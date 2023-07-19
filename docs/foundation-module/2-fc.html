@@ -50,6 +50,8 @@ here we are.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">chapter_md_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">colouring_language_block_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">colouring_rule_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">command_line_switch_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">debugging_aspect_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">dict_entry_CLASS</span>
@@ -62,6 +64,7 @@ here we are.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_page_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_volume_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">filename_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">hash_table_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">heterogeneous_tree_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">HTML_file_state_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">HTML_tag_CLASS</span>
@@ -83,6 +86,8 @@ here we are.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_macro_parameter_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_variable_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_variable_set_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">programming_language_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">reserved_word_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">scan_directory_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">section_md_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">semantic_version_number_holder_CLASS</span>
@@ -98,6 +103,8 @@ here we are.
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">chapter_md</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">debugging_aspect</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">dictionary</span><span class="plain-syntax">)</span>
@@ -109,6 +116,7 @@ here we are.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook_volume</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ebook</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">heterogeneous_tree</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">HTML_file_state</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">JSON_pair_requirement</span><span class="plain-syntax">)</span>
@@ -126,6 +134,8 @@ here we are.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preprocessor_macro_parameter</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preprocessor_variable</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preprocessor_variable_set</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">scan_directory</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">section_md</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number_holder</span><span class="plain-syntax">)</span>
@@ -146,7 +156,7 @@ here we are.
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-mmr.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-dl.html">dl</a></li><li class="progresssection"><a href="2-mmr.html">mmr</a></li><li class="progresscurrent">fc</li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-str.html">str</a></li><li class="progresssection"><a href="2-wal.html">wal</a></li><li class="progresssection"><a href="2-mth.html">mth</a></li><li class="progresssection"><a href="2-llas.html">llas</a></li><li class="progresssection"><a href="2-dct.html">dct</a></li><li class="progresssection"><a href="2-trs.html">trs</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progresschapter"><a href="8-ws.html">8</a></li><li class="progressnext"><a href="2-lcl.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-mmr.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-dl.html">dl</a></li><li class="progresssection"><a href="2-mmr.html">mmr</a></li><li class="progresscurrent">fc</li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-str.html">str</a></li><li class="progresssection"><a href="2-wal.html">wal</a></li><li class="progresssection"><a href="2-mth.html">mth</a></li><li class="progresssection"><a href="2-llas.html">llas</a></li><li class="progresssection"><a href="2-dct.html">dct</a></li><li class="progresssection"><a href="2-trs.html">trs</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progresschapter"><a href="8-ws.html">8</a></li><li class="progresschapter"><a href="9-pl.html">9</a></li><li class="progressnext"><a href="2-lcl.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

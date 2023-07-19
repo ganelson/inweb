@@ -46,6 +46,7 @@
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"inweb"</span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">THIS_IS_INWEB</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>We need to itemise the structures we'll want to allocate. For explanations,
 see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
@@ -57,12 +58,9 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="definition-keyword">enum</span> <span class="constant-syntax">colony_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">colony_member_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">colour_scheme_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">colouring_language_block_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">colouring_rule_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">defined_constant_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">enumeration_set_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">footnote_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">hash_table_entry_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">hash_table_entry_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">language_function_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">language_type_CLASS</span>
@@ -73,8 +71,6 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="definition-keyword">enum</span> <span class="constant-syntax">paragraph_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">paragraph_tagging_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">preform_nonterminal_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">programming_language_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">reserved_word_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">section_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">source_line_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">structure_element_CLASS</span>
@@ -146,13 +142,10 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colour_scheme</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">defined_constant</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">enumeration_set</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">footnote</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry_usage</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_function</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">language_type</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">macro_usage</span><span class="plain-syntax">)</span>
@@ -162,8 +155,6 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph_tagging</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">paragraph</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">preform_nonterminal</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">reserved_word</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">section</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">structure_element</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tangle_target</span><span class="plain-syntax">)</span>
@@ -225,7 +216,7 @@ see <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide t
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_function_defn_node</span><span class="plain-syntax">)</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="P-htpw.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">bsc</li><li class="progresssection"><a href="1-pc.html">pc</a></li><li class="progresssection"><a href="1-cnf.html">cnf</a></li><li class="progresssection"><a href="1-ts.html">ts</a></li><li class="progresssection"><a href="1-ptt.html">ptt</a></li><li class="progresssection"><a href="1-apacs.html">apacs</a></li><li class="progresschapter"><a href="2-tr.html">2</a></li><li class="progresschapter"><a href="3-ta.html">3</a></li><li class="progresschapter"><a href="4-pl.html">4</a></li><li class="progresschapter"><a href="5-wt.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="1-pc.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-htpw.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">bsc</li><li class="progresssection"><a href="1-pc.html">pc</a></li><li class="progresssection"><a href="1-cnf.html">cnf</a></li><li class="progresssection"><a href="1-ts.html">ts</a></li><li class="progresssection"><a href="1-ptt.html">ptt</a></li><li class="progresssection"><a href="1-apacs.html">apacs</a></li><li class="progresschapter"><a href="2-tr.html">2</a></li><li class="progresschapter"><a href="3-ta.html">3</a></li><li class="progresschapter"><a href="4-taf.html">4</a></li><li class="progresschapter"><a href="5-wt.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="1-pc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

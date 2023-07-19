@@ -6,6 +6,7 @@ module.
 @ Every program using //foundation// must define this:
 
 @d PROGRAM_NAME "inweb"
+@d THIS_IS_INWEB
 
 @ We need to itemise the structures we'll want to allocate. For explanations,
 see //foundation: A Brief Guide to Foundation//.
@@ -16,12 +17,9 @@ see //foundation: A Brief Guide to Foundation//.
 @e colony_CLASS
 @e colony_member_CLASS
 @e colour_scheme_CLASS
-@e colouring_language_block_CLASS
-@e colouring_rule_CLASS
 @e defined_constant_CLASS
 @e enumeration_set_CLASS
 @e footnote_CLASS
-@e hash_table_entry_CLASS
 @e hash_table_entry_usage_CLASS
 @e language_function_CLASS
 @e language_type_CLASS
@@ -32,8 +30,6 @@ see //foundation: A Brief Guide to Foundation//.
 @e paragraph_CLASS
 @e paragraph_tagging_CLASS
 @e preform_nonterminal_CLASS
-@e programming_language_CLASS
-@e reserved_word_CLASS
 @e section_CLASS
 @e source_line_CLASS
 @e structure_element_CLASS
@@ -105,13 +101,10 @@ DECLARE_CLASS(chapter)
 DECLARE_CLASS(colony)
 DECLARE_CLASS(colony_member)
 DECLARE_CLASS(colour_scheme)
-DECLARE_CLASS(colouring_language_block)
-DECLARE_CLASS(colouring_rule)
 DECLARE_CLASS(defined_constant)
 DECLARE_CLASS(enumeration_set)
 DECLARE_CLASS(footnote)
 DECLARE_CLASS(hash_table_entry_usage)
-DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(language_function)
 DECLARE_CLASS(language_type)
 DECLARE_CLASS(macro_usage)
@@ -121,8 +114,6 @@ DECLARE_CLASS(para_macro)
 DECLARE_CLASS(paragraph_tagging)
 DECLARE_CLASS(paragraph)
 DECLARE_CLASS(preform_nonterminal)
-DECLARE_CLASS(programming_language)
-DECLARE_CLASS(reserved_word)
 DECLARE_CLASS(section)
 DECLARE_CLASS(structure_element)
 DECLARE_CLASS(tangle_target)

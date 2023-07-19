@@ -73,6 +73,7 @@ int main(int argc, char **argv) {
 	}
 	path_to_inweb_patterns = Pathnames::down(path_to_inweb, I"Patterns");
 	path_to_inweb_materials = Pathnames::down(path_to_inweb, I"Materials");
+	Languages::set_default_directory(Pathnames::down(path_to_inweb, I"Languages"));
 
 	Main::follow_instructions(&args);
 

@@ -275,7 +275,7 @@ objects. But to the loader, these are all just names.
 </p>
 
 <p class="commentary">The reader then loads in definitions of these programming languages by
-calling <a href="4-pl.html#SP2" class="internal">Languages::find_by_name</a>, and the parser does the same when it
+calling <a href="3-ta.html#SP10" class="internal">Analyser::find_by_name</a>, and the parser does the same when it
 finds extract lines like
 </p>
 
@@ -285,10 +285,10 @@ finds extract lines like
 <p class="commentary">to say that a passage of text must be syntax-coloured like the ACME language.
 </p>
 
-<p class="commentary"><a href="4-pl.html#SP2" class="internal">Languages::find_by_name</a> is thus called at any time when Inweb finds need
+<p class="commentary"><a href="3-ta.html#SP10" class="internal">Analyser::find_by_name</a> is thus called at any time when Inweb finds need
 of a language; it looks for a language definition file (see documentation
 at <a href="M-spl.html" class="internal">Supporting Programming Languages</a>), parses it one line at a time using
-<a href="4-pl.html#SP8" class="internal">Languages::read_definition_line</a>, and returns a <a href="4-pl.html#SP6" class="internal">programming_language</a>
+<a href="../foundation-module/9-pl.html#SP8" class="internal">Languages::read_definition_line</a>, and returns a <a href="../foundation-module/9-pl.html#SP6" class="internal">programming_language</a>
 object. These correspond to their names: you cannot have two different PL
 objects with languages both called "Python", say.
 </p>
@@ -296,7 +296,7 @@ objects with languages both called "Python", say.
 <p class="commentary">The practical effect is that a web can involve many languages, even though
 the main use case is to have just one throughout. <a href="2-tr.html#SP1" class="internal">web</a>, <a href="2-tr.html#SP2" class="internal">chapter</a>,
 <a href="2-tr.html#SP3" class="internal">section</a> and even individual <a href="2-lc.html#SP1" class="internal">source_line</a> objects all contain pointers
-to a <a href="4-pl.html#SP6" class="internal">programming_language</a>.
+to a <a href="../foundation-module/9-pl.html#SP6" class="internal">programming_language</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:9"><p class="inwebfootnote"><sup id="fnref:9"><a href="#fn:9" rel="footnote">9</a></sup> A little-used feature of Inweb, which should arguably be taken out as
@@ -533,7 +533,7 @@ it on Spotify.
 get itself into fiddly details of formats, it also avoids specifics of
 programming languages. It does this by calling <a href="4-lm.html#SP25" class="internal">LanguageMethods::syntax_colour</a>,
 which in turn calls the <span class="extract"><span class="extract-syntax">SYNTAX_COLOUR_WEA_MTID</span></span> method for the relevant
-instance of <a href="4-pl.html#SP6" class="internal">programming_language</a>. In effect the weaver sends a snippet
+instance of <a href="../foundation-module/9-pl.html#SP6" class="internal">programming_language</a>. In effect the weaver sends a snippet
 of code and asks to be told how it's to be coloured: not in terms of green
 vs blue, but in terms of <span class="extract"><span class="extract-syntax">IDENTIFIER_COLOUR</span></span> vs <span class="extract"><span class="extract-syntax">RESERVED_COLOUR</span></span> and so on.
 </p>
@@ -544,8 +544,8 @@ assigns no particular code to this, what instead happens is that the generic
 handler function in <a href="4-as.html" class="internal">ACME Support</a> takes on the task.<sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> This runs the
 colouring program in the language's definition file. Colouring programs are,
 in effect, a mini-language of their own, which is compiled by
-<a href="4-pl.html" class="internal">Programming Languages</a> and then run in a low-level interpreter by
-<a href="4-tp.html" class="internal">The Painter</a>.
+<a href="../foundation-module/9-pl.html" class="internal">Programming Languages (in foundation)</a> and then run in a low-level interpreter by
+<a href="../foundation-module/9-tp.html" class="internal">The Painter (in foundation)</a>.
 </p>
 
 <ul class="footnotetexts"><li class="footnote" id="fn:14"><p class="inwebfootnote"><sup id="fnref:14"><a href="#fn:14" rel="footnote">14</a></sup> "ACME" is used here in the sense of "generic".
@@ -704,7 +704,7 @@ need with a new definition file alone: see <a href="M-spl.html" class="internal"
 Failing that, see if making definition files more powerful would do it (for
 example, by making the ACME support more general-purpose). Failing even that,
 follow the model of <a href="4-cl.html" class="internal">C-Like Languages</a>: that is, add logic to
-<a href="4-pl.html#SP7" class="internal">Languages::read_definition</a> which adds method receiver functions
+<a href="../foundation-module/9-pl.html#SP7" class="internal">Languages::read_definition</a> which adds method receiver functions
 to a language with a given name, or, preferably, some given declaration in
 the language definition file. On no account insert any language bias into
 <a href="3-tw.html" class="internal">The Weaver</a> or <a href="3-tt.html" class="internal">The Tangler</a>.
@@ -726,7 +726,7 @@ object, don't forget to declare it in <a href="1-bsc.html" class="internal">Basi
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresscurrentchapter">P</li><li class="progresscurrent">htpw</li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-tr.html">2</a></li><li class="progresschapter"><a href="3-ta.html">3</a></li><li class="progresschapter"><a href="4-pl.html">4</a></li><li class="progresschapter"><a href="5-wt.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="1-bsc.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresscurrentchapter">P</li><li class="progresscurrent">htpw</li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progresschapter"><a href="2-tr.html">2</a></li><li class="progresschapter"><a href="3-ta.html">3</a></li><li class="progresschapter"><a href="4-taf.html">4</a></li><li class="progresschapter"><a href="5-wt.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="1-bsc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

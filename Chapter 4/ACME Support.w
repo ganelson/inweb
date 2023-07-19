@@ -23,7 +23,7 @@ void ACMESupport::add_fallbacks(programming_language *pl) {
 	if (Methods::provided(pl->methods, POST_ANALYSIS_ANA_MTID) == FALSE)
 		METHOD_ADD(pl, POST_ANALYSIS_ANA_MTID, ACMESupport::post_analysis);
 	if (Methods::provided(pl->methods, PARSE_COMMENT_TAN_MTID) == FALSE)
-		METHOD_ADD(pl, PARSE_COMMENT_TAN_MTID, ACMESupport::parse_comment);
+		METHOD_ADD(pl, PARSE_COMMENT_TAN_MTID, Painter::parse_comment);
 	if (Methods::provided(pl->methods, COMMENT_TAN_MTID) == FALSE)
 		METHOD_ADD(pl, COMMENT_TAN_MTID, ACMESupport::comment);
 	if (Methods::provided(pl->methods, SHEBANG_TAN_MTID) == FALSE)
@@ -157,85 +157,6 @@ void ACMESupport::comment(programming_language *pl,
 		WRITE(" %S\n", comm);
 	}
 }
-
-@ In the following, |q_mode| is 0 outside quotes, 1 inside a character literal,
-and 2 inside a string literal; |c_mode| is 0 outside comments, 1 inside a line
-comment, and 2 inside a multiline comment.
-
-=
-int ACMESupport::parse_comment(programming_language *pl,
-	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
-	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
-	for (int i=0; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
-		switch (c_mode) {
-			case 0: @<Outside commentary@>; break;
-			case 1: @<Inside a line comment@>; break;
-			case 2: @<Inside a multiline comment@>; break;
-		}
-	}
-	if (c_mode == 2) c_end = Str::len(line);
-	if ((c_position >= 0) && (non_white_space == FALSE)) {
-		Str::clear(part_before_comment);
-		for (int i=0; i<c_position; i++)
-			PUT_TO(part_before_comment, Str::get_at(line, i));
-		Str::clear(part_within_comment);
-		for (int i=c_position + 2; i<c_end; i++)
-			PUT_TO(part_within_comment, Str::get_at(line, i));
-		Str::trim_white_space_at_end(part_within_comment);
-		return TRUE;
-	}
-	return FALSE;
-}
-
-@<Inside a multiline comment@> =
-	if (Str::includes_at(line, i, pl->multiline_comment_close)) {
-		c_mode = 0; c_end = i; i += Str::len(pl->multiline_comment_close) - 1;
-	}
-
-@<Inside a line comment@> =
-	;
-
-@<Outside commentary@> =
-	switch (q_mode) {
-		case 0: @<Outside quoted matter@>; break;
-		case 1: @<Inside a literal character@>; break;
-		case 2: @<Inside a literal string@>; break;
-	}
-
-@<Outside quoted matter@> =
-	if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
-	if (c == Str::get_first_char(pl->string_literal)) q_mode = 2;
-	else if (c == Str::get_first_char(pl->character_literal)) q_mode = 1;
-	else if (Str::includes_at(line, i, pl->multiline_comment_open)) {
-		c_mode = 2; c_position = i; non_white_space = FALSE;
-		i += Str::len(pl->multiline_comment_open) - 1;
-	} else if (Str::includes_at(line, i, pl->line_comment)) {
-		c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
-		i += Str::len(pl->line_comment) - 1;
-	} else if (Str::includes_at(line, i, pl->whole_line_comment)) {
-		int material_exists = FALSE;
-		for (int j=0; j<i; j++)
-			if (!(Characters::is_whitespace(Str::get_at(line, j))))
-				material_exists = TRUE;
-		if (material_exists == FALSE) {
-			c_mode = 1; c_position = i; c_end = Str::len(line);
-			non_white_space = FALSE;
-			i += Str::len(pl->whole_line_comment) - 1;
-		}
-	}
-
-@<Inside a literal character@> =
-	if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
-	if (c == Str::get_first_char(pl->character_literal_escape)) i += 1;
-	if (c == Str::get_first_char(pl->character_literal)) q_mode = 0;
-	q_mode = 0;
-
-@<Inside a literal string@> =
-	if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
-	if (c == Str::get_first_char(pl->string_literal_escape)) i += 1;
-	if (c == Str::get_first_char(pl->string_literal)) q_mode = 0;
-	q_mode = 0;
 
 @
 

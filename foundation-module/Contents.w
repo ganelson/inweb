@@ -72,3 +72,7 @@ Chapter 8: Literate Programming
 	Build Files
 	Simple Tangler
 
+Chapter 9: Syntax Colouring
+	Programming Languages
+	Reserved Words
+	The Painter

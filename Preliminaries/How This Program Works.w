@@ -159,14 +159,14 @@ the loader stores those in the relevant //chapter_md// or //section_md//
 objects. But to the loader, these are all just names.
 
 The reader then loads in definitions of these programming languages by
-calling //Languages::find_by_name//, and the parser does the same when it
+calling //Analyser::find_by_name//, and the parser does the same when it
 finds extract lines like
 = (text as Inweb)
 	= (text as ACME)
 =
 to say that a passage of text must be syntax-coloured like the ACME language.
 
-//Languages::find_by_name// is thus called at any time when Inweb finds need
+//Analyser::find_by_name// is thus called at any time when Inweb finds need
 of a language; it looks for a language definition file (see documentation
 at //Supporting Programming Languages//), parses it one line at a time using
 //Languages::read_definition_line//, and returns a //programming_language//

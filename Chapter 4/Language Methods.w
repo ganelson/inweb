@@ -364,8 +364,6 @@ void LanguageMethods::reset_syntax_colouring(programming_language *pl) {
 @e SYNTAX_COLOUR_WEA_MTID
 
 =
-int colouring_state = PLAIN_COLOUR;
-
 INT_METHOD_TYPE(SYNTAX_COLOUR_WEA_MTID, programming_language *pl,
 	weave_order *wv, source_line *L, text_stream *matter, text_stream *colouring)
 int LanguageMethods::syntax_colour(programming_language *pl,
@@ -376,7 +374,7 @@ int LanguageMethods::syntax_colour(programming_language *pl,
 	if (L->category == TEXT_EXTRACT_LCAT) colour_as = L->colour_as;
 	theme_tag *T = Tags::find_by_name(I"Preform", FALSE);
 	if ((T) && (Tags::tagged_with(L->owning_paragraph, T))) {
-		programming_language *prepl = Languages::find_by_name(I"Preform", wv->weave_web, FALSE);
+		programming_language *prepl = Analyser::find_by_name(I"Preform", wv->weave_web, FALSE);
 		if ((L->category == PREFORM_LCAT) || (L->category == PREFORM_GRAMMAR_LCAT))
 			if (prepl) colour_as = prepl;
 	}

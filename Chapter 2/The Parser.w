@@ -348,7 +348,7 @@ division in the current section.
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = Str::duplicate(mr2.exp[1]);
-			code_pl_for_body = Languages::find_by_name(I"Extracts", W, TRUE);
+			code_pl_for_body = Analyser::find_by_name(I"Extracts", W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as code%)"))) {
@@ -362,7 +362,7 @@ division in the current section.
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
-			code_pl_for_body = Languages::find_by_name(mr2.exp[1], W, TRUE);
+			code_pl_for_body = Analyser::find_by_name(mr2.exp[1], W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as code%)"))) {
@@ -372,7 +372,7 @@ division in the current section.
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as (%c+)%)"))) {
 			@<Make plainer@>;
-			code_pl_for_body = Languages::find_by_name(mr2.exp[2], W, TRUE);
+			code_pl_for_body = Analyser::find_by_name(mr2.exp[2], W, TRUE);
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
 			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+)%)"))) {

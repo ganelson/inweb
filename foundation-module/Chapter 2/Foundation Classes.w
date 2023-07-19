@@ -9,6 +9,8 @@ declarations have to come after that point in the tangled code. But now
 here we are.
 
 @e chapter_md_CLASS
+@e colouring_language_block_CLASS
+@e colouring_rule_CLASS
 @e command_line_switch_CLASS
 @e debugging_aspect_CLASS
 @e dict_entry_CLASS
@@ -21,6 +23,7 @@ here we are.
 @e ebook_page_CLASS
 @e ebook_volume_CLASS
 @e filename_CLASS
+@e hash_table_entry_CLASS
 @e heterogeneous_tree_CLASS
 @e HTML_file_state_CLASS
 @e HTML_tag_CLASS
@@ -42,6 +45,8 @@ here we are.
 @e preprocessor_macro_parameter_CLASS
 @e preprocessor_variable_CLASS
 @e preprocessor_variable_set_CLASS
+@e programming_language_CLASS
+@e reserved_word_CLASS
 @e scan_directory_CLASS
 @e section_md_CLASS
 @e semantic_version_number_holder_CLASS
@@ -57,6 +62,8 @@ here we are.
 
 =
 DECLARE_CLASS(chapter_md)
+DECLARE_CLASS(colouring_language_block)
+DECLARE_CLASS(colouring_rule)
 DECLARE_CLASS(command_line_switch)
 DECLARE_CLASS(debugging_aspect)
 DECLARE_CLASS(dictionary)
@@ -68,6 +75,7 @@ DECLARE_CLASS(ebook_page)
 DECLARE_CLASS(ebook_volume)
 DECLARE_CLASS(ebook)
 DECLARE_CLASS(filename)
+DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(heterogeneous_tree)
 DECLARE_CLASS(HTML_file_state)
 DECLARE_CLASS(JSON_pair_requirement)
@@ -85,6 +93,8 @@ DECLARE_CLASS(preprocessor_macro)
 DECLARE_CLASS(preprocessor_macro_parameter)
 DECLARE_CLASS(preprocessor_variable)
 DECLARE_CLASS(preprocessor_variable_set)
+DECLARE_CLASS(programming_language)
+DECLARE_CLASS(reserved_word)
 DECLARE_CLASS(scan_directory)
 DECLARE_CLASS(section_md)
 DECLARE_CLASS(semantic_version_number_holder)

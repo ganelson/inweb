@@ -7,7 +7,13 @@ definitions from files.
 Programming languages are identified by name: for example, |C++| or |Perl|.
 
 @ =
-programming_language *Languages::find_by_name(text_stream *lname, web *W,
+pathname *default_programming_language_path = NULL;
+
+void Languages::set_default_directory(pathname *P) {
+	default_programming_language_path = P;
+}
+
+programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 	int error_if_not_found) {
 	programming_language *pl;
 	@<If this is the name of a language already known, return that@>;
@@ -25,12 +31,9 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W,
 
 @<Read the language definition file with this name@> =
 	filename *F = NULL;
-	if (W) {
-		pathname *P = Pathnames::down(W->md->path_to_web, I"Dialects");
-		@<Try P@>;
-	}
-	pathname *P = Languages::default_directory();
-	@<Try P@>;
+	if (P) @<Try P@>;
+	P = default_programming_language_path;
+	if (P) @<Try P@>;
 	if (F == NULL) {
 		if (error_if_not_found)
 			Errors::fatal_with_text(
@@ -48,15 +51,11 @@ programming_language *Languages::find_by_name(text_stream *lname, web *W,
 		if (TextFiles::exists(F) == FALSE) F = NULL;
 	}
 
-@ I'm probably showing my age here.
+@
 
 =
-programming_language *Languages::default(web *W) {
-	return Languages::find_by_name(I"C", W, TRUE);
-}
-
 void Languages::show(OUTPUT_STREAM) {
-	WRITE("Inweb can see the following programming language definitions:\n\n");
+	WRITE("I can see the following programming language definitions:\n\n");
 	int N = NUMBER_CREATED(programming_language);
 	programming_language **sorted_table =
 		Memory::calloc(N, (int) sizeof(programming_language *), ARRAY_SORTING_MREASON);
@@ -82,7 +81,8 @@ int Languages::compare_names(const void *ent1, const void *ent2) {
 
 =
 void Languages::read_definitions(pathname *P) {
-	if (P == NULL) P = Languages::default_directory();
+	if (P == NULL) P = default_programming_language_path;
+	if (P == NULL) internal_error("no path for definitions");
 	scan_directory *D = Directories::open(P);
 	TEMPORARY_TEXT(leafname)
 	while (Directories::next(D, leafname)) {
@@ -93,10 +93,6 @@ void Languages::read_definitions(pathname *P) {
 	}
 	DISCARD_TEXT(leafname)
 	Directories::close(D);
-}
-
-pathname *Languages::default_directory(void) {
-	return Pathnames::down(path_to_inweb, I"Languages");
 }
 
 @ So, then, languages are defined by files which are read in, and parsed
@@ -203,7 +199,7 @@ programming_language *Languages::read_definition(filename *F) {
 	pl->function_notation[0] = 0;
 
 	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
-	Analyser::initialise_hash_table(&(pl->built_in_keywords));
+	ReservedWords::initialise_hash_table(&(pl->built_in_keywords));
 	pl->program = NULL;
 	pl->methods = Methods::new_set();
 
@@ -216,9 +212,11 @@ extra features are provided. The call to |ACMESupport::add_fallbacks|
 adds generic method calls to give effect to the settings in the definition.
 
 @<Add method calls to the language@> =
+	#ifdef THIS_IS_INWEB
 	if (pl->C_like) CLike::make_c_like(pl);
 	if (Str::eq(pl->language_name, I"InC")) InCSupport::add_features(pl);
 	ACMESupport::add_fallbacks(pl);
+	#endif
 
 @ So, then, the above reads the file and feeds it line by line to this:
 
@@ -574,7 +572,7 @@ reserved_word *Languages::reserved(programming_language *pl, text_stream *W, wch
 	rw->word = Str::duplicate(W);
 	rw->colour = (int) C;
 	ADD_TO_LINKED_LIST(rw, reserved_word, pl->reserved_words);
-	Analyser::mark_reserved_word(&(pl->built_in_keywords), rw->word, (int) C);
+	ReservedWords::mark_reserved_word(&(pl->built_in_keywords), rw->word, (int) C);
 	return rw;
 }
 

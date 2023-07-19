@@ -145,11 +145,11 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I,
 	W->analysed = FALSE;
 	W->as_ebook = NULL;
 	W->redirect_weaves_to = NULL;
-	W->main_language = Languages::default(W);
+	W->main_language = Analyser::default_language(W);
 	W->web_extent = 0; W->no_paragraphs = 0; 
 	text_stream *language_name = Bibliographic::get_datum(W->md, I"Language");
 	if (Str::len(language_name) > 0)
-		W->main_language = Languages::find_by_name(language_name, W, TRUE);
+		W->main_language = Analyser::find_by_name(language_name, W, TRUE);
 	main_target = Reader::add_tangle_target(W, W->main_language);
 
 @<Initialise the rest of the chapter structure@> =
@@ -158,7 +158,7 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I,
 	C->sections = NEW_LINKED_LIST(section);
 	C->ch_language = W->main_language;
 	if (Str::len(Cm->ch_language_name) > 0)
-		C->ch_language = Languages::find_by_name(Cm->ch_language_name, W, TRUE);
+		C->ch_language = Analyser::find_by_name(Cm->ch_language_name, W, TRUE);
 
 @<Initialise the rest of the section structure@> =
 	S->sect_extent = 0;
@@ -175,10 +175,10 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I,
 	S->owning_web = W;
 	S->sect_language = C->ch_language;
 	if (Str::len(S->md->sect_language_name) > 0)
-		S->sect_language = Languages::find_by_name(S->md->sect_language_name, W, TRUE);
+		S->sect_language = Analyser::find_by_name(S->md->sect_language_name, W, TRUE);
 	if (Str::len(S->md->sect_independent_language) > 0) {
 		programming_language *pl =
-			Languages::find_by_name(S->md->sect_independent_language, W, TRUE);
+			Analyser::find_by_name(S->md->sect_independent_language, W, TRUE);
 		S->sect_language = pl;
 		S->sect_target = Reader::add_tangle_target(W, pl);
 	} else {
@@ -391,7 +391,7 @@ typedef struct tangle_target {
 tangle_target *Reader::add_tangle_target(web *W, programming_language *language) {
 	tangle_target *tt = CREATE(tangle_target);
 	tt->tangle_language = language;
-	Analyser::initialise_hash_table(&(tt->symbols));
+	ReservedWords::initialise_hash_table(&(tt->symbols));
 	ADD_TO_LINKED_LIST(tt, tangle_target, W->tangle_targets);
 	return tt;
 }

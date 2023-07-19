@@ -13,6 +13,7 @@ Because of that, we need to call the following before we begin a run of calls
 to |Painter::syntax_colour|:
 
 =
+int colouring_state = PLAIN_COLOUR;
 int painter_count = 1;
 void Painter::reset_syntax_colouring(programming_language *pl) {
 	colouring_state = PLAIN_COLOUR;
@@ -41,8 +42,16 @@ int Painter::syntax_colour(programming_language *pl,
 	if (with_comments) {
 		TEMPORARY_TEXT(part_before_comment)
 		TEMPORARY_TEXT(part_within_comment)
-		if (LanguageMethods::parse_comment(pl,
-			matter, part_before_comment, part_within_comment)) {
+		int found = FALSE;
+		#ifdef THIS_IS_INWEB
+		found = LanguageMethods::parse_comment(pl,
+			matter, part_before_comment, part_within_comment);
+		#endif
+		#ifndef THIS_IS_INWEB
+		found = Painter::parse_comment(pl,
+			matter, part_before_comment, part_within_comment);
+		#endif
+		if (found) {
 			int N = Str::len(matter);
 			for (int i=Str::len(part_before_comment); i<N; i++)
 				Str::put_at(colouring, i, COMMENT_COLOUR);
@@ -69,7 +78,7 @@ void Painter::syntax_colour_inner(programming_language *pl,
 	int dquote_escape = Str::get_first_char(pl->string_literal_escape);
 	for (int i=from; i <= to; i++) {
 		wchar_t skip = NOT_A_COLOUR;
-		int one_off = -1, will_be = -1;
+		int one_off = -1, will_be = -1, glob = 1;
 		switch (colouring_state) {
 			case PLAIN_COLOUR: {
 				wchar_t c = Str::get_at(matter, i);
@@ -81,10 +90,23 @@ void Painter::syntax_colour_inner(programming_language *pl,
 					colouring_state = CHARACTER_COLOUR;
 					break;
 				}
-				if (Painter::identifier_at(pl, matter, colouring, i))
+				if (Str::includes_at(matter, i, pl->multiline_comment_open)) {
+					one_off = COMMENT_COLOUR; will_be = COMMENT_COLOUR;
+					glob = Str::len(pl->multiline_comment_open);
+				} else if (Str::includes_at(matter, i, pl->line_comment)) {
+					one_off = COMMENT_COLOUR; will_be = PLAIN_COLOUR;
+					glob = Str::len(matter) - i;
+				} else if (Painter::identifier_at(pl, matter, colouring, i)) {
 					one_off = IDENTIFIER_COLOUR;
+				}
 				break;
 			}
+			case COMMENT_COLOUR:
+				if (Str::includes_at(matter, i, pl->multiline_comment_close)) {
+					one_off = COMMENT_COLOUR; will_be = PLAIN_COLOUR;
+					glob = Str::len(pl->multiline_comment_close);
+				}
+				break;
 			case CHARACTER_COLOUR: {
 				wchar_t c = Str::get_at(matter, i);
 				if (c == squote) will_be = PLAIN_COLOUR;
@@ -98,8 +120,11 @@ void Painter::syntax_colour_inner(programming_language *pl,
 				break;
 			}
 		}
-		if (one_off >= 0) Str::put_at(colouring, i, (wchar_t) one_off);
-		else Str::put_at(colouring, i, (wchar_t) colouring_state);
+		for (int j=0; j<glob; j++) {
+			if (one_off >= 0) Str::put_at(colouring, i+j, (wchar_t) one_off);
+			else Str::put_at(colouring, i+j, (wchar_t) colouring_state);
+		}
+		i += glob - 1;
 		if (will_be >= 0) colouring_state = will_be;
 		if ((skip != NOT_A_COLOUR) && (i<to)) {
 			i++; Str::put_at(colouring, i, skip);
@@ -348,7 +373,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 	} else if (rule->match_keyword_of_colour != NOT_A_COLOUR) {
 		TEMPORARY_TEXT(id)
 		Str::substr(id, Str::at(matter, from), Str::at(matter, to+1));
-		int rw = Analyser::is_reserved_word(HT, id, (int) rule->match_keyword_of_colour);
+		int rw = ReservedWords::is_reserved_word(HT, id, (int) rule->match_keyword_of_colour);
 		DISCARD_TEXT(id)
 		if (rw == FALSE) return FALSE;
 	} else if (rule->match_colour != NOT_A_COLOUR) {
@@ -442,3 +467,82 @@ void Painter::colour_file(programming_language *pl, filename *F, text_stream *to
 	}
 	if (c > 0) { PUT_TO(to, '\n'); PUT_TO(coloured, NEWLINE_COLOUR); }
 }
+
+@ In the following, |q_mode| is 0 outside quotes, 1 inside a character literal,
+and 2 inside a string literal; |c_mode| is 0 outside comments, 1 inside a line
+comment, and 2 inside a multiline comment.
+
+=
+int Painter::parse_comment(programming_language *pl,
+	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
+	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
+	for (int i=0; i<Str::len(line); i++) {
+		wchar_t c = Str::get_at(line, i);
+		switch (c_mode) {
+			case 0: @<Outside commentary@>; break;
+			case 1: @<Inside a line comment@>; break;
+			case 2: @<Inside a multiline comment@>; break;
+		}
+	}
+	if (c_mode == 2) c_end = Str::len(line);
+	if ((c_position >= 0) && (non_white_space == FALSE)) {
+		Str::clear(part_before_comment);
+		for (int i=0; i<c_position; i++)
+			PUT_TO(part_before_comment, Str::get_at(line, i));
+		Str::clear(part_within_comment);
+		for (int i=c_position + 2; i<c_end; i++)
+			PUT_TO(part_within_comment, Str::get_at(line, i));
+		Str::trim_white_space_at_end(part_within_comment);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+@<Inside a multiline comment@> =
+	if (Str::includes_at(line, i, pl->multiline_comment_close)) {
+		c_mode = 0; c_end = i; i += Str::len(pl->multiline_comment_close) - 1;
+	}
+
+@<Inside a line comment@> =
+	;
+
+@<Outside commentary@> =
+	switch (q_mode) {
+		case 0: @<Outside quoted matter@>; break;
+		case 1: @<Inside a literal character@>; break;
+		case 2: @<Inside a literal string@>; break;
+	}
+
+@<Outside quoted matter@> =
+	if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
+	if (c == Str::get_first_char(pl->string_literal)) q_mode = 2;
+	else if (c == Str::get_first_char(pl->character_literal)) q_mode = 1;
+	else if (Str::includes_at(line, i, pl->multiline_comment_open)) {
+		c_mode = 2; c_position = i; non_white_space = FALSE;
+		i += Str::len(pl->multiline_comment_open) - 1;
+	} else if (Str::includes_at(line, i, pl->line_comment)) {
+		c_mode = 1; c_position = i; c_end = Str::len(line); non_white_space = FALSE;
+		i += Str::len(pl->line_comment) - 1;
+	} else if (Str::includes_at(line, i, pl->whole_line_comment)) {
+		int material_exists = FALSE;
+		for (int j=0; j<i; j++)
+			if (!(Characters::is_whitespace(Str::get_at(line, j))))
+				material_exists = TRUE;
+		if (material_exists == FALSE) {
+			c_mode = 1; c_position = i; c_end = Str::len(line);
+			non_white_space = FALSE;
+			i += Str::len(pl->whole_line_comment) - 1;
+		}
+	}
+
+@<Inside a literal character@> =
+	if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
+	if (c == Str::get_first_char(pl->character_literal_escape)) i += 1;
+	if (c == Str::get_first_char(pl->character_literal)) q_mode = 0;
+	q_mode = 0;
+
+@<Inside a literal string@> =
+	if (!(Characters::is_whitespace(c))) non_white_space = TRUE;
+	if (c == Str::get_first_char(pl->string_literal_escape)) i += 1;
+	if (c == Str::get_first_char(pl->string_literal)) q_mode = 0;
+	q_mode = 0;

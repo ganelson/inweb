@@ -482,7 +482,7 @@ and macro usage is rendered differently.
 		theme_tag *T = Tags::find_by_name(I"Preform", FALSE);
 		if ((T) && (Tags::tagged_with(L->owning_paragraph, T))) {
 			programming_language *prepl =
-				Languages::find_by_name(I"Preform", wv->weave_web, FALSE);
+				Analyser::find_by_name(I"Preform", wv->weave_web, FALSE);
 			if (prepl) pl = prepl;
 		}
 		text_stream *note = NULL;
