@@ -8,7 +8,7 @@ Some of our programs have to issue commands to the host operating system,
 to copy files, pass them through TeX, and so on. All of that is done using
 the C standard library |system| function; the commands invoked are all
 standard for POSIX, so will work on MacOS and Linux, but on a Windows system
-they would need to be read in a POSIX-style environment like Cygwin.
+they would need to be read in a POSIX-style environment like Cygwin or MSYS2.
 
 =
 void Shell::quote_path(OUTPUT_STREAM, pathname *P) {
