@@ -234,6 +234,13 @@ int Platform::rename_directory(char *old_transcoded_pathname, char *new_transcod
 	return TRUE;
 }
 
+@h Copying.
+
+=
+void Platform::copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
+	CopyFile(from_transcoded_pathname, to_transcoded_pathname, FALSE);
+}
+
 @h Sync.
 
 =
