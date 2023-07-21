@@ -267,18 +267,6 @@ void Platform::closedir(void *D) {
 	closedir(dirp);
 }
 
-@h Copying.
-
-=
-void Platform::copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
-	char cp_command[10*MAX_FILENAME_LENGTH];
-	sprintf(cp_command, "cp -f ");
-	Platform::quote_text(cp_command + strlen(cp_command), from_transcoded_pathname, TRUE);
-	sprintf(cp_command + strlen(cp_command), " ");
-	Platform::quote_text(cp_command + strlen(cp_command), to_transcoded_pathname, FALSE);
-	Platform::system(cp_command);
-}
-
 @h Renaming.
 
 =
@@ -292,6 +280,18 @@ int Platform::rename_directory(char *old_transcoded_pathname, char *new_transcod
 	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
 		return FALSE;
 	return TRUE;
+}
+
+@h Copying.
+
+=
+void Platform::copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
+	char cp_command[10*MAX_FILENAME_LENGTH];
+	sprintf(cp_command, "cp -f ");
+	Platform::quote_text(cp_command + strlen(cp_command), from_transcoded_pathname, FALSE);
+	sprintf(cp_command + strlen(cp_command), " ");
+	Platform::quote_text(cp_command + strlen(cp_command), to_transcoded_pathname, FALSE);
+	Platform::system(cp_command);
 }
 
 @h Timestamp and file size.

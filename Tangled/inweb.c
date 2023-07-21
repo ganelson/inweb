@@ -2627,15 +2627,15 @@ void  Platform__closedir(void *D) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void  Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) ;
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_POSIX
-#line 285 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 291 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 279 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__rename_directory(char *old_transcoded_pathname, char *new_transcoded_pathname) ;
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 288 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+void  Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 305 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -5917,18 +5917,6 @@ void Platform__closedir(void *D) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 273 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
-	char cp_command[10*MAX_FILENAME_LENGTH];
-	sprintf(cp_command, "cp -f ");
-	Platform__quote_text(cp_command + strlen(cp_command), from_transcoded_pathname, TRUE);
-	sprintf(cp_command + strlen(cp_command), " ");
-	Platform__quote_text(cp_command + strlen(cp_command), to_transcoded_pathname, FALSE);
-	Platform__system(cp_command);
-}
-
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_POSIX
-#line 285 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__rename_file(char *old_transcoded_pathname, char *new_transcoded_pathname) {
 	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
 		return FALSE;
@@ -5939,6 +5927,18 @@ int Platform__rename_directory(char *old_transcoded_pathname, char *new_transcod
 	if (rename(old_transcoded_pathname, new_transcoded_pathname) != 0)
 		return FALSE;
 	return TRUE;
+}
+
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 288 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+void Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
+	char cp_command[10*MAX_FILENAME_LENGTH];
+	sprintf(cp_command, "cp -f ");
+	Platform__quote_text(cp_command + strlen(cp_command), from_transcoded_pathname, FALSE);
+	sprintf(cp_command + strlen(cp_command), " ");
+	Platform__quote_text(cp_command + strlen(cp_command), to_transcoded_pathname, FALSE);
+	Platform__system(cp_command);
 }
 
 #endif /* PLATFORM_POSIX */
