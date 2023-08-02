@@ -316,3 +316,20 @@ int Filenames::rename(filename *F, text_stream *new_name) {
 	DISCARD_TEXT(new_path)
 	return rv;
 }
+
+@h Copying.
+
+=
+void Filenames::copy_file(filename *from, filename *to) {
+	TEMPORARY_TEXT(from_path)
+	TEMPORARY_TEXT(to_path)
+	WRITE_TO(from_path, "%f", from);
+	WRITE_TO(to_path, "%f", to);
+	char from_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(from_name_written_out, from_path, 4*MAX_FILENAME_LENGTH);
+	char to_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(to_name_written_out, to_path, 4*MAX_FILENAME_LENGTH);
+	Platform::copy_file(from_name_written_out, to_name_written_out);
+	DISCARD_TEXT(from_path)
+	DISCARD_TEXT(to_path)
+}

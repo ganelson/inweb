@@ -282,6 +282,18 @@ int Platform::rename_directory(char *old_transcoded_pathname, char *new_transcod
 	return TRUE;
 }
 
+@h Copying.
+
+=
+void Platform::copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
+	char cp_command[10*MAX_FILENAME_LENGTH];
+	sprintf(cp_command, "cp -f ");
+	Platform::quote_text(cp_command + strlen(cp_command), from_transcoded_pathname, FALSE);
+	sprintf(cp_command + strlen(cp_command), " ");
+	Platform::quote_text(cp_command + strlen(cp_command), to_transcoded_pathname, FALSE);
+	Platform::system(cp_command);
+}
+
 @h Timestamp and file size.
 There are implementations of the C standard library where |time_t| has
 super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to
