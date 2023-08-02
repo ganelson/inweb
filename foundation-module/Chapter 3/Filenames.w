@@ -291,8 +291,8 @@ int Filenames::size(filename *F) {
 }
 
 @h Renaming.
-If this succeeds, the pathname |F| is altered to match the new directory name, and
-the function returns |TRUE|; if not, |P| is unchanged, and |FALSE|.
+If this succeeds, the filename |F| is altered to match the new name, and
+the function returns |TRUE|; if not, |F| is unchanged, and |FALSE|.
 
 =
 int Filenames::rename(filename *F, text_stream *new_name) {
@@ -332,4 +332,22 @@ void Filenames::copy_file(filename *from, filename *to) {
 	Platform::copy_file(from_name_written_out, to_name_written_out);
 	DISCARD_TEXT(from_path)
 	DISCARD_TEXT(to_path)
+}
+
+@h Moving.
+
+=
+int Filenames::move_file(filename *from, filename *to) {
+	TEMPORARY_TEXT(from_path)
+	TEMPORARY_TEXT(to_path)
+	WRITE_TO(from_path, "%f", from);
+	WRITE_TO(to_path, "%f", to);
+	char from_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(from_name_written_out, from_path, 4*MAX_FILENAME_LENGTH);
+	char to_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(to_name_written_out, to_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform::rename_file(from_name_written_out, to_name_written_out);
+	DISCARD_TEXT(from_path)
+	DISCARD_TEXT(to_path)
+	return rv;
 }

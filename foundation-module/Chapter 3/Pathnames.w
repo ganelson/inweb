@@ -273,3 +273,21 @@ void Pathnames::rsync(pathname *source, pathname *dest) {
 	DISCARD_TEXT(pn2)
 	Platform::rsync(transcoded_source, transcoded_dest);
 }
+
+@h Moving.
+
+=
+int Pathnames::move_directory(pathname *from, pathname *to) {
+	TEMPORARY_TEXT(from_path)
+	TEMPORARY_TEXT(to_path)
+	WRITE_TO(from_path, "%p", from);
+	WRITE_TO(to_path, "%p", to);
+	char from_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(from_name_written_out, from_path, 4*MAX_FILENAME_LENGTH);
+	char to_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str::copy_to_locale_string(to_name_written_out, to_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform::rename_directory(from_name_written_out, to_name_written_out);
+	DISCARD_TEXT(from_path)
+	DISCARD_TEXT(to_path)
+	return rv;
+}

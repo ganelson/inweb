@@ -3219,6 +3219,8 @@ void  Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) ;
 int  Pathnames__create_in_file_system(pathname *P) ;
 #line 263 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__rsync(pathname *source, pathname *dest) ;
+#line 280 "inweb/foundation-module/Chapter 3/Pathnames.w"
+int  Pathnames__move_directory(pathname *from, pathname *to) ;
 #line 22 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__in(pathname *P, text_stream *file_name) ;
 #line 26 "inweb/foundation-module/Chapter 3/Filenames.w"
@@ -3259,6 +3261,8 @@ int  Filenames__size(filename *F) ;
 int  Filenames__rename(filename *F, text_stream *new_name) ;
 #line 323 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__copy_file(filename *from, filename *to) ;
+#line 340 "inweb/foundation-module/Chapter 3/Filenames.w"
+int  Filenames__move_file(filename *from, filename *to) ;
 #ifdef PLATFORM_POSIX
 #line 50 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
 FILE * CIFilingSystem__fopen(const char *path, const char *mode) ;
@@ -9505,6 +9509,22 @@ void Pathnames__rsync(pathname *source, pathname *dest) {
 	Platform__rsync(transcoded_source, transcoded_dest);
 }
 
+#line 280 "inweb/foundation-module/Chapter 3/Pathnames.w"
+int Pathnames__move_directory(pathname *from, pathname *to) {
+	TEMPORARY_TEXT(from_path)
+	TEMPORARY_TEXT(to_path)
+	WRITE_TO(from_path, "%p", from);
+	WRITE_TO(to_path, "%p", to);
+	char from_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(from_name_written_out, from_path, 4*MAX_FILENAME_LENGTH);
+	char to_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(to_name_written_out, to_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform__rename_directory(from_name_written_out, to_name_written_out);
+	DISCARD_TEXT(from_path)
+	DISCARD_TEXT(to_path)
+	return rv;
+}
+
 #line 17 "inweb/foundation-module/Chapter 3/Filenames.w"
 
 #line 22 "inweb/foundation-module/Chapter 3/Filenames.w"
@@ -9767,6 +9787,22 @@ void Filenames__copy_file(filename *from, filename *to) {
 	Platform__copy_file(from_name_written_out, to_name_written_out);
 	DISCARD_TEXT(from_path)
 	DISCARD_TEXT(to_path)
+}
+
+#line 340 "inweb/foundation-module/Chapter 3/Filenames.w"
+int Filenames__move_file(filename *from, filename *to) {
+	TEMPORARY_TEXT(from_path)
+	TEMPORARY_TEXT(to_path)
+	WRITE_TO(from_path, "%f", from);
+	WRITE_TO(to_path, "%f", to);
+	char from_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(from_name_written_out, from_path, 4*MAX_FILENAME_LENGTH);
+	char to_name_written_out[4*MAX_FILENAME_LENGTH];
+	Str__copy_to_locale_string(to_name_written_out, to_path, 4*MAX_FILENAME_LENGTH);
+	int rv = Platform__rename_file(from_name_written_out, to_name_written_out);
+	DISCARD_TEXT(from_path)
+	DISCARD_TEXT(to_path)
+	return rv;
 }
 
 #ifdef PLATFORM_POSIX
