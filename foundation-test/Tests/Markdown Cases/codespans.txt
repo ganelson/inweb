@@ -1,0 +1,63 @@
+! Codespan tests (examples 327-349 from CommonMark specification)
+! Example 327
+`hi`lo`
+----
+! Example 328
+`foo`
+----
+! Example 329
+`` foo ` bar ``
+----
+! Example 330
+` `` `
+----
+! Example 331
+`  ``  `
+----
+! Example 332
+` a`
+----
+! Example 333
+`	b	`
+----
+! Example 334
+` `
+`  `
+----
+! Example 335
+``
+foo
+bar  
+baz
+``
+----
+! Example 336
+``
+foo 
+``
+----
+! Example 337
+`foo   bar 
+baz`
+----
+! Example 338
+`foo\`bar`
+----
+! Example 339
+``foo`bar``
+----
+! Example 340
+` foo `` bar `
+----
+! Example 341
+*foo`*`
+----
+! Example 347
+```foo``
+----
+! Example 348
+`foo
+----
+! Example 349
+`foo``bar``
+----

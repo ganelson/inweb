@@ -1,4 +1,5 @@
 -cases 'inweb/foundation-test/Tests/Test Cases'
+-cases [Markdown] 'inweb/foundation-test/Tests/Markdown Cases'
 
 -recipe
 
@@ -6,6 +7,24 @@
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 
 	step: inweb/foundation-test/Tangled/foundation-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
+	or: 'produced errors in foundation-test' $A
+
+	show: $A
+
+	exists: $I
+	or: 'passed without errors but no blessed output existed'
+
+	match text: $A $I
+	or: 'produced incorrect output'
+
+-end
+
+-recipe [Markdown]
+
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	step: inweb/foundation-test/Tangled/foundation-test -test-markdown $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in foundation-test' $A
 
 	show: $A

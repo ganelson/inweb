@@ -16,6 +16,7 @@ Choosing which unit test to run on the basis of the command-line arguments.
 @e TEST_SEMVER_CLSW
 @e TEST_TREES_CLSW
 @e TEST_JSON_CLSW
+@e TEST_MARKDOWN_CLSW
 
 =
 int main(int argc, char **argv) {
@@ -42,6 +43,8 @@ int main(int argc, char **argv) {
 		L"test heterogeneous trees (X is ignored)");
 	CommandLine::declare_switch(TEST_JSON_CLSW, L"test-json", 2,
 		L"test decoding and encoding of JSON file X");
+	CommandLine::declare_switch(TEST_MARKDOWN_CLSW, L"test-markdown", 2,
+		L"test decoding and rendering of Markdown notation in file X");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 	Foundation::end();
@@ -60,6 +63,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case TEST_SEMVER_CLSW: Unit::test_semver(); break;
 		case TEST_TREES_CLSW: Unit::test_trees(); break;
 		case TEST_JSON_CLSW: Unit::test_JSON(arg); break;
+		case TEST_MARKDOWN_CLSW: Unit::test_Markdown(arg); break;
 	}
 }
 

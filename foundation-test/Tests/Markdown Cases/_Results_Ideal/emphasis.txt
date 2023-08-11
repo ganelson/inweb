@@ -1,0 +1,632 @@
+! Example 350
+*foo bar*
+--->
+<p><em>foo bar</em></p>
+--------
+! Example 351
+a * foo bar*
+--->
+<p>a * foo bar*</p>
+--------
+! Example 352
+a*"foo"*
+--->
+<p>a*"foo"*</p>
+--------
+! Example 353
+* a *
+--->
+<p>* a *</p>
+--------
+! Example 354
+foo*bar*
+--->
+<p>foo<em>bar</em></p>
+--------
+! Example 355
+5*6*78
+--->
+<p>5<em>6</em>78</p>
+--------
+! Example 356
+_foo bar_
+--->
+<p><em>foo bar</em></p>
+--------
+! Example 357
+_ foo bar_
+--->
+<p>_ foo bar_</p>
+--------
+! Example 358
+a_"foo"_
+--->
+<p>a_"foo"_</p>
+--------
+! Example 359
+foo_bar_
+--->
+<p>foo_bar_</p>
+--------
+! Example 360
+5_6_78
+--->
+<p>5_6_78</p>
+--------
+! Example 361
+пристаням_стремятся_
+--->
+<p>пристаням_стремятся_</p>
+--------
+! Example 362
+aa_"bb"_cc
+--->
+<p>aa_"bb"_cc</p>
+--------
+! Example 363
+foo-_(bar)_
+--->
+<p>foo-<em>(bar)</em></p>
+--------
+! Example 364
+_foo*
+--->
+<p>_foo*</p>
+--------
+! Example 365
+*foo bar *
+--->
+<p>*foo bar *</p>
+--------
+! Example 366
+*foo bar
+*
+--->
+<p>*foo bar
+*</p>
+--------
+! Example 367
+*(*foo)
+--->
+<p>*(*foo)</p>
+--------
+! Example 368
+*(*foo*)*
+--->
+<p><em>(<em>foo</em>)</em></p>
+--------
+! Example 369
+*foo*bar
+--->
+<p><em>foo</em>bar</p>
+--------
+! Example 370
+_foo bar _
+--->
+<p>_foo bar _</p>
+--------
+! Example 371
+_(_foo)
+--->
+<p>_(_foo)</p>
+--------
+! Example 372
+_(_foo_)_
+--->
+<p><em>(<em>foo</em>)</em></p>
+--------
+! Example 373
+_foo_bar
+--->
+<p>_foo_bar</p>
+--------
+! Example 374
+_пристаням_стремятся
+--->
+<p>_пристаням_стремятся</p>
+--------
+! Example 375
+_foo_bar_baz_
+--->
+<p><em>foo_bar_baz</em></p>
+--------
+! Example 376
+_(bar)_.
+--->
+<p><em>(bar)</em>.</p>
+--------
+! Example 377
+**foo bar**
+--->
+<p><strong>foo bar</strong></p>
+--------
+! Example 378
+** foo bar**
+--->
+<p>** foo bar**</p>
+--------
+! Example 379
+a**"foo"**
+--->
+<p>a**"foo"**</p>
+--------
+! Example 380
+foo**bar**
+--->
+<p>foo<strong>bar</strong></p>
+--------
+! Example 381
+__foo bar__
+--->
+<p><strong>foo bar</strong></p>
+--------
+! Example 382
+__ foo bar__
+--->
+<p>__ foo bar__</p>
+--------
+! Example 383
+__
+foo bar__
+--->
+<p>__
+foo bar__</p>
+--------
+! Example 384
+a__"foo"__
+--->
+<p>a__"foo"__</p>
+--------
+! Example 385
+foo__bar__
+--->
+<p>foo__bar__</p>
+--------
+! Example 386
+5__6__78
+--->
+<p>5__6__78</p>
+--------
+! Example 387
+пристаням__стремятся__
+--->
+<p>пристаням__стремятся__</p>
+--------
+! Example 388
+__foo, __bar__, baz__
+--->
+<p><strong>foo, <strong>bar</strong>, baz</strong></p>
+--------
+! Example 389
+foo-__(bar)__
+--->
+<p>foo-<strong>(bar)</strong></p>
+--------
+! Example 390
+**foo bar **
+--->
+<p>**foo bar **</p>
+--------
+! Example 391
+**(**foo)
+--->
+<p>**(**foo)</p>
+--------
+! Example 392
+*(**foo**)*
+--->
+<p><em>(<strong>foo</strong>)</em></p>
+--------
+! Example 393
+**Gomphocarpus (*Gomphocarpus physocarpus*, syn.
+*Asclepias physocarpa*)**
+--->
+<p><strong>Gomphocarpus (<em>Gomphocarpus physocarpus</em>, syn.
+<em>Asclepias physocarpa</em>)</strong></p>
+--------
+! Example 394
+**foo "*bar*" foo**
+--->
+<p><strong>foo "<em>bar</em>" foo</strong></p>
+--------
+! Example 395
+**foo**bar
+--->
+<p><strong>foo</strong>bar</p>
+--------
+! Example 396
+__foo bar __
+--->
+<p>__foo bar __</p>
+--------
+! Example 397
+__(__foo)
+--->
+<p>__(__foo)</p>
+--------
+! Example 398
+_(__foo__)_
+--->
+<p><em>(<strong>foo</strong>)</em></p>
+--------
+! Example 399
+__foo__bar
+--->
+<p>__foo__bar</p>
+--------
+! Example 400
+__пристаням__стремятся
+--->
+<p>__пристаням__стремятся</p>
+--------
+! Example 401
+__foo__bar__baz__
+--->
+<p><strong>foo__bar__baz</strong></p>
+--------
+! Example 402
+__(bar)__.
+--->
+<p><strong>(bar)</strong>.</p>
+--------
+! Example 403
+*foo [bar](/url)*
+--->
+<p><em>foo [bar](/url)</em></p>
+--------
+! Example 404
+*foo
+bar*
+--->
+<p><em>foo
+bar</em></p>
+--------
+! Example 405
+_foo __bar__ baz_
+--->
+<p><em>foo <strong>bar</strong> baz</em></p>
+--------
+! Example 406
+_foo _bar_ baz_
+--->
+<p><em>foo <em>bar</em> baz</em></p>
+--------
+! Example 407
+__foo_ bar_
+--->
+<p><em><em>foo</em> bar</em></p>
+--------
+! Example 408
+*foo *bar**
+--->
+<p><em>foo <em>bar</em></em></p>
+--------
+! Example 409
+*foo **bar** baz*
+--->
+<p><em>foo <strong>bar</strong> baz</em></p>
+--------
+! Example 410
+*foo**bar**baz*
+--->
+<p><em>foo<strong>bar</strong>baz</em></p>
+--------
+! Example 411
+*foo**bar*
+--->
+<p><em>foo**bar</em></p>
+--------
+! Example 412
+***foo** bar*
+--->
+<p><em><strong>foo</strong> bar</em></p>
+--------
+! Example 413
+*foo **bar***
+--->
+<p><em>foo <strong>bar</strong></em></p>
+--------
+! Example 414
+*foo**bar***
+--->
+<p><em>foo<strong>bar</strong></em></p>
+--------
+! Example 415
+foo***bar***baz
+--->
+<p>foo<em><strong>bar</strong></em>baz</p>
+--------
+! Example 416
+foo******bar*********baz
+--->
+<p>foo<strong><strong><strong>bar</strong></strong></strong>***baz</p>
+--------
+! Example 417
+*foo **bar *baz* bim** bop*
+--->
+<p><em>foo <strong>bar <em>baz</em> bim</strong> bop</em></p>
+--------
+! Example 418
+*foo [*bar*](/url)*
+--->
+<p><em>foo [<em>bar</em>](/url)</em></p>
+--------
+! Example 419
+** is not an empty emphasis
+--->
+<p>** is not an empty emphasis</p>
+--------
+! Example 420
+**** is not an empty strong emphasis
+--->
+<p>**** is not an empty strong emphasis</p>
+--------
+! Example 421
+**foo [bar](/url)**
+--->
+<p><strong>foo [bar](/url)</strong></p>
+--------
+! Example 422
+**foo
+bar**
+--->
+<p><strong>foo
+bar</strong></p>
+--------
+! Example 423
+__foo _bar_ baz__
+--->
+<p><strong>foo <em>bar</em> baz</strong></p>
+--------
+! Example 424
+__foo __bar__ baz__
+--->
+<p><strong>foo <strong>bar</strong> baz</strong></p>
+--------
+! Example 425
+____foo__ bar__
+--->
+<p><strong><strong>foo</strong> bar</strong></p>
+--------
+! Example 426
+**foo **bar****
+--->
+<p><strong>foo <strong>bar</strong></strong></p>
+--------
+! Example 427
+**foo *bar* baz**
+--->
+<p><strong>foo <em>bar</em> baz</strong></p>
+--------
+! Example 428
+**foo*bar*baz**
+--->
+<p><strong>foo<em>bar</em>baz</strong></p>
+--------
+! Example 429
+***foo* bar**
+--->
+<p><strong><em>foo</em> bar</strong></p>
+--------
+! Example 430
+**foo *bar***
+--->
+<p><strong>foo <em>bar</em></strong></p>
+--------
+! Example 431
+**foo *bar **baz**
+bim* bop**
+--->
+<p><strong>foo <em>bar <strong>baz</strong>
+bim</em> bop</strong></p>
+--------
+! Example 432
+**foo [*bar*](/url)**
+--->
+<p><strong>foo [<em>bar</em>](/url)</strong></p>
+--------
+! Example 433
+__ is not an empty emphasis
+--->
+<p>__ is not an empty emphasis</p>
+--------
+! Example 434
+____ is not an empty strong emphasis
+--->
+<p>____ is not an empty strong emphasis</p>
+--------
+! Example 435
+foo ***
+--->
+<p>foo ***</p>
+--------
+! Example 436
+foo *\**
+--->
+<p>foo <em>*</em></p>
+--------
+! Example 437
+foo *_*
+--->
+<p>foo <em>_</em></p>
+--------
+! Example 438
+foo *****
+--->
+<p>foo *****</p>
+--------
+! Example 439
+foo **\***
+--->
+<p>foo <strong>*</strong></p>
+--------
+! Example 440
+foo **_**
+--->
+<p>foo <strong>_</strong></p>
+--------
+! Example 441
+**foo*
+--->
+<p>*<em>foo</em></p>
+--------
+! Example 442
+*foo**
+--->
+<p><em>foo</em>*</p>
+--------
+! Example 443
+***foo**
+--->
+<p>*<strong>foo</strong></p>
+--------
+! Example 444
+****foo*
+--->
+<p>***<em>foo</em></p>
+--------
+! Example 445
+**foo***
+--->
+<p><strong>foo</strong>*</p>
+--------
+! Example 446
+*foo****
+--->
+<p><em>foo</em>***</p>
+--------
+! Example 447
+foo ___
+--->
+<p>foo ___</p>
+--------
+! Example 448
+foo _\__
+--->
+<p>foo <em>_</em></p>
+--------
+! Example 449
+foo _*_
+--->
+<p>foo <em>*</em></p>
+--------
+! Example 450
+foo _____
+--->
+<p>foo _____</p>
+--------
+! Example 451
+foo __\___
+--->
+<p>foo <strong>_</strong></p>
+--------
+! Example 452
+foo __*__
+--->
+<p>foo <strong>*</strong></p>
+--------
+! Example 453
+__foo_
+--->
+<p>_<em>foo</em></p>
+--------
+! Example 454
+_foo__
+--->
+<p><em>foo</em>_</p>
+--------
+! Example 455
+___foo__
+--->
+<p>_<strong>foo</strong></p>
+--------
+! Example 456
+____foo_
+--->
+<p>___<em>foo</em></p>
+--------
+! Example 457
+__foo___
+--->
+<p><strong>foo</strong>_</p>
+--------
+! Example 458
+_foo____
+--->
+<p><em>foo</em>___</p>
+--------
+! Example 459
+**foo**
+--->
+<p><strong>foo</strong></p>
+--------
+! Example 460
+*_foo_*
+--->
+<p><em><em>foo</em></em></p>
+--------
+! Example 461
+__foo__
+--->
+<p><strong>foo</strong></p>
+--------
+! Example 462
+_*foo*_
+--->
+<p><em><em>foo</em></em></p>
+--------
+! Example 463
+****foo****
+--->
+<p><strong><strong>foo</strong></strong></p>
+--------
+! Example 464
+____foo____
+--->
+<p><strong><strong>foo</strong></strong></p>
+--------
+! Example 465
+******foo******
+--->
+<p><strong><strong><strong>foo</strong></strong></strong></p>
+--------
+! Example 466
+***foo***
+--->
+<p><em><strong>foo</strong></em></p>
+--------
+! Example 467
+_____foo_____
+--->
+<p><em><strong><strong>foo</strong></strong></em></p>
+--------
+! Example 468
+*foo _bar* baz_
+--->
+<p><em>foo _bar</em> baz_</p>
+--------
+! Example 469
+*foo __bar *baz bim__ bam*
+--->
+<p><em>foo <strong>bar *baz bim</strong> bam</em></p>
+--------
+! Example 470
+**foo **bar baz**
+--->
+<p>**foo <strong>bar baz</strong></p>
+--------
+! Example 471
+*foo *bar baz*
+--->
+<p>*foo <em>bar baz</em></p>
+--------
+! Example 477
+*a `*`*
+--->
+<p><em>a <code>*</code></em></p>
+--------
+! Example 478
+_a `_`_
+--->
+<p><em>a <code>_</code></em></p>
+--------

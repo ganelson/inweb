@@ -34,6 +34,7 @@ here we are.
 @e JSON_value_CLASS
 @e linked_list_CLASS
 @e linked_list_item_CLASS
+@e markdown_item_CLASS
 @e match_avinue_CLASS
 @e match_trie_CLASS
 @e method_CLASS
@@ -41,6 +42,7 @@ here we are.
 @e module_CLASS
 @e module_search_CLASS
 @e pathname_CLASS
+@e md_emphasis_delimiter_CLASS
 @e preprocessor_macro_CLASS
 @e preprocessor_macro_parameter_CLASS
 @e preprocessor_variable_CLASS
@@ -110,6 +112,8 @@ DECLARE_CLASS(web_md)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dict_entry, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(HTML_tag, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(linked_list_item, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(markdown_item, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_avinue, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_trie, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(md_emphasis_delimiter, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(text_stream, 100)

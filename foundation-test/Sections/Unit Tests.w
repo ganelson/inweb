@@ -483,3 +483,32 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 		WRITE_TO(JSON, "%S\n", text);
 	}
 }
+
+@h Markdown.
+
+=
+void Unit::test_Markdown(text_stream *arg) {
+	text_stream *marked_up = Str::new();
+	filename *F = Filenames::from_text(arg);
+	TEMPORARY_TEXT(MD)
+	TextFiles::read(F, FALSE, "unable to read file of MD", TRUE,
+		&Unit::test_MD_helper, NULL, (void *) marked_up);
+	DISCARD_TEXT(MD)
+}
+
+void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *state) {
+	text_stream *marked_up = (text_stream *) state;
+	if (Str::get_first_char(text) == '!') { WRITE_TO(STDOUT, "%S\n", text); return; }
+	if (Str::eq(text, I"TRACE")) { Markdown::set_tracing(TRUE); return; }
+	if (Str::eq(text, I"----")) {
+		Str::delete_last_character(marked_up);
+		WRITE_TO(STDOUT, "%S\n--->\n", marked_up);
+		markdown_item *md = Markdown::parse_paragraph(marked_up);
+		Markdown::render_md_purist(STDOUT, md);
+		WRITE_TO(STDOUT, "--------\n");
+		Str::clear(marked_up);
+		Markdown::set_tracing(FALSE);
+	} else {
+		WRITE_TO(marked_up, "%S\n", text);
+	}
+}

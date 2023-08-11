@@ -1,0 +1,100 @@
+! Codespan tests (examples 327-349 from CommonMark specification)
+! Example 327
+`hi`lo`
+--->
+<p><code>hi</code>lo`</p>
+--------
+! Example 328
+`foo`
+--->
+<p><code>foo</code></p>
+--------
+! Example 329
+`` foo ` bar ``
+--->
+<p><code>foo ` bar</code></p>
+--------
+! Example 330
+` `` `
+--->
+<p><code>``</code></p>
+--------
+! Example 331
+`  ``  `
+--->
+<p><code> `` </code></p>
+--------
+! Example 332
+` a`
+--->
+<p><code> a</code></p>
+--------
+! Example 333
+`	b	`
+--->
+<p><code>	b	</code></p>
+--------
+! Example 334
+` `
+`  `
+--->
+<p><code> </code>
+<code>  </code></p>
+--------
+! Example 335
+``
+foo
+bar  
+baz
+``
+--->
+<p><code>foo bar   baz</code></p>
+--------
+! Example 336
+``
+foo 
+``
+--->
+<p><code>foo </code></p>
+--------
+! Example 337
+`foo   bar 
+baz`
+--->
+<p><code>foo   bar  baz</code></p>
+--------
+! Example 338
+`foo\`bar`
+--->
+<p><code>foo\</code>bar`</p>
+--------
+! Example 339
+``foo`bar``
+--->
+<p><code>foo`bar</code></p>
+--------
+! Example 340
+` foo `` bar `
+--->
+<p><code>foo `` bar</code></p>
+--------
+! Example 341
+*foo`*`
+--->
+<p>*foo<code>*</code></p>
+--------
+! Example 347
+```foo``
+--->
+<p>```foo``</p>
+--------
+! Example 348
+`foo
+--->
+<p>`foo</p>
+--------
+! Example 349
+`foo``bar``
+--->
+<p>`foo<code>bar</code></p>
+--------
