@@ -4,7 +4,7 @@
 -recipe
 
 	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $I = $PATH/$CASE--I.txt
 
 	step: inweb/foundation-test/Tangled/foundation-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in foundation-test' $A
@@ -22,7 +22,7 @@
 -recipe [Markdown]
 
 	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $I = $PATH/$CASE--I.txt
 
 	step: inweb/foundation-test/Tangled/foundation-test -test-markdown $PATH/$CASE.txt >$A 2>&1
 	or: 'produced errors in foundation-test' $A

@@ -16,6 +16,15 @@ lightweight node:
 @e EMPHASIS_MIT
 @e STRONG_MIT
 @e CODE_MIT
+@e URI_AUTOLINK_MIT
+@e EMAIL_AUTOLINK_MIT
+@e INLINE_HTML_MIT
+@e LINE_BREAK_MIT
+@e SOFT_BREAK_MIT
+@e LINK_MIT
+@e IMAGE_MIT
+@e LINK_DEST_MIT
+@e LINK_TITLE_MIT
 
 =
 typedef struct markdown_item {
@@ -100,6 +109,30 @@ Pc, Pd, Pe, Pf, Pi, Po, or Ps.
 
 =
 int Markdown::is_Unicode_punctuation(wchar_t c) {
+	return Markdown::is_ASCII_punctuation(c);
+}
+
+@ Whereas these are fairly unarguable.
+
+=
+int Markdown::is_ASCII_letter(wchar_t c) {
+	if ((c >= 'a') && (c <= 'z')) return TRUE;
+	if ((c >= 'A') && (c <= 'Z')) return TRUE;
+	return FALSE;
+}
+
+int Markdown::is_ASCII_digit(wchar_t c) {
+	if ((c >= '0') && (c <= '9')) return TRUE;
+	return FALSE;
+}
+
+int Markdown::is_control_character(wchar_t c) {
+	if ((c >= 0x0001) && (c <= 0x001f)) return TRUE;
+	if (c == 0x007f) return TRUE;
+	return FALSE;
+}
+
+int Markdown::is_ASCII_punctuation(wchar_t c) {
 	if ((c >= 0x0021) && (c <= 0x002F)) return TRUE;
 	if ((c >= 0x003A) && (c <= 0x0040)) return TRUE;
 	if ((c >= 0x005B) && (c <= 0x0060)) return TRUE;
@@ -108,13 +141,14 @@ int Markdown::is_Unicode_punctuation(wchar_t c) {
 }
 
 @ This is a convenient adaptation of |Str::get_at| which reads from the slice
-inside a markdown node:
+inside a markdown node. Note that it is able to see characters outside the
+range being sliced: this is intentional and is needed for some of the
+delimiter-scanning.
 
 =
 wchar_t Markdown::get_at(markdown_item *md, int at) {
 	if (md == NULL) return 0;
 	if (Str::len(md->sliced_from) == 0) return 0;
-//	if ((at < md->from) || (at > md->to)) return 0;
 	return Str::get_at(md->sliced_from, at);
 }
 
@@ -161,11 +195,14 @@ int Markdown::width(markdown_item *md) {
 				width++;
 			}
 		}
-		if (md->type == CODE_MIT) {
+		if ((md->type == CODE_MIT) || (md->type == URI_AUTOLINK_MIT) ||
+			(md->type == EMAIL_AUTOLINK_MIT) || (md->type == INLINE_HTML_MIT)) {
 			for (int i=md->from; i<=md->to; i++) {
 				width++;
 			}
 		}
+		if (md->type == LINE_BREAK_MIT) width++;
+		if (md->type == SOFT_BREAK_MIT) width++;
 		for (markdown_item *c = md->down; c; c = c->next)
 			width += Markdown::width(c);
 		return width;
@@ -195,12 +232,21 @@ void Markdown::render_debug_r(OUTPUT_STREAM, markdown_item *md) {
 		}
 		md->cycle_count = md_db_cycle_count;
 		switch (md->type) {
-			case PARAGRAPH_MIT: WRITE("PARAGRAPH"); break;
-			case MATERIAL_MIT:  WRITE("MATERIAL");  break;
-			case PLAIN_MIT:     WRITE("PLAIN");     @<Debug text@>; break;
-			case EMPHASIS_MIT:  WRITE("EMPHASIS");  break;
-			case STRONG_MIT:    WRITE("STRONG");    break;
-			case CODE_MIT:      WRITE("CODE");      @<Debug text@>; break;
+			case PARAGRAPH_MIT:      WRITE("PARAGRAPH");          break;
+			case MATERIAL_MIT:       WRITE("MATERIAL");           break;
+			case PLAIN_MIT:          WRITE("PLAIN");              @<Debug text@>; break;
+			case EMPHASIS_MIT:       WRITE("EMPHASIS");           break;
+			case STRONG_MIT:         WRITE("STRONG");             break;
+			case LINK_MIT:           WRITE("LINK");               break;
+			case IMAGE_MIT:          WRITE("IMAGE");              break;
+			case LINK_DEST_MIT:      WRITE("LINK_DEST");          break;
+			case LINK_TITLE_MIT:     WRITE("LINK_TITLE");         break;
+			case CODE_MIT:           WRITE("CODE");               @<Debug text@>; break;
+			case URI_AUTOLINK_MIT:   WRITE("URI_AUTOLINK");       @<Debug text@>; break;
+			case EMAIL_AUTOLINK_MIT: WRITE("EMAIL_AUTOLINK");     @<Debug text@>; break;
+			case INLINE_HTML_MIT:    WRITE("INLINE_HTML");        @<Debug text@>; break;
+			case LINE_BREAK_MIT:     WRITE("LINE_BREAK");         break;
+			case SOFT_BREAK_MIT:     WRITE("SOFT_BREAK");         break;
 		}
 		WRITE("\n");
 		INDENT;
@@ -245,13 +291,36 @@ into nodes which become the newest children of |owner|.
 =
 void Markdown::parse_inline_matter(markdown_item *owner, text_stream *text) {
 	@<First pass: top-level inline items@>;
-	@<Second pass: emphasis inline items@>;
+	@<Second pass: link and image inline items@>;
+	@<Third pass: emphasis inline items@>;
 }
 
 @h Inline code.
-At the top level, we look for code snippets inside backticks.
+At the top level, the inline items are code snippets, autolinks and raw HTML.
+"Code spans, HTML tags, and autolinks have the same precedence", so we will
+scan left to right.
 
-See CommonMark 6.1: "A backtick string is a string of one or more backtick
+@<First pass: top-level inline items@> =
+	int i = 0;
+	while (Str::get_at(text, i) == ' ') i++;
+	int from = i;
+	for (; i<Str::len(text); i++) {
+		@<Does a backtick begin here?@>;
+		@<Does an autolink begin here?@>;
+		@<Does a raw HTML tag begin here?@>;
+		@<Does a hard or soft line break occur here?@>;
+		ContinueOuter: ;
+	}
+	if (from <= Str::len(text)-1) {
+		int to = Str::len(text)-1;
+		while (Str::get_at(text, to) == ' ') to--;
+		if (to >= from) {
+			markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, to);
+			Markdown::add_to(md, owner);
+		}
+	}
+
+@ See CommonMark 6.1: "A backtick string is a string of one or more backtick
 characters that is neither preceded nor followed by a backtick." This returns
 the length of a backtick string beginning at |at|, if one does, or 0 if it
 does not.
@@ -265,28 +334,20 @@ int Markdown::backtick_string(text_stream *text, int at) {
 	return count;
 }
 
-@<First pass: top-level inline items@> =
-	int from = 0;
-	for (int i=0; i<Str::len(text); i++) {
-		int count = Markdown::backtick_string(text, i);
-		if (count > 0) {
-			for (int j=i+count+1; j<Str::len(text); j++) {
-				if (Markdown::backtick_string(text, j) == count) {
-					if (i-1 >= from) {
-						markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
-						Markdown::add_to(md, owner);
-					}
-					@<Insert an inline code item@>;
-					i = j+count; from = j+count;
-					goto ContinueOuter;
+@<Does a backtick begin here?@> =
+	int count = Markdown::backtick_string(text, i);
+	if (count > 0) {
+		for (int j=i+count+1; j<Str::len(text); j++) {
+			if (Markdown::backtick_string(text, j) == count) {
+				if (i-1 >= from) {
+					markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+					Markdown::add_to(md, owner);
 				}
+				@<Insert an inline code item@>;
+				i = j+count; from = j+count;
+				goto ContinueOuter;
 			}
 		}
-		ContinueOuter: ;
-	}
-	if (from <= Str::len(text)-1) {
-		markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, Str::len(text)-1);
-		Markdown::add_to(md, owner);
 	}
 
 @ "The contents of the code span are the characters between these two backtick strings".
@@ -313,27 +374,840 @@ space characters, a single space character is removed from the front and back."
 		Markdown::add_to(md, owner);
 	}
 
+@<Does an autolink begin here?@> =
+	if (Str::get_at(text, i) == '<') {
+		for (int j=i+1; j<Str::len(text); j++) {
+			wchar_t c = Str::get_at(text, j);
+			if (c == '>') {
+				int link_from = i+1, link_to = j-1, count = j-i+1;
+				if (tracing_Markdown_parser) {
+					text_stream *OUT = STDOUT;
+					WRITE("Investigating potential autolink: ");
+					for (int k=i; k<=j; k++) PUT(Str::get_at(text, k));
+					WRITE("\n");
+				}
+				@<Test for URI autolink@>;
+				@<Test for email autolink@>;
+				break;
+			}
+			if ((c == '<') ||
+				(Markdown::is_Unicode_whitespace(c)) ||
+				(Markdown::is_control_character(c)))
+				break;
+		}
+	}
+
+@ "A URI autolink consists of... a scheme followed by a colon followed by zero
+or more characters other than ASCII control characters, space, <, and >... a
+scheme is any sequence of 2–32 characters beginning with an ASCII letter and
+followed by any combination of ASCII letters, digits, or the symbols plus,
+period, or hyphen."
+
+@<Test for URI autolink@> =
+	int colon_at = -1;
+	for (int k=link_from; k<=link_to; k++) if (Str::get_at(text, k) == ':') { colon_at = k; break; }
+	if (colon_at >= 0) {
+		int scheme_valid = TRUE;
+		@<Vet the scheme@>;
+		int link_valid = TRUE;
+		@<Vet the link@>;
+		if ((scheme_valid) && (link_valid)) {
+			if (i-1 >= from) {
+				markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+				Markdown::add_to(md, owner);
+			}
+			markdown_item *md = Markdown::new_slice(URI_AUTOLINK_MIT,
+				text, link_from, link_to);
+			Markdown::add_to(md, owner);
+			i = j+count; from = j+count;
+			if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Found URI\n");
+			goto ContinueOuter;			
+		} else if (tracing_Markdown_parser) {
+			if (scheme_valid == FALSE) WRITE_TO(STDOUT, "Colon suggested URI but scheme invalid\n");
+			if (link_valid == FALSE) WRITE_TO(STDOUT, "Colon suggested URI but link invalid\n");
+		}
+	} else {
+		if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Not a URI: no colon\n");
+	}
+
+@<Vet the scheme@> =
+	int scheme_length = colon_at - link_from;
+	if ((scheme_length < 2) || (scheme_length > 32)) scheme_valid = FALSE;
+	for (int i=link_from; i<colon_at; i++) {
+		wchar_t c = Str::get_at(text, i);
+		if (!((Markdown::is_ASCII_letter(c)) ||
+			((i > link_from) &&
+				((Markdown::is_ASCII_digit(c)) || (c == '+') || (c == '-') || (c == '.')))))
+			scheme_valid = FALSE;
+	}
+
+@<Vet the link@> =
+	for (int i=colon_at+1; i<=link_to; i++) {
+		wchar_t c = Str::get_at(text, i);
+		if ((c == '<') || (c == '>') || (c == ' ') ||
+			(Markdown::is_control_character(c)))
+			link_valid = FALSE;
+	}
+
+@<Test for email autolink@> =
+	int atsign_at = -1;
+	for (int k=link_from; k<=link_to; k++) if (Str::get_at(text, k) == '@') { atsign_at = k; break; }
+	if (atsign_at >= 0) {
+		int username_valid = TRUE;
+		@<Vet the username@>;
+		int domain_valid = TRUE;
+		@<Vet the domain name@>;
+		if ((username_valid) && (domain_valid)) {
+			if (i-1 >= from) {
+				markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+				Markdown::add_to(md, owner);
+			}
+			markdown_item *md = Markdown::new_slice(EMAIL_AUTOLINK_MIT,
+				text, link_from, link_to);
+			Markdown::add_to(md, owner);
+			i = j+count; from = j+count;
+			if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Found email\n");
+			goto ContinueOuter;			
+		} else if (tracing_Markdown_parser) {
+			if (username_valid == FALSE) WRITE_TO(STDOUT, "At suggested email but username invalid\n");
+			if (domain_valid == FALSE) WRITE_TO(STDOUT, "At suggested email but domain invalid\n");
+		}
+	} else {
+		if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Not an email: no at-sign\n");
+	}
+
+@ What constitutes a legal email address follows the HTML 5 regular expression,
+according to CommonMark. Good luck using |{{@1-x.2.z.w| as your email address,
+but you absolutely can.
+
+@<Vet the username@> =
+	int username_length = atsign_at - link_from;
+	if (username_length < 1) username_valid = FALSE;
+	for (int i=link_from; i<atsign_at; i++) {
+		wchar_t c = Str::get_at(text, i);
+		if (!((Markdown::is_ASCII_letter(c)) ||
+				(Markdown::is_ASCII_digit(c)) ||
+				(c == '.') ||
+				(c == '!') ||
+				(c == '#') ||
+				(c == '$') ||
+				(c == '%') ||
+				(c == '&') ||
+				(c == '\'') ||
+				(c == '*') ||
+				(c == '+') ||
+				(c == '/') ||
+				(c == '=') ||
+				(c == '?') ||
+				(c == '^') ||
+				(c == '_') ||
+				(c == '`') ||
+				(c == '{') ||
+				(c == '|') ||
+				(c == '}') ||
+				(c == '~') ||
+				(c == '-')))
+			username_valid = FALSE;
+	}
+
+@<Vet the domain name@> =
+	int segment_length = 0;
+	for (int i=atsign_at+1; i<=link_to; i++) {
+		wchar_t c = Str::get_at(text, i);
+		if (segment_length == 0) {
+			if (!((Markdown::is_ASCII_letter(c)) || (Markdown::is_ASCII_digit(c))))
+				domain_valid = FALSE;
+		} else {
+			if (c == '.') { segment_length = 0; continue; }
+			if (c == '-') {
+				if ((Str::get_at(text, i+1) == 0) || (Str::get_at(text, i+1) == '.'))
+					domain_valid = FALSE;
+			} else if (!((Markdown::is_ASCII_letter(c)) || (Markdown::is_ASCII_digit(c))))
+				domain_valid = FALSE;
+		}
+		segment_length++;
+		if (segment_length >= 64) domain_valid = FALSE;
+	}
+	if (segment_length >= 64) domain_valid = FALSE;
+
+@<Does a raw HTML tag begin here?@> =
+	if (Str::get_at(text, i) == '<') {
+		switch (Str::get_at(text, i+1)) {
+			case '?': @<Does a processing instruction begin here?@>; break;
+			case '!':
+				if ((Str::get_at(text, i+2) == '-') && (Str::get_at(text, i+3) == '-'))
+					@<Does an HTML comment begin here?@>;
+				if ((Str::get_at(text, i+2) == '[') && (Str::get_at(text, i+3) == 'C') &&
+					(Str::get_at(text, i+4) == 'D') && (Str::get_at(text, i+5) == 'A') &&
+					(Str::get_at(text, i+6) == 'T') && (Str::get_at(text, i+7) == 'A') &&
+					(Str::get_at(text, i+8) == '['))
+					@<Does a CDATA section begin here?@>;
+				if (Markdown::is_ASCII_letter(Str::get_at(text, i+2)))
+					@<Does an HTML declaration begin here?@>;
+				break;
+			case '/': @<Does a close tag begin here?@>; break;
+			default: @<Does an open tag begin here?@>; break;
+		}
+		NotATag: ;
+	}
+
+@ The content of a PI must be non-empty.
+
+@<Does a processing instruction begin here?@> =
+	for (int j = i+3; j<Str::len(text); j++)
+		if ((Str::get_at(text, j) == '?') && (Str::get_at(text, j+1) == '>')) {
+			int tag_from = i, tag_to = j+1;
+			@<Allow it as a raw HTML tag@>;
+		}
+
+@ A comment can be empty, but cannot end in a dash or contain a double-dash:
+
+@<Does an HTML comment begin here?@> =
+	int bad_start = FALSE;
+	if (Str::get_at(text, i+4) == '>') bad_start = TRUE;
+	if ((Str::get_at(text, i+4) == '-') && (Str::get_at(text, i+5) == '>')) bad_start = TRUE;
+	if (bad_start == FALSE)
+		for (int j = i+4; j<Str::len(text); j++)
+			if ((Str::get_at(text, j) == '-') && (Str::get_at(text, j+1) == '-')) {
+				if (Str::get_at(text, j+2) == '>') {
+					int tag_from = i, tag_to = j+2;
+					@<Allow it as a raw HTML tag@>;
+				}
+				break;
+			} 
+
+@ The content of a declaration can be empty.
+
+@<Does an HTML declaration begin here?@> =
+	for (int j = i+2; j<Str::len(text); j++)
+		if (Str::get_at(text, j) == '>') {
+			int tag_from = i, tag_to = j;
+			@<Allow it as a raw HTML tag@>;
+		}
+
+@ The content of a CDATA must be non-empty.
+
+@<Does a CDATA section begin here?@> =
+	for (int j = i+10; j<Str::len(text); j++)
+		if ((Str::get_at(text, j) == ']') && (Str::get_at(text, j+1) == ']') &&
+			(Str::get_at(text, j+2) == '>')) {
+			int tag_from = i, tag_to = j+2;
+			@<Allow it as a raw HTML tag@>;
+		}
+
+@<Does an open tag begin here?@> =
+	int at = i+1;
+	@<Advance past tag name@>;
+	@<Advance past attributes@>;
+	@<Advance past optional tag-whitespace@>;
+	if (Str::get_at(text, at) == '/') at++;
+	if (Str::get_at(text, at) == '>') {
+		int tag_from = i, tag_to = at;
+		@<Allow it as a raw HTML tag@>;
+	}
+
+@<Does a close tag begin here?@> =
+	int at = i+2;
+	@<Advance past tag name@>;
+	@<Advance past optional tag-whitespace@>;
+	if (Str::get_at(text, at) == '>') {
+		int tag_from = i, tag_to = at;
+		@<Allow it as a raw HTML tag@>;
+	}
+
+@<Advance past tag name@> =
+	wchar_t c = Str::get_at(text, at);
+	if (Markdown::is_ASCII_letter(c) == FALSE) goto NotATag;
+	while ((c == '-') || (Markdown::is_ASCII_letter(c)) || (Markdown::is_ASCII_digit(c)))
+		c = Str::get_at(text, ++at);
+
+@<Advance past attributes@> =
+	while (TRUE) {
+		int start_at = at;
+		@<Advance past optional tag-whitespace@>;
+		if (at == start_at) break;
+		wchar_t c = Str::get_at(text, at);
+		if ((c == '_') || (c == ':') || (Markdown::is_ASCII_letter(c))) {
+			while ((c == '_') || (c == ':') || (c == '.') || (c == '-') ||
+				(Markdown::is_ASCII_letter(c)) || (Markdown::is_ASCII_digit(c)))
+				c = Str::get_at(text, ++at);
+			int start_value_at = at;
+			@<Advance past optional tag-whitespace@>;
+			if (Str::get_at(text, at) != '=') {
+				at = start_value_at; goto DoneValueSpecification;
+			}
+			at++;
+			@<Advance past optional tag-whitespace@>;
+			@<Try for a single-quoted attribute value@>;
+			@<Try for a double-quoted attribute value@>;
+			@<Try for an unquoted attribute value@>;
+			DoneValueSpecification: ;
+		} else { at = start_at; break; }
+	}
+
+@<Try for an unquoted attribute value@> =
+	int k = at;
+	while (TRUE) {
+		wchar_t c = Str::get_at(text, k);
+		if ((c == ' ') || (c == '\t') || (c == '\n') || (c == '"') || (c == '\'') ||
+			(c == '=') || (c == '<') || (c == '>') || (c == '`') || (c == 0))
+			break;
+		k++;
+	}
+	if (k == at) { at = start_value_at; goto DoneValueSpecification; }
+	at = k; goto DoneValueSpecification;
+
+@<Try for a single-quoted attribute value@> =
+	if (Str::get_at(text, at) == '\'') {
+		int k = at + 1;
+		while ((Str::get_at(text, k) != '\'') && (Str::get_at(text, k) != 0))
+			k++;
+		if (Str::get_at(text, k) == '\'') { at = k+1; goto DoneValueSpecification; }
+		at = start_value_at; goto DoneValueSpecification;
+	}
+
+@<Try for a double-quoted attribute value@> =
+	if (Str::get_at(text, at) == '"') {
+		int k = at + 1;
+		while ((Str::get_at(text, k) != '"') && (Str::get_at(text, k) != 0))
+			k++;
+		if (Str::get_at(text, k) == '"') { at = k+1; goto DoneValueSpecification; }
+		at = start_value_at; goto DoneValueSpecification;
+	}
+
+@<Advance past compulsory tag-whitespace@> =
+	wchar_t c = Str::get_at(text, at);
+	if ((c != ' ') && (c != '\t') && (c != '\n')) goto NotATag;
+	@<Advance past optional tag-whitespace@>;
+
+@<Advance past optional tag-whitespace@> =
+	int line_ending_count = 0;
+	while (TRUE) {
+		wchar_t c = Str::get_at(text, at++);
+		if (c == '\n') {
+			line_ending_count++;
+			if (line_ending_count == 2) break;
+		}
+		if ((c != ' ') && (c != '\t') && (c != '\n')) break;
+	}
+	at--;
+
+@<Allow it as a raw HTML tag@> =
+	if (i-1 >= from) {
+		markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+		Markdown::add_to(md, owner);
+	}
+	markdown_item *md = Markdown::new_slice(INLINE_HTML_MIT, text, tag_from, tag_to);
+	Markdown::add_to(md, owner);
+	i = tag_to; from = tag_to + 1;
+	if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Found raw HTML\n");
+	goto ContinueOuter;
+
+@<Does a hard or soft line break occur here?@> =
+	if (Str::get_at(text, i) == '\n') {
+		int soak = 0;
+		if (Str::get_at(text, i-1) == '\\') soak = 2;
+		int preceding_spaces = 0;
+		while (Str::get_at(text, i-1-preceding_spaces) == ' ') preceding_spaces++;
+		if (preceding_spaces >= 2) soak = preceding_spaces+1;
+		if (soak > 0) {
+			if (i-soak >= from) {
+				markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-soak);
+				Markdown::add_to(md, owner);
+			}
+			markdown_item *md = Markdown::new_slice(LINE_BREAK_MIT, I"\n\n", 0, 1);
+			Markdown::add_to(md, owner);
+		} else {
+			if (i-preceding_spaces-1 >= from) {
+				markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-preceding_spaces-1);
+				Markdown::add_to(md, owner);
+			}
+			markdown_item *md = Markdown::new_slice(SOFT_BREAK_MIT, I"\n", 0, 0);
+			Markdown::add_to(md, owner);
+		}
+		i++;
+		while (Str::get_at(text, i) == ' ') i++;
+		from = i;
+		i--;
+		if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Found raw HTML\n");
+		goto ContinueOuter;
+	}
+
+@h Links and images.
+
+@<Second pass: link and image inline items@> =
+	Markdown::scan_for_links_and_images(owner, FALSE);
+
+@
+
+=
+void Markdown::scan_for_links_and_images(markdown_item *owner, int images_only) {
+	if (tracing_Markdown_parser) {
+		WRITE_TO(STDOUT, "Beginning link/image pass:\n");
+		Markdown::render_debug(STDOUT, owner);
+	}
+	md_charpos leftmost_pos = Markdown::first_pos(owner);
+	while (TRUE) {
+		if (tracing_Markdown_parser) {
+			if (Markdown::somewhere(leftmost_pos)) {
+				WRITE_TO(STDOUT, "Link/image notation scan from %c\n",
+					Markdown::get(leftmost_pos));
+				Markdown::render_debug(STDOUT, leftmost_pos.md);
+			} else {
+				WRITE_TO(STDOUT, "Link/image notation scan from start\n");
+			}
+		}
+		md_link_parse found = Markdown::first_valid_link(leftmost_pos, Markdown::nowhere(), images_only, FALSE);
+		if (found.is_link == NOT_APPLICABLE) break;
+		if (tracing_Markdown_parser) {
+			WRITE_TO(STDOUT, "Link matter: ");
+			if (found.link_text_empty) WRITE_TO(STDOUT, "EMPTY\n");
+			else Markdown::view_positions(STDOUT, found.link_text_from, found.link_text_to);
+			WRITE_TO(STDOUT, "Link destination: ");
+			if (found.link_destination_empty) WRITE_TO(STDOUT, "EMPTY\n");
+			else Markdown::view_positions(STDOUT, found.link_destination_from, found.link_destination_to);
+			WRITE_TO(STDOUT, "Link title: ");
+			if (found.link_title_empty) WRITE_TO(STDOUT, "EMPTY\n");
+			else Markdown::view_positions(STDOUT, found.link_title_from, found.link_title_to);
+		}
+		markdown_item *run = owner->down, *interstitial = NULL, *remainder = NULL;
+		Markdown::cut_to_just_before(run, found.first, &run, &interstitial);
+		Markdown::cut_to_just_after(interstitial, found.last, &interstitial, &remainder);
+		markdown_item *link_text = NULL;
+		markdown_item *link_destination = NULL;
+		markdown_item *link_title = NULL;
+		if (found.link_text_empty == FALSE) {
+			Markdown::cut_to_just_before(interstitial, found.link_text_from, &interstitial, &link_text);
+			Markdown::cut_to_just_after(link_text, found.link_text_to, &link_text, &interstitial);
+		}
+		if (Markdown::somewhere(found.link_destination_from)) {
+			if (found.link_destination_empty == FALSE) {
+				Markdown::cut_to_just_before(interstitial, found.link_destination_from, &interstitial, &link_destination);
+				Markdown::cut_to_just_after(link_destination, found.link_destination_to, &link_destination, &interstitial);
+			}
+		}
+		if (Markdown::somewhere(found.link_title_from)) {
+			if (found.link_title_empty == FALSE) {
+				Markdown::cut_to_just_before(interstitial, found.link_title_from, &interstitial, &link_title);
+				Markdown::cut_to_just_after(link_title, found.link_title_to, &link_title, &interstitial);
+			}
+		}
+		markdown_item *link_item = Markdown::new_item((found.is_link == TRUE)?LINK_MIT:IMAGE_MIT);
+		markdown_item *matter = Markdown::new_item(MATERIAL_MIT);
+		if (found.link_text_empty == FALSE) matter->down = link_text;
+		Markdown::add_to(matter, link_item);
+		if (found.is_link == TRUE)
+			Markdown::scan_for_links_and_images(matter, TRUE);
+		else
+			Markdown::scan_for_links_and_images(matter, FALSE);
+		if (link_destination) {
+			markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
+			if (found.link_destination_empty == FALSE) dest_item->down = link_destination;
+			Markdown::add_to(dest_item, link_item);
+		}
+		if (link_title) {
+			markdown_item *title_item = Markdown::new_item(LINK_TITLE_MIT);
+			if (found.link_title_empty == FALSE) title_item->down = link_title;
+			Markdown::add_to(title_item, link_item);
+		}
+		if (run) {
+			owner->down = run;
+			while (run->next) run = run->next; run->next = link_item;
+		} else {
+			owner->down = link_item;
+		}
+		link_item->next = remainder;
+		if (tracing_Markdown_parser) {
+			WRITE_TO(STDOUT, "After link surgery:\n");
+			Markdown::render_debug(STDOUT, owner);
+		}
+		leftmost_pos = Markdown::left_edge_of(remainder);
+	}
+}
+
+@ =
+typedef struct md_charpos {
+	struct markdown_item *md;
+	struct markdown_item *md_prev;
+	int at;
+} md_charpos;
+
+md_charpos Markdown::nowhere(void) {
+	md_charpos pos;
+	pos.md = NULL;
+	pos.md_prev = NULL;
+	pos.at = -1;
+	return pos;
+}
+
+int Markdown::somewhere(md_charpos pos) {
+	if (pos.md) return TRUE;
+	return FALSE;
+}
+
+int Markdown::pos_eq(md_charpos A, md_charpos B) {
+	if ((A.md) && (A.md == B.md) && (A.at == B.at)) return TRUE;
+	if ((A.md == NULL) && (B.md == NULL)) return TRUE;
+	return FALSE;
+}
+
+int Markdown::plainish(markdown_item *md) {
+	if ((md) && ((md->type == PLAIN_MIT) || (md->type == LINE_BREAK_MIT) || (md->type == SOFT_BREAK_MIT)))
+		return TRUE;
+	return FALSE;
+}
+
+md_charpos Markdown::first_pos(markdown_item *owner) {
+	markdown_item *md = (owner)?(owner->down):NULL;
+	while ((md) && (Markdown::plainish(md) == FALSE)) md = md->next;
+	if (md == NULL) return Markdown::nowhere();
+	return Markdown::left_edge_of(md);
+}
+
+md_charpos Markdown::left_edge_of(markdown_item *md) {
+	if (md == NULL) return Markdown::nowhere();
+	md_charpos pos;
+	pos.md = md;
+	pos.md_prev = md;
+	pos.at = md->from;
+	return pos;
+}
+
+md_charpos Markdown::next_pos(md_charpos pos) {
+	if (Markdown::somewhere(pos)) {
+		if (pos.at < pos.md->to) { pos.at++; return pos; }
+		pos.md_prev = pos.md;
+		pos.md = pos.md->next;
+		while ((pos.md) && (Markdown::plainish(pos.md) == FALSE)) pos.md = pos.md->next;
+		if (pos.md) { pos.at = pos.md->from; return pos; }
+	}
+	return Markdown::nowhere();
+}
+
+md_charpos Markdown::next_pos_up_to(md_charpos pos, md_charpos end) {
+	if ((Markdown::somewhere(end)) && (pos.md->sliced_from == end.md->sliced_from) && (pos.at >= end.at))
+		return Markdown::nowhere();
+	return Markdown::next_pos(pos);
+}
+
+md_charpos Markdown::next_pos_plainish_only(md_charpos pos) {
+	if (Markdown::somewhere(pos)) {
+		if (pos.at < pos.md->to) { pos.at++; return pos; }
+		pos.md_prev = pos.md;
+		pos.md = pos.md->next;
+		if ((pos.md) && (Markdown::plainish(pos.md))) { pos.at = pos.md->from; return pos; }
+	}
+	return Markdown::nowhere();
+}
+
+md_charpos Markdown::next_pos_up_to_plainish_only(md_charpos pos, md_charpos end) {
+	if ((Markdown::somewhere(end)) && (pos.md->sliced_from == end.md->sliced_from) && (pos.at >= end.at))
+		return Markdown::nowhere();
+	return Markdown::next_pos_plainish_only(pos);
+}
+
+wchar_t Markdown::get(md_charpos pos) {
+	if (Markdown::somewhere(pos)) return Markdown::get_at(pos.md, pos.at);
+	return 0;
+}
+
+int Markdown::is_in(md_charpos pos, markdown_item *md) {
+	if ((Markdown::somewhere(pos)) && (md)) {
+		if ((md->sliced_from) && (md->sliced_from == pos.md->sliced_from) &&
+			(pos.at >= md->from) && (pos.at <= md->to)) return TRUE;
+	}
+	return FALSE;
+}
+
+void Markdown::view_positions(OUTPUT_STREAM, md_charpos A, md_charpos B) {
+	if (Markdown::somewhere(A) == FALSE) { WRITE("NONE\n"); return; }
+	for (md_charpos pos = A; Markdown::somewhere(pos); pos = Markdown::next_pos(pos)) {
+		PUT(Markdown::get(pos));
+		if (Markdown::pos_eq(pos, B)) break;
+	}
+	PUT('\n');
+}
+
+void Markdown::cut_to_just_before(markdown_item *chain_from, md_charpos cut_point,
+	markdown_item **left_segment, markdown_item **right_segment) {
+	markdown_item *L = chain_from, *R = NULL;
+	if ((chain_from) && (Markdown::somewhere(cut_point))) {
+		markdown_item *md, *md_prev = NULL;
+		for (md = chain_from; (md) && (Markdown::is_in(cut_point, md) == FALSE);
+			md_prev = md, md = md->next) ;
+		if (md) {
+			if (cut_point.at <= md->from) {
+				if (md_prev) md_prev->next = NULL; else L = NULL;
+				R = md;
+			} else {
+				int old_to = md->to;
+				md->to = cut_point.at - 1;
+				markdown_item *splinter = Markdown::new_slice(md->type, md->sliced_from, cut_point.at, old_to);
+				splinter->next = md->next;
+				md->next = NULL;
+				R = splinter;
+			}
+		}
+	}
+	if (left_segment) *left_segment = L;
+	if (right_segment) *right_segment = R;
+}
+
+void Markdown::cut_to_just_after(markdown_item *chain_from, md_charpos cut_point,
+	markdown_item **left_segment, markdown_item **right_segment) {
+	markdown_item *L = chain_from, *R = NULL;
+	if ((chain_from) && (Markdown::somewhere(cut_point))) {
+		markdown_item *md, *md_prev = NULL;
+		for (md = chain_from; (md) && (Markdown::is_in(cut_point, md) == FALSE);
+			md_prev = md, md = md->next) ;
+		if (md) {
+			if (cut_point.at >= md->to) {
+				R = md->next;
+				md->next = NULL;
+			} else {
+				int old_to = md->to;
+				md->to = cut_point.at;
+				markdown_item *splinter = Markdown::new_slice(md->type, md->sliced_from, cut_point.at + 1, old_to);
+				splinter->next = md->next;
+				md->next = NULL;
+				R = splinter;
+			}
+		}
+	}
+	if (left_segment) *left_segment = L;
+	if (right_segment) *right_segment = R;
+}
+
+typedef struct md_link_parse {
+	int is_link; /* |TRUE| for link, |FALSE| for image, |NOT_APPLICABLE| for fail */
+	struct md_charpos first;
+	struct md_charpos link_text_from;
+	struct md_charpos link_text_to;
+	int link_text_empty;
+	struct md_charpos link_destination_from;
+	struct md_charpos link_destination_to;
+	int link_destination_empty;
+	struct md_charpos link_title_from;
+	struct md_charpos link_title_to;
+	int link_title_empty;
+	struct md_charpos last;
+} md_link_parse;
+
+@
+
+@d ABANDON_LINK(reason)
+	{ if (tracing_Markdown_parser) { WRITE_TO(STDOUT, "Link abandoned: %s\n", reason); }
+	pos = abandon_at; goto AbandonHope; }
+
+@ =
+md_link_parse Markdown::first_valid_link(md_charpos from, md_charpos to, int images_only, int links_only) {
+	md_link_parse result;
+	result.is_link = NOT_APPLICABLE;
+	result.first = Markdown::nowhere();
+	result.link_text_from = Markdown::nowhere();
+	result.link_text_to = Markdown::nowhere();
+	result.link_text_empty = NOT_APPLICABLE;
+	result.link_destination_from = Markdown::nowhere();
+	result.link_destination_to = Markdown::nowhere();
+	result.link_destination_empty = NOT_APPLICABLE;
+	result.link_title_from = Markdown::nowhere();
+	result.link_title_to = Markdown::nowhere();
+	result.link_title_empty = NOT_APPLICABLE;
+	result.last = Markdown::nowhere();
+	wchar_t prev_c = 0;
+	md_charpos prev_pos = Markdown::nowhere();
+	for (md_charpos pos = from; Markdown::somewhere(pos); pos = Markdown::next_pos_up_to(pos, to)) {
+		wchar_t c = Markdown::get(pos);
+		if ((c == '[') &&
+			((links_only == FALSE) || (prev_c != '!')) &&
+			((images_only == FALSE) || (prev_c == '!'))) {
+			int link_rather_than_image = TRUE;
+			result.first = pos;
+			if ((prev_c == '!') && (links_only == FALSE)) {
+				link_rather_than_image = FALSE; result.first = prev_pos;
+			}
+			
+			if (link_rather_than_image) {
+				if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Potential link found\n");
+			} else {
+				if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Potential image found\n");
+			}
+			md_charpos abandon_at = pos;
+			@<Work out the link text@>;
+			if (Markdown::get(pos) != '(') ABANDON_LINK("no '('");
+			pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+			@<Advance pos by optional small amount of white space@>;
+			if (Markdown::get(pos) != ')') @<Work out the link destination@>;
+			@<Advance pos by optional small amount of white space@>;
+			if (Markdown::get(pos) != ')') @<Work out the link title@>;
+			@<Advance pos by optional small amount of white space@>;
+			if (Markdown::get(pos) != ')') ABANDON_LINK("no ')'");
+			result.last = pos;
+			result.is_link = link_rather_than_image;
+			if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Confirmed\n");
+			return result;
+		}
+		AbandonHope: ;
+		prev_pos = pos;
+		prev_c = c;
+	}
+	return result;
+}
+
+@<Work out the link text@> =
+	md_charpos prev_pos = pos;
+	result.link_text_from = Markdown::next_pos_up_to(pos, to);
+	wchar_t prev_c = 0;
+	int bl = 0, count = 0;
+	while (c != 0) {
+		count++;
+		if ((c == '[') && (prev_c != '\\')) bl++;
+		if ((c == ']') && (prev_c != '\\')) { bl--; if (bl == 0) break; }		
+		prev_pos = pos;
+		prev_c = c;
+		pos = Markdown::next_pos_up_to(pos, to);
+		c = Markdown::get(pos);
+	}
+	if (c == 0) { pos = abandon_at; ABANDON_LINK("no end to linked matter"); }
+	result.link_text_empty = (count<=2)?TRUE:FALSE;
+	result.link_text_to = prev_pos;
+	if (link_rather_than_image) {
+		md_link_parse nested =
+			Markdown::first_valid_link(result.link_text_from, result.link_text_to, FALSE, TRUE);
+		if (nested.is_link != NOT_APPLICABLE) return nested;
+	}
+	pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+	
+@<Work out the link destination@> =
+	if (Markdown::get(pos) == '<') {
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+		result.link_destination_from = pos;
+		int empty = TRUE;
+		wchar_t prev_c = 0;
+		while ((Markdown::get(pos) != '>') || (prev_c == '\\')) {
+			if (Markdown::get(pos) == 0) ABANDON_LINK("no end to destination in angles");
+			if (Markdown::get(pos) == '<') ABANDON_LINK("'<' in destination in angles");
+			prev_pos = pos; prev_c = Markdown::get(pos);
+			pos = Markdown::next_pos_up_to_plainish_only(pos, to); empty = FALSE;
+		}
+		result.link_destination_empty = empty;
+		result.link_destination_to = prev_pos;
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+		if ((Markdown::get(pos) == '"') || (Markdown::get(pos) == '\'') || (Markdown::get(pos) == '(')) ABANDON_LINK("no gap between destination and title");
+	} else {
+		result.link_destination_from = pos;
+		int bl = 1;
+		wchar_t prev_c = 0;
+		md_charpos prev_pos = pos;
+		int empty = TRUE;
+		while ((Markdown::get(pos) != ' ') && (Markdown::get(pos) != '\n') && (Markdown::get(pos) != '\t')) {
+			wchar_t c = Markdown::get(pos);
+			if ((c == '(') && (prev_c != '\\')) bl++;
+			if ((c == ')') && (prev_c != '\\')) { bl--; if (bl == 0) break; }
+			if (c == 0) ABANDON_LINK("no end to destination");
+			if (Markdown::is_control_character(c)) ABANDON_LINK("control character in destination");
+			prev_pos = pos;
+			prev_c = c;
+			pos = Markdown::next_pos_up_to_plainish_only(pos, to); empty = FALSE;
+		}
+		result.link_destination_empty = empty;
+		result.link_destination_to = prev_pos;
+		if ((Markdown::get(pos) == '"') || (Markdown::get(pos) == '\'') || (Markdown::get(pos) == '(')) ABANDON_LINK("no gap between destination and title");
+	}
+
+@<Work out the link title@> =
+	if (Markdown::get(pos) == '"') {
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+		result.link_title_from = pos;
+		wchar_t prev_c = 0;
+		md_charpos prev_pos = pos;
+		int empty = TRUE;
+		wchar_t c = Markdown::get(pos);
+		while (c != 0) {
+			wchar_t c = Markdown::get(pos);
+			if ((c == '"') && (prev_c != '\\')) break;
+			prev_pos = pos;
+			prev_c = c;
+			pos = Markdown::next_pos_up_to_plainish_only(pos, to); empty = FALSE;
+		}
+		if (c == 0) ABANDON_LINK("no end to title");
+		result.link_title_empty = empty;
+		result.link_title_to = prev_pos;
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+	}
+	else if (Markdown::get(pos) == '\'') {
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+		result.link_title_from = pos;
+		wchar_t prev_c = 0;
+		md_charpos prev_pos = pos;
+		int empty = TRUE;
+		wchar_t c = Markdown::get(pos);
+		while (c != 0) {
+			wchar_t c = Markdown::get(pos);
+			if ((c == '\'') && (prev_c != '\\')) break;
+			prev_pos = pos;
+			prev_c = c;
+			pos = Markdown::next_pos_up_to_plainish_only(pos, to); empty = FALSE;
+		}
+		if (c == 0) ABANDON_LINK("no end to title");
+		result.link_title_empty = empty;
+		result.link_title_to = prev_pos;
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+	}
+	else if (Markdown::get(pos) == '(') {
+		pos = Markdown::next_pos_up_to(pos, to);
+		result.link_title_from = pos;
+		wchar_t prev_c = 0;
+		md_charpos prev_pos = pos;
+		int empty = TRUE;
+		wchar_t c = Markdown::get(pos);
+		while (c != 0) {
+			wchar_t c = Markdown::get(pos);
+			if ((c == '(') && (prev_c != '\\')) ABANDON_LINK("unescaped '(' in title");
+			if ((c == ')') && (prev_c != '\\')) break;
+			prev_pos = pos;
+			prev_c = c;
+			pos = Markdown::next_pos_up_to(pos, to); empty = FALSE;
+		}
+		if (c == 0) ABANDON_LINK("no end to title");
+		result.link_title_empty = empty;
+		result.link_title_to = prev_pos;
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+	}
+
+@<Advance pos by optional small amount of white space@> =
+	int line_endings = 0;
+	wchar_t c = Markdown::get(pos);
+	while ((c == ' ') || (c == '\t') || (c == '\n')) {
+		if (c == '\n') { line_endings++; if (line_endings >= 2) break; }
+		pos = Markdown::next_pos_up_to_plainish_only(pos, to);
+		c = Markdown::get(pos);
+	}
+
 @h Emphasis.
-Well, that was easy. Now for the second pass, in which we look for the use
+Well, that was easy. Now for the hardest pass, in which we look for the use
 of asterisks and underscores for emphasis. This notation is deeply ambiguous
 on its face, and CommonMark's precise specification is a bit of an ordeal,
 but here goes.
 
-@<Second pass: emphasis inline items@> =
+@<Third pass: emphasis inline items@> =
 	Markdown::fragment_into_emphasis_items(owner);
 
 @ =
 void Markdown::fragment_into_emphasis_items(markdown_item *owner) {
+	for (markdown_item *md = owner->down; md; md = md->next)
+		if (md->type == LINK_MIT)
+			Markdown::fragment_into_emphasis_items(md->down);
 	text_stream *OUT = STDOUT;
 	if (tracing_Markdown_parser) {
-		INDENT;
 		WRITE("Seeking emphasis in:\n");
+		INDENT;
 		Markdown::render_debug(STDOUT, owner);
 	}
 	@<Seek emphasis@>;
 	if (tracing_Markdown_parser) {
-		WRITE("Emphasis search complete\n");
 		OUTDENT;
+		WRITE("Emphasis search complete\n");
 	}
 }
 
@@ -581,7 +1455,7 @@ than the original, it does at least terminate.
 		WRITE("Option %d is to fragment thus:\n", no_options);
 		Markdown::render_debug(STDOUT, option);
 		WRITE("Resulting in: ");
-		Markdown::render_md_purist(STDOUT, option);
+		Markdown::render(STDOUT, option);
 		WRITE("Which scores %d penalty points\n", Markdown::penalty(option));
 	}
 
@@ -720,46 +1594,203 @@ int Markdown::penalty(markdown_item *md) {
 This is blessedly simple by comparison.
 
 =
-void Markdown::render_md_purist(OUTPUT_STREAM, markdown_item *md) {
+void Markdown::render(OUTPUT_STREAM, markdown_item *md) {
+	Markdown::render_r(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE);
+}
+
+@
+
+@d TAGS_MDRMODE 1
+@d ESCAPES_MDRMODE 2
+@d URI_MDRMODE 4
+
+=
+void Markdown::render_r(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (md) {
 		switch (md->type) {
-			case PARAGRAPH_MIT: HTML_OPEN("p");
+			case PARAGRAPH_MIT: if (mode & TAGS_MDRMODE) HTML_OPEN("p");
 								@<Recurse@>;
-								HTML_CLOSE("p");
+								if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 								break;
 			case MATERIAL_MIT: 	@<Recurse@>;
 								break;
 			case PLAIN_MIT:    	@<Render text@>;
 								break;
-			case EMPHASIS_MIT: 	HTML_OPEN("em");
+			case EMPHASIS_MIT: 	if (mode & TAGS_MDRMODE) HTML_OPEN("em");
 								@<Recurse@>;
-								HTML_CLOSE("em");
+								if (mode & TAGS_MDRMODE) HTML_CLOSE("em");
 								break;
-			case STRONG_MIT:   	HTML_OPEN("strong");
+			case STRONG_MIT:   	if (mode & TAGS_MDRMODE) HTML_OPEN("strong");
 								@<Recurse@>;
-								HTML_CLOSE("strong");
+								if (mode & TAGS_MDRMODE) HTML_CLOSE("strong");
 								break;
-			case CODE_MIT:     	HTML_OPEN("code");
-								@<Render text unescaped@>;
-								HTML_CLOSE("code");
+			case CODE_MIT:     	if (mode & TAGS_MDRMODE) HTML_OPEN("code");
+								@<Render text raw@>;
+								if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
 								break;
+			case LINK_MIT:      @<Render link@>; break;
+			case IMAGE_MIT:     @<Render image@>; break;
+			case LINK_DEST_MIT: Markdown::render_slice(OUT, md->down, mode | URI_MDRMODE); break;
+			case LINK_TITLE_MIT: @<Recurse@>; break;
+			case LINE_BREAK_MIT: if (mode & TAGS_MDRMODE) WRITE("<br />\n"); break;
+			case SOFT_BREAK_MIT: WRITE("\n"); break;
+			case EMAIL_AUTOLINK_MIT: @<Render email link@>; break;
+			case URI_AUTOLINK_MIT: @<Render URI link@>; break;
+			case INLINE_HTML_MIT: @<Render text raw@>; break;
 		}
 	}
 }
 
 @<Recurse@> =
 	for (markdown_item *c = md->down; c; c = c->next)
-		Markdown::render_md_purist(OUT, c);
+		Markdown::render_r(OUT, c, mode);
 
 @<Render text@> =
 	for (int i=md->from; i<=md->to; i++) {
 		wchar_t c = Markdown::get_at(md, i);
-		if (c == '\\') { i++; c = Markdown::get_at(md, i); }
-		PUT(c);
+		if ((c == '\\') && (i<md->to) && (Markdown::is_ASCII_punctuation(Markdown::get_at(md, i+1))))
+			c = Markdown::get_at(md, ++i);
+		Markdown::render_character(OUT, c);
 	}
 
 @<Render text unescaped@> =
 	for (int i=md->from; i<=md->to; i++) {
 		wchar_t c = Markdown::get_at(md, i);
+		Markdown::render_character(OUT, c);
+	}
+
+@<Render text raw@> =
+	for (int i=md->from; i<=md->to; i++) {
+		wchar_t c = Markdown::get_at(md, i);
 		PUT(c);
 	}
+
+@<Render link@> =
+	TEMPORARY_TEXT(URI)
+	TEMPORARY_TEXT(title)
+	if (md->down->next) {
+		if (md->down->next->type == LINK_DEST_MIT) {
+			Markdown::render_r(URI, md->down->next, mode);
+			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
+				Markdown::render_r(title, md->down->next->next, mode);
+		} else if (md->down->next->type == LINK_TITLE_MIT) {
+			Markdown::render_r(title, md->down->next, mode);
+		}
+	}
+	if (Str::len(title) > 0) {
+		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\" title=\"%S\"", URI, title);
+	} else {
+		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\"", URI);
+	}
+	Markdown::render_r(OUT, md->down, mode);
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
+	DISCARD_TEXT(URI)
+	DISCARD_TEXT(title)
+
+@<Render image@> =
+	TEMPORARY_TEXT(URI)
+	TEMPORARY_TEXT(title)
+	TEMPORARY_TEXT(alt)
+	if (md->down->next) {
+		if (md->down->next->type == LINK_DEST_MIT) {
+			Markdown::render_r(URI, md->down->next, mode);
+			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
+				Markdown::render_r(title, md->down->next->next, mode);
+		} else if (md->down->next->type == LINK_TITLE_MIT) {
+			Markdown::render_r(title, md->down->next, mode);
+		}
+	}
+	Markdown::render_r(alt, md->down, mode & (~TAGS_MDRMODE));
+	if (Str::len(title) > 0) {
+		HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
+	} else {
+		HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" /", URI, alt);
+	}
+	DISCARD_TEXT(URI)
+	DISCARD_TEXT(title)
+	DISCARD_TEXT(alt)
+
+@<Render email link@> =
+	text_stream *supplied_scheme = I"mailto:";
+	@<Render autolink@>;
+
+@<Render URI link@> =
+	text_stream *supplied_scheme = NULL;
+	@<Render autolink@>;
+
+@<Render autolink@> =
+	TEMPORARY_TEXT(address)
+	Markdown::render_slice(address, md, (mode & (~ESCAPES_MDRMODE)) | URI_MDRMODE);
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S%S\"", supplied_scheme, address);
+	@<Render text unescaped@>;
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
+	DISCARD_TEXT(address)
+
+@
+
+=
+void Markdown::render_character(OUTPUT_STREAM, wchar_t c) {
+	switch (c) {
+		case '<': WRITE("&lt;"); break;
+		case '&': WRITE("&amp;"); break;
+		case '>': WRITE("&gt;"); break;
+		case '"': WRITE("&quot;"); break;
+		default: PUT(c); break;
+	}
+}
+
+@
+
+@d MARKDOWN_URI_HEX(x) {
+		unsigned int z = (unsigned int) x;
+		PUT('%');
+		Markdown::render_hex_digit(OUT, z >> 4);
+		Markdown::render_hex_digit(OUT, z & 0x0f);
+	}
+
+=
+void Markdown::render_hex_digit(OUTPUT_STREAM, unsigned int x) {
+	x = x%16;
+	if (x<10) PUT('0'+(int) x);
+	else PUT('A'+((int) x-10));
+}
+
+void Markdown::render_slice(OUTPUT_STREAM, markdown_item *md, int mode) {
+	if (md) {
+		for (int i=md->from; i<=md->to; i++) {
+			wchar_t c = Markdown::get_at(md, i);
+			if ((mode & ESCAPES_MDRMODE) && (c == '\\') && (i<md->to) &&
+				(Markdown::is_ASCII_punctuation(Markdown::get_at(md, i+1))))
+				c = Markdown::get_at(md, ++i);
+			if (mode & URI_MDRMODE) {
+				if (c >= 0x10000) {
+					MARKDOWN_URI_HEX(0xF0 + (unsigned char) (c >> 18));
+					MARKDOWN_URI_HEX(0x80 + (unsigned char) ((c >> 12) & 0x3f));
+					MARKDOWN_URI_HEX( 0x80 + (unsigned char) ((c >> 6) & 0x3f));
+					MARKDOWN_URI_HEX(0x80 + (unsigned char) (c & 0x3f));
+				} else if (c >= 0x800) {
+					MARKDOWN_URI_HEX(0xE0 + (unsigned char) (c >> 12));
+					MARKDOWN_URI_HEX(0x80 + (unsigned char) ((c >> 6) & 0x3f));
+					MARKDOWN_URI_HEX(0x80 + (unsigned char) (c & 0x3f));
+				} else if (c >= 0x80) {
+					MARKDOWN_URI_HEX(0xC0 + (unsigned char) (c >> 6));
+					MARKDOWN_URI_HEX(0x80 + (unsigned char) (c & 0x3f));
+				} else {
+					switch (c) {
+						case '<': WRITE("&lt;"); break;
+						case '&': WRITE("&amp;"); break;
+						case '>': WRITE("&gt;"); break;
+						case '[': MARKDOWN_URI_HEX((unsigned char) c); break;
+						case '\\':MARKDOWN_URI_HEX((unsigned char) c); break;
+						case '\"':MARKDOWN_URI_HEX((unsigned char) c); break;
+						case ']': MARKDOWN_URI_HEX((unsigned char) c); break;
+						case ' ': MARKDOWN_URI_HEX((unsigned char) c); break;
+						default: PUT(c); break;
+					}
+				}
+			} else {
+				Markdown::render_character(OUT, c);
+			}
+		}
+	}
+}

@@ -1,3 +1,4 @@
+! Emphasis tests (examples 350-478 from CommonMark specification)
 ! Example 350
 *foo bar*
 --->
@@ -11,7 +12,7 @@ a * foo bar*
 ! Example 352
 a*"foo"*
 --->
-<p>a*"foo"*</p>
+<p>a*&quot;foo&quot;*</p>
 --------
 ! Example 353
 * a *
@@ -41,7 +42,7 @@ _ foo bar_
 ! Example 358
 a_"foo"_
 --->
-<p>a_"foo"_</p>
+<p>a_&quot;foo&quot;_</p>
 --------
 ! Example 359
 foo_bar_
@@ -61,7 +62,7 @@ foo_bar_
 ! Example 362
 aa_"bb"_cc
 --->
-<p>aa_"bb"_cc</p>
+<p>aa_&quot;bb&quot;_cc</p>
 --------
 ! Example 363
 foo-_(bar)_
@@ -148,7 +149,7 @@ _(bar)_.
 ! Example 379
 a**"foo"**
 --->
-<p>a**"foo"**</p>
+<p>a**&quot;foo&quot;**</p>
 --------
 ! Example 380
 foo**bar**
@@ -175,7 +176,7 @@ foo bar__</p>
 ! Example 384
 a__"foo"__
 --->
-<p>a__"foo"__</p>
+<p>a__&quot;foo&quot;__</p>
 --------
 ! Example 385
 foo__bar__
@@ -227,7 +228,7 @@ foo-__(bar)__
 ! Example 394
 **foo "*bar*" foo**
 --->
-<p><strong>foo "<em>bar</em>" foo</strong></p>
+<p><strong>foo &quot;<em>bar</em>&quot; foo</strong></p>
 --------
 ! Example 395
 **foo**bar
@@ -272,7 +273,7 @@ __(bar)__.
 ! Example 403
 *foo [bar](/url)*
 --->
-<p><em>foo [bar](/url)</em></p>
+<p><em>foo <a href="/url">bar</a></em></p>
 --------
 ! Example 404
 *foo
@@ -349,7 +350,7 @@ foo******bar*********baz
 ! Example 418
 *foo [*bar*](/url)*
 --->
-<p><em>foo [<em>bar</em>](/url)</em></p>
+<p><em>foo <a href="/url"><em>bar</em></a></em></p>
 --------
 ! Example 419
 ** is not an empty emphasis
@@ -364,7 +365,7 @@ foo******bar*********baz
 ! Example 421
 **foo [bar](/url)**
 --->
-<p><strong>foo [bar](/url)</strong></p>
+<p><strong>foo <a href="/url">bar</a></strong></p>
 --------
 ! Example 422
 **foo
@@ -423,7 +424,7 @@ bim</em> bop</strong></p>
 ! Example 432
 **foo [*bar*](/url)**
 --->
-<p><strong>foo [<em>bar</em>](/url)</strong></p>
+<p><strong>foo <a href="/url"><em>bar</em></a></strong></p>
 --------
 ! Example 433
 __ is not an empty emphasis

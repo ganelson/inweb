@@ -1,3 +1,4 @@
+! Emphasis tests (examples 350-478 from CommonMark specification)
 ! Example 350
 *foo bar*
 ----

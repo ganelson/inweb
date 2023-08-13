@@ -1,0 +1,58 @@
+! Autolink tests (examples 593-611 from CommonMark specification)
+! Example 593
+<http://foo.bar.baz>
+----
+! Example 594
+<http://foo.bar.baz/test?q=hello&id=22&boolean>
+----
+! Example 595
+<irc://foo.bar:2233/baz>
+----
+! Example 596
+<MAILTO:FOO@BAR.BAZ>
+----
+! Example 597
+<a+b+c:d>
+----
+! Example 598
+<made-up-scheme://foo,bar>
+----
+! Example 599
+<http://../>
+----
+! Example 600
+<localhost:5001/foo>
+----
+! Example 601
+<http://foo.bar/baz bim>
+----
+! Example 602
+<http://example.com/\[\>
+----
+! Example 603
+<foo@bar.example.com>
+----
+! Example 604
+<foo+special@Bar.baz-bar0.com>
+----
+! Example 605
+<foo\+@bar.example.com>
+----
+! Example 606
+<>
+----
+! Example 607
+< http://foo.bar >
+----
+! Example 608
+<m:abc>
+----
+! Example 609
+<foo.bar.baz>
+----
+! Example 610
+http://example.com
+----
+! Example 611
+foo@bar.example.com
+----

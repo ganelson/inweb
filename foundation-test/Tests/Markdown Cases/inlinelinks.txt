@@ -1,0 +1,141 @@
+! Example 481
+[link](/uri "title")
+----
+! Example 482
+[link](/uri)
+----
+! Example 483
+[](./target.md)
+----
+! Example 484
+[link]()
+----
+! Example 485
+[link](<>)
+----
+! Example 486
+[]()
+----
+! Example 487
+[link](/my uri)
+----
+! Example 488
+[link](</my uri>)
+----
+! Example 489
+[link](foo
+bar)
+----
+! Example 490
+[link](<foo
+bar>)
+----
+! Example 491
+[a](<b)c>)
+----
+! Example 492
+[link](<foo\>)
+----
+! Example 493
+[a](<b)c
+[a](<b)c>
+[a](<b>c)
+----
+! Example 494
+[link](\(foo\))
+----
+! Example 495
+[link](foo(and(bar)))
+----
+! Example 496
+[link](foo(and(bar))
+----
+! Example 497
+[link](foo\(and\(bar\))
+----
+! Example 498
+[link](<foo(and(bar)>)
+----
+! Example 499
+[link](foo\)\:)
+----
+! Example 500
+[link](#fragment) ...
+[link](http://example.com#fragment) ...
+[link](http://example.com?foo=3#frag)
+----
+! Example 501
+[link](foo\bar)
+----
+! Example 503
+[link]("title")
+----
+! Example 504
+[link](/url "title")
+[link](/url 'title')
+[link](/url (title))
+----
+! Example 505
+[link](/url "title \"&quot;")
+----
+! Example 506
+[link](/url "title")
+----
+! Example 507
+[link](/url "title "and" title")
+----
+! Example 508
+[link](/url 'title "and" title')
+----
+! Example 509
+[link](   /uri
+  "title"  )
+----
+! Example 510
+[link] (/uri)
+----
+! Example 511
+[link [foo [bar]]](/uri)
+----
+! Example 512
+[link] bar](/uri)
+----
+! Example 513
+[link [bar](/uri)
+----
+! Example 514
+[link \[bar](/uri)
+----
+! Example 515
+[link *foo **bar** `#`*](/uri)
+----
+! Example 516
+[![moon](moon.jpg)](/uri)
+----
+! Example 517
+[foo [bar](/uri)](/uri)
+----
+! Example 518
+[foo *[bar [baz](/uri)](/uri)*](/uri)
+----
+! Example 519
+![[[foo](uri1)](uri2)](uri3)
+----
+! Example 520
+*[foo*](/uri)
+----
+! Example 521
+[foo *bar](baz*)
+----
+! Example 522
+*foo [bar* baz]
+----
+! Example 523
+[foo <bar attr="](baz)">
+----
+! Example 524
+[foo`](/uri)`
+----
+! Example 525
+[foo<http://example.com/?search=](uri)>
+----

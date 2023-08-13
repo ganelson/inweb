@@ -1,0 +1,119 @@
+! Example 612
+<a><bab><c2c>
+--->
+<p><a><bab><c2c></p>
+--------
+! Example 613
+<a/><b2/>
+--->
+<p><a/><b2/></p>
+--------
+! Example 614
+<a  /><b2
+data="foo" >
+--->
+<p><a  /><b2
+data="foo" ></p>
+--------
+! Example 615
+<a foo="bar" bam = 'baz <em>"</em>'
+_boolean zoop:33=zoop:33 />
+--->
+<p><a foo="bar" bam = 'baz <em>"</em>'
+_boolean zoop:33=zoop:33 /></p>
+--------
+! Example 616
+Foo <responsive-image src="foo.jpg" />
+--->
+<p>Foo <responsive-image src="foo.jpg" /></p>
+--------
+! Example 617
+<33> <__>
+--->
+<p>&lt;33&gt; &lt;__&gt;</p>
+--------
+! Example 618
+<a h*#ref="hi">
+--->
+<p>&lt;a h*#ref=&quot;hi&quot;&gt;</p>
+--------
+! Example 619
+<a href="hi'> <a href=hi'>
+--->
+<p>&lt;a href=&quot;hi'&gt; &lt;a href=hi'&gt;</p>
+--------
+! Example 620
+< a><
+foo><bar/ >
+<foo bar=baz
+bim!bop />
+--->
+<p>&lt; a&gt;&lt;
+foo&gt;&lt;bar/ &gt;
+&lt;foo bar=baz
+bim!bop /&gt;</p>
+--------
+! Example 621
+<a href='bar'title=title>
+--->
+<p>&lt;a href='bar'title=title&gt;</p>
+--------
+! Example 622
+</a></foo >
+--->
+<p></a></foo ></p>
+--------
+! Example 623
+</a href="foo">
+--->
+<p>&lt;/a href=&quot;foo&quot;&gt;</p>
+--------
+! Example 624
+foo <!-- this is a
+comment - with hyphen -->
+--->
+<p>foo <!-- this is a
+comment - with hyphen --></p>
+--------
+! Example 625
+foo <!-- not a comment -- two hyphens -->
+--->
+<p>foo &lt;!-- not a comment -- two hyphens --&gt;</p>
+--------
+! Example 626
+foo <!--> foo -->
+foo <!-- foo--->
+--->
+<p>foo &lt;!--&gt; foo --&gt;
+foo &lt;!-- foo---&gt;</p>
+--------
+! Example 627
+foo <?php echo $a; ?>
+--->
+<p>foo <?php echo $a; ?></p>
+--------
+! Example 628
+foo <!ELEMENT br EMPTY>
+--->
+<p>foo <!ELEMENT br EMPTY></p>
+--------
+! Example 629
+foo <![CDATA[>&<]]>
+--->
+<p>foo <![CDATA[>&<]]></p>
+--------
+! Example 630
+foo <a href="&ouml;">
+--->
+<p>foo <a href="&ouml;"></p>
+--------
+! Example 631
+foo <a href="\*">
+--->
+<p>foo <a href="\*"></p>
+--------
+! Example 632
+<a href="\"">
+--->
+<p>&lt;a href=&quot;&quot;&quot;&gt;</p>
+--------
