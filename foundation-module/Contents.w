@@ -52,7 +52,9 @@ Chapter 4: Text Handling
 Chapter 5: Generating Websites
 "For making individual web pages, or gathering them into mini-sites or ebooks."
 	HTML
-	Markdown
+	Markdown Trees
+	Markdown Parsing
+	Markdown Rendering
 	Epub Ebooks
 
 Chapter 6: Media

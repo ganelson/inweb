@@ -1,0 +1,12 @@
+! Example 571
+![foo](/url "title")
+----
+! Example 574
+![foo [bar](/url)](/url2)
+----
+! Example 577
+![foo](train.jpg)
+----
+! Example 578
+My ![foo bar](/path/to/train.jpg  "title"   )
+----
