@@ -86,12 +86,12 @@ foo
 ! Example 646
 ### foo\
 --->
-<p>### foo\</p>
+<h3>foo\</h3>
 --------
 ! Example 647
 ### foo  
 --->
-<p>### foo</p>
+<h3>foo</h3>
 --------
 ! Example 648
 foo

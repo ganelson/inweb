@@ -22,10 +22,16 @@ void MarkdownRenderer::go(OUTPUT_STREAM, markdown_item *md) {
 void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (md == NULL) return;
 	switch (md->type) {
+		case DOCUMENT_MIT: 	     @<Recurse@>;
+								 break;
+		case ATX_MIT:            @<Render an ATX heading@>;
+								 WRITE("\n");
+								 break;
 		case PARAGRAPH_MIT:      if (mode & TAGS_MDRMODE) HTML_OPEN("p");
 								 @<Recurse@>;
 								 if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 								 break;
+		case THEMATIC_MIT:       if (mode & TAGS_MDRMODE) WRITE("<hr />\n"); break;
 		case MATERIAL_MIT: 	     @<Recurse@>;
 								 break;
 		case PLAIN_MIT:    	     MarkdownRenderer::slice(OUT, md, mode);
@@ -58,6 +64,20 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 @<Recurse@> =
 	for (markdown_item *c = md->down; c; c = c->next)
 		MarkdownRenderer::recurse(OUT, c, mode);
+
+@<Render an ATX heading@> =
+	char *h = "p";
+	switch (md->details) {
+		case 1: h = "h1"; break;
+		case 2: h = "h2"; break;
+		case 3: h = "h3"; break;
+		case 4: h = "h4"; break;
+		case 5: h = "h5"; break;
+		case 6: h = "h6"; break;
+	}
+	if (mode & TAGS_MDRMODE) HTML_OPEN(h);
+	@<Recurse@>;
+	if (mode & TAGS_MDRMODE) HTML_CLOSE(h);
 
 @<Render link@> =
 	TEMPORARY_TEXT(URI)

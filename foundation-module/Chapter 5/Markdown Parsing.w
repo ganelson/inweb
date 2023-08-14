@@ -14,10 +14,116 @@ void MarkdownParser::set_tracing(int state) {
 	tracing_Markdown_parser = state;
 }
 
+markdown_item *MarkdownParser::passage(text_stream *text) {
+	markdown_item *doc = Markdown::new_item(DOCUMENT_MIT);
+	markdown_item *current_block = NULL;
+	TEMPORARY_TEXT(line)
+	LOOP_THROUGH_TEXT(pos, text) {
+		wchar_t c = Str::get(pos);
+		if (c == '\n') {
+			MarkdownParser::add_to_document(doc, &current_block, line);
+			Str::clear(line);
+		} else {
+			PUT_TO(line, c);
+		}
+	}
+	if (Str::len(line) > 0) MarkdownParser::add_to_document(doc, &current_block, line);
+	MarkdownParser::inline_recursion(doc);
+	return doc;
+}
+
+void MarkdownParser::add_to_document(markdown_item *doc, markdown_item **current,
+	text_stream *line) {
+	if (Str::is_whitespace(line)) @<Line is whitespace@>;
+	int indentation = 0, initial_spacing = 0;
+	for (int i=0, spaces=0; i<Str::len(line); i++) {
+		wchar_t c = Str::get_at(line, i);
+		if (c == ' ') { spaces++; if (spaces == 4) indentation++; }
+		else if (c == '\t') { spaces = 0; indentation++; }
+		else break;
+		initial_spacing++;
+	}
+	if (indentation == 0) {
+		int hash_count = 0;
+		while (Str::get_at(line, initial_spacing+hash_count) == '#') hash_count++;
+		if ((hash_count >= 1) && (hash_count <= 6)) @<Line is an ATX heading@>;
+		wchar_t c = Str::get_at(line, initial_spacing);
+		if ((c == '-') || (c == '_') || (c == '*')) {
+			int ornament_count = 1;
+			for (int j=initial_spacing+1; j<Str::len(line); j++) {
+				wchar_t d = Str::get_at(line, j);
+				if (d == c) {
+					if (ornament_count > 0) ornament_count++;
+				} else {
+					if ((d != ' ') && (d != '\t')) ornament_count = 0;
+				}
+			}
+			if (ornament_count >= 3) @<Line is a thematic break@>;
+		}
+	}
+	@<Line forms piece of paragraph@>;
+}
+	
+@<Line is whitespace@> =
+	if (*current) (*current)->whitespace_follows = TRUE;
+	*current = NULL;
+	return;
+
+@<Line is an ATX heading@> =
+	*current = Markdown::new_item(ATX_MIT);
+	(*current)->details = hash_count;
+	text_stream *H = Str::new();
+	(*current)->stashed = H;
+	for (int i=initial_spacing+hash_count; i<Str::len(line); i++) {
+		wchar_t c = Str::get_at(line, i);
+		if ((Str::len(H) == 0) && ((c == ' ') || (c == '\t')))
+			continue;
+		PUT_TO(H, c);
+	}
+	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
+		Str::delete_last_character(H);
+	while (Str::get_last_char(H) == '#') {
+		int at = Str::len(H) - 2, bs_count = 0;
+		while (Str::get_at(H, at) == '\\') { bs_count++; at--; }
+		if (bs_count % 2 == 1) break;
+		Str::delete_last_character(H);
+	}
+	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
+		Str::delete_last_character(H);
+	Markdown::add_to(*current, doc);
+	return;
+
+@<Line is a thematic break@> =
+	*current = Markdown::new_item(THEMATIC_MIT);
+	Markdown::add_to(*current, doc);
+	return;
+
+@<Line forms piece of paragraph@> =
+	if ((*current) && ((*current)->type == PARAGRAPH_MIT)) {
+		WRITE_TO((*current)->stashed, "\n");
+	} else {
+		*current = Markdown::new_item(PARAGRAPH_MIT);
+		(*current)->stashed = Str::new();
+		Markdown::add_to(*current, doc);
+	}
+	WRITE_TO((*current)->stashed, "%S", line);
+	return;
+
+@
+
+=
+void MarkdownParser::inline_recursion(markdown_item *at) {
+	if (at == NULL) return;
+	if (at->type == PARAGRAPH_MIT)
+		at->down = MarkdownParser::inline(at->stashed);
+	if (at->type == ATX_MIT)
+		at->down = MarkdownParser::inline(at->stashed);
+	for (markdown_item *c = at->down; c; c = c->next)
+		MarkdownParser::inline_recursion(c);
+}
+
 markdown_item *MarkdownParser::paragraph(text_stream *text) {
-	markdown_item *passage = Markdown::new_item(PARAGRAPH_MIT);
-	passage->down = MarkdownParser::inline(text);
-	return passage;
+	return MarkdownParser::passage(text);
 }
 
 markdown_item *MarkdownParser::inline(text_stream *text) {
@@ -478,7 +584,7 @@ void MarkdownParser::links_and_images(markdown_item *owner, int images_only) {
 	if (owner == NULL) return;
 	if (tracing_Markdown_parser) {
 		WRITE_TO(STDOUT, "Beginning link/image pass:\n");
-		Markdown::render_debug(STDOUT, owner);
+		Markdown::debug_subtree(STDOUT, owner);
 	}
 	md_charpos leftmost_pos = Markdown::left_edge_of(owner->down);
 	while (TRUE) {
@@ -486,7 +592,7 @@ void MarkdownParser::links_and_images(markdown_item *owner, int images_only) {
 			if (Markdown::somewhere(leftmost_pos)) {
 				WRITE_TO(STDOUT, "Link/image notation scan from %c\n",
 					Markdown::get(leftmost_pos));
-				Markdown::render_debug(STDOUT, leftmost_pos.md);
+				Markdown::debug_subtree(STDOUT, leftmost_pos.md);
 			} else {
 				WRITE_TO(STDOUT, "Link/image notation scan from start\n");
 			}
@@ -496,13 +602,13 @@ void MarkdownParser::links_and_images(markdown_item *owner, int images_only) {
 		if (tracing_Markdown_parser) {
 			WRITE_TO(STDOUT, "Link matter: ");
 			if (found.link_text_empty) WRITE_TO(STDOUT, "EMPTY\n");
-			else Markdown::debug_charpos_range(STDOUT, found.link_text_from, found.link_text_to);
+			else Markdown::debug_interval(STDOUT, found.link_text_from, found.link_text_to);
 			WRITE_TO(STDOUT, "Link destination: ");
 			if (found.link_destination_empty) WRITE_TO(STDOUT, "EMPTY\n");
-			else Markdown::debug_charpos_range(STDOUT, found.link_destination_from, found.link_destination_to);
+			else Markdown::debug_interval(STDOUT, found.link_destination_from, found.link_destination_to);
 			WRITE_TO(STDOUT, "Link title: ");
 			if (found.link_title_empty) WRITE_TO(STDOUT, "EMPTY\n");
-			else Markdown::debug_charpos_range(STDOUT, found.link_title_from, found.link_title_to);
+			else Markdown::debug_interval(STDOUT, found.link_title_from, found.link_title_to);
 		}
 		markdown_item *chain = owner->down, *found_text = NULL, *remainder = NULL;
 		Markdown::cut_interval(chain, found.first, found.last, &chain, &found_text, &remainder);
@@ -545,7 +651,7 @@ void MarkdownParser::links_and_images(markdown_item *owner, int images_only) {
 		link_item->next = remainder;
 		if (tracing_Markdown_parser) {
 			WRITE_TO(STDOUT, "After link surgery:\n");
-			Markdown::render_debug(STDOUT, owner);
+			Markdown::debug_subtree(STDOUT, owner);
 		}
 		leftmost_pos = Markdown::left_edge_of(remainder);
 	}
@@ -776,7 +882,7 @@ void MarkdownParser::emphasis(markdown_item *owner) {
 	if (tracing_Markdown_parser) {
 		WRITE("Seeking emphasis in:\n");
 		INDENT;
-		Markdown::render_debug(STDOUT, owner);
+		Markdown::debug_subtree(STDOUT, owner);
 	}
 	@<Seek emphasis@>;
 	if (tracing_Markdown_parser) {
@@ -944,14 +1050,18 @@ typedef struct md_emphasis_delimiter {
 			P->can_open = can_open;
 			P->can_close = can_close;
 			if (tracing_Markdown_parser) {
-				WRITE("DR%d at %d with width %d type %d left, right %d, "
-					"%d open, close %d, %d preceded '%c' followed '%c'\n",
-					no_delimiters, P->pos.at, P->width, P->type,
-					MarkdownParser::left_flanking(pos, run),
-					MarkdownParser::right_flanking(pos, run),
-					P->can_open, P->can_close,
-					Markdown::get_unescaped(P->pos, -1),
-					Markdown::get_unescaped(P->pos, P->width));
+				WRITE("DR%d at ", no_delimiters);
+				Markdown::debug_pos(OUT, pos);
+				WRITE(" width %d type %d", P->width, P->type);
+				if (MarkdownParser::left_flanking(pos, run)) WRITE(", left-flanking");
+				if (MarkdownParser::right_flanking(pos, run)) WRITE(", right-flanking");
+				if (P->can_open) WRITE(", can-open");
+				if (P->can_close) WRITE(", can-close");
+				WRITE(", preceded by ");
+				Markdown::debug_char(OUT, Markdown::get_unescaped(P->pos, -1));
+				WRITE(", followed by ");
+				Markdown::debug_char(OUT, Markdown::get_unescaped(P->pos, P->width));
+				WRITE("\n");
 			}
 			int x = (P->type>0)?0:1;
 			if ((can_open) && (can_close == FALSE)) open_count[x] += P->width;
@@ -1020,7 +1130,7 @@ than the original, it does at least terminate.
 
 	if (tracing_Markdown_parser) {
 		WRITE("Option %d is to fragment thus:\n", no_options);
-		Markdown::render_debug(STDOUT, option);
+		Markdown::debug_subtree(STDOUT, option);
 		WRITE("Resulting in: ");
 		MarkdownRenderer::go(STDOUT, option);
 		WRITE("\nWhich scores %d penalty points\n", MarkdownParser::penalty(option));
@@ -1050,10 +1160,10 @@ delimiter, not the outside edges.
 	last_trimmed_char_right = Markdown::pos(CI, C_start + width - 1);
 
 	if (tracing_Markdown_parser) {
-		WRITE("-> fL = "); Markdown::debug_pos(OUT, first_trimmed_char_left);
-		WRITE(" / lL = "); Markdown::debug_pos(OUT, last_trimmed_char_left);
-		WRITE(" / fR = "); Markdown::debug_pos(OUT, first_trimmed_char_right);
-		WRITE(" / lR = "); Markdown::debug_pos(OUT, last_trimmed_char_right);
+		WRITE(" first left = "); Markdown::debug_pos(OUT, first_trimmed_char_left);
+		WRITE("\n  last left = "); Markdown::debug_pos(OUT, last_trimmed_char_left);
+		WRITE("\nfirst right = "); Markdown::debug_pos(OUT, first_trimmed_char_right);
+		WRITE("\n last right = "); Markdown::debug_pos(OUT, last_trimmed_char_right);
 		WRITE("\n");
 	}
 

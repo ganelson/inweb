@@ -60,7 +60,18 @@ int Markdown::is_ASCII_punctuation(wchar_t c) {
 We will parse a paragraph of MD content into a tree of nodes, each of which
 has one of the following types:
 
-@e PARAGRAPH_MIT from 1
+@e DOCUMENT_MIT from 1
+@e PARAGRAPH_MIT
+@e THEMATIC_MIT
+@e ATX_MIT
+@e SETEXT_MIT
+@e INDENTED_CODE_MIT
+@e FENCED_CODE_MIT
+@e HTML_MIT
+@e LINK_REF_MIT
+@e BLOCK_QUOTE_MIT
+@e LIST_MIT
+@e LIST_ITEM_MIT
 @e MATERIAL_MIT
 @e PLAIN_MIT
 @e EMPHASIS_MIT
@@ -79,7 +90,18 @@ has one of the following types:
 =
 text_stream *Markdown::item_type_name(int t) {
 	switch (t) {
+		case DOCUMENT_MIT:       return I"DOCUMENT_MIT";
 		case PARAGRAPH_MIT:      return I"PARAGRAPH";
+		case THEMATIC_MIT:       return I"THEMATIC";
+		case ATX_MIT:            return I"ATX";
+		case SETEXT_MIT:         return I"SETEXT";
+		case INDENTED_CODE_MIT:  return I"INDENTED_CODE";
+		case FENCED_CODE_MIT:    return I"FENCED_CODE";
+		case HTML_MIT:           return I"HTML";
+		case LINK_REF_MIT:       return I"LINK_REF";
+		case BLOCK_QUOTE_MIT:    return I"BLOCK_QUOTE";
+		case LIST_MIT:           return I"LIST";
+		case LIST_ITEM_MIT:      return I"LIST_ITEM";
 		case MATERIAL_MIT:       return I"MATERIAL";
 		case PLAIN_MIT:          return I"PLAIN";
 		case EMPHASIS_MIT:       return I"EMPHASIS";
@@ -96,6 +118,31 @@ text_stream *Markdown::item_type_name(int t) {
 		case SOFT_BREAK_MIT:     return I"SOFT_BREAK";
 		default:                 return I"<UNKNOWN>";
 	}
+}
+
+int Markdown::item_type_container_block(int t) {
+	switch (t) {
+		case DOCUMENT_MIT:       return TRUE;
+		case BLOCK_QUOTE_MIT:    return TRUE;
+		case LIST_MIT:           return TRUE;
+		case LIST_ITEM_MIT:      return TRUE;
+	}
+	return FALSE;
+}
+
+int Markdown::item_type_leaf_block(int t) {
+	switch (t) {
+		case PARAGRAPH_MIT:      return TRUE;
+		case THEMATIC_MIT:       return TRUE;
+		case ATX_MIT:            return TRUE;
+		case SETEXT_MIT:         return TRUE;
+		case INDENTED_CODE_MIT:  return TRUE;
+		case FENCED_CODE_MIT:    return TRUE;
+		case HTML_MIT:           return TRUE;
+		case LINK_REF_MIT:       return TRUE;
+		case BLOCK_QUOTE_MIT:    return TRUE;
+	}
+	return FALSE;
 }
 
 int Markdown::item_type_slices(int t) {
@@ -131,6 +178,9 @@ typedef struct markdown_item {
 	struct markdown_item *next;
 	struct markdown_item *down;
 	struct markdown_item *copied_from;
+	int whitespace_follows;
+	struct text_stream *stashed;
+	int details;
 	int cycle_count; /* used only for tracing the tree when debugging */
 	int id; /* used only for tracing the tree when debugging */
 	CLASS_DEFINITION
@@ -142,6 +192,9 @@ markdown_item *Markdown::new_item(int type) {
 	md->type = type;
 	md->sliced_from = NULL; md->from = 0; md->to = -1;
 	md->next = NULL; md->down = NULL;
+	md->whitespace_follows = FALSE;
+	md->stashed = NULL;
+	md->details = 0;
 	md->cycle_count = 0;
 	md->id = md_ids++;
 	md->copied_from = NULL;
@@ -417,7 +470,8 @@ void Markdown::cut_to_just_before(markdown_item *chain_from, md_charpos cut_poin
 			} else {
 				int old_to = md->to;
 				md->to = cut_point.at - 1;
-				markdown_item *splinter = Markdown::new_slice(md->type, md->sliced_from, cut_point.at, old_to);
+				markdown_item *splinter =
+					Markdown::new_slice(md->type, md->sliced_from, cut_point.at, old_to);
 				splinter->next = md->next;
 				md->next = NULL;
 				R = splinter;
@@ -446,7 +500,8 @@ void Markdown::cut_to_just_at(markdown_item *chain_from, md_charpos cut_point,
 			} else {
 				int old_to = md->to;
 				md->to = cut_point.at;
-				markdown_item *splinter = Markdown::new_slice(md->type, md->sliced_from, cut_point.at + 1, old_to);
+				markdown_item *splinter =
+					Markdown::new_slice(md->type, md->sliced_from, cut_point.at + 1, old_to);
 				splinter->next = md->next;
 				md->next = NULL;
 				R = splinter;
@@ -469,17 +524,82 @@ void Markdown::cut_interval(markdown_item *chain_from, md_charpos A, md_charpos 
 	if (middle_segment) *middle_segment = interstitial;
 }
 
-@h Debugging Markdown trees.
-This rather defensively-written code is to print a tree which may be ill-founded
-or not, in fact, be a tree at all. That should never happen, but if things which
+@h Debugging.
+This prints the internal tree representation of Markdown: none of this code
+is needed either for parsing or rendering.
+
+=
+void Markdown::debug_char(OUTPUT_STREAM, wchar_t c) {
+	switch (c) {
+		case 0:    WRITE("NULL"); break;
+		case '\n': WRITE("NEWLINE"); break;
+		case '\t': WRITE("TAB"); break;
+		case ' ':  WRITE("SPACE"); break;
+		case 0xA0: WRITE("NONBREAKING-SPACE"); break;
+		default:   WRITE("'%c'", c); break;
+	}
+}
+
+void Markdown::debug_char_briefly(OUTPUT_STREAM, wchar_t c) {
+	switch (c) {
+		case 0:    WRITE("\\x0000"); break;
+		case '\n': WRITE("\\n"); break;
+		case '\t': WRITE("\\t"); break;
+		case '\\': WRITE("\\\\"); break;
+		default:   WRITE("%c", c); break;
+	}
+}
+
+void Markdown::debug_pos(OUTPUT_STREAM, md_charpos A) {
+	if (Markdown::somewhere(A) == FALSE) { WRITE("{nowhere}"); return; }
+	WRITE("{");
+	Markdown::debug_item(OUT, A.md);
+	WRITE(" at %d = ", A.at);
+	Markdown::debug_char(OUT, Markdown::get(A));
+	WRITE("}");
+}
+
+void Markdown::debug_interval(OUTPUT_STREAM, md_charpos A, md_charpos B) {
+	if (Markdown::somewhere(A) == FALSE) { WRITE("NONE\n"); return; }
+	WRITE("[");
+	Markdown::debug_pos(OUT, A);
+	WRITE("...");
+	Markdown::debug_pos(OUT, B);
+	WRITE(" - ");
+	for (md_charpos pos = A; Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
+		Markdown::debug_char(OUT, Markdown::get(pos));
+		if (Markdown::pos_eq(pos, B)) break;
+		WRITE(",");
+	}
+	WRITE("]\n");
+}
+
+void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
+	if (md == NULL) { WRITE("<no-item>"); return; }
+	WRITE("%S-", Markdown::item_type_name(md->type));
+	WRITE("M%d", md->id);
+	if (md->copied_from) WRITE("<-M%d", md->copied_from->id);
+	if (Markdown::item_type_slices(md->type)) {
+		WRITE("(%d = '", md->from);
+		for (int i = md->from; i <= md->to; i++) {
+			Markdown::debug_char_briefly(OUT, Str::get_at(md->sliced_from, i));
+		}
+		WRITE("' = %d", md->to);
+		WRITE(")");
+	}
+}
+
+@h Trees and chains.
+This rather defensively-written code is to print a tree or chain which may be
+ill-founded or otherwise damaged. That should never happen, but if things which
 should never happen never happened, we wouldn't need to debug.
 
 =
 int md_db_cycle_count = 1;
 
-void Markdown::render_debug(OUTPUT_STREAM, markdown_item *md) {
+void Markdown::debug_subtree(OUTPUT_STREAM, markdown_item *md) {
 	md_db_cycle_count++;
-	Markdown::render_debug_r(OUT, md);
+	Markdown::debug_item_r(OUT, md);
 }
 
 void Markdown::debug_chain(OUTPUT_STREAM, markdown_item *md) {
@@ -493,71 +613,28 @@ void Markdown::debug_chain_label(OUTPUT_STREAM, markdown_item *md, text_stream *
 	if (md)
 		for (; md; md = md->next) {
 			WRITE(" -> ");
-			Markdown::render_debug_r(OUT, md);
+			Markdown::debug_item_r(OUT, md);
 		}
 	else
 		WRITE("<none>\n");
 	OUTDENT;
 }
 
-void Markdown::render_debug_r(OUTPUT_STREAM, markdown_item *md) {
+@ Both of which recursively use:
+
+=
+void Markdown::debug_item_r(OUTPUT_STREAM, markdown_item *md) {
 	if (md) {
-		WRITE("M%d ", md->id);
+		Markdown::debug_item(OUT, md);
 		if (md->cycle_count == md_db_cycle_count) {
 			WRITE("AGAIN!\n");
-			return;
+		} else {
+			md->cycle_count = md_db_cycle_count;
+			WRITE("\n");
+			INDENT;
+			for (markdown_item *c = md->down; c; c = c->next)
+				Markdown::debug_item_r(OUT, c);
+			OUTDENT;
 		}
-		md->cycle_count = md_db_cycle_count;
-		switch (md->type) {
-			case PARAGRAPH_MIT:      WRITE("PARAGRAPH");          break;
-			case MATERIAL_MIT:       WRITE("MATERIAL");           break;
-			case PLAIN_MIT:          WRITE("PLAIN");              @<Debug text@>; break;
-			case EMPHASIS_MIT:       WRITE("EMPHASIS");           break;
-			case STRONG_MIT:         WRITE("STRONG");             break;
-			case LINK_MIT:           WRITE("LINK");               break;
-			case IMAGE_MIT:          WRITE("IMAGE");              break;
-			case LINK_DEST_MIT:      WRITE("LINK_DEST");          break;
-			case LINK_TITLE_MIT:     WRITE("LINK_TITLE");         break;
-			case CODE_MIT:           WRITE("CODE");               @<Debug text@>; break;
-			case URI_AUTOLINK_MIT:   WRITE("URI_AUTOLINK");       @<Debug text@>; break;
-			case EMAIL_AUTOLINK_MIT: WRITE("EMAIL_AUTOLINK");     @<Debug text@>; break;
-			case INLINE_HTML_MIT:    WRITE("INLINE_HTML");        @<Debug text@>; break;
-			case LINE_BREAK_MIT:     WRITE("LINE_BREAK");         break;
-			case SOFT_BREAK_MIT:     WRITE("SOFT_BREAK");         break;
-		}
-		WRITE("\n");
-		INDENT;
-		for (markdown_item *c = md->down; c; c = c->next)
-			Markdown::render_debug_r(OUT, c);
-		OUTDENT;
 	}
-}
-
-@<Debug text@> =
-	WRITE("(%d, %d) from (%d, %d) = '", md->from, md->to, 0, Str::len(md->sliced_from) -1);
-	for (int i = md->from; i <= md->to; i++) PUT(Str::get_at(md->sliced_from, i));
-	WRITE("'");
-
-@ =
-void Markdown::debug_pos(OUTPUT_STREAM, md_charpos A) {
-	if (Markdown::somewhere(A) == FALSE) { WRITE("{nowhere}"); return; }
-	WRITE("{");
-	Markdown::debug_item(OUT, A.md);
-	WRITE(" at %d = '%c'}", A.at, Markdown::get(A));
-}
-
-void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
-	if (md == NULL) { WRITE("<no-item>"); return; }
-	WRITE("M%d", md->id);
-	if (md->copied_from) WRITE("<-M%d", md->copied_from->id);
-	WRITE("(%d, %d)", md->from, md->to);
-}
-
-void Markdown::debug_charpos_range(OUTPUT_STREAM, md_charpos A, md_charpos B) {
-	if (Markdown::somewhere(A) == FALSE) { WRITE("NONE\n"); return; }
-	for (md_charpos pos = A; Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
-		PUT(Markdown::get(pos));
-		if (Markdown::pos_eq(pos, B)) break;
-	}
-	PUT('\n');
 }
