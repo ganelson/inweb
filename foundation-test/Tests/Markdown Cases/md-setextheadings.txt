@@ -1,0 +1,177 @@
+! Example 80
+Foo *bar*
+=========
+
+Foo *bar*
+---------
+! End
+
+! Example 81
+Foo *bar
+baz*
+====
+! End
+
+! Example 82
+  Foo *bar
+baz*	
+====
+! End
+
+! Example 83
+Foo
+-------------------------
+
+Foo
+=
+! End
+
+! Example 84
+   Foo
+---
+
+  Foo
+-----
+
+  Foo
+  ===
+! End
+
+! Example 85
+    Foo
+    ---
+
+    Foo
+---
+! End
+
+! Example 86
+Foo
+   ----      
+! End
+
+! Example 87
+Foo
+    ---
+! End
+
+! Example 88
+Foo
+= =
+
+Foo
+--- -
+! End
+
+! Example 89
+Foo  
+-----
+! End
+
+! Example 90
+Foo\
+----
+! End
+
+! Example 91
+`Foo
+----
+`
+
+<a title="a lot
+---
+of dashes"/>
+! End
+
+! Example 92
+> Foo
+---
+! End
+
+! Example 93
+> foo
+bar
+===
+! End
+
+! Example 94
+- Foo
+---
+! End
+
+! Example 95
+Foo
+Bar
+---
+! End
+
+! Example 96
+---
+Foo
+---
+Bar
+---
+Baz
+! End
+
+! Example 97
+
+====
+! End
+
+! Example 98
+---
+---
+! End
+
+! Example 99
+- foo
+-----
+! End
+
+! Example 100
+    foo
+---
+! End
+
+! Example 101
+> foo
+-----
+! End
+
+! Example 102
+\> foo
+------
+! End
+
+! Example 103
+Foo
+
+bar
+---
+baz
+! End
+
+! Example 104
+Foo
+bar
+
+---
+
+baz
+! End
+
+! Example 105
+Foo
+bar
+* * *
+baz
+! End
+
+! Example 106
+Foo
+bar
+\---
+baz
+! End
+

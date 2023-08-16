@@ -1,0 +1,283 @@
+! Example 80
+Foo *bar*
+=========
+
+Foo *bar*
+---------
+! Solution
+<h1>Foo <em>bar</em></h1>
+<h2>Foo <em>bar</em></h2>
+! End
+
+! Example 81
+Foo *bar
+baz*
+====
+! Solution
+<h1>Foo <em>bar
+baz</em></h1>
+! End
+
+! Example 82
+  Foo *bar
+baz*	
+====
+! Solution
+<h1>Foo <em>bar
+baz</em></h1>
+! End
+
+! Example 83
+Foo
+-------------------------
+
+Foo
+=
+! Solution
+<h2>Foo</h2>
+<h1>Foo</h1>
+! End
+
+! Example 84
+   Foo
+---
+
+  Foo
+-----
+
+  Foo
+  ===
+! Solution
+<h2>Foo</h2>
+<h2>Foo</h2>
+<h1>Foo</h1>
+! End
+
+! Example 85
+    Foo
+    ---
+
+    Foo
+---
+! Solution
+<pre><code>Foo
+---
+
+Foo
+</code></pre>
+<hr />
+! End
+
+! Example 86
+Foo
+   ----      
+! Solution
+<h2>Foo</h2>
+! End
+
+! Example 87
+Foo
+    ---
+! Solution
+<p>Foo
+---</p>
+! End
+
+! Example 88
+Foo
+= =
+
+Foo
+--- -
+! Solution
+<p>Foo
+= =</p>
+<p>Foo</p>
+<hr />
+! End
+
+! Example 89
+Foo  
+-----
+! Solution
+<h2>Foo</h2>
+! End
+
+! Example 90
+Foo\
+----
+! Solution
+<h2>Foo\</h2>
+! End
+
+! Example 91
+`Foo
+----
+`
+
+<a title="a lot
+---
+of dashes"/>
+! Solution
+<h2>`Foo</h2>
+<p>`</p>
+<h2>&lt;a title=&quot;a lot</h2>
+<p>of dashes&quot;/&gt;</p>
+! End
+
+! Example 92
+> Foo
+---
+! Solution
+<blockquote>
+<p>Foo</p>
+</blockquote>
+<hr />
+! End
+
+! Example 93
+> foo
+bar
+===
+! Solution
+<blockquote>
+<p>foo
+bar
+===</p>
+</blockquote>
+! End
+
+! Example 94
+- Foo
+---
+! Solution
+<ul>
+<li>Foo</li>
+</ul>
+<hr />
+! End
+
+! Example 95
+Foo
+Bar
+---
+! Solution
+<h2>Foo
+Bar</h2>
+! End
+
+! Example 96
+---
+Foo
+---
+Bar
+---
+Baz
+! Solution
+<hr />
+<h2>Foo</h2>
+<h2>Bar</h2>
+<p>Baz</p>
+! End
+
+! Example 97
+
+====
+! Solution
+<p>====</p>
+! End
+
+! Example 98
+---
+---
+! Solution
+<hr />
+<hr />
+! End
+
+! Example 99
+- foo
+-----
+! Solution
+<ul>
+<li>foo</li>
+</ul>
+<hr />
+! End
+
+! Example 100
+    foo
+---
+! Solution
+<pre><code>foo
+</code></pre>
+<hr />
+! End
+
+! Example 101
+> foo
+-----
+! Solution
+<blockquote>
+<p>foo</p>
+</blockquote>
+<hr />
+! End
+
+! Example 102
+\> foo
+------
+! Solution
+<h2>&gt; foo</h2>
+! End
+
+! Example 103
+Foo
+
+bar
+---
+baz
+! Solution
+<p>Foo</p>
+<h2>bar</h2>
+<p>baz</p>
+! End
+
+! Example 104
+Foo
+bar
+
+---
+
+baz
+! Solution
+<p>Foo
+bar</p>
+<hr />
+<p>baz</p>
+! End
+
+! Example 105
+Foo
+bar
+* * *
+baz
+! Solution
+<p>Foo
+bar</p>
+<hr />
+<p>baz</p>
+! End
+
+! Example 106
+Foo
+bar
+\---
+baz
+! Solution
+<p>Foo
+bar
+---
+baz</p>
+! End
+

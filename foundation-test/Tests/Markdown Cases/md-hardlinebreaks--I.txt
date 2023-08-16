@@ -1,124 +1,110 @@
 ! Example 633
 foo  
 baz
---->
+! Solution
 <p>foo<br />
 baz</p>
---------
+! End
+
 ! Example 634
 foo\
 baz
---->
+! Solution
 <p>foo<br />
 baz</p>
---------
+! End
+
 ! Example 635
 foo       
 baz
---->
+! Solution
 <p>foo<br />
 baz</p>
---------
+! End
+
 ! Example 636
 foo  
      bar
---->
+! Solution
 <p>foo<br />
 bar</p>
---------
+! End
+
 ! Example 637
 foo\
      bar
---->
+! Solution
 <p>foo<br />
 bar</p>
---------
+! End
+
 ! Example 638
 *foo  
 bar*
---->
+! Solution
 <p><em>foo<br />
 bar</em></p>
---------
+! End
+
 ! Example 639
 *foo\
 bar*
---->
+! Solution
 <p><em>foo<br />
 bar</em></p>
---------
+! End
+
 ! Example 640
 `code  
 span`
---->
+! Solution
 <p><code>code   span</code></p>
---------
+! End
+
 ! Example 641
 `code\
 span`
---->
+! Solution
 <p><code>code\ span</code></p>
---------
+! End
+
 ! Example 642
 <a href="foo  
 bar">
---->
+! Solution
 <p><a href="foo  
 bar"></p>
---------
+! End
+
 ! Example 643
 <a href="foo\
 bar">
---->
+! Solution
 <p><a href="foo\
 bar"></p>
---------
+! End
+
 ! Example 644
 foo\
---->
+! Solution
 <p>foo\</p>
---------
+! End
+
 ! Example 645
 foo  
---->
+! Solution
 <p>foo</p>
---------
+! End
+
 ! Example 646
 ### foo\
---->
+! Solution
 <h3>foo\</h3>
---------
+! End
+
 ! Example 647
 ### foo  
---->
+! Solution
 <h3>foo</h3>
---------
-! Example 648
-foo
-baz
---->
-<p>foo
-baz</p>
---------
-! Example 649
-foo 
- baz
---->
-<p>foo
-baz</p>
---------
-! Example 650
-hello $.;'there
---->
-<p>hello $.;'there</p>
---------
-! Example 651
-Foo χρῆν
---->
-<p>Foo χρῆν</p>
---------
-! Example 652
-Multiple     spaces
---->
-<p>Multiple     spaces</p>
---------
+! End
+

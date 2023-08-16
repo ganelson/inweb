@@ -1,0 +1,92 @@
+! Example 62
+# foo
+## foo
+### foo
+#### foo
+##### foo
+###### foo
+! End
+
+! Example 63
+####### foo
+! End
+
+! Example 64
+#5 bolt
+
+#hashtag
+! End
+
+! Example 65
+\## foo
+! End
+
+! Example 66
+# foo *bar* \*baz\*
+! End
+
+! Example 67
+#                  foo                     
+! End
+
+! Example 68
+ ### foo
+  ## foo
+   # foo
+! End
+
+! Example 69
+    # foo
+! End
+
+! Example 70
+foo
+    # bar
+! End
+
+! Example 71
+## foo ##
+  ###   bar    ###
+! End
+
+! Example 72
+# foo ##################################
+##### foo ##
+! End
+
+! Example 73
+### foo ###     
+! End
+
+! Example 74
+### foo ### b
+! End
+
+! Example 75
+# foo#
+! End
+
+! Example 76
+### foo \###
+## foo #\##
+# foo \#
+! End
+
+! Example 77
+****
+## foo
+****
+! End
+
+! Example 78
+Foo bar
+# baz
+Bar foo
+! End
+
+! Example 79
+## 
+#
+### ###
+! End
+

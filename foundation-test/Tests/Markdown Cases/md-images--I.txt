@@ -1,0 +1,165 @@
+! Example 571
+![foo](/url "title")
+! Solution
+<p><img src="/url" alt="foo" title="title" /></p>
+! End
+
+! Example 572
+![foo *bar*]
+
+[foo *bar*]: train.jpg "train & tracks"
+! Solution
+<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+! End
+
+! Example 573
+![foo ![bar](/url)](/url2)
+! Solution
+<p><img src="/url2" alt="foo bar" /></p>
+! End
+
+! Example 574
+![foo [bar](/url)](/url2)
+! Solution
+<p><img src="/url2" alt="foo bar" /></p>
+! End
+
+! Example 575
+![foo *bar*][]
+
+[foo *bar*]: train.jpg "train & tracks"
+! Solution
+<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+! End
+
+! Example 576
+![foo *bar*][foobar]
+
+[FOOBAR]: train.jpg "train & tracks"
+! Solution
+<p><img src="train.jpg" alt="foo bar" title="train &amp; tracks" /></p>
+! End
+
+! Example 577
+![foo](train.jpg)
+! Solution
+<p><img src="train.jpg" alt="foo" /></p>
+! End
+
+! Example 578
+My ![foo bar](/path/to/train.jpg  "title"   )
+! Solution
+<p>My <img src="/path/to/train.jpg" alt="foo bar" title="title" /></p>
+! End
+
+! Example 579
+![foo](<url>)
+! Solution
+<p><img src="url" alt="foo" /></p>
+! End
+
+! Example 580
+![](/url)
+! Solution
+<p><img src="/url" alt="" /></p>
+! End
+
+! Example 581
+![foo][bar]
+
+[bar]: /url
+! Solution
+<p><img src="/url" alt="foo" /></p>
+! End
+
+! Example 582
+![foo][bar]
+
+[BAR]: /url
+! Solution
+<p><img src="/url" alt="foo" /></p>
+! End
+
+! Example 583
+![foo][]
+
+[foo]: /url "title"
+! Solution
+<p><img src="/url" alt="foo" title="title" /></p>
+! End
+
+! Example 584
+![*foo* bar][]
+
+[*foo* bar]: /url "title"
+! Solution
+<p><img src="/url" alt="foo bar" title="title" /></p>
+! End
+
+! Example 585
+![Foo][]
+
+[foo]: /url "title"
+! Solution
+<p><img src="/url" alt="Foo" title="title" /></p>
+! End
+
+! Example 586
+![foo] 
+[]
+
+[foo]: /url "title"
+! Solution
+<p><img src="/url" alt="foo" title="title" />
+[]</p>
+! End
+
+! Example 587
+![foo]
+
+[foo]: /url "title"
+! Solution
+<p><img src="/url" alt="foo" title="title" /></p>
+! End
+
+! Example 588
+![*foo* bar]
+
+[*foo* bar]: /url "title"
+! Solution
+<p><img src="/url" alt="foo bar" title="title" /></p>
+! End
+
+! Example 589
+![[foo]]
+
+[[foo]]: /url "title"
+! Solution
+<p>![[foo]]</p>
+<p>[[foo]]: /url &quot;title&quot;</p>
+! End
+
+! Example 590
+![Foo]
+
+[foo]: /url "title"
+! Solution
+<p><img src="/url" alt="Foo" title="title" /></p>
+! End
+
+! Example 591
+!\[foo]
+
+[foo]: /url "title"
+! Solution
+<p>![foo]</p>
+! End
+
+! Example 592
+\![foo]
+
+[foo]: /url "title"
+! Solution
+<p>!<a href="/url" title="title">foo</a></p>
+! End
+

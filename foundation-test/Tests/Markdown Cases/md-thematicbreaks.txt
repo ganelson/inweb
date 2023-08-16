@@ -1,0 +1,96 @@
+! Example 43
+***
+---
+___
+! End
+
+! Example 44
++++
+! End
+
+! Example 45
+===
+! End
+
+! Example 46
+--
+**
+__
+! End
+
+! Example 47
+ ***
+  ***
+   ***
+! End
+
+! Example 48
+    ***
+! End
+
+! Example 49
+Foo
+    ***
+! End
+
+! Example 50
+_____________________________________
+! End
+
+! Example 51
+ - - -
+! End
+
+! Example 52
+ **  * ** * ** * **
+! End
+
+! Example 53
+-     -      -      -
+! End
+
+! Example 54
+- - - -    
+! End
+
+! Example 55
+_ _ _ _ a
+
+a------
+
+---a---
+! End
+
+! Example 56
+ *-*
+! End
+
+! Example 57
+- foo
+***
+- bar
+! End
+
+! Example 58
+Foo
+***
+bar
+! End
+
+! Example 59
+Foo
+---
+bar
+! End
+
+! Example 60
+* Foo
+* * *
+* Bar
+! End
+
+! Example 61
+- Foo
+- * * *
+! End
+

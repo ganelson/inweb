@@ -1,0 +1,12 @@
+! Example 650
+hello $.;'there
+! End
+
+! Example 651
+Foo χρῆν
+! End
+
+! Example 652
+Multiple     spaces
+! End
+

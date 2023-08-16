@@ -1,10 +1,5 @@
-! Example 485
-TRACE
-This is a line.
-
-## Ho there!
-_ _ _
-Here are two
-lines forming somethung.
-
-----
+! Example 1*
+>>> foo
+> bar
+>>baz
+! End

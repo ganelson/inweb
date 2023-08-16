@@ -1,0 +1,148 @@
+! Example 62
+# foo
+## foo
+### foo
+#### foo
+##### foo
+###### foo
+! Solution
+<h1>foo</h1>
+<h2>foo</h2>
+<h3>foo</h3>
+<h4>foo</h4>
+<h5>foo</h5>
+<h6>foo</h6>
+! End
+
+! Example 63
+####### foo
+! Solution
+<p>####### foo</p>
+! End
+
+! Example 64
+#5 bolt
+
+#hashtag
+! Solution
+<p>#5 bolt</p>
+<p>#hashtag</p>
+! End
+
+! Example 65
+\## foo
+! Solution
+<p>## foo</p>
+! End
+
+! Example 66
+# foo *bar* \*baz\*
+! Solution
+<h1>foo <em>bar</em> *baz*</h1>
+! End
+
+! Example 67
+#                  foo                     
+! Solution
+<h1>foo</h1>
+! End
+
+! Example 68
+ ### foo
+  ## foo
+   # foo
+! Solution
+<h3>foo</h3>
+<h2>foo</h2>
+<h1>foo</h1>
+! End
+
+! Example 69
+    # foo
+! Solution
+<pre><code># foo
+</code></pre>
+! End
+
+! Example 70
+foo
+    # bar
+! Solution
+<p>foo
+# bar</p>
+! End
+
+! Example 71
+## foo ##
+  ###   bar    ###
+! Solution
+<h2>foo</h2>
+<h3>bar</h3>
+! End
+
+! Example 72
+# foo ##################################
+##### foo ##
+! Solution
+<h1>foo</h1>
+<h5>foo</h5>
+! End
+
+! Example 73
+### foo ###     
+! Solution
+<h3>foo</h3>
+! End
+
+! Example 74
+### foo ### b
+! Solution
+<h3>foo ### b</h3>
+! End
+
+! Example 75
+# foo#
+! Solution
+<h1>foo#</h1>
+! End
+
+! Example 76
+### foo \###
+## foo #\##
+# foo \#
+! Solution
+<h3>foo ###</h3>
+<h2>foo ###</h2>
+<h1>foo #</h1>
+! End
+
+! Example 77
+****
+## foo
+****
+! Solution
+<hr />
+<h2>foo</h2>
+<hr />
+! End
+
+! Example 78
+Foo bar
+# baz
+Bar foo
+! Solution
+<p>Foo bar</p>
+<h1>baz</h1>
+<p>Bar foo</p>
+! End
+
+! Example 79
+## 
+#
+### ###
+! Solution
+<h2></h2>
+<h1></h1>
+<h3></h3>
+! End
+

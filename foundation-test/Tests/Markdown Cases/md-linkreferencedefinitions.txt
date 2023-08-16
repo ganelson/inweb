@@ -1,0 +1,179 @@
+! Example 192
+[foo]: /url "title"
+
+[foo]
+! End
+
+! Example 193
+   [foo]: 
+      /url  
+           'the title'  
+
+[foo]
+! End
+
+! Example 194
+[Foo*bar\]]:my_(url) 'title (with parens)'
+
+[Foo*bar\]]
+! End
+
+! Example 195
+[Foo bar]:
+<my url>
+'title'
+
+[Foo bar]
+! End
+
+! Example 196
+[foo]: /url '
+title
+line1
+line2
+'
+
+[foo]
+! End
+
+! Example 197
+[foo]: /url 'title
+
+with blank line'
+
+[foo]
+! End
+
+! Example 198
+[foo]:
+/url
+
+[foo]
+! End
+
+! Example 199
+[foo]:
+
+[foo]
+! End
+
+! Example 200
+[foo]: <>
+
+[foo]
+! End
+
+! Example 201
+[foo]: <bar>(baz)
+
+[foo]
+! End
+
+! Example 202
+[foo]: /url\bar\*baz "foo\"bar\baz"
+
+[foo]
+! End
+
+! Example 203
+[foo]
+
+[foo]: url
+! End
+
+! Example 204
+[foo]
+
+[foo]: first
+[foo]: second
+! End
+
+! Example 205
+[FOO]: /url
+
+[Foo]
+! End
+
+! Example 206
+[ΑΓΩ]: /φου
+
+[αγω]
+! End
+
+! Example 207
+[foo]: /url
+! End
+
+! Example 208
+[
+foo
+]: /url
+bar
+! End
+
+! Example 209
+[foo]: /url "title" ok
+! End
+
+! Example 210
+[foo]: /url
+"title" ok
+! End
+
+! Example 211
+    [foo]: /url "title"
+
+[foo]
+! End
+
+! Example 212
+```
+[foo]: /url
+```
+
+[foo]
+! End
+
+! Example 213
+Foo
+[bar]: /baz
+
+[bar]
+! End
+
+! Example 214
+# [Foo]
+[foo]: /url
+> bar
+! End
+
+! Example 215
+[foo]: /url
+bar
+===
+[foo]
+! End
+
+! Example 216
+[foo]: /url
+===
+[foo]
+! End
+
+! Example 217
+[foo]: /foo-url "foo"
+[bar]: /bar-url
+  "bar"
+[baz]: /baz-url
+
+[foo],
+[bar],
+[baz]
+! End
+
+! Example 218
+[foo]
+
+> [foo]: /url
+! End
+

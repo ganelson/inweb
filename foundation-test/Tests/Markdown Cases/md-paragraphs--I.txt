@@ -1,0 +1,75 @@
+! Example 219
+aaa
+
+bbb
+! Solution
+<p>aaa</p>
+<p>bbb</p>
+! End
+
+! Example 220
+aaa
+bbb
+
+ccc
+ddd
+! Solution
+<p>aaa
+bbb</p>
+<p>ccc
+ddd</p>
+! End
+
+! Example 221
+aaa
+
+
+bbb
+! Solution
+<p>aaa</p>
+<p>bbb</p>
+! End
+
+! Example 222
+  aaa
+ bbb
+! Solution
+<p>aaa
+bbb</p>
+! End
+
+! Example 223
+aaa
+             bbb
+                                       ccc
+! Solution
+<p>aaa
+bbb
+ccc</p>
+! End
+
+! Example 224
+   aaa
+bbb
+! Solution
+<p>aaa
+bbb</p>
+! End
+
+! Example 225
+    aaa
+bbb
+! Solution
+<pre><code>aaa
+</code></pre>
+<p>bbb</p>
+! End
+
+! Example 226
+aaa     
+bbb     
+! Solution
+<p>aaa<br />
+bbb</p>
+! End
+

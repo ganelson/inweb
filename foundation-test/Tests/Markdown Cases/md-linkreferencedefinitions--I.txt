@@ -1,0 +1,255 @@
+! Example 192
+[foo]: /url "title"
+
+[foo]
+! Solution
+<p><a href="/url" title="title">foo</a></p>
+! End
+
+! Example 193
+   [foo]: 
+      /url  
+           'the title'  
+
+[foo]
+! Solution
+<p><a href="/url" title="the title">foo</a></p>
+! End
+
+! Example 194
+[Foo*bar\]]:my_(url) 'title (with parens)'
+
+[Foo*bar\]]
+! Solution
+<p><a href="my_(url)" title="title (with parens)">Foo*bar]</a></p>
+! End
+
+! Example 195
+[Foo bar]:
+<my url>
+'title'
+
+[Foo bar]
+! Solution
+<p><a href="my%20url" title="title">Foo bar</a></p>
+! End
+
+! Example 196
+[foo]: /url '
+title
+line1
+line2
+'
+
+[foo]
+! Solution
+<p><a href="/url" title="
+title
+line1
+line2
+">foo</a></p>
+! End
+
+! Example 197
+[foo]: /url 'title
+
+with blank line'
+
+[foo]
+! Solution
+<p>[foo]: /url 'title</p>
+<p>with blank line'</p>
+<p>[foo]</p>
+! End
+
+! Example 198
+[foo]:
+/url
+
+[foo]
+! Solution
+<p><a href="/url">foo</a></p>
+! End
+
+! Example 199
+[foo]:
+
+[foo]
+! Solution
+<p>[foo]:</p>
+<p>[foo]</p>
+! End
+
+! Example 200
+[foo]: <>
+
+[foo]
+! Solution
+<p><a href="">foo</a></p>
+! End
+
+! Example 201
+[foo]: <bar>(baz)
+
+[foo]
+! Solution
+<p>[foo]: <bar>(baz)</p>
+<p>[foo]</p>
+! End
+
+! Example 202
+[foo]: /url\bar\*baz "foo\"bar\baz"
+
+[foo]
+! Solution
+<p><a href="/url%5Cbar*baz" title="foo&quot;bar\baz">foo</a></p>
+! End
+
+! Example 203
+[foo]
+
+[foo]: url
+! Solution
+<p><a href="url">foo</a></p>
+! End
+
+! Example 204
+[foo]
+
+[foo]: first
+[foo]: second
+! Solution
+<p><a href="first">foo</a></p>
+! End
+
+! Example 205
+[FOO]: /url
+
+[Foo]
+! Solution
+<p><a href="/url">Foo</a></p>
+! End
+
+! Example 206
+[ΑΓΩ]: /φου
+
+[αγω]
+! Solution
+<p><a href="/%CF%86%CE%BF%CF%85">αγω</a></p>
+! End
+
+! Example 207
+[foo]: /url
+! Solution
+! End
+
+! Example 208
+[
+foo
+]: /url
+bar
+! Solution
+<p>bar</p>
+! End
+
+! Example 209
+[foo]: /url "title" ok
+! Solution
+<p>[foo]: /url &quot;title&quot; ok</p>
+! End
+
+! Example 210
+[foo]: /url
+"title" ok
+! Solution
+<p>&quot;title&quot; ok</p>
+! End
+
+! Example 211
+    [foo]: /url "title"
+
+[foo]
+! Solution
+<pre><code>[foo]: /url &quot;title&quot;
+</code></pre>
+<p>[foo]</p>
+! End
+
+! Example 212
+```
+[foo]: /url
+```
+
+[foo]
+! Solution
+<pre><code>[foo]: /url
+</code></pre>
+<p>[foo]</p>
+! End
+
+! Example 213
+Foo
+[bar]: /baz
+
+[bar]
+! Solution
+<p>Foo
+[bar]: /baz</p>
+<p>[bar]</p>
+! End
+
+! Example 214
+# [Foo]
+[foo]: /url
+> bar
+! Solution
+<h1><a href="/url">Foo</a></h1>
+<blockquote>
+<p>bar</p>
+</blockquote>
+! End
+
+! Example 215
+[foo]: /url
+bar
+===
+[foo]
+! Solution
+<h1>bar</h1>
+<p><a href="/url">foo</a></p>
+! End
+
+! Example 216
+[foo]: /url
+===
+[foo]
+! Solution
+<p>===
+<a href="/url">foo</a></p>
+! End
+
+! Example 217
+[foo]: /foo-url "foo"
+[bar]: /bar-url
+  "bar"
+[baz]: /baz-url
+
+[foo],
+[bar],
+[baz]
+! Solution
+<p><a href="/foo-url" title="foo">foo</a>,
+<a href="/bar-url" title="bar">bar</a>,
+<a href="/baz-url">baz</a></p>
+! End
+
+! Example 218
+[foo]
+
+> [foo]: /url
+! Solution
+<p><a href="/url">foo</a></p>
+<blockquote>
+</blockquote>
+! End
+

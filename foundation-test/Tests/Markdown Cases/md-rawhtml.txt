@@ -1,70 +1,92 @@
 ! Example 612
 <a><bab><c2c>
-----
+! End
+
 ! Example 613
 <a/><b2/>
-----
+! End
+
 ! Example 614
 <a  /><b2
 data="foo" >
-----
+! End
+
 ! Example 615
 <a foo="bar" bam = 'baz <em>"</em>'
 _boolean zoop:33=zoop:33 />
-----
+! End
+
 ! Example 616
 Foo <responsive-image src="foo.jpg" />
-----
+! End
+
 ! Example 617
 <33> <__>
-----
+! End
+
 ! Example 618
 <a h*#ref="hi">
-----
+! End
+
 ! Example 619
 <a href="hi'> <a href=hi'>
-----
+! End
+
 ! Example 620
 < a><
 foo><bar/ >
 <foo bar=baz
 bim!bop />
-----
+! End
+
 ! Example 621
 <a href='bar'title=title>
-----
+! End
+
 ! Example 622
 </a></foo >
-----
+! End
+
 ! Example 623
 </a href="foo">
-----
+! End
+
 ! Example 624
 foo <!-- this is a
 comment - with hyphen -->
-----
+! End
+
 ! Example 625
 foo <!-- not a comment -- two hyphens -->
-----
+! End
+
 ! Example 626
 foo <!--> foo -->
+
 foo <!-- foo--->
-----
+! End
+
 ! Example 627
 foo <?php echo $a; ?>
-----
+! End
+
 ! Example 628
 foo <!ELEMENT br EMPTY>
-----
+! End
+
 ! Example 629
 foo <![CDATA[>&<]]>
-----
+! End
+
 ! Example 630
 foo <a href="&ouml;">
-----
+! End
+
 ! Example 631
 foo <a href="\*">
-----
+! End
+
 ! Example 632
 <a href="\"">
-----
+! End
+

@@ -1,0 +1,289 @@
+! Example 228
+> # Foo
+> bar
+> baz
+! Solution
+<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+! End
+
+! Example 229
+># Foo
+>bar
+> baz
+! Solution
+<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+! End
+
+! Example 230
+   > # Foo
+   > bar
+ > baz
+! Solution
+<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+! End
+
+! Example 231
+    > # Foo
+    > bar
+    > baz
+! Solution
+<pre><code>&gt; # Foo
+&gt; bar
+&gt; baz
+</code></pre>
+! End
+
+! Example 232
+> # Foo
+> bar
+baz
+! Solution
+<blockquote>
+<h1>Foo</h1>
+<p>bar
+baz</p>
+</blockquote>
+! End
+
+! Example 233
+> bar
+baz
+> foo
+! Solution
+<blockquote>
+<p>bar
+baz
+foo</p>
+</blockquote>
+! End
+
+! Example 234
+> foo
+---
+! Solution
+<blockquote>
+<p>foo</p>
+</blockquote>
+<hr />
+! End
+
+! Example 235
+> - foo
+- bar
+! Solution
+<blockquote>
+<ul>
+<li>foo</li>
+</ul>
+</blockquote>
+<ul>
+<li>bar</li>
+</ul>
+! End
+
+! Example 236
+>     foo
+    bar
+! Solution
+<blockquote>
+<pre><code>foo
+</code></pre>
+</blockquote>
+<pre><code>bar
+</code></pre>
+! End
+
+! Example 237
+> ```
+foo
+```
+! Solution
+<blockquote>
+<pre><code></code></pre>
+</blockquote>
+<p>foo</p>
+<pre><code></code></pre>
+! End
+
+! Example 238
+> foo
+    - bar
+! Solution
+<blockquote>
+<p>foo
+- bar</p>
+</blockquote>
+! End
+
+! Example 239
+>
+! Solution
+<blockquote>
+</blockquote>
+! End
+
+! Example 240
+>
+>  
+> 
+! Solution
+<blockquote>
+</blockquote>
+! End
+
+! Example 241
+>
+> foo
+>  
+! Solution
+<blockquote>
+<p>foo</p>
+</blockquote>
+! End
+
+! Example 242
+> foo
+
+> bar
+! Solution
+<blockquote>
+<p>foo</p>
+</blockquote>
+<blockquote>
+<p>bar</p>
+</blockquote>
+! End
+
+! Example 243
+> foo
+> bar
+! Solution
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+! End
+
+! Example 244
+> foo
+>
+> bar
+! Solution
+<blockquote>
+<p>foo</p>
+<p>bar</p>
+</blockquote>
+! End
+
+! Example 245
+foo
+> bar
+! Solution
+<p>foo</p>
+<blockquote>
+<p>bar</p>
+</blockquote>
+! End
+
+! Example 246
+> aaa
+***
+> bbb
+! Solution
+<blockquote>
+<p>aaa</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>bbb</p>
+</blockquote>
+! End
+
+! Example 247
+> bar
+baz
+! Solution
+<blockquote>
+<p>bar
+baz</p>
+</blockquote>
+! End
+
+! Example 248
+> bar
+
+baz
+! Solution
+<blockquote>
+<p>bar</p>
+</blockquote>
+<p>baz</p>
+! End
+
+! Example 249
+> bar
+>
+baz
+! Solution
+<blockquote>
+<p>bar</p>
+</blockquote>
+<p>baz</p>
+! End
+
+! Example 250
+> > > foo
+bar
+! Solution
+<blockquote>
+<blockquote>
+<blockquote>
+<p>foo
+bar</p>
+</blockquote>
+</blockquote>
+</blockquote>
+! End
+
+! Example 251
+>>> foo
+> bar
+>>baz
+! Solution
+<blockquote>
+<blockquote>
+<blockquote>
+<p>foo
+bar
+baz</p>
+</blockquote>
+</blockquote>
+</blockquote>
+! End
+
+! Example 252
+>     code
+
+>    not code
+! Solution
+<blockquote>
+<pre><code>code
+</code></pre>
+</blockquote>
+<blockquote>
+<p>not code</p>
+</blockquote>
+! End
+

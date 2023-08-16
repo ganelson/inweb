@@ -1,0 +1,47 @@
+! Example 219
+aaa
+
+bbb
+! End
+
+! Example 220
+aaa
+bbb
+
+ccc
+ddd
+! End
+
+! Example 221
+aaa
+
+
+bbb
+! End
+
+! Example 222
+  aaa
+ bbb
+! End
+
+! Example 223
+aaa
+             bbb
+                                       ccc
+! End
+
+! Example 224
+   aaa
+bbb
+! End
+
+! Example 225
+    aaa
+bbb
+! End
+
+! Example 226
+aaa     
+bbb     
+! End
+

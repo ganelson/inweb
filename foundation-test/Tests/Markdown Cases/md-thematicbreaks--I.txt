@@ -1,0 +1,164 @@
+! Example 43
+***
+---
+___
+! Solution
+<hr />
+<hr />
+<hr />
+! End
+
+! Example 44
++++
+! Solution
+<p>+++</p>
+! End
+
+! Example 45
+===
+! Solution
+<p>===</p>
+! End
+
+! Example 46
+--
+**
+__
+! Solution
+<p>--
+**
+__</p>
+! End
+
+! Example 47
+ ***
+  ***
+   ***
+! Solution
+<hr />
+<hr />
+<hr />
+! End
+
+! Example 48
+    ***
+! Solution
+<pre><code>***
+</code></pre>
+! End
+
+! Example 49
+Foo
+    ***
+! Solution
+<p>Foo
+***</p>
+! End
+
+! Example 50
+_____________________________________
+! Solution
+<hr />
+! End
+
+! Example 51
+ - - -
+! Solution
+<hr />
+! End
+
+! Example 52
+ **  * ** * ** * **
+! Solution
+<hr />
+! End
+
+! Example 53
+-     -      -      -
+! Solution
+<hr />
+! End
+
+! Example 54
+- - - -    
+! Solution
+<hr />
+! End
+
+! Example 55
+_ _ _ _ a
+
+a------
+
+---a---
+! Solution
+<p>_ _ _ _ a</p>
+<p>a------</p>
+<p>---a---</p>
+! End
+
+! Example 56
+ *-*
+! Solution
+<p><em>-</em></p>
+! End
+
+! Example 57
+- foo
+***
+- bar
+! Solution
+<ul>
+<li>foo</li>
+</ul>
+<hr />
+<ul>
+<li>bar</li>
+</ul>
+! End
+
+! Example 58
+Foo
+***
+bar
+! Solution
+<p>Foo</p>
+<hr />
+<p>bar</p>
+! End
+
+! Example 59
+Foo
+---
+bar
+! Solution
+<h2>Foo</h2>
+<p>bar</p>
+! End
+
+! Example 60
+* Foo
+* * *
+* Bar
+! Solution
+<ul>
+<li>Foo</li>
+</ul>
+<hr />
+<ul>
+<li>Bar</li>
+</ul>
+! End
+
+! Example 61
+- Foo
+- * * *
+! Solution
+<ul>
+<li>Foo</li>
+<li>
+<hr />
+</li>
+</ul>
+! End
+

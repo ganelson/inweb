@@ -1,0 +1,303 @@
+! Example 119
+```
+<
+ >
+```
+! Solution
+<pre><code>&lt;
+ &gt;
+</code></pre>
+! End
+
+! Example 120
+~~~
+<
+ >
+~~~
+! Solution
+<pre><code>&lt;
+ &gt;
+</code></pre>
+! End
+
+! Example 121
+``
+foo
+``
+! Solution
+<p><code>foo</code></p>
+! End
+
+! Example 122
+```
+aaa
+~~~
+```
+! Solution
+<pre><code>aaa
+~~~
+</code></pre>
+! End
+
+! Example 123
+~~~
+aaa
+```
+~~~
+! Solution
+<pre><code>aaa
+```
+</code></pre>
+! End
+
+! Example 124
+````
+aaa
+```
+``````
+! Solution
+<pre><code>aaa
+```
+</code></pre>
+! End
+
+! Example 125
+~~~~
+aaa
+~~~
+~~~~
+! Solution
+<pre><code>aaa
+~~~
+</code></pre>
+! End
+
+! Example 126
+```
+! Solution
+<pre><code></code></pre>
+! End
+
+! Example 127
+`````
+
+```
+aaa
+! Solution
+<pre><code>
+```
+aaa
+</code></pre>
+! End
+
+! Example 128
+> ```
+> aaa
+
+bbb
+! Solution
+<blockquote>
+<pre><code>aaa
+</code></pre>
+</blockquote>
+<p>bbb</p>
+! End
+
+! Example 129
+```
+
+  
+```
+! Solution
+<pre><code>
+  
+</code></pre>
+! End
+
+! Example 130
+```
+```
+! Solution
+<pre><code></code></pre>
+! End
+
+! Example 131
+ ```
+ aaa
+aaa
+```
+! Solution
+<pre><code>aaa
+aaa
+</code></pre>
+! End
+
+! Example 132
+  ```
+aaa
+  aaa
+aaa
+  ```
+! Solution
+<pre><code>aaa
+aaa
+aaa
+</code></pre>
+! End
+
+! Example 133
+   ```
+   aaa
+    aaa
+  aaa
+   ```
+! Solution
+<pre><code>aaa
+ aaa
+aaa
+</code></pre>
+! End
+
+! Example 134
+    ```
+    aaa
+    ```
+! Solution
+<pre><code>```
+aaa
+```
+</code></pre>
+! End
+
+! Example 135
+```
+aaa
+  ```
+! Solution
+<pre><code>aaa
+</code></pre>
+! End
+
+! Example 136
+   ```
+aaa
+  ```
+! Solution
+<pre><code>aaa
+</code></pre>
+! End
+
+! Example 137
+```
+aaa
+    ```
+! Solution
+<pre><code>aaa
+    ```
+</code></pre>
+! End
+
+! Example 138
+``` ```
+aaa
+! Solution
+<p><code> </code>
+aaa</p>
+! End
+
+! Example 139
+~~~~~~
+aaa
+~~~ ~~
+! Solution
+<pre><code>aaa
+~~~ ~~
+</code></pre>
+! End
+
+! Example 140
+foo
+```
+bar
+```
+baz
+! Solution
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+<p>baz</p>
+! End
+
+! Example 141
+foo
+---
+~~~
+bar
+~~~
+# baz
+! Solution
+<h2>foo</h2>
+<pre><code>bar
+</code></pre>
+<h1>baz</h1>
+! End
+
+! Example 142
+```ruby
+def foo(x)
+  return 3
+end
+```
+! Solution
+<pre><code class="language-ruby">def foo(x)
+  return 3
+end
+</code></pre>
+! End
+
+! Example 143
+~~~~    ruby startline=3 $%@#$
+def foo(x)
+  return 3
+end
+~~~~~~~
+! Solution
+<pre><code class="language-ruby">def foo(x)
+  return 3
+end
+</code></pre>
+! End
+
+! Example 144
+````;
+````
+! Solution
+<pre><code class="language-;"></code></pre>
+! End
+
+! Example 145
+``` aa ```
+foo
+! Solution
+<p><code>aa</code>
+foo</p>
+! End
+
+! Example 146
+~~~ aa ``` ~~~
+foo
+~~~
+! Solution
+<pre><code class="language-aa">foo
+</code></pre>
+! End
+
+! Example 147
+```
+``` aaa
+```
+! Solution
+<pre><code>``` aaa
+</code></pre>
+! End
+

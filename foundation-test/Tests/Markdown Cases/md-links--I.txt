@@ -1,0 +1,656 @@
+! Example 481
+[link](/uri "title")
+! Solution
+<p><a href="/uri" title="title">link</a></p>
+! End
+
+! Example 482
+[link](/uri)
+! Solution
+<p><a href="/uri">link</a></p>
+! End
+
+! Example 483
+[](./target.md)
+! Solution
+<p><a href="./target.md"></a></p>
+! End
+
+! Example 484
+[link]()
+! Solution
+<p><a href="">link</a></p>
+! End
+
+! Example 485
+[link](<>)
+! Solution
+<p><a href="">link</a></p>
+! End
+
+! Example 486
+[]()
+! Solution
+<p><a href=""></a></p>
+! End
+
+! Example 487
+[link](/my uri)
+! Solution
+<p>[link](/my uri)</p>
+! End
+
+! Example 488
+[link](</my uri>)
+! Solution
+<p><a href="/my%20uri">link</a></p>
+! End
+
+! Example 489
+[link](foo
+bar)
+! Solution
+<p>[link](foo
+bar)</p>
+! End
+
+! Example 490
+[link](<foo
+bar>)
+! Solution
+<p>[link](<foo
+bar>)</p>
+! End
+
+! Example 491
+[a](<b)c>)
+! Solution
+<p><a href="b)c">a</a></p>
+! End
+
+! Example 492
+[link](<foo\>)
+! Solution
+<p>[link](&lt;foo&gt;)</p>
+! End
+
+! Example 493
+[a](<b)c
+[a](<b)c>
+[a](<b>c)
+! Solution
+<p>[a](&lt;b)c
+[a](&lt;b)c&gt;
+[a](<b>c)</p>
+! End
+
+! Example 494
+[link](\(foo\))
+! Solution
+<p><a href="(foo)">link</a></p>
+! End
+
+! Example 495
+[link](foo(and(bar)))
+! Solution
+<p><a href="foo(and(bar))">link</a></p>
+! End
+
+! Example 496
+[link](foo(and(bar))
+! Solution
+<p>[link](foo(and(bar))</p>
+! End
+
+! Example 497
+[link](foo\(and\(bar\))
+! Solution
+<p><a href="foo(and(bar)">link</a></p>
+! End
+
+! Example 498
+[link](<foo(and(bar)>)
+! Solution
+<p><a href="foo(and(bar)">link</a></p>
+! End
+
+! Example 499
+[link](foo\)\:)
+! Solution
+<p><a href="foo):">link</a></p>
+! End
+
+! Example 500
+[link](#fragment)
+
+[link](http://example.com#fragment)
+
+[link](http://example.com?foo=3#frag)
+! Solution
+<p><a href="#fragment">link</a></p>
+<p><a href="http://example.com#fragment">link</a></p>
+<p><a href="http://example.com?foo=3#frag">link</a></p>
+! End
+
+! Example 501
+[link](foo\bar)
+! Solution
+<p><a href="foo%5Cbar">link</a></p>
+! End
+
+! Example 503
+[link]("title")
+! Solution
+<p><a href="%22title%22">link</a></p>
+! End
+
+! Example 504
+[link](/url "title")
+[link](/url 'title')
+[link](/url (title))
+! Solution
+<p><a href="/url" title="title">link</a>
+<a href="/url" title="title">link</a>
+<a href="/url" title="title">link</a></p>
+! End
+
+! Example 506
+[link](/url "title")
+! Solution
+<p><a href="/url%C2%A0%22title%22">link</a></p>
+! End
+
+! Example 507
+[link](/url "title "and" title")
+! Solution
+<p>[link](/url &quot;title &quot;and&quot; title&quot;)</p>
+! End
+
+! Example 508
+[link](/url 'title "and" title')
+! Solution
+<p><a href="/url" title="title &quot;and&quot; title">link</a></p>
+! End
+
+! Example 509
+[link](   /uri
+  "title"  )
+! Solution
+<p><a href="/uri" title="title">link</a></p>
+! End
+
+! Example 510
+[link] (/uri)
+! Solution
+<p>[link] (/uri)</p>
+! End
+
+! Example 511
+[link [foo [bar]]](/uri)
+! Solution
+<p><a href="/uri">link [foo [bar]]</a></p>
+! End
+
+! Example 512
+[link] bar](/uri)
+! Solution
+<p>[link] bar](/uri)</p>
+! End
+
+! Example 513
+[link [bar](/uri)
+! Solution
+<p>[link <a href="/uri">bar</a></p>
+! End
+
+! Example 514
+[link \[bar](/uri)
+! Solution
+<p><a href="/uri">link [bar</a></p>
+! End
+
+! Example 515
+[link *foo **bar** `#`*](/uri)
+! Solution
+<p><a href="/uri">link <em>foo <strong>bar</strong> <code>#</code></em></a></p>
+! End
+
+! Example 516
+[![moon](moon.jpg)](/uri)
+! Solution
+<p><a href="/uri"><img src="moon.jpg" alt="moon" /></a></p>
+! End
+
+! Example 517
+[foo [bar](/uri)](/uri)
+! Solution
+<p>[foo <a href="/uri">bar</a>](/uri)</p>
+! End
+
+! Example 518
+[foo *[bar [baz](/uri)](/uri)*](/uri)
+! Solution
+<p>[foo <em>[bar <a href="/uri">baz</a>](/uri)</em>](/uri)</p>
+! End
+
+! Example 519
+![[[foo](uri1)](uri2)](uri3)
+! Solution
+<p><img src="uri3" alt="[foo](uri2)" /></p>
+! End
+
+! Example 520
+*[foo*](/uri)
+! Solution
+<p>*<a href="/uri">foo*</a></p>
+! End
+
+! Example 521
+[foo *bar](baz*)
+! Solution
+<p><a href="baz*">foo *bar</a></p>
+! End
+
+! Example 522
+*foo [bar* baz]
+! Solution
+<p><em>foo [bar</em> baz]</p>
+! End
+
+! Example 523
+[foo <bar attr="](baz)">
+! Solution
+<p>[foo <bar attr="](baz)"></p>
+! End
+
+! Example 524
+[foo`](/uri)`
+! Solution
+<p>[foo<code>](/uri)</code></p>
+! End
+
+! Example 525
+[foo<http://example.com/?search=](uri)>
+! Solution
+<p>[foo<a href="http://example.com/?search=%5D(uri)">http://example.com/?search=](uri)</a></p>
+! End
+
+! Example 526
+[foo][bar]
+
+[bar]: /url "title"
+! Solution
+<p><a href="/url" title="title">foo</a></p>
+! End
+
+! Example 527
+[link [foo [bar]]][ref]
+
+[ref]: /uri
+! Solution
+<p><a href="/uri">link [foo [bar]]</a></p>
+! End
+
+! Example 528
+[link \[bar][ref]
+
+[ref]: /uri
+! Solution
+<p><a href="/uri">link [bar</a></p>
+! End
+
+! Example 529
+[link *foo **bar** `#`*][ref]
+
+[ref]: /uri
+! Solution
+<p><a href="/uri">link <em>foo <strong>bar</strong> <code>#</code></em></a></p>
+! End
+
+! Example 530
+[![moon](moon.jpg)][ref]
+
+[ref]: /uri
+! Solution
+<p><a href="/uri"><img src="moon.jpg" alt="moon" /></a></p>
+! End
+
+! Example 531
+[foo [bar](/uri)][ref]
+
+[ref]: /uri
+! Solution
+<p>[foo <a href="/uri">bar</a>]<a href="/uri">ref</a></p>
+! End
+
+! Example 532
+[foo *bar [baz][ref]*][ref]
+
+[ref]: /uri
+! Solution
+<p>[foo <em>bar <a href="/uri">baz</a></em>]<a href="/uri">ref</a></p>
+! End
+
+! Example 533
+*[foo*][ref]
+
+[ref]: /uri
+! Solution
+<p>*<a href="/uri">foo*</a></p>
+! End
+
+! Example 534
+[foo *bar][ref]*
+
+[ref]: /uri
+! Solution
+<p><a href="/uri">foo *bar</a>*</p>
+! End
+
+! Example 535
+[foo <bar attr="][ref]">
+
+[ref]: /uri
+! Solution
+<p>[foo <bar attr="][ref]"></p>
+! End
+
+! Example 536
+[foo`][ref]`
+
+[ref]: /uri
+! Solution
+<p>[foo<code>][ref]</code></p>
+! End
+
+! Example 537
+[foo<http://example.com/?search=][ref]>
+
+[ref]: /uri
+! Solution
+<p>[foo<a href="http://example.com/?search=%5D%5Bref%5D">http://example.com/?search=][ref]</a></p>
+! End
+
+! Example 538
+[foo][BaR]
+
+[bar]: /url "title"
+! Solution
+<p><a href="/url" title="title">foo</a></p>
+! End
+
+! Example 539
+[ẞ]
+
+[SS]: /url
+! Solution
+<p><a href="/url">ẞ</a></p>
+! End
+
+! Example 540
+[Foo
+  bar]: /url
+
+[Baz][Foo bar]
+! Solution
+<p><a href="/url">Baz</a></p>
+! End
+
+! Example 541
+[foo] [bar]
+
+[bar]: /url "title"
+! Solution
+<p>[foo] <a href="/url" title="title">bar</a></p>
+! End
+
+! Example 542
+[foo]
+[bar]
+
+[bar]: /url "title"
+! Solution
+<p>[foo]
+<a href="/url" title="title">bar</a></p>
+! End
+
+! Example 543
+[foo]: /url1
+
+[foo]: /url2
+
+[bar][foo]
+! Solution
+<p><a href="/url1">bar</a></p>
+! End
+
+! Example 544
+[bar][foo\!]
+
+[foo!]: /url
+! Solution
+<p>[bar][foo!]</p>
+! End
+
+! Example 545
+[foo][ref[]
+
+[ref[]: /uri
+! Solution
+<p>[foo][ref[]</p>
+<p>[ref[]: /uri</p>
+! End
+
+! Example 546
+[foo][ref[bar]]
+
+[ref[bar]]: /uri
+! Solution
+<p>[foo][ref[bar]]</p>
+<p>[ref[bar]]: /uri</p>
+! End
+
+! Example 547
+[[[foo]]]
+
+[[[foo]]]: /url
+! Solution
+<p>[[[foo]]]</p>
+<p>[[[foo]]]: /url</p>
+! End
+
+! Example 548
+[foo][ref\[]
+
+[ref\[]: /uri
+! Solution
+<p><a href="/uri">foo</a></p>
+! End
+
+! Example 549
+[bar\\]: /uri
+
+[bar\\]
+! Solution
+<p><a href="/uri">bar\</a></p>
+! End
+
+! Example 550
+[]
+
+[]: /uri
+! Solution
+<p>[]</p>
+<p>[]: /uri</p>
+! End
+
+! Example 551
+[
+ ]
+
+[
+ ]: /uri
+! Solution
+<p>[
+]</p>
+<p>[
+]: /uri</p>
+! End
+
+! Example 552
+[foo][]
+
+[foo]: /url "title"
+! Solution
+<p><a href="/url" title="title">foo</a></p>
+! End
+
+! Example 553
+[*foo* bar][]
+
+[*foo* bar]: /url "title"
+! Solution
+<p><a href="/url" title="title"><em>foo</em> bar</a></p>
+! End
+
+! Example 554
+[Foo][]
+
+[foo]: /url "title"
+! Solution
+<p><a href="/url" title="title">Foo</a></p>
+! End
+
+! Example 555
+[foo] 
+[]
+
+[foo]: /url "title"
+! Solution
+<p><a href="/url" title="title">foo</a>
+[]</p>
+! End
+
+! Example 556
+[foo]
+
+[foo]: /url "title"
+! Solution
+<p><a href="/url" title="title">foo</a></p>
+! End
+
+! Example 557
+[*foo* bar]
+
+[*foo* bar]: /url "title"
+! Solution
+<p><a href="/url" title="title"><em>foo</em> bar</a></p>
+! End
+
+! Example 558
+[[*foo* bar]]
+
+[*foo* bar]: /url "title"
+! Solution
+<p>[<a href="/url" title="title"><em>foo</em> bar</a>]</p>
+! End
+
+! Example 559
+[[bar [foo]
+
+[foo]: /url
+! Solution
+<p>[[bar <a href="/url">foo</a></p>
+! End
+
+! Example 560
+[Foo]
+
+[foo]: /url "title"
+! Solution
+<p><a href="/url" title="title">Foo</a></p>
+! End
+
+! Example 561
+[foo] bar
+
+[foo]: /url
+! Solution
+<p><a href="/url">foo</a> bar</p>
+! End
+
+! Example 562
+\[foo]
+
+[foo]: /url "title"
+! Solution
+<p>[foo]</p>
+! End
+
+! Example 563
+[foo*]: /url
+
+*[foo*]
+! Solution
+<p>*<a href="/url">foo*</a></p>
+! End
+
+! Example 564
+[foo][bar]
+
+[foo]: /url1
+[bar]: /url2
+! Solution
+<p><a href="/url2">foo</a></p>
+! End
+
+! Example 565
+[foo][]
+
+[foo]: /url1
+! Solution
+<p><a href="/url1">foo</a></p>
+! End
+
+! Example 566
+[foo]()
+
+[foo]: /url1
+! Solution
+<p><a href="">foo</a></p>
+! End
+
+! Example 567
+[foo](not a link)
+
+[foo]: /url1
+! Solution
+<p><a href="/url1">foo</a>(not a link)</p>
+! End
+
+! Example 568
+[foo][bar][baz]
+
+[baz]: /url
+! Solution
+<p>[foo]<a href="/url">bar</a></p>
+! End
+
+! Example 569
+[foo][bar][baz]
+
+[baz]: /url1
+[bar]: /url2
+! Solution
+<p><a href="/url2">foo</a><a href="/url1">baz</a></p>
+! End
+
+! Example 570
+[foo][bar][baz]
+
+[baz]: /url1
+[foo]: /url2
+! Solution
+<p>[foo]<a href="/url1">bar</a></p>
+! End
+

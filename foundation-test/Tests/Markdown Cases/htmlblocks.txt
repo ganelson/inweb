@@ -1,0 +1,318 @@
+! Example 148
+<table><tr><td>
+<pre>
+**Hello**,
+
+_world_.
+</pre>
+</td></tr></table>
+! End
+
+! Example 149
+<table>
+  <tr>
+    <td>
+           hi
+    </td>
+  </tr>
+</table>
+
+okay.
+! End
+
+! Example 150
+ <div>
+  *hello*
+         <foo><a>
+! End
+
+! Example 151
+</div>
+*foo*
+! End
+
+! Example 152
+<DIV CLASS="foo">
+
+*Markdown*
+
+</DIV>
+! End
+
+! Example 153
+<div id="foo"
+  class="bar">
+</div>
+! End
+
+! Example 154
+<div id="foo" class="bar
+  baz">
+</div>
+! End
+
+! Example 155
+<div>
+*foo*
+
+*bar*
+! End
+
+! Example 156
+<div id="foo"
+*hi*
+! End
+
+! Example 157
+<div class
+foo
+! End
+
+! Example 158
+<div *???-&&&-<---
+*foo*
+! End
+
+! Example 159
+<div><a href="bar">*foo*</a></div>
+! End
+
+! Example 160
+<table><tr><td>
+foo
+</td></tr></table>
+! End
+
+! Example 161
+<div></div>
+``` c
+int x = 33;
+```
+! End
+
+! Example 162
+<a href="foo">
+*bar*
+</a>
+! End
+
+! Example 163
+<Warning>
+*bar*
+</Warning>
+! End
+
+! Example 164
+<i class="foo">
+*bar*
+</i>
+! End
+
+! Example 165
+</ins>
+*bar*
+! End
+
+! Example 166
+<del>
+*foo*
+</del>
+! End
+
+! Example 167
+<del>
+
+*foo*
+
+</del>
+! End
+
+! Example 168
+<del>*foo*</del>
+! End
+
+! Example 169
+<pre language="haskell"><code>
+import Text.HTML.TagSoup
+
+main :: IO ()
+main = print $ parseTags tags
+</code></pre>
+okay
+! End
+
+! Example 170
+<script type="text/javascript">
+// JavaScript example
+
+document.getElementById("demo").innerHTML = "Hello JavaScript!";
+</script>
+okay
+! End
+
+! Example 171
+<textarea>
+
+*foo*
+
+_bar_
+
+</textarea>
+! End
+
+! Example 172
+<style
+  type="text/css">
+h1 {color:red;}
+
+p {color:blue;}
+</style>
+okay
+! End
+
+! Example 173
+<style
+  type="text/css">
+
+foo
+! End
+
+! Example 174
+> <div>
+> foo
+
+bar
+! End
+
+! Example 175
+- <div>
+- foo
+! End
+
+! Example 176
+<style>p{color:red;}</style>
+*foo*
+! End
+
+! Example 177
+<!-- foo -->*bar*
+*baz*
+! End
+
+! Example 178
+<script>
+foo
+</script>1. *bar*
+! End
+
+! Example 179
+<!-- Foo
+
+bar
+   baz -->
+okay
+! End
+
+! Example 180
+<?php
+
+  echo '>';
+
+?>
+okay
+! End
+
+! Example 181
+<!DOCTYPE html>
+! End
+
+! Example 182
+<![CDATA[
+function matchwo(a,b)
+{
+  if (a < b && a < 0) then {
+    return 1;
+
+  } else {
+
+    return 0;
+  }
+}
+]]>
+okay
+! End
+
+! Example 183
+  <!-- foo -->
+
+    <!-- foo -->
+! End
+
+! Example 184
+  <div>
+
+    <div>
+! End
+
+! Example 185
+Foo
+<div>
+bar
+</div>
+! End
+
+! Example 186
+<div>
+bar
+</div>
+*foo*
+! End
+
+! Example 187
+Foo
+<a href="bar">
+baz
+! End
+
+! Example 188
+<div>
+
+*Emphasized* text.
+
+</div>
+! End
+
+! Example 189
+<div>
+*Emphasized* text.
+</div>
+! End
+
+! Example 190
+<table>
+
+<tr>
+
+<td>
+Hi
+</td>
+
+</tr>
+
+</table>
+! End
+
+! Example 191
+<table>
+
+  <tr>
+
+    <td>
+      Hi
+    </td>
+
+  </tr>
+
+</table>
+! End
+

@@ -17,6 +17,7 @@ int Markdown::is_Unicode_whitespace(wchar_t c) {
 	if (c == 0x000C) return TRUE;
 	if (c == 0x000D) return TRUE;
 	if (c == 0x0020) return TRUE;
+	if (c == 0x00A0) return TRUE;
 	return FALSE;
 }
 
@@ -63,15 +64,15 @@ has one of the following types:
 @e DOCUMENT_MIT from 1
 @e PARAGRAPH_MIT
 @e THEMATIC_MIT
-@e ATX_MIT
-@e SETEXT_MIT
-@e INDENTED_CODE_MIT
-@e FENCED_CODE_MIT
+@e HEADING_MIT
+@e CODE_BLOCK_MIT
 @e HTML_MIT
 @e LINK_REF_MIT
 @e BLOCK_QUOTE_MIT
-@e LIST_MIT
-@e LIST_ITEM_MIT
+@e UNORDERED_LIST_MIT
+@e ORDERED_LIST_MIT
+@e UNORDERED_LIST_ITEM_MIT
+@e ORDERED_LIST_ITEM_MIT
 @e MATERIAL_MIT
 @e PLAIN_MIT
 @e EMPHASIS_MIT
@@ -93,15 +94,15 @@ text_stream *Markdown::item_type_name(int t) {
 		case DOCUMENT_MIT:       return I"DOCUMENT_MIT";
 		case PARAGRAPH_MIT:      return I"PARAGRAPH";
 		case THEMATIC_MIT:       return I"THEMATIC";
-		case ATX_MIT:            return I"ATX";
-		case SETEXT_MIT:         return I"SETEXT";
-		case INDENTED_CODE_MIT:  return I"INDENTED_CODE";
-		case FENCED_CODE_MIT:    return I"FENCED_CODE";
+		case HEADING_MIT:        return I"HEADING";
+		case CODE_BLOCK_MIT:     return I"CODE_BLOCK";
 		case HTML_MIT:           return I"HTML";
 		case LINK_REF_MIT:       return I"LINK_REF";
 		case BLOCK_QUOTE_MIT:    return I"BLOCK_QUOTE";
-		case LIST_MIT:           return I"LIST";
-		case LIST_ITEM_MIT:      return I"LIST_ITEM";
+		case ORDERED_LIST_MIT:   return I"ORDERED_LIST";
+		case UNORDERED_LIST_MIT: return I"UNORDERED_LIST";
+		case ORDERED_LIST_ITEM_MIT:   return I"ORDERED_LIST_ITEM";
+		case UNORDERED_LIST_ITEM_MIT: return I"UNORDERED_LIST_ITEM";
 		case MATERIAL_MIT:       return I"MATERIAL";
 		case PLAIN_MIT:          return I"PLAIN";
 		case EMPHASIS_MIT:       return I"EMPHASIS";
@@ -122,10 +123,12 @@ text_stream *Markdown::item_type_name(int t) {
 
 int Markdown::item_type_container_block(int t) {
 	switch (t) {
-		case DOCUMENT_MIT:       return TRUE;
-		case BLOCK_QUOTE_MIT:    return TRUE;
-		case LIST_MIT:           return TRUE;
-		case LIST_ITEM_MIT:      return TRUE;
+		case DOCUMENT_MIT:            return TRUE;
+		case BLOCK_QUOTE_MIT:         return TRUE;
+		case ORDERED_LIST_MIT:        return TRUE;
+		case UNORDERED_LIST_MIT:      return TRUE;
+		case ORDERED_LIST_ITEM_MIT:   return TRUE;
+		case UNORDERED_LIST_ITEM_MIT: return TRUE;
 	}
 	return FALSE;
 }
@@ -134,10 +137,8 @@ int Markdown::item_type_leaf_block(int t) {
 	switch (t) {
 		case PARAGRAPH_MIT:      return TRUE;
 		case THEMATIC_MIT:       return TRUE;
-		case ATX_MIT:            return TRUE;
-		case SETEXT_MIT:         return TRUE;
-		case INDENTED_CODE_MIT:  return TRUE;
-		case FENCED_CODE_MIT:    return TRUE;
+		case HEADING_MIT:        return TRUE;
+		case CODE_BLOCK_MIT:     return TRUE;
 		case HTML_MIT:           return TRUE;
 		case LINK_REF_MIT:       return TRUE;
 		case BLOCK_QUOTE_MIT:    return TRUE;
@@ -167,6 +168,16 @@ int Markdown::item_type_plainish(int t) {
 	return FALSE;
 }
 
+int Markdown::item_type_quasi_plainish(int t) {
+	switch (t) {
+		case PLAIN_MIT:          return TRUE;
+		case LINE_BREAK_MIT:     return TRUE;
+		case SOFT_BREAK_MIT:     return TRUE;
+		case INLINE_HTML_MIT:    return TRUE;
+	}
+	return FALSE;
+}
+
 @h Items.
 
 =
@@ -180,7 +191,9 @@ typedef struct markdown_item {
 	struct markdown_item *copied_from;
 	int whitespace_follows;
 	struct text_stream *stashed;
+	struct text_stream *info_string;
 	int details;
+	int open;
 	int cycle_count; /* used only for tracing the tree when debugging */
 	int id; /* used only for tracing the tree when debugging */
 	CLASS_DEFINITION
@@ -194,10 +207,12 @@ markdown_item *Markdown::new_item(int type) {
 	md->next = NULL; md->down = NULL;
 	md->whitespace_follows = FALSE;
 	md->stashed = NULL;
+	md->info_string = NULL;
 	md->details = 0;
 	md->cycle_count = 0;
 	md->id = md_ids++;
 	md->copied_from = NULL;
+	md->open = NOT_APPLICABLE;
 	return md;
 }
 
@@ -219,6 +234,14 @@ markdown_item *Markdown::new_slice(int type, text_stream *text, int from, int to
 =
 int Markdown::plainish(markdown_item *md) {
 	if (md) return Markdown::item_type_plainish(md->type);
+	return FALSE;
+}
+
+@ A "quasi-plainish" item can also include autolinks:
+
+=
+int Markdown::quasi_plainish(markdown_item *md) {
+	if (md) return Markdown::item_type_quasi_plainish(md->type);
 	return FALSE;
 }
 
@@ -410,6 +433,18 @@ md_charpos Markdown::advance_plainish_only(md_charpos pos) {
 	return Markdown::nowhere();
 }
 
+@ A fractionally different version again:
+
+=
+md_charpos Markdown::advance_quasi_plainish_only(md_charpos pos) {
+	if (Markdown::somewhere(pos)) {
+		if (pos.at < pos.md->to) { pos.at++; return pos; }
+		pos.md = pos.md->next;
+		if ((pos.md) && (Markdown::quasi_plainish(pos.md))) { pos.at = pos.md->from; return pos; }
+	}
+	return Markdown::nowhere();
+}
+
 @ And these halt at a specific point:
 
 =
@@ -425,6 +460,13 @@ md_charpos Markdown::advance_up_to_plainish_only(md_charpos pos, md_charpos end)
 		(pos.md->sliced_from == end.md->sliced_from) && (pos.at >= end.at))
 		return Markdown::nowhere();
 	return Markdown::advance_plainish_only(pos);
+}
+
+md_charpos Markdown::advance_up_to_quasi_plainish_only(md_charpos pos, md_charpos end) {
+	if ((Markdown::somewhere(end)) &&
+		(pos.md->sliced_from == end.md->sliced_from) && (pos.at >= end.at))
+		return Markdown::nowhere();
+	return Markdown::advance_quasi_plainish_only(pos);
 }
 
 @ The character at a given position:
@@ -576,6 +618,8 @@ void Markdown::debug_interval(OUTPUT_STREAM, md_charpos A, md_charpos B) {
 
 void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
 	if (md == NULL) { WRITE("<no-item>"); return; }
+	if (md->open == TRUE) WRITE("*");
+	if (md->open == FALSE) WRITE(".");
 	WRITE("%S-", Markdown::item_type_name(md->type));
 	WRITE("M%d", md->id);
 	if (md->copied_from) WRITE("<-M%d", md->copied_from->id);
@@ -586,7 +630,13 @@ void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
 		}
 		WRITE("' = %d", md->to);
 		WRITE(")");
+	} else if (Str::len(md->stashed) > 0) {
+		WRITE(" = (", md->from);
+		for (int i=0; i<Str::len(md->stashed); i++)
+			Markdown::debug_char_briefly(OUT, Str::get_at(md->stashed, i));
+		WRITE(")");
 	}
+	if (md->whitespace_follows) WRITE("+ws");
 }
 
 @h Trees and chains.

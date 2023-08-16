@@ -1,0 +1,16 @@
+! Example 648
+foo
+baz
+! Solution
+<p>foo
+baz</p>
+! End
+
+! Example 649
+foo 
+ baz
+! Solution
+<p>foo
+baz</p>
+! End
+

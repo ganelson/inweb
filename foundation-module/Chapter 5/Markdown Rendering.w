@@ -13,6 +13,7 @@ through the tree: it's a bitmap composed of the following.
 @d ESCAPES_MDRMODE 2     /* Treat backslash followed by ASCII punctuation as an escape? */
 @d URI_MDRMODE     4     /* Encode characters as they need to appear in a URI */
 @d RAW_MDRMODE     8     /* Treat all characters literally */
+@d LOOSE_MDRMODE  16     /* Wrap list items in paragraph tags */
 
 =
 void MarkdownRenderer::go(OUTPUT_STREAM, markdown_item *md) {
@@ -24,14 +25,47 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	switch (md->type) {
 		case DOCUMENT_MIT: 	     @<Recurse@>;
 								 break;
-		case ATX_MIT:            @<Render an ATX heading@>;
+		case HEADING_MIT:        @<Render a heading@>;
 								 WRITE("\n");
 								 break;
 		case PARAGRAPH_MIT:      if (mode & TAGS_MDRMODE) HTML_OPEN("p");
 								 @<Recurse@>;
 								 if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 								 break;
+		case BLOCK_QUOTE_MIT:    // if (md->down) {
+									 if (mode & TAGS_MDRMODE) HTML_OPEN("blockquote");
+									 WRITE("\n");
+									 @<Recurse@>;
+									 if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
+								//  }
+								 break;
+		case CODE_BLOCK_MIT:     @<Render a code block@>; break;
+		case ORDERED_LIST_ITEM_MIT:
+		case UNORDERED_LIST_ITEM_MIT:
+								 @<Render a list item@>; break;
+		case ORDERED_LIST_MIT:   if (mode & TAGS_MDRMODE) {
+									int start = md->down->details;
+									if (start < 0) start = -(start+1);
+									if (start != 1) {
+										HTML_OPEN_WITH("ol", "start=\"%d\"", start);
+								    } else {
+										HTML_OPEN("ol");
+									}
+								 }
+								 WRITE("\n");
+								 @<Recurse through list@>;
+								 if (mode & TAGS_MDRMODE) HTML_CLOSE("ol");
+								 WRITE("\n");
+								 break;
+		case UNORDERED_LIST_MIT: if (mode & TAGS_MDRMODE) HTML_OPEN("ul");
+								 WRITE("\n");
+								 @<Recurse through list@>;
+								 if (mode & TAGS_MDRMODE) HTML_CLOSE("ul");
+								 WRITE("\n");
+								 break;
+		case HTML_MIT:           @<Render a raw HTML block@>; break;
 		case THEMATIC_MIT:       if (mode & TAGS_MDRMODE) WRITE("<hr />\n"); break;
+		case LINK_REF_MIT:       break;
 		case MATERIAL_MIT: 	     @<Recurse@>;
 								 break;
 		case PLAIN_MIT:    	     MarkdownRenderer::slice(OUT, md, mode);
@@ -45,7 +79,7 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 								 if (mode & TAGS_MDRMODE) HTML_CLOSE("strong");
 								 break;
 		case CODE_MIT:           if (mode & TAGS_MDRMODE) HTML_OPEN("code");
-								 MarkdownRenderer::slice(OUT, md, mode | RAW_MDRMODE);
+								 MarkdownRenderer::slice(OUT, md, mode);
 								 if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
 								 break;
 		case LINK_MIT:           @<Render link@>; break;
@@ -65,7 +99,7 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	for (markdown_item *c = md->down; c; c = c->next)
 		MarkdownRenderer::recurse(OUT, c, mode);
 
-@<Render an ATX heading@> =
+@<Render a heading@> =
 	char *h = "p";
 	switch (md->details) {
 		case 1: h = "h1"; break;
@@ -78,6 +112,61 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (mode & TAGS_MDRMODE) HTML_OPEN(h);
 	@<Recurse@>;
 	if (mode & TAGS_MDRMODE) HTML_CLOSE(h);
+
+@<Render a code block@> =
+	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
+	TEMPORARY_TEXT(language)
+	for (int i=0; i<Str::len(md->info_string); i++) {
+		wchar_t c = Str::get_at(md->info_string, i);
+		if ((c == ' ') || (c == '\t')) break;
+		PUT_TO(language, c);
+	}
+	if (Str::len(language) > 0) {
+		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("code", "class=\"language-%S\"", language);
+	} else {
+		if (mode & TAGS_MDRMODE) HTML_OPEN("code");
+	}
+	DISCARD_TEXT(language)
+	md->sliced_from = md->stashed;
+	md->from = 0; md->to = Str::len(md->sliced_from) - 1;
+	MarkdownRenderer::slice(OUT, md, mode);
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("pre");
+	WRITE("\n");
+
+@<Render a raw HTML block@> =
+	WRITE("%S", md->stashed);
+
+@<Recurse through list@> =
+	int old_mode = mode;
+	mode = mode & (~LOOSE_MDRMODE);
+	for (markdown_item *ch = md->down; ch; ch = ch->next) {
+		if ((ch->next) && (ch->whitespace_follows))
+			mode = mode | LOOSE_MDRMODE;
+		for (markdown_item *gch = ch->down; gch; gch = gch->next)
+			if ((gch->next) && (gch->whitespace_follows))
+				mode = mode | LOOSE_MDRMODE;
+	}
+	@<Recurse@>;
+	mode = old_mode;
+ 
+@<Render a list item@> =
+	if (mode & TAGS_MDRMODE) {
+		HTML_OPEN("li");
+//		if (mode & LOOSE_MDRMODE) WRITE("\n");
+	}
+	int nl_issued = FALSE;
+	for (markdown_item *ch = md->down; ch; ch = ch->next)
+		if (((mode & LOOSE_MDRMODE) == 0) && (ch->type == PARAGRAPH_MIT))
+			MarkdownRenderer::recurse(OUT, ch->down, mode);
+		else {
+			if (nl_issued == FALSE) { nl_issued = TRUE; WRITE("\n"); }
+			MarkdownRenderer::recurse(OUT, ch, mode);
+		}
+	if (mode & TAGS_MDRMODE) {
+		HTML_CLOSE("li");
+	}
+	WRITE("\n");
 
 @<Render link@> =
 	TEMPORARY_TEXT(URI)
@@ -116,9 +205,17 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	}
 	MarkdownRenderer::recurse(alt, md->down, mode & (~TAGS_MDRMODE));
 	if (Str::len(title) > 0) {
-		HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
+		if (mode & TAGS_MDRMODE) {
+			HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
+		} else {
+			WRITE("%S", alt);
+		}
 	} else {
-		HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" /", URI, alt);
+		if (mode & TAGS_MDRMODE) {
+			HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" /", URI, alt);
+		} else {
+			WRITE("%S", alt);
+		}
 	}
 	DISCARD_TEXT(URI)
 	DISCARD_TEXT(title)
@@ -180,6 +277,7 @@ void MarkdownRenderer::char(OUTPUT_STREAM, wchar_t c, int mode) {
 				case '\\':MARKDOWN_URI_HEX((unsigned char) c); break;
 				case '\"':MARKDOWN_URI_HEX((unsigned char) c); break;
 				case ']': MARKDOWN_URI_HEX((unsigned char) c); break;
+				case '`': MARKDOWN_URI_HEX((unsigned char) c); break;
 				case ' ': MARKDOWN_URI_HEX((unsigned char) c); break;
 				default: PUT(c); break;
 			}

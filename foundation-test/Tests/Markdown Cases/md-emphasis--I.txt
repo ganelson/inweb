@@ -1,633 +1,798 @@
-! Emphasis tests (examples 350-478 from CommonMark specification)
 ! Example 350
 *foo bar*
---->
+! Solution
 <p><em>foo bar</em></p>
---------
+! End
+
 ! Example 351
 a * foo bar*
---->
+! Solution
 <p>a * foo bar*</p>
---------
+! End
+
 ! Example 352
 a*"foo"*
---->
+! Solution
 <p>a*&quot;foo&quot;*</p>
---------
+! End
+
 ! Example 353
-* a *
---->
-<p>* a *</p>
---------
+* a *
+! Solution
+<p>* a *</p>
+! End
+
 ! Example 354
 foo*bar*
---->
+! Solution
 <p>foo<em>bar</em></p>
---------
+! End
+
 ! Example 355
 5*6*78
---->
+! Solution
 <p>5<em>6</em>78</p>
---------
+! End
+
 ! Example 356
 _foo bar_
---->
+! Solution
 <p><em>foo bar</em></p>
---------
+! End
+
 ! Example 357
 _ foo bar_
---->
+! Solution
 <p>_ foo bar_</p>
---------
+! End
+
 ! Example 358
 a_"foo"_
---->
+! Solution
 <p>a_&quot;foo&quot;_</p>
---------
+! End
+
 ! Example 359
 foo_bar_
---->
+! Solution
 <p>foo_bar_</p>
---------
+! End
+
 ! Example 360
 5_6_78
---->
+! Solution
 <p>5_6_78</p>
---------
+! End
+
 ! Example 361
 пристаням_стремятся_
---->
+! Solution
 <p>пристаням_стремятся_</p>
---------
+! End
+
 ! Example 362
 aa_"bb"_cc
---->
+! Solution
 <p>aa_&quot;bb&quot;_cc</p>
---------
+! End
+
 ! Example 363
 foo-_(bar)_
---->
+! Solution
 <p>foo-<em>(bar)</em></p>
---------
+! End
+
 ! Example 364
 _foo*
---->
+! Solution
 <p>_foo*</p>
---------
+! End
+
 ! Example 365
 *foo bar *
---->
+! Solution
 <p>*foo bar *</p>
---------
+! End
+
 ! Example 366
 *foo bar
 *
---->
+! Solution
 <p>*foo bar
 *</p>
---------
+! End
+
 ! Example 367
 *(*foo)
---->
+! Solution
 <p>*(*foo)</p>
---------
+! End
+
 ! Example 368
 *(*foo*)*
---->
+! Solution
 <p><em>(<em>foo</em>)</em></p>
---------
+! End
+
 ! Example 369
 *foo*bar
---->
+! Solution
 <p><em>foo</em>bar</p>
---------
+! End
+
 ! Example 370
 _foo bar _
---->
+! Solution
 <p>_foo bar _</p>
---------
+! End
+
 ! Example 371
 _(_foo)
---->
+! Solution
 <p>_(_foo)</p>
---------
+! End
+
 ! Example 372
 _(_foo_)_
---->
+! Solution
 <p><em>(<em>foo</em>)</em></p>
---------
+! End
+
 ! Example 373
 _foo_bar
---->
+! Solution
 <p>_foo_bar</p>
---------
+! End
+
 ! Example 374
 _пристаням_стремятся
---->
+! Solution
 <p>_пристаням_стремятся</p>
---------
+! End
+
 ! Example 375
 _foo_bar_baz_
---->
+! Solution
 <p><em>foo_bar_baz</em></p>
---------
+! End
+
 ! Example 376
 _(bar)_.
---->
+! Solution
 <p><em>(bar)</em>.</p>
---------
+! End
+
 ! Example 377
 **foo bar**
---->
+! Solution
 <p><strong>foo bar</strong></p>
---------
+! End
+
 ! Example 378
 ** foo bar**
---->
+! Solution
 <p>** foo bar**</p>
---------
+! End
+
 ! Example 379
 a**"foo"**
---->
+! Solution
 <p>a**&quot;foo&quot;**</p>
---------
+! End
+
 ! Example 380
 foo**bar**
---->
+! Solution
 <p>foo<strong>bar</strong></p>
---------
+! End
+
 ! Example 381
 __foo bar__
---->
+! Solution
 <p><strong>foo bar</strong></p>
---------
+! End
+
 ! Example 382
 __ foo bar__
---->
+! Solution
 <p>__ foo bar__</p>
---------
+! End
+
 ! Example 383
 __
 foo bar__
---->
+! Solution
 <p>__
 foo bar__</p>
---------
+! End
+
 ! Example 384
 a__"foo"__
---->
+! Solution
 <p>a__&quot;foo&quot;__</p>
---------
+! End
+
 ! Example 385
 foo__bar__
---->
+! Solution
 <p>foo__bar__</p>
---------
+! End
+
 ! Example 386
 5__6__78
---->
+! Solution
 <p>5__6__78</p>
---------
+! End
+
 ! Example 387
 пристаням__стремятся__
---->
+! Solution
 <p>пристаням__стремятся__</p>
---------
+! End
+
 ! Example 388
 __foo, __bar__, baz__
---->
+! Solution
 <p><strong>foo, <strong>bar</strong>, baz</strong></p>
---------
+! End
+
 ! Example 389
 foo-__(bar)__
---->
+! Solution
 <p>foo-<strong>(bar)</strong></p>
---------
+! End
+
 ! Example 390
 **foo bar **
---->
+! Solution
 <p>**foo bar **</p>
---------
+! End
+
 ! Example 391
 **(**foo)
---->
+! Solution
 <p>**(**foo)</p>
---------
+! End
+
 ! Example 392
 *(**foo**)*
---->
+! Solution
 <p><em>(<strong>foo</strong>)</em></p>
---------
+! End
+
 ! Example 393
 **Gomphocarpus (*Gomphocarpus physocarpus*, syn.
 *Asclepias physocarpa*)**
---->
+! Solution
 <p><strong>Gomphocarpus (<em>Gomphocarpus physocarpus</em>, syn.
 <em>Asclepias physocarpa</em>)</strong></p>
---------
+! End
+
 ! Example 394
 **foo "*bar*" foo**
---->
+! Solution
 <p><strong>foo &quot;<em>bar</em>&quot; foo</strong></p>
---------
+! End
+
 ! Example 395
 **foo**bar
---->
+! Solution
 <p><strong>foo</strong>bar</p>
---------
+! End
+
 ! Example 396
 __foo bar __
---->
+! Solution
 <p>__foo bar __</p>
---------
+! End
+
 ! Example 397
 __(__foo)
---->
+! Solution
 <p>__(__foo)</p>
---------
+! End
+
 ! Example 398
 _(__foo__)_
---->
+! Solution
 <p><em>(<strong>foo</strong>)</em></p>
---------
+! End
+
 ! Example 399
 __foo__bar
---->
+! Solution
 <p>__foo__bar</p>
---------
+! End
+
 ! Example 400
 __пристаням__стремятся
---->
+! Solution
 <p>__пристаням__стремятся</p>
---------
+! End
+
 ! Example 401
 __foo__bar__baz__
---->
+! Solution
 <p><strong>foo__bar__baz</strong></p>
---------
+! End
+
 ! Example 402
 __(bar)__.
---->
+! Solution
 <p><strong>(bar)</strong>.</p>
---------
+! End
+
 ! Example 403
 *foo [bar](/url)*
---->
+! Solution
 <p><em>foo <a href="/url">bar</a></em></p>
---------
+! End
+
 ! Example 404
 *foo
 bar*
---->
+! Solution
 <p><em>foo
 bar</em></p>
---------
+! End
+
 ! Example 405
 _foo __bar__ baz_
---->
+! Solution
 <p><em>foo <strong>bar</strong> baz</em></p>
---------
+! End
+
 ! Example 406
 _foo _bar_ baz_
---->
+! Solution
 <p><em>foo <em>bar</em> baz</em></p>
---------
+! End
+
 ! Example 407
 __foo_ bar_
---->
+! Solution
 <p><em><em>foo</em> bar</em></p>
---------
+! End
+
 ! Example 408
 *foo *bar**
---->
+! Solution
 <p><em>foo <em>bar</em></em></p>
---------
+! End
+
 ! Example 409
 *foo **bar** baz*
---->
+! Solution
 <p><em>foo <strong>bar</strong> baz</em></p>
---------
+! End
+
 ! Example 410
 *foo**bar**baz*
---->
+! Solution
 <p><em>foo<strong>bar</strong>baz</em></p>
---------
+! End
+
 ! Example 411
 *foo**bar*
---->
+! Solution
 <p><em>foo**bar</em></p>
---------
+! End
+
 ! Example 412
 ***foo** bar*
---->
+! Solution
 <p><em><strong>foo</strong> bar</em></p>
---------
+! End
+
 ! Example 413
 *foo **bar***
---->
+! Solution
 <p><em>foo <strong>bar</strong></em></p>
---------
+! End
+
 ! Example 414
 *foo**bar***
---->
+! Solution
 <p><em>foo<strong>bar</strong></em></p>
---------
+! End
+
 ! Example 415
 foo***bar***baz
---->
+! Solution
 <p>foo<em><strong>bar</strong></em>baz</p>
---------
+! End
+
 ! Example 416
 foo******bar*********baz
---->
+! Solution
 <p>foo<strong><strong><strong>bar</strong></strong></strong>***baz</p>
---------
+! End
+
 ! Example 417
 *foo **bar *baz* bim** bop*
---->
+! Solution
 <p><em>foo <strong>bar <em>baz</em> bim</strong> bop</em></p>
---------
+! End
+
 ! Example 418
 *foo [*bar*](/url)*
---->
+! Solution
 <p><em>foo <a href="/url"><em>bar</em></a></em></p>
---------
+! End
+
 ! Example 419
 ** is not an empty emphasis
---->
+! Solution
 <p>** is not an empty emphasis</p>
---------
+! End
+
 ! Example 420
 **** is not an empty strong emphasis
---->
+! Solution
 <p>**** is not an empty strong emphasis</p>
---------
+! End
+
 ! Example 421
 **foo [bar](/url)**
---->
+! Solution
 <p><strong>foo <a href="/url">bar</a></strong></p>
---------
+! End
+
 ! Example 422
 **foo
 bar**
---->
+! Solution
 <p><strong>foo
 bar</strong></p>
---------
+! End
+
 ! Example 423
 __foo _bar_ baz__
---->
+! Solution
 <p><strong>foo <em>bar</em> baz</strong></p>
---------
+! End
+
 ! Example 424
 __foo __bar__ baz__
---->
+! Solution
 <p><strong>foo <strong>bar</strong> baz</strong></p>
---------
+! End
+
 ! Example 425
 ____foo__ bar__
---->
+! Solution
 <p><strong><strong>foo</strong> bar</strong></p>
---------
+! End
+
 ! Example 426
 **foo **bar****
---->
+! Solution
 <p><strong>foo <strong>bar</strong></strong></p>
---------
+! End
+
 ! Example 427
 **foo *bar* baz**
---->
+! Solution
 <p><strong>foo <em>bar</em> baz</strong></p>
---------
+! End
+
 ! Example 428
 **foo*bar*baz**
---->
+! Solution
 <p><strong>foo<em>bar</em>baz</strong></p>
---------
+! End
+
 ! Example 429
 ***foo* bar**
---->
+! Solution
 <p><strong><em>foo</em> bar</strong></p>
---------
+! End
+
 ! Example 430
 **foo *bar***
---->
+! Solution
 <p><strong>foo <em>bar</em></strong></p>
---------
+! End
+
 ! Example 431
 **foo *bar **baz**
 bim* bop**
---->
+! Solution
 <p><strong>foo <em>bar <strong>baz</strong>
 bim</em> bop</strong></p>
---------
+! End
+
 ! Example 432
 **foo [*bar*](/url)**
---->
+! Solution
 <p><strong>foo <a href="/url"><em>bar</em></a></strong></p>
---------
+! End
+
 ! Example 433
 __ is not an empty emphasis
---->
+! Solution
 <p>__ is not an empty emphasis</p>
---------
+! End
+
 ! Example 434
 ____ is not an empty strong emphasis
---->
+! Solution
 <p>____ is not an empty strong emphasis</p>
---------
+! End
+
 ! Example 435
 foo ***
---->
+! Solution
 <p>foo ***</p>
---------
+! End
+
 ! Example 436
 foo *\**
---->
+! Solution
 <p>foo <em>*</em></p>
---------
+! End
+
 ! Example 437
 foo *_*
---->
+! Solution
 <p>foo <em>_</em></p>
---------
+! End
+
 ! Example 438
 foo *****
---->
+! Solution
 <p>foo *****</p>
---------
+! End
+
 ! Example 439
 foo **\***
---->
+! Solution
 <p>foo <strong>*</strong></p>
---------
+! End
+
 ! Example 440
 foo **_**
---->
+! Solution
 <p>foo <strong>_</strong></p>
---------
+! End
+
 ! Example 441
 **foo*
---->
+! Solution
 <p>*<em>foo</em></p>
---------
+! End
+
 ! Example 442
 *foo**
---->
+! Solution
 <p><em>foo</em>*</p>
---------
+! End
+
 ! Example 443
 ***foo**
---->
+! Solution
 <p>*<strong>foo</strong></p>
---------
+! End
+
 ! Example 444
 ****foo*
---->
+! Solution
 <p>***<em>foo</em></p>
---------
+! End
+
 ! Example 445
 **foo***
---->
+! Solution
 <p><strong>foo</strong>*</p>
---------
+! End
+
 ! Example 446
 *foo****
---->
+! Solution
 <p><em>foo</em>***</p>
---------
+! End
+
 ! Example 447
 foo ___
---->
+! Solution
 <p>foo ___</p>
---------
+! End
+
 ! Example 448
 foo _\__
---->
+! Solution
 <p>foo <em>_</em></p>
---------
+! End
+
 ! Example 449
 foo _*_
---->
+! Solution
 <p>foo <em>*</em></p>
---------
+! End
+
 ! Example 450
 foo _____
---->
+! Solution
 <p>foo _____</p>
---------
+! End
+
 ! Example 451
 foo __\___
---->
+! Solution
 <p>foo <strong>_</strong></p>
---------
+! End
+
 ! Example 452
 foo __*__
---->
+! Solution
 <p>foo <strong>*</strong></p>
---------
+! End
+
 ! Example 453
 __foo_
---->
+! Solution
 <p>_<em>foo</em></p>
---------
+! End
+
 ! Example 454
 _foo__
---->
+! Solution
 <p><em>foo</em>_</p>
---------
+! End
+
 ! Example 455
 ___foo__
---->
+! Solution
 <p>_<strong>foo</strong></p>
---------
+! End
+
 ! Example 456
 ____foo_
---->
+! Solution
 <p>___<em>foo</em></p>
---------
+! End
+
 ! Example 457
 __foo___
---->
+! Solution
 <p><strong>foo</strong>_</p>
---------
+! End
+
 ! Example 458
 _foo____
---->
+! Solution
 <p><em>foo</em>___</p>
---------
+! End
+
 ! Example 459
 **foo**
---->
+! Solution
 <p><strong>foo</strong></p>
---------
+! End
+
 ! Example 460
 *_foo_*
---->
+! Solution
 <p><em><em>foo</em></em></p>
---------
+! End
+
 ! Example 461
 __foo__
---->
+! Solution
 <p><strong>foo</strong></p>
---------
+! End
+
 ! Example 462
 _*foo*_
---->
+! Solution
 <p><em><em>foo</em></em></p>
---------
+! End
+
 ! Example 463
 ****foo****
---->
+! Solution
 <p><strong><strong>foo</strong></strong></p>
---------
+! End
+
 ! Example 464
 ____foo____
---->
+! Solution
 <p><strong><strong>foo</strong></strong></p>
---------
+! End
+
 ! Example 465
 ******foo******
---->
+! Solution
 <p><strong><strong><strong>foo</strong></strong></strong></p>
---------
+! End
+
 ! Example 466
 ***foo***
---->
+! Solution
 <p><em><strong>foo</strong></em></p>
---------
+! End
+
 ! Example 467
 _____foo_____
---->
+! Solution
 <p><em><strong><strong>foo</strong></strong></em></p>
---------
+! End
+
 ! Example 468
 *foo _bar* baz_
---->
+! Solution
 <p><em>foo _bar</em> baz_</p>
---------
+! End
+
 ! Example 469
 *foo __bar *baz bim__ bam*
---->
+! Solution
 <p><em>foo <strong>bar *baz bim</strong> bam</em></p>
---------
+! End
+
 ! Example 470
 **foo **bar baz**
---->
+! Solution
 <p>**foo <strong>bar baz</strong></p>
---------
+! End
+
 ! Example 471
 *foo *bar baz*
---->
+! Solution
 <p>*foo <em>bar baz</em></p>
---------
+! End
+
+! Example 472
+*[bar*](/url)
+! Solution
+<p>*<a href="/url">bar*</a></p>
+! End
+
+! Example 473
+_foo [bar_](/url)
+! Solution
+<p>_foo <a href="/url">bar_</a></p>
+! End
+
+! Example 474
+*<img src="foo" title="*"/>
+! Solution
+<p>*<img src="foo" title="*"/></p>
+! End
+
+! Example 475
+**<a href="**">
+! Solution
+<p>**<a href="**"></p>
+! End
+
+! Example 476
+__<a href="__">
+! Solution
+<p>__<a href="__"></p>
+! End
+
 ! Example 477
 *a `*`*
---->
+! Solution
 <p><em>a <code>*</code></em></p>
---------
+! End
+
 ! Example 478
 _a `_`_
---->
+! Solution
 <p><em>a <code>_</code></em></p>
---------
+! End
+
+! Example 479
+**a<http://foo.bar/?q=**>
+! Solution
+<p>**a<a href="http://foo.bar/?q=**">http://foo.bar/?q=**</a></p>
+! End
+
+! Example 480
+__a<http://foo.bar/?q=__>
+! Solution
+<p>__a<a href="http://foo.bar/?q=__">http://foo.bar/?q=__</a></p>
+! End
+

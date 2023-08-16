@@ -1,0 +1,463 @@
+! Example 481
+[link](/uri "title")
+! End
+
+! Example 482
+[link](/uri)
+! End
+
+! Example 483
+[](./target.md)
+! End
+
+! Example 484
+[link]()
+! End
+
+! Example 485
+[link](<>)
+! End
+
+! Example 486
+[]()
+! End
+
+! Example 487
+[link](/my uri)
+! End
+
+! Example 488
+[link](</my uri>)
+! End
+
+! Example 489
+[link](foo
+bar)
+! End
+
+! Example 490
+[link](<foo
+bar>)
+! End
+
+! Example 491
+[a](<b)c>)
+! End
+
+! Example 492
+[link](<foo\>)
+! End
+
+! Example 493
+[a](<b)c
+[a](<b)c>
+[a](<b>c)
+! End
+
+! Example 494
+[link](\(foo\))
+! End
+
+! Example 495
+[link](foo(and(bar)))
+! End
+
+! Example 496
+[link](foo(and(bar))
+! End
+
+! Example 497
+[link](foo\(and\(bar\))
+! End
+
+! Example 498
+[link](<foo(and(bar)>)
+! End
+
+! Example 499
+[link](foo\)\:)
+! End
+
+! Example 500
+[link](#fragment)
+
+[link](http://example.com#fragment)
+
+[link](http://example.com?foo=3#frag)
+! End
+
+! Example 501
+[link](foo\bar)
+! End
+
+! Example 503
+[link]("title")
+! End
+
+! Example 504
+[link](/url "title")
+[link](/url 'title')
+[link](/url (title))
+! End
+
+! Example 506
+[link](/url "title")
+! End
+
+! Example 507
+[link](/url "title "and" title")
+! End
+
+! Example 508
+[link](/url 'title "and" title')
+! End
+
+! Example 509
+[link](   /uri
+  "title"  )
+! End
+
+! Example 510
+[link] (/uri)
+! End
+
+! Example 511
+[link [foo [bar]]](/uri)
+! End
+
+! Example 512
+[link] bar](/uri)
+! End
+
+! Example 513
+[link [bar](/uri)
+! End
+
+! Example 514
+[link \[bar](/uri)
+! End
+
+! Example 515
+[link *foo **bar** `#`*](/uri)
+! End
+
+! Example 516
+[![moon](moon.jpg)](/uri)
+! End
+
+! Example 517
+[foo [bar](/uri)](/uri)
+! End
+
+! Example 518
+[foo *[bar [baz](/uri)](/uri)*](/uri)
+! End
+
+! Example 519
+![[[foo](uri1)](uri2)](uri3)
+! End
+
+! Example 520
+*[foo*](/uri)
+! End
+
+! Example 521
+[foo *bar](baz*)
+! End
+
+! Example 522
+*foo [bar* baz]
+! End
+
+! Example 523
+[foo <bar attr="](baz)">
+! End
+
+! Example 524
+[foo`](/uri)`
+! End
+
+! Example 525
+[foo<http://example.com/?search=](uri)>
+! End
+
+! Example 526
+[foo][bar]
+
+[bar]: /url "title"
+! End
+
+! Example 527
+[link [foo [bar]]][ref]
+
+[ref]: /uri
+! End
+
+! Example 528
+[link \[bar][ref]
+
+[ref]: /uri
+! End
+
+! Example 529
+[link *foo **bar** `#`*][ref]
+
+[ref]: /uri
+! End
+
+! Example 530
+[![moon](moon.jpg)][ref]
+
+[ref]: /uri
+! End
+
+! Example 531
+[foo [bar](/uri)][ref]
+
+[ref]: /uri
+! End
+
+! Example 532
+[foo *bar [baz][ref]*][ref]
+
+[ref]: /uri
+! End
+
+! Example 533
+*[foo*][ref]
+
+[ref]: /uri
+! End
+
+! Example 534
+[foo *bar][ref]*
+
+[ref]: /uri
+! End
+
+! Example 535
+[foo <bar attr="][ref]">
+
+[ref]: /uri
+! End
+
+! Example 536
+[foo`][ref]`
+
+[ref]: /uri
+! End
+
+! Example 537
+[foo<http://example.com/?search=][ref]>
+
+[ref]: /uri
+! End
+
+! Example 538
+[foo][BaR]
+
+[bar]: /url "title"
+! End
+
+! Example 539
+[ẞ]
+
+[SS]: /url
+! End
+
+! Example 540
+[Foo
+  bar]: /url
+
+[Baz][Foo bar]
+! End
+
+! Example 541
+[foo] [bar]
+
+[bar]: /url "title"
+! End
+
+! Example 542
+[foo]
+[bar]
+
+[bar]: /url "title"
+! End
+
+! Example 543
+[foo]: /url1
+
+[foo]: /url2
+
+[bar][foo]
+! End
+
+! Example 544
+[bar][foo\!]
+
+[foo!]: /url
+! End
+
+! Example 545
+[foo][ref[]
+
+[ref[]: /uri
+! End
+
+! Example 546
+[foo][ref[bar]]
+
+[ref[bar]]: /uri
+! End
+
+! Example 547
+[[[foo]]]
+
+[[[foo]]]: /url
+! End
+
+! Example 548
+[foo][ref\[]
+
+[ref\[]: /uri
+! End
+
+! Example 549
+[bar\\]: /uri
+
+[bar\\]
+! End
+
+! Example 550
+[]
+
+[]: /uri
+! End
+
+! Example 551
+[
+ ]
+
+[
+ ]: /uri
+! End
+
+! Example 552
+[foo][]
+
+[foo]: /url "title"
+! End
+
+! Example 553
+[*foo* bar][]
+
+[*foo* bar]: /url "title"
+! End
+
+! Example 554
+[Foo][]
+
+[foo]: /url "title"
+! End
+
+! Example 555
+[foo] 
+[]
+
+[foo]: /url "title"
+! End
+
+! Example 556
+[foo]
+
+[foo]: /url "title"
+! End
+
+! Example 557
+[*foo* bar]
+
+[*foo* bar]: /url "title"
+! End
+
+! Example 558
+[[*foo* bar]]
+
+[*foo* bar]: /url "title"
+! End
+
+! Example 559
+[[bar [foo]
+
+[foo]: /url
+! End
+
+! Example 560
+[Foo]
+
+[foo]: /url "title"
+! End
+
+! Example 561
+[foo] bar
+
+[foo]: /url
+! End
+
+! Example 562
+\[foo]
+
+[foo]: /url "title"
+! End
+
+! Example 563
+[foo*]: /url
+
+*[foo*]
+! End
+
+! Example 564
+[foo][bar]
+
+[foo]: /url1
+[bar]: /url2
+! End
+
+! Example 565
+[foo][]
+
+[foo]: /url1
+! End
+
+! Example 566
+[foo]()
+
+[foo]: /url1
+! End
+
+! Example 567
+[foo](not a link)
+
+[foo]: /url1
+! End
+
+! Example 568
+[foo][bar][baz]
+
+[baz]: /url
+! End
+
+! Example 569
+[foo][bar][baz]
+
+[baz]: /url1
+[bar]: /url2
+! End
+
+! Example 570
+[foo][bar][baz]
+
+[baz]: /url1
+[foo]: /url2
+! End
+

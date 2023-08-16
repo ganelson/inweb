@@ -1,63 +1,96 @@
-! Codespan tests (examples 327-349 from CommonMark specification)
-! Example 327
-`hi`lo`
-----
 ! Example 328
 `foo`
-----
+! End
+
 ! Example 329
 `` foo ` bar ``
-----
+! End
+
 ! Example 330
 ` `` `
-----
+! End
+
 ! Example 331
 `  ``  `
-----
+! End
+
 ! Example 332
 ` a`
-----
+! End
+
 ! Example 333
-`	b	`
-----
+` b `
+! End
+
 ! Example 334
-` `
+` `
 `  `
-----
+! End
+
 ! Example 335
 ``
 foo
 bar  
 baz
 ``
-----
+! End
+
 ! Example 336
 ``
 foo 
 ``
-----
+! End
+
 ! Example 337
 `foo   bar 
 baz`
-----
+! End
+
 ! Example 338
 `foo\`bar`
-----
+! End
+
 ! Example 339
 ``foo`bar``
-----
+! End
+
 ! Example 340
 ` foo `` bar `
-----
+! End
+
 ! Example 341
 *foo`*`
-----
+! End
+
+! Example 342
+[not a `link](/foo`)
+! End
+
+! Example 343
+`<a href="`">`
+! End
+
+! Example 344
+<a href="`">`
+! End
+
+! Example 345
+`<http://foo.bar.`baz>`
+! End
+
+! Example 346
+<http://foo.bar.`baz>`
+! End
+
 ! Example 347
 ```foo``
-----
+! End
+
 ! Example 348
 `foo
-----
+! End
+
 ! Example 349
 `foo``bar``
-----
+! End
+

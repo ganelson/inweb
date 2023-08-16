@@ -1,0 +1,10 @@
+! Example 42
+- `one
+- two`
+! Solution
+<ul>
+<li>`one</li>
+<li>two`</li>
+</ul>
+! End
+

@@ -1,0 +1,142 @@
+! Example 107
+    a simple
+      indented code block
+! Solution
+<pre><code>a simple
+  indented code block
+</code></pre>
+! End
+
+! Example 108
+  - foo
+
+    bar
+! Solution
+<ul>
+<li>
+<p>foo</p>
+<p>bar</p>
+</li>
+</ul>
+! End
+
+! Example 109
+1.  foo
+
+    - bar
+! Solution
+<ol>
+<li>
+<p>foo</p>
+<ul>
+<li>bar</li>
+</ul>
+</li>
+</ol>
+! End
+
+! Example 110
+    <a/>
+    *hi*
+
+    - one
+! Solution
+<pre><code>&lt;a/&gt;
+*hi*
+
+- one
+</code></pre>
+! End
+
+! Example 111
+    chunk1
+
+    chunk2
+  
+ 
+ 
+    chunk3
+! Solution
+<pre><code>chunk1
+
+chunk2
+
+
+
+chunk3
+</code></pre>
+! End
+
+! Example 112
+    chunk1
+      
+      chunk2
+! Solution
+<pre><code>chunk1
+  
+  chunk2
+</code></pre>
+! End
+
+! Example 113
+Foo
+    bar
+
+! Solution
+<p>Foo
+bar</p>
+! End
+
+! Example 114
+    foo
+bar
+! Solution
+<pre><code>foo
+</code></pre>
+<p>bar</p>
+! End
+
+! Example 115
+# Heading
+    foo
+Heading
+------
+    foo
+----
+! Solution
+<h1>Heading</h1>
+<pre><code>foo
+</code></pre>
+<h2>Heading</h2>
+<pre><code>foo
+</code></pre>
+<hr />
+! End
+
+! Example 116
+        foo
+    bar
+! Solution
+<pre><code>    foo
+bar
+</code></pre>
+! End
+
+! Example 117
+
+    
+    foo
+    
+
+! Solution
+<pre><code>foo
+</code></pre>
+! End
+
+! Example 118
+    foo  
+! Solution
+<pre><code>foo  
+</code></pre>
+! End
+

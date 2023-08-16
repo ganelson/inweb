@@ -436,6 +436,14 @@ int Str::suffix_eq(text_stream *S1, text_stream *S2, int N) {
 	return TRUE;
 }
 
+int Str::begins_with(text_stream *S1, text_stream *S2) {
+	return Str::prefix_eq(S1, S2, Str::len(S2));
+}
+
+int Str::ends_with(text_stream *S1, text_stream *S2) {
+	return Str::suffix_eq(S1, S2, Str::len(S2));
+}
+
 int Str::begins_with_wide_string(text_stream *S, wchar_t *prefix) {
 	if ((prefix == NULL) || (*prefix == 0)) return TRUE;
 	if (S == NULL) return FALSE;
@@ -610,10 +618,26 @@ int Str::includes_wide_string_at_insensitive(text_stream *S, wchar_t *prefix, in
 int Str::includes(text_stream *S, text_stream *T) {
 	int LS = Str::len(S);
 	int LT = Str::len(T);
-	for (int i=0; i<LS-LT; i++) {
+	for (int i=0; i<=LS-LT; i++) {
 		int failed = FALSE;
 		for (int j=0; j<LT; j++)
 			if (Str::get_at(S, i+j) != Str::get_at(T, j)) {
+				failed = TRUE;
+				break;
+			}
+		if (failed == FALSE) return TRUE;
+	}
+	return FALSE;
+}
+
+int Str::includes_insensitive(text_stream *S, text_stream *T) {
+	int LS = Str::len(S);
+	int LT = Str::len(T);
+	for (int i=0; i<LS-LT; i++) {
+		int failed = FALSE;
+		for (int j=0; j<LT; j++)
+			if (Characters::tolower(Str::get_at(S, i+j)) !=
+				Characters::tolower(Str::get_at(T, j))) {
 				failed = TRUE;
 				break;
 			}

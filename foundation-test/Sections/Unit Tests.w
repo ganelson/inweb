@@ -498,16 +498,17 @@ void Unit::test_Markdown(text_stream *arg) {
 
 void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *state) {
 	text_stream *marked_up = (text_stream *) state;
-	if ((Str::get_first_char(text) == '!') && (Str::get_at(text, 1) == ' ')) { WRITE_TO(STDOUT, "%S\n", text); return; }
-	if (Str::eq(text, I"TRACE")) { MarkdownParser::set_tracing(TRUE); return; }
-	if (Str::eq(text, I"----")) {
+	if (Str::eq(text, I"! End")) {
 		Str::delete_last_character(marked_up);
-		WRITE_TO(STDOUT, "%S\n--->\n", marked_up);
+		WRITE_TO(STDOUT, "%S\n! Solution\n", marked_up);
 		markdown_item *md = MarkdownParser::paragraph(marked_up);
 		MarkdownRenderer::go(STDOUT, md);
-		WRITE_TO(STDOUT, "--------\n");
+		WRITE_TO(STDOUT, "! End\n\n");
 		Str::clear(marked_up);
 		MarkdownParser::set_tracing(FALSE);
+	} else if ((Str::get_first_char(text) == '!') && (Str::get_at(text, 1) == ' ')) {
+		WRITE_TO(STDOUT, "%S\n", text); Str::clear(marked_up);
+		if (Str::get_last_char(text) == '*') MarkdownParser::set_tracing(TRUE);
 	} else {
 		WRITE_TO(marked_up, "%S\n", text);
 	}

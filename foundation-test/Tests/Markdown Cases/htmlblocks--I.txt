@@ -1,0 +1,537 @@
+! Example 148
+<table><tr><td>
+<pre>
+**Hello**,
+
+_world_.
+</pre>
+</td></tr></table>
+! Solution
+<table><tr><td>
+<pre>
+**Hello**,
+<p><em>world</em>.
+</pre></p>
+</td></tr></table>
+! End
+
+! Example 149
+<table>
+  <tr>
+    <td>
+           hi
+    </td>
+  </tr>
+</table>
+
+okay.
+! Solution
+<table>
+  <tr>
+    <td>
+           hi
+    </td>
+  </tr>
+</table>
+<p>okay.</p>
+! End
+
+! Example 150
+ <div>
+  *hello*
+         <foo><a>
+! Solution
+ <div>
+  *hello*
+         <foo><a>
+! End
+
+! Example 151
+</div>
+*foo*
+! Solution
+</div>
+*foo*
+! End
+
+! Example 152
+<DIV CLASS="foo">
+
+*Markdown*
+
+</DIV>
+! Solution
+<DIV CLASS="foo">
+<p><em>Markdown</em></p>
+</DIV>
+! End
+
+! Example 153
+<div id="foo"
+  class="bar">
+</div>
+! Solution
+<div id="foo"
+  class="bar">
+</div>
+! End
+
+! Example 154
+<div id="foo" class="bar
+  baz">
+</div>
+! Solution
+<div id="foo" class="bar
+  baz">
+</div>
+! End
+
+! Example 155
+<div>
+*foo*
+
+*bar*
+! Solution
+<div>
+*foo*
+<p><em>bar</em></p>
+! End
+
+! Example 156
+<div id="foo"
+*hi*
+! Solution
+<div id="foo"
+*hi*
+! End
+
+! Example 157
+<div class
+foo
+! Solution
+<div class
+foo
+! End
+
+! Example 158
+<div *???-&&&-<---
+*foo*
+! Solution
+<div *???-&&&-<---
+*foo*
+! End
+
+! Example 159
+<div><a href="bar">*foo*</a></div>
+! Solution
+<div><a href="bar">*foo*</a></div>
+! End
+
+! Example 160
+<table><tr><td>
+foo
+</td></tr></table>
+! Solution
+<table><tr><td>
+foo
+</td></tr></table>
+! End
+
+! Example 161
+<div></div>
+``` c
+int x = 33;
+```
+! Solution
+<div></div>
+``` c
+int x = 33;
+```
+! End
+
+! Example 162
+<a href="foo">
+*bar*
+</a>
+! Solution
+<a href="foo">
+*bar*
+</a>
+! End
+
+! Example 163
+<Warning>
+*bar*
+</Warning>
+! Solution
+<Warning>
+*bar*
+</Warning>
+! End
+
+! Example 164
+<i class="foo">
+*bar*
+</i>
+! Solution
+<i class="foo">
+*bar*
+</i>
+! End
+
+! Example 165
+</ins>
+*bar*
+! Solution
+</ins>
+*bar*
+! End
+
+! Example 166
+<del>
+*foo*
+</del>
+! Solution
+<del>
+*foo*
+</del>
+! End
+
+! Example 167
+<del>
+
+*foo*
+
+</del>
+! Solution
+<del>
+<p><em>foo</em></p>
+</del>
+! End
+
+! Example 168
+<del>*foo*</del>
+! Solution
+<p><del><em>foo</em></del></p>
+! End
+
+! Example 169
+<pre language="haskell"><code>
+import Text.HTML.TagSoup
+
+main :: IO ()
+main = print $ parseTags tags
+</code></pre>
+okay
+! Solution
+<pre language="haskell"><code>
+import Text.HTML.TagSoup
+
+main :: IO ()
+main = print $ parseTags tags
+</code></pre>
+<p>okay</p>
+! End
+
+! Example 170
+<script type="text/javascript">
+// JavaScript example
+
+document.getElementById("demo").innerHTML = "Hello JavaScript!";
+</script>
+okay
+! Solution
+<script type="text/javascript">
+// JavaScript example
+
+document.getElementById("demo").innerHTML = "Hello JavaScript!";
+</script>
+<p>okay</p>
+! End
+
+! Example 171
+<textarea>
+
+*foo*
+
+_bar_
+
+</textarea>
+! Solution
+<textarea>
+
+*foo*
+
+_bar_
+
+</textarea>
+! End
+
+! Example 172
+<style
+  type="text/css">
+h1 {color:red;}
+
+p {color:blue;}
+</style>
+okay
+! Solution
+<style
+  type="text/css">
+h1 {color:red;}
+
+p {color:blue;}
+</style>
+<p>okay</p>
+! End
+
+! Example 173
+<style
+  type="text/css">
+
+foo
+! Solution
+<style
+  type="text/css">
+
+foo
+! End
+
+! Example 174
+> <div>
+> foo
+
+bar
+! Solution
+<blockquote>
+<div>
+foo
+</blockquote>
+<p>bar</p>
+! End
+
+! Example 175
+- <div>
+- foo
+! Solution
+<ul>
+<li>
+<div>
+</li>
+<li>foo</li>
+</ul>
+! End
+
+! Example 176
+<style>p{color:red;}</style>
+*foo*
+! Solution
+<style>p{color:red;}</style>
+<p><em>foo</em></p>
+! End
+
+! Example 177
+<!-- foo -->*bar*
+*baz*
+! Solution
+<!-- foo -->*bar*
+<p><em>baz</em></p>
+! End
+
+! Example 178
+<script>
+foo
+</script>1. *bar*
+! Solution
+<script>
+foo
+</script>1. *bar*
+! End
+
+! Example 179
+<!-- Foo
+
+bar
+   baz -->
+okay
+! Solution
+<!-- Foo
+
+bar
+   baz -->
+<p>okay</p>
+! End
+
+! Example 180
+<?php
+
+  echo '>';
+
+?>
+okay
+! Solution
+<?php
+
+  echo '>';
+
+?>
+<p>okay</p>
+! End
+
+! Example 181
+<!DOCTYPE html>
+! Solution
+<!DOCTYPE html>
+! End
+
+! Example 182
+<![CDATA[
+function matchwo(a,b)
+{
+  if (a < b && a < 0) then {
+    return 1;
+
+  } else {
+
+    return 0;
+  }
+}
+]]>
+okay
+! Solution
+<![CDATA[
+function matchwo(a,b)
+{
+  if (a < b && a < 0) then {
+    return 1;
+
+  } else {
+
+    return 0;
+  }
+}
+]]>
+<p>okay</p>
+! End
+
+! Example 183
+  <!-- foo -->
+
+    <!-- foo -->
+! Solution
+  <!-- foo -->
+<pre><code>&lt;!-- foo --&gt;
+</code></pre>
+! End
+
+! Example 184
+  <div>
+
+    <div>
+! Solution
+  <div>
+<pre><code>&lt;div&gt;
+</code></pre>
+! End
+
+! Example 185
+Foo
+<div>
+bar
+</div>
+! Solution
+<p>Foo</p>
+<div>
+bar
+</div>
+! End
+
+! Example 186
+<div>
+bar
+</div>
+*foo*
+! Solution
+<div>
+bar
+</div>
+*foo*
+! End
+
+! Example 187
+Foo
+<a href="bar">
+baz
+! Solution
+<p>Foo
+<a href="bar">
+baz</p>
+! End
+
+! Example 188
+<div>
+
+*Emphasized* text.
+
+</div>
+! Solution
+<div>
+<p><em>Emphasized</em> text.</p>
+</div>
+! End
+
+! Example 189
+<div>
+*Emphasized* text.
+</div>
+! Solution
+<div>
+*Emphasized* text.
+</div>
+! End
+
+! Example 190
+<table>
+
+<tr>
+
+<td>
+Hi
+</td>
+
+</tr>
+
+</table>
+! Solution
+<table>
+<tr>
+<td>
+Hi
+</td>
+</tr>
+</table>
+! End
+
+! Example 191
+<table>
+
+  <tr>
+
+    <td>
+      Hi
+    </td>
+
+  </tr>
+
+</table>
+! Solution
+<table>
+  <tr>
+<pre><code>&lt;td&gt;
+  Hi
+&lt;/td&gt;
+</code></pre>
+  </tr>
+</table>
+! End
+

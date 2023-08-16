@@ -37,6 +37,7 @@ here we are.
 @e markdown_item_CLASS
 @e match_avinue_CLASS
 @e match_trie_CLASS
+@e md_doc_reference_CLASS
 @e method_CLASS
 @e method_set_CLASS
 @e module_CLASS
@@ -115,5 +116,6 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(linked_list_item, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(markdown_item, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_avinue, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_trie, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(md_doc_reference, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(md_emphasis_delimiter, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(text_stream, 100)

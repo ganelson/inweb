@@ -1,379 +1,530 @@
-! Emphasis tests (examples 350-478 from CommonMark specification)
 ! Example 350
 *foo bar*
-----
+! End
+
 ! Example 351
 a * foo bar*
-----
+! End
+
 ! Example 352
 a*"foo"*
-----
+! End
+
 ! Example 353
-* a *
-----
+* a *
+! End
+
 ! Example 354
 foo*bar*
-----
+! End
+
 ! Example 355
 5*6*78
-----
+! End
+
 ! Example 356
 _foo bar_
-----
+! End
+
 ! Example 357
 _ foo bar_
-----
+! End
+
 ! Example 358
 a_"foo"_
-----
+! End
+
 ! Example 359
 foo_bar_
-----
+! End
+
 ! Example 360
 5_6_78
-----
+! End
+
 ! Example 361
 пристаням_стремятся_
-----
+! End
+
 ! Example 362
 aa_"bb"_cc
-----
+! End
+
 ! Example 363
 foo-_(bar)_
-----
+! End
+
 ! Example 364
 _foo*
-----
+! End
+
 ! Example 365
 *foo bar *
-----
+! End
+
 ! Example 366
 *foo bar
 *
-----
+! End
+
 ! Example 367
 *(*foo)
-----
+! End
+
 ! Example 368
 *(*foo*)*
-----
+! End
+
 ! Example 369
 *foo*bar
-----
+! End
+
 ! Example 370
 _foo bar _
-----
+! End
+
 ! Example 371
 _(_foo)
-----
+! End
+
 ! Example 372
 _(_foo_)_
-----
+! End
+
 ! Example 373
 _foo_bar
-----
+! End
+
 ! Example 374
 _пристаням_стремятся
-----
+! End
+
 ! Example 375
 _foo_bar_baz_
-----
+! End
+
 ! Example 376
 _(bar)_.
-----
+! End
+
 ! Example 377
 **foo bar**
-----
+! End
+
 ! Example 378
 ** foo bar**
-----
+! End
+
 ! Example 379
 a**"foo"**
-----
+! End
+
 ! Example 380
 foo**bar**
-----
+! End
+
 ! Example 381
 __foo bar__
-----
+! End
+
 ! Example 382
 __ foo bar__
-----
+! End
+
 ! Example 383
 __
 foo bar__
-----
+! End
+
 ! Example 384
 a__"foo"__
-----
+! End
+
 ! Example 385
 foo__bar__
-----
+! End
+
 ! Example 386
 5__6__78
-----
+! End
+
 ! Example 387
 пристаням__стремятся__
-----
+! End
+
 ! Example 388
 __foo, __bar__, baz__
-----
+! End
+
 ! Example 389
 foo-__(bar)__
-----
+! End
+
 ! Example 390
 **foo bar **
-----
+! End
+
 ! Example 391
 **(**foo)
-----
+! End
+
 ! Example 392
 *(**foo**)*
-----
+! End
+
 ! Example 393
 **Gomphocarpus (*Gomphocarpus physocarpus*, syn.
 *Asclepias physocarpa*)**
-----
+! End
+
 ! Example 394
 **foo "*bar*" foo**
-----
+! End
+
 ! Example 395
 **foo**bar
-----
+! End
+
 ! Example 396
 __foo bar __
-----
+! End
+
 ! Example 397
 __(__foo)
-----
+! End
+
 ! Example 398
 _(__foo__)_
-----
+! End
+
 ! Example 399
 __foo__bar
-----
+! End
+
 ! Example 400
 __пристаням__стремятся
-----
+! End
+
 ! Example 401
 __foo__bar__baz__
-----
+! End
+
 ! Example 402
 __(bar)__.
-----
+! End
+
 ! Example 403
 *foo [bar](/url)*
-----
+! End
+
 ! Example 404
 *foo
 bar*
-----
+! End
+
 ! Example 405
 _foo __bar__ baz_
-----
+! End
+
 ! Example 406
 _foo _bar_ baz_
-----
+! End
+
 ! Example 407
 __foo_ bar_
-----
+! End
+
 ! Example 408
 *foo *bar**
-----
+! End
+
 ! Example 409
 *foo **bar** baz*
-----
+! End
+
 ! Example 410
 *foo**bar**baz*
-----
+! End
+
 ! Example 411
 *foo**bar*
-----
+! End
+
 ! Example 412
 ***foo** bar*
-----
+! End
+
 ! Example 413
 *foo **bar***
-----
+! End
+
 ! Example 414
 *foo**bar***
-----
+! End
+
 ! Example 415
 foo***bar***baz
-----
+! End
+
 ! Example 416
 foo******bar*********baz
-----
+! End
+
 ! Example 417
 *foo **bar *baz* bim** bop*
-----
+! End
+
 ! Example 418
 *foo [*bar*](/url)*
-----
+! End
+
 ! Example 419
 ** is not an empty emphasis
-----
+! End
+
 ! Example 420
 **** is not an empty strong emphasis
-----
+! End
+
 ! Example 421
 **foo [bar](/url)**
-----
+! End
+
 ! Example 422
 **foo
 bar**
-----
+! End
+
 ! Example 423
 __foo _bar_ baz__
-----
+! End
+
 ! Example 424
 __foo __bar__ baz__
-----
+! End
+
 ! Example 425
 ____foo__ bar__
-----
+! End
+
 ! Example 426
 **foo **bar****
-----
+! End
+
 ! Example 427
 **foo *bar* baz**
-----
+! End
+
 ! Example 428
 **foo*bar*baz**
-----
+! End
+
 ! Example 429
 ***foo* bar**
-----
+! End
+
 ! Example 430
 **foo *bar***
-----
+! End
+
 ! Example 431
 **foo *bar **baz**
 bim* bop**
-----
+! End
+
 ! Example 432
 **foo [*bar*](/url)**
-----
+! End
+
 ! Example 433
 __ is not an empty emphasis
-----
+! End
+
 ! Example 434
 ____ is not an empty strong emphasis
-----
+! End
+
 ! Example 435
 foo ***
-----
+! End
+
 ! Example 436
 foo *\**
-----
+! End
+
 ! Example 437
 foo *_*
-----
+! End
+
 ! Example 438
 foo *****
-----
+! End
+
 ! Example 439
 foo **\***
-----
+! End
+
 ! Example 440
 foo **_**
-----
+! End
+
 ! Example 441
 **foo*
-----
+! End
+
 ! Example 442
 *foo**
-----
+! End
+
 ! Example 443
 ***foo**
-----
+! End
+
 ! Example 444
 ****foo*
-----
+! End
+
 ! Example 445
 **foo***
-----
+! End
+
 ! Example 446
 *foo****
-----
+! End
+
 ! Example 447
 foo ___
-----
+! End
+
 ! Example 448
 foo _\__
-----
+! End
+
 ! Example 449
 foo _*_
-----
+! End
+
 ! Example 450
 foo _____
-----
+! End
+
 ! Example 451
 foo __\___
-----
+! End
+
 ! Example 452
 foo __*__
-----
+! End
+
 ! Example 453
 __foo_
-----
+! End
+
 ! Example 454
 _foo__
-----
+! End
+
 ! Example 455
 ___foo__
-----
+! End
+
 ! Example 456
 ____foo_
-----
+! End
+
 ! Example 457
 __foo___
-----
+! End
+
 ! Example 458
 _foo____
-----
+! End
+
 ! Example 459
 **foo**
-----
+! End
+
 ! Example 460
 *_foo_*
-----
+! End
+
 ! Example 461
 __foo__
-----
+! End
+
 ! Example 462
 _*foo*_
-----
+! End
+
 ! Example 463
 ****foo****
-----
+! End
+
 ! Example 464
 ____foo____
-----
+! End
+
 ! Example 465
 ******foo******
-----
+! End
+
 ! Example 466
 ***foo***
-----
+! End
+
 ! Example 467
 _____foo_____
-----
+! End
+
 ! Example 468
 *foo _bar* baz_
-----
+! End
+
 ! Example 469
 *foo __bar *baz bim__ bam*
-----
+! End
+
 ! Example 470
 **foo **bar baz**
-----
+! End
+
 ! Example 471
 *foo *bar baz*
-----
+! End
+
+! Example 472
+*[bar*](/url)
+! End
+
+! Example 473
+_foo [bar_](/url)
+! End
+
+! Example 474
+*<img src="foo" title="*"/>
+! End
+
+! Example 475
+**<a href="**">
+! End
+
+! Example 476
+__<a href="__">
+! End
+
 ! Example 477
 *a `*`*
-----
+! End
+
 ! Example 478
 _a `_`_
-----
+! End
+
+! Example 479
+**a<http://foo.bar/?q=**>
+! End
+
+! Example 480
+__a<http://foo.bar/?q=__>
+! End
+

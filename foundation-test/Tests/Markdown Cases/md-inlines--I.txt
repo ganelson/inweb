@@ -1,0 +1,6 @@
+! Example 327
+`hi`lo`
+! Solution
+<p><code>hi</code>lo`</p>
+! End
+

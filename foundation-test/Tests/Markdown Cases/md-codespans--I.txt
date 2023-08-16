@@ -1,0 +1,141 @@
+! Example 328
+`foo`
+! Solution
+<p><code>foo</code></p>
+! End
+
+! Example 329
+`` foo ` bar ``
+! Solution
+<p><code>foo ` bar</code></p>
+! End
+
+! Example 330
+` `` `
+! Solution
+<p><code>``</code></p>
+! End
+
+! Example 331
+`  ``  `
+! Solution
+<p><code> `` </code></p>
+! End
+
+! Example 332
+` a`
+! Solution
+<p><code> a</code></p>
+! End
+
+! Example 333
+` b `
+! Solution
+<p><code> b </code></p>
+! End
+
+! Example 334
+` `
+`  `
+! Solution
+<p><code> </code>
+<code>  </code></p>
+! End
+
+! Example 335
+``
+foo
+bar  
+baz
+``
+! Solution
+<p><code>foo bar   baz</code></p>
+! End
+
+! Example 336
+``
+foo 
+``
+! Solution
+<p><code>foo </code></p>
+! End
+
+! Example 337
+`foo   bar 
+baz`
+! Solution
+<p><code>foo   bar  baz</code></p>
+! End
+
+! Example 338
+`foo\`bar`
+! Solution
+<p><code>foo\</code>bar`</p>
+! End
+
+! Example 339
+``foo`bar``
+! Solution
+<p><code>foo`bar</code></p>
+! End
+
+! Example 340
+` foo `` bar `
+! Solution
+<p><code>foo `` bar</code></p>
+! End
+
+! Example 341
+*foo`*`
+! Solution
+<p>*foo<code>*</code></p>
+! End
+
+! Example 342
+[not a `link](/foo`)
+! Solution
+<p>[not a <code>link](/foo</code>)</p>
+! End
+
+! Example 343
+`<a href="`">`
+! Solution
+<p><code>&lt;a href=&quot;</code>&quot;&gt;`</p>
+! End
+
+! Example 344
+<a href="`">`
+! Solution
+<p><a href="`">`</p>
+! End
+
+! Example 345
+`<http://foo.bar.`baz>`
+! Solution
+<p><code>&lt;http://foo.bar.</code>baz&gt;`</p>
+! End
+
+! Example 346
+<http://foo.bar.`baz>`
+! Solution
+<p><a href="http://foo.bar.%60baz">http://foo.bar.`baz</a>`</p>
+! End
+
+! Example 347
+```foo``
+! Solution
+<p>```foo``</p>
+! End
+
+! Example 348
+`foo
+! Solution
+<p>`foo</p>
+! End
+
+! Example 349
+`foo``bar``
+! Solution
+<p>`foo<code>bar</code></p>
+! End
+

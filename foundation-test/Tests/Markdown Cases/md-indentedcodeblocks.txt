@@ -1,0 +1,77 @@
+! Example 107
+    a simple
+      indented code block
+! End
+
+! Example 108
+  - foo
+
+    bar
+! End
+
+! Example 109
+1.  foo
+
+    - bar
+! End
+
+! Example 110
+    <a/>
+    *hi*
+
+    - one
+! End
+
+! Example 111
+    chunk1
+
+    chunk2
+  
+ 
+ 
+    chunk3
+! End
+
+! Example 112
+    chunk1
+      
+      chunk2
+! End
+
+! Example 113
+Foo
+    bar
+
+! End
+
+! Example 114
+    foo
+bar
+! End
+
+! Example 115
+# Heading
+    foo
+Heading
+------
+    foo
+----
+! End
+
+! Example 116
+        foo
+    bar
+! End
+
+! Example 117
+
+    
+    foo
+    
+
+! End
+
+! Example 118
+    foo  
+! End
+

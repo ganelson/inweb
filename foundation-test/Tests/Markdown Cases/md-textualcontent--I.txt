@@ -1,0 +1,18 @@
+! Example 650
+hello $.;'there
+! Solution
+<p>hello $.;'there</p>
+! End
+
+! Example 651
+Foo χρῆν
+! Solution
+<p>Foo χρῆν</p>
+! End
+
+! Example 652
+Multiple     spaces
+! Solution
+<p>Multiple     spaces</p>
+! End
+

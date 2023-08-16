@@ -1,119 +1,141 @@
 ! Example 612
 <a><bab><c2c>
---->
+! Solution
 <p><a><bab><c2c></p>
---------
+! End
+
 ! Example 613
 <a/><b2/>
---->
+! Solution
 <p><a/><b2/></p>
---------
+! End
+
 ! Example 614
 <a  /><b2
 data="foo" >
---->
+! Solution
 <p><a  /><b2
 data="foo" ></p>
---------
+! End
+
 ! Example 615
 <a foo="bar" bam = 'baz <em>"</em>'
 _boolean zoop:33=zoop:33 />
---->
+! Solution
 <p><a foo="bar" bam = 'baz <em>"</em>'
 _boolean zoop:33=zoop:33 /></p>
---------
+! End
+
 ! Example 616
 Foo <responsive-image src="foo.jpg" />
---->
+! Solution
 <p>Foo <responsive-image src="foo.jpg" /></p>
---------
+! End
+
 ! Example 617
 <33> <__>
---->
+! Solution
 <p>&lt;33&gt; &lt;__&gt;</p>
---------
+! End
+
 ! Example 618
 <a h*#ref="hi">
---->
+! Solution
 <p>&lt;a h*#ref=&quot;hi&quot;&gt;</p>
---------
+! End
+
 ! Example 619
 <a href="hi'> <a href=hi'>
---->
+! Solution
 <p>&lt;a href=&quot;hi'&gt; &lt;a href=hi'&gt;</p>
---------
+! End
+
 ! Example 620
 < a><
 foo><bar/ >
 <foo bar=baz
 bim!bop />
---->
+! Solution
 <p>&lt; a&gt;&lt;
 foo&gt;&lt;bar/ &gt;
 &lt;foo bar=baz
 bim!bop /&gt;</p>
---------
+! End
+
 ! Example 621
 <a href='bar'title=title>
---->
+! Solution
 <p>&lt;a href='bar'title=title&gt;</p>
---------
+! End
+
 ! Example 622
 </a></foo >
---->
+! Solution
 <p></a></foo ></p>
---------
+! End
+
 ! Example 623
 </a href="foo">
---->
+! Solution
 <p>&lt;/a href=&quot;foo&quot;&gt;</p>
---------
+! End
+
 ! Example 624
 foo <!-- this is a
 comment - with hyphen -->
---->
+! Solution
 <p>foo <!-- this is a
 comment - with hyphen --></p>
---------
+! End
+
 ! Example 625
 foo <!-- not a comment -- two hyphens -->
---->
+! Solution
 <p>foo &lt;!-- not a comment -- two hyphens --&gt;</p>
---------
+! End
+
 ! Example 626
 foo <!--> foo -->
+
 foo <!-- foo--->
---->
-<p>foo &lt;!--&gt; foo --&gt;
-foo &lt;!-- foo---&gt;</p>
---------
+! Solution
+<p>foo &lt;!--&gt; foo --&gt;</p>
+<p>foo &lt;!-- foo---&gt;</p>
+! End
+
 ! Example 627
 foo <?php echo $a; ?>
---->
+! Solution
 <p>foo <?php echo $a; ?></p>
---------
+! End
+
 ! Example 628
 foo <!ELEMENT br EMPTY>
---->
+! Solution
 <p>foo <!ELEMENT br EMPTY></p>
---------
+! End
+
 ! Example 629
 foo <![CDATA[>&<]]>
---->
+! Solution
 <p>foo <![CDATA[>&<]]></p>
---------
+! End
+
 ! Example 630
 foo <a href="&ouml;">
---->
+! Solution
 <p>foo <a href="&ouml;"></p>
---------
+! End
+
 ! Example 631
 foo <a href="\*">
---->
+! Solution
 <p>foo <a href="\*"></p>
---------
+! End
+
 ! Example 632
 <a href="\"">
---->
+! Solution
 <p>&lt;a href=&quot;&quot;&quot;&gt;</p>
---------
+! End
+

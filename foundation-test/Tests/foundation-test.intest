@@ -1,5 +1,6 @@
 -cases 'inweb/foundation-test/Tests/Test Cases'
 -cases [Markdown] 'inweb/foundation-test/Tests/Markdown Cases'
+-singular temp
 
 -recipe
 

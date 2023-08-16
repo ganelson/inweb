@@ -1,0 +1,10 @@
+! Example 648
+foo
+baz
+! End
+
+! Example 649
+foo 
+ baz
+! End
+

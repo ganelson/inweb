@@ -1,96 +1,114 @@
-! Autolink tests (examples 593-611 from CommonMark specification)
 ! Example 593
 <http://foo.bar.baz>
---->
+! Solution
 <p><a href="http://foo.bar.baz">http://foo.bar.baz</a></p>
---------
+! End
+
 ! Example 594
 <http://foo.bar.baz/test?q=hello&id=22&boolean>
---->
+! Solution
 <p><a href="http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean">http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean</a></p>
---------
+! End
+
 ! Example 595
 <irc://foo.bar:2233/baz>
---->
+! Solution
 <p><a href="irc://foo.bar:2233/baz">irc://foo.bar:2233/baz</a></p>
---------
+! End
+
 ! Example 596
 <MAILTO:FOO@BAR.BAZ>
---->
+! Solution
 <p><a href="MAILTO:FOO@BAR.BAZ">MAILTO:FOO@BAR.BAZ</a></p>
---------
+! End
+
 ! Example 597
 <a+b+c:d>
---->
+! Solution
 <p><a href="a+b+c:d">a+b+c:d</a></p>
---------
+! End
+
 ! Example 598
 <made-up-scheme://foo,bar>
---->
+! Solution
 <p><a href="made-up-scheme://foo,bar">made-up-scheme://foo,bar</a></p>
---------
+! End
+
 ! Example 599
 <http://../>
---->
+! Solution
 <p><a href="http://../">http://../</a></p>
---------
+! End
+
 ! Example 600
 <localhost:5001/foo>
---->
+! Solution
 <p><a href="localhost:5001/foo">localhost:5001/foo</a></p>
---------
+! End
+
 ! Example 601
 <http://foo.bar/baz bim>
---->
+! Solution
 <p>&lt;http://foo.bar/baz bim&gt;</p>
---------
+! End
+
 ! Example 602
 <http://example.com/\[\>
---->
+! Solution
 <p><a href="http://example.com/%5C%5B%5C">http://example.com/\[\</a></p>
---------
+! End
+
 ! Example 603
 <foo@bar.example.com>
---->
+! Solution
 <p><a href="mailto:foo@bar.example.com">foo@bar.example.com</a></p>
---------
+! End
+
 ! Example 604
 <foo+special@Bar.baz-bar0.com>
---->
+! Solution
 <p><a href="mailto:foo+special@Bar.baz-bar0.com">foo+special@Bar.baz-bar0.com</a></p>
---------
+! End
+
 ! Example 605
 <foo\+@bar.example.com>
---->
+! Solution
 <p>&lt;foo+@bar.example.com&gt;</p>
---------
+! End
+
 ! Example 606
 <>
---->
+! Solution
 <p>&lt;&gt;</p>
---------
+! End
+
 ! Example 607
 < http://foo.bar >
---->
+! Solution
 <p>&lt; http://foo.bar &gt;</p>
---------
+! End
+
 ! Example 608
 <m:abc>
---->
+! Solution
 <p>&lt;m:abc&gt;</p>
---------
+! End
+
 ! Example 609
 <foo.bar.baz>
---->
+! Solution
 <p>&lt;foo.bar.baz&gt;</p>
---------
+! End
+
 ! Example 610
 http://example.com
---->
+! Solution
 <p>http://example.com</p>
---------
+! End
+
 ! Example 611
 foo@bar.example.com
---->
+! Solution
 <p>foo@bar.example.com</p>
---------
+! End
+

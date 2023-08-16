@@ -1,0 +1,682 @@
+! Example 253
+A paragraph
+with two lines.
+
+    indented code
+
+> A block quote.
+! Solution
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+! End
+
+! Example 254
+1.  A paragraph
+    with two lines.
+
+        indented code
+
+    > A block quote.
+! Solution
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+! End
+
+! Example 255
+- one
+
+ two
+! Solution
+<ul>
+<li>one</li>
+</ul>
+<p>two</p>
+! End
+
+! Example 256
+- one
+
+  two
+! Solution
+<ul>
+<li>
+<p>one</p>
+<p>two</p>
+</li>
+</ul>
+! End
+
+! Example 257
+ -    one
+
+     two
+! Solution
+<ul>
+<li>one</li>
+</ul>
+<pre><code> two
+</code></pre>
+! End
+
+! Example 258
+ -    one
+
+      two
+! Solution
+<ul>
+<li>
+<p>one</p>
+<p>two</p>
+</li>
+</ul>
+! End
+
+! Example 259
+   > > 1.  one
+>>
+>>     two
+! Solution
+<blockquote>
+<blockquote>
+<ol>
+<li>
+<p>one</p>
+<p>two</p>
+</li>
+</ol>
+</blockquote>
+</blockquote>
+! End
+
+! Example 260
+>>- one
+>>
+  >  > two
+! Solution
+<blockquote>
+<blockquote>
+<ul>
+<li>one</li>
+</ul>
+<p>two</p>
+</blockquote>
+</blockquote>
+! End
+
+! Example 261
+-one
+
+2.two
+! Solution
+<p>-one</p>
+<p>2.two</p>
+! End
+
+! Example 262
+- foo
+
+
+  bar
+! Solution
+<ul>
+<li>
+<p>foo</p>
+<p>bar</p>
+</li>
+</ul>
+! End
+
+! Example 263
+1.  foo
+
+    ```
+    bar
+    ```
+
+    baz
+
+    > bam
+! Solution
+<ol>
+<li>
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+<p>baz</p>
+<blockquote>
+<p>bam</p>
+</blockquote>
+</li>
+</ol>
+! End
+
+! Example 264
+- Foo
+
+      bar
+
+
+      baz
+! Solution
+<ul>
+<li>
+<p>Foo</p>
+<pre><code>bar
+
+
+baz
+</code></pre>
+</li>
+</ul>
+! End
+
+! Example 265
+123456789. ok
+! Solution
+<ol start="123456789">
+<li>ok</li>
+</ol>
+! End
+
+! Example 266
+1234567890. not ok
+! Solution
+<p>1234567890. not ok</p>
+! End
+
+! Example 267
+0. ok
+! Solution
+<ol start="0">
+<li>ok</li>
+</ol>
+! End
+
+! Example 268
+003. ok
+! Solution
+<ol start="3">
+<li>ok</li>
+</ol>
+! End
+
+! Example 269
+-1. not ok
+! Solution
+<p>-1. not ok</p>
+! End
+
+! Example 270
+- foo
+
+      bar
+! Solution
+<ul>
+<li>
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+</li>
+</ul>
+! End
+
+! Example 271
+  10.  foo
+
+           bar
+! Solution
+<ol start="10">
+<li>
+<p>foo</p>
+<pre><code>bar
+</code></pre>
+</li>
+</ol>
+! End
+
+! Example 272
+    indented code
+
+paragraph
+
+    more code
+! Solution
+<pre><code>indented code
+</code></pre>
+<p>paragraph</p>
+<pre><code>more code
+</code></pre>
+! End
+
+! Example 273
+1.     indented code
+
+   paragraph
+
+       more code
+! Solution
+<ol>
+<li>
+<pre><code>indented code
+</code></pre>
+<p>paragraph</p>
+<pre><code>more code
+</code></pre>
+</li>
+</ol>
+! End
+
+! Example 274
+1.      indented code
+
+   paragraph
+
+       more code
+! Solution
+<ol>
+<li>
+<pre><code> indented code
+</code></pre>
+<p>paragraph</p>
+<pre><code>more code
+</code></pre>
+</li>
+</ol>
+! End
+
+! Example 275
+   foo
+
+bar
+! Solution
+<p>foo</p>
+<p>bar</p>
+! End
+
+! Example 276
+-    foo
+
+  bar
+! Solution
+<ul>
+<li>foo</li>
+</ul>
+<p>bar</p>
+! End
+
+! Example 277
+-  foo
+
+   bar
+! Solution
+<ul>
+<li>
+<p>foo</p>
+<p>bar</p>
+</li>
+</ul>
+! End
+
+! Example 278
+-
+  foo
+-
+  ```
+  bar
+  ```
+-
+      baz
+! Solution
+<ul>
+<li>foo</li>
+<li>
+<pre><code>bar
+</code></pre>
+</li>
+<li>
+<pre><code>baz
+</code></pre>
+</li>
+</ul>
+! End
+
+! Example 279
+-   
+  foo
+! Solution
+<ul>
+<li>foo</li>
+</ul>
+! End
+
+! Example 280
+-
+
+  foo
+! Solution
+<ul>
+<li></li>
+</ul>
+<p>foo</p>
+! End
+
+! Example 281
+- foo
+-
+- bar
+! Solution
+<ul>
+<li>foo</li>
+<li></li>
+<li>bar</li>
+</ul>
+! End
+
+! Example 282
+- foo
+-   
+- bar
+! Solution
+<ul>
+<li>foo</li>
+<li></li>
+<li>bar</li>
+</ul>
+! End
+
+! Example 283
+1. foo
+2.
+3. bar
+! Solution
+<ol>
+<li>foo</li>
+<li></li>
+<li>bar</li>
+</ol>
+! End
+
+! Example 284
+*
+! Solution
+<ul>
+<li></li>
+</ul>
+! End
+
+! Example 285
+foo
+*
+
+foo
+1.
+! Solution
+<p>foo
+*</p>
+<p>foo
+1.</p>
+! End
+
+! Example 286
+ 1.  A paragraph
+     with two lines.
+
+         indented code
+
+     > A block quote.
+! Solution
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+! End
+
+! Example 287
+  1.  A paragraph
+      with two lines.
+
+          indented code
+
+      > A block quote.
+! Solution
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+! End
+
+! Example 288
+   1.  A paragraph
+       with two lines.
+
+           indented code
+
+       > A block quote.
+! Solution
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+! End
+
+! Example 289
+    1.  A paragraph
+        with two lines.
+
+            indented code
+
+        > A block quote.
+! Solution
+<pre><code>1.  A paragraph
+    with two lines.
+
+        indented code
+
+    &gt; A block quote.
+</code></pre>
+! End
+
+! Example 290
+  1.  A paragraph
+with two lines.
+
+          indented code
+
+      > A block quote.
+! Solution
+<ol>
+<li>
+<p>A paragraph
+with two lines.</p>
+<pre><code>indented code
+</code></pre>
+<blockquote>
+<p>A block quote.</p>
+</blockquote>
+</li>
+</ol>
+! End
+
+! Example 291
+  1.  A paragraph
+    with two lines.
+! Solution
+<ol>
+<li>A paragraph
+with two lines.</li>
+</ol>
+! End
+
+! Example 292
+> 1. > Blockquote
+continued here.
+! Solution
+<blockquote>
+<ol>
+<li>
+<blockquote>
+<p>Blockquote
+continued here.</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+! End
+
+! Example 293
+> 1. > Blockquote
+> continued here.
+! Solution
+<blockquote>
+<ol>
+<li>
+<blockquote>
+<p>Blockquote
+continued here.</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+! End
+
+! Example 294
+- foo
+  - bar
+    - baz
+      - boo
+! Solution
+<ul>
+<li>foo
+<ul>
+<li>bar
+<ul>
+<li>baz
+<ul>
+<li>boo</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+! End
+
+! Example 295
+- foo
+ - bar
+  - baz
+   - boo
+! Solution
+<ul>
+<li>foo</li>
+<li>bar</li>
+<li>baz</li>
+<li>boo</li>
+</ul>
+! End
+
+! Example 296
+10) foo
+    - bar
+! Solution
+<ol start="10">
+<li>foo
+<ul>
+<li>bar</li>
+</ul>
+</li>
+</ol>
+! End
+
+! Example 297
+10) foo
+   - bar
+! Solution
+<ol start="10">
+<li>foo</li>
+</ol>
+<ul>
+<li>bar</li>
+</ul>
+! End
+
+! Example 298
+- - foo
+! Solution
+<ul>
+<li>
+<ul>
+<li>foo</li>
+</ul>
+</li>
+</ul>
+! End
+
+! Example 299
+1. - 2. foo
+! Solution
+<ol>
+<li>
+<ul>
+<li>
+<ol start="2">
+<li>foo</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+! End
+
+! Example 300
+- # Foo
+- Bar
+  ---
+  baz
+! Solution
+<ul>
+<li>
+<h1>Foo</h1>
+</li>
+<li>
+<h2>Bar</h2>
+baz</li>
+</ul>
+! End
+
