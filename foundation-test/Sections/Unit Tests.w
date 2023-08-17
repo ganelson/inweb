@@ -501,14 +501,13 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 	if (Str::eq(text, I"! End")) {
 		Str::delete_last_character(marked_up);
 		WRITE_TO(STDOUT, "%S\n! Solution\n", marked_up);
-		markdown_item *md = MarkdownParser::paragraph(marked_up);
-		MarkdownRenderer::go(STDOUT, md);
+		Markdown::render(STDOUT, Markdown::parse(marked_up));
 		WRITE_TO(STDOUT, "! End\n\n");
 		Str::clear(marked_up);
-		MarkdownParser::set_tracing(FALSE);
+		Markdown::set_tracing(FALSE);
 	} else if ((Str::get_first_char(text) == '!') && (Str::get_at(text, 1) == ' ')) {
 		WRITE_TO(STDOUT, "%S\n", text); Str::clear(marked_up);
-		if (Str::get_last_char(text) == '*') MarkdownParser::set_tracing(TRUE);
+		if (Str::get_last_char(text) == '*') Markdown::set_tracing(TRUE);
 	} else {
 		WRITE_TO(marked_up, "%S\n", text);
 	}
