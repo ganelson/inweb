@@ -1,0 +1,80 @@
+! Example 25
+&nbsp; &amp; &copy; &AElig; &Dcaron;
+&frac34; &HilbertSpace; &DifferentialD;
+&ClockwiseContourIntegral; &ngE;
+! End
+
+! Example 26
+&#35; &#1234; &#992; &#0;
+! End
+
+! Example 27
+&#X22; &#XD06; &#xcab;
+! End
+
+! Example 28
+&nbsp &x; &#; &#x;
+&#87654321;
+&#abcdef0;
+&ThisIsNotDefined; &hi?;
+! End
+
+! Example 29
+&copy
+! End
+
+! Example 30
+&MadeUpEntity;
+! End
+
+! Example 31
+<a href="&ouml;&ouml;.html">
+! End
+
+! Example 32
+[foo](/f&ouml;&ouml; "f&ouml;&ouml;")
+! End
+
+! Example 33
+[foo]
+
+[foo]: /f&ouml;&ouml; "f&ouml;&ouml;"
+! End
+
+! Example 34
+``` f&ouml;&ouml;
+foo
+```
+! End
+
+! Example 35
+`f&ouml;&ouml;`
+! End
+
+! Example 36
+    f&ouml;f&ouml;
+! End
+
+! Example 37
+&#42;foo&#42;
+*foo*
+! End
+
+! Example 38
+&#42; foo
+
+* foo
+! End
+
+! Example 39
+foo&#10;&#10;bar
+! End
+
+! Example 40
+&#9;foo
+! End
+
+! Example 41
+[a](url &quot;tit&quot;)
+! End
+

@@ -14,10 +14,11 @@ through the tree: it's a bitmap composed of the following.
 @d URI_MDRMODE     4     /* Encode characters as they need to appear in a URI */
 @d RAW_MDRMODE     8     /* Treat all characters literally */
 @d LOOSE_MDRMODE  16     /* Wrap list items in paragraph tags */
+@d ENTITIES_MDRMODE 32   /* Convert |&etc;| to whatever it ought to represent */
 
 =
 void MarkdownRenderer::go(OUTPUT_STREAM, markdown_item *md) {
-	MarkdownRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE);
+	MarkdownRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE | ENTITIES_MDRMODE);
 }
 
 void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
@@ -79,8 +80,11 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 								 if (mode & TAGS_MDRMODE) HTML_CLOSE("strong");
 								 break;
 		case CODE_MIT:           if (mode & TAGS_MDRMODE) HTML_OPEN("code");
+									int old_mode = mode;
+									mode = mode & (~ESCAPES_MDRMODE) & (~ENTITIES_MDRMODE);
 								 MarkdownRenderer::slice(OUT, md, mode);
 								 if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
+								 mode = old_mode;
 								 break;
 		case LINK_MIT:           @<Render link@>; break;
 		case IMAGE_MIT:          @<Render image@>; break;
@@ -90,7 +94,7 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 		case SOFT_BREAK_MIT:     MarkdownRenderer::char(OUT, '\n', mode); break;
 		case EMAIL_AUTOLINK_MIT: @<Render email link@>; break;
 		case URI_AUTOLINK_MIT:   @<Render URI link@>; break;
-		case INLINE_HTML_MIT:    MarkdownRenderer::slice(OUT, md, (mode | RAW_MDRMODE) & (~ESCAPES_MDRMODE)); break;
+		case INLINE_HTML_MIT:    MarkdownRenderer::slice(OUT, md, (mode | RAW_MDRMODE) & (~ESCAPES_MDRMODE) & (~ENTITIES_MDRMODE)); break;
 		default:                 internal_error("unimplemented Markdown item render");
 	}
 }
@@ -114,6 +118,8 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (mode & TAGS_MDRMODE) HTML_CLOSE(h);
 
 @<Render a code block@> =
+	int old_mode = mode;
+	mode = mode & (~ESCAPES_MDRMODE) & (~ENTITIES_MDRMODE);
 	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
 	TEMPORARY_TEXT(language)
 	for (int i=0; i<Str::len(md->info_string); i++) {
@@ -122,7 +128,12 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 		PUT_TO(language, c);
 	}
 	if (Str::len(language) > 0) {
-		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("code", "class=\"language-%S\"", language);
+		TEMPORARY_TEXT(language_rendered)
+		md->sliced_from = language;
+		md->from = 0; md->to = Str::len(language) - 1;
+		MarkdownRenderer::slice(language_rendered, md, mode | ENTITIES_MDRMODE);
+		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("code", "class=\"language-%S\"", language_rendered);
+		DISCARD_TEXT(language_rendered)
 	} else {
 		if (mode & TAGS_MDRMODE) HTML_OPEN("code");
 	}
@@ -133,6 +144,7 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("pre");
 	WRITE("\n");
+	mode = old_mode;
 
 @<Render a raw HTML block@> =
 	WRITE("%S", md->stashed);
@@ -151,10 +163,7 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	mode = old_mode;
  
 @<Render a list item@> =
-	if (mode & TAGS_MDRMODE) {
-		HTML_OPEN("li");
-//		if (mode & LOOSE_MDRMODE) WRITE("\n");
-	}
+	if (mode & TAGS_MDRMODE) HTML_OPEN("li");
 	int nl_issued = FALSE;
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
 		if (((mode & LOOSE_MDRMODE) == 0) && (ch->type == PARAGRAPH_MIT))
@@ -163,9 +172,7 @@ void MarkdownRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 			if (nl_issued == FALSE) { nl_issued = TRUE; WRITE("\n"); }
 			MarkdownRenderer::recurse(OUT, ch, mode);
 		}
-	if (mode & TAGS_MDRMODE) {
-		HTML_CLOSE("li");
-	}
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("li");
 	WRITE("\n");
 
 @<Render link@> =
@@ -247,6 +254,28 @@ void MarkdownRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 			if ((mode & ESCAPES_MDRMODE) && (c == '\\') && (i<md->to) &&
 				(Markdown::is_ASCII_punctuation(Markdown::get_at(md, i+1))))
 				c = Markdown::get_at(md, ++i);
+			else if ((mode & ENTITIES_MDRMODE) && (c == '&') && (i+2<=md->to)) {
+				int at = i;
+				TEMPORARY_TEXT(entity)
+				wchar_t d = c;
+				while ((d != 0) && (d != ';')) {
+					if (at > md->to) break;
+					d = Markdown::get_at(md, at++);
+					PUT_TO(entity, d);
+				}
+				if (d == ';') {
+					wchar_t A = 0, B = 0;
+					int valid = HTMLEntities::parse(entity, &A, &B);
+					DISCARD_TEXT(entity)
+					if (valid) {
+						if (A == 0) A = 0xFFFD;
+						MarkdownRenderer::char(OUT, A, mode);
+						if (B) MarkdownRenderer::char(OUT, B, mode);
+						i = at - 1;
+						continue;
+					}
+				}
+			}
 			MarkdownRenderer::char(OUT, c, mode);
 		}
 	}

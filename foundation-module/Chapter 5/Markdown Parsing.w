@@ -19,11 +19,12 @@ markdown_item *MarkdownParser::passage(text_stream *text) {
 	md_doc_state state;
 	state.doc = Markdown::new_item(DOCUMENT_MIT);
 	state.doc->open = TRUE;
-	state.code_indent_to_strip = 0;
+	state.code_indent_to_strip = MarkdownParser::begin_eating_space_from(NULL);
 	state.blanks = Str::new();
 	state.fencing_material = 0;
 	state.fence_width = 0;
 	state.fenced_code = NULL;
+	state.fence_sp = 100000000;
 	state.HTML_end_condition = 0;
 	state.link_references = Dictionaries::new(32, FALSE);
 
@@ -31,8 +32,10 @@ markdown_item *MarkdownParser::passage(text_stream *text) {
 	for (int i=0; i < 100; i++) state.containers[i] = NULL;
 	for (int i=0; i < 100; i++) state.positionals[i] = 0;
 	for (int i=0; i < 100; i++) state.positionals_indent[i] = 0;
+	for (int i=0; i < 100; i++) state.positionals_at[i] = MarkdownParser::begin_eating_space_from(NULL);
 	for (int i=0; i < 100; i++) state.positionals_implied[i] = 0;
 	for (int i=0; i < 100; i++) state.positional_values[i] = 0;
+	for (int i=0; i < 100; i++) state.positional_blank_counts[i] = 0;
 	
 	state.container_sp = 1;
 	state.containers[0] = state.doc;
@@ -74,7 +77,7 @@ markdown_item *MarkdownParser::passage(text_stream *text) {
 typedef struct md_doc_state {
 	struct markdown_item *doc;
 	struct text_stream *blanks;
-	int code_indent_to_strip;
+	struct md_whitespacer code_indent_to_strip;
 	wchar_t fencing_material;
 	struct markdown_item *fenced_code;
 	int fence_width;
@@ -86,8 +89,10 @@ typedef struct md_doc_state {
 	int container_sp;
 	int positionals[100];
 	int positionals_indent[100];
+	struct md_whitespacer positionals_at[100];
 	int positionals_implied[100];
 	int positional_values[100];
+	int positional_blank_counts[100];
 	int positional_sp;
 } md_doc_state;
 
@@ -99,31 +104,66 @@ typedef struct md_doc_reference {
 
 typedef struct md_whitespacer {
 	struct text_stream *line;
-	int pos;
-	int spaces_in_hand;
-	int spaces_read;
+	int read_index;
+	int line_position;
+	int tab_spacing;
 } md_whitespacer;
 
-md_whitespacer MarkdownParser::begin_eating_space_from(text_stream *line, int pos) {
+md_whitespacer MarkdownParser::begin_eating_space_from(text_stream *line) {
 	md_whitespacer mdw;
 	mdw.line = line;
-	mdw.pos = pos;
-	mdw.spaces_in_hand = 0;
-	mdw.spaces_read = 0;
+	mdw.read_index = 0;
+	mdw.line_position = 0;
+	mdw.tab_spacing = 4;
 	return mdw;
+}
+
+int MarkdownParser::read_index(md_whitespacer *mdw) {
+	return mdw->read_index;
+}
+
+wchar_t MarkdownParser::mdw_get(md_whitespacer *mdw) {
+	wchar_t c = Str::get_at(mdw->line, mdw->read_index);
+	if (c == '\t') return ' ';
+	return c;
+}
+
+void MarkdownParser::mdw_advance(md_whitespacer *mdw) {
+	mdw->line_position++;
+	if (MarkdownParser::at_whole_character(mdw)) mdw->read_index++;
+}
+
+int MarkdownParser::at_whole_character(md_whitespacer *mdw) {
+	wchar_t c = Str::get_at(mdw->line, mdw->read_index);
+	if (c != '\t') return TRUE;
+	if (mdw->line_position % mdw->tab_spacing == 0) return TRUE;
+	return FALSE;
+}
+
+void MarkdownParser::mdw_advance_by(md_whitespacer *mdw, int N) {
+	if (N < 0) internal_error("There's no going back");
+	for (int i=0; i<N; i++) MarkdownParser::mdw_advance(mdw);
+}
+
+int MarkdownParser::mdw_eq(md_whitespacer *A, md_whitespacer *B) {
+	if ((A->line_position == B->line_position) &&
+		(A->read_index == B->read_index) &&
+		(A->tab_spacing == B->tab_spacing)) return TRUE;
+	return FALSE;
+}
+
+int MarkdownParser::read_string_index(md_whitespacer *mdw) {
+	return mdw->read_index;
+}
+
+int MarkdownParser::read_line_position(md_whitespacer *mdw) {
+	return mdw->line_position;
 }
 
 int MarkdownParser::eat_space(md_whitespacer *mdw) {
 	if (mdw == NULL) internal_error("no mdw");
-	if (mdw->spaces_in_hand > 0) {
-		mdw->spaces_in_hand--; return TRUE;
-	}
-	wchar_t c = Str::get_at(mdw->line, mdw->pos);
-// PRINT("EAT AT %d = %c\n", mdw->pos, c);
-	if (c == ' ') { mdw->pos++; mdw->spaces_read++; return TRUE; }
-	if (c == '\t') {
-		mdw->pos++;
-		mdw->spaces_in_hand = mdw->spaces_in_hand + 3 - (mdw->spaces_read)%4;
+	if (MarkdownParser::mdw_get(mdw) == ' ') {
+		MarkdownParser::mdw_advance(mdw);
 		return TRUE;
 	}
 	return FALSE;
@@ -147,29 +187,51 @@ int MarkdownParser::spaces_available(md_whitespacer *mdw) {
 }
 
 int MarkdownParser::blank_from_here(md_whitespacer *mdw) {
-	for (int i=mdw->pos; i<Str::len(mdw->line); i++) {
+	for (int i=mdw->read_index; i<Str::len(mdw->line); i++) {
 		wchar_t c = Str::get_at(mdw->line, i);
 		if ((c != ' ') && (c != '\t')) return FALSE;
 	}
 	return TRUE;
 }
 
+
+
+void MarkdownParser::debug_positional_stack(OUTPUT_STREAM, md_doc_state *state, int first_implicit_marker) {
+	for (int i=0; i<state->positional_sp; i++) {
+		if (first_implicit_marker == i) WRITE("! ");
+		switch (state->positionals[i]) {
+			case BLOCK_QUOTE_MIT: WRITE("blockquote "); break;
+			case UNORDERED_LIST_MIT: WRITE("ul "); break;
+			case ORDERED_LIST_MIT: WRITE("ol "); break;
+			case UNORDERED_LIST_ITEM_MIT: WRITE("(*) "); break;
+			case ORDERED_LIST_ITEM_MIT: WRITE("(%d) ", state->positional_values[i]); break;
+		}
+	}
+	if (state->positional_sp > 0) {
+		WRITE("[blank=%d] ", state->positional_blank_counts[state->positional_sp - 1]);
+		WRITE("[at=%d] ", MarkdownParser::read_line_position(&(state->positionals_at[state->positional_sp - 1])));
+		WRITE("[min-indent=%d] ", state->positionals_indent[state->positional_sp - 1]);
+	} else {
+		WRITE("empty\n");
+	}
+	WRITE("\n");
+}
+
 void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	if (tracing_Markdown_parser) {
 		WRITE_TO(STDOUT, "=======\nAdding '%S' to tree:\n", line);
 		Markdown::debug_subtree(STDOUT, state->doc);
+		WRITE_TO(STDOUT, "Positional stack carried over: ");
+		MarkdownParser::debug_positional_stack(STDOUT, state, -1);
 	}
-	if ((MarkdownParser::block_open(state, HTML_MIT)) &&
-		(state->HTML_end_condition != 0)) @<Line is part of HTML@>;
-
 	int explicit_markers = 0, first_implicit_marker = -1;
-	int sp = 0, last_explicit_list_marker_sp = 0;
-	md_whitespacer mdw = MarkdownParser::begin_eating_space_from(line, 0);
+	int sp = 0, last_explicit_list_marker_sp = 0, last_explicit_list_marker_width = -1;
+	md_whitespacer mdw = MarkdownParser::begin_eating_space_from(line);
 
 	int min_indent_to_continue = -1;
 	while (TRUE) {
 		if (sp > 50) { PRINT("Stack overflow!"); break; }
-		if ((state->fenced_code) && (sp >= state->fence_sp-1)) break;
+		if (sp >= state->fence_sp-1) break;
 		md_whitespacer copy = mdw;
 		int available = MarkdownParser::spaces_available(&mdw);
 		if (min_indent_to_continue < 0) min_indent_to_continue = available;
@@ -194,57 +256,66 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 		
 		if (available < 4) {
 			MarkdownParser::eat_spaces(available, &mdw);
- //PRINT("FROM %d\n", mdw.pos);
-			int L = MarkdownParser::block_quote_marker(line, mdw.pos);
-			if (L > 0) {
-//				if ((Str::get_at(line, mdw.pos+L) == ' ') || (Str::get_at(line, mdw.pos+L) == 0)) {
-					if (Str::get_at(line, mdw.pos+L) == ' ') L++;
-					mdw.pos += L;
+ 			md_whitespacer starts_at = mdw;
+			md_whitespacer adv = MarkdownParser::block_quote_marker(starts_at);
+			if (MarkdownParser::mdw_eq(&adv, &mdw) == FALSE) {
+					MarkdownParser::eat_space(&adv);
+					int L = MarkdownParser::read_index(&adv) - MarkdownParser::read_index(&mdw);
+					mdw = adv;
 					state->positionals[sp] = BLOCK_QUOTE_MIT;
 					state->positionals_indent[sp] = min_indent_to_continue + L + MarkdownParser::spaces_available(&mdw);
 					state->positionals_implied[sp] = FALSE;
+					state->positional_blank_counts[sp] = 0;
+					state->positionals_at[sp] = starts_at;
 					state->positional_values[sp++] = 0;
 					explicit_markers++;
 					continue;
-//				}
 			}
 			int val = 0;
-			L = MarkdownParser::bullet_list_marker(line, mdw.pos, &val);
-			if (L > 0) {
-				if ((Str::get_at(line, mdw.pos+L) == ' ') || (Str::get_at(line, mdw.pos+L) == 0)) {
-					if (Str::get_at(line, mdw.pos+L) == ' ') L++;
-// PRINT("At %d,  L=%d, sa=%d\n", mdw.pos, L, MarkdownParser::spaces_available(&mdw));
-//if (interrupts_paragraph) PRINT("Interrupts\n");
-					mdw.pos += L;
+			adv = MarkdownParser::bullet_list_marker(starts_at, &val);
+			if (MarkdownParser::mdw_eq(&adv, &mdw) == FALSE) {
+				wchar_t next = MarkdownParser::mdw_get(&adv);
+				if ((next == ' ') || (next == 0)) {
+					int orig_L = MarkdownParser::read_index(&adv) - MarkdownParser::read_index(&mdw);
+					MarkdownParser::eat_space(&adv);
+					int L = MarkdownParser::read_index(&adv) - MarkdownParser::read_index(&mdw);
+					mdw = adv;
 					if ((MarkdownParser::blank_from_here(&mdw)) && (interrupts_paragraph)) {
 						mdw = copy;
 					} else {
+						last_explicit_list_marker_sp = sp;
+						last_explicit_list_marker_width = orig_L;
 						state->positionals[sp] = UNORDERED_LIST_ITEM_MIT;
 						state->positionals_indent[sp] = min_indent_to_continue + L + MarkdownParser::spaces_available(&mdw);
 						state->positionals_implied[sp] = FALSE;
+						state->positional_blank_counts[sp] = 0;
+						state->positionals_at[sp] = starts_at;
 						state->positional_values[sp++] = val;
 						explicit_markers++;
-						last_explicit_list_marker_sp = sp;
 						continue;
 					}
 				}
 			}
-			L = MarkdownParser::ordered_list_marker(line, mdw.pos, &val);
-			if (L > 0) {
-				if ((Str::get_at(line, mdw.pos+L) == ' ') || (Str::get_at(line, mdw.pos+L) == 0)) {
-					if (Str::get_at(line, mdw.pos+L) == ' ') L++;
-//PRINT("At %d,  L=%d, bfh=%d\n", mdw.pos, L, MarkdownParser::blank_from_here(&mdw));
-//if (interrupts_paragraph) PRINT("Interrupts with val = %d\n", val);
-					mdw.pos += L;
+			adv = MarkdownParser::ordered_list_marker(starts_at, &val);
+			if (MarkdownParser::mdw_eq(&adv, &mdw) == FALSE) {
+				wchar_t next = MarkdownParser::mdw_get(&adv);
+				if ((next == ' ') || (next == 0)) {
+					int orig_L = MarkdownParser::read_index(&adv) - MarkdownParser::read_index(&mdw);
+					MarkdownParser::eat_space(&adv);
+					int L = MarkdownParser::read_index(&adv) - MarkdownParser::read_index(&mdw);
+					mdw = adv;
 					if (((MarkdownParser::blank_from_here(&mdw)) || (val != 1)) && (interrupts_paragraph)) {
 						mdw = copy;
 					} else {
-	//PRINT("GHre!\n");
+						last_explicit_list_marker_sp = sp;
+						last_explicit_list_marker_width = orig_L;
 						state->positionals[sp] = ORDERED_LIST_ITEM_MIT;
 						state->positionals_indent[sp] = min_indent_to_continue + L + MarkdownParser::spaces_available(&mdw);
 						state->positionals_implied[sp] = FALSE;
+						state->positional_blank_counts[sp] = 0;
+						state->positionals_at[sp] = starts_at;
 						state->positional_values[sp++] = val;
-						last_explicit_list_marker_sp = sp;
+						explicit_markers++;
 						continue;
 					}
 				}
@@ -253,30 +324,60 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 		}
 		break;
 	}
+	int old_psp = state->positional_sp;
 	state->positional_sp = sp;
 
+	if (MarkdownParser::blank_from_here(&mdw))
+		if (state->positionals_implied[sp-1]) {
+			mdw = state->positionals_at[sp-1];
+			MarkdownParser::mdw_advance_by(&mdw, state->positionals_indent[sp-1]);
+		}
+
 	int available = MarkdownParser::spaces_available(&mdw);
+			if (tracing_Markdown_parser) {
+				PRINT("mdw is at %d , available = %d, positionals_at = %d ind = %d\n", MarkdownParser::read_index(&mdw), available, MarkdownParser::read_line_position(&(state->positionals_at[sp-1])), state->positionals_indent[sp-1]);
+			}
 	int indentation = 0;
-	if (available >= 4) { indentation = 1; available = 4; }
-	MarkdownParser::eat_spaces(available, &mdw);
-	int left_code_gutter = mdw.pos;
-	int initial_spacing = mdw.pos;
 	
-	if (tracing_Markdown_parser) {
-		PRINT("Line '%S' (length %d)\n", line, Str::len(line));
-		for (int i=0; i<state->positional_sp; i++) {
-			if (first_implicit_marker == i) PRINT("! ");
-			switch (state->positionals[i]) {
-				case BLOCK_QUOTE_MIT: PRINT("blockquote "); break;
-				case UNORDERED_LIST_MIT: PRINT("ul "); break;
-				case ORDERED_LIST_MIT: PRINT("ol "); break;
-				case UNORDERED_LIST_ITEM_MIT: PRINT("(*) "); break;
-				case ORDERED_LIST_ITEM_MIT: PRINT("(%d) ", state->positional_values[i]); break;
+	if (available >= 4) {
+		indentation = 1; available = 4;
+		if ((last_explicit_list_marker_width >= 0) &&
+			(last_explicit_list_marker_sp == state->positional_sp-1)) {
+			if (tracing_Markdown_parser) {
+				PRINT("Opening line is code rule applies, and sets pos indent[%d] = %d\n",
+					last_explicit_list_marker_sp, last_explicit_list_marker_width + 1);
+			}
+			state->positionals_indent[last_explicit_list_marker_sp] = last_explicit_list_marker_width + 1;
+		}
+	}
+	if (MarkdownParser::blank_from_here(&mdw)) {
+		if ((last_explicit_list_marker_width >= 0) &&
+			(last_explicit_list_marker_sp == state->positional_sp-1)) {
+			if (tracing_Markdown_parser) {
+				PRINT("Opening line is empty rule applies, and sets pos indent[%d] = %d\n",
+					last_explicit_list_marker_sp, last_explicit_list_marker_width + 1);
+			}
+			state->positionals_indent[last_explicit_list_marker_sp] = last_explicit_list_marker_width + 1;
+			state->positional_blank_counts[last_explicit_list_marker_sp] = 1;
+		} else {
+			while ((state->positional_sp > 0) &&
+					(state->positional_blank_counts[state->positional_sp-1] > 0)) {
+				if (tracing_Markdown_parser) {
+					PRINT("Blank after blank opening rule applies\n");
+				}
+				MarkdownParser::mark_block_with_ws(state, state->containers[state->positional_sp]);
+				state->positional_sp--;
+				sp--;
 			}
 		}
-		if (state->positional_sp > 0) {
-			PRINT("[min-indent=%d]\n", state->positionals_indent[state->positional_sp - 1]);
-		}
+	}
+	MarkdownParser::eat_spaces(available, &mdw);
+	int initial_spacing = MarkdownParser::read_string_index(&mdw);
+	
+	if (tracing_Markdown_parser) {
+		PRINT("Line '%S' (fence sp = %d)\n", line, state->fence_sp);
+		PRINT("New positional stack: ");
+		MarkdownParser::debug_positional_stack(STDOUT, state, first_implicit_marker);
 		PRINT("Line has indentation = %d, then: '", indentation);
 		for (int i=initial_spacing; i<Str::len(line); i++)
 			PUT_TO(STDOUT, Str::get_at(line, i));
@@ -284,20 +385,24 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 	int interpretations[20], details[20];
-	for (int i=0; i<20; i++) {
+	for (int i=0; i<20; i++)
 		interpretations[i] =
 			MarkdownParser::can_interpret_as(state, line, indentation, initial_spacing, i, NULL, &(details[i]));
-	}
-	
+
 	if ((state->current_leaves[PARAGRAPH_MIT]) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]) && (state->positional_sp == state->container_sp-1))
 		interpretations[THEMATIC_MDINTERPRETATION] = FALSE;
 
 	int N = 0; for (int i=0; i<20; i++) if (interpretations[i]) N++;
 
-	if ((state->current_leaves[PARAGRAPH_MIT]) && (MarkdownParser::container_will_change(state) == FALSE) &&
-		((N == 0) || ((N == 1) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])))) {
-		
-		interpretations[LAZY_CONTINUATION_MDINTERPRETATION] = TRUE;
+	if ((state->current_leaves[PARAGRAPH_MIT]) && (MarkdownParser::container_will_change(state) == FALSE)) {
+		int lazy = TRUE;
+		for (int i=0; i<20; i++)
+			if (interpretations[i]) {
+				if (i == SETEXT_UNDERLINE_MDINTERPRETATION) continue;
+				if ((i == HTML_MDINTERPRETATION) && (details[i] == MISCPAIR_MDHTMLC)) continue;
+				lazy = FALSE;
+			}
+		interpretations[LAZY_CONTINUATION_MDINTERPRETATION] = lazy;
 	}
 
 	if (tracing_Markdown_parser) {
@@ -311,12 +416,13 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 					case THEMATIC_MDINTERPRETATION: PRINT("thematic? "); break;
 					case ATX_HEADING_MDINTERPRETATION: PRINT("atx? "); break;
 					case SETEXT_UNDERLINE_MDINTERPRETATION: PRINT("setext? "); break;
-					case HTML_MDINTERPRETATION: PRINT("html? "); break;
+					case HTML_MDINTERPRETATION: PRINT("html-open? "); break;
 					case CODE_FENCE_OPEN_MDINTERPRETATION: PRINT("fence-open? "); break;
 					case CODE_FENCE_CLOSE_MDINTERPRETATION: PRINT("fence-close? "); break;
 					case CODE_BLOCK_MDINTERPRETATION: PRINT("code? "); break;
 					case FENCED_CODE_BLOCK_MDINTERPRETATION: PRINT("fenced-code? "); break;
 					case LAZY_CONTINUATION_MDINTERPRETATION: PRINT("lazy-continuation? "); break;
+					case HTML_CONTINUATION_MDINTERPRETATION: PRINT("html-continuation? "); break;
 				}
 			}
 		}
@@ -326,7 +432,9 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 	if (interpretations[LAZY_CONTINUATION_MDINTERPRETATION]) {
-		if ((state->positional_sp == state->container_sp-1) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
+		int sp = state->positional_sp;
+		state->positional_sp = old_psp;
+		if ((sp == state->container_sp-1) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
 		@<Line forms piece of paragraph@>;
 	} else {
 		if (state->current_leaves[PARAGRAPH_MIT])
@@ -340,7 +448,7 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 		@<Close the code fence@>;
 		interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION] = FALSE;
 	}
-
+	if (interpretations[HTML_CONTINUATION_MDINTERPRETATION]) @<Line is part of HTML@>;
 	if (interpretations[CODE_FENCE_OPEN_MDINTERPRETATION]) @<Line is an opening code fence@>;
 	if (interpretations[CODE_FENCE_CLOSE_MDINTERPRETATION]) @<Line is a closing code fence@>;
 	if (interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION]) @<Line is part of a fenced code block@>;
@@ -355,31 +463,26 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 
 @<Line is whitespace@> =
 	last_explicit_list_marker_sp = state->container_sp-1;
-	if (state->containers[sp]->type != BLOCK_QUOTE_MIT)
-	for (sp = last_explicit_list_marker_sp; sp<state->container_sp; sp++) {
+	int sp = state->container_sp-1;
+	if (state->positionals_implied[sp-1]) {
 		if (state->containers[sp]->down) {
 			for (markdown_item *ch = state->containers[sp]->down; ch; ch = ch->next)
-				if (ch->next == NULL)
-					ch->whitespace_follows = TRUE;
+				if ((ch->next == NULL) && (ch->type != BLOCK_QUOTE_MIT))
+					MarkdownParser::mark_block_with_ws(state, ch);
 		} else {
-			state->containers[sp]->whitespace_follows = TRUE;
+			MarkdownParser::mark_block_with_ws(state, state->containers[sp]);
 		}
 	}
-	switch (state->HTML_end_condition) {
-		case MISCSINGLE_MDHTMLC:
-		case MISCPAIR_MDHTMLC:
-			state->HTML_end_condition = 0;
-			break;
-	}
+
 	if (indentation > 0)
-		for (int i=left_code_gutter; i<Str::len(line); i++) {
+		for (int i=initial_spacing; i<Str::len(line); i++) {
 			wchar_t c = Str::get_at(line, i);
 			PUT_TO(state->blanks, c);
 		}
 	PUT_TO(state->blanks, '\n');
 	return;
 	
-@<Line opens HTML@> =	
+@<Line opens HTML@> =
 	state->HTML_end_condition = details[HTML_MDINTERPRETATION];
 	if (tracing_Markdown_parser) {
 		PRINT("enter HTML with end_condition = %d\n", state->HTML_end_condition);
@@ -387,57 +490,82 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	markdown_item *htmlb = Markdown::new_item(HTML_MIT);
 	htmlb->stashed = Str::new();
 	MarkdownParser::add_block(state, htmlb);
+	state->fence_sp = state->container_sp;	
 	@<Add text of line to HTML block@>;
+	int ends = FALSE;
 	@<Test for HTML end condition@>;
+	if (ends) @<End the HTML block@>;
 	return;
 
 @<Line is part of HTML@> =
-	@<Add text of line to HTML block@>;
-	@<Test for HTML end condition@>;
-	return;
+	markdown_item *latest = state->current_leaves[HTML_MIT];
+	if (latest == NULL) @<End the HTML block@>
+	else {
+		int ends = FALSE;
+		@<Test for HTML end condition@>;
+		if ((latest) && (!((ends) &&
+			((state->HTML_end_condition == MISCSINGLE_MDHTMLC) ||
+				(state->HTML_end_condition == MISCPAIR_MDHTMLC)))))
+			@<Add text of line to HTML block@>;
+		if (ends) @<End the HTML block@>
+		return;
+	}
 
 @<Add text of line to HTML block@> =
 	markdown_item *latest = state->current_leaves[HTML_MIT];
-	for (int i = 0; i<Str::len(line); i++) {
+	int from = initial_spacing;
+	if (state->fence_sp == 1) from = 0;
+//WRITE_TO(latest->stashed, "(hey: %d)", state->fence_sp);
+	for (int i = from; i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
 	}
 	PUT_TO(latest->stashed, '\n');
 
+@<End the HTML block@> =
+	markdown_item *latest = state->current_leaves[HTML_MIT];
+	state->HTML_end_condition = 0;
+	state->fence_sp = 10000000;
+	if (latest) MarkdownParser::close_block(state, latest);
+
 @<Test for HTML end condition@> =
-	if (tracing_Markdown_parser) {
-		PRINT("test '%S' for HTML_end_condition = %d\n", line, state->HTML_end_condition);
+	if (state->current_leaves[HTML_MIT] == NULL) {
+		if (tracing_Markdown_parser) {
+			PRINT("HTML forcibly ended by closure of container\n");
+		}
+	} else {
+		if (tracing_Markdown_parser) {
+			PRINT("test '%S' for HTML_end_condition = %d\n", line, state->HTML_end_condition);
+		}
+		switch (state->HTML_end_condition) {
+			case PRE_MDHTMLC:
+				if ((Str::includes_insensitive(line, I"</pre>")) ||
+					(Str::includes_insensitive(line, I"</script>")) ||
+					(Str::includes_insensitive(line, I"</style>")) ||
+					(Str::includes_insensitive(line, I"</textarea>")))
+					ends = TRUE;
+				break;
+			case COMMENT_MDHTMLC:
+				if (Str::includes(line, I"-->")) ends = TRUE;
+				break;
+			case QUERY_MDHTMLC:
+				if (Str::includes(line, I"?>")) ends = TRUE;
+				break;
+			case PLING_MDHTMLC:
+				if (Str::includes(line, I"!>")) ends = TRUE;
+				break;
+			case CDATA_MDHTMLC:
+				if (Str::includes(line, I"]]>")) ends = TRUE;
+				break;
+			case MISCSINGLE_MDHTMLC:
+			case MISCPAIR_MDHTMLC:
+				if (Str::is_whitespace(line)) ends = TRUE;
+				break;
+		}
 	}
-	int ends = FALSE;
-	switch (state->HTML_end_condition) {
-		case PRE_MDHTMLC:
-			if ((Str::includes_insensitive(line, I"</pre>")) ||
-				(Str::includes_insensitive(line, I"</script>")) ||
-				(Str::includes_insensitive(line, I"</style>")) ||
-				(Str::includes_insensitive(line, I"</textarea>")))
-				ends = TRUE;
-			break;
-		case COMMENT_MDHTMLC:
-			if (Str::includes(line, I"-->")) ends = TRUE;
-			break;
-		case QUERY_MDHTMLC:
-			if (Str::includes(line, I"?>")) ends = TRUE;
-			break;
-		case PLING_MDHTMLC:
-			if (Str::includes(line, I"!>")) ends = TRUE;
-			break;
-		case CDATA_MDHTMLC:
-			if (Str::includes(line, I"]]>")) ends = TRUE;
-			break;
-		case MISCSINGLE_MDHTMLC: break;
-		case MISCPAIR_MDHTMLC: break;
-	}
+	
 	if (tracing_Markdown_parser) {
 		PRINT("test outcome: %s\n", (ends)?"yes":"no");
-	}
-	if (ends) {
-		state->HTML_end_condition = 0;
-		MarkdownParser::close_block(state, state->current_leaves[HTML_MIT]);
 	}
 
 @<Line is an ATX heading@> =
@@ -492,7 +620,7 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	cb->stashed = Str::new();
 	cb->info_string = info_string;
 	MarkdownParser::add_block(state, cb);
-	state->code_indent_to_strip = initial_spacing;
+	state->code_indent_to_strip = mdw;
 	state->fencing_material = c;
 	state->fence_width = post_count;
 	state->fenced_code = cb;
@@ -505,6 +633,7 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 
 @<Close the code fence@> =
 	state->fencing_material = 0; state->fence_width = 0; state->fenced_code = NULL;
+	state->fence_sp = 10000000;
 
 @<Line is part of an indented code block@> =
 	markdown_item *latest = state->current_leaves[CODE_BLOCK_MIT];
@@ -514,11 +643,15 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	} else {
 		markdown_item *cb = Markdown::new_item(CODE_BLOCK_MIT);
 		cb->stashed = Str::new();
-		state->code_indent_to_strip = -1;
+		state->code_indent_to_strip = MarkdownParser::begin_eating_space_from(line);
 		MarkdownParser::add_block(state, cb);
 		latest = cb;
 	}
-	for (int i=left_code_gutter; i<Str::len(line); i++) {
+	while (MarkdownParser::at_whole_character(&mdw) == FALSE) {
+		PUT_TO(latest->stashed, ' ');
+		MarkdownParser::mdw_advance(&mdw);
+	}
+	for (int i = MarkdownParser::read_string_index(&mdw); i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
 	}
@@ -526,9 +659,13 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 @<Line is part of a fenced code block@> =
-	int from = state->code_indent_to_strip;
-	if (from > initial_spacing) from = initial_spacing;
-	for (int i = from; i<Str::len(line); i++) {
+	md_whitespacer from = state->code_indent_to_strip;
+	if (MarkdownParser::read_line_position(&from) > MarkdownParser::read_line_position(&mdw)) from = mdw;
+	while (MarkdownParser::at_whole_character(&from) == FALSE) {
+		PUT_TO(state->fenced_code->stashed, ' ');
+		MarkdownParser::mdw_advance(&from);
+	}
+	for (int i = MarkdownParser::read_string_index(&from); i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		PUT_TO(state->fenced_code->stashed, c);
 	}
@@ -564,6 +701,7 @@ void MarkdownParser::add_to_document(md_doc_state *state, text_stream *line) {
 @e CODE_BLOCK_MDINTERPRETATION
 @e FENCED_CODE_BLOCK_MDINTERPRETATION
 @e LAZY_CONTINUATION_MDINTERPRETATION
+@e HTML_CONTINUATION_MDINTERPRETATION
 
 =
 int MarkdownParser::can_interpret_as(md_doc_state *state, text_stream *line,
@@ -628,11 +766,16 @@ int MarkdownParser::can_interpret_as(md_doc_state *state, text_stream *line,
 				}
 				if (post_count >= 3) {
 					if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (post_count < state->fence_width)) return FALSE;
-					int ambiguous = FALSE, count = 0;
+					int ambiguous = FALSE, count = 0, escaped = FALSE;
 					for (; j<Str::len(line); j++) {
 						wchar_t d = Str::get_at(line, j);
-						if ((d == '`') && (c == d)) ambiguous = TRUE;
-						PUT_TO(info_string, d); count++;
+						if ((escaped == FALSE) && (d == '\\') && (Markdown::is_ASCII_punctuation(Str::get_at(line, j+1))))
+							escaped = TRUE;
+						else {
+							if ((escaped == FALSE) && (d == '`') && (c == d)) ambiguous = TRUE;
+							PUT_TO(info_string, d); count++;
+							escaped = FALSE;
+						}
 					}
 					Str::trim_white_space(info_string);
 					if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (count > 0)) return FALSE;
@@ -655,6 +798,10 @@ int MarkdownParser::can_interpret_as(md_doc_state *state, text_stream *line,
 			if (state->fenced_code) return TRUE;
 			return FALSE;
 		case LAZY_CONTINUATION_MDINTERPRETATION:
+			return FALSE;
+		case HTML_CONTINUATION_MDINTERPRETATION:
+			if ((MarkdownParser::block_open(state, HTML_MIT)) &&
+				(state->HTML_end_condition != 0)) return TRUE;
 			return FALSE;
 		default: return FALSE;
 	}
@@ -700,16 +847,16 @@ HTML blocks.
 		cond = QUERY_MDHTMLC; goto HTML_Start_Found;
 	}
 	
+	if (Str::begins_with(tag, I"![CDATA[")) {
+		cond = CDATA_MDHTMLC; goto HTML_Start_Found;
+	}
+	
 	
 	if (Str::begins_with(tag, I"!")) {
 		cond = PLING_MDHTMLC; goto HTML_Start_Found;
 	}
 	
 
-	if (Str::begins_with(tag, I"![CDATA[")) {
-		cond = CDATA_MDHTMLC; goto HTML_Start_Found;
-	}
-	
 	
 	if (Str::get_first_char(tag) == '/') Str::delete_first_character(tag);
 	for (int i=0; i<Str::len(tag); i++) {
@@ -787,6 +934,7 @@ HTML blocks.
 		Str::clear(tag);
 		WRITE_TO(tag, "%S", line);
 		Str::trim_white_space(tag);
+		if (Str::get_first_char(tag) == '<') { Str::delete_first_character(tag); Str::trim_white_space(tag); }
 		int valid = TRUE, closing = FALSE;
 		if (Str::get_first_char(tag) == '/') { closing = TRUE; Str::delete_first_character(tag); }
 		TEMPORARY_TEXT(tag_name)
@@ -803,10 +951,12 @@ HTML blocks.
 			(Str::eq_insensitive(tag_name, I"script")) ||
 			(Str::eq_insensitive(tag_name, I"style")) ||
 			(Str::eq_insensitive(tag_name, I"textarea"))) valid = FALSE;
+//PRINT("Seems %S like tag = %S, closing = %d\n", tag, tag_name, closing);
 		DISCARD_TEXT(tag_name)
 		if (closing == FALSE) {
 			while (TRUE) {
 				wchar_t c = Str::get_at(tag, i);
+//PRINT("While loop at i = %d, c = %c\n", i, c);
 				if ((c != ' ') && (c != '\t')) break;
 				i = MarkdownParser::advance_past_spacing(tag, i);
 				c = Str::get_at(tag, i);
@@ -816,8 +966,10 @@ HTML blocks.
 						(Markdown::is_ASCII_letter(c)) || (Markdown::is_ASCII_digit(c))) {
 						i++; c = Str::get_at(tag, i);
 					}
+//PRINT("Got to loop at i = %d, c = %c\n", i, Str::get_at(tag, i));
 					i = MarkdownParser::advance_past_spacing(tag, i);
 					if (Str::get_at(tag, i) == '=') {
+						i++;
 						i = MarkdownParser::advance_past_spacing(tag, i);
 						wchar_t c = Str::get_at(tag, i);
 						if (c == '\'') {
@@ -826,27 +978,31 @@ HTML blocks.
 								i++; c = Str::get_at(tag, i);
 							}
 							if (c == 0) valid = FALSE;
+							i++;
 						} else if (c == '"') {
 							i++; c = Str::get_at(tag, i);
 							while ((c) && (c != '"')) {
 								i++; c = Str::get_at(tag, i);
 							}
 							if (c == 0) valid = FALSE;
+							i++;
 						} else {
 							int nc = 0;
-							while ((c != ' ') && (c != '\t') && (c != '\n') && (c != '"') &&
+							while ((c != 0) && (c != ' ') && (c != '\t') && (c != '\n') && (c != '"') &&
 								(c != '\'') && (c != '=') && (c != '<') && (c != '>') && (c != '`')) {
 								nc++; i++; c = Str::get_at(tag, i);
 							}
 							if (nc == 0) valid = FALSE;
+							i++;
 						}
 						i = MarkdownParser::advance_past_spacing(tag, i);
 					}
 				} else break;
 			}
 		}
+//PRINT("Exit loop at i = %d, c = %c\n", i, Str::get_at(tag, i));
 		if ((closing == FALSE) && (Str::get_at(tag, i) == '/')) i++;
-		if (Str::get_at(tag, i) != '>') valid = FALSE;
+		if (Str::get_at(tag, i) != '>') valid = FALSE; i++;
 		i = MarkdownParser::advance_past_spacing(tag, i);
 		if (Str::get_at(tag, i) != 0) valid = FALSE;
 		if (valid) {
@@ -963,6 +1119,15 @@ void MarkdownParser::establish_context(md_doc_state *state) {
 	}
 }
 
+void MarkdownParser::mark_block_with_ws(md_doc_state *state, markdown_item *block) {
+	if (block) {
+		if (tracing_Markdown_parser) {
+			WRITE_TO(STDOUT, "Mark as whitespace-following: "); Markdown::debug_item(STDOUT, block);
+		}
+		block->whitespace_follows = TRUE;
+	}
+}
+
 void MarkdownParser::open_block(md_doc_state *state, markdown_item *block) {
 	if (block->open == NOT_APPLICABLE) {
 		block->open = TRUE;
@@ -1014,36 +1179,42 @@ int MarkdownParser::advance_past_spacing(text_stream *tag, int i) {
 	return i;
 }
 
-int MarkdownParser::block_quote_marker(text_stream *line, int at) {
-	if (Str::get_at(line, at) != '>') return 0;
-	return 1;
+md_whitespacer MarkdownParser::block_quote_marker(md_whitespacer mdw) {
+	if (MarkdownParser::mdw_get(&mdw) != '>') return mdw;
+	MarkdownParser::mdw_advance(&mdw);
+	return mdw;
 }
 
-int MarkdownParser::bullet_list_marker(text_stream *line, int at, int *v) {
-	if (MarkdownParser::thematic_marker(line, at)) return 0;
-	wchar_t c = Str::get_at(line, at);
+md_whitespacer MarkdownParser::bullet_list_marker(md_whitespacer mdw, int *v) {
+	md_whitespacer old = mdw;
+	if (MarkdownParser::thematic_marker(mdw.line, MarkdownParser::read_index(&mdw))) return old;
+	wchar_t c = MarkdownParser::mdw_get(&mdw);
 	if ((c == '-') || (c == '+') || (c == '*')) {
-		*v = c; return 1;
+		MarkdownParser::mdw_advance(&mdw);
+		*v = c;
 	}
-	return 0;
+	return mdw;
 }
 
-int MarkdownParser::ordered_list_marker(text_stream *line, int at, int *v) {
-	if (MarkdownParser::thematic_marker(line, at)) return 0;
-	wchar_t c = Str::get_at(line, at);
+md_whitespacer MarkdownParser::ordered_list_marker(md_whitespacer mdw, int *v) {
+	md_whitespacer old = mdw;
+	if (MarkdownParser::thematic_marker(mdw.line, MarkdownParser::read_index(&mdw))) return old;
+	wchar_t c = MarkdownParser::mdw_get(&mdw);
 	int dc = 0, val = 0;
 	while (Markdown::is_ASCII_digit(c)) {
 		val = 10*val + (int) (c - '0');
-		at++; dc++;
-		c = Str::get_at(line, at);
+		MarkdownParser::mdw_advance(&mdw); dc++;
+		c = MarkdownParser::mdw_get(&mdw);
 	}
-	if ((dc < 1) || (dc > 9)) return 0;
-	c = Str::get_at(line, at);
+	if ((dc < 1) || (dc > 9)) return old;
+	c = MarkdownParser::mdw_get(&mdw);
 	if ((c == '.') || (c == ')')) {
 		if (c == ')') val = -1-val;
-		*v = val; return dc+1;
+		*v = val;
+		MarkdownParser::mdw_advance(&mdw);
+		return mdw;
 	}
-	return 0;
+	return old;
 }
 
 int MarkdownParser::thematic_marker(text_stream *line, int initial_spacing) {
@@ -1281,7 +1452,7 @@ void MarkdownParser::propagate_white_space_follows(md_doc_state *state, markdown
 		MarkdownParser::propagate_white_space_follows(state, c);
 	for (markdown_item *c = at->down; c; c = c->next)
 		if ((c->next == NULL) && (c->whitespace_follows))
-			at->whitespace_follows = TRUE;
+			MarkdownParser::mark_block_with_ws(state, at);
 }
 
 int MarkdownParser::in_same_list(markdown_item *A, markdown_item *B) {
@@ -1333,13 +1504,20 @@ the entire text, but with leading and trailing spaces removed.
 markdown_item *MarkdownParser::make_inline_chain(markdown_item *owner, text_stream *text) {
 	int i = 0;
 	while (Str::get_at(text, i) == ' ') i++;
-	int from = i;
+	int from = i, escaped = FALSE;
 	for (; i<Str::len(text); i++) {
-		@<Does a backtick begin here?@>;
-		@<Does an autolink begin here?@>;
-		@<Does a raw HTML tag begin here?@>;
-		@<Does a hard or soft line break occur here?@>;
-		ContinueOuter: ;
+		if ((escaped == FALSE) && (Str::get_at(text, i) == '\\') && (Markdown::is_ASCII_punctuation(Str::get_at(text, i+1)))) {
+			escaped = TRUE;
+		} else {
+			if (escaped == FALSE) {
+				@<Does a backtick begin here?@>;
+				@<Does an autolink begin here?@>;
+				@<Does a raw HTML tag begin here?@>;
+			}
+			@<Does a hard or soft line break occur here?@>;
+			ContinueOuter: ;
+			escaped = FALSE;
+		}
 	}
 	if (from <= Str::len(text)-1) {
 		int to = Str::len(text)-1;
@@ -1761,7 +1939,7 @@ but you absolutely can.
 		while (Str::get_at(text, i) == ' ') i++;
 		from = i;
 		i--;
-		if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Found raw HTML\n");
+		if (tracing_Markdown_parser) WRITE_TO(STDOUT, "Found line break\n");
 		goto ContinueOuter;
 	}
 

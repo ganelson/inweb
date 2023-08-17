@@ -1,0 +1,105 @@
+! Example 12
+\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~
+! Solution
+<p>!&quot;#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~</p>
+! End
+
+! Example 13
+\	\A\a\ \3\φ\«
+! Solution
+<p>\	\A\a\ \3\φ\«</p>
+! End
+
+! Example 14
+\*not emphasized*
+\<br/> not a tag
+\[not a link](/foo)
+\`not code`
+1\. not a list
+\* not a list
+\# not a heading
+\[foo]: /url "not a reference"
+\&ouml; not a character entity
+! Solution
+<p>*not emphasized*
+&lt;br/&gt; not a tag
+[not a link](/foo)
+`not code`
+1. not a list
+* not a list
+# not a heading
+[foo]: /url &quot;not a reference&quot;
+&amp;ouml; not a character entity</p>
+! End
+
+! Example 15
+\\*emphasis*
+! Solution
+<p>\<em>emphasis</em></p>
+! End
+
+! Example 16
+foo\
+bar
+! Solution
+<p>foo<br />
+bar</p>
+! End
+
+! Example 17
+`` \[\` ``
+! Solution
+<p><code>\[\`</code></p>
+! End
+
+! Example 18
+    \[\]
+! Solution
+<pre><code>\[\]
+</code></pre>
+! End
+
+! Example 19
+~~~
+\[\]
+~~~
+! Solution
+<pre><code>\[\]
+</code></pre>
+! End
+
+! Example 20
+<http://example.com?find=\*>
+! Solution
+<p><a href="http://example.com?find=%5C*">http://example.com?find=\*</a></p>
+! End
+
+! Example 21
+<a href="/bar\/)">
+! Solution
+<a href="/bar\/)">
+! End
+
+! Example 22
+[foo](/bar\* "ti\*tle")
+! Solution
+<p><a href="/bar*" title="ti*tle">foo</a></p>
+! End
+
+! Example 23
+[foo]
+
+[foo]: /bar\* "ti\*tle"
+! Solution
+<p><a href="/bar*" title="ti*tle">foo</a></p>
+! End
+
+! Example 24
+``` foo\+bar
+foo
+```
+! Solution
+<pre><code class="language-foo+bar">foo
+</code></pre>
+! End
+

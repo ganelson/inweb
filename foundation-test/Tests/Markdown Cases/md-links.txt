@@ -90,6 +90,10 @@ bar>)
 [link](foo\bar)
 ! End
 
+! Example 502
+[link](foo%20b&auml;)
+! End
+
 ! Example 503
 [link]("title")
 ! End
@@ -98,6 +102,10 @@ bar>)
 [link](/url "title")
 [link](/url 'title')
 [link](/url (title))
+! End
+
+! Example 505
+[link](/url "title \"&quot;")
 ! End
 
 ! Example 506

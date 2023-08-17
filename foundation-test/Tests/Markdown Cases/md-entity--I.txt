@@ -1,0 +1,127 @@
+! Example 25
+&nbsp; &amp; &copy; &AElig; &Dcaron;
+&frac34; &HilbertSpace; &DifferentialD;
+&ClockwiseContourIntegral; &ngE;
+! Solution
+<p>  &amp; © Æ Ď
+¾ ℋ ⅆ
+∲ ≧̸</p>
+! End
+
+! Example 26
+&#35; &#1234; &#992; &#0;
+! Solution
+<p># Ӓ Ϡ �</p>
+! End
+
+! Example 27
+&#X22; &#XD06; &#xcab;
+! Solution
+<p>&quot; ആ ಫ</p>
+! End
+
+! Example 28
+&nbsp &x; &#; &#x;
+&#87654321;
+&#abcdef0;
+&ThisIsNotDefined; &hi?;
+! Solution
+<p>&amp;nbsp &amp;x; &amp;#; &amp;#x;
+&amp;#87654321;
+&amp;#abcdef0;
+&amp;ThisIsNotDefined; &amp;hi?;</p>
+! End
+
+! Example 29
+&copy
+! Solution
+<p>&amp;copy</p>
+! End
+
+! Example 30
+&MadeUpEntity;
+! Solution
+<p>&amp;MadeUpEntity;</p>
+! End
+
+! Example 31
+<a href="&ouml;&ouml;.html">
+! Solution
+<a href="&ouml;&ouml;.html">
+! End
+
+! Example 32
+[foo](/f&ouml;&ouml; "f&ouml;&ouml;")
+! Solution
+<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>
+! End
+
+! Example 33
+[foo]
+
+[foo]: /f&ouml;&ouml; "f&ouml;&ouml;"
+! Solution
+<p><a href="/f%C3%B6%C3%B6" title="föö">foo</a></p>
+! End
+
+! Example 34
+``` f&ouml;&ouml;
+foo
+```
+! Solution
+<pre><code class="language-föö">foo
+</code></pre>
+! End
+
+! Example 35
+`f&ouml;&ouml;`
+! Solution
+<p><code>f&amp;ouml;&amp;ouml;</code></p>
+! End
+
+! Example 36
+    f&ouml;f&ouml;
+! Solution
+<pre><code>f&amp;ouml;f&amp;ouml;
+</code></pre>
+! End
+
+! Example 37
+&#42;foo&#42;
+*foo*
+! Solution
+<p>*foo*
+<em>foo</em></p>
+! End
+
+! Example 38
+&#42; foo
+
+* foo
+! Solution
+<p>* foo</p>
+<ul>
+<li>foo</li>
+</ul>
+! End
+
+! Example 39
+foo&#10;&#10;bar
+! Solution
+<p>foo
+
+bar</p>
+! End
+
+! Example 40
+&#9;foo
+! Solution
+<p>	foo</p>
+! End
+
+! Example 41
+[a](url &quot;tit&quot;)
+! Solution
+<p>[a](url &quot;tit&quot;)</p>
+! End
+

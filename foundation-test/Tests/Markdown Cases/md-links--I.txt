@@ -138,6 +138,12 @@ bar>)</p>
 <p><a href="foo%5Cbar">link</a></p>
 ! End
 
+! Example 502
+[link](foo%20b&auml;)
+! Solution
+<p><a href="foo%20b%C3%A4">link</a></p>
+! End
+
 ! Example 503
 [link]("title")
 ! Solution
@@ -152,6 +158,12 @@ bar>)</p>
 <p><a href="/url" title="title">link</a>
 <a href="/url" title="title">link</a>
 <a href="/url" title="title">link</a></p>
+! End
+
+! Example 505
+[link](/url "title \"&quot;")
+! Solution
+<p><a href="/url" title="title &quot;&quot;">link</a></p>
 ! End
 
 ! Example 506

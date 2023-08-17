@@ -1,0 +1,67 @@
+! Example 12
+\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\_\`\{\|\}\~
+! End
+
+! Example 13
+\	\A\a\ \3\φ\«
+! End
+
+! Example 14
+\*not emphasized*
+\<br/> not a tag
+\[not a link](/foo)
+\`not code`
+1\. not a list
+\* not a list
+\# not a heading
+\[foo]: /url "not a reference"
+\&ouml; not a character entity
+! End
+
+! Example 15
+\\*emphasis*
+! End
+
+! Example 16
+foo\
+bar
+! End
+
+! Example 17
+`` \[\` ``
+! End
+
+! Example 18
+    \[\]
+! End
+
+! Example 19
+~~~
+\[\]
+~~~
+! End
+
+! Example 20
+<http://example.com?find=\*>
+! End
+
+! Example 21
+<a href="/bar\/)">
+! End
+
+! Example 22
+[foo](/bar\* "ti\*tle")
+! End
+
+! Example 23
+[foo]
+
+[foo]: /bar\* "ti\*tle"
+! End
+
+! Example 24
+``` foo\+bar
+foo
+```
+! End
+

@@ -1,0 +1,109 @@
+! Example 1
+	foo	baz		bim
+! Solution
+<pre><code>foo	baz		bim
+</code></pre>
+! End
+
+! Example 2
+  	foo	baz		bim
+! Solution
+<pre><code>foo	baz		bim
+</code></pre>
+! End
+
+! Example 3
+    a	a
+    ὐ	a
+! Solution
+<pre><code>a	a
+ὐ	a
+</code></pre>
+! End
+
+! Example 4
+  - foo
+
+	bar
+! Solution
+<ul>
+<li>
+<p>foo</p>
+<p>bar</p>
+</li>
+</ul>
+! End
+
+! Example 5
+- foo
+
+		bar
+! Solution
+<ul>
+<li>
+<p>foo</p>
+<pre><code>  bar
+</code></pre>
+</li>
+</ul>
+! End
+
+! Example 6
+>		foo
+! Solution
+<blockquote>
+<pre><code>  foo
+</code></pre>
+</blockquote>
+! End
+
+! Example 7
+-		foo
+! Solution
+<ul>
+<li>
+<pre><code>  foo
+</code></pre>
+</li>
+</ul>
+! End
+
+! Example 8
+    foo
+	bar
+! Solution
+<pre><code>foo
+bar
+</code></pre>
+! End
+
+! Example 9
+ - foo
+   - bar
+	 - baz
+! Solution
+<ul>
+<li>foo
+<ul>
+<li>bar
+<ul>
+<li>baz</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+! End
+
+! Example 10
+#	Foo
+! Solution
+<h1>Foo</h1>
+! End
+
+! Example 11
+*	*	*	
+! Solution
+<hr />
+! End
+

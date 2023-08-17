@@ -1,0 +1,52 @@
+! Example 1
+	foo	baz		bim
+! End
+
+! Example 2
+  	foo	baz		bim
+! End
+
+! Example 3
+    a	a
+    ὐ	a
+! End
+
+! Example 4
+  - foo
+
+	bar
+! End
+
+! Example 5
+- foo
+
+		bar
+! End
+
+! Example 6
+>		foo
+! End
+
+! Example 7
+-		foo
+! End
+
+! Example 8
+    foo
+	bar
+! End
+
+! Example 9
+ - foo
+   - bar
+	 - baz
+! End
+
+! Example 10
+#	Foo
+! End
+
+! Example 11
+*	*	*	
+! End
+

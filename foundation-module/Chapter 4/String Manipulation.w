@@ -633,7 +633,7 @@ int Str::includes(text_stream *S, text_stream *T) {
 int Str::includes_insensitive(text_stream *S, text_stream *T) {
 	int LS = Str::len(S);
 	int LT = Str::len(T);
-	for (int i=0; i<LS-LT; i++) {
+	for (int i=0; i<=LS-LT; i++) {
 		int failed = FALSE;
 		for (int j=0; j<LT; j++)
 			if (Characters::tolower(Str::get_at(S, i+j)) !=
