@@ -11,14 +11,15 @@ Phase II of the parser consists entirely of walking the tree built in Phase I,
 with the following function.
 
 =
-void MDInlineParser::inline_recursion(md_links_dictionary *link_refs, markdown_item *at) {
+void MDInlineParser::inline_recursion(markdown_variation *variation,
+	md_links_dictionary *link_refs, markdown_item *at) {
 	if (at == NULL) return;
 	if (at->type == PARAGRAPH_MIT)
-		at->down = MDInlineParser::inline(link_refs, at->stashed);
+		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
 	if (at->type == HEADING_MIT)
-		at->down = MDInlineParser::inline(link_refs, at->stashed);
+		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
 	for (markdown_item *c = at->down; c; c = c->next)
-		MDInlineParser::inline_recursion(link_refs, c);
+		MDInlineParser::inline_recursion(variation, link_refs, c);
 }
 
 @ What it does, then, is to look at the text of paragraphs and headings to
@@ -47,15 +48,17 @@ for most purposes. Finally, but with some difficulty, we look for emphasis
 notation. 
 
 =
-markdown_item *MDInlineParser::inline(md_links_dictionary *link_refs, text_stream *text) {
+markdown_item *MDInlineParser::inline(markdown_variation *variation,
+	md_links_dictionary *link_refs, text_stream *text) {
 	markdown_item *owner = Markdown::new_item(MATERIAL_MIT);
-	MDInlineParser::make_inline_chain(owner, text);
-	MDInlineParser::links_and_images(link_refs, owner, FALSE);
-	MDInlineParser::emphasis(owner);
+	MDInlineParser::make_inline_chain(variation, owner, text);
+	MDInlineParser::links_and_images(variation, link_refs, owner, FALSE);
+	MDInlineParser::emphasis(variation, owner);
 	return owner;
 }
 
-markdown_item *MDInlineParser::make_inline_chain(markdown_item *owner, text_stream *text) {
+markdown_item *MDInlineParser::make_inline_chain(markdown_variation *variation,
+	markdown_item *owner, text_stream *text) {
 	int i = 0;
 	while (Str::get_at(text, i) == ' ') i++;
 	int from = i, escaped = FALSE;
@@ -516,8 +519,8 @@ text, which is not allowed to contain tags, only plain text. But syntactically
 it is legal Markdown.
 
 =
-void MDInlineParser::links_and_images(md_links_dictionary *link_refs,
-	markdown_item *owner, int images_only) {
+void MDInlineParser::links_and_images(markdown_variation *variation,
+	md_links_dictionary *link_refs, markdown_item *owner, int images_only) {
 	if (owner == NULL) return;
 	if (tracing_Markdown_parser) {
 		PRINT("Beginning link/image pass:\n");
@@ -606,8 +609,8 @@ typedef struct md_link_parse {
 	markdown_item *matter = Markdown::new_item(MATERIAL_MIT);
 	if (found.link_text_empty == FALSE) matter->down = link_text;
 	Markdown::add_to(matter, link_item);
-	if (found.is_link == TRUE) MDInlineParser::links_and_images(link_refs, matter, TRUE);
-	else MDInlineParser::links_and_images(link_refs, matter, FALSE);
+	if (found.is_link == TRUE) MDInlineParser::links_and_images(variation, link_refs, matter, TRUE);
+	else MDInlineParser::links_and_images(variation, link_refs, matter, FALSE);
 	if (ref) {
 		if (Str::len(ref->destination) > 0) {
 			markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
@@ -955,10 +958,10 @@ on its face, and CommonMark's precise specification is a bit of an ordeal,
 but here goes.
 
 =
-void MDInlineParser::emphasis(markdown_item *owner) {
+void MDInlineParser::emphasis(markdown_variation *variation, markdown_item *owner) {
 	for (markdown_item *md = owner->down; md; md = md->next)
 		if ((md->type == LINK_MIT) || (md->type == IMAGE_MIT))
-			MDInlineParser::emphasis(md->down);
+			MDInlineParser::emphasis(variation, md->down);
 	text_stream *OUT = STDOUT;
 	if (tracing_Markdown_parser) {
 		WRITE("Seeking emphasis in:\n");
@@ -1206,8 +1209,8 @@ than the original, it does at least terminate.
 	@<Make the chain of emphasis items from top to bottom@>;
 	@<Perform the tree surgery to insert the emphasis item@>;
 
-	MDInlineParser::emphasis(em_bottom);
-	MDInlineParser::emphasis(option);
+	MDInlineParser::emphasis(variation, em_bottom);
+	MDInlineParser::emphasis(variation, option);
 
 	if (tracing_Markdown_parser) {
 		WRITE("Option %d is to fragment thus:\n", no_options);

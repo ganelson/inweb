@@ -35,6 +35,7 @@ here we are.
 @e linked_list_CLASS
 @e linked_list_item_CLASS
 @e markdown_item_CLASS
+@e markdown_variation_CLASS
 @e match_avinue_CLASS
 @e match_trie_CLASS
 @e md_link_dictionary_entry_CLASS
@@ -89,6 +90,7 @@ DECLARE_CLASS(JSON_single_requirement)
 DECLARE_CLASS(JSON_type)
 DECLARE_CLASS(JSON_value)
 DECLARE_CLASS(linked_list)
+DECLARE_CLASS(markdown_variation)
 DECLARE_CLASS(md_doc_state)
 DECLARE_CLASS(md_links_dictionary)
 DECLARE_CLASS(method_set)

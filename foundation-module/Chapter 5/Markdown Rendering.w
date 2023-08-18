@@ -21,10 +21,18 @@ through the tree: it's a bitmap composed of the following.
 
 =
 void MDRenderer::render(OUTPUT_STREAM, markdown_item *md) {
-	MDRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE | ENTITIES_MDRMODE);
+	MDRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE | ENTITIES_MDRMODE,
+		MarkdownVariations::CommonMark());
 }
 
-void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
+void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
+	markdown_variation *variation) {
+	MDRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE | ENTITIES_MDRMODE,
+		variation);
+}
+
+void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
+	markdown_variation *variation) {
 	if (md == NULL) return;
 	int old_mode = mode;
 	switch (md->type) {
@@ -50,7 +58,7 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 		case HTML_MIT:                  @<Render a raw HTML block@>; break;
 		case THEMATIC_MIT:              if (mode & TAGS_MDRMODE) WRITE("<hr />\n");
 		                                break;
-		case EMPTY_MIT:              break;
+		case EMPTY_MIT:                 break;
 
 		case MATERIAL_MIT: 	            @<Recurse@>; break;
 
@@ -132,10 +140,10 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode) {
 	int nl_issued = FALSE;
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
 		if (((mode & LOOSE_MDRMODE) == 0) && (ch->type == PARAGRAPH_MIT))
-			MDRenderer::recurse(OUT, ch->down, mode);
+			MDRenderer::recurse(OUT, ch->down, mode, variation);
 		else {
 			if (nl_issued == FALSE) { nl_issued = TRUE; WRITE("\n"); }
-			MDRenderer::recurse(OUT, ch, mode);
+			MDRenderer::recurse(OUT, ch, mode, variation);
 		}
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("li");
 	WRITE("\n");
@@ -214,11 +222,11 @@ been taken out at the parsing stage.)
 	TEMPORARY_TEXT(title)
 	if (md->down->next) {
 		if (md->down->next->type == LINK_DEST_MIT) {
-			MDRenderer::recurse(URI, md->down->next, mode);
+			MDRenderer::recurse(URI, md->down->next, mode, variation);
 			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
-				MDRenderer::recurse(title, md->down->next->next, mode);
+				MDRenderer::recurse(title, md->down->next->next, mode, variation);
 		} else if (md->down->next->type == LINK_TITLE_MIT) {
-			MDRenderer::recurse(title, md->down->next, mode);
+			MDRenderer::recurse(title, md->down->next, mode, variation);
 		}
 	}
 	if (Str::len(title) > 0) {
@@ -226,7 +234,7 @@ been taken out at the parsing stage.)
 	} else {
 		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\"", URI);
 	}
-	MDRenderer::recurse(OUT, md->down, mode);
+	MDRenderer::recurse(OUT, md->down, mode, variation);
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
 	DISCARD_TEXT(URI)
 	DISCARD_TEXT(title)
@@ -237,14 +245,14 @@ been taken out at the parsing stage.)
 	TEMPORARY_TEXT(alt)
 	if (md->down->next) {
 		if (md->down->next->type == LINK_DEST_MIT) {
-			MDRenderer::recurse(URI, md->down->next, mode);
+			MDRenderer::recurse(URI, md->down->next, mode, variation);
 			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
-				MDRenderer::recurse(title, md->down->next->next, mode);
+				MDRenderer::recurse(title, md->down->next->next, mode, variation);
 		} else if (md->down->next->type == LINK_TITLE_MIT) {
-			MDRenderer::recurse(title, md->down->next, mode);
+			MDRenderer::recurse(title, md->down->next, mode, variation);
 		}
 	}
-	MDRenderer::recurse(alt, md->down, mode & (~TAGS_MDRMODE));
+	MDRenderer::recurse(alt, md->down, mode & (~TAGS_MDRMODE), variation);
 	if (Str::len(title) > 0) {
 		if (mode & TAGS_MDRMODE) {
 			HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
@@ -266,7 +274,7 @@ been taken out at the parsing stage.)
 
 @<Recurse@> =
 	for (markdown_item *c = md->down; c; c = c->next)
-		MDRenderer::recurse(OUT, c, mode);
+		MDRenderer::recurse(OUT, c, mode, variation);
 
 @ Down at the lower level now: how to render the slice of text in a single
 inline item. In |ESCAPES_MDRMODE|, backslash followed by ASCII (but not

@@ -51,6 +51,7 @@ maximum, but it doesn't seem worth it.
 
 =
 typedef struct md_doc_state {
+	struct markdown_variation *variation;
 	struct markdown_item *tree_head;
 	struct md_links_dictionary *link_references;
 
@@ -73,9 +74,11 @@ typedef struct md_doc_state {
 	CLASS_DEFINITION
 } md_doc_state;
 
-md_doc_state *MDBlockParser::initialise(markdown_item *head, md_links_dictionary *dict) {
+md_doc_state *MDBlockParser::initialise(markdown_variation *variation,
+	markdown_item *head, md_links_dictionary *dict) {
 	md_doc_state *state = CREATE(md_doc_state);
 
+	state->variation = variation;
 	state->tree_head = head;
 	state->link_references = dict;
 

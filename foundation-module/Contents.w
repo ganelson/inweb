@@ -58,6 +58,7 @@ Chapter 5: Generating Websites
 	Markdown Phase I
 	Markdown Phase II
 	Markdown Rendering
+	Markdown Variations
 	Epub Ebooks
 
 Chapter 6: Media
