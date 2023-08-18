@@ -6,249 +6,639 @@ container and leaf blocks.
 @h Disclaimer.
 Do not call functions in this section directly: use the API in //Markdown//.
 
-@ Parser state.
+@h State.
+We now define the state of the Phase I parser preserved between successive
+calls to the function |MDBlockParser::add_to_document|.
+
+The most important part is the pair of stacks. The "container stack" holds the
+chain of container blocks containing the current write position. For
+example, if the words "Sundman traded the Z-Grill for a block of four Inverted
+Jennys" appear in a paragraph under a list of notable philately deals, then
+the container stack will consist of the |DOCUMENT_MIT| head node (position 0),
+then an |UNORDERED_LIST_ITEM_MIT| node (position 1), and the |container_sp|
+will be 2. The paragraph item does exist, but is not a container and is not
+held on the stack; it will be one of the child nodes (in fact, the last one)
+of the |UNORDERED_LIST_ITEM_MIT| node.
+
+The container stack, then, refers to the actual tree, and provides us with a
+quick way to access the latest goings-on. The full tree may be very large,
+so we wouldn't want to traverse it every time a line came along: that would
+have quadratic running time in the number of lines.
+
+The "marker stack" records the notation used to specify this situation.
+For example, the line |* > The future King George V paid £1,450 for an unused blue|
+contains two "positional marker" notations: the |*| indicates an unordered list
+item, the |>| a block quote. Here, then, the marker stack also holds two items.
+But because we want the indexing of the two stacks to correspond exactly,
+these two items are indexed 1 and 2, not 0 and 1. The hypothetical entry 0
+on the marker stack would correspond to saying that the text is to go into
+the document as a whole, and that goes without saying, so we do not use entry 0.
+
+This correspondence means that when the line has been acted on, marker 1
+(the |*|) leads to container 1 being an |UNORDERED_LIST_ITEM_MIT|, and
+marker 2 (the |>|) leads to container 2 being a |BLOCK_QUOTE_MIT|. So at
+some points during parsing, the two stacks line up nicely. Nevertheless,
+they are not the same, and they have different stack pointers, because
+at times one contains more entries than the other.
+
+@ A dirty secret: the code below currently has a hard maximum on the nesting
+depth of list items and block quotes. No human will remotely discover this,
+and the only consequence of exceeding it is that we won't render block quotes
+or list items deeper than that. It wouldn't be too hard to remove this hard
+maximum, but it doesn't seem worth it.
+
+@d MAX_MARKDOWN_CONTAINER_DEPTH 128 /* human users rarely exceed 2 */
 
 =
 typedef struct md_doc_state {
-	struct markdown_item *doc;
-	struct text_stream *blanks;
-	int code_indent_to_strip; /* measured as a position, not a string index */
-	wchar_t fencing_material;
-	struct markdown_item *fenced_code;
-	int fence_width;
-	int fence_sp;
-	int HTML_end_condition;
+	struct markdown_item *tree_head;
 	struct md_links_dictionary *link_references;
-	struct markdown_item *containers[100];
-	struct markdown_item *current_leaves[100];
+
+	struct markdown_item *containers[MAX_MARKDOWN_CONTAINER_DEPTH];
 	int container_sp;
-	int positionals[100];
-	int positionals_indent[100];
-	int positionals_at[100];
-	int positionals_implied[100];
-	int positional_values[100];
-	wchar_t positional_flavours[100];
-	int positional_blank_counts[100];
-	int positional_sp;
+
+	struct positional_marker markers[MAX_MARKDOWN_CONTAINER_DEPTH];
+	int marker_sp;
+	int temporary_marker_limit;
+
+	struct markdown_item *receiving_PARAGRAPH;
+	struct markdown_item *receiving_CODE_ITEM;
+	struct markdown_item *receiving_HTML;
+	struct text_stream *blank_matter_after_receiver;
+
+	struct md_fencing_data fencing;
+
+	int HTML_end_condition;
+
 	CLASS_DEFINITION
 } md_doc_state;
 
 md_doc_state *MDBlockParser::initialise(markdown_item *head, md_links_dictionary *dict) {
 	md_doc_state *state = CREATE(md_doc_state);
 
-	state->doc = head;
-	state->doc->open = TRUE;
-	state->code_indent_to_strip = -1;
-	state->blanks = Str::new();
-	state->fencing_material = 0;
-	state->fence_width = 0;
-	state->fenced_code = NULL;
-	state->fence_sp = 100000000;
-	state->HTML_end_condition = 0;
+	state->tree_head = head;
 	state->link_references = dict;
 
-	for (int i=0; i < 100; i++) state->current_leaves[i] = NULL;
-	for (int i=0; i < 100; i++) state->containers[i] = NULL;
-	for (int i=0; i < 100; i++) state->positionals[i] = 0;
-	for (int i=0; i < 100; i++) state->positionals_indent[i] = 0;
-	for (int i=0; i < 100; i++) state->positionals_at[i] = 0;
-	for (int i=0; i < 100; i++) state->positionals_implied[i] = 0;
-	for (int i=0; i < 100; i++) state->positional_values[i] = 0;
-	for (int i=0; i < 100; i++) state->positional_flavours[i] = 0;
-	for (int i=0; i < 100; i++) state->positional_blank_counts[i] = 0;
-	
-	state->container_sp = 1;
-	state->containers[0] = head;
+	@<Initialise the two stacks@>;
+	@<Initialise the receiver data@>;
 
-	state->positional_sp = 0;
+	MDBlockParser::open_block(state, head);
 	return state;
 }
 
+@<Initialise the two stacks@> =
+	state->marker_sp = 0;
+	for (int i=0; i < MAX_MARKDOWN_CONTAINER_DEPTH; i++)
+		MDBlockParser::clear_marker(&(state->markers[i]));
+	MDBlockParser::lift_marker_limit(state);
 
-void MDBlockParser::debug_positional_stack(OUTPUT_STREAM, md_doc_state *state, int first_implicit_marker) {
-	for (int i=0; i<state->positional_sp; i++) {
-		if (first_implicit_marker == i) WRITE("! ");
-		switch (state->positionals[i]) {
-			case BLOCK_QUOTE_MIT: WRITE("blockquote "); break;
-			case UNORDERED_LIST_MIT: WRITE("ul "); break;
-			case ORDERED_LIST_MIT: WRITE("ol "); break;
-			case UNORDERED_LIST_ITEM_MIT: WRITE("(%c) ", state->positional_flavours[i]); break;
-			case ORDERED_LIST_ITEM_MIT: WRITE("%d%c ", state->positional_values[i], state->positional_flavours[i]); break;
+	state->container_sp = 1;
+	for (int i=0; i < MAX_MARKDOWN_CONTAINER_DEPTH; i++) state->containers[i] = NULL;
+	state->containers[0] = head;
+
+@<Initialise the receiver data@> =
+	state->receiving_PARAGRAPH = NULL;
+	state->receiving_CODE_ITEM = NULL;
+	state->receiving_HTML = NULL;
+	state->blank_matter_after_receiver = Str::new();
+
+	MDBlockParser::clear_fencing_data(state);
+	MDBlockParser::clear_HTML_data(state);
+
+@h Receivers.
+A "receiver" is a block into which actual copy, that is, text, is poured. In
+theory that would include headings, but headings are created by converting
+them from paragraphs, so they are not included here: thus, there are just three.
+
+We can never have two different paragraphs both being receivers at the same
+time, and so on, but it is possible for both a paragraph and a code block
+to be receivers simultaneously during parsing (for reasons to do with lazy
+continuation and blank lines). So although it is tempting to have just a
+single variable, "the current receiver item", we can't do that.
+
+=
+markdown_item *MDBlockParser::latest_paragraph(md_doc_state *state) {
+	return state->receiving_PARAGRAPH;
+}
+
+markdown_item *MDBlockParser::latest_HTML_block(md_doc_state *state) {
+	return state->receiving_HTML;
+}
+
+markdown_item *MDBlockParser::latest_code_block(md_doc_state *state) {
+	return state->receiving_CODE_ITEM;
+}
+markdown_item *MDBlockParser::latest_receiver(md_doc_state *state, int type) {
+	switch (type) {
+		case PARAGRAPH_MIT: return state->receiving_PARAGRAPH;
+		case CODE_BLOCK_MIT: return state->receiving_CODE_ITEM;
+		case HTML_MIT: return state->receiving_HTML;
+	}
+	return NULL;
+}
+
+@ These functions make a block a receiver, or make it stop being one.
+
+=
+void MDBlockParser::make_receiver(md_doc_state *state, markdown_item *block) {
+	if (block) {
+		switch (block->type) {
+			case PARAGRAPH_MIT:  state->receiving_PARAGRAPH = block; break;
+			case CODE_BLOCK_MIT: state->receiving_CODE_ITEM = block; break;
+			case HTML_MIT:       state->receiving_HTML = block; break;
 		}
 	}
-	if (state->positional_sp > 0) {
-		WRITE("[blank=%d] ", state->positional_blank_counts[state->positional_sp - 1]);
-		WRITE("[at=%d] ", state->positionals_at[state->positional_sp - 1]);
-		WRITE("[min-indent=%d] ", state->positionals_indent[state->positional_sp - 1]);
-	} else {
-		WRITE("empty\n");
+	Str::clear(state->blank_matter_after_receiver);
+}
+
+void MDBlockParser::remove_receiver(md_doc_state *state, markdown_item *block) {
+	if (block) {
+		switch (block->type) {
+			case PARAGRAPH_MIT:  state->receiving_PARAGRAPH = NULL; break;
+			case CODE_BLOCK_MIT: state->receiving_CODE_ITEM = NULL; break;
+			case HTML_MIT:       state->receiving_HTML = NULL; break;
+		}
 	}
+}
+
+@ "Fencing", in the sense of gardens not sword-fighting, happens when a 
+fenced code block is being parsed. This requires quite a bit of extra state,
+since we are not allowed to match a fence |~~~| with a fence |````|, and so on.
+The width of the fence is the number of characters used in its opening, so
+for example 3 for |~~~|.
+
+Note that |fencing_material| is always 0 when we are not parsing a fenced
+code block.
+
+The "left margin" is measured in character positions (not string index points)
+and is the number of characters by which the fenced code block is indented,
+when this is required. (This happens sometimes when fenced code blocks occur
+inside list items, for example.)
+
+=
+typedef struct md_fencing_data {
+	wchar_t material; /* character used in the fence syntax */
+	int width;
+	struct markdown_item *fenced_code;
+	int left_margin; /* measured as a position, not a string index */
+} md_fencing_data;
+
+void MDBlockParser::clear_fencing_data(md_doc_state *state) {
+	state->fencing.material = 0;
+	state->fencing.width = 0;
+	state->fencing.fenced_code = NULL;
+	state->fencing.left_margin = -1; /* meaning "none" */
+}
+
+@ Similarly, HTML blocks have closing syntax which depends on their opening
+syntax, so we need to remember some state when parsing those, too.
+
+=
+void MDBlockParser::clear_HTML_data(md_doc_state *state) {
+	state->HTML_end_condition = 0;
+}
+
+@h Markers.
+Markers can survive from one line to the next, and indeed this is essential.
+Consider the sequence
+= (text)
+	* Victorian stamps
+	  - Penny Black
+	* Edwardian stamps
+=
+Three positional markers are obvious in this text, but in fact there's a fourth
+implicit one. The line |  - Penny Black| implicitly marks itself as being a subentry
+of the outer entry, as if a ghostly asterisk were hiding behind the opening spacing.
+In this case, we will parse that by preserving the marker from the previous line,
+but flagging it as |continues_from_earlier_line|.
+
+Note that block quote markers are never flagged as continuing, because they work
+differently: instead of being implicitly continued, block quotes are explicitly so.
+= (text)
+	> This is all part of
+	> the same block quote.
+=
+
+The |blank_counts| keeps track of how many blank lines follow, and is needed only
+because of the special rule that a list item cannot begin with two blank lines.
+
+=
+typedef struct positional_marker {
+	int item_type; /* |BLOCK_QUOTE_MIT|, |ORDERED_LIST_ITEM_MIT| or |UNORDERED_LIST_ITEM_MIT| */
+	int indent;                /* minimum required indentation for subsequent lines to continue */
+	int at;                    /* character position (not string index) of the start of the marker */
+	int list_item_value;       /* for example, 7 for |7) | or |7. | */
+	wchar_t list_item_flavour; /* for example, |')'| for |7) | and |'.'| for |7. | */
+
+	int continues_from_earlier_line;
+	int blank_counts;
+} positional_marker;
+
+void MDBlockParser::clear_marker(positional_marker *marker) {
+	marker->item_type = 0; /* which is not a valid item type: this will never be used */
+	marker->indent = 0;
+	marker->at = 0;
+	marker->continues_from_earlier_line = FALSE;
+	marker->list_item_value = 0;
+	marker->list_item_flavour = 0;
+	marker->blank_counts = 0;
+}
+
+@ Ordinarily, we can parse markers to our heart's content, or at least up to
+|MAX_MARKDOWN_CONTAINER_DEPTH| of them. But sometimes we mustn't. Consider:
+= (text)
+	```
+	> * 1) Whatever
+	```
+=
+This is a fenced code block, so the tantalising string of potential markers,
+|> * 1)|, is in fact part of the code being fenced. We need to prevent that,
+so during the parsing of lines in such a block, the following limit is
+imposed on the number of markers we are allowed to parse. (In this example, 0.)
+
+=
+void MDBlockParser::impose_marker_limit(md_doc_state *state, int limit) {
+	state->temporary_marker_limit = limit;
+}
+
+void MDBlockParser::lift_marker_limit(md_doc_state *state) {
+	state->temporary_marker_limit = 100000000;
+}
+
+@ The marker stack is only in some ways a stack: we have access at any time
+to the markers at each level. Here, we put a new blank marker in place at
+level |position|: remember that this counts from 1, not from 0.
+
+=
+positional_marker *MDBlockParser::new_marker_at(md_doc_state *state, int position, int type) {
+	if ((type != BLOCK_QUOTE_MIT) &&
+		(type != UNORDERED_LIST_ITEM_MIT) && (type != ORDERED_LIST_ITEM_MIT))
+		internal_error("bad type for marker stack");
+	if ((position <= 0) || (position >= MAX_MARKDOWN_CONTAINER_DEPTH))
+		internal_error("marker out of range");
+	positional_marker *marker = &(state->markers[position]);
+	MDBlockParser::clear_marker(marker);
+	marker->item_type = type;
+	return marker;
+}
+
+@ And this gives access to the marker at any level.
+
+=
+positional_marker *MDBlockParser::marker_at(md_doc_state *state, int position) {
+	if ((position <= 0) || (position >= MAX_MARKDOWN_CONTAINER_DEPTH)) return NULL;
+	positional_marker *marker = &(state->markers[position]);
+	if (marker->item_type == 0) return NULL;
+	return marker;
+}
+
+@ Inevitably, more notation:
+
+=
+void MDBlockParser::debug_positional_stack(OUTPUT_STREAM,
+	md_doc_state *state, int first_implicit_marker) {
+	for (int i=1; i<MAX_MARKDOWN_CONTAINER_DEPTH; i++) {
+		if (first_implicit_marker == i) WRITE("! ");
+		if (i == state->marker_sp) WRITE("[top] ");
+		if ((i > state->marker_sp) && (state->markers[i].item_type == 0)) break;
+		MDBlockParser::debug_marker(OUT, &(state->markers[i]), (i == state->marker_sp-1)?TRUE:FALSE);
+	}
+	if (state->marker_sp == 0) WRITE("empty");
 	WRITE("\n");
 }
 
+void MDBlockParser::debug_marker(OUTPUT_STREAM, positional_marker *marker, int in_full) {
+	if (marker == NULL) { WRITE("<no-marker>"); return; }
+	switch (marker->item_type) {
+		case BLOCK_QUOTE_MIT:         WRITE("> "); break;
+		case UNORDERED_LIST_ITEM_MIT: WRITE("(%c) ", marker->list_item_flavour); break;
+		case ORDERED_LIST_ITEM_MIT:   WRITE("%d%c ",
+										marker->list_item_value, marker->list_item_flavour);
+									  break;
+		default: WRITE("<invalid-marker>"); break;
+	}
+	if (in_full) {
+		WRITE("[at=%d] ", marker->at);
+		WRITE("[min-indent=%d] ", marker->indent);
+		if (marker->blank_counts) WRITE("[blanks=%d] ", marker->blank_counts);
+	}
+}
+
+@ Let's finally do some actual parsing. Block quote markers are very simple:
+they are just |>| signs. The following function indicates success by advancing
+the read position, and failure by not doing so.
+
+=
+tabbed_string_iterator MDBlockParser::block_quote_marker(tabbed_string_iterator line_scanner) {
+	if (TabbedStr::get_character(&line_scanner) != '>') return line_scanner;
+	TabbedStr::advance(&line_scanner);
+	return line_scanner;
+}
+
+@ Bullet list markers are |-|, |+| or |*|, this character being the "flavour".
+
+=
+tabbed_string_iterator MDBlockParser::bullet_list_marker(tabbed_string_iterator line_scanner,
+	wchar_t *flavour) {
+	tabbed_string_iterator old = line_scanner;
+	if (MDBlockParser::thematic_marker(line_scanner.line, TabbedStr::get_index(&line_scanner))) return old;
+	wchar_t c = TabbedStr::get_character(&line_scanner);
+	if ((c == '-') || (c == '+') || (c == '*')) {
+		TabbedStr::advance(&line_scanner);
+		*flavour = c;
+	}
+	return line_scanner;
+}
+
+@ Ordered list markers are |N)| or |N.|, with the terminal character being the
+flavour once more, and |N| being a string of up to 9 decimal digits. These
+can include leading zeros, but not minus signs, and can only be in decimal.
+They are in fact almost entirely thrown away as information, as we'll see
+when we get to rendering, but we parse them anyway.
+
+=
+tabbed_string_iterator MDBlockParser::ordered_list_marker(tabbed_string_iterator line_scanner,
+	int *v, wchar_t *flavour) {
+	tabbed_string_iterator old = line_scanner;
+	if (MDBlockParser::thematic_marker(line_scanner.line, TabbedStr::get_index(&line_scanner))) return old;
+	wchar_t c = TabbedStr::get_character(&line_scanner);
+	int dc = 0, val = 0;
+	while (Characters::is_ASCII_digit(c)) {
+		val = 10*val + (int) (c - '0');
+		TabbedStr::advance(&line_scanner); dc++;
+		c = TabbedStr::get_character(&line_scanner);
+	}
+	if ((dc < 1) || (dc > 9)) return old;
+	c = TabbedStr::get_character(&line_scanner);
+	if ((c == '.') || (c == ')')) {
+		*flavour = c;
+		*v = val;
+		TabbedStr::advance(&line_scanner);
+		return line_scanner;
+	}
+	return old;
+}
+
+@ A line which can be interpreted as a thematic break is never a list item,
+so we need to parse those too. These always occur after the early phase in
+which tabs count as spaces, so we no longer use a |tabbed_string_iterator|
+here. The function returns either true or false.
+
+=
+int MDBlockParser::thematic_marker(text_stream *line, int initial_spacing) {
+	wchar_t c = Str::get_at(line, initial_spacing);
+	if ((c == '-') || (c == '_') || (c == '*')) {
+		int ornament_count = 1;
+		for (int j=initial_spacing+1; j<Str::len(line); j++) {
+			wchar_t d = Str::get_at(line, j);
+			if (d == c) {
+				if (ornament_count > 0) ornament_count++;
+			} else {
+				if ((d != ' ') && (d != '\t')) ornament_count = 0;
+			}
+		}
+		if (ornament_count >= 3) return TRUE;
+	}
+	return FALSE;
+}
+
+@h Containers.
+Enough on markers: we also need some preparatory work on container and leaf blocks.
+
+A block can occasionally change type. For example, a |PARAGRAPH_MIT| may turn
+out to be a heading after all because of a subsequent setext underline, and then
+it must become a |HEADING_MIT|. We do this carefully to avoid getting the
+receiver states cross-wired.
+
+=
+void MDBlockParser::change_type(md_doc_state *state, markdown_item *block, int t) {
+	if (block == NULL) internal_error("no block");
+	if (tracing_Markdown_parser) {
+		PRINT("Change type: "); Markdown::debug_item(STDOUT, block);
+	}
+	if (block->open) MDBlockParser::remove_receiver(state, block);
+	block->type = t;
+	if (block->open) MDBlockParser::make_receiver(state, block);
+	if (tracing_Markdown_parser) {
+		PRINT(" -> "); Markdown::debug_item(STDOUT, block); PRINT("\n");
+	}
+}
+
+@ This marks a block as being followed by white space line(s) in the context
+of its own container. Tracking this is annoying, but we need it in order to
+determine whether lists are loose or tight when rendering.
+
+=
+void MDBlockParser::mark_block_with_ws(md_doc_state *state, markdown_item *block) {
+	if (block) {
+		if (tracing_Markdown_parser) {
+			PRINT("Mark as whitespace-following: "); Markdown::debug_item(STDOUT, block);
+		}
+		block->whitespace_follows = TRUE;
+	}
+}
+
+@ We have a not-very-important concept of blocks being open or closed. Only
+leaf and container blocks can meaningfully be opened: for other items, |block->open|
+will remain |NOT_APPLICABLE|. A block can be opened only once, and closed only
+once, and it can only be closed after it has been opened.
+
+=
+void MDBlockParser::open_block(md_doc_state *state, markdown_item *block) {
+	if (block->open == NOT_APPLICABLE) {
+		block->open = TRUE;
+		MDBlockParser::close_block(state, MDBlockParser::latest_receiver(state, block->type));
+		MDBlockParser::make_receiver(state, block);
+	}
+}
+
+void MDBlockParser::close_block(md_doc_state *state, markdown_item *at) {
+	if (at == NULL) return;
+	if (at->open != TRUE) return;
+	if (tracing_Markdown_parser) {
+		PRINT("Closing: "); Markdown::debug_item(STDOUT, at); PRINT("\n");
+		STREAM_INDENT(STDOUT);
+	}
+	at->open = FALSE;
+	for (markdown_item *ch = at->down; ch; ch = ch->next)
+		MDBlockParser::close_block(state, ch);
+	if (tracing_Markdown_parser) {
+		STREAM_OUTDENT(STDOUT);
+	}
+	MDBlockParser::remove_receiver(state, at);
+	MDBlockParser::remove_link_references(state, at);
+}
+
+@ So when are blocks opened? We've already seen that the |DOCUMENT_MIT| block
+is opened right at the start. As we will later see, container blocks are
+opened when they are created. And the following function opens a new leaf
+block and joins it to the tree:
+
+=
+void MDBlockParser::turn_over_a_new_leaf(md_doc_state *state, markdown_item *block) {
+	MDBlockParser::open_block(state, block);
+	Markdown::add_to(block, state->containers[state->container_sp-1]);
+}
+
+@h The main function.
+So, now we're off to the races.
+
+=
 void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	if (tracing_Markdown_parser) {
 		PRINT("=======\nAdding '%S' to tree:\n", line);
-		Markdown::debug_subtree(STDOUT, state->doc);
+		Markdown::debug_subtree(STDOUT, state->tree_head);
 		PRINT("Positional stack carried over: ");
 		MDBlockParser::debug_positional_stack(STDOUT, state, -1);
 	}
-	int explicit_markers = 0, first_implicit_marker = -1;
-	int sp = 0, last_explicit_list_marker_sp = 0, last_explicit_list_marker_width = -1;
-	tabbed_string_iterator mdw = TabbedStr::new(line, 4);
+	int first_implicit_marker = -1;
+	int sp = 1, last_explicit_list_marker_sp = 1, last_explicit_list_marker_width = -1;
+	tabbed_string_iterator line_scanner = TabbedStr::new(line, 4);
 
 	int min_indent_to_continue = -1;
 	while (TRUE) {
-		if (sp > 50) { PRINT("Stack overflow!"); break; }
-		if (sp >= state->fence_sp-1) break;
-		tabbed_string_iterator copy = mdw;
-		int available = TabbedStr::spaces_available(&mdw);
+		if (sp >= MAX_MARKDOWN_CONTAINER_DEPTH) break;
+		if (sp >= state->temporary_marker_limit) break;
+		tabbed_string_iterator copy = line_scanner;
+		int available = TabbedStr::spaces_available(&line_scanner);
 		if (min_indent_to_continue < 0) min_indent_to_continue = available;
 		else min_indent_to_continue = 0;
-		if ((sp < state->positional_sp) &&
-				(state->positionals[sp] != BLOCK_QUOTE_MIT) &&
-				((TabbedStr::blank_from_here(&mdw)) ||
-					(available >= state->positionals_indent[sp]))) {
-				TabbedStr::eat_spaces(state->positionals_indent[sp], &mdw);
+		positional_marker *marker = MDBlockParser::marker_at(state, sp);
+		if ((sp < state->marker_sp) && (marker) && (marker->item_type != BLOCK_QUOTE_MIT) &&
+			((TabbedStr::blank_from_here(&line_scanner)) || (available >= marker->indent))) {
+				TabbedStr::eat_spaces(state->markers[sp].indent, &line_scanner);
 				if (first_implicit_marker < 0) first_implicit_marker = sp;
-				state->positionals_implied[sp] = TRUE;
-				state->positional_flavours[sp] = 0;
-				state->positional_values[sp++] = 0;
+				marker->continues_from_earlier_line = TRUE;
+				sp++;
 				continue;
 		}
 		int interrupts_paragraph = FALSE;
-		if (state->current_leaves[PARAGRAPH_MIT])
+		if (MDBlockParser::latest_paragraph(state))
 			interrupts_paragraph = TRUE;
-		if ((sp < state->container_sp-1) &&
-			((state->containers[sp+1]->type == UNORDERED_LIST_ITEM_MIT) ||
-				(state->containers[sp+1]->type == ORDERED_LIST_ITEM_MIT)))
+		if ((sp < state->container_sp) &&
+			((state->containers[sp]->type == UNORDERED_LIST_ITEM_MIT) ||
+				(state->containers[sp]->type == ORDERED_LIST_ITEM_MIT)))
 			interrupts_paragraph = FALSE;
 		
 		if (available < 4) {
-			TabbedStr::eat_spaces(available, &mdw);
- 			tabbed_string_iterator starts_at = mdw;
+			TabbedStr::eat_spaces(available, &line_scanner);
+ 			tabbed_string_iterator starts_at = line_scanner;
 			tabbed_string_iterator adv = MDBlockParser::block_quote_marker(starts_at);
-			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&mdw)) {
+			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&line_scanner)) {
 					TabbedStr::eat_space(&adv);
-					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&mdw);
-					mdw = adv;
-					state->positionals[sp] = BLOCK_QUOTE_MIT;
-					state->positionals_indent[sp] = min_indent_to_continue + L + TabbedStr::spaces_available(&mdw);
-					state->positionals_implied[sp] = FALSE;
-					state->positional_blank_counts[sp] = 0;
-					state->positionals_at[sp] = TabbedStr::get_position(&starts_at);
-					state->positional_flavours[sp] = 0;
-					state->positional_values[sp++] = 0;
-					explicit_markers++;
+					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
+					line_scanner = adv;
+					positional_marker *bq_m = MDBlockParser::new_marker_at(state, sp, BLOCK_QUOTE_MIT);
+					bq_m->at = TabbedStr::get_position(&starts_at);
+					bq_m->indent = min_indent_to_continue + L + TabbedStr::spaces_available(&line_scanner);
+					sp++;
 					continue;
 			}
 			wchar_t flavour = 0;
 			adv = MDBlockParser::bullet_list_marker(starts_at, &flavour);
-			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&mdw)) {
+			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&line_scanner)) {
 				wchar_t next = TabbedStr::get_character(&adv);
 				if ((next == ' ') || (next == 0)) {
-					int orig_L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&mdw);
+					int orig_L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
 					TabbedStr::eat_space(&adv);
-					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&mdw);
-					mdw = adv;
-					if ((TabbedStr::blank_from_here(&mdw)) && (interrupts_paragraph)) {
-						mdw = copy;
+					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
+					line_scanner = adv;
+					if ((TabbedStr::blank_from_here(&line_scanner)) && (interrupts_paragraph)) {
+						line_scanner = copy;
 					} else {
 						last_explicit_list_marker_sp = sp;
 						last_explicit_list_marker_width = orig_L;
-						state->positionals[sp] = UNORDERED_LIST_ITEM_MIT;
-						state->positionals_indent[sp] = min_indent_to_continue + L + TabbedStr::spaces_available(&mdw);
-						state->positionals_implied[sp] = FALSE;
-						state->positional_blank_counts[sp] = 0;
-						state->positionals_at[sp] = TabbedStr::get_position(&starts_at);
-						state->positional_flavours[sp] = flavour;
-						state->positional_values[sp++] = 0;
-						explicit_markers++;
+						positional_marker *li_m = MDBlockParser::new_marker_at(state, sp, UNORDERED_LIST_ITEM_MIT);
+						li_m->at = TabbedStr::get_position(&starts_at);
+						li_m->indent = min_indent_to_continue + L + TabbedStr::spaces_available(&line_scanner);
+						li_m->list_item_flavour = flavour;
+						sp++;
 						continue;
 					}
 				}
 			}
 			int val = 0;
 			adv = MDBlockParser::ordered_list_marker(starts_at, &val, &flavour);
-			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&mdw)) {
+			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&line_scanner)) {
 				wchar_t next = TabbedStr::get_character(&adv);
 				if ((next == ' ') || (next == 0)) {
-					int orig_L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&mdw);
+					int orig_L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
 					TabbedStr::eat_space(&adv);
-					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&mdw);
-					mdw = adv;
-					if (((TabbedStr::blank_from_here(&mdw)) || (val != 1)) && (interrupts_paragraph)) {
-						mdw = copy;
+					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
+					line_scanner = adv;
+					if (((TabbedStr::blank_from_here(&line_scanner)) || (val != 1)) && (interrupts_paragraph)) {
+						line_scanner = copy;
 					} else {
 						last_explicit_list_marker_sp = sp;
 						last_explicit_list_marker_width = orig_L;
-						state->positionals[sp] = ORDERED_LIST_ITEM_MIT;
-						state->positionals_indent[sp] = min_indent_to_continue + L + TabbedStr::spaces_available(&mdw);
-						state->positionals_implied[sp] = FALSE;
-						state->positional_blank_counts[sp] = 0;
-						state->positionals_at[sp] = TabbedStr::get_position(&starts_at);
-						state->positional_flavours[sp] = flavour;
-						state->positional_values[sp++] = val;
-						explicit_markers++;
+						positional_marker *li_m = MDBlockParser::new_marker_at(state, sp, ORDERED_LIST_ITEM_MIT);
+						li_m->at = TabbedStr::get_position(&starts_at);
+						li_m->indent = min_indent_to_continue + L + TabbedStr::spaces_available(&line_scanner);
+						li_m->list_item_flavour = flavour;
+						li_m->list_item_value = val;
+						sp++;
 						continue;
 					}
 				}
 			}
-			mdw = copy;
+			line_scanner = copy;
 		}
 		break;
 	}
-	int old_psp = state->positional_sp;
-	state->positional_sp = sp;
+	int old_psp = state->marker_sp;
+	state->marker_sp = sp;
 
-	if (TabbedStr::blank_from_here(&mdw))
-		if (state->positionals_implied[sp-1])
-			TabbedStr::seek(&mdw,
-				state->positionals_at[sp-1] + state->positionals_indent[sp-1]);
+	if (TabbedStr::blank_from_here(&line_scanner))
+		if (state->markers[sp-1].continues_from_earlier_line)
+			TabbedStr::seek(&line_scanner,
+				state->markers[sp-1].at + state->markers[sp-1].indent);
 
-	int available = TabbedStr::spaces_available(&mdw);
+	int available = TabbedStr::spaces_available(&line_scanner);
 			if (tracing_Markdown_parser) {
-				PRINT("mdw is at %d , available = %d, positionals_at = %d ind = %d\n", TabbedStr::get_index(&mdw), available, state->positionals_at[sp-1], state->positionals_indent[sp-1]);
+				PRINT("line_scanner is at %d , available = %d, positionals_at = %d ind = %d\n", TabbedStr::get_index(&line_scanner), available, state->markers[sp-1].at, state->markers[sp-1].indent);
 			}
 	int indentation = 0;
 	
 	if (available >= 4) {
 		indentation = 1; available = 4;
 		if ((last_explicit_list_marker_width >= 0) &&
-			(last_explicit_list_marker_sp == state->positional_sp-1)) {
+			(last_explicit_list_marker_sp == state->marker_sp-1)) {
 			if (tracing_Markdown_parser) {
 				PRINT("Opening line is code rule applies, and sets pos indent[%d] = %d\n",
 					last_explicit_list_marker_sp, last_explicit_list_marker_width + 1);
 			}
-			state->positionals_indent[last_explicit_list_marker_sp] = last_explicit_list_marker_width + 1;
+			state->markers[last_explicit_list_marker_sp].indent = last_explicit_list_marker_width + 1;
 		}
 	}
-	if (TabbedStr::blank_from_here(&mdw)) {
+	if (TabbedStr::blank_from_here(&line_scanner)) {
 		if ((last_explicit_list_marker_width >= 0) &&
-			(last_explicit_list_marker_sp == state->positional_sp-1)) {
+			(last_explicit_list_marker_sp == state->marker_sp-1)) {
 			if (tracing_Markdown_parser) {
 				PRINT("Opening line is empty rule applies, and sets pos indent[%d] = %d\n",
 					last_explicit_list_marker_sp, last_explicit_list_marker_width + 1);
 			}
-			state->positionals_indent[last_explicit_list_marker_sp] = last_explicit_list_marker_width + 1;
-			state->positional_blank_counts[last_explicit_list_marker_sp] = 1;
+			state->markers[last_explicit_list_marker_sp].indent = last_explicit_list_marker_width + 1;
+			state->markers[last_explicit_list_marker_sp].blank_counts = 1;
 		} else {
-			while ((state->positional_sp > 0) &&
-					(state->positional_blank_counts[state->positional_sp-1] > 0)) {
+			while ((state->marker_sp > 1) &&
+					(state->markers[state->marker_sp-1].blank_counts > 0)) {
 				if (tracing_Markdown_parser) {
 					PRINT("Blank after blank opening rule applies\n");
 				}
-				MDBlockParser::mark_block_with_ws(state, state->containers[state->positional_sp]);
-				state->positional_sp--;
+				MDBlockParser::mark_block_with_ws(state, state->containers[state->marker_sp-1]);
+				state->marker_sp--;
 				sp--;
 			}
 		}
 	}
-	TabbedStr::eat_spaces(available, &mdw);
-	int initial_spacing = TabbedStr::get_index(&mdw);
+	TabbedStr::eat_spaces(available, &line_scanner);
+	int initial_spacing = TabbedStr::get_index(&line_scanner);
 	
 	if (tracing_Markdown_parser) {
-		PRINT("Line '%S' (fence sp = %d)\n", line, state->fence_sp);
+		PRINT("Line '%S' ", line);
+		if (state->temporary_marker_limit < 100000000)
+			PRINT("(marker limit %d)", state->temporary_marker_limit);
+		PRINT("\n");
 		PRINT("New positional stack: ");
 		MDBlockParser::debug_positional_stack(STDOUT, state, first_implicit_marker);
 		PRINT("Line has indentation = %d, then: '", indentation);
@@ -262,12 +652,12 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 		interpretations[i] =
 			MDBlockParser::can_interpret_as(state, line, indentation, initial_spacing, i, NULL, &(details[i]));
 
-	if ((state->current_leaves[PARAGRAPH_MIT]) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]) && (state->positional_sp == state->container_sp-1))
+	if ((MDBlockParser::latest_paragraph(state)) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]) && (state->marker_sp == state->container_sp))
 		interpretations[THEMATIC_MDINTERPRETATION] = FALSE;
 
 	int N = 0; for (int i=0; i<20; i++) if (interpretations[i]) N++;
 
-	if ((state->current_leaves[PARAGRAPH_MIT]) && (MDBlockParser::container_will_change(state) == FALSE)) {
+	if ((MDBlockParser::latest_paragraph(state)) && (MDBlockParser::container_will_change(state) == FALSE)) {
 		int lazy = TRUE;
 		for (int i=0; i<20; i++)
 			if (interpretations[i]) {
@@ -305,19 +695,19 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 	if (interpretations[LAZY_CONTINUATION_MDINTERPRETATION]) {
-		int sp = state->positional_sp;
-		state->positional_sp = old_psp;
-		if ((sp == state->container_sp-1) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
+		int sp = state->marker_sp;
+		state->marker_sp = old_psp;
+		if ((sp == state->container_sp) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
 		@<Line forms piece of paragraph@>;
 	} else {
-		if (state->current_leaves[PARAGRAPH_MIT])
-			MDBlockParser::close_block(state, state->current_leaves[PARAGRAPH_MIT]);
-		if ((state->current_leaves[CODE_BLOCK_MIT]) && (interpretations[CODE_BLOCK_MDINTERPRETATION] == FALSE) && (interpretations[WHITESPACE_MDINTERPRETATION] == FALSE))
-			MDBlockParser::close_block(state, state->current_leaves[CODE_BLOCK_MIT]);
+		if (MDBlockParser::latest_paragraph(state))
+			MDBlockParser::close_block(state, MDBlockParser::latest_paragraph(state));
+		if ((MDBlockParser::latest_code_block(state)) && (interpretations[CODE_BLOCK_MDINTERPRETATION] == FALSE) && (interpretations[WHITESPACE_MDINTERPRETATION] == FALSE))
+			MDBlockParser::close_block(state, MDBlockParser::latest_code_block(state));
 	}
 
 	MDBlockParser::establish_context(state);
-	if ((state->fenced_code) && (state->fence_sp > state->container_sp)) {
+	if ((state->fencing.material != 0) && (state->container_sp < state->temporary_marker_limit)) {
 		@<Close the code fence@>;
 		interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION] = FALSE;
 	}
@@ -326,7 +716,7 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	if (interpretations[CODE_FENCE_CLOSE_MDINTERPRETATION]) @<Line is a closing code fence@>;
 	if (interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION]) @<Line is part of a fenced code block@>;
 	if (interpretations[WHITESPACE_MDINTERPRETATION]) @<Line is whitespace@>;
-	if ((state->current_leaves[PARAGRAPH_MIT]) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
+	if ((MDBlockParser::latest_paragraph(state)) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
 	if (interpretations[ATX_HEADING_MDINTERPRETATION]) @<Line is an ATX heading@>;
 	if (interpretations[THEMATIC_MDINTERPRETATION]) @<Line is a thematic break@>;
 	if (interpretations[HTML_MDINTERPRETATION]) @<Line opens HTML@>;
@@ -337,7 +727,7 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 @<Line is whitespace@> =
 	last_explicit_list_marker_sp = state->container_sp-1;
 	int sp = state->container_sp-1;
-	if (state->positionals_implied[sp-1]) {
+	if (state->markers[sp].continues_from_earlier_line) {
 		if (state->containers[sp]->down) {
 			for (markdown_item *ch = state->containers[sp]->down; ch; ch = ch->next)
 				if ((ch->next == NULL) && (ch->type != BLOCK_QUOTE_MIT))
@@ -350,9 +740,9 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	if (indentation > 0)
 		for (int i=initial_spacing; i<Str::len(line); i++) {
 			wchar_t c = Str::get_at(line, i);
-			PUT_TO(state->blanks, c);
+			PUT_TO(state->blank_matter_after_receiver, c);
 		}
-	PUT_TO(state->blanks, '\n');
+	PUT_TO(state->blank_matter_after_receiver, '\n');
 	return;
 	
 @<Line opens HTML@> =
@@ -362,8 +752,8 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	}
 	markdown_item *htmlb = Markdown::new_item(HTML_MIT);
 	htmlb->stashed = Str::new();
-	MDBlockParser::add_block(state, htmlb);
-	state->fence_sp = state->container_sp;	
+	MDBlockParser::turn_over_a_new_leaf(state, htmlb);
+	MDBlockParser::impose_marker_limit(state, state->container_sp);
 	@<Add text of line to HTML block@>;
 	int ends = FALSE;
 	@<Test for HTML end condition@>;
@@ -371,7 +761,7 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 @<Line is part of HTML@> =
-	markdown_item *latest = state->current_leaves[HTML_MIT];
+	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
 	if (latest == NULL) @<End the HTML block@>
 	else {
 		int ends = FALSE;
@@ -385,10 +775,9 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 @<Add text of line to HTML block@> =
-	markdown_item *latest = state->current_leaves[HTML_MIT];
+	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
 	int from = initial_spacing;
-	if (state->fence_sp == 1) from = 0;
-//WRITE_TO(latest->stashed, "(hey: %d)", state->fence_sp);
+	if (state->temporary_marker_limit == 1) from = 0;
 	for (int i = from; i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
@@ -396,13 +785,13 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 	PUT_TO(latest->stashed, '\n');
 
 @<End the HTML block@> =
-	markdown_item *latest = state->current_leaves[HTML_MIT];
-	state->HTML_end_condition = 0;
-	state->fence_sp = 10000000;
+	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
+	MDBlockParser::clear_HTML_data(state);
+	MDBlockParser::lift_marker_limit(state);
 	if (latest) MDBlockParser::close_block(state, latest);
 
 @<Test for HTML end condition@> =
-	if (state->current_leaves[HTML_MIT] == NULL) {
+	if (MDBlockParser::latest_HTML_block(state) == NULL) {
 		if (tracing_Markdown_parser) {
 			PRINT("HTML forcibly ended by closure of container\n");
 		}
@@ -470,12 +859,12 @@ and numerous other early Internet developments.)
 	}
 	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
 		Str::delete_last_character(H);
-	MDBlockParser::add_block(state, headb);
+	MDBlockParser::turn_over_a_new_leaf(state, headb);
 	return;
 
 @<Line is a setext underline@> =
 	wchar_t c = Str::get_at(line, initial_spacing);
-	markdown_item *headb = state->current_leaves[PARAGRAPH_MIT];
+	markdown_item *headb = MDBlockParser::latest_paragraph(state);
 	if (headb) {
 		MDBlockParser::remove_link_references(state, headb);
 		if (headb->type == EMPTY_MIT) @<Line forms piece of paragraph@>;
@@ -488,7 +877,7 @@ and numerous other early Internet developments.)
 
 @<Line is a thematic break@> =
 	markdown_item *themb = Markdown::new_item(THEMATIC_MIT);
-	MDBlockParser::add_block(state, themb);
+	MDBlockParser::turn_over_a_new_leaf(state, themb);
 	return;
 
 @<Line is an opening code fence@> =
@@ -499,12 +888,13 @@ and numerous other early Internet developments.)
 	markdown_item *cb = Markdown::new_item(CODE_BLOCK_MIT);
 	cb->stashed = Str::new();
 	cb->info_string = info_string;
-	MDBlockParser::add_block(state, cb);
-	state->code_indent_to_strip = TabbedStr::get_position(&mdw);
-	state->fencing_material = c;
-	state->fence_width = post_count;
-	state->fenced_code = cb;
-	state->fence_sp = state->container_sp;
+	MDBlockParser::turn_over_a_new_leaf(state, cb);
+	state->fencing.left_margin = TabbedStr::get_position(&line_scanner);
+	state->fencing.material = c;
+	state->fencing.width = post_count;
+	state->fencing.fenced_code = cb;
+	MDBlockParser::make_receiver(state, cb);
+	MDBlockParser::impose_marker_limit(state, state->container_sp);
 	return;
 
 @<Line is a closing code fence@> =
@@ -512,26 +902,26 @@ and numerous other early Internet developments.)
 	return;
 
 @<Close the code fence@> =
-	state->fencing_material = 0; state->fence_width = 0; state->fenced_code = NULL;
-	state->fence_sp = 10000000;
+	MDBlockParser::clear_fencing_data(state);
+	MDBlockParser::lift_marker_limit(state);
 
 @<Line is part of an indented code block@> =
-	markdown_item *latest = state->current_leaves[CODE_BLOCK_MIT];
+	markdown_item *latest = MDBlockParser::latest_code_block(state);
 	if (latest) {
-		WRITE_TO(latest->stashed, "%S", state->blanks);
-		Str::clear(state->blanks);
+		WRITE_TO(latest->stashed, "%S", state->blank_matter_after_receiver);
+		Str::clear(state->blank_matter_after_receiver);
 	} else {
 		markdown_item *cb = Markdown::new_item(CODE_BLOCK_MIT);
 		cb->stashed = Str::new();
-		state->code_indent_to_strip = -1;
-		MDBlockParser::add_block(state, cb);
+		state->fencing.left_margin = -1;
+		MDBlockParser::turn_over_a_new_leaf(state, cb);
 		latest = cb;
 	}
-	while (TabbedStr::at_whole_character(&mdw) == FALSE) {
+	while (TabbedStr::at_whole_character(&line_scanner) == FALSE) {
 		PUT_TO(latest->stashed, ' ');
-		TabbedStr::advance(&mdw);
+		TabbedStr::advance(&line_scanner);
 	}
-	for (int i = TabbedStr::get_index(&mdw); i<Str::len(line); i++) {
+	for (int i = TabbedStr::get_index(&line_scanner); i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
 	}
@@ -539,22 +929,23 @@ and numerous other early Internet developments.)
 	return;
 
 @<Line is part of a fenced code block@> =
-	if ((state->code_indent_to_strip >= 0) &&
-		(state->code_indent_to_strip < TabbedStr::get_position(&mdw)))
-		TabbedStr::seek(&mdw, state->code_indent_to_strip);
-	while (TabbedStr::at_whole_character(&mdw) == FALSE) {
-		PUT_TO(state->fenced_code->stashed, ' ');
-		TabbedStr::advance(&mdw);
+	markdown_item *code_block = state->fencing.fenced_code;
+	if ((state->fencing.left_margin >= 0) &&
+		(state->fencing.left_margin < TabbedStr::get_position(&line_scanner)))
+		TabbedStr::seek(&line_scanner, state->fencing.left_margin);
+	while (TabbedStr::at_whole_character(&line_scanner) == FALSE) {
+		PUT_TO(code_block->stashed, ' ');
+		TabbedStr::advance(&line_scanner);
 	}
-	for (int i = TabbedStr::get_index(&mdw); i<Str::len(line); i++) {
+	for (int i = TabbedStr::get_index(&line_scanner); i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
-		PUT_TO(state->fenced_code->stashed, c);
+		PUT_TO(code_block->stashed, c);
 	}
-	PUT_TO(state->fenced_code->stashed, '\n');
+	PUT_TO(code_block->stashed, '\n');
 	return;
 
 @<Line forms piece of paragraph@> =
-	markdown_item *parb = state->current_leaves[PARAGRAPH_MIT];
+	markdown_item *parb = MDBlockParser::latest_paragraph(state);
 	if ((parb) && (parb->type == PARAGRAPH_MIT)) {
 		WRITE_TO(parb->stashed, "\n");
 		for (int i = initial_spacing; i<Str::len(line); i++) {
@@ -564,7 +955,7 @@ and numerous other early Internet developments.)
 	} else {
 		markdown_item *parb = Markdown::new_item(PARAGRAPH_MIT);
 		parb->stashed = Str::new();
-		MDBlockParser::add_block(state, parb);
+		MDBlockParser::turn_over_a_new_leaf(state, parb);
 		for (int i=initial_spacing; i<Str::len(line); i++)
 			PUT_TO(parb->stashed, Str::get_at(line, i));
 	}
@@ -610,7 +1001,7 @@ int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
 			return FALSE;
 		}
 		case SETEXT_UNDERLINE_MDINTERPRETATION: {
-			if (MDBlockParser::block_open(state, PARAGRAPH_MIT) == FALSE) return FALSE;
+			if (MDBlockParser::latest_paragraph(state) == NULL) return FALSE;
 			if (indentation > 0) return FALSE;
 			wchar_t c = Str::get_at(line, initial_spacing);
 			if ((c == '-') || (c == '=')) {
@@ -632,11 +1023,11 @@ int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
 		case CODE_FENCE_OPEN_MDINTERPRETATION:
 		case CODE_FENCE_CLOSE_MDINTERPRETATION: {
 			if (indentation > 0) return FALSE;
-			if ((which == CODE_FENCE_OPEN_MDINTERPRETATION) && (state->fenced_code)) return FALSE;
-			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fenced_code == NULL)) return FALSE;
+			if ((which == CODE_FENCE_OPEN_MDINTERPRETATION) && (state->fencing.material != 0)) return FALSE;
+			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material == 0)) return FALSE;
 			text_stream *info_string = text_details;
 			wchar_t c = Str::get_at(line, initial_spacing);
-			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing_material != c)) return FALSE;
+			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material != c)) return FALSE;
 			if ((c == '`') || (c == '~')) {
 				int post_count = 0;
 				int j = initial_spacing;
@@ -646,7 +1037,7 @@ int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
 					else break;
 				}
 				if (post_count >= 3) {
-					if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (post_count < state->fence_width)) return FALSE;
+					if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (post_count < state->fencing.width)) return FALSE;
 					int ambiguous = FALSE, count = 0, escaped = FALSE;
 					for (; j<Str::len(line); j++) {
 						wchar_t d = Str::get_at(line, j);
@@ -672,16 +1063,16 @@ int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
 			if (indentation > 0) return FALSE;
 			@<Parse as HTML start line@>;
 		case CODE_BLOCK_MDINTERPRETATION:
-			if (MDBlockParser::block_open(state, PARAGRAPH_MIT)) return FALSE;
+			if (MDBlockParser::latest_paragraph(state)) return FALSE;
 			if (indentation > 0) return TRUE;
 			return FALSE;
 		case FENCED_CODE_BLOCK_MDINTERPRETATION:
-			if (state->fenced_code) return TRUE;
+			if (state->fencing.material != 0) return TRUE;
 			return FALSE;
 		case LAZY_CONTINUATION_MDINTERPRETATION:
 			return FALSE;
 		case HTML_CONTINUATION_MDINTERPRETATION:
-			if ((MDBlockParser::block_open(state, HTML_MIT)) &&
+			if ((MDBlockParser::latest_HTML_block(state)) &&
 				(state->HTML_end_condition != 0)) return TRUE;
 			return FALSE;
 		default: return FALSE;
@@ -899,20 +1290,20 @@ HTML blocks.
 
 =
 int MDBlockParser::container_will_change(md_doc_state *state) {
-	if (state->positional_sp + 1 > state->container_sp) return TRUE;
+	if (state->marker_sp > state->container_sp) return TRUE;
 
-	for (int sp = 0; sp<state->positional_sp; sp++) {
-		if (state->positionals[sp] != state->containers[sp+1]->type) { /* PRINT("X%d\n", sp); */ return TRUE; }
-		if (state->positionals_implied[sp] == FALSE) {
-			if (state->containers[sp+1]->type != BLOCK_QUOTE_MIT) {
+	for (int sp = 1; sp<state->marker_sp; sp++) {
+		if (state->markers[sp].item_type != state->containers[sp]->type) { /* PRINT("X%d\n", sp); */ return TRUE; }
+		if (state->markers[sp].continues_from_earlier_line == FALSE) {
+			if (state->containers[sp]->type != BLOCK_QUOTE_MIT) {
 				 /* PRINT("Y%d\n", sp); */ return TRUE;
 			}
 		}
 	}
 
-	if (state->positional_sp + 1 < state->container_sp) {
-		if (state->positional_sp > 0) {
-			int p_top = state->positionals[state->positional_sp-1];
+	if (state->marker_sp < state->container_sp) {
+		if (state->marker_sp > 1) {
+			int p_top = state->markers[state->marker_sp-1].item_type;
 			int s_top = state->containers[state->container_sp-1]->type;
 			if ((p_top == s_top) && (p_top != BLOCK_QUOTE_MIT)) return TRUE;
 		}
@@ -922,39 +1313,39 @@ int MDBlockParser::container_will_change(md_doc_state *state) {
 }
 
 void MDBlockParser::establish_context(md_doc_state *state) {
-	int wipe_down_to_pos = state->positional_sp;
-	for (int sp = 0; sp<state->positional_sp; sp++) {
-		if (sp == state->container_sp-1) { wipe_down_to_pos = sp; break; }
-		int p_type = state->positionals[sp];
-		int s_type = state->containers[sp+1]->type;
+	int wipe_down_to_pos = state->marker_sp;
+	for (int sp = 1; sp<state->marker_sp; sp++) {
+		if (sp == state->container_sp) { wipe_down_to_pos = sp; break; }
+		int p_type = state->markers[sp].item_type;
+		int s_type = state->containers[sp]->type;
 		if (p_type != s_type) { wipe_down_to_pos = sp; break; }
-		if ((p_type != BLOCK_QUOTE_MIT) && (state->positionals_implied[sp] == FALSE)) { wipe_down_to_pos = sp; break; }
+		if ((p_type != BLOCK_QUOTE_MIT) && (state->markers[sp].continues_from_earlier_line == FALSE)) { wipe_down_to_pos = sp; break; }
 	}
 
 	if (tracing_Markdown_parser) {
-		PRINT("psp = %d, sp = %d:", state->positional_sp, state->container_sp);
-		if (0 == wipe_down_to_pos) PRINT(" WIPE");
-		for (int i=0; (i<state->container_sp-1) || (i<state->positional_sp); i++) {
-			PRINT(" p:%d s:%d;", (i<state->positional_sp)?state->positionals[i]:0,
-				(i<state->container_sp-1)?(state->containers[i+1]->type):0);
+		PRINT("psp = %d, sp = %d:", state->marker_sp, state->container_sp);
+		if (1 == wipe_down_to_pos) PRINT(" WIPE");
+		for (int i=1; (i<state->container_sp) || (i<state->marker_sp); i++) {
+			PRINT(" p:%d s:%d;", (i<state->marker_sp)?state->markers[i].item_type:0,
+				(i<state->container_sp)?(state->containers[i]->type):0);
 			if (i+1 == wipe_down_to_pos) PRINT(" WIPE");
 		}
 		PRINT("\n");
 	}
 
-	for (int sp = state->container_sp-1; sp>=wipe_down_to_pos+1; sp--) {
+	for (int sp = state->container_sp-1; sp >= wipe_down_to_pos; sp--) {
 		MDBlockParser::close_block(state, state->containers[sp]);
 		state->containers[sp] = NULL;
 	}
 
-	for (int sp = wipe_down_to_pos; sp<state->positional_sp; sp++) {
-		markdown_item *newbq = Markdown::new_item(state->positionals[sp]);
-		Markdown::add_to(newbq, state->containers[sp]);
+	for (int sp = wipe_down_to_pos; sp<state->marker_sp; sp++) {
+		markdown_item *newbq = Markdown::new_item(state->markers[sp].item_type);
+		Markdown::add_to(newbq, state->containers[sp-1]);
 		MDBlockParser::open_block(state, newbq);
-		state->containers[sp+1] = newbq;
-		Markdown::set_item_number_and_flavour(newbq, state->positional_values[sp], state->positional_flavours[sp]);
+		state->containers[sp] = newbq;
+		Markdown::set_item_number_and_flavour(newbq, state->markers[sp].list_item_value, state->markers[sp].list_item_flavour);
 	}
-	state->container_sp = state->positional_sp+1;
+	state->container_sp = state->marker_sp;
 	if (tracing_Markdown_parser) {
 		PRINT("Container stack:");
 		for (int sp = 0; sp<state->container_sp; sp++) {
@@ -962,53 +1353,6 @@ void MDBlockParser::establish_context(md_doc_state *state) {
 		}
 		PRINT("\n");
 	}
-}
-
-void MDBlockParser::mark_block_with_ws(md_doc_state *state, markdown_item *block) {
-	if (block) {
-		if (tracing_Markdown_parser) {
-			PRINT("Mark as whitespace-following: "); Markdown::debug_item(STDOUT, block);
-		}
-		block->whitespace_follows = TRUE;
-	}
-}
-
-void MDBlockParser::open_block(md_doc_state *state, markdown_item *block) {
-	if (block->open == NOT_APPLICABLE) {
-		block->open = TRUE;
-		MDBlockParser::close_block(state, state->current_leaves[block->type]);
-		state->current_leaves[block->type] = block;
-	}
-}
-
-markdown_item *MDBlockParser::add_block(md_doc_state *state, markdown_item *block) {
-	block->open = TRUE;
-	Markdown::add_to(block, state->containers[state->container_sp-1]);
-	if (state->current_leaves[block->type])
-		MDBlockParser::close_block(state, state->current_leaves[block->type]);
-	state->current_leaves[block->type] = block;
-	Str::clear(state->blanks);
-	return block;
-}
-
-void MDBlockParser::change_type(md_doc_state *state, markdown_item *block, int t) {
-	if (block == NULL) internal_error("no block");
-	if (tracing_Markdown_parser) {
-		PRINT("Change type: "); Markdown::debug_item(STDOUT, block);
-	}
-	if (block->open) state->current_leaves[block->type] = NULL;
-	block->type = t;
-	if (block->open) state->current_leaves[t] = block;
-	if (tracing_Markdown_parser) {
-		PRINT(" -> "); Markdown::debug_item(STDOUT, block); PRINT("\n");
-	}
-}
-
-int MDBlockParser::block_open(md_doc_state *state, int type) {
-	if (state->current_leaves[type]) {
-		return TRUE;
-	}
-	return FALSE;
 }
 
 int MDBlockParser::advance_past_spacing(text_stream *tag, int i) {
@@ -1023,80 +1367,9 @@ int MDBlockParser::advance_past_spacing(text_stream *tag, int i) {
 	return i;
 }
 
-tabbed_string_iterator MDBlockParser::block_quote_marker(tabbed_string_iterator mdw) {
-	if (TabbedStr::get_character(&mdw) != '>') return mdw;
-	TabbedStr::advance(&mdw);
-	return mdw;
-}
-
-tabbed_string_iterator MDBlockParser::bullet_list_marker(tabbed_string_iterator mdw, wchar_t *flavour) {
-	tabbed_string_iterator old = mdw;
-	if (MDBlockParser::thematic_marker(mdw.line, TabbedStr::get_index(&mdw))) return old;
-	wchar_t c = TabbedStr::get_character(&mdw);
-	if ((c == '-') || (c == '+') || (c == '*')) {
-		TabbedStr::advance(&mdw);
-		*flavour = c;
-	}
-	return mdw;
-}
-
-tabbed_string_iterator MDBlockParser::ordered_list_marker(tabbed_string_iterator mdw, int *v, wchar_t *flavour) {
-	tabbed_string_iterator old = mdw;
-	if (MDBlockParser::thematic_marker(mdw.line, TabbedStr::get_index(&mdw))) return old;
-	wchar_t c = TabbedStr::get_character(&mdw);
-	int dc = 0, val = 0;
-	while (Characters::is_ASCII_digit(c)) {
-		val = 10*val + (int) (c - '0');
-		TabbedStr::advance(&mdw); dc++;
-		c = TabbedStr::get_character(&mdw);
-	}
-	if ((dc < 1) || (dc > 9)) return old;
-	c = TabbedStr::get_character(&mdw);
-	if ((c == '.') || (c == ')')) {
-		*flavour = c;
-		*v = val;
-		TabbedStr::advance(&mdw);
-		return mdw;
-	}
-	return old;
-}
-
-int MDBlockParser::thematic_marker(text_stream *line, int initial_spacing) {
-	wchar_t c = Str::get_at(line, initial_spacing);
-	if ((c == '-') || (c == '_') || (c == '*')) {
-		int ornament_count = 1;
-		for (int j=initial_spacing+1; j<Str::len(line); j++) {
-			wchar_t d = Str::get_at(line, j);
-			if (d == c) {
-				if (ornament_count > 0) ornament_count++;
-			} else {
-				if ((d != ' ') && (d != '\t')) ornament_count = 0;
-			}
-		}
-		if (ornament_count >= 3) return TRUE;
-	}
-	return FALSE;
-}
-
 @
 
 =
-void MDBlockParser::close_block(md_doc_state *state, markdown_item *at) {
-	if (at == NULL) return;
-	if (at->open != TRUE) return;
-	if (tracing_Markdown_parser) {
-		PRINT("Closing: "); Markdown::debug_item(STDOUT, at); PRINT("\n");
-		STREAM_INDENT(STDOUT);
-	}
-	at->open = FALSE;
-	for (markdown_item *ch = at->down; ch; ch = ch->next)
-		MDBlockParser::close_block(state, ch);
-	if (tracing_Markdown_parser) {
-		STREAM_OUTDENT(STDOUT);
-	}
-	state->current_leaves[at->type] = NULL;
-	MDBlockParser::remove_link_references(state, at);
-}
 
 int MDBlockParser::can_remove_link_references(md_doc_state *state, markdown_item *at) {
 	return MDBlockParser::remove_link_references_inner(state, at, FALSE);
