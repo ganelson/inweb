@@ -15,7 +15,6 @@ is returned.
 =
 int HTMLEntities::parse(text_stream *entity, wchar_t *A, wchar_t *B) {
 	if (Str::get_at(entity, 0) != '&') return FALSE;
-// PRINT("Entity: <%S>\n", entity);
 	if (Str::get_at(entity, 1) == '#') {
 		int base = 10, from = 2;
 		if ((Str::get_at(entity, 2) == 'x') || (Str::get_at(entity, 2) == 'X')) {
@@ -25,7 +24,6 @@ int HTMLEntities::parse(text_stream *entity, wchar_t *A, wchar_t *B) {
 		while (Str::get_at(entity, from)) {
 			int dval = -1;
 			wchar_t digit = Str::get_at(entity, from);
-// PRINT("Digit: <%c>\n", digit);
 			if ((digit >= '0') && (digit <= '9')) dval = (int) digit - (int) '0';
 			else if ((base == 16) && (digit >= 'a') && (digit <= 'f')) dval = 10 + (int) digit - (int) 'a';
 			else if ((base == 16) && (digit >= 'A') && (digit <= 'F')) dval = 10 + (int) digit - (int) 'A';

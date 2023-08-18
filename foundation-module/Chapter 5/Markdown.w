@@ -16,7 +16,7 @@ We provide two basic functions:
 |Markdown::render(OUT, tree)| outputs HTML expressing the Markdown tree |tree|.
 
 The combination |Markdown::render(OUT, Markdown::parse(T))| thus turns
-Markdown-marked-up text into HTML.
+Markdown into HTML.
 
 @ Markdown was devised by John Gruber in 2004, building on the work of Aaron Swartz
 in 2002; CommonMark is the work of John MacFarlane and others, and began around 2012,
@@ -33,20 +33,22 @@ a technological one. The practical effect is that his early Perl script
 is studied as if it were a sometimes baffling scripture. But in many ways
 that doesn't matter.
 
-The real problem with Markdown is its genius is also its greatest weakness: that
-no input text is illegal. There is no such thing as erroneous Markdown. There is
-only Markdown that does something you didn't expect. And because all inputs are
-legal, we cannot exclude tremendously unwise or on-its-face ambiguous syntax. We
-have to take a decision on what it means in every conceivable case.
+The real problem with Markdown is that its genius is also its greatest weakness:
+that no input text is illegal. There is no such thing as erroneous Markdown.
+There is only Markdown that formats what you wrote in a way you perhaps didn't
+expect. And because all inputs are legal, we cannot exclude tremendously unwise
+or on-its-face ambiguous syntax. We have to take a decision on what it means in
+every conceivable case.
 
 CommonMark is not wholly unambiguous, which is next to impossible, but it's very
-precise and is certainly now best practice. It also provides an immensely valuable
-test suite, as noted above, of 652 test examples. In every case
-|Markdown::render(OUT, Markdown::parse(T))| exactly agrees with CommonMark,
+precise and is certainly now best practice. In particular, it's the one used by
+GitHub, though it doesn't include GitHub's extensions. It also provides an
+immensely valuable test suite, as noted above, of 652 test examples. In every
+case |Markdown::render(OUT, Markdown::parse(T))| exactly agrees with CommonMark,
 producing precisely the same (and not simply equivalent) HTML output. These are
-all organised as test cases of |foundation-test|, so if Intest passes all
-the |foundation-test| cases then this parser is in agreement with CommonMark.
-Do not modify it without checking this.
+all organised as test cases of |foundation-test|, so if Intest passes all the
+|foundation-test| cases then this parser is in agreement with CommonMark. Do not
+modify it without checking this.
 
 @ We will certainly want to know what's going on for debugging purposes, so:
 

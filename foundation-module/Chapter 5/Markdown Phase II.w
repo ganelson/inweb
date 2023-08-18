@@ -7,13 +7,8 @@ links, backticked code and so forth.
 Do not call functions in this section directly: use the API in //Markdown//.
 
 @h Inline code.
-At the top level, the inline items are code snippets, autolinks and raw HTML.
-"Code spans, HTML tags, and autolinks have the same precedence", so we will
-scan left to right. The result of this is the initial chain of items. If
-nothing of interest is found, there's just a single PLAIN item containing
-the entire text, but with leading and trailing spaces removed.
-
-@
+Phase II of the parser consists entirely of walking the tree built in Phase I,
+with the following function.
 
 =
 void MDInlineParser::inline_recursion(md_links_dictionary *link_refs, markdown_item *at) {
@@ -26,6 +21,32 @@ void MDInlineParser::inline_recursion(md_links_dictionary *link_refs, markdown_i
 		MDInlineParser::inline_recursion(link_refs, c);
 }
 
+@ What it does, then, is to look at the text of paragraphs and headings to
+process them as "inline matter", which may contain emphasis, code excerpts
+and raw HTML, or images, or links. Since all these constructions can be
+nested, the result is a further tree, using a whole lot of new items never
+generated in Phase I.
+
+To recap the syntaxes we're looking for:
+= (text)
+	This is a line of plain copy.
+	This one has `a backtick string`.
+	This one an autolink, <stanley.gibbons@heaven.org>, in email form.
+	This one an autolink, <https://www.stanleygibbons.com>, in web form.
+	This one [uses a link](https://www.stanleygibbons.com).
+	This one depicts ![the Blue Mauritius](https://upload.wikimedia.org/wikipedia/commons/8/8e/1847_BothPost_Office_Jakubek.jpg).
+	This one uses **strong** and *weak* emphasis.
+	This one also uses __strong__ and _weak_ emphasis.
+=
+
+Every inline string becomes a subtree under a |MATERIAL_MIT| item. We then
+proceed in three stages: make the "chain", which involves finding backtick
+strings, raw HTML and autolinks, all constructions of equal precedence.
+Then we look for links and images, images being essentially a form of link
+for most purposes. Finally, but with some difficulty, we look for emphasis
+notation. 
+
+=
 markdown_item *MDInlineParser::inline(md_links_dictionary *link_refs, text_stream *text) {
 	markdown_item *owner = Markdown::new_item(MATERIAL_MIT);
 	MDInlineParser::make_inline_chain(owner, text);
@@ -39,7 +60,8 @@ markdown_item *MDInlineParser::make_inline_chain(markdown_item *owner, text_stre
 	while (Str::get_at(text, i) == ' ') i++;
 	int from = i, escaped = FALSE;
 	for (; i<Str::len(text); i++) {
-		if ((escaped == FALSE) && (Str::get_at(text, i) == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(text, i+1)))) {
+		if ((escaped == FALSE) && (Str::get_at(text, i) == '\\') &&
+			(Characters::is_ASCII_punctuation(Str::get_at(text, i+1)))) {
 			escaped = TRUE;
 		} else {
 			if (escaped == FALSE) {
@@ -477,9 +499,25 @@ but you absolutely can.
 	}
 
 @h Links and images.
+Well, so now we come to the middle-precedence items: links and images. These
+have equal precedence, so they ought to be read from left to right, but there's
+a twist: a link is not valid if its linked material contains another link.
+= (text)
+	This [looks like [a link within a link](somewhere.html)](nowhere.html).
+=
+results in only the inner link being processed as such. That restriction
+does not hold for images, so this is all legal:
+= (text)
+	This ![picture of [an unperforated Malaya strip](malaya.html)](strip.jpg).
+=
+Indeed, image notations can contain other image notations. Of course, that
+does no good, because rendering uses the textual part of an image as its |"alt"|
+text, which is not allowed to contain tags, only plain text. But syntactically
+it is legal Markdown.
 
 =
-void MDInlineParser::links_and_images(md_links_dictionary *link_refs, markdown_item *owner, int images_only) {
+void MDInlineParser::links_and_images(md_links_dictionary *link_refs,
+	markdown_item *owner, int images_only) {
 	if (owner == NULL) return;
 	if (tracing_Markdown_parser) {
 		PRINT("Beginning link/image pass:\n");
@@ -516,106 +554,105 @@ void MDInlineParser::links_and_images(md_links_dictionary *link_refs, markdown_i
 				else Markdown::debug_interval(STDOUT, found.link_title_from, found.link_title_to);
 			}
 		}
-		markdown_item *chain = owner->down, *found_text = NULL, *remainder = NULL;
-		Markdown::cut_interval(chain, found.first, found.last, &chain, &found_text, &remainder);
-
-		markdown_item *link_text = NULL;
-		markdown_item *link_destination = NULL;
-		markdown_item *link_title = NULL;
-		if (found.link_text_empty == FALSE)
-			Markdown::cut_interval(found_text, found.link_text_from, found.link_text_to,
-				NULL, &link_text, &found_text);
-		if ((Markdown::somewhere(found.link_destination_from)) &&
-			(found.link_destination_empty == FALSE))
-			Markdown::cut_interval(found_text, found.link_destination_from, found.link_destination_to,
-				NULL, &link_destination, &found_text);
-		if ((Markdown::somewhere(found.link_title_from)) && (found.link_title_empty == FALSE))
-			Markdown::cut_interval(found_text, found.link_title_from, found.link_title_to,
-				NULL, &link_title, &found_text);
-		markdown_item *link_item = Markdown::new_item((found.is_link == TRUE)?LINK_MIT:IMAGE_MIT);
-		markdown_item *matter = Markdown::new_item(MATERIAL_MIT);
-		if (found.link_text_empty == FALSE) matter->down = link_text;
-		Markdown::add_to(matter, link_item);
-		if (found.is_link == TRUE) MDInlineParser::links_and_images(link_refs, matter, TRUE);
-		else MDInlineParser::links_and_images(link_refs, matter, FALSE);
-		if (ref) {
-			if (Str::len(ref->destination) > 0) {
-				markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
-				dest_item->down = Markdown::new_slice(PLAIN_MIT, ref->destination, 0, Str::len(ref->destination)-1);
-				Markdown::add_to(dest_item, link_item);
-			}
-			if (Str::len(ref->title) > 0) {
-				markdown_item *title_item = Markdown::new_item(LINK_TITLE_MIT);
-				title_item->down = Markdown::new_slice(PLAIN_MIT, ref->title, 0, Str::len(ref->title)-1);
-				Markdown::add_to(title_item, link_item);
-			}
-		} else {
-			if (link_destination) {
-				markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
-				if (found.link_destination_empty == FALSE) dest_item->down = link_destination;
-				Markdown::add_to(dest_item, link_item);
-			}
-			if (link_title) {
-				markdown_item *title_item = Markdown::new_item(LINK_TITLE_MIT);
-				if (found.link_title_empty == FALSE) title_item->down = link_title;
-				Markdown::add_to(title_item, link_item);
-			}
-		}
-		if (chain) {
-			owner->down = chain;
-			while (chain->next) chain = chain->next; chain->next = link_item;
-		} else {
-			owner->down = link_item;
-		}
-		link_item->next = remainder;
-		if (tracing_Markdown_parser) {
-			PRINT("After link surgery:\n");
-			Markdown::debug_subtree(STDOUT, owner);
-		}
-		leftmost_pos = Markdown::left_edge_of(remainder);
+		@<Deal with a valid link or image@>;
 	}
 }
 
+@ The following structure holds the findings of |MDInlineParser::first_valid_link|
+if it succeeds. Note that a link/image which makes a reference is only syntactically
+valid if the reference matches something in the dictionary.
 
+It might seem redundant to have the |*_empty| fields below, but there are some
+awkward cases where, as a result of earlier splicing, it's difficult to represent
+nonexistent text with |md_charpos| structs.
+
+=
 typedef struct md_link_parse {
 	int is_link; /* |TRUE| for link, |FALSE| for image, |NOT_APPLICABLE| for fail */
-	struct md_charpos first;
-	struct md_charpos link_text_from;
-	struct md_charpos link_text_to;
-	int link_text_empty;
+	struct md_charpos first;                  /* leftmost character of the whole construct */
+	struct md_charpos link_text_from;         /* leftmost character inside the squares */
+	struct md_charpos link_text_to;           /* ...and so on */
+	int link_text_empty;                      /* |TRUE| or |FALSE| */
 	struct md_charpos link_destination_from;
 	struct md_charpos link_destination_to;
 	int link_destination_empty;
 	struct md_charpos link_title_from;
 	struct md_charpos link_title_to;
 	int link_title_empty;
-	struct md_link_dictionary_entry *link_reference;
-	struct md_charpos last;
+	struct md_link_dictionary_entry *link_reference; /* or |NULL| if it's not by reference */
+	struct md_charpos last; /* rightmost character of the whole construct */
 } md_link_parse;
 
-@
+@ See //Markdown// for how all this splicing is done.
 
-@d ABANDON_LINK(reason)
-	{ if (tracing_Markdown_parser) { PRINT("Link abandoned: %s\n", reason); }
-	pos = abandon_at; goto AbandonHope; }
+@<Deal with a valid link or image@> =
+	markdown_item *chain = owner->down, *found_text = NULL, *remainder = NULL;
+	Markdown::cut_interval(chain, found.first, found.last, &chain, &found_text, &remainder);
 
-@ =
+	markdown_item *link_text = NULL;
+	markdown_item *link_destination = NULL;
+	markdown_item *link_title = NULL;
+	if (found.link_text_empty == FALSE)
+		Markdown::cut_interval(found_text, found.link_text_from, found.link_text_to,
+			NULL, &link_text, &found_text);
+	if ((Markdown::somewhere(found.link_destination_from)) &&
+		(found.link_destination_empty == FALSE))
+		Markdown::cut_interval(found_text, found.link_destination_from, found.link_destination_to,
+			NULL, &link_destination, &found_text);
+	if ((Markdown::somewhere(found.link_title_from)) && (found.link_title_empty == FALSE))
+		Markdown::cut_interval(found_text, found.link_title_from, found.link_title_to,
+			NULL, &link_title, &found_text);
+	markdown_item *link_item = Markdown::new_item((found.is_link == TRUE)?LINK_MIT:IMAGE_MIT);
+	markdown_item *matter = Markdown::new_item(MATERIAL_MIT);
+	if (found.link_text_empty == FALSE) matter->down = link_text;
+	Markdown::add_to(matter, link_item);
+	if (found.is_link == TRUE) MDInlineParser::links_and_images(link_refs, matter, TRUE);
+	else MDInlineParser::links_and_images(link_refs, matter, FALSE);
+	if (ref) {
+		if (Str::len(ref->destination) > 0) {
+			markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
+			dest_item->down = Markdown::new_slice(PLAIN_MIT, ref->destination, 0, Str::len(ref->destination)-1);
+			Markdown::add_to(dest_item, link_item);
+		}
+		if (Str::len(ref->title) > 0) {
+			markdown_item *title_item = Markdown::new_item(LINK_TITLE_MIT);
+			title_item->down = Markdown::new_slice(PLAIN_MIT, ref->title, 0, Str::len(ref->title)-1);
+			Markdown::add_to(title_item, link_item);
+		}
+	} else {
+		if (link_destination) {
+			markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
+			if (found.link_destination_empty == FALSE) dest_item->down = link_destination;
+			Markdown::add_to(dest_item, link_item);
+		}
+		if (link_title) {
+			markdown_item *title_item = Markdown::new_item(LINK_TITLE_MIT);
+			if (found.link_title_empty == FALSE) title_item->down = link_title;
+			Markdown::add_to(title_item, link_item);
+		}
+	}
+	if (chain) {
+		owner->down = chain;
+		while (chain->next) chain = chain->next; chain->next = link_item;
+	} else {
+		owner->down = link_item;
+	}
+	link_item->next = remainder;
+	if (tracing_Markdown_parser) {
+		PRINT("After link surgery:\n");
+		Markdown::debug_subtree(STDOUT, owner);
+	}
+	leftmost_pos = Markdown::left_edge_of(remainder);
+
+@ Okay, so it's time to go looking for the leftmost valid link or image in
+the given part of a chain of nodes. Links begin with an unescaped |[|
+and images with an unescaped |![|.
+
+=
 md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 	md_charpos from, md_charpos to, int images_only, int links_only) {
 	md_link_parse result;
-	result.is_link = NOT_APPLICABLE;
-	result.first = Markdown::nowhere();
-	result.link_text_from = Markdown::nowhere();
-	result.link_text_to = Markdown::nowhere();
-	result.link_text_empty = NOT_APPLICABLE;
-	result.link_destination_from = Markdown::nowhere();
-	result.link_destination_to = Markdown::nowhere();
-	result.link_destination_empty = NOT_APPLICABLE;
-	result.link_title_from = Markdown::nowhere();
-	result.link_title_to = Markdown::nowhere();
-	result.link_title_empty = NOT_APPLICABLE;
-	result.link_reference = FALSE;
-	result.last = Markdown::nowhere();
+	@<Initialise the parse result to a no@>;
 	wchar_t prev_c = 0;
 	md_charpos prev_pos = Markdown::nowhere();
 	int escaped = FALSE;
@@ -646,6 +683,27 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 	return result;
 }
 
+@<Initialise the parse result to a no@> =
+	result.is_link = NOT_APPLICABLE;
+	result.first = Markdown::nowhere();
+	result.link_text_from = Markdown::nowhere();
+	result.link_text_to = Markdown::nowhere();
+	result.link_text_empty = NOT_APPLICABLE;
+	result.link_destination_from = Markdown::nowhere();
+	result.link_destination_to = Markdown::nowhere();
+	result.link_destination_empty = NOT_APPLICABLE;
+	result.link_title_from = Markdown::nowhere();
+	result.link_title_to = Markdown::nowhere();
+	result.link_title_empty = NOT_APPLICABLE;
+	result.link_reference = FALSE;
+	result.last = Markdown::nowhere();
+
+@
+
+@d ABANDON_LINK(reason)
+	{ if (tracing_Markdown_parser) { PRINT("Link abandoned: %s\n", reason); }
+	pos = abandon_at; goto AbandonHope; }
+
 @<See if a link begins here@> =
 	if (((links_only == FALSE) || (prev_c != '!')) &&
 		((images_only == FALSE) || (prev_c == '!'))) {
@@ -667,11 +725,12 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 		} else {
 			if ((Markdown::get(pos) != '(') || (pass == 2)) {
 				TEMPORARY_TEXT(label)
-				for (md_charpos pos = result.link_text_from; Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
+				for (md_charpos pos = result.link_text_from; Markdown::somewhere(pos);
+					pos = Markdown::advance(pos)) {
 					PUT_TO(label, Markdown::get(pos));
 					if (Markdown::pos_eq(pos, result.link_text_to)) break;
 				}
-				MDInlineParser::unescape(label);
+				@<Deal with escape characters in the label@>;
 				md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
 				if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
 				result.link_reference = ref;
@@ -753,7 +812,8 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 	}
 	if (c == 0) { pos = abandon_at; ABANDON_LINK("no end to reference"); }
 	if (Str::len(label) == 0) {
-		for (md_charpos pos = result.link_text_from; Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
+		for (md_charpos pos = result.link_text_from; Markdown::somewhere(pos);
+			pos = Markdown::advance(pos)) {
 			PUT_TO(label, Markdown::get(pos));
 			if (Markdown::pos_eq(pos, result.link_text_to)) break;
 		}
@@ -761,6 +821,22 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 	md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
 	if (ref == NULL) ABANDON_LINK("unknown reference");
 	result.link_reference = ref;
+
+@ Note that only square brackets and backslashes can be escaped in a link
+or image reference label, not other ASCII punctuation.
+
+@<Deal with escape characters in the label@> =
+	TEMPORARY_TEXT(to)
+	for (int i=0; i<Str::len(label); i++) {
+		if ((Str::get_at(label, i) == '\\') &&
+			((Str::get_at(label, i+1) == '[') ||
+				(Str::get_at(label, i+1) == '\\') ||
+				(Str::get_at(label, i+1) == ']')))
+			i++;
+		PUT_TO(to, Str::get_at(label, i));
+	}
+	Str::clear(label); WRITE_TO(label, "%S", to);
+	DISCARD_TEXT(to)
 
 @<Work out the link destination@> =
 	if (Markdown::get(pos) == '<') {
@@ -871,24 +947,6 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 		pos = Markdown::advance_up_to_quasi_plainish_only(pos, to);
 		c = Markdown::get(pos);
 	}
-
-@
-
-=
-void MDInlineParser::unescape(text_stream *label) {
-	TEMPORARY_TEXT(to)
-	for (int i=0; i<Str::len(label); i++) {
-		if ((Str::get_at(label, i) == '\\') &&
-			((Str::get_at(label, i+1) == '[') ||
-				(Str::get_at(label, i+1) == '\\') ||
-				(Str::get_at(label, i+1) == ']')))
-			i++;
-		PUT_TO(to, Str::get_at(label, i));
-	}
-	Str::clear(label); WRITE_TO(label, "%S", to);
-	DISCARD_TEXT(to)
-}
-
 
 @h Emphasis.
 Well, that was easy. Now for the hardest pass, in which we look for the use

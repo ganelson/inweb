@@ -227,6 +227,7 @@ typedef struct positional_marker {
 	int item_type; /* |BLOCK_QUOTE_MIT|, |ORDERED_LIST_ITEM_MIT| or |UNORDERED_LIST_ITEM_MIT| */
 	int indent;                /* minimum required indentation for subsequent lines to continue */
 	int at;                    /* character position (not string index) of the start of the marker */
+	int width;                 /* for example, 2 for |7) | or |7. |: the non-whitespace chars only */
 	int list_item_value;       /* for example, 7 for |7) | or |7. | */
 	wchar_t list_item_flavour; /* for example, |')'| for |7) | and |'.'| for |7. | */
 
@@ -236,6 +237,7 @@ typedef struct positional_marker {
 
 void MDBlockParser::clear_marker(positional_marker *marker) {
 	marker->item_type = 0; /* which is not a valid item type: this will never be used */
+	marker->width = 0;
 	marker->indent = 0;
 	marker->at = 0;
 	marker->continues_from_earlier_line = FALSE;
@@ -296,9 +298,8 @@ positional_marker *MDBlockParser::marker_at(md_doc_state *state, int position) {
 
 =
 void MDBlockParser::debug_positional_stack(OUTPUT_STREAM,
-	md_doc_state *state, int first_implicit_marker) {
+	md_doc_state *state) {
 	for (int i=1; i<MAX_MARKDOWN_CONTAINER_DEPTH; i++) {
-		if (first_implicit_marker == i) WRITE("! ");
 		if (i == state->marker_sp) WRITE("[top] ");
 		if ((i > state->marker_sp) && (state->markers[i].item_type == 0)) break;
 		MDBlockParser::debug_marker(OUT, &(state->markers[i]), (i == state->marker_sp-1)?TRUE:FALSE);
@@ -309,6 +310,7 @@ void MDBlockParser::debug_positional_stack(OUTPUT_STREAM,
 
 void MDBlockParser::debug_marker(OUTPUT_STREAM, positional_marker *marker, int in_full) {
 	if (marker == NULL) { WRITE("<no-marker>"); return; }
+	if (marker->continues_from_earlier_line) WRITE("continuing:");
 	switch (marker->item_type) {
 		case BLOCK_QUOTE_MIT:         WRITE("> "); break;
 		case UNORDERED_LIST_ITEM_MIT: WRITE("(%c) ", marker->list_item_flavour); break;
@@ -360,7 +362,8 @@ when we get to rendering, but we parse them anyway.
 tabbed_string_iterator MDBlockParser::ordered_list_marker(tabbed_string_iterator line_scanner,
 	int *v, wchar_t *flavour) {
 	tabbed_string_iterator old = line_scanner;
-	if (MDBlockParser::thematic_marker(line_scanner.line, TabbedStr::get_index(&line_scanner))) return old;
+	if (MDBlockParser::thematic_marker(line_scanner.line,
+		TabbedStr::get_index(&line_scanner))) return old;
 	wchar_t c = TabbedStr::get_character(&line_scanner);
 	int dc = 0, val = 0;
 	while (Characters::is_ASCII_digit(c)) {
@@ -385,11 +388,11 @@ which tabs count as spaces, so we no longer use a |tabbed_string_iterator|
 here. The function returns either true or false.
 
 =
-int MDBlockParser::thematic_marker(text_stream *line, int initial_spacing) {
-	wchar_t c = Str::get_at(line, initial_spacing);
+int MDBlockParser::thematic_marker(text_stream *line, int index) {
+	wchar_t c = Str::get_at(line, index);
 	if ((c == '-') || (c == '_') || (c == '*')) {
 		int ornament_count = 1;
-		for (int j=initial_spacing+1; j<Str::len(line); j++) {
+		for (int j=index+1; j<Str::len(line); j++) {
 			wchar_t d = Str::get_at(line, j);
 			if (d == c) {
 				if (ornament_count > 0) ornament_count++;
@@ -399,6 +402,204 @@ int MDBlockParser::thematic_marker(text_stream *line, int initial_spacing) {
 		}
 		if (ornament_count >= 3) return TRUE;
 	}
+	return FALSE;
+}
+
+@ So now we're ready for the main function which parses the prefix to a line,
+moving the scanner past the sequence of positional markers which appear to be
+present. Note that we observe any temporary marker limit, and that in the
+remote contingency of |MAX_MARKDOWN_CONTAINER_DEPTH| being reached (e.g. if
+somebody's cat stood on the "greater than" button when they weren't looking),
+we simply ignore markers beyond that point.
+
+On exit, the return value is the positional stack pointer, i.e., is the number
+of markers read plus 1, and the line scanner has moved past each marker. If no
+markers are found, the return value is 1 and the scanner has not moved.
+
+The "left margin" is the width, in character positions, of any run of white
+space at the start of the line. The first marker, if there is one, will
+therefore begin at this character position.
+
+=
+int MDBlockParser::parse_positional_markers(md_doc_state *state, tabbed_string_iterator *line_scanner) {
+	int sp = 1; /* next positional stack position to store into */
+	
+	int left_margin = TabbedStr::spaces_available(line_scanner);
+
+	while (TRUE) {
+		if (sp >= MAX_MARKDOWN_CONTAINER_DEPTH) break;
+		if (sp >= state->temporary_marker_limit) break;
+
+		tabbed_string_iterator rewind_point = *line_scanner;
+
+		int interrupts_paragraph = FALSE;
+		if (MDBlockParser::latest_paragraph(state)) interrupts_paragraph = TRUE;
+		if ((sp < state->container_sp) &&
+			((state->containers[sp]->type == UNORDERED_LIST_ITEM_MIT) ||
+				(state->containers[sp]->type == ORDERED_LIST_ITEM_MIT)))
+			interrupts_paragraph = FALSE;
+	
+		int available = TabbedStr::spaces_available(line_scanner);
+		@<Is there enough space here to be able to infer a continuation of a marker?@>;
+		@<Is there an explicit marker here?@>;
+		break;
+	}
+	return sp;
+}
+
+@ Suppose we see these two lines in succession:
+= (text)
+	2)   This is list entry two.
+	     It continues here.
+=
+The second line implies a continuation of the first because of the indentation
+by five spaces, which is the |width| recorded in marker 1 (i.e., the |2)|)
+recorded on line 1.
+
+If we're in that position, we retain the marker from last time around, but
+flag it as a continuation. (If we didn't, we would create a second list entry
+also numbered |2)|.)
+
+@<Is there enough space here to be able to infer a continuation of a marker?@> =
+	positional_marker *marker = MDBlockParser::marker_at(state, sp);
+	if ((sp < state->marker_sp) && (marker) && (marker->item_type != BLOCK_QUOTE_MIT) &&
+		((TabbedStr::blank_from_here(line_scanner)) || (available >= marker->indent))) {
+			TabbedStr::eat_spaces(state->markers[sp].indent, line_scanner);
+			marker->continues_from_earlier_line = TRUE;
+			sp++;
+			continue;
+	}
+
+@ If there are more than four spaces, we have indented far enough to make this
+a code block, so that any punctuation like |17.| that we see past that point
+would be part of the quoted code, not a marker.
+
+@<Is there an explicit marker here?@> =
+	if (available < 4) {
+		TabbedStr::eat_spaces(available, line_scanner);
+		tabbed_string_iterator starts_at = *line_scanner;
+		@<Is there a block quote marker here?@>;
+		@<Is there a bullet list marker here?@>;
+		@<Is there an ordered list marker here?@>;
+		*line_scanner = rewind_point;
+	}
+
+@ The "black width" of a marker is the width in characters of the actual
+non-spaces used to express it: so, |153. This is item 153.| has black width 3.
+The "white width" is the black width plus the position width of any required
+white spacing which follows. For block quote markers, no such spacing is
+required - |>> This is a legal double block quote| - and so the white width
+is the same as the black width.
+
+@<Is there a block quote marker here?@> =
+	tabbed_string_iterator adv = MDBlockParser::block_quote_marker(starts_at);
+	int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+	if (black_width > 0) {
+		TabbedStr::eat_space(&adv);
+		int white_width = black_width;
+		*line_scanner = adv;
+		positional_marker *bq_m = MDBlockParser::new_marker_at(state, sp, BLOCK_QUOTE_MIT);
+		bq_m->width = black_width;
+		bq_m->at = TabbedStr::get_position(&starts_at);
+		bq_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+		if (sp == 1) bq_m->indent += left_margin;
+		sp++;
+		continue;
+	}
+	
+@ Bullet list markers are not allowed to interrupt a paragraph going on from
+the previous line: or rather, they are read as regular text if they do.
+
+Bullets are recognised only as such if they occur at the end of the line, or
+are followed by a single space. In the first case the white width equals the
+black width, in the second case it is the black width plus 1.
+
+@<Is there a bullet list marker here?@> =
+	wchar_t flavour = 0;
+	tabbed_string_iterator adv = MDBlockParser::bullet_list_marker(starts_at, &flavour);
+	int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+	if (black_width > 0) {
+		wchar_t next = TabbedStr::get_character(&adv);
+		if ((next == ' ') || (next == 0)) {
+			TabbedStr::eat_space(&adv);
+			int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+			*line_scanner = adv;
+			if ((TabbedStr::blank_from_here(line_scanner)) && (interrupts_paragraph)) {
+				*line_scanner = rewind_point;
+			} else {
+				positional_marker *li_m =
+					MDBlockParser::new_marker_at(state, sp, UNORDERED_LIST_ITEM_MIT);
+				li_m->width = black_width;
+				li_m->at = TabbedStr::get_position(&starts_at);
+				li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+				if (sp == 1) li_m->indent += left_margin;
+				li_m->list_item_flavour = flavour;
+				sp++;
+				continue;
+			}
+		}
+	}
+
+@ Ordered list markers are allowed to interrupt a paragraph, but only if the
+number used in them is 1, so that there's some evidence the author intended a
+list and hasn't simply written something like:
+= (text)
+	The Royal Philatelic Society London was founded on 10 April
+	1869. Permission to use the prefix "Royal" was granted by King
+	Edward VII in November 1906.
+=
+where we don't want to parse the |1869.| as beginning a list with first
+entry "Permission to use...".
+
+@<Is there an ordered list marker here?@> =
+	wchar_t flavour = 0;
+	int val = 0;
+	tabbed_string_iterator adv = MDBlockParser::ordered_list_marker(starts_at, &val, &flavour);
+	int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+	if (black_width > 0) {
+		wchar_t next = TabbedStr::get_character(&adv);
+		if ((next == ' ') || (next == 0)) {
+			TabbedStr::eat_space(&adv);
+			int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+			*line_scanner = adv;
+			if (((TabbedStr::blank_from_here(line_scanner)) || (val != 1)) && (interrupts_paragraph)) {
+				*line_scanner = rewind_point;
+			} else {
+				positional_marker *li_m =
+					MDBlockParser::new_marker_at(state, sp, ORDERED_LIST_ITEM_MIT);
+				li_m->width = black_width;
+				li_m->at = TabbedStr::get_position(&starts_at);
+				li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+				if (sp == 1) li_m->indent += left_margin;
+				li_m->list_item_flavour = flavour;
+				li_m->list_item_value = val;
+				sp++;
+				continue;
+			}
+		}
+	}
+
+@ It's convenient to provide a quick way to test if the innermost marker is
+for a list entry which is new this time around (i.e., not a continuation).
+
+=
+positional_marker *MDBlockParser::innermost_marker(md_doc_state *state) {
+	if (state->marker_sp == 1) return NULL;
+	return MDBlockParser::marker_at(state, state->marker_sp - 1);
+}
+
+int MDBlockParser::marker_is_list_entry(positional_marker *marker) {
+	if ((marker) &&
+		((marker->item_type == ORDERED_LIST_ITEM_MIT) ||
+			(marker->item_type == UNORDERED_LIST_ITEM_MIT)))
+		return TRUE;
+	return FALSE;
+}
+
+int MDBlockParser::marker_is_new_list_entry(positional_marker *marker) {
+	if ((MDBlockParser::marker_is_list_entry(marker)) &&
+		(marker->continues_from_earlier_line == FALSE))
+		return TRUE;
 	return FALSE;
 }
 
@@ -480,8 +681,40 @@ void MDBlockParser::turn_over_a_new_leaf(md_doc_state *state, markdown_item *blo
 	Markdown::add_to(block, state->containers[state->container_sp-1]);
 }
 
+@h Comparing the two stacks.
+As we shall see, it's going to be essential when deciding on lazy continuation
+to see if the markers currently in place would cause a change in the container
+stack.
+
+=
+int MDBlockParser::container_will_change(md_doc_state *state) {
+	if (state->marker_sp > state->container_sp) return TRUE;
+	for (int sp = 1; sp<state->marker_sp; sp++) {
+		positional_marker *marker = MDBlockParser::marker_at(state, sp);
+		if (marker->item_type != state->containers[sp]->type) return TRUE;
+		if (MDBlockParser::marker_is_new_list_entry(marker)) return TRUE;
+	}
+	return FALSE;
+}
+
 @h The main function.
-So, now we're off to the races.
+So, now we're off to the races. Unsurprisingly, we work from left to right.
+We divide the line into four sections: left margin, positional markers,
+intervening white space, and content. For example:
+= (text)
+	  -  21)   Thomas Keay Tapling (1855-1891) was an English politician.
+	mmpppppppppcccccccccccccccccccccccccccc
+	              He played first-class cricket and was also an eminent philatelist
+	mmpppppppppwwwccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+=
+Note that the intervening white space, if any, is the bonus white space beyond
+any which is used to imply positional markers.
+
+CommonMark requires that tabs are to be read as if spaces had been typed to
+achieve the same effect as tabbed intervals of four spaces, but only for
+purposes of determining block structure. So we parse with a tab-respecting
+line scanner up to the beginning of the content, and then throw that away and
+use regular string processing thereafter.
 
 =
 void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
@@ -489,200 +722,187 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 		PRINT("=======\nAdding '%S' to tree:\n", line);
 		Markdown::debug_subtree(STDOUT, state->tree_head);
 		PRINT("Positional stack carried over: ");
-		MDBlockParser::debug_positional_stack(STDOUT, state, -1);
+		MDBlockParser::debug_positional_stack(STDOUT, state);
+		if (state->temporary_marker_limit < 100000000)
+			PRINT("(Marker limit %d is in force)", state->temporary_marker_limit);
 	}
-	int first_implicit_marker = -1;
-	int sp = 1, last_explicit_list_marker_sp = 1, last_explicit_list_marker_width = -1;
+
+	int marker_sp_left_over_from_last_line = state->marker_sp;
+
 	tabbed_string_iterator line_scanner = TabbedStr::new(line, 4);
+	@<Parse the left margin and the positional markers@>;
 
-	int min_indent_to_continue = -1;
-	while (TRUE) {
-		if (sp >= MAX_MARKDOWN_CONTAINER_DEPTH) break;
-		if (sp >= state->temporary_marker_limit) break;
-		tabbed_string_iterator copy = line_scanner;
-		int available = TabbedStr::spaces_available(&line_scanner);
-		if (min_indent_to_continue < 0) min_indent_to_continue = available;
-		else min_indent_to_continue = 0;
-		positional_marker *marker = MDBlockParser::marker_at(state, sp);
-		if ((sp < state->marker_sp) && (marker) && (marker->item_type != BLOCK_QUOTE_MIT) &&
-			((TabbedStr::blank_from_here(&line_scanner)) || (available >= marker->indent))) {
-				TabbedStr::eat_spaces(state->markers[sp].indent, &line_scanner);
-				if (first_implicit_marker < 0) first_implicit_marker = sp;
-				marker->continues_from_earlier_line = TRUE;
-				sp++;
-				continue;
-		}
-		int interrupts_paragraph = FALSE;
-		if (MDBlockParser::latest_paragraph(state))
-			interrupts_paragraph = TRUE;
-		if ((sp < state->container_sp) &&
-			((state->containers[sp]->type == UNORDERED_LIST_ITEM_MIT) ||
-				(state->containers[sp]->type == ORDERED_LIST_ITEM_MIT)))
-			interrupts_paragraph = FALSE;
-		
-		if (available < 4) {
-			TabbedStr::eat_spaces(available, &line_scanner);
- 			tabbed_string_iterator starts_at = line_scanner;
-			tabbed_string_iterator adv = MDBlockParser::block_quote_marker(starts_at);
-			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&line_scanner)) {
-					TabbedStr::eat_space(&adv);
-					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
-					line_scanner = adv;
-					positional_marker *bq_m = MDBlockParser::new_marker_at(state, sp, BLOCK_QUOTE_MIT);
-					bq_m->at = TabbedStr::get_position(&starts_at);
-					bq_m->indent = min_indent_to_continue + L + TabbedStr::spaces_available(&line_scanner);
-					sp++;
-					continue;
-			}
-			wchar_t flavour = 0;
-			adv = MDBlockParser::bullet_list_marker(starts_at, &flavour);
-			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&line_scanner)) {
-				wchar_t next = TabbedStr::get_character(&adv);
-				if ((next == ' ') || (next == 0)) {
-					int orig_L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
-					TabbedStr::eat_space(&adv);
-					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
-					line_scanner = adv;
-					if ((TabbedStr::blank_from_here(&line_scanner)) && (interrupts_paragraph)) {
-						line_scanner = copy;
-					} else {
-						last_explicit_list_marker_sp = sp;
-						last_explicit_list_marker_width = orig_L;
-						positional_marker *li_m = MDBlockParser::new_marker_at(state, sp, UNORDERED_LIST_ITEM_MIT);
-						li_m->at = TabbedStr::get_position(&starts_at);
-						li_m->indent = min_indent_to_continue + L + TabbedStr::spaces_available(&line_scanner);
-						li_m->list_item_flavour = flavour;
-						sp++;
-						continue;
-					}
-				}
-			}
-			int val = 0;
-			adv = MDBlockParser::ordered_list_marker(starts_at, &val, &flavour);
-			if (TabbedStr::get_position(&adv) > TabbedStr::get_position(&line_scanner)) {
-				wchar_t next = TabbedStr::get_character(&adv);
-				if ((next == ' ') || (next == 0)) {
-					int orig_L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
-					TabbedStr::eat_space(&adv);
-					int L = TabbedStr::get_index(&adv) - TabbedStr::get_index(&line_scanner);
-					line_scanner = adv;
-					if (((TabbedStr::blank_from_here(&line_scanner)) || (val != 1)) && (interrupts_paragraph)) {
-						line_scanner = copy;
-					} else {
-						last_explicit_list_marker_sp = sp;
-						last_explicit_list_marker_width = orig_L;
-						positional_marker *li_m = MDBlockParser::new_marker_at(state, sp, ORDERED_LIST_ITEM_MIT);
-						li_m->at = TabbedStr::get_position(&starts_at);
-						li_m->indent = min_indent_to_continue + L + TabbedStr::spaces_available(&line_scanner);
-						li_m->list_item_flavour = flavour;
-						li_m->list_item_value = val;
-						sp++;
-						continue;
-					}
-				}
-			}
-			line_scanner = copy;
-		}
-		break;
-	}
-	int old_psp = state->marker_sp;
-	state->marker_sp = sp;
+	int indentation = FALSE;
+	@<Parse the white space between the markers and the content@>;
 
-	if (TabbedStr::blank_from_here(&line_scanner))
-		if (state->markers[sp-1].continues_from_earlier_line)
-			TabbedStr::seek(&line_scanner,
-				state->markers[sp-1].at + state->markers[sp-1].indent);
-
-	int available = TabbedStr::spaces_available(&line_scanner);
-			if (tracing_Markdown_parser) {
-				PRINT("line_scanner is at %d , available = %d, positionals_at = %d ind = %d\n", TabbedStr::get_index(&line_scanner), available, state->markers[sp-1].at, state->markers[sp-1].indent);
-			}
-	int indentation = 0;
-	
-	if (available >= 4) {
-		indentation = 1; available = 4;
-		if ((last_explicit_list_marker_width >= 0) &&
-			(last_explicit_list_marker_sp == state->marker_sp-1)) {
-			if (tracing_Markdown_parser) {
-				PRINT("Opening line is code rule applies, and sets pos indent[%d] = %d\n",
-					last_explicit_list_marker_sp, last_explicit_list_marker_width + 1);
-			}
-			state->markers[last_explicit_list_marker_sp].indent = last_explicit_list_marker_width + 1;
-		}
-	}
-	if (TabbedStr::blank_from_here(&line_scanner)) {
-		if ((last_explicit_list_marker_width >= 0) &&
-			(last_explicit_list_marker_sp == state->marker_sp-1)) {
-			if (tracing_Markdown_parser) {
-				PRINT("Opening line is empty rule applies, and sets pos indent[%d] = %d\n",
-					last_explicit_list_marker_sp, last_explicit_list_marker_width + 1);
-			}
-			state->markers[last_explicit_list_marker_sp].indent = last_explicit_list_marker_width + 1;
-			state->markers[last_explicit_list_marker_sp].blank_counts = 1;
-		} else {
-			while ((state->marker_sp > 1) &&
-					(state->markers[state->marker_sp-1].blank_counts > 0)) {
-				if (tracing_Markdown_parser) {
-					PRINT("Blank after blank opening rule applies\n");
-				}
-				MDBlockParser::mark_block_with_ws(state, state->containers[state->marker_sp-1]);
-				state->marker_sp--;
-				sp--;
-			}
-		}
-	}
-	TabbedStr::eat_spaces(available, &line_scanner);
-	int initial_spacing = TabbedStr::get_index(&line_scanner);
-	
 	if (tracing_Markdown_parser) {
 		PRINT("Line '%S' ", line);
-		if (state->temporary_marker_limit < 100000000)
-			PRINT("(marker limit %d)", state->temporary_marker_limit);
 		PRINT("\n");
 		PRINT("New positional stack: ");
-		MDBlockParser::debug_positional_stack(STDOUT, state, first_implicit_marker);
-		PRINT("Line has indentation = %d, then: '", indentation);
-		for (int i=initial_spacing; i<Str::len(line); i++)
-			PUT_TO(STDOUT, Str::get_at(line, i));
+		MDBlockParser::debug_positional_stack(STDOUT, state);
+	}
+
+	@<Parse the content@>;
+}
+
+@<Parse the left margin and the positional markers@> =
+	state->marker_sp = MDBlockParser::parse_positional_markers(state, &line_scanner);
+
+@<Parse the white space between the markers and the content@> =
+	ReparseIntervening: ;
+	positional_marker *innermost = MDBlockParser::innermost_marker(state);
+	@<If the line is blank from here on, some of it may still be content@>;
+
+	int intervening_space_width = TabbedStr::spaces_available(&line_scanner);
+	
+	if (intervening_space_width >= 4)
+		@<This line is indented enough to be part of an indented code block@>;
+
+	if (TabbedStr::blank_from_here(&line_scanner)) {
+		if (MDBlockParser::marker_is_new_list_entry(innermost))
+			@<This line will open a list item with no content as yet@>
+		else if (MDBlockParser::marker_is_list_entry(innermost))
+			@<But a list item cannot begin with two empty lines@>;
+	}
+
+	TabbedStr::eat_spaces(intervening_space_width, &line_scanner);
+
+@ If the line contains only white space after the positional markers, that
+does not necessarily mean there is no content. Consider:
+= (text)
+	12)  ~~~
+	     This is a fenced code block.
+	         
+	     ~~~
+=
+Line 3 here contains an (implied) positional marker, since it's still part
+of list item 12, but any white space occurring from the character position
+underneath the |T| onwards is part of the content, and must live on in the
+code block. We deal with this by moving the read position of the line
+scanner (which is currently at the end of the line, wherever that is)
+back to the |T| position.
+
+@<If the line is blank from here on, some of it may still be content@> =
+	if (TabbedStr::blank_from_here(&line_scanner))
+		if ((innermost) && (innermost->continues_from_earlier_line))
+			TabbedStr::seek(&line_scanner, innermost->at + innermost->indent);
+
+@ Four or more spaces suggests indented code. If so, we want to consider
+the intervening space as containing exactly four spaces (in position terms),
+with any extras being part of the content. That requires us to set the
+indentation level of a newly opening list item accordingly, so that on
+subsequent lines the same margin will be followed.
+
+@<This line is indented enough to be part of an indented code block@> =
+	indentation = TRUE; intervening_space_width = 4;
+	if (MDBlockParser::marker_is_new_list_entry(innermost)) {
+		if (tracing_Markdown_parser) {
+			PRINT("Opening line is code rule applies, and sets pos indent[%d] = %d\n",
+				state->marker_sp, innermost->width + 1);
+		}
+		innermost->indent = innermost->width + 1;
+	}
+
+@ Suppose something like this:
+= (text)
+	12)
+=
+where there is not enough white space after the |)| to force indentation as a
+new indented code block (i.e., of which the first line happens to be blank).
+Where are we to set the indentation position for the |12)|? We make it the
+absolute minimum: the black width plus 1.
+
+@<This line will open a list item with no content as yet@> =
+	if (tracing_Markdown_parser) {
+		PRINT("Opening line is empty rule applies, and sets pos indent[%d] = %d\n",
+			state->marker_sp, innermost->width + 1);
+	}
+	innermost->indent = innermost->width + 1;
+	innermost->blank_counts = 1;
+
+@ A list item is not permitted to begin with two blanks:
+= (text)
+	11)	
+	    This is part of list item 11.
+
+	12)
+	
+	    This is not part of list item 12.
+=
+So if we find ourselves in the situation of the blank line 5, we delete the
+innermost marker, and go back to the start of the intervening space parsing,
+because there's a new innermost marker now, and indentation also needs
+reconsideration. 
+
+Note that we also have to mark the list item not being continued as being
+followed by white space.
+
+@<But a list item cannot begin with two empty lines@> =
+	if (innermost->blank_counts > 0) {
+		if (tracing_Markdown_parser) {
+			PRINT("Blank after blank opening rule applies\n");
+		}
+		MDBlockParser::mark_block_with_ws(state, state->containers[state->marker_sp-1]);
+		state->marker_sp--;
+		goto ReparseIntervening;
+	}
+
+@ We finally reach the content, and move from tab-respecting-parsing with a
+scanner to regular character-by-character parsing. |content_index| is the
+index position of the line at which content begins. There's actually a
+tricky edge case here if we're in a code block where the content opens
+with white space: we could find ourselves with the line scanner still midway
+through a not-fully-consumed tab character. Infuriatingly, it is only
+compliant with CommonMark to deal with this situation (by injecting additional
+space characters not found in |line|) in certain cases, so for now we have
+to live with this uneasy worry.
+
+@<Parse the content@> =
+	int content_index = TabbedStr::get_index(&line_scanner);
+	
+	if (tracing_Markdown_parser) {
+		if (indentation) PRINT("Indentation present. ");
+		PRINT("Content: '");
+		for (int i=content_index; i<Str::len(line); i++)
+			Markdown::debug_char_briefly(STDOUT, Str::get_at(line, i));
 		PRINT("'\n");
 	}
 
-	int interpretations[20], details[20];
-	for (int i=0; i<20; i++)
-		interpretations[i] =
-			MDBlockParser::can_interpret_as(state, line, indentation, initial_spacing, i, NULL, &(details[i]));
+	int interpretations[NO_MDINTERPRETATIONS], details[NO_MDINTERPRETATIONS];
+	@<Work out the possible interpretations of this content@>;
 
-	if ((MDBlockParser::latest_paragraph(state)) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]) && (state->marker_sp == state->container_sp))
-		interpretations[THEMATIC_MDINTERPRETATION] = FALSE;
+	if (interpretations[LAZY_CONTINUATION_MDINTERPRETATION])
+		@<This is a lazy continuation@>
+	else
+		@<This is not a lazy continuation@>;
 
-	int N = 0; for (int i=0; i<20; i++) if (interpretations[i]) N++;
+@ "Interpretations" are possible ways to understand the context, and some
+lines are open to multiple interpretations. We need to find all possible ways
+because CommonMark requires us to consider lazy continuation only when no other
+interpretation is possible.
 
-	if ((MDBlockParser::latest_paragraph(state)) && (MDBlockParser::container_will_change(state) == FALSE)) {
-		int lazy = TRUE;
-		for (int i=0; i<20; i++)
-			if (interpretations[i]) {
-				if (i == SETEXT_UNDERLINE_MDINTERPRETATION) continue;
-				if ((i == HTML_MDINTERPRETATION) && (details[i] == MISCPAIR_MDHTMLC)) continue;
-				lazy = FALSE;
-			}
-		interpretations[LAZY_CONTINUATION_MDINTERPRETATION] = lazy;
-	}
+@<Work out the possible interpretations of this content@> =
+	for (int which=0; which<NO_MDINTERPRETATIONS; which++)
+		interpretations[which] =
+			MDBlockParser::can_interpret_as(state, line, indentation, content_index,
+				which, NULL, &(details[which]));
+	@<Is this a lazy continuation?@>;
 
 	if (tracing_Markdown_parser) {
 		PRINT("interpretations: ");
 		int c = 0;
-		for (int i=0; i<20; i++) {
-			if (interpretations[i]) {
+		for (int which=0; which<NO_MDINTERPRETATIONS; which++) {
+			if (interpretations[which]) {
 				c++;
-				switch (i) {
-					case WHITESPACE_MDINTERPRETATION: PRINT("white? "); break;
-					case THEMATIC_MDINTERPRETATION: PRINT("thematic? "); break;
-					case ATX_HEADING_MDINTERPRETATION: PRINT("atx? "); break;
-					case SETEXT_UNDERLINE_MDINTERPRETATION: PRINT("setext? "); break;
-					case HTML_MDINTERPRETATION: PRINT("html-open? "); break;
-					case CODE_FENCE_OPEN_MDINTERPRETATION: PRINT("fence-open? "); break;
-					case CODE_FENCE_CLOSE_MDINTERPRETATION: PRINT("fence-close? "); break;
-					case CODE_BLOCK_MDINTERPRETATION: PRINT("code? "); break;
+				switch (which) {
+					case WHITESPACE_MDINTERPRETATION:        PRINT("white? "); break;
+					case THEMATIC_MDINTERPRETATION:          PRINT("thematic? "); break;
+					case ATX_HEADING_MDINTERPRETATION:       PRINT("atx? "); break;
+					case SETEXT_UNDERLINE_MDINTERPRETATION:  PRINT("setext? "); break;
+					case HTML_MDINTERPRETATION:              PRINT("html-open? "); break;
+					case CODE_FENCE_OPEN_MDINTERPRETATION:   PRINT("fence-open? "); break;
+					case CODE_FENCE_CLOSE_MDINTERPRETATION:  PRINT("fence-close? "); break;
+					case CODE_BLOCK_MDINTERPRETATION:        PRINT("code? "); break;
 					case FENCED_CODE_BLOCK_MDINTERPRETATION: PRINT("fenced-code? "); break;
 					case LAZY_CONTINUATION_MDINTERPRETATION: PRINT("lazy-continuation? "); break;
 					case HTML_CONTINUATION_MDINTERPRETATION: PRINT("html-continuation? "); break;
@@ -694,71 +914,289 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 		if (MDBlockParser::container_will_change(state)) PRINT("Container change coming\n");
 	}
 
-	if (interpretations[LAZY_CONTINUATION_MDINTERPRETATION]) {
-		int sp = state->marker_sp;
-		state->marker_sp = old_psp;
-		if ((sp == state->container_sp) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
-		@<Line forms piece of paragraph@>;
-	} else {
-		if (MDBlockParser::latest_paragraph(state))
-			MDBlockParser::close_block(state, MDBlockParser::latest_paragraph(state));
-		if ((MDBlockParser::latest_code_block(state)) && (interpretations[CODE_BLOCK_MDINTERPRETATION] == FALSE) && (interpretations[WHITESPACE_MDINTERPRETATION] == FALSE))
-			MDBlockParser::close_block(state, MDBlockParser::latest_code_block(state));
-	}
+@ This is a little subtle. It seems obvious enough that these lines all belong
+to the same paragraph:
+= (text)
+	By 1887 his collection was second only to that of Philippe Ferrari de La
+	Renotière. Among his holdings were many world-famous rarities, including both
+	values of the "Post Office" Mauritius and three examples of the Inverted
+	Head Four Annas of India.
+=
+But "lazy continuation" goes further. It provides that if there is no indication
+to the contrary, a line should be taken as a continuation of the current paragraph.
+So for example:
+= (text)
+	1) By 1887 his collection was second only to that of Philippe Ferrari de La
+	Renotière. Among...
+=
+Here, all of the lines are part of list entry |1)|. This is a different situation
+from:
+= (text)
+	1) By 1887 his collection was second only to that of Philippe Ferrari de La
+	   Renotière. Among...
+=
+where continuation occurs because the subsequent lines are indented to match
+the list item marker's margin. The difference between these two cases is that
+in the second case there is a continuing positional marker on the marker stack,
+whereas in the first case there is not, since indentation was insufficient
+for that.
 
-	MDBlockParser::establish_context(state);
-	if ((state->fencing.material != 0) && (state->container_sp < state->temporary_marker_limit)) {
-		@<Close the code fence@>;
-		interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION] = FALSE;
+The short version is that lines are LCs only if no other interpretation is
+possible, but setext underlinings and certain kinds of raw HTML opening (but
+not others) are exceptions to this. Because setext underlinings can be
+syntactically identical to thematic division lines, we also have to ensure
+that a thematic interpretation of that sort does not veto lazy continuation.
+CommonMark requires close study here.
+
+Note also that any requirement in the markers to create new list entries or
+block quotes is enough to veto LC (this is what |MDBlockParser::container_will_change|
+is testing for), and of course, there has to be a paragraph going on or else
+there is nothing to continue.
+
+@<Is this a lazy continuation?@> =
+	if ((MDBlockParser::latest_paragraph(state)) &&
+		(MDBlockParser::container_will_change(state) == FALSE)) {
+		int lazy = TRUE;
+		if ((interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]) &&
+			(state->marker_sp == state->container_sp))
+			interpretations[THEMATIC_MDINTERPRETATION] = FALSE;
+		for (int which=0; which<NO_MDINTERPRETATIONS; which++)
+			if (interpretations[which]) {
+				if (which == SETEXT_UNDERLINE_MDINTERPRETATION) continue;
+				if ((which == HTML_MDINTERPRETATION) &&
+					(details[which] == MISCPAIR_MDHTMLC)) continue;
+				lazy = FALSE;
+			}
+		interpretations[LAZY_CONTINUATION_MDINTERPRETATION] = lazy;
 	}
+	if (interpretations[LAZY_CONTINUATION_MDINTERPRETATION] == FALSE)
+		interpretations[SETEXT_UNDERLINE_MDINTERPRETATION] = FALSE;
+
+@ As noted above, what's lazy about lazy continuation is that the markers were
+not fully specified to match the containers, so that |marker_sp| is below
+|container_sp|. But the markers from last time are still there on the stack,
+so to retrieve them, all we have to do is raise |marker_sp| back to where it was.
+
+As for the content, it's either paragraph copy or else a setext underline, but
+can only be the latter if the alignment is right.
+
+@<This is a lazy continuation@> =
+	int sp = state->marker_sp;
+	state->marker_sp = marker_sp_left_over_from_last_line;
+
+	if ((sp == state->container_sp) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]))
+		@<Line is a setext underline and turns the existing paragraph into a heading@>;
+	@<Line continues an existing paragraph@>;
+
+@ With a sigh of relief, we're not in the lazy case here, and so the markers
+are a true representation of what the containers ought to be. Since we're
+not continuing a paragraph, it's now time to close any existing one, as it
+can never be continued again.
+
+The sequence of the interpretation tests is important here, as it decides
+which take priority: for example, a blank line occurring inside HTML is
+not white space and must be given the |HTML_CONTINUATION_MDINTERPRETATION|.
+Each of the 10 possible outcomes below ends with a |return| from the function,
+so exactly one will take effect.
+
+@<This is not a lazy continuation@> =
+	if (MDBlockParser::latest_paragraph(state))
+		MDBlockParser::close_block(state, MDBlockParser::latest_paragraph(state));
+	if ((MDBlockParser::latest_code_block(state)) &&
+		(interpretations[CODE_BLOCK_MDINTERPRETATION] == FALSE) &&
+		(interpretations[WHITESPACE_MDINTERPRETATION] == FALSE))
+		MDBlockParser::close_block(state, MDBlockParser::latest_code_block(state));
+
+	@<Make the container stack agree with the markers stack@>;
+
 	if (interpretations[HTML_CONTINUATION_MDINTERPRETATION]) @<Line is part of HTML@>;
-	if (interpretations[CODE_FENCE_OPEN_MDINTERPRETATION]) @<Line is an opening code fence@>;
-	if (interpretations[CODE_FENCE_CLOSE_MDINTERPRETATION]) @<Line is a closing code fence@>;
+	if (interpretations[CODE_FENCE_OPEN_MDINTERPRETATION])   @<Line is an opening code fence@>;
+	if (interpretations[CODE_FENCE_CLOSE_MDINTERPRETATION])  @<Line is a closing code fence@>;
 	if (interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION]) @<Line is part of a fenced code block@>;
-	if (interpretations[WHITESPACE_MDINTERPRETATION]) @<Line is whitespace@>;
-	if ((MDBlockParser::latest_paragraph(state)) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION])) @<Line is a setext underline@>;
-	if (interpretations[ATX_HEADING_MDINTERPRETATION]) @<Line is an ATX heading@>;
-	if (interpretations[THEMATIC_MDINTERPRETATION]) @<Line is a thematic break@>;
-	if (interpretations[HTML_MDINTERPRETATION]) @<Line opens HTML@>;
-	if (interpretations[CODE_BLOCK_MDINTERPRETATION]) @<Line is part of an indented code block@>;
-	@<Line forms piece of paragraph@>;
-}
+	if (interpretations[WHITESPACE_MDINTERPRETATION])        @<Line is whitespace@>;
+	if (interpretations[ATX_HEADING_MDINTERPRETATION])       @<Line is an ATX heading@>;
+	if (interpretations[THEMATIC_MDINTERPRETATION])          @<Line is a thematic break@>;
+	if (interpretations[HTML_MDINTERPRETATION])              @<Line opens HTML@>;
+	if (interpretations[CODE_BLOCK_MDINTERPRETATION])        @<Line is part of an indented code block@>;
+	@<Line opens a new paragraph@>;
 
-@<Line is whitespace@> =
-	last_explicit_list_marker_sp = state->container_sp-1;
-	int sp = state->container_sp-1;
-	if (state->markers[sp].continues_from_earlier_line) {
-		if (state->containers[sp]->down) {
-			for (markdown_item *ch = state->containers[sp]->down; ch; ch = ch->next)
-				if ((ch->next == NULL) && (ch->type != BLOCK_QUOTE_MIT))
-					MDBlockParser::mark_block_with_ws(state, ch);
-		} else {
-			MDBlockParser::mark_block_with_ws(state, state->containers[sp]);
-		}
-	}
+@ This is really the heart of the stacking algorithm: we've reached a point where
+the row of markers has expressed a clear description of what the containers ought
+to be. For example, if it read |* * > 2) Whatever|, we would have four items on
+the marker stack, and we need to make sure that the container stack also has
+four items (not counting item 0, the document head) which exactly match those
+markers. 
 
-	if (indentation > 0)
-		for (int i=initial_spacing; i<Str::len(line); i++) {
-			wchar_t c = Str::get_at(line, i);
-			PUT_TO(state->blank_matter_after_receiver, c);
-		}
-	PUT_TO(state->blank_matter_after_receiver, '\n');
-	return;
-	
-@<Line opens HTML@> =
-	state->HTML_end_condition = details[HTML_MDINTERPRETATION];
+@<Make the container stack agree with the markers stack@> =
+	int wipe_down_to_pos;
+	@<Find the outermost point of current disagreement@>;
+	@<Close all existing containers inside that point@>;
+	@<Open new containers as needed from that point to match the further markers@>;
 	if (tracing_Markdown_parser) {
-		PRINT("enter HTML with end_condition = %d\n", state->HTML_end_condition);
+		PRINT("Container stack:");
+		for (int sp = 0; sp<state->container_sp; sp++) {
+			PRINT(" -> "); Markdown::debug_item(STDOUT, state->containers[sp]);
+		}
+		PRINT("\n");
 	}
-	markdown_item *htmlb = Markdown::new_item(HTML_MIT);
-	htmlb->stashed = Str::new();
-	MDBlockParser::turn_over_a_new_leaf(state, htmlb);
-	MDBlockParser::impose_marker_limit(state, state->container_sp);
-	@<Add text of line to HTML block@>;
-	int ends = FALSE;
-	@<Test for HTML end condition@>;
-	if (ends) @<End the HTML block@>;
+
+@ The two stacks may in fact agree up to a certain point, but they diverge
+as soon as they run into a non-continued list marker. For example, with the
+lines:
+= (text)
+	> > 1) Switzerland: Zurich: 1843 4 rappen, the unique unsevered horizontal strip of five;
+	> > 2) Uruguay: 1858 120 centavos blue and 180 centavos green, in tête beche pairs, two of five known;
+=
+the outermost point of disagreement (i.e., the leftmost) is at stack position
+3, where the two numbered item markers live. The eventual effect will be to
+change the container stack from:
+= (text)
+	BLOCK_QUOTE_MIT
+		BLOCK_QUOTE_MIT
+			ORDERED_LIST_ITEM_MIT "Switzerland: Zurich: 1843..."
+=
+to become:
+= (text)
+	BLOCK_QUOTE_MIT
+		BLOCK_QUOTE_MIT
+			ORDERED_LIST_ITEM_MIT "Uruguay: 1858 120 centavos..."
+=
+
+@<Find the outermost point of current disagreement@> =
+	int min_sp = state->marker_sp, max_sp = state->marker_sp;
+	if (state->container_sp < min_sp) min_sp = state->container_sp;
+	if (state->container_sp > max_sp) max_sp = state->container_sp;
+	wipe_down_to_pos = min_sp;
+	for (int sp = 1; sp<min_sp; sp++) {
+		positional_marker *marker = MDBlockParser::marker_at(state, sp);
+		if (MDBlockParser::marker_is_new_list_entry(marker) == TRUE) {
+			wipe_down_to_pos = sp; break;
+		}
+	}	
+	if (tracing_Markdown_parser) {
+		PRINT("Stacks compared: ");
+		if (wipe_down_to_pos == 1) PRINT(" WIPE");
+		for (int sp=1; (sp<state->container_sp) || (sp<state->marker_sp); sp++) {
+			PRINT(" ");
+			if (sp >= state->marker_sp) PRINT("--");
+			else MDBlockParser::debug_marker(STDOUT, MDBlockParser::marker_at(state, sp), TRUE);
+			PRINT(" vs ");
+			if (sp >= state->container_sp) PRINT("--");
+			else Markdown::debug_item(STDOUT, state->containers[sp]);
+			if (sp+1 == wipe_down_to_pos) PRINT(" WIPE");
+		}
+		PRINT("\n");
+	}
+
+@ This looks straightforward, but we need to be aware that if we are closing
+a container which contains an incomplete fenced code block (one which never
+reached its closing fence) then it needs to be ended as the container does;
+and similarly for raw HTML which has not yet, and now never will, reach its
+ending line.
+
+@<Close all existing containers inside that point@> =
+	for (int sp = state->container_sp-1; sp >= wipe_down_to_pos; sp--) {
+		MDBlockParser::close_block(state, state->containers[sp]);
+		state->containers[sp] = NULL;
+	}
+	state->container_sp = wipe_down_to_pos;
+	if (state->container_sp < state->temporary_marker_limit) {
+		if (state->fencing.material != 0) {
+			@<Close the code fence@>;
+			interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION] = FALSE;
+		} else if (state->HTML_end_condition) {
+			@<End the HTML block@>;
+			interpretations[HTML_CONTINUATION_MDINTERPRETATION] = FALSE;
+		}
+		MDBlockParser::lift_marker_limit(state);
+	}
+
+@ And this is where all container items are born, except of course for the
+outermost document item.
+
+@<Open new containers as needed from that point to match the further markers@> =
+	for (int sp = wipe_down_to_pos; sp<state->marker_sp; sp++) {
+		positional_marker *marker = MDBlockParser::marker_at(state, sp);
+		markdown_item *newbq = Markdown::new_item(marker->item_type);
+		Markdown::set_item_number_and_flavour(newbq,
+			marker->list_item_value, marker->list_item_flavour);
+		Markdown::add_to(newbq, state->containers[sp-1]);
+		state->containers[state->container_sp++] = newbq;
+		MDBlockParser::open_block(state, newbq);
+	}
+
+@ That's it for the part of the algorithm which decides which interpretation
+to give the content. There are 12 possible outcomes of that, and we'll give
+them in the same priority sequence as was followed above.
+
+First, the two paragraph-continuation cases, where a setext underline takes
+priority. "Setext" stands for "Structure Enhanced Text", a precursor language
+to Markdown created by Ian Feldman in 1991.
+= (text)
+	Women in Philately
+	==================
+	One of the earliest was Adelaide Lucy Fenton, who wrote articles in the
+	1860s for the journal The Philatelist under the name Herbert Camoens.
+=
+This natural-looking notation survives in Markdown today, and line 2 above
+is a "setext underline".
+
+Dealing with it would be straightforward - simply make the paragraph item
+holding "Women in Philately" a heading item, and throw the underline characters
+away. But consider the following edge case:
+= (text)
+	[pb]: /pennyblacks.html "Penny Black catalogue"
+	-----
+=
+Here |-----| looks like, and has been parsed as, a setext underline. But it
+isn't, because in fact the whole paragraph was taken up with link references,
+leaving it with no content. So the only way correctly to deal with this is to
+remove the link references first and see if there's any para left.
+
+It might seem tidier to deal with link references when they join paragraphs
+but, infuriatingly, they can sometimes run across multiple lines, and moreover
+can do so in a way such that the first line alone is also a valid link reference:
+= (text)
+	[pb]: /pennyblacks.html
+	  "Penny Black catalogue"
+	-----
+=
+So it is not safe to strip out link references until a paragraph is done.
+In these cases where the apparent underline is, in fact, not an underline
+because there was no content left, we have to preserve it as literal
+content, opening a new paragraph to hold the |-----|.
+
+@<Line is a setext underline and turns the existing paragraph into a heading@> =
+	wchar_t c = Str::get_at(line, content_index);
+	markdown_item *headb = MDBlockParser::latest_paragraph(state);
+	if (headb) {
+		MDBlockParser::remove_link_references(state, headb);
+		if (headb->type == EMPTY_MIT) @<Line opens a new paragraph@>;
+		MDBlockParser::change_type(state, headb, HEADING_MIT);
+		if (c == '=') Markdown::set_heading_level(headb, 1);
+		else Markdown::set_heading_level(headb, 2);
+		Str::trim_white_space(headb->stashed);
+	}
 	return;
+
+@ Actual paragraph continuation is much simpler.
+
+@<Line continues an existing paragraph@> =
+	markdown_item *parb = MDBlockParser::latest_paragraph(state);
+	if ((parb) && (parb->type == PARAGRAPH_MIT)) {
+		WRITE_TO(parb->stashed, "\n");
+		for (int i = content_index; i<Str::len(line); i++) {
+			wchar_t c = Str::get_at(line, i);
+			PUT_TO(parb->stashed, c);
+		}
+	} else internal_error("no paragraph is open after all");
+	return;
+
+@ Now for the 10 possibilities which don't fall under lazy continuations.
+Top of the heap is an HTML continuation line. This may or may not meet the
+criteria to be the final line. Note that in two cases of HTML start/end
+conditions, the final line is white space, but is not to be included in the
+material itself. In the other five cases, the final line is part of the matter.
 
 @<Line is part of HTML@> =
 	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
@@ -774,21 +1212,179 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 		return;
 	}
 
+@ Now to open a fenced code block, which means recording a lot of information
+about it: the info string, if there is one, has to be preserved in the tree,
+since it will be used during rendering to apply a CSS class. The other data
+here is needed only during parsing, and remembers the syntax used here so that
+we can make sure matching syntax is used on the closing line.
+
+@<Line is an opening code fence@> =
+	int post_count = details[CODE_FENCE_OPEN_MDINTERPRETATION];
+	text_stream *info_string = Str::new();
+	MDBlockParser::can_interpret_as(state, line, indentation, content_index,
+		CODE_FENCE_OPEN_MDINTERPRETATION, info_string, NULL);
+	wchar_t c = Str::get_at(line, content_index);
+	markdown_item *cb = Markdown::new_item(CODE_BLOCK_MIT);
+	cb->stashed = Str::new();
+	cb->info_string = info_string;
+	MDBlockParser::turn_over_a_new_leaf(state, cb);
+	state->fencing.left_margin = TabbedStr::get_position(&line_scanner);
+	state->fencing.material = c;
+	state->fencing.width = post_count;
+	state->fencing.fenced_code = cb;
+	MDBlockParser::make_receiver(state, cb);
+	MDBlockParser::impose_marker_limit(state, state->container_sp);
+	return;
+
+@ Next up, the closing line of a code fence. Note that this is not the only
+way a fenced code block can end: it can also end when its container is closed,
+see above.
+
+@<Line is a closing code fence@> =
+	@<Close the code fence@>;
+	return;
+
+@<Close the code fence@> =
+	MDBlockParser::clear_fencing_data(state);
+	MDBlockParser::lift_marker_limit(state);
+
+@ Next, a continuation line in a fenced code block. Here we're subject to the
+tricky issue mentioned above where the line scanner working through tabs
+early in the line and reading them as if they were spaces, may in fact be
+only part-way through a tab at the start of the content. If that happens,
+we need to inject artificial space characters into the code put into the block,
+thus faking the same visual effect. (It does not comply with CommonMark to use a
+tab for this: we must use the correct fraction of a tab, using spaces as quarter-tabs.)
+
+@<Line is part of a fenced code block@> =
+	markdown_item *code_block = state->fencing.fenced_code;
+	if ((state->fencing.left_margin >= 0) &&
+		(state->fencing.left_margin < TabbedStr::get_position(&line_scanner)))
+		TabbedStr::seek(&line_scanner, state->fencing.left_margin);
+	while (TabbedStr::at_whole_character(&line_scanner) == FALSE) {
+		PUT_TO(code_block->stashed, ' ');
+		TabbedStr::advance(&line_scanner);
+	}
+	for (int i = TabbedStr::get_index(&line_scanner); i<Str::len(line); i++) {
+		wchar_t c = Str::get_at(line, i);
+		PUT_TO(code_block->stashed, c);
+	}
+	PUT_TO(code_block->stashed, '\n');
+	return;
+
+@ And next, white space! Where the content is entirely blank to the reader's eye.
+But that doesn't mean it should be discarded. There's an edge case (those happy
+words again) where something like this happens, where I'm typing underscores
+in place of spaces to make it more visible:
+= (text)
+	Here is some code:
+	
+	____You can see this is a code block,
+	____because of the indentation by 4 spaces.
+	_______
+	____Now this is part of the same code block, and although
+	____the whitespace line falling between the two looked blank,
+	____it actually contained more than 4 spaces of indentation,
+	____7 in fact, so three of those must be put into the block.
+=
+Those extra spaces are cached in |state->blank_matter_after_receiver|. They
+can't be added to the code block yet because, of course, we don't yet know
+when parsing the blank line whether the future lines will continue the code
+block or not. (In this example, they will, but we can't know that.)
+
+@<Line is whitespace@> =
+	int sp = state->container_sp-1;
+	if (state->markers[sp].continues_from_earlier_line) {
+		if (state->containers[sp]->down) {
+			for (markdown_item *ch = state->containers[sp]->down; ch; ch = ch->next)
+				if ((ch->next == NULL) && (ch->type != BLOCK_QUOTE_MIT))
+					MDBlockParser::mark_block_with_ws(state, ch);
+		} else {
+			MDBlockParser::mark_block_with_ws(state, state->containers[sp]);
+		}
+	}
+
+	if (indentation)
+		for (int i=content_index; i<Str::len(line); i++) {
+			wchar_t c = Str::get_at(line, i);
+			PUT_TO(state->blank_matter_after_receiver, c);
+		}
+	PUT_TO(state->blank_matter_after_receiver, '\n');
+	return;
+	
+@ "ATX" was a direct precursor to Markdown, by Aaron Swartz, who collaborated
+with John Gruber in its development: the term "ATX heading" preserves its
+memory. (And indeed his. Whereas Gruber became a successful commentator and
+Internet opinion-former through speech, Swartz's activism was more disruptive
+and direct, and he was to be hounded to death by an overzealous Federal
+prosecutor in 2013. He was just 26. But he deserves to be remembered for
+pioneering work on RSS, podcasting, Reddit, Creative Commons, and numerous
+other utopian Internet developments in that final decade when it was still
+a hacker's playground. As with David Foster Wallace, we shall never know what
+he might have gone on to give us.)
+
+@<Line is an ATX heading@> =
+	int hash_count = details[ATX_HEADING_MDINTERPRETATION];
+	markdown_item *headb = Markdown::new_item(HEADING_MIT);
+	Markdown::set_heading_level(headb, hash_count);
+	text_stream *H = Str::new();
+	headb->stashed = H;
+	for (int i=content_index+hash_count; i<Str::len(line); i++) {
+		wchar_t c = Str::get_at(line, i);
+		if ((Str::len(H) == 0) && ((c == ' ') || (c == '\t')))
+			continue;
+		PUT_TO(H, c);
+	}
+	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
+		Str::delete_last_character(H);
+	for (int i=Str::len(H)-1; i>=0; i--) {
+		if ((Str::get_at(H, i) == ' ') || (Str::get_at(H, i) == '\t')) {
+			Str::truncate(H, i); break; 
+		}
+		if (Str::get_at(H, i) != '#') break;
+		if (i == 0) Str::clear(H);
+	}
+	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
+		Str::delete_last_character(H);
+	MDBlockParser::turn_over_a_new_leaf(state, headb);
+	return;
+
+@ Next, a thematic break. Which couldn't be easier: there's no text to preserve.
+All thematic breaks are identical leaf blocks in the tree.
+
+@<Line is a thematic break@> =
+	markdown_item *themb = Markdown::new_item(THEMATIC_MIT);
+	MDBlockParser::turn_over_a_new_leaf(state, themb);
+	return;
+
+@ And now for a line which opens a verbatim HTML block. Something to look
+out for is that sometimes the opening line is also the closing line for such
+a block, so we need to test for that.
+
+@<Line opens HTML@> =
+	state->HTML_end_condition = details[HTML_MDINTERPRETATION];
+	if (tracing_Markdown_parser) {
+		PRINT("enter HTML with end_condition = %d\n", state->HTML_end_condition);
+	}
+	markdown_item *htmlb = Markdown::new_item(HTML_MIT);
+	htmlb->stashed = Str::new();
+	MDBlockParser::turn_over_a_new_leaf(state, htmlb);
+	MDBlockParser::impose_marker_limit(state, state->container_sp);
+	@<Add text of line to HTML block@>;
+	int ends = FALSE;
+	@<Test for HTML end condition@>;
+	if (ends) @<End the HTML block@>;
+	return;
+
 @<Add text of line to HTML block@> =
 	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
-	int from = initial_spacing;
+	int from = content_index;
 	if (state->temporary_marker_limit == 1) from = 0;
 	for (int i = from; i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
 	}
 	PUT_TO(latest->stashed, '\n');
-
-@<End the HTML block@> =
-	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
-	MDBlockParser::clear_HTML_data(state);
-	MDBlockParser::lift_marker_limit(state);
-	if (latest) MDBlockParser::close_block(state, latest);
 
 @<Test for HTML end condition@> =
 	if (MDBlockParser::latest_HTML_block(state) == NULL) {
@@ -830,80 +1426,14 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 		PRINT("test outcome: %s\n", (ends)?"yes":"no");
 	}
 
-@ "ATX" was the precursor to Markdown, by Aaron Swartz, and the term "ATX heading"
-preserves its memory. (And indeed his: hounded to death by an overzealous Federal
-prosecutor in 2013, who considered his Internet activism criminal, Swartz deserves
-to be remembered for pioneering work on RSS, which enabled podcasting, on Reddit
-and numerous other early Internet developments.)
-
-@<Line is an ATX heading@> =
-	int hash_count = details[ATX_HEADING_MDINTERPRETATION];
-	markdown_item *headb = Markdown::new_item(HEADING_MIT);
-	Markdown::set_heading_level(headb, hash_count);
-	text_stream *H = Str::new();
-	headb->stashed = H;
-	for (int i=initial_spacing+hash_count; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
-		if ((Str::len(H) == 0) && ((c == ' ') || (c == '\t')))
-			continue;
-		PUT_TO(H, c);
-	}
-	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
-		Str::delete_last_character(H);
-	for (int i=Str::len(H)-1; i>=0; i--) {
-		if ((Str::get_at(H, i) == ' ') || (Str::get_at(H, i) == '\t')) {
-			Str::truncate(H, i); break; 
-		}
-		if (Str::get_at(H, i) != '#') break;
-		if (i == 0) Str::clear(H);
-	}
-	while ((Str::get_last_char(H) == ' ') || (Str::get_last_char(H) == '\t'))
-		Str::delete_last_character(H);
-	MDBlockParser::turn_over_a_new_leaf(state, headb);
-	return;
-
-@<Line is a setext underline@> =
-	wchar_t c = Str::get_at(line, initial_spacing);
-	markdown_item *headb = MDBlockParser::latest_paragraph(state);
-	if (headb) {
-		MDBlockParser::remove_link_references(state, headb);
-		if (headb->type == EMPTY_MIT) @<Line forms piece of paragraph@>;
-		MDBlockParser::change_type(state, headb, HEADING_MIT);
-		if (c == '=') Markdown::set_heading_level(headb, 1);
-		else Markdown::set_heading_level(headb, 2);
-		Str::trim_white_space(headb->stashed);
-	}
-	return;
-
-@<Line is a thematic break@> =
-	markdown_item *themb = Markdown::new_item(THEMATIC_MIT);
-	MDBlockParser::turn_over_a_new_leaf(state, themb);
-	return;
-
-@<Line is an opening code fence@> =
-	int post_count = details[CODE_FENCE_OPEN_MDINTERPRETATION];
-	text_stream *info_string = Str::new();
-	MDBlockParser::can_interpret_as(state, line, indentation, initial_spacing, CODE_FENCE_OPEN_MDINTERPRETATION, info_string, NULL);
-	wchar_t c = Str::get_at(line, initial_spacing);
-	markdown_item *cb = Markdown::new_item(CODE_BLOCK_MIT);
-	cb->stashed = Str::new();
-	cb->info_string = info_string;
-	MDBlockParser::turn_over_a_new_leaf(state, cb);
-	state->fencing.left_margin = TabbedStr::get_position(&line_scanner);
-	state->fencing.material = c;
-	state->fencing.width = post_count;
-	state->fencing.fenced_code = cb;
-	MDBlockParser::make_receiver(state, cb);
-	MDBlockParser::impose_marker_limit(state, state->container_sp);
-	return;
-
-@<Line is a closing code fence@> =
-	@<Close the code fence@>;
-	return;
-
-@<Close the code fence@> =
-	MDBlockParser::clear_fencing_data(state);
+@<End the HTML block@> =
+	markdown_item *latest = MDBlockParser::latest_HTML_block(state);
+	MDBlockParser::clear_HTML_data(state);
 	MDBlockParser::lift_marker_limit(state);
+	if (latest) MDBlockParser::close_block(state, latest);
+
+@ And now for a continuation of an existing indented (but not fenced) code
+block:
 
 @<Line is part of an indented code block@> =
 	markdown_item *latest = MDBlockParser::latest_code_block(state);
@@ -928,40 +1458,28 @@ and numerous other early Internet developments.)
 	PUT_TO(latest->stashed, '\n');
 	return;
 
-@<Line is part of a fenced code block@> =
-	markdown_item *code_block = state->fencing.fenced_code;
-	if ((state->fencing.left_margin >= 0) &&
-		(state->fencing.left_margin < TabbedStr::get_position(&line_scanner)))
-		TabbedStr::seek(&line_scanner, state->fencing.left_margin);
-	while (TabbedStr::at_whole_character(&line_scanner) == FALSE) {
-		PUT_TO(code_block->stashed, ' ');
-		TabbedStr::advance(&line_scanner);
-	}
-	for (int i = TabbedStr::get_index(&line_scanner); i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
-		PUT_TO(code_block->stashed, c);
-	}
-	PUT_TO(code_block->stashed, '\n');
+@ There's just one interpretation left to deal with, the lowest-priority
+but a very common outcome:
+
+@<Line opens a new paragraph@> =
+	markdown_item *parb = Markdown::new_item(PARAGRAPH_MIT);
+	parb->stashed = Str::new();
+	MDBlockParser::turn_over_a_new_leaf(state, parb);
+	for (int i=content_index; i<Str::len(line); i++)
+		PUT_TO(parb->stashed, Str::get_at(line, i));
 	return;
 
-@<Line forms piece of paragraph@> =
-	markdown_item *parb = MDBlockParser::latest_paragraph(state);
-	if ((parb) && (parb->type == PARAGRAPH_MIT)) {
-		WRITE_TO(parb->stashed, "\n");
-		for (int i = initial_spacing; i<Str::len(line); i++) {
-			wchar_t c = Str::get_at(line, i);
-			PUT_TO(parb->stashed, c);
-		}
-	} else {
-		markdown_item *parb = Markdown::new_item(PARAGRAPH_MIT);
-		parb->stashed = Str::new();
-		MDBlockParser::turn_over_a_new_leaf(state, parb);
-		for (int i=initial_spacing; i<Str::len(line); i++)
-			PUT_TO(parb->stashed, Str::get_at(line, i));
-	}
-	return;
+@h Finding interpretations.
+That finally completes the main "process a line" function, but we delegated
+a whole lot of syntactic parsing to work out which interpretations for a line
+are tenable. So, here goes.
 
-@
+The following always says no to |LAZY_CONTINUATION_MDINTERPRETATION| because
+it's not in a position to know: that decision depends on all the other
+decisions, and on the situation at large as well. See above for where it is
+actually decided.
+
+@d NO_MDINTERPRETATIONS 12 /* well, okay, so there are actually 11, but... */
 
 @e WHITESPACE_MDINTERPRETATION from 1
 @e THEMATIC_MDINTERPRETATION
@@ -972,170 +1490,244 @@ and numerous other early Internet developments.)
 @e CODE_FENCE_CLOSE_MDINTERPRETATION
 @e CODE_BLOCK_MDINTERPRETATION
 @e FENCED_CODE_BLOCK_MDINTERPRETATION
-@e LAZY_CONTINUATION_MDINTERPRETATION
 @e HTML_CONTINUATION_MDINTERPRETATION
+@e LAZY_CONTINUATION_MDINTERPRETATION
 
 =
 int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
-	int indentation, int initial_spacing, int which, text_stream *text_details, int *int_detail) {
+	int indentation, int content_index, int which, text_stream *text_details, int *int_detail) {
 	switch (which) {
-		case WHITESPACE_MDINTERPRETATION:
-			for (int i=initial_spacing; i<Str::len(line); i++)
-				if ((Str::get_at(line, i) != ' ') && (Str::get_at(line, i) != '\t'))
-					return FALSE;
-			return TRUE;
-		case THEMATIC_MDINTERPRETATION:
-			if (indentation > 0) return FALSE;
-			return MDBlockParser::thematic_marker(line, initial_spacing);
-		case ATX_HEADING_MDINTERPRETATION: {
-			if (indentation > 0) return FALSE;
-			int hash_count = 0;
-			while (Str::get_at(line, initial_spacing+hash_count) == '#') hash_count++;
-			if ((hash_count >= 1) && (hash_count <= 6) &&
-				((Str::get_at(line, initial_spacing+hash_count) == ' ') ||
-					(Str::get_at(line, initial_spacing+hash_count) == '\t') ||
-					(Str::get_at(line, initial_spacing+hash_count) == 0))) {
-				if (int_detail) *int_detail = hash_count;
-				return TRUE;
-			}
-			return FALSE;
-		}
-		case SETEXT_UNDERLINE_MDINTERPRETATION: {
-			if (MDBlockParser::latest_paragraph(state) == NULL) return FALSE;
-			if (indentation > 0) return FALSE;
-			wchar_t c = Str::get_at(line, initial_spacing);
-			if ((c == '-') || (c == '=')) {
-				int ornament_count = 1, extraneous = 0;
-				int j=initial_spacing+1;
-				for (; j<Str::len(line); j++) {
-					wchar_t d = Str::get_at(line, j);
-					if (d == c) ornament_count++;
-					else break;
-				}
-				for (; j<Str::len(line); j++) {
-					wchar_t d = Str::get_at(line, j);
-					if ((d != ' ') && (d != '\t')) extraneous++;
-				}
-				if ((ornament_count > 0) && (extraneous == 0)) return TRUE;
-			}
-			return FALSE;
-		}
+		case WHITESPACE_MDINTERPRETATION:        @<Is WHITESPACE_MDINTERPRETATION tenable?@>;
+		case THEMATIC_MDINTERPRETATION:          @<Is THEMATIC_MDINTERPRETATION tenable?@>;
+		case ATX_HEADING_MDINTERPRETATION:       @<Is ATX_HEADING_MDINTERPRETATION tenable?@>;
+		case SETEXT_UNDERLINE_MDINTERPRETATION:  @<Is SETEXT_UNDERLINE_MDINTERPRETATION tenable?@>;
 		case CODE_FENCE_OPEN_MDINTERPRETATION:
-		case CODE_FENCE_CLOSE_MDINTERPRETATION: {
-			if (indentation > 0) return FALSE;
-			if ((which == CODE_FENCE_OPEN_MDINTERPRETATION) && (state->fencing.material != 0)) return FALSE;
-			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material == 0)) return FALSE;
-			text_stream *info_string = text_details;
-			wchar_t c = Str::get_at(line, initial_spacing);
-			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material != c)) return FALSE;
-			if ((c == '`') || (c == '~')) {
-				int post_count = 0;
-				int j = initial_spacing;
-				for (; j<Str::len(line); j++) {
-					wchar_t d = Str::get_at(line, j);
-					if (d == c) post_count++;
-					else break;
-				}
-				if (post_count >= 3) {
-					if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (post_count < state->fencing.width)) return FALSE;
-					int ambiguous = FALSE, count = 0, escaped = FALSE;
-					for (; j<Str::len(line); j++) {
-						wchar_t d = Str::get_at(line, j);
-						if ((escaped == FALSE) && (d == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(line, j+1))))
-							escaped = TRUE;
-						else {
-							if ((escaped == FALSE) && (d == '`') && (c == d)) ambiguous = TRUE;
-							PUT_TO(info_string, d); count++;
-							escaped = FALSE;
-						}
-					}
-					Str::trim_white_space(info_string);
-					if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (count > 0)) return FALSE;
-					if (ambiguous == FALSE) {
-						if (int_detail) *int_detail = post_count;
-						return TRUE;
-					}
-				}
-			}
-			return FALSE;
-		}
-		case HTML_MDINTERPRETATION:
-			if (indentation > 0) return FALSE;
-			@<Parse as HTML start line@>;
-		case CODE_BLOCK_MDINTERPRETATION:
-			if (MDBlockParser::latest_paragraph(state)) return FALSE;
-			if (indentation > 0) return TRUE;
-			return FALSE;
-		case FENCED_CODE_BLOCK_MDINTERPRETATION:
-			if (state->fencing.material != 0) return TRUE;
-			return FALSE;
-		case LAZY_CONTINUATION_MDINTERPRETATION:
-			return FALSE;
-		case HTML_CONTINUATION_MDINTERPRETATION:
-			if ((MDBlockParser::latest_HTML_block(state)) &&
-				(state->HTML_end_condition != 0)) return TRUE;
-			return FALSE;
+		case CODE_FENCE_CLOSE_MDINTERPRETATION:  @<Is either code fence interpretation tenable?@>;
+		case HTML_MDINTERPRETATION:              @<Is HTML_MDINTERPRETATION tenable?@>;
+		case CODE_BLOCK_MDINTERPRETATION:        @<Is CODE_BLOCK_MDINTERPRETATION tenable?@>;
+		case FENCED_CODE_BLOCK_MDINTERPRETATION: @<Is FENCED_CODE_BLOCK_MDINTERPRETATION tenable?@>;
+		case HTML_CONTINUATION_MDINTERPRETATION: @<Is HTML_CONTINUATION_MDINTERPRETATION tenable?@>;
+		case LAZY_CONTINUATION_MDINTERPRETATION: return FALSE;
 		default: return FALSE;
 	}
 }
 
-@ There are, appallingly, seven possible pairs of start/end condition for
-HTML blocks.
+@<Is WHITESPACE_MDINTERPRETATION tenable?@> =
+	for (int i=content_index; i<Str::len(line); i++)
+		if ((Str::get_at(line, i) != ' ') && (Str::get_at(line, i) != '\t'))
+			return FALSE;
+	return TRUE;
 
-@e PRE_MDHTMLC from 1
-@e COMMENT_MDHTMLC
-@e QUERY_MDHTMLC
-@e PLING_MDHTMLC
-@e CDATA_MDHTMLC
-@e MISCSINGLE_MDHTMLC
-@e MISCPAIR_MDHTMLC
+@ Beware: indent a thematic marker like |-  -  -| far enough, and it becomes
+part of a code block, not a thematic break at all.
 
-@<Parse as HTML start line@> =
-	wchar_t c = Str::get_at(line, initial_spacing);
+@<Is THEMATIC_MDINTERPRETATION tenable?@> =
+	if (indentation) return FALSE;
+	return MDBlockParser::thematic_marker(line, content_index);
+
+@ One to six |#| characters, followed by white space or the end of the line.
+Note that there can be junk in the form of further |#|s at the far end,
+but removing that junk is not our business here.
+
+@<Is ATX_HEADING_MDINTERPRETATION tenable?@> =
+	if (indentation) return FALSE;
+	int hash_count = 0;
+	while (Str::get_at(line, content_index+hash_count) == '#') hash_count++;
+	if ((hash_count >= 1) && (hash_count <= 6) &&
+		((Str::get_at(line, content_index+hash_count) == ' ') ||
+			(Str::get_at(line, content_index+hash_count) == '\t') ||
+			(Str::get_at(line, content_index+hash_count) == 0))) {
+		if (int_detail) *int_detail = hash_count;
+		return TRUE;
+	}
+	return FALSE;
+
+@ Provided we're following a paragraph, any sequence of 1 or more identical
+|-| or |=| characters followed by white space to the end of the line is a
+setext underline.
+
+@<Is SETEXT_UNDERLINE_MDINTERPRETATION tenable?@> =
+	if (MDBlockParser::latest_paragraph(state) == NULL) return FALSE;
+	if (indentation) return FALSE;
+	wchar_t c = Str::get_at(line, content_index);
+	if ((c == '-') || (c == '=')) {
+		int ornament_count = 1, extraneous = 0;
+		int j=content_index+1;
+		for (; j<Str::len(line); j++) {
+			wchar_t d = Str::get_at(line, j);
+			if (d == c) ornament_count++;
+			else break;
+		}
+		for (; j<Str::len(line); j++) {
+			wchar_t d = Str::get_at(line, j);
+			if ((d != ' ') && (d != '\t')) extraneous++;
+		}
+		if ((ornament_count > 0) && (extraneous == 0)) return TRUE;
+	}
+	return FALSE;
+
+@ A code fence is a run of three or more backticks or three or more tildes,
+except that if it's to be a closing fence then it only works if it matches the
+opening fence, using at least as many of the same character. Thus:
+= (text)
+	---
+	~~~~
+	~~~~
+	--
+	-----
+=
+is in fact a single fenced code block. Once line 1 has been accepted as being
+a |CODE_FENCE_OPEN_MDINTERPRETATION| case, the subsequent lines are not
+the closing fence because they are too short or of the wrong kind, until we
+reach line 5.
+
+@<Is either code fence interpretation tenable?@> =
+	if (indentation) return FALSE;
+	if ((which == CODE_FENCE_OPEN_MDINTERPRETATION) && (state->fencing.material != 0))
+		return FALSE;
+	if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material == 0))
+		return FALSE;
+	text_stream *info_string = text_details;
+	wchar_t c = Str::get_at(line, content_index);
+	if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material != c))
+		return FALSE;
+	if ((c == '`') || (c == '~')) {
+		int post_count = 0;
+		int j = content_index;
+		for (; j<Str::len(line); j++) {
+			wchar_t d = Str::get_at(line, j);
+			if (d == c) post_count++;
+			else break;
+		}
+		if (post_count >= 3) {
+			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) &&
+				(post_count < state->fencing.width)) return FALSE;
+			@<Looks good so far, but what about the info string?@>;
+		}
+	}
+	return FALSE;
+
+@ We need to deal with backslashes used as escape characters in the info
+string, which is an optional run of characters following the opening fence
+on the same line. Note that a code fence is illegal if unescaped backticks
+are used in it, where the backtick is the fencing material. In such a case,
+it is not enough to reject the info string, we must reject the interpretation
+of the line as |CODE_FENCE_OPEN_MDINTERPRETATION|.
+
+@<Looks good so far, but what about the info string?@> =
+	int ambiguous = FALSE, count = 0, escaped = FALSE;
+	for (; j<Str::len(line); j++) {
+		wchar_t d = Str::get_at(line, j);
+		if ((escaped == FALSE) && (d == '\\') &&
+			(Characters::is_ASCII_punctuation(Str::get_at(line, j+1))))
+			escaped = TRUE;
+		else {
+			if ((escaped == FALSE) && (d == '`') && (c == d)) ambiguous = TRUE;
+			PUT_TO(info_string, d); count++;
+			escaped = FALSE;
+		}
+	}
+	Str::trim_white_space(info_string);
+	if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (count > 0)) return FALSE;
+	if (ambiguous == FALSE) {
+		if (int_detail) *int_detail = post_count;
+		return TRUE;
+	}
+
+@ HTML blocks are runs of verbatim copy found inside the Markdown file and
+passed straight through. This sounds easy, but the trick is to decide what
+is, and isn't, HTML. The doctrine is that HTML begins on the first line which
+meets a "start condition" and ends on the next which meets its corresponding
+"end condition" (and that may be the same line, as noted above).
+
+Simple enough? Infuriatingly, there are seven different pairs of start/end
+condition for HTML blocks, referred to in CommonMark as types. They must not
+quite be tested in their numerical order, since type 4 implies type 5, so
+5 must be checked before 4.
+
+The one piece of good news is that they all start with a |<| character.
+
+@e PRE_MDHTMLC from 1   /* CommonMark type 1 */
+@e COMMENT_MDHTMLC      /* CommonMark type 2 */
+@e QUERY_MDHTMLC        /* CommonMark type 3 */
+@e PLING_MDHTMLC        /* CommonMark type 4 */
+@e CDATA_MDHTMLC        /* CommonMark type 5 */
+@e MISCSINGLE_MDHTMLC   /* CommonMark type 6 */
+@e MISCPAIR_MDHTMLC     /* CommonMark type 7 */
+
+@<Is HTML_MDINTERPRETATION tenable?@> =
+	if (indentation) return FALSE;
+	wchar_t c = Str::get_at(line, content_index);
 	if (c != '<') return FALSE;
 
-	int cond = 0;
+	int condition_type = 0; /* not a valid condition */
 	
-	int i = initial_spacing+1;
+	int i = content_index+1; /* i.e., the index after the |<| */
 	TEMPORARY_TEXT(tag)
 	for (; i<Str::len(line); i++) {
 		wchar_t c = Str::get_at(line, i);
 		if ((c == ' ') || (c == '\t') || (c == '>')) break;
 		PUT_TO(tag, c);
 	}
+	
+	@<Is a PRE_MDHTMLC type HTML opening tenable?@>;
+	@<Is a COMMENT_MDHTMLC type HTML opening tenable?@>;
+	@<Is a QUERY_MDHTMLC type HTML opening tenable?@>;
+	@<Is a CDATA_MDHTMLC type HTML opening tenable?@>;	
+	@<Is a PLING_MDHTMLC type HTML opening tenable?@>;
+	
+	if (Str::get_first_char(tag) == '/') Str::delete_first_character(tag);
+	for (int i=0; i<Str::len(tag); i++) {
+		if (Str::get_at(tag, i) == '>') {
+			Str::put_at(tag, i, 0); break;
+		}
+		if ((Str::get_at(tag, i) == '/') && (Str::get_at(tag, i+1) == '>')) {
+			Str::put_at(tag, i, 0); break;
+		}
+	}
+
+	@<Is a MISCSINGLE_MDHTMLC type HTML opening tenable?@>;
+	@<Is a MISCPAIR_MDHTMLC type HTML opening tenable?@>;
+
+	HTML_Start_Found: ;
+
+	DISCARD_TEXT(tag)
+
+	if (condition_type != 0) {		
+		if (int_detail) *int_detail = condition_type;
+		return TRUE;
+	}
+	return FALSE;
+
+@<Is a PRE_MDHTMLC type HTML opening tenable?@> =	
 	if ((Str::eq_insensitive(tag, I"pre")) ||
 		(Str::eq_insensitive(tag, I"script")) ||
 		(Str::eq_insensitive(tag, I"style")) ||
 		(Str::eq_insensitive(tag, I"textarea"))) {
-		cond = PRE_MDHTMLC; goto HTML_Start_Found;
+		condition_type = PRE_MDHTMLC; goto HTML_Start_Found;
 	}
-	
-	if (Str::begins_with(tag, I"!--")) {
-		cond = COMMENT_MDHTMLC; goto HTML_Start_Found;
-	}
-	
-	
-	if (Str::begins_with(tag, I"?")) {
-		cond = QUERY_MDHTMLC; goto HTML_Start_Found;
-	}
-	
-	if (Str::begins_with(tag, I"![CDATA[")) {
-		cond = CDATA_MDHTMLC; goto HTML_Start_Found;
-	}
-	
-	
-	if (Str::begins_with(tag, I"!")) {
-		cond = PLING_MDHTMLC; goto HTML_Start_Found;
-	}
-	
 
-	
-	if (Str::get_first_char(tag) == '/') Str::delete_first_character(tag);
-	for (int i=0; i<Str::len(tag); i++) {
-		if (Str::get_at(tag, i) == '>') { Str::put_at(tag, i, 0); break; }
-		if ((Str::get_at(tag, i) == '/') && (Str::get_at(tag, i+1) == '>')) { Str::put_at(tag, i, 0); break; }
+@<Is a COMMENT_MDHTMLC type HTML opening tenable?@> =	
+	if (Str::begins_with(tag, I"!--")) {
+		condition_type = COMMENT_MDHTMLC; goto HTML_Start_Found;
 	}
-	
+
+@<Is a QUERY_MDHTMLC type HTML opening tenable?@> =	
+	if (Str::begins_with(tag, I"?")) {
+		condition_type = QUERY_MDHTMLC; goto HTML_Start_Found;
+	}
+
+@<Is a CDATA_MDHTMLC type HTML opening tenable?@> =
+	if (Str::begins_with(tag, I"![CDATA[")) {
+		condition_type = CDATA_MDHTMLC; goto HTML_Start_Found;
+	}
+
+@<Is a PLING_MDHTMLC type HTML opening tenable?@> =
+	if (Str::begins_with(tag, I"!")) {
+		condition_type = PLING_MDHTMLC; goto HTML_Start_Found;
+	}
+
+@<Is a MISCSINGLE_MDHTMLC type HTML opening tenable?@> =	
 	if ((Str::eq_insensitive(tag, I"address")) ||
 		(Str::eq_insensitive(tag, I"article")) ||
 		(Str::eq_insensitive(tag, I"aside")) ||
@@ -1198,163 +1790,109 @@ HTML blocks.
 		(Str::eq_insensitive(tag, I"tr")) ||
 		(Str::eq_insensitive(tag, I"track")) ||
 		(Str::eq_insensitive(tag, I"ul"))) {
-		cond = MISCSINGLE_MDHTMLC; goto HTML_Start_Found;
+		condition_type = MISCSINGLE_MDHTMLC; goto HTML_Start_Found;
 	}
-	
-	
-	if (cond == 0) {
-		Str::clear(tag);
-		WRITE_TO(tag, "%S", line);
-		Str::trim_white_space(tag);
-		if (Str::get_first_char(tag) == '<') { Str::delete_first_character(tag); Str::trim_white_space(tag); }
-		int valid = TRUE, closing = FALSE;
-		if (Str::get_first_char(tag) == '/') { closing = TRUE; Str::delete_first_character(tag); }
-		TEMPORARY_TEXT(tag_name)
-		int i = 0;
-		for (; i<Str::len(tag); i++) {
+
+@ And now the really painful one. See CommonMark, but basically this is
+where we have what looks like a tag and is not one that would cause |PRE_MDHTMLC|,
+but can also be followed by HTML attributes and values: for example,
+|<img src="this">| would be matched by the following.
+
+@<Is a MISCPAIR_MDHTMLC type HTML opening tenable?@> =
+	Str::clear(tag);
+	WRITE_TO(tag, "%S", line);
+	Str::trim_white_space(tag);
+	if (Str::get_first_char(tag) == '<') { Str::delete_first_character(tag); Str::trim_white_space(tag); }
+	int valid = TRUE, closing = FALSE;
+	if (Str::get_first_char(tag) == '/') { closing = TRUE; Str::delete_first_character(tag); }
+	TEMPORARY_TEXT(tag_name)
+	int i = 0;
+	for (; i<Str::len(tag); i++) {
+		wchar_t c = Str::get_at(tag, i);
+		if ((Characters::is_ASCII_letter(c)) ||
+			((i > 0) && ((Characters::is_ASCII_digit(c)) || (c == '-'))))
+			PUT_TO(tag_name, c);
+		else break;
+	}
+	if (Str::len(tag_name) == 0) valid = FALSE;
+	if ((Str::eq_insensitive(tag_name, I"pre")) ||
+		(Str::eq_insensitive(tag_name, I"script")) ||
+		(Str::eq_insensitive(tag_name, I"style")) ||
+		(Str::eq_insensitive(tag_name, I"textarea"))) valid = FALSE;
+	DISCARD_TEXT(tag_name)
+	if (closing == FALSE) {
+		while (TRUE) {
 			wchar_t c = Str::get_at(tag, i);
-			if ((Characters::is_ASCII_letter(c)) ||
-				((i > 0) && ((Characters::is_ASCII_digit(c)) || (c == '-'))))
-				PUT_TO(tag_name, c);
-			else break;
-		}
-		if (Str::len(tag_name) == 0) valid = FALSE;
-		if ((Str::eq_insensitive(tag_name, I"pre")) ||
-			(Str::eq_insensitive(tag_name, I"script")) ||
-			(Str::eq_insensitive(tag_name, I"style")) ||
-			(Str::eq_insensitive(tag_name, I"textarea"))) valid = FALSE;
-		DISCARD_TEXT(tag_name)
-		if (closing == FALSE) {
-			while (TRUE) {
-				wchar_t c = Str::get_at(tag, i);
-				if ((c != ' ') && (c != '\t')) break;
-				i = MDBlockParser::advance_past_spacing(tag, i);
-				c = Str::get_at(tag, i);
-				if ((c == '_') || (c == ':') || (Characters::is_ASCII_letter(c))) {
+			if ((c != ' ') && (c != '\t')) break;
+			i = MDBlockParser::advance_past_spacing(tag, i);
+			c = Str::get_at(tag, i);
+			if ((c == '_') || (c == ':') || (Characters::is_ASCII_letter(c))) {
+				i++; c = Str::get_at(tag, i);
+				while ((c == '_') || (c == ':') || (c == '.') || (c == '-') ||
+					(Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c))) {
 					i++; c = Str::get_at(tag, i);
-					while ((c == '_') || (c == ':') || (c == '.') || (c == '-') ||
-						(Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c))) {
+				}
+				i = MDBlockParser::advance_past_spacing(tag, i);
+				if (Str::get_at(tag, i) == '=') {
+					i++;
+					i = MDBlockParser::advance_past_spacing(tag, i);
+					wchar_t c = Str::get_at(tag, i);
+					if (c == '\'') {
 						i++; c = Str::get_at(tag, i);
+						while ((c) && (c != '\'')) {
+							i++; c = Str::get_at(tag, i);
+						}
+						if (c == 0) valid = FALSE;
+						i++;
+					} else if (c == '"') {
+						i++; c = Str::get_at(tag, i);
+						while ((c) && (c != '"')) {
+							i++; c = Str::get_at(tag, i);
+						}
+						if (c == 0) valid = FALSE;
+						i++;
+					} else {
+						int nc = 0;
+						while ((c != 0) && (c != ' ') && (c != '\t') && (c != '\n') && (c != '"') &&
+							(c != '\'') && (c != '=') && (c != '<') && (c != '>') && (c != '`')) {
+							nc++; i++; c = Str::get_at(tag, i);
+						}
+						if (nc == 0) valid = FALSE;
+						i++;
 					}
 					i = MDBlockParser::advance_past_spacing(tag, i);
-					if (Str::get_at(tag, i) == '=') {
-						i++;
-						i = MDBlockParser::advance_past_spacing(tag, i);
-						wchar_t c = Str::get_at(tag, i);
-						if (c == '\'') {
-							i++; c = Str::get_at(tag, i);
-							while ((c) && (c != '\'')) {
-								i++; c = Str::get_at(tag, i);
-							}
-							if (c == 0) valid = FALSE;
-							i++;
-						} else if (c == '"') {
-							i++; c = Str::get_at(tag, i);
-							while ((c) && (c != '"')) {
-								i++; c = Str::get_at(tag, i);
-							}
-							if (c == 0) valid = FALSE;
-							i++;
-						} else {
-							int nc = 0;
-							while ((c != 0) && (c != ' ') && (c != '\t') && (c != '\n') && (c != '"') &&
-								(c != '\'') && (c != '=') && (c != '<') && (c != '>') && (c != '`')) {
-								nc++; i++; c = Str::get_at(tag, i);
-							}
-							if (nc == 0) valid = FALSE;
-							i++;
-						}
-						i = MDBlockParser::advance_past_spacing(tag, i);
-					}
-				} else break;
-			}
-		}
-		if ((closing == FALSE) && (Str::get_at(tag, i) == '/')) i++;
-		if (Str::get_at(tag, i) != '>') valid = FALSE; i++;
-		i = MDBlockParser::advance_past_spacing(tag, i);
-		if (Str::get_at(tag, i) != 0) valid = FALSE;
-		if (valid) {
-			cond = MISCPAIR_MDHTMLC; goto HTML_Start_Found;
+				}
+			} else break;
 		}
 	}
-
-	if (cond != 0) {
-		HTML_Start_Found:
-		if (int_detail) *int_detail = cond;
-		return TRUE;
+	if ((closing == FALSE) && (Str::get_at(tag, i) == '/')) i++;
+	if (Str::get_at(tag, i) != '>') valid = FALSE; i++;
+	i = MDBlockParser::advance_past_spacing(tag, i);
+	if (Str::get_at(tag, i) != 0) valid = FALSE;
+	if (valid) {
+		condition_type = MISCPAIR_MDHTMLC; goto HTML_Start_Found;
 	}
 
+@ After which, the rest are anticlimactic:
+
+@<Is CODE_BLOCK_MDINTERPRETATION tenable?@> =
+	if (MDBlockParser::latest_paragraph(state)) return FALSE;
+	if (indentation) return TRUE;
 	return FALSE;
 
-@
+@<Is FENCED_CODE_BLOCK_MDINTERPRETATION tenable?@> =
+	if (state->fencing.material != 0) return TRUE;
+	return FALSE;
+
+@<Is HTML_CONTINUATION_MDINTERPRETATION tenable?@> =
+	if ((MDBlockParser::latest_HTML_block(state)) &&
+		(state->HTML_end_condition != 0)) return TRUE;
+	return FALSE;
+
+@ The function above makes use of the following, where we skip white space provided
+we do not skip an entire visually blank line.
 
 =
-int MDBlockParser::container_will_change(md_doc_state *state) {
-	if (state->marker_sp > state->container_sp) return TRUE;
-
-	for (int sp = 1; sp<state->marker_sp; sp++) {
-		if (state->markers[sp].item_type != state->containers[sp]->type) { /* PRINT("X%d\n", sp); */ return TRUE; }
-		if (state->markers[sp].continues_from_earlier_line == FALSE) {
-			if (state->containers[sp]->type != BLOCK_QUOTE_MIT) {
-				 /* PRINT("Y%d\n", sp); */ return TRUE;
-			}
-		}
-	}
-
-	if (state->marker_sp < state->container_sp) {
-		if (state->marker_sp > 1) {
-			int p_top = state->markers[state->marker_sp-1].item_type;
-			int s_top = state->containers[state->container_sp-1]->type;
-			if ((p_top == s_top) && (p_top != BLOCK_QUOTE_MIT)) return TRUE;
-		}
-	}
-
-	return FALSE;
-}
-
-void MDBlockParser::establish_context(md_doc_state *state) {
-	int wipe_down_to_pos = state->marker_sp;
-	for (int sp = 1; sp<state->marker_sp; sp++) {
-		if (sp == state->container_sp) { wipe_down_to_pos = sp; break; }
-		int p_type = state->markers[sp].item_type;
-		int s_type = state->containers[sp]->type;
-		if (p_type != s_type) { wipe_down_to_pos = sp; break; }
-		if ((p_type != BLOCK_QUOTE_MIT) && (state->markers[sp].continues_from_earlier_line == FALSE)) { wipe_down_to_pos = sp; break; }
-	}
-
-	if (tracing_Markdown_parser) {
-		PRINT("psp = %d, sp = %d:", state->marker_sp, state->container_sp);
-		if (1 == wipe_down_to_pos) PRINT(" WIPE");
-		for (int i=1; (i<state->container_sp) || (i<state->marker_sp); i++) {
-			PRINT(" p:%d s:%d;", (i<state->marker_sp)?state->markers[i].item_type:0,
-				(i<state->container_sp)?(state->containers[i]->type):0);
-			if (i+1 == wipe_down_to_pos) PRINT(" WIPE");
-		}
-		PRINT("\n");
-	}
-
-	for (int sp = state->container_sp-1; sp >= wipe_down_to_pos; sp--) {
-		MDBlockParser::close_block(state, state->containers[sp]);
-		state->containers[sp] = NULL;
-	}
-
-	for (int sp = wipe_down_to_pos; sp<state->marker_sp; sp++) {
-		markdown_item *newbq = Markdown::new_item(state->markers[sp].item_type);
-		Markdown::add_to(newbq, state->containers[sp-1]);
-		MDBlockParser::open_block(state, newbq);
-		state->containers[sp] = newbq;
-		Markdown::set_item_number_and_flavour(newbq, state->markers[sp].list_item_value, state->markers[sp].list_item_flavour);
-	}
-	state->container_sp = state->marker_sp;
-	if (tracing_Markdown_parser) {
-		PRINT("Container stack:");
-		for (int sp = 0; sp<state->container_sp; sp++) {
-			PRINT(" -> "); Markdown::debug_item(STDOUT, state->containers[sp]);
-		}
-		PRINT("\n");
-	}
-}
-
 int MDBlockParser::advance_past_spacing(text_stream *tag, int i) {
 	int newlines = 0;
 	wchar_t c = Str::get_at(tag, i);
@@ -1367,32 +1905,20 @@ int MDBlockParser::advance_past_spacing(text_stream *tag, int i) {
 	return i;
 }
 
-@
+@h Parsing link references.
+When a paragraph contains link references, that will be at the beginning,
+and they need to be excised. Since this can in principle leave the paragraph
+entirely denuded of text, we may need to convert it to an |EMPTY_MIT| node.
 
 =
-
-int MDBlockParser::can_remove_link_references(md_doc_state *state, markdown_item *at) {
-	return MDBlockParser::remove_link_references_inner(state, at, FALSE);
-}
-
-void MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at) {
-	MDBlockParser::remove_link_references_inner(state, at, TRUE);
-}
-
-int MDBlockParser::remove_link_references_inner(md_doc_state *state, markdown_item *at, int go_ahead) {
-	int original_type = at->type;
-	if (original_type == PARAGRAPH_MIT) {
+int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at) {
+	if (at->type == PARAGRAPH_MIT) {
 		int matched_to = 0;
 		while (matched_to >= 0) {
 			matched_to = -1;
-			TEMPORARY_TEXT(X)
-			Str::clear(X);
-			for (int j=0; j<Str::len(at->stashed); j++)
-				PUT_TO(X, Str::get_at(at->stashed, j));
-			@<Try this one@>;
-			DISCARD_TEXT(X)
+			text_stream *X = at->stashed;
+			@<Try to match a single link reference@>;
 			if (matched_to > 0) {
-				if (go_ahead == FALSE) return TRUE;
 				Str::delete_n_characters(at->stashed, matched_to);
 				if (Str::len(at->stashed) == 0) {
 					MDBlockParser::change_type(state, at, EMPTY_MIT);
@@ -1404,23 +1930,14 @@ int MDBlockParser::remove_link_references_inner(md_doc_state *state, markdown_it
 	return FALSE;
 }
 
-@<Try this one@> =
+@<Try to match a single link reference@> =
 	int i = 0;
 	while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
 	if (Str::get_at(X, i) == '[') {
 		i++;
 		int count = 0, ws_count = 0;
 		TEMPORARY_TEXT(label)
-		for (; i<Str::len(X); i++) {
-			wchar_t c = Str::get_at(X, i);
-			if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
-				i++; c = Str::get_at(X, i);
-			} else if (c == ']') { i++; break; }
-			else if (c == '[') { count = 0; break; }
-			if ((c == ' ') || (c == '\t') || (c == '\n')) ws_count++;
-			PUT_TO(label, c);
-			count++;
-		}
+		@<Find the label text@>;
 		if ((Str::get_at(X, i) == ':') && (count <= 999) && (ws_count < count)) {
 			i++;
 			i = MDBlockParser::advance_past_spacing(X, i);
@@ -1429,59 +1946,10 @@ int MDBlockParser::remove_link_references_inner(md_doc_state *state, markdown_it
 			
 			TEMPORARY_TEXT(destination)
 			TEMPORARY_TEXT(title)
-			wchar_t c = Str::get_at(X, i);
-			if (c == '<') {
-				i++; c = Str::get_at(X, i);
-				while ((c != 0) && (c != '\n')) {
-					if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
-						i++; c = Str::get_at(X, i);
-					} else if (c == '>') break;
-					PUT_TO(destination, c);
-					i++; c = Str::get_at(X, i);
-				}
-				if (Str::get_at(X, i) == '>') i++; else valid = FALSE;
-			} else if ((c != 0) && (Characters::is_control_character(c) == FALSE)) {
-				int bl = 0;
-				while ((c != 0) && (c != ' ') && (Characters::is_control_character(c) == FALSE)) {
-					if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
-						i++; c = Str::get_at(X, i);
-					} else if (c == '(') bl++;
-					else if (c == ')') { bl--; if (bl < 0) valid = FALSE; }
-					PUT_TO(destination, c);
-					i++; c = Str::get_at(X, i);
-				}
-				if (bl != 0) valid = FALSE;
-			} else valid = FALSE;
-
-			ws_count = i;
-			while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
-			int stop_here = -1;
-			if ((valid) && (Str::get_at(X, i) == '\n')) stop_here = i;
-			i = MDBlockParser::advance_past_spacing(X, i);
-			ws_count = i - ws_count;
-			wchar_t quot = 0;
-			if (Str::get_at(X, i) == '"') quot = '"';
-			if (Str::get_at(X, i) == '\'') quot = '\'';
-			if ((ws_count > 0) && (quot)) {
-				for (i++; i<Str::len(X); i++) {
-					wchar_t c = Str::get_at(X, i);
-					if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
-						i++; c = Str::get_at(X, i);
-					} else if (c == quot) break;
-					PUT_TO(title, c);
-				}
-				if (Str::get_at(X, i) == quot) i++; else valid = FALSE;
-			}
-			while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
-			if ((Str::get_at(X, i) != 0) && (Str::get_at(X, i) != '\n')) valid = FALSE;
-			i++;
-			
-			if ((valid == FALSE) && (stop_here >= 0)) { valid = TRUE; i = stop_here+1; }
+			@<Find the destination and title texts@>;
 
 			if (valid) {
-				if (go_ahead) {
-					Markdown::create(state->link_references, label, destination, title);
-				}
+				Markdown::create(state->link_references, label, destination, title);
 				matched_to = i;
 			}
 			DISCARD_TEXT(destination)
@@ -1490,7 +1958,74 @@ int MDBlockParser::remove_link_references_inner(md_doc_state *state, markdown_it
 		DISCARD_TEXT(label)
 	}
 
-@
+@<Find the label text@> =
+	for (; i<Str::len(X); i++) {
+		wchar_t c = Str::get_at(X, i);
+		if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
+			i++; c = Str::get_at(X, i);
+		} else if (c == ']') { i++; break; }
+		else if (c == '[') { count = 0; break; }
+		if ((c == ' ') || (c == '\t') || (c == '\n')) ws_count++;
+		PUT_TO(label, c);
+		count++;
+	}
+
+@<Find the destination and title texts@> =
+	wchar_t c = Str::get_at(X, i);
+	if (c == '<') {
+		i++; c = Str::get_at(X, i);
+		while ((c != 0) && (c != '\n')) {
+			if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
+				i++; c = Str::get_at(X, i);
+			} else if (c == '>') break;
+			PUT_TO(destination, c);
+			i++; c = Str::get_at(X, i);
+		}
+		if (Str::get_at(X, i) == '>') i++; else valid = FALSE;
+	} else if ((c != 0) && (Characters::is_control_character(c) == FALSE)) {
+		int bl = 0;
+		while ((c != 0) && (c != ' ') && (Characters::is_control_character(c) == FALSE)) {
+			if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
+				i++; c = Str::get_at(X, i);
+			} else if (c == '(') bl++;
+			else if (c == ')') { bl--; if (bl < 0) valid = FALSE; }
+			PUT_TO(destination, c);
+			i++; c = Str::get_at(X, i);
+		}
+		if (bl != 0) valid = FALSE;
+	} else valid = FALSE;
+
+	ws_count = i;
+	while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
+	int stop_here = -1;
+	if ((valid) && (Str::get_at(X, i) == '\n')) stop_here = i;
+	i = MDBlockParser::advance_past_spacing(X, i);
+	ws_count = i - ws_count;
+	wchar_t quot = 0;
+	if (Str::get_at(X, i) == '"') quot = '"';
+	if (Str::get_at(X, i) == '\'') quot = '\'';
+	if ((ws_count > 0) && (quot)) {
+		for (i++; i<Str::len(X); i++) {
+			wchar_t c = Str::get_at(X, i);
+			if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
+				i++; c = Str::get_at(X, i);
+			} else if (c == quot) break;
+			PUT_TO(title, c);
+		}
+		if (Str::get_at(X, i) == quot) i++; else valid = FALSE;
+	}
+	while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
+	if ((Str::get_at(X, i) != 0) && (Str::get_at(X, i) != '\n')) valid = FALSE;
+	i++;
+	
+	if ((valid == FALSE) && (stop_here >= 0)) { valid = TRUE; i = stop_here+1; }
+
+@h The interstage.
+Phase I is now complete except for two tidying-up operations needed for lists.
+The first is to group together consecutive list entries which look as if they
+belong to the same list; they need the same flavour and the same basic type
+(ordered or unordered). We insert |ORDERED_LIST_MIT| or |UNORDERED_LIST_MIT|
+items into the tree to hold these.
 
 =
 void MDBlockParser::gather_lists(md_doc_state *state, markdown_item *at) {
@@ -1512,6 +2047,20 @@ void MDBlockParser::gather_lists(md_doc_state *state, markdown_item *at) {
 	}
 }
 
+int MDBlockParser::in_same_list(markdown_item *A, markdown_item *B) {
+	if ((A) && (B) &&
+		(Markdown::get_item_flavour(A)) &&
+		(Markdown::get_item_flavour(A) == Markdown::get_item_flavour(B)))
+		return TRUE;
+	return FALSE;
+}
+
+@ In order to be able to detect looseness of lists, we will need to make
+sure the white space flags are correct. Why would they be wrong, you ask?
+Well, because the new |ORDERED_LIST_MIT| or |UNORDERED_LIST_MIT| items have
+only just appeared, so had no opportunity to pick up these flags during Phase I.
+
+=
 void MDBlockParser::propagate_white_space_follows(md_doc_state *state, markdown_item *at) {
 	if (at == NULL) return;
 	for (markdown_item *c = at->down; c; c = c->next)
@@ -1519,12 +2068,4 @@ void MDBlockParser::propagate_white_space_follows(md_doc_state *state, markdown_
 	for (markdown_item *c = at->down; c; c = c->next)
 		if ((c->next == NULL) && (c->whitespace_follows))
 			MDBlockParser::mark_block_with_ws(state, at);
-}
-
-int MDBlockParser::in_same_list(markdown_item *A, markdown_item *B) {
-	if ((A) && (B) &&
-		(Markdown::get_item_flavour(A)) &&
-		(Markdown::get_item_flavour(A) == Markdown::get_item_flavour(B)))
-		return TRUE;
-	return FALSE;
 }
