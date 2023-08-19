@@ -53,7 +53,8 @@ markdown_item *MDInlineParser::inline(markdown_variation *variation,
 	markdown_item *owner = Markdown::new_item(MATERIAL_MIT);
 	MDInlineParser::make_inline_chain(variation, owner, text);
 	MDInlineParser::links_and_images(variation, link_refs, owner, FALSE);
-	MDInlineParser::emphasis(variation, owner);
+	if (MarkdownVariations::supports(variation, EMPHASIS_MARKDOWNFEATURE))
+		MDInlineParser::emphasis(variation, owner);
 	return owner;
 }
 
@@ -103,17 +104,19 @@ int MDInlineParser::backtick_string(text_stream *text, int at) {
 }
 
 @<Does a backtick begin here?@> =
-	int count = MDInlineParser::backtick_string(text, i);
-	if (count > 0) {
-		for (int j=i+count+1; j<Str::len(text); j++) {
-			if (MDInlineParser::backtick_string(text, j) == count) {
-				if (i-1 >= from) {
-					markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
-					Markdown::add_to(md, owner);
+	if (MarkdownVariations::supports(variation, BACKTICKED_CODE_MARKDOWNFEATURE)) {
+		int count = MDInlineParser::backtick_string(text, i);
+		if (count > 0) {
+			for (int j=i+count+1; j<Str::len(text); j++) {
+				if (MDInlineParser::backtick_string(text, j) == count) {
+					if (i-1 >= from) {
+						markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+						Markdown::add_to(md, owner);
+					}
+					@<Insert an inline code item@>;
+					i = j+count; from = j+count;
+					goto ContinueOuter;
 				}
-				@<Insert an inline code item@>;
-				i = j+count; from = j+count;
-				goto ContinueOuter;
 			}
 		}
 	}
@@ -154,8 +157,10 @@ space characters, a single space character is removed from the front and back."
 					for (int k=i; k<=j; k++) PUT(Str::get_at(text, k));
 					WRITE("\n");
 				}
-				@<Test for URI autolink@>;
-				@<Test for email autolink@>;
+				if (MarkdownVariations::supports(variation, WEB_AUTOLINKS_MARKDOWNFEATURE))
+					@<Test for URI autolink@>;
+				if (MarkdownVariations::supports(variation, EMAIL_AUTOLINKS_MARKDOWNFEATURE))
+					@<Test for email autolink@>;
 				break;
 			}
 			if ((c == '<') ||
@@ -299,24 +304,26 @@ but you absolutely can.
 	if (segment_length >= 64) domain_valid = FALSE;
 
 @<Does a raw HTML tag begin here?@> =
-	if (Str::get_at(text, i) == '<') {
-		switch (Str::get_at(text, i+1)) {
-			case '?': @<Does a processing instruction begin here?@>; break;
-			case '!':
-				if ((Str::get_at(text, i+2) == '-') && (Str::get_at(text, i+3) == '-'))
-					@<Does an HTML comment begin here?@>;
-				if ((Str::get_at(text, i+2) == '[') && (Str::get_at(text, i+3) == 'C') &&
-					(Str::get_at(text, i+4) == 'D') && (Str::get_at(text, i+5) == 'A') &&
-					(Str::get_at(text, i+6) == 'T') && (Str::get_at(text, i+7) == 'A') &&
-					(Str::get_at(text, i+8) == '['))
-					@<Does a CDATA section begin here?@>;
-				if (Characters::is_ASCII_letter(Str::get_at(text, i+2)))
-					@<Does an HTML declaration begin here?@>;
-				break;
-			case '/': @<Does a close tag begin here?@>; break;
-			default: @<Does an open tag begin here?@>; break;
+	if (MarkdownVariations::supports(variation, INLINE_HTML_MARKDOWNFEATURE)) {
+		if (Str::get_at(text, i) == '<') {
+			switch (Str::get_at(text, i+1)) {
+				case '?': @<Does a processing instruction begin here?@>; break;
+				case '!':
+					if ((Str::get_at(text, i+2) == '-') && (Str::get_at(text, i+3) == '-'))
+						@<Does an HTML comment begin here?@>;
+					if ((Str::get_at(text, i+2) == '[') && (Str::get_at(text, i+3) == 'C') &&
+						(Str::get_at(text, i+4) == 'D') && (Str::get_at(text, i+5) == 'A') &&
+						(Str::get_at(text, i+6) == 'T') && (Str::get_at(text, i+7) == 'A') &&
+						(Str::get_at(text, i+8) == '['))
+						@<Does a CDATA section begin here?@>;
+					if (Characters::is_ASCII_letter(Str::get_at(text, i+2)))
+						@<Does an HTML declaration begin here?@>;
+					break;
+				case '/': @<Does a close tag begin here?@>; break;
+				default: @<Does an open tag begin here?@>; break;
+			}
+			NotATag: ;
 		}
-		NotATag: ;
 	}
 
 @ The content of a PI must be non-empty.
@@ -522,6 +529,9 @@ it is legal Markdown.
 void MDInlineParser::links_and_images(markdown_variation *variation,
 	md_links_dictionary *link_refs, markdown_item *owner, int images_only) {
 	if (owner == NULL) return;
+	if ((MarkdownVariations::supports(variation, LINKS_MARKDOWNFEATURE) == FALSE) &&
+		(MarkdownVariations::supports(variation, IMAGES_MARKDOWNFEATURE) == FALSE))
+		return;
 	if (tracing_Markdown_parser) {
 		PRINT("Beginning link/image pass:\n");
 		Markdown::debug_subtree(STDOUT, owner);
@@ -537,8 +547,8 @@ void MDInlineParser::links_and_images(markdown_variation *variation,
 				PRINT("Link/image notation scan from start\n");
 			}
 		}
-		md_link_parse found = MDInlineParser::first_valid_link(link_refs,
-			leftmost_pos, Markdown::nowhere(), images_only, FALSE);
+		md_link_parse found = MDInlineParser::first_valid_link(variation,
+			link_refs, leftmost_pos, Markdown::nowhere(), images_only, FALSE);
 		if (found.is_link == NOT_APPLICABLE) break;
 		md_link_dictionary_entry *ref = found.link_reference;
 		if (tracing_Markdown_parser) {
@@ -652,8 +662,9 @@ the given part of a chain of nodes. Links begin with an unescaped |[|
 and images with an unescaped |![|.
 
 =
-md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
-	md_charpos from, md_charpos to, int images_only, int links_only) {
+md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
+	md_links_dictionary *link_refs, md_charpos from, md_charpos to,
+	int images_only, int links_only) {
 	md_link_parse result;
 	@<Initialise the parse result to a no@>;
 	wchar_t prev_c = 0;
@@ -710,50 +721,53 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 @<See if a link begins here@> =
 	if (((links_only == FALSE) || (prev_c != '!')) &&
 		((images_only == FALSE) || (prev_c == '!'))) {
-		int link_rather_than_image = TRUE;
+		int link_rather_than_image = TRUE, uses = LINKS_MARKDOWNFEATURE;
 		result.first = pos;
 		if ((prev_c == '!') && (links_only == FALSE)) {
-			link_rather_than_image = FALSE; result.first = prev_pos;
+			link_rather_than_image = FALSE;
+			uses = IMAGES_MARKDOWNFEATURE;
+			result.first = prev_pos;
 		}
-	
-		if (link_rather_than_image) {
-			if (tracing_Markdown_parser) PRINT("Potential link found\n");
-		} else {
-			if (tracing_Markdown_parser) PRINT("Potential image found\n");
-		}
-		md_charpos abandon_at = pos;
-		@<Work out the link text@>;
-		if (Markdown::get(pos) == '[') {
-			@<Work out the reference@>;
-		} else {
-			if ((Markdown::get(pos) != '(') || (pass == 2)) {
-				TEMPORARY_TEXT(label)
-				for (md_charpos pos = result.link_text_from; Markdown::somewhere(pos);
-					pos = Markdown::advance(pos)) {
-					PUT_TO(label, Markdown::get(pos));
-					if (Markdown::pos_eq(pos, result.link_text_to)) break;
-				}
-				@<Deal with escape characters in the label@>;
-				md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
-				if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
-				result.link_reference = ref;
-				pos = result.link_text_to;
-				pos = Markdown::advance_up_to(pos, to);
-				DISCARD_TEXT(label)
+		if (MarkdownVariations::supports(variation, uses)) {
+			if (link_rather_than_image) {
+				if (tracing_Markdown_parser) PRINT("Potential link found\n");
 			} else {
-				pos = Markdown::advance_up_to_quasi_plainish_only(pos, to);
-				@<Advance pos by optional small amount of white space@>;
-				if (Markdown::get(pos) != ')') @<Work out the link destination@>;
-				@<Advance pos by optional small amount of white space@>;
-				if (Markdown::get(pos) != ')') @<Work out the link title@>;
-				@<Advance pos by optional small amount of white space@>;
-				if (Markdown::get(pos) != ')') ABANDON_LINK("no ')'");
+				if (tracing_Markdown_parser) PRINT("Potential image found\n");
 			}
+			md_charpos abandon_at = pos;
+			@<Work out the link text@>;
+			if (Markdown::get(pos) == '[') {
+				@<Work out the reference@>;
+			} else {
+				if ((Markdown::get(pos) != '(') || (pass == 2)) {
+					TEMPORARY_TEXT(label)
+					for (md_charpos pos = result.link_text_from; Markdown::somewhere(pos);
+						pos = Markdown::advance(pos)) {
+						PUT_TO(label, Markdown::get(pos));
+						if (Markdown::pos_eq(pos, result.link_text_to)) break;
+					}
+					@<Deal with escape characters in the label@>;
+					md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
+					if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
+					result.link_reference = ref;
+					pos = result.link_text_to;
+					pos = Markdown::advance_up_to(pos, to);
+					DISCARD_TEXT(label)
+				} else {
+					pos = Markdown::advance_up_to_quasi_plainish_only(pos, to);
+					@<Advance pos by optional small amount of white space@>;
+					if (Markdown::get(pos) != ')') @<Work out the link destination@>;
+					@<Advance pos by optional small amount of white space@>;
+					if (Markdown::get(pos) != ')') @<Work out the link title@>;
+					@<Advance pos by optional small amount of white space@>;
+					if (Markdown::get(pos) != ')') ABANDON_LINK("no ')'");
+				}
+			}
+			result.last = pos;
+			result.is_link = link_rather_than_image;
+			if (tracing_Markdown_parser) PRINT("Confirmed\n");
+			return result;
 		}
-		result.last = pos;
-		result.is_link = link_rather_than_image;
-		if (tracing_Markdown_parser) PRINT("Confirmed\n");
-		return result;
 	}
 
 @<Work out the link text@> =
@@ -781,7 +795,7 @@ md_link_parse MDInlineParser::first_valid_link(md_links_dictionary *link_refs,
 	result.link_text_to = prev_pos;
 	if (link_rather_than_image) {
 		md_link_parse nested =
-			MDInlineParser::first_valid_link(link_refs,
+			MDInlineParser::first_valid_link(variation, link_refs,
 				result.link_text_from, result.link_text_to, FALSE, TRUE);
 		if (nested.is_link != NOT_APPLICABLE) return nested;
 	}
@@ -1216,7 +1230,7 @@ than the original, it does at least terminate.
 		WRITE("Option %d is to fragment thus:\n", no_options);
 		Markdown::debug_subtree(STDOUT, option);
 		WRITE("Resulting in: ");
-		MDRenderer::render(STDOUT, option);
+		Markdown::render_extended(STDOUT, option, variation);
 		WRITE("\nWhich scores %d penalty points\n", MDInlineParser::penalty(option));
 	}
 

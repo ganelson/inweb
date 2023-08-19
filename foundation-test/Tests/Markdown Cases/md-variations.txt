@@ -1,0 +1,7 @@
+! Variation 1
+In this variant, entities like &#67; and &HilbertSpace; should be ignored.
+Similarly, inline HTML <img src="whatever"> should be thrown out, though
+autolinks like <https://this.com> or <whomever@wherever.com> ought to keep working.
+
+# Not a heading, either
+! End

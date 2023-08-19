@@ -20,15 +20,12 @@ through the tree: it's a bitmap composed of the following.
 @d ENTITIES_MDRMODE 0x0020     /* Convert |&entity;| to whatever it ought to represent */
 
 =
-void MDRenderer::render(OUTPUT_STREAM, markdown_item *md) {
-	MDRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE | ENTITIES_MDRMODE,
-		MarkdownVariations::CommonMark());
-}
-
 void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
 	markdown_variation *variation) {
-	MDRenderer::recurse(OUT, md, TAGS_MDRMODE | ESCAPES_MDRMODE | ENTITIES_MDRMODE,
-		variation);
+	int default_mode = TAGS_MDRMODE | ESCAPES_MDRMODE;
+	if (MarkdownVariations::supports(variation, ENTITIES_MARKDOWNFEATURE))
+		default_mode = default_mode | ENTITIES_MDRMODE;	
+	MDRenderer::recurse(OUT, md, default_mode, variation);
 }
 
 void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
@@ -183,7 +180,10 @@ been taken out at the parsing stage.)
 		TEMPORARY_TEXT(language_rendered)
 		md->sliced_from = language;
 		md->from = 0; md->to = Str::len(language) - 1;
-		MDRenderer::slice(language_rendered, md, mode | ENTITIES_MDRMODE);
+		if (MarkdownVariations::supports(variation, ENTITIES_MARKDOWNFEATURE))
+			MDRenderer::slice(language_rendered, md, mode | ENTITIES_MDRMODE);
+		else
+			MDRenderer::slice(language_rendered, md, mode);
 		if (mode & TAGS_MDRMODE)
 			HTML_OPEN_WITH("code", "class=\"language-%S\"", language_rendered);
 		DISCARD_TEXT(language_rendered)

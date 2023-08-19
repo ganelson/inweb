@@ -495,19 +495,21 @@ required - |>> This is a legal double block quote| - and so the white width
 is the same as the black width.
 
 @<Is there a block quote marker here?@> =
-	tabbed_string_iterator adv = MDBlockParser::block_quote_marker(starts_at);
-	int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
-	if (black_width > 0) {
-		TabbedStr::eat_space(&adv);
-		int white_width = black_width;
-		*line_scanner = adv;
-		positional_marker *bq_m = MDBlockParser::new_marker_at(state, sp, BLOCK_QUOTE_MIT);
-		bq_m->width = black_width;
-		bq_m->at = TabbedStr::get_position(&starts_at);
-		bq_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
-		if (sp == 1) bq_m->indent += left_margin;
-		sp++;
-		continue;
+	if (MarkdownVariations::supports(state->variation, BLOCK_QUOTES_MARKDOWNFEATURE)) {
+		tabbed_string_iterator adv = MDBlockParser::block_quote_marker(starts_at);
+		int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+		if (black_width > 0) {
+			TabbedStr::eat_space(&adv);
+			int white_width = black_width;
+			*line_scanner = adv;
+			positional_marker *bq_m = MDBlockParser::new_marker_at(state, sp, BLOCK_QUOTE_MIT);
+			bq_m->width = black_width;
+			bq_m->at = TabbedStr::get_position(&starts_at);
+			bq_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+			if (sp == 1) bq_m->indent += left_margin;
+			sp++;
+			continue;
+		}
 	}
 	
 @ Bullet list markers are not allowed to interrupt a paragraph going on from
@@ -518,27 +520,29 @@ are followed by a single space. In the first case the white width equals the
 black width, in the second case it is the black width plus 1.
 
 @<Is there a bullet list marker here?@> =
-	wchar_t flavour = 0;
-	tabbed_string_iterator adv = MDBlockParser::bullet_list_marker(starts_at, &flavour);
-	int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
-	if (black_width > 0) {
-		wchar_t next = TabbedStr::get_character(&adv);
-		if ((next == ' ') || (next == 0)) {
-			TabbedStr::eat_space(&adv);
-			int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
-			*line_scanner = adv;
-			if ((TabbedStr::blank_from_here(line_scanner)) && (interrupts_paragraph)) {
-				*line_scanner = rewind_point;
-			} else {
-				positional_marker *li_m =
-					MDBlockParser::new_marker_at(state, sp, UNORDERED_LIST_ITEM_MIT);
-				li_m->width = black_width;
-				li_m->at = TabbedStr::get_position(&starts_at);
-				li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
-				if (sp == 1) li_m->indent += left_margin;
-				li_m->list_item_flavour = flavour;
-				sp++;
-				continue;
+	if (MarkdownVariations::supports(state->variation, UNORDERED_LISTS_MARKDOWNFEATURE)) {
+		wchar_t flavour = 0;
+		tabbed_string_iterator adv = MDBlockParser::bullet_list_marker(starts_at, &flavour);
+		int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+		if (black_width > 0) {
+			wchar_t next = TabbedStr::get_character(&adv);
+			if ((next == ' ') || (next == 0)) {
+				TabbedStr::eat_space(&adv);
+				int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+				*line_scanner = adv;
+				if ((TabbedStr::blank_from_here(line_scanner)) && (interrupts_paragraph)) {
+					*line_scanner = rewind_point;
+				} else {
+					positional_marker *li_m =
+						MDBlockParser::new_marker_at(state, sp, UNORDERED_LIST_ITEM_MIT);
+					li_m->width = black_width;
+					li_m->at = TabbedStr::get_position(&starts_at);
+					li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+					if (sp == 1) li_m->indent += left_margin;
+					li_m->list_item_flavour = flavour;
+					sp++;
+					continue;
+				}
 			}
 		}
 	}
@@ -555,29 +559,31 @@ where we don't want to parse the |1869.| as beginning a list with first
 entry "Permission to use...".
 
 @<Is there an ordered list marker here?@> =
-	wchar_t flavour = 0;
-	int val = 0;
-	tabbed_string_iterator adv = MDBlockParser::ordered_list_marker(starts_at, &val, &flavour);
-	int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
-	if (black_width > 0) {
-		wchar_t next = TabbedStr::get_character(&adv);
-		if ((next == ' ') || (next == 0)) {
-			TabbedStr::eat_space(&adv);
-			int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
-			*line_scanner = adv;
-			if (((TabbedStr::blank_from_here(line_scanner)) || (val != 1)) && (interrupts_paragraph)) {
-				*line_scanner = rewind_point;
-			} else {
-				positional_marker *li_m =
-					MDBlockParser::new_marker_at(state, sp, ORDERED_LIST_ITEM_MIT);
-				li_m->width = black_width;
-				li_m->at = TabbedStr::get_position(&starts_at);
-				li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
-				if (sp == 1) li_m->indent += left_margin;
-				li_m->list_item_flavour = flavour;
-				li_m->list_item_value = val;
-				sp++;
-				continue;
+	if (MarkdownVariations::supports(state->variation, ORDERED_LISTS_MARKDOWNFEATURE)) {
+		wchar_t flavour = 0;
+		int val = 0;
+		tabbed_string_iterator adv = MDBlockParser::ordered_list_marker(starts_at, &val, &flavour);
+		int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+		if (black_width > 0) {
+			wchar_t next = TabbedStr::get_character(&adv);
+			if ((next == ' ') || (next == 0)) {
+				TabbedStr::eat_space(&adv);
+				int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+				*line_scanner = adv;
+				if (((TabbedStr::blank_from_here(line_scanner)) || (val != 1)) && (interrupts_paragraph)) {
+					*line_scanner = rewind_point;
+				} else {
+					positional_marker *li_m =
+						MDBlockParser::new_marker_at(state, sp, ORDERED_LIST_ITEM_MIT);
+					li_m->width = black_width;
+					li_m->at = TabbedStr::get_position(&starts_at);
+					li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+					if (sp == 1) li_m->indent += left_margin;
+					li_m->list_item_flavour = flavour;
+					li_m->list_item_value = val;
+					sp++;
+					continue;
+				}
 			}
 		}
 	}
@@ -758,7 +764,8 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 
 	int intervening_space_width = TabbedStr::spaces_available(&line_scanner);
 	
-	if (intervening_space_width >= 4)
+	if ((intervening_space_width >= 4) &&
+		(MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE)))
 		@<This line is indented enough to be part of an indented code block@>;
 
 	if (TabbedStr::blank_from_here(&line_scanner)) {
@@ -1525,23 +1532,29 @@ int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
 part of a code block, not a thematic break at all.
 
 @<Is THEMATIC_MDINTERPRETATION tenable?@> =
-	if (indentation) return FALSE;
-	return MDBlockParser::thematic_marker(line, content_index);
+	if ((MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
+		&& (indentation)) return FALSE;
+	if (MarkdownVariations::supports(state->variation, THEMATIC_MARKERS_MARKDOWNFEATURE))
+		return MDBlockParser::thematic_marker(line, content_index);
+	return FALSE;
 
 @ One to six |#| characters, followed by white space or the end of the line.
 Note that there can be junk in the form of further |#|s at the far end,
 but removing that junk is not our business here.
 
 @<Is ATX_HEADING_MDINTERPRETATION tenable?@> =
-	if (indentation) return FALSE;
-	int hash_count = 0;
-	while (Str::get_at(line, content_index+hash_count) == '#') hash_count++;
-	if ((hash_count >= 1) && (hash_count <= 6) &&
-		((Str::get_at(line, content_index+hash_count) == ' ') ||
-			(Str::get_at(line, content_index+hash_count) == '\t') ||
-			(Str::get_at(line, content_index+hash_count) == 0))) {
-		if (int_detail) *int_detail = hash_count;
-		return TRUE;
+	if ((MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
+		&& (indentation)) return FALSE;
+	if (MarkdownVariations::supports(state->variation, ATX_HEADINGS_MARKDOWNFEATURE)) {
+		int hash_count = 0;
+		while (Str::get_at(line, content_index+hash_count) == '#') hash_count++;
+		if ((hash_count >= 1) && (hash_count <= 6) &&
+			((Str::get_at(line, content_index+hash_count) == ' ') ||
+				(Str::get_at(line, content_index+hash_count) == '\t') ||
+				(Str::get_at(line, content_index+hash_count) == 0))) {
+			if (int_detail) *int_detail = hash_count;
+			return TRUE;
+		}
 	}
 	return FALSE;
 
@@ -1551,21 +1564,24 @@ setext underline.
 
 @<Is SETEXT_UNDERLINE_MDINTERPRETATION tenable?@> =
 	if (MDBlockParser::latest_paragraph(state) == NULL) return FALSE;
-	if (indentation) return FALSE;
-	wchar_t c = Str::get_at(line, content_index);
-	if ((c == '-') || (c == '=')) {
-		int ornament_count = 1, extraneous = 0;
-		int j=content_index+1;
-		for (; j<Str::len(line); j++) {
-			wchar_t d = Str::get_at(line, j);
-			if (d == c) ornament_count++;
-			else break;
+	if ((MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
+		&& (indentation)) return FALSE;
+	if (MarkdownVariations::supports(state->variation, SETEXT_HEADINGS_MARKDOWNFEATURE)) {
+		wchar_t c = Str::get_at(line, content_index);
+		if ((c == '-') || (c == '=')) {
+			int ornament_count = 1, extraneous = 0;
+			int j=content_index+1;
+			for (; j<Str::len(line); j++) {
+				wchar_t d = Str::get_at(line, j);
+				if (d == c) ornament_count++;
+				else break;
+			}
+			for (; j<Str::len(line); j++) {
+				wchar_t d = Str::get_at(line, j);
+				if ((d != ' ') && (d != '\t')) extraneous++;
+			}
+			if ((ornament_count > 0) && (extraneous == 0)) return TRUE;
 		}
-		for (; j<Str::len(line); j++) {
-			wchar_t d = Str::get_at(line, j);
-			if ((d != ' ') && (d != '\t')) extraneous++;
-		}
-		if ((ornament_count > 0) && (extraneous == 0)) return TRUE;
 	}
 	return FALSE;
 
@@ -1585,27 +1601,30 @@ the closing fence because they are too short or of the wrong kind, until we
 reach line 5.
 
 @<Is either code fence interpretation tenable?@> =
-	if (indentation) return FALSE;
-	if ((which == CODE_FENCE_OPEN_MDINTERPRETATION) && (state->fencing.material != 0))
-		return FALSE;
-	if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material == 0))
-		return FALSE;
-	text_stream *info_string = text_details;
-	wchar_t c = Str::get_at(line, content_index);
-	if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material != c))
-		return FALSE;
-	if ((c == '`') || (c == '~')) {
-		int post_count = 0;
-		int j = content_index;
-		for (; j<Str::len(line); j++) {
-			wchar_t d = Str::get_at(line, j);
-			if (d == c) post_count++;
-			else break;
-		}
-		if (post_count >= 3) {
-			if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) &&
-				(post_count < state->fencing.width)) return FALSE;
-			@<Looks good so far, but what about the info string?@>;
+	if ((MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
+		&& (indentation)) return FALSE;
+	if (MarkdownVariations::supports(state->variation, FENCED_CODE_BLOCKS_MARKDOWNFEATURE)) {
+		if ((which == CODE_FENCE_OPEN_MDINTERPRETATION) && (state->fencing.material != 0))
+			return FALSE;
+		if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material == 0))
+			return FALSE;
+		text_stream *info_string = text_details;
+		wchar_t c = Str::get_at(line, content_index);
+		if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material != c))
+			return FALSE;
+		if ((c == '`') || (c == '~')) {
+			int post_count = 0;
+			int j = content_index;
+			for (; j<Str::len(line); j++) {
+				wchar_t d = Str::get_at(line, j);
+				if (d == c) post_count++;
+				else break;
+			}
+			if (post_count >= 3) {
+				if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) &&
+					(post_count < state->fencing.width)) return FALSE;
+				@<Looks good so far, but what about the info string?@>;
+			}
 		}
 	}
 	return FALSE;
@@ -1659,7 +1678,10 @@ The one piece of good news is that they all start with a |<| character.
 @e MISCPAIR_MDHTMLC     /* CommonMark type 7 */
 
 @<Is HTML_MDINTERPRETATION tenable?@> =
-	if (indentation) return FALSE;
+	if ((MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
+		&& (indentation)) return FALSE;
+	if (MarkdownVariations::supports(state->variation, HTML_BLOCKS_MARKDOWNFEATURE) == FALSE)
+		return FALSE;
 	wchar_t c = Str::get_at(line, content_index);
 	if (c != '<') return FALSE;
 
@@ -1876,7 +1898,8 @@ but can also be followed by HTML attributes and values: for example,
 		condition_type = MISCPAIR_MDHTMLC; goto HTML_Start_Found;
 	}
 
-@ After which, the rest are anticlimactic:
+@ After which, the rest are anticlimactic: they are all forms of continuation
+of blocks already under way.
 
 @<Is CODE_BLOCK_MDINTERPRETATION tenable?@> =
 	if (MDBlockParser::latest_paragraph(state)) return FALSE;

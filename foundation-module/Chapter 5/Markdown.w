@@ -244,7 +244,12 @@ context-free except for its use of the links dictionary:
 
 =
 void Markdown::render(OUTPUT_STREAM, markdown_item *tree) {
-	MDRenderer::render(OUT, tree);
+	MDRenderer::render_extended(OUT, tree, MarkdownVariations::CommonMark());
+}
+
+void Markdown::render_extended(OUTPUT_STREAM, markdown_item *tree,
+	markdown_variation *variation) {
+	MDRenderer::render_extended(OUT, tree, variation);
 }
 
 @h Storing marked-up copy.

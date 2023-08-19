@@ -1,0 +1,13 @@
+! Variation 1
+In this variant, entities like &#67; and &HilbertSpace; should be ignored.
+Similarly, inline HTML <img src="whatever"> should be thrown out, though
+autolinks like <https://this.com> or <whomever@wherever.com> ought to keep working.
+
+# Not a heading, either
+! Solution
+<p>In this variant, entities like &amp;#67; and &amp;HilbertSpace; should be ignored.
+Similarly, inline HTML &lt;img src=&quot;whatever&quot;&gt; should be thrown out, though
+autolinks like <a href="https://this.com">https://this.com</a> or <a href="mailto:whomever@wherever.com">whomever@wherever.com</a>.</p>
+<p># Not a heading, either</p>
+! End
+
