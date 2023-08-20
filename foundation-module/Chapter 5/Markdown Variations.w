@@ -42,6 +42,7 @@ typedef struct markdown_variation {
 markdown_variation *MarkdownVariations::new(text_stream *name) {
 	markdown_variation *variation = CREATE(markdown_variation);
 	variation->name = Str::duplicate(name);
+	variation->methods = Methods::new_set();
 	for (int i=0; i<NO_DEFINED_MARKDOWNFEATURE_VALUES; i++)
 		variation->active_built_in_features[i] = FALSE;
 	MarkdownVariations::make_baseline_features_active(variation);
@@ -73,6 +74,7 @@ markdown_feature *MarkdownVariations::new_feature(text_stream *name, int id) {
 	if (id >= MAX_MARKDOWNFEATURES) internal_error("too many Markdown features");
 	feature->name = Str::duplicate(name);
 	feature->feature_ID = id;
+	feature->methods = Methods::new_set();
 	if (markdown_feature_registry[id]) internal_error("Markdown feature ID clash");
 	markdown_feature_registry[id] = feature;
 	return feature;
@@ -89,7 +91,7 @@ int MarkdownVariations::supports(markdown_variation *variation, int feature_id) 
 @h The CommonMark variation.
 Vanilla ice cream is under-rated:
 
-@e BLOCK_QUOTES_MARKDOWNFEATURE from 1
+@e BLOCK_QUOTES_MARKDOWNFEATURE from 0
 @e ORDERED_LISTS_MARKDOWNFEATURE
 @e UNORDERED_LISTS_MARKDOWNFEATURE
 @e INDENTED_CODE_BLOCKS_MARKDOWNFEATURE
@@ -172,5 +174,59 @@ void MarkdownVariations::make_baseline_features_active(markdown_variation *varia
 	MarkdownVariations::add_feature(variation, LINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, IMAGES_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, EMPHASIS_MARKDOWNFEATURE);
+}
+
+@h Methods for features.
+New features need to be able to intervene in the parsing or rendering algorithms,
+so for that we provide methods.
+
+|RENDER_MARKDOWN_MTID| allows a feature to meddle in how a node is rendered.
+
+@e RENDER_MARKDOWN_MTID
+
+=
+INT_METHOD_TYPE(RENDER_MARKDOWN_MTID, markdown_feature *feature, text_stream *OUT,
+	markdown_item *md, int mode)
+int MarkdownVariations::intervene_in_rendering(markdown_variation *variation,
+	text_stream *OUT, markdown_item *md, int mode) {
+	markdown_feature *feature;
+	LOOP_OVER(feature, markdown_feature) {
+		if (MarkdownVariations::supports(variation, feature->feature_ID)) {
+			int rv = FALSE;
+			INT_METHOD_CALL(rv, feature, RENDER_MARKDOWN_MTID, OUT, md, mode);
+			if (rv) return TRUE;
+		}
+	}
+	return FALSE;
+}
+
+@ |POST_PHASE_I_MARKDOWN_MTID| allows a feature to restructure or annotate the
+block tree produced by Phase I parsing; similarly |POST_PHASE_II_MARKDOWN_MTID|.
+
+@e POST_PHASE_I_MARKDOWN_MTID
+@e POST_PHASE_II_MARKDOWN_MTID
+
+=
+VOID_METHOD_TYPE(POST_PHASE_I_MARKDOWN_MTID, markdown_feature *feature,
+	markdown_item *tree, md_links_dictionary *link_references)
+VOID_METHOD_TYPE(POST_PHASE_II_MARKDOWN_MTID, markdown_feature *feature,
+	markdown_item *tree, md_links_dictionary *link_references)
+void MarkdownVariations::intervene_after_Phase_I(markdown_variation *variation,
+	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_feature *feature;
+	LOOP_OVER(feature, markdown_feature) {
+		if (MarkdownVariations::supports(variation, feature->feature_ID)) {
+			VOID_METHOD_CALL(feature, POST_PHASE_I_MARKDOWN_MTID, tree, link_references);
+		}
+	}
+}
+void MarkdownVariations::intervene_after_Phase_II(markdown_variation *variation,
+	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_feature *feature;
+	LOOP_OVER(feature, markdown_feature) {
+		if (MarkdownVariations::supports(variation, feature->feature_ID)) {
+			VOID_METHOD_CALL(feature, POST_PHASE_II_MARKDOWN_MTID, tree, link_references);
+		}
+	}
 }
 

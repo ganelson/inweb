@@ -233,12 +233,14 @@ three lines of which the third is empty.
 	if (tracing_Markdown_parser) PRINT("======\nGathering lists\n");
 	MDBlockParser::gather_lists(state, tree);
 	MDBlockParser::propagate_white_space_follows(state, tree);
+	MarkdownVariations::intervene_after_Phase_I(variation, tree, dict);
 
 @ Note that the Phase I parser state is not used in Phase II, which is
 context-free except for its use of the links dictionary:
 
 @<Phase II@> =
 	MDInlineParser::inline_recursion(variation, dict, tree);
+	MarkdownVariations::intervene_after_Phase_II(variation, tree, dict);
 
 @ Rendering is similarly delegated:
 

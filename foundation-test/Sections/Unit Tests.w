@@ -486,6 +486,9 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 
 @h Markdown.
 
+@e BOXED_QUOTES_MARKDOWNFEATURE
+@e PASTE_ICONS_MARKDOWNFEATURE
+
 =
 markdown_variation *variation_to_test_against = NULL, *testy_Markdown = NULL;
 
@@ -496,6 +499,16 @@ void Unit::test_Markdown(text_stream *arg) {
 	MarkdownVariations::remove_feature(testy_Markdown, INLINE_HTML_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, ATX_HEADINGS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, ENTITIES_MARKDOWNFEATURE);
+
+	markdown_feature *boxed_quotes = MarkdownVariations::new_feature(I"boxed code blocks", BOXED_QUOTES_MARKDOWNFEATURE);
+	METHOD_ADD(boxed_quotes, RENDER_MARKDOWN_MTID, Unit::boxed_quote_renderer);
+	MarkdownVariations::add_feature(testy_Markdown, BOXED_QUOTES_MARKDOWNFEATURE);
+
+	markdown_feature *paste_icons = MarkdownVariations::new_feature(I"paste icons", PASTE_ICONS_MARKDOWNFEATURE);
+	METHOD_ADD(paste_icons, RENDER_MARKDOWN_MTID, Unit::paste_icons_renderer);
+	METHOD_ADD(paste_icons, POST_PHASE_I_MARKDOWN_MTID, Unit::paste_icons_intervene_after_Phase_I);
+	MarkdownVariations::add_feature(testy_Markdown, PASTE_ICONS_MARKDOWNFEATURE);
+
 	text_stream *marked_up = Str::new();
 	filename *F = Filenames::from_text(arg);
 	TEMPORARY_TEXT(MD)
@@ -523,4 +536,68 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 	} else {
 		WRITE_TO(marked_up, "%S\n", text);
 	}
+}
+
+int Unit::boxed_quote_renderer(markdown_feature *feature, text_stream *OUT,
+	markdown_item *md, int mode) {
+	if (md->type == BLOCK_QUOTE_MIT) {
+		HTML_OPEN_WITH("div", "border=\"1\"");
+		MDRenderer::recurse(OUT, md, mode, MarkdownVariations::CommonMark());
+		HTML_CLOSE("div");
+		return TRUE;
+	}
+	return FALSE;
+}
+
+void Unit::paste_icons_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_item *tree, md_links_dictionary *link_references) {
+	Unit::paiapi_r(tree);
+}
+
+void Unit::paiapi_r(markdown_item *md) {
+	markdown_item *current_sample = NULL;
+	for (markdown_item *ch = md->down; ch; ch=ch->next) {
+		if ((ch->type == CODE_BLOCK_MIT) && (Str::prefix_eq(ch->stashed, I"{*}", 3))) {
+			ch->user_state = STORE_POINTER_markdown_item(ch);
+			current_sample = ch;
+			Str::delete_first_character(ch->stashed);
+			Str::delete_first_character(ch->stashed);
+			Str::delete_first_character(ch->stashed);
+		} else if ((ch->type == CODE_BLOCK_MIT) &&
+			(Str::prefix_eq(ch->stashed, I"{**}", 3)) && (current_sample)) {
+			ch->user_state = STORE_POINTER_markdown_item(current_sample);
+			Str::delete_first_character(ch->stashed);
+			Str::delete_first_character(ch->stashed);
+			Str::delete_first_character(ch->stashed);
+			Str::delete_first_character(ch->stashed);
+		}
+		Unit::paiapi_r(ch);
+	}
+}
+
+int Unit::paste_icons_renderer(markdown_feature *feature, text_stream *OUT,
+	markdown_item *md, int mode) {
+	if (md->type == CODE_BLOCK_MIT) {
+		if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {
+			markdown_item *first = RETRIEVE_POINTER_markdown_item(md->user_state);
+			TEMPORARY_TEXT(accumulated)
+			for (markdown_item *ch = md; ch; ch = ch->next) {
+				if (ch->type == CODE_BLOCK_MIT) {
+					if (GENERAL_POINTER_IS_NULL(ch->user_state) == FALSE) {
+						markdown_item *latest = RETRIEVE_POINTER_markdown_item(ch->user_state);
+						if (first == latest) WRITE_TO(accumulated, "%S", ch->stashed);
+					}
+				}
+			}
+			TEMPORARY_TEXT(link)
+			WRITE_TO(link, "class=\"pastelink\" href=\"javascript:pasteCode('%S')\"", accumulated);
+			HTML_OPEN_WITH("a", "%S", link);
+			DISCARD_TEXT(link)
+			HTML_TAG_WITH("img", "border=0 src=paste.png");
+			HTML_CLOSE("a");
+			DISCARD_TEXT(accumulated)
+			return FALSE;
+		}
+	}
+	return FALSE;
 }

@@ -31,10 +31,9 @@ void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
 void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	markdown_variation *variation) {
 	if (md == NULL) return;
+	if (MarkdownVariations::intervene_in_rendering(variation, OUT, md, mode)) return;
 	int old_mode = mode;
 	switch (md->type) {
-		case DOCUMENT_MIT: 	            @<Recurse@>; break;
-
 		case ORDERED_LIST_MIT:          @<Render an ordered list@>; break;
 		case ORDERED_LIST_ITEM_MIT:     @<Render a list item@>; break;
 		case UNORDERED_LIST_MIT:        @<Render an unordered list@>; break;
@@ -56,8 +55,6 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 		case THEMATIC_MIT:              if (mode & TAGS_MDRMODE) WRITE("<hr />\n");
 		                                break;
 		case EMPTY_MIT:                 break;
-
-		case MATERIAL_MIT: 	            @<Recurse@>; break;
 
 		case PLAIN_MIT:    	            MDRenderer::slice(OUT, md, mode);
 								        break;
@@ -95,7 +92,7 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 								       	break;
 		case LINK_TITLE_MIT:            @<Recurse@>; break;
 
-		default:                        internal_error("unimplemented Markdown item render");
+		default:                        @<Recurse@>; break;
 	}
 	mode = old_mode;
 }
