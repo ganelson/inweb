@@ -1952,6 +1952,8 @@ int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at
 				}
 			}
 		}
+		if (MarkdownVariations::supports(state->variation, TABLES_MARKDOWNFEATURE))
+			@<See if this is really a table@>;
 	}
 	return FALSE;
 }
@@ -2045,6 +2047,138 @@ int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at
 	i++;
 	
 	if ((valid == FALSE) && (stop_here >= 0)) { valid = TRUE; i = stop_here+1; }
+
+@ This is a GitHub-flavored Markdown extension:
+
+"A table is an arrangement of data with rows and columns, consisting of a single
+header row, a delimiter row separating the header from the data, and zero or
+more data rows.
+
+Each row consists of cells containing arbitrary text, in which inlines are
+parsed, separated by pipes. A leading and trailing pipe is also recommended
+for clarity of reading, and if there’s otherwise parsing ambiguity. Spaces
+between pipes and cell content are trimmed. Block-level elements cannot be
+inserted in a table.
+
+The delimiter row consists of cells whose only content are hyphens, and
+optionally, a leading or trailing colon, or both, to indicate left, right,
+or center alignment respectively."
+
+@<See if this is really a table@> =
+	text_stream *X = at->stashed;
+	TEMPORARY_TEXT(line1)
+	TEMPORARY_TEXT(line2)
+	int remainder_at = -1;
+	for (int i=0, counter=1; i<Str::len(X); i++) {
+		wchar_t c = Str::get_at(X, i);
+		if (c == '\n') counter++;
+		else if (counter == 1) PUT_TO(line1, c);
+		else if (counter == 2) PUT_TO(line2, c);
+		else if (counter == 3) { remainder_at = i; break; }
+	}
+	int cell_count1 = MDBlockParser::count_cells(line1, FALSE, NULL);
+	int cell_count2 = MDBlockParser::count_cells(line2, TRUE, NULL);
+	if (tracing_Markdown_parser) PRINT("Try as table: cells %d, %d\n", cell_count1, cell_count2);
+	
+	if ((cell_count1 == cell_count2) && (cell_count1 > 0)) {
+		MDBlockParser::change_type(state, at, TABLE_MIT);
+		Markdown::set_column_count(at, cell_count1);
+		MDBlockParser::count_cells(line2, TRUE, at);
+		MDBlockParser::count_cells(line1, FALSE, at);
+		if (remainder_at > 0) {
+			Str::clear(line1);
+			for (int i=remainder_at; i<Str::len(X); i++) {
+				wchar_t c = Str::get_at(X, i);
+				if (c == '\n') {
+					MDBlockParser::count_cells(line1, FALSE, at);
+					Str::clear(line1);
+				} else {
+					PUT_TO(line1, c);
+				}
+			}
+			MDBlockParser::count_cells(line1, FALSE, at);
+		}
+	}
+	DISCARD_TEXT(line1)
+	DISCARD_TEXT(line2)
+
+@ =
+int MDBlockParser::count_cells(text_stream *line, int is_delimiter_row,
+	markdown_item *table_item) {
+	int col_count = 0;
+	if ((table_item) && (is_delimiter_row == FALSE)) {
+		for (markdown_item *md = table_item->down->down; md; md = md->next) col_count++;
+	}
+	markdown_item *row_item = NULL;
+	if (table_item) {
+		row_item = Markdown::new_item(TABLE_ROW_MIT);
+		Markdown::add_to(row_item, table_item);
+	}
+	int i = 0, edge_pipes = 0;
+	while ((Str::get_at(line, i) == ' ') || (Str::get_at(line, i) == '\t')) i++;
+	if (Str::get_at(line, i) == '|') { edge_pipes++; i++; }
+	int j = Str::len(line) - 1;
+	while ((Str::get_at(line, j) == ' ') || (Str::get_at(line, j) == '\t')) j--;
+	if (Str::get_at(line, j) == '|') { edge_pipes++; j--; }
+	int cell_count = 0, escaped = FALSE, cell_number = 0;
+	TEMPORARY_TEXT(cell)
+	for (int k = i; k <= j; k++) {
+		wchar_t c = Str::get_at(line, k);
+		if ((escaped == FALSE) && (c == '\\')) {
+			escaped = TRUE;
+		} else {
+			if ((escaped == FALSE) && (c == '|')) {
+				if (cell_count == 0) cell_count = 2;
+				else cell_count++;
+				@<Deal with cell contents@>;
+				Str::clear(cell);
+			} else {
+				PUT_TO(cell, c);
+			}
+			escaped = FALSE;
+		}
+	}
+	@<Deal with cell contents@>;
+	DISCARD_TEXT(cell)
+	if ((cell_count == 0) && (edge_pipes == 2)) cell_count = 1;
+	if ((table_item) && (is_delimiter_row == FALSE)) {
+		for (; cell_number < col_count; cell_number++) {
+			markdown_item *cell_item = Markdown::new_item(TABLE_COLUMN_MIT);
+			cell_item->stashed = Str::new();
+			Markdown::add_to(cell_item, row_item);
+		}
+	}
+	return cell_count;
+}
+
+@<Deal with cell contents@> =
+	Str::trim_white_space(cell);
+	int from = 0, to = Str::len(cell) - 1, alignment = 0;
+	if (is_delimiter_row) {
+		if (Str::get_at(cell, from) == ':') {
+			from++; alignment = 1;
+			if (Str::get_at(cell, to) == ':') {
+				to--; alignment = 3;
+			}
+		} else if (Str::get_at(cell, to) == ':') {
+			to--; alignment = 2;
+		}
+		for (int i=from; i<=to; i++)
+			if (Str::get_at(cell, i) != '-')
+				return 0;
+		if (table_item) {
+			markdown_item *tc = Markdown::new_item(TABLE_COLUMN_MIT);
+			Markdown::set_alignment(tc, alignment);
+			Markdown::add_to(tc, row_item);
+		}
+	} else if (table_item) {
+		if (cell_number < col_count) {
+			markdown_item *cell_item = Markdown::new_item(TABLE_COLUMN_MIT);
+			cell_item->stashed = Str::duplicate(cell);
+			Markdown::add_to(cell_item, row_item);
+		}
+	}
+	cell_number++;
 
 @h The interstage.
 Phase I is now complete except for two tidying-up operations needed for lists.

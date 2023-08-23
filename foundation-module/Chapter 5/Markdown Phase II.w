@@ -18,6 +18,8 @@ void MDInlineParser::inline_recursion(markdown_variation *variation,
 		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
 	if (at->type == HEADING_MIT)
 		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
+	if ((at->type == TABLE_COLUMN_MIT) && (Str::len(at->stashed) > 0))
+		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
 	for (markdown_item *c = at->down; c; c = c->next)
 		MDInlineParser::inline_recursion(variation, link_refs, c);
 }
@@ -53,8 +55,14 @@ markdown_item *MDInlineParser::inline(markdown_variation *variation,
 	markdown_item *owner = Markdown::new_item(MATERIAL_MIT);
 	MDInlineParser::make_inline_chain(variation, owner, text);
 	MDInlineParser::links_and_images(variation, link_refs, owner, FALSE);
-	if (MarkdownVariations::supports(variation, EMPHASIS_MARKDOWNFEATURE))
-		MDInlineParser::emphasis(variation, owner);
+	int mask = 0;
+	if (MarkdownVariations::supports(variation, ASTERISK_EMPHASIS_MARKDOWNFEATURE))
+		mask += ASTERISK_EMPHASIS_BIT;
+	if (MarkdownVariations::supports(variation, UNDERSCORE_EMPHASIS_MARKDOWNFEATURE))
+		mask += UNDERSCORE_EMPHASIS_BIT;
+	if (MarkdownVariations::supports(variation, STRIKETHROUGH_MARKDOWNFEATURE))
+		mask += TILDE_STRIKETHROUGH_BIT;
+	if (mask) MDInlineParser::emphasis(variation, owner, mask);
 	return owner;
 }
 
@@ -971,14 +979,19 @@ of asterisks and underscores for emphasis. This notation is deeply ambiguous
 on its face, and CommonMark's precise specification is a bit of an ordeal,
 but here goes.
 
+@d ASTERISK_EMPHASIS_BIT 1
+@d UNDERSCORE_EMPHASIS_BIT 2
+@d TILDE_STRIKETHROUGH_BIT 4
+
 =
-void MDInlineParser::emphasis(markdown_variation *variation, markdown_item *owner) {
+void MDInlineParser::emphasis(markdown_variation *variation, markdown_item *owner,
+	int mask) {
 	for (markdown_item *md = owner->down; md; md = md->next)
 		if ((md->type == LINK_MIT) || (md->type == IMAGE_MIT))
-			MDInlineParser::emphasis(variation, md->down);
+			MDInlineParser::emphasis(variation, md->down, mask);
 	text_stream *OUT = STDOUT;
 	if (tracing_Markdown_parser) {
-		WRITE("Seeking emphasis in:\n");
+		WRITE("Seeking emphasis (%d) in:\n", mask);
 		INDENT;
 		Markdown::debug_subtree(STDOUT, owner);
 	}
@@ -997,12 +1010,25 @@ non-backslash-escaped _ character."
 This function returns 0 unless a delimiter run begins at |at|, and then returns
 its length if this was asterisked, and minus its length if underscored.
 
+The GitHub extension to CommonMark for tildes meaning strikethrough is restricted
+to runs of length 1 or 2, and we return those as 10000001 and 10000002.
+
 =
-int MDInlineParser::delimiter_run(md_charpos pos) {
-	int count = Markdown::unescaped_run(pos, '*');
-	if ((count > 0) && (Markdown::get_unescaped(pos, -1) != '*')) return count;
-	count = Markdown::unescaped_run(pos, '_');
-	if ((count > 0) && (Markdown::get_unescaped(pos, -1) != '_')) return -count;
+int MDInlineParser::delimiter_run(md_charpos pos, int mask) {
+	int count = 0;
+	if (mask & ASTERISK_EMPHASIS_BIT) {
+		count = Markdown::unescaped_run(pos, '*');
+		if ((count > 0) && (Markdown::get_unescaped(pos, -1) != '*')) return count;
+	}
+	if (mask & UNDERSCORE_EMPHASIS_BIT) {
+		count = Markdown::unescaped_run(pos, '_');
+		if ((count > 0) && (Markdown::get_unescaped(pos, -1) != '_')) return -count;
+	}
+	if (mask & TILDE_STRIKETHROUGH_BIT) {
+		count = Markdown::unescaped_run(pos, '~');
+		if ((count >= 1) && (count <= 2) && (Markdown::get_unescaped(pos, -1) != '~'))
+			return 10000000 + count;
+	}
 	return 0;
 }
 
@@ -1124,35 +1150,38 @@ we can pretty safely keep that number small.
 typedef struct md_emphasis_delimiter {
 	struct md_charpos pos; /* first character in the run */
 	int width;             /* for example, 7 for a run of seven asterisks */
-	int type;              /* 1 for asterisks, -1 for underscores */
+	int type;              /* 1 for asterisks, -1 for underscores, 0 for tildes */
 	int can_open;          /* result of |MDInlineParser::can_open_emphasis| on it */
 	int can_close;         /* result of |MDInlineParser::can_close_emphasis| on it */
 	CLASS_DEFINITION
 } md_emphasis_delimiter;
 
 @<Find the possible emphasis delimiters@> =
-	int open_count[2] = { 0, 0 }, close_count[2] = { 0, 0 }, both_count[2] = { 0, 0 }; 
+	int open_count[3] = { 0, 0, 0 }, close_count[3] = { 0, 0, 0 }, both_count[3] = { 0, 0, 0 }; 
 	for (md_charpos pos = Markdown::left_edge_of(owner->down);
 		Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
-		int run = MDInlineParser::delimiter_run(pos);
+		int run = MDInlineParser::delimiter_run(pos, mask);
 		if (run != 0) {
 			if (no_delimiters >= MAX_MD_EMPHASIS_DELIMITERS) break;
-			int can_open = MDInlineParser::can_open_emphasis(pos, run);
-			int can_close = MDInlineParser::can_close_emphasis(pos, run);
+			int run_combined = run;
+			if (run > 10000000) run_combined = run - 10000000;
+			int can_open = MDInlineParser::can_open_emphasis(pos, run_combined);
+			int can_close = MDInlineParser::can_close_emphasis(pos, run_combined);
 			if ((no_delimiters == 0) && (can_open == FALSE)) continue;
 			if ((can_open == FALSE) && (can_close == FALSE)) continue;
 			md_emphasis_delimiter *P = &(delimiters[no_delimiters++]);
 			P->pos = pos;
-			P->width = (run>0)?run:(-run);
-			P->type = (run>0)?1:-1;
+			P->width = (run_combined>0)?run_combined:(-run_combined);
+			P->type = (run_combined>0)?1:-1;
+			if (run > 10000000) P->type = 0;
 			P->can_open = can_open;
 			P->can_close = can_close;
 			if (tracing_Markdown_parser) {
 				WRITE("DR%d at ", no_delimiters);
 				Markdown::debug_pos(OUT, pos);
 				WRITE(" width %d type %d", P->width, P->type);
-				if (MDInlineParser::left_flanking(pos, run)) WRITE(", left-flanking");
-				if (MDInlineParser::right_flanking(pos, run)) WRITE(", right-flanking");
+				if (MDInlineParser::left_flanking(pos, run_combined)) WRITE(", left-flanking");
+				if (MDInlineParser::right_flanking(pos, run_combined)) WRITE(", right-flanking");
 				if (P->can_open) WRITE(", can-open");
 				if (P->can_close) WRITE(", can-close");
 				WRITE(", preceded by ");
@@ -1162,11 +1191,13 @@ typedef struct md_emphasis_delimiter {
 				WRITE("\n");
 			}
 			int x = (P->type>0)?0:1;
+			if (P->type == 0) x = 2;
 			if ((can_open) && (can_close == FALSE)) open_count[x] += P->width;
 			if ((can_open == FALSE) && (can_close)) close_count[x] += P->width;
 			if ((can_open) && (can_close)) both_count[x] += P->width;
 			if ((both_count[0] == 0) && (open_count[0] == close_count[0]) &&
-				(both_count[1] == 0) && (open_count[1] == close_count[1])) break;
+				(both_count[1] == 0) && (open_count[1] == close_count[1]) &&
+				(both_count[2] == 0) && (open_count[2] == close_count[2])) break;
 		}
 	}
 
@@ -1223,8 +1254,8 @@ than the original, it does at least terminate.
 	@<Make the chain of emphasis items from top to bottom@>;
 	@<Perform the tree surgery to insert the emphasis item@>;
 
-	MDInlineParser::emphasis(variation, em_bottom);
-	MDInlineParser::emphasis(variation, option);
+	MDInlineParser::emphasis(variation, em_bottom, mask);
+	MDInlineParser::emphasis(variation, option, mask);
 
 	if (tracing_Markdown_parser) {
 		WRITE("Option %d is to fragment thus:\n", no_options);
@@ -1285,12 +1316,17 @@ be outermost. So this would give us:
 =
 
 @<Make the chain of emphasis items from top to bottom@> =
-	em_top = Markdown::new_item(((width%2) == 1)?EMPHASIS_MIT:STRONG_MIT);
-	if ((width%2) == 1) width -= 1; else width -= 2;
-	em_bottom = em_top;
-	while (width > 0) {
-		markdown_item *g = Markdown::new_item(STRONG_MIT); width -= 2;
-		em_bottom->down = g; em_bottom = g;
+	if (OD->type == 0) {
+		em_top = Markdown::new_item(STRIKETHROUGH_MIT);
+		em_bottom = em_top;
+	} else {
+		em_top = Markdown::new_item(((width%2) == 1)?EMPHASIS_MIT:STRONG_MIT);
+		if ((width%2) == 1) width -= 1; else width -= 2;
+		em_bottom = em_top;
+		while (width > 0) {
+			markdown_item *g = Markdown::new_item(STRONG_MIT); width -= 2;
+			em_bottom->down = g; em_bottom = g;
+		}
 	}
 
 @<Perform the tree surgery to insert the emphasis item@> =

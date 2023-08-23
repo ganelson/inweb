@@ -500,6 +500,8 @@ void Unit::test_Markdown(text_stream *arg) {
 	MarkdownVariations::remove_feature(testy_Markdown, ATX_HEADINGS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, ENTITIES_MARKDOWNFEATURE);
 
+	MarkdownVariations::make_GitHub_features_active(testy_Markdown);
+
 	markdown_feature *boxed_quotes = MarkdownVariations::new_feature(I"boxed code blocks", BOXED_QUOTES_MARKDOWNFEATURE);
 	METHOD_ADD(boxed_quotes, RENDER_MARKDOWN_MTID, Unit::boxed_quote_renderer);
 	MarkdownVariations::add_feature(testy_Markdown, BOXED_QUOTES_MARKDOWNFEATURE);
@@ -531,7 +533,10 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 		variation_to_test_against = MarkdownVariations::CommonMark();
 	} else if ((Str::get_first_char(text) == '!') && (Str::get_at(text, 1) == ' ')) {
 		WRITE_TO(STDOUT, "%S\n", text); Str::clear(marked_up);
-		if (Str::includes(text, I"Variation")) variation_to_test_against = testy_Markdown;
+		if (Str::includes(text, I"Variation"))
+			variation_to_test_against = testy_Markdown;
+		if (Str::includes(text, I"GitHub")) 
+			variation_to_test_against = MarkdownVariations::GitHub_flavored_Markdown();
 		if (Str::get_last_char(text) == '*') Markdown::set_tracing(TRUE);
 	} else {
 		WRITE_TO(marked_up, "%S\n", text);

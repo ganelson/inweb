@@ -18,10 +18,14 @@ void MarkdownVariations::start(void) {
 	MarkdownVariations::define_CommonMark();
 }
 
-markdown_variation *CommonMark_variation = NULL;
+markdown_variation *CommonMark_variation = NULL, *GitHub_flavored_Markdown_variation = NULL;
 
 markdown_variation *MarkdownVariations::CommonMark(void) {
 	return CommonMark_variation;
+}
+
+markdown_variation *MarkdownVariations::GitHub_flavored_Markdown(void) {
+	return GitHub_flavored_Markdown_variation;
 }
 
 @ A variation is essentially a named collection of features, which may affect
@@ -108,7 +112,8 @@ Vanilla ice cream is under-rated:
 @e BACKTICKED_CODE_MARKDOWNFEATURE
 @e LINKS_MARKDOWNFEATURE
 @e IMAGES_MARKDOWNFEATURE
-@e EMPHASIS_MARKDOWNFEATURE
+@e ASTERISK_EMPHASIS_MARKDOWNFEATURE
+@e UNDERSCORE_EMPHASIS_MARKDOWNFEATURE
 
 @e ENTITIES_MARKDOWNFEATURE
 
@@ -129,7 +134,8 @@ markdown_feature *inline_HTML_Markdown_feature = NULL;
 markdown_feature *backticked_code_Markdown_feature = NULL;
 markdown_feature *links_Markdown_feature = NULL;
 markdown_feature *images_Markdown_feature = NULL;
-markdown_feature *emphasis_Markdown_feature = NULL;
+markdown_feature *asterisk_emphasis_Markdown_feature = NULL;
+markdown_feature *underscore_emphasis_Markdown_feature = NULL;
 
 markdown_feature *entities_Markdown_feature = NULL;
 
@@ -150,11 +156,14 @@ void MarkdownVariations::define_CommonMark(void) {
 	backticked_code_Markdown_feature =      MarkdownVariations::new_feature(I"backticked code",      BACKTICKED_CODE_MARKDOWNFEATURE);
 	links_Markdown_feature =                MarkdownVariations::new_feature(I"links",                LINKS_MARKDOWNFEATURE);
 	images_Markdown_feature =               MarkdownVariations::new_feature(I"images",               IMAGES_MARKDOWNFEATURE);
-	emphasis_Markdown_feature =             MarkdownVariations::new_feature(I"emphasis",             EMPHASIS_MARKDOWNFEATURE);
+	asterisk_emphasis_Markdown_feature =    MarkdownVariations::new_feature(I"emphasis",             ASTERISK_EMPHASIS_MARKDOWNFEATURE);
+	underscore_emphasis_Markdown_feature =  MarkdownVariations::new_feature(I"emphasis",             UNDERSCORE_EMPHASIS_MARKDOWNFEATURE);
 
 	entities_Markdown_feature =             MarkdownVariations::new_feature(I"entities",             ENTITIES_MARKDOWNFEATURE);
 
 	CommonMark_variation = MarkdownVariations::new(I"CommonMark 0.30");
+	GitHub_flavored_Markdown_variation = MarkdownVariations::new(I"GitHub-flavored Markdown 0.29");
+	MarkdownVariations::make_GitHub_features_active(GitHub_flavored_Markdown_variation);
 }
 
 void MarkdownVariations::make_baseline_features_active(markdown_variation *variation) {
@@ -174,9 +183,24 @@ void MarkdownVariations::make_baseline_features_active(markdown_variation *varia
 	MarkdownVariations::add_feature(variation, BACKTICKED_CODE_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, LINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, IMAGES_MARKDOWNFEATURE);
-	MarkdownVariations::add_feature(variation, EMPHASIS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, ASTERISK_EMPHASIS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, UNDERSCORE_EMPHASIS_MARKDOWNFEATURE);
 
 	MarkdownVariations::add_feature(variation, ENTITIES_MARKDOWNFEATURE);
+}
+
+@h Github extensions to CommonMark.
+See //GitHub's specification -> https://github.github.com/gfm//, which is based
+on CommonMark, though its description of new features is a little more concise,
+since these have been added with more prudent syntax.
+
+@e STRIKETHROUGH_MARKDOWNFEATURE
+@e TABLES_MARKDOWNFEATURE
+
+=
+void MarkdownVariations::make_GitHub_features_active(markdown_variation *variation) {
+	MarkdownVariations::add_feature(variation, STRIKETHROUGH_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, TABLES_MARKDOWNFEATURE);
 }
 
 @h Methods for features.

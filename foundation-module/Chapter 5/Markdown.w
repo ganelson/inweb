@@ -315,6 +315,13 @@ paragraph is inline content.
 @e LINK_DEST_MIT
 @e LINK_TITLE_MIT
 
+@ Now for GitHub extensions:
+
+@e TABLE_MIT
+@e TABLE_COLUMN_MIT
+@e TABLE_ROW_MIT
+@e STRIKETHROUGH_MIT
+
 @ Recapitulating all of that:
 
 =
@@ -402,6 +409,11 @@ void Markdown::create_item_types(void) {
 	Markdown::new_inline_type(IMAGE_MIT, I"IMAGE");
 	Markdown::new_inline_type(LINK_DEST_MIT, I"LINK_DEST");
 	Markdown::new_inline_type(LINK_TITLE_MIT, I"LINK_TITLE");
+
+	Markdown::new_leaf_block_type(TABLE_MIT, I"TABLE");
+	Markdown::new_leaf_block_type(TABLE_COLUMN_MIT, I"TABLE_COLUMN");
+	Markdown::new_leaf_block_type(TABLE_ROW_MIT, I"TABLE_ROW");
+	Markdown::new_inline_type(STRIKETHROUGH_MIT, I"STRIKETHROUGH");
 }
 
 text_stream *Markdown::item_type_name(int t) {
@@ -554,6 +566,34 @@ int Markdown::get_heading_level(markdown_item *md) {
 void Markdown::set_heading_level(markdown_item *md, int L) {
 	if ((md == NULL) || (md->type != HEADING_MIT)) internal_error("not a heading");
 	if ((L < 1) || (L > 6)) internal_error("bad heading level");
+	md->details = L;
+}
+
+@ The |TABLE_MIT| item, and no other, has a "column count" which is at least 1.
+
+=
+int Markdown::get_column_count(markdown_item *md) {
+	if ((md == NULL) || (md->type != TABLE_MIT)) return 0;
+	return md->details;
+}
+
+void Markdown::set_column_count(markdown_item *md, int L) {
+	if ((md == NULL) || (md->type != TABLE_MIT)) internal_error("not a table");
+	if (L < 1) internal_error("bad column count");
+	md->details = L;
+}
+
+@ The |TABLE_COLUMN_MIT| item, and no other, has an "alignment" which is 0 to 3.
+
+=
+int Markdown::get_alignment(markdown_item *md) {
+	if ((md == NULL) || (md->type != TABLE_COLUMN_MIT)) return 0;
+	return md->details;
+}
+
+void Markdown::set_alignment(markdown_item *md, int L) {
+	if ((md == NULL) || (md->type != TABLE_COLUMN_MIT)) internal_error("not a table col");
+	if ((L < 0) || (L > 3)) internal_error("bad alignment");
 	md->details = L;
 }
 

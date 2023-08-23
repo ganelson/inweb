@@ -1,0 +1,21 @@
+! GitHub 491
+~~Hi~~ Hello, ~there~ world!
+! Solution
+<p><del>Hi</del> Hello, <del>there</del> world!</p>
+! End
+
+! GitHub 492
+This ~~has a
+
+new paragraph~~.
+! Solution
+<p>This ~~has a</p>
+<p>new paragraph~~.</p>
+! End
+
+! GitHub 493
+This will ~~~not~~~ strike.
+! Solution
+<p>This will ~~~not~~~ strike.</p>
+! End
+

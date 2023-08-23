@@ -1,0 +1,52 @@
+! GitHub 198
+| foo | bar |
+| --- | --- |
+| baz | bim |
+! End
+
+! GitHub 199
+| abc | defghi |
+:-: | -----------:
+bar | baz
+! End
+
+! GitHub 200
+| f\|oo  |
+| ------ |
+| b `\|` az |
+| b **\|** im |
+! End
+
+! GitHub 201
+| abc | def |
+| --- | --- |
+| bar | baz |
+> bar
+! End
+
+! GitHub 202
+| abc | def |
+| --- | --- |
+| bar | baz |
+bar
+
+bar
+! End
+
+! GitHub 203
+| abc | def |
+| --- |
+| bar |
+! End
+
+! GitHub 204
+| abc | def |
+| --- | --- |
+| bar |
+| bar | baz | boo |
+! End
+
+! GitHub 205
+| abc | def |
+| --- | --- |
+! End

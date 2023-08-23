@@ -54,6 +54,7 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 		case HTML_MIT:                  @<Render a raw HTML block@>; break;
 		case THEMATIC_MIT:              if (mode & TAGS_MDRMODE) WRITE("<hr />\n");
 		                                break;
+		case TABLE_MIT:					@<Render a table@>; break;
 		case EMPTY_MIT:                 break;
 
 		case PLAIN_MIT:    	            MDRenderer::slice(OUT, md, mode);
@@ -69,6 +70,10 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 		case STRONG_MIT:   	            if (mode & TAGS_MDRMODE) HTML_OPEN("strong");
 								        @<Recurse@>;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("strong");
+								        break;
+		case STRIKETHROUGH_MIT:   	    if (mode & TAGS_MDRMODE) HTML_OPEN("del");
+								        @<Recurse@>;
+								        if (mode & TAGS_MDRMODE) HTML_CLOSE("del");
 								        break;
 		case CODE_MIT:                  if (mode & TAGS_MDRMODE) HTML_OPEN("code");
 								       	mode = mode & (~ESCAPES_MDRMODE);
@@ -197,6 +202,54 @@ been taken out at the parsing stage.)
 
 @<Render a raw HTML block@> =
 	WRITE("%S", md->stashed);
+
+@<Render a table@> =
+	markdown_item *alignment_markers = md->down;
+	if (alignment_markers) {
+		int row_count = 0;
+		for (markdown_item *md = alignment_markers->next; md; md = md->next) row_count++;
+		if (row_count > 0) {
+			WRITE("<table>\n");
+			WRITE("<thead>\n");
+			markdown_item *row = alignment_markers->next;
+			WRITE("<tr>\n");
+			for (markdown_item *md = row->down, *top = alignment_markers->down;
+				md; md = md->next, top = top->next) {
+				switch (Markdown::get_alignment(top)) {
+					case 0: WRITE("<th>"); break;
+					case 1: WRITE("<th align=\"left\">"); break;
+					case 2: WRITE("<th align=\"right\">"); break;
+					case 3: WRITE("<th align=\"center\">"); break;
+				}
+				if (md->down) MDRenderer::recurse(OUT, md->down, mode, variation);
+				WRITE("</th>\n");
+			}
+			WRITE("</tr>\n");
+			row = row->next;
+			WRITE("</thead>\n");
+			if (row_count > 1) {
+				WRITE("<tbody>\n");
+				while (row) {
+					WRITE("<tr>\n");
+					for (markdown_item *md = row->down, *top = alignment_markers->down;
+						md; md = md->next, top = top->next) {
+						switch (Markdown::get_alignment(top)) {
+							case 0: WRITE("<td>"); break;
+							case 1: WRITE("<td align=\"left\">"); break;
+							case 2: WRITE("<td align=\"right\">"); break;
+							case 3: WRITE("<td align=\"center\">"); break;
+						}
+						if (md->down) MDRenderer::recurse(OUT, md->down, mode, variation);
+						WRITE("</td>\n");
+					}
+					WRITE("</tr>\n");
+					row = row->next;
+				}
+				WRITE("</tbody>\n");
+			}
+			WRITE("</table>\n");
+		}
+	}
 
 @<Render email link@> =
 	text_stream *supplied_scheme = I"mailto:";

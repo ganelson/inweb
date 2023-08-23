@@ -1,0 +1,13 @@
+! GitHub 491
+~~Hi~~ Hello, ~there~ world!
+! End
+
+! GitHub 492
+This ~~has a
+
+new paragraph~~.
+! End
+
+! GitHub 493
+This will ~~~not~~~ strike.
+! End

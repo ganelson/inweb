@@ -1,0 +1,169 @@
+! GitHub 198
+| foo | bar |
+| --- | --- |
+| baz | bim |
+! Solution
+<table>
+<thead>
+<tr>
+<th>foo</th>
+<th>bar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baz</td>
+<td>bim</td>
+</tr>
+</tbody>
+</table>
+! End
+
+! GitHub 199
+| abc | defghi |
+:-: | -----------:
+bar | baz
+! Solution
+<table>
+<thead>
+<tr>
+<th align="center">abc</th>
+<th align="right">defghi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">bar</td>
+<td align="right">baz</td>
+</tr>
+</tbody>
+</table>
+! End
+
+! GitHub 200
+| f\|oo  |
+| ------ |
+| b `\|` az |
+| b **\|** im |
+! Solution
+<table>
+<thead>
+<tr>
+<th>f|oo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b <code>|</code> az</td>
+</tr>
+<tr>
+<td>b <strong>|</strong> im</td>
+</tr>
+</tbody>
+</table>
+! End
+
+! GitHub 201
+| abc | def |
+| --- | --- |
+| bar | baz |
+> bar
+! Solution
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bar</td>
+<td>baz</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>bar</p>
+</blockquote>
+! End
+
+! GitHub 202
+| abc | def |
+| --- | --- |
+| bar | baz |
+bar
+
+bar
+! Solution
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bar</td>
+<td>baz</td>
+</tr>
+<tr>
+<td>bar</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>bar</p>
+! End
+
+! GitHub 203
+| abc | def |
+| --- |
+| bar |
+! Solution
+<p>| abc | def |
+| --- |
+| bar |</p>
+! End
+
+! GitHub 204
+| abc | def |
+| --- | --- |
+| bar |
+| bar | baz | boo |
+! Solution
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bar</td>
+<td></td>
+</tr>
+<tr>
+<td>bar</td>
+<td>baz</td>
+</tr>
+</tbody>
+</table>
+! End
+
+! GitHub 205
+| abc | def |
+| --- | --- |
+! Solution
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+</table>
+! End
+
