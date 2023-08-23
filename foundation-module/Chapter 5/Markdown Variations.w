@@ -13,6 +13,7 @@ will provide only one of these here: the baseline of CommonMark.
 markdown_feature *markdown_feature_registry[MAX_MARKDOWNFEATURES];
 
 void MarkdownVariations::start(void) {
+	Markdown::create_item_types();
 	for (int i=0; i<MAX_MARKDOWNFEATURES; i++) markdown_feature_registry[i] = NULL;
 	MarkdownVariations::define_CommonMark();
 }
@@ -174,6 +175,8 @@ void MarkdownVariations::make_baseline_features_active(markdown_variation *varia
 	MarkdownVariations::add_feature(variation, LINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, IMAGES_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, EMPHASIS_MARKDOWNFEATURE);
+
+	MarkdownVariations::add_feature(variation, ENTITIES_MARKDOWNFEATURE);
 }
 
 @h Methods for features.

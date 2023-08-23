@@ -626,9 +626,9 @@ void MDBlockParser::change_type(md_doc_state *state, markdown_item *block, int t
 	if (tracing_Markdown_parser) {
 		PRINT("Change type: "); Markdown::debug_item(STDOUT, block);
 	}
-	if (block->open) MDBlockParser::remove_receiver(state, block);
+	if ((state) && (block->open)) MDBlockParser::remove_receiver(state, block);
 	block->type = t;
-	if (block->open) MDBlockParser::make_receiver(state, block);
+	if ((state) && (block->open)) MDBlockParser::make_receiver(state, block);
 	if (tracing_Markdown_parser) {
 		PRINT(" -> "); Markdown::debug_item(STDOUT, block); PRINT("\n");
 	}

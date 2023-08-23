@@ -258,8 +258,10 @@ void Markdown::render_extended(OUTPUT_STREAM, markdown_item *tree,
 We will represent the results of parsing Markdown in the obvious way: as a
 tree structure, made of nodes called "items" which are |markdown_item| objects.
 
-Each node has one of the following types. |DOCUMENT_MIT| is for the head node,
-and no other.
+Each node used by CommonMark has one of the following types, but variations
+can add their own further types.
+
+|DOCUMENT_MIT| is for the head node, and no other.
 
 @e DOCUMENT_MIT from 1
 
@@ -316,97 +318,114 @@ paragraph is inline content.
 @ Recapitulating all of that:
 
 =
+markdown_type_metadata markdown_type_metadata_registry[NO_DEFINED_MIT_VALUES+1];
+
+typedef struct markdown_type_metadata {
+	struct text_stream *name;
+	int is_container;
+	int is_block;
+	int is_inline;
+	int is_plainish;
+	int is_quasiplainish;
+} markdown_type_metadata;
+
+void Markdown::new_item_type(int mit, text_stream *name) {
+	markdown_type_metadata_registry[mit].name = Str::duplicate(name);
+	markdown_type_metadata_registry[mit].is_container = FALSE;
+	markdown_type_metadata_registry[mit].is_block = FALSE;
+	markdown_type_metadata_registry[mit].is_inline = FALSE;
+	markdown_type_metadata_registry[mit].is_plainish = FALSE;
+	markdown_type_metadata_registry[mit].is_quasiplainish = FALSE;
+}
+
+void Markdown::new_container_block_type(int mit, text_stream *name) {
+	Markdown::new_item_type(mit, name);
+	markdown_type_metadata_registry[mit].is_container = TRUE;
+	markdown_type_metadata_registry[mit].is_block = TRUE;
+}
+
+void Markdown::new_leaf_block_type(int mit, text_stream *name) {
+	Markdown::new_item_type(mit, name);
+	markdown_type_metadata_registry[mit].is_block = TRUE;
+}
+
+void Markdown::new_inline_type(int mit, text_stream *name) {
+	Markdown::new_item_type(mit, name);
+	markdown_type_metadata_registry[mit].is_inline = TRUE;
+}
+
+void Markdown::new_plainish_inline_type(int mit, text_stream *name) {
+	Markdown::new_item_type(mit, name);
+	markdown_type_metadata_registry[mit].is_inline = TRUE;
+	markdown_type_metadata_registry[mit].is_plainish = TRUE;
+	markdown_type_metadata_registry[mit].is_quasiplainish = TRUE;
+}
+
+void Markdown::new_quasiplainish_inline_type(int mit, text_stream *name) {
+	Markdown::new_item_type(mit, name);
+	markdown_type_metadata_registry[mit].is_inline = TRUE;
+	markdown_type_metadata_registry[mit].is_quasiplainish = TRUE;
+}
+
+void Markdown::create_item_types(void) {
+	for (int mit = 1; mit <= NO_DEFINED_MIT_VALUES; mit++)
+		Markdown::new_item_type(mit, I"?UNDEFINED");
+
+	Markdown::new_container_block_type(DOCUMENT_MIT, I"DOCUMENT");
+	Markdown::new_container_block_type(BLOCK_QUOTE_MIT, I"BLOCK_QUOTE");
+	Markdown::new_container_block_type(UNORDERED_LIST_MIT, I"UNORDERED_LIST");
+	Markdown::new_container_block_type(ORDERED_LIST_MIT, I"ORDERED_LIST");
+	Markdown::new_container_block_type(UNORDERED_LIST_ITEM_MIT, I"UNORDERED_LIST_ITEM");
+	Markdown::new_container_block_type(ORDERED_LIST_ITEM_MIT, I"ORDERED_LIST_ITEM");
+
+	Markdown::new_leaf_block_type(PARAGRAPH_MIT, I"PARAGRAPH");
+	Markdown::new_leaf_block_type(THEMATIC_MIT, I"THEMATIC");
+	Markdown::new_leaf_block_type(HEADING_MIT, I"HEADING");
+	Markdown::new_leaf_block_type(CODE_BLOCK_MIT, I"CODE_BLOCK");
+	Markdown::new_leaf_block_type(HTML_MIT, I"HTML");
+	Markdown::new_leaf_block_type(EMPTY_MIT, I"EMPTY");
+
+	Markdown::new_inline_type(MATERIAL_MIT, I"MATERIAL");
+
+	Markdown::new_plainish_inline_type(PLAIN_MIT, I"PLAIN");
+	Markdown::new_plainish_inline_type(LINE_BREAK_MIT, I"LINE_BREAK");
+	Markdown::new_plainish_inline_type(SOFT_BREAK_MIT, I"SOFT_BREAK");
+
+	Markdown::new_quasiplainish_inline_type(INLINE_HTML_MIT, I"INLINE_HTML");
+
+	Markdown::new_inline_type(EMPHASIS_MIT, I"EMPHASIS");
+	Markdown::new_inline_type(STRONG_MIT, I"STRONG");
+	Markdown::new_inline_type(CODE_MIT, I"CODE");
+	Markdown::new_inline_type(URI_AUTOLINK_MIT, I"URI_AUTOLINK");
+	Markdown::new_inline_type(EMAIL_AUTOLINK_MIT, I"EMAIL_AUTOLINK");
+	Markdown::new_inline_type(LINK_MIT, I"LINK");
+	Markdown::new_inline_type(IMAGE_MIT, I"IMAGE");
+	Markdown::new_inline_type(LINK_DEST_MIT, I"LINK_DEST");
+	Markdown::new_inline_type(LINK_TITLE_MIT, I"LINK_TITLE");
+}
+
 text_stream *Markdown::item_type_name(int t) {
-	switch (t) {
-		case DOCUMENT_MIT:            return I"DOCUMENT_MIT";
-
-		case BLOCK_QUOTE_MIT:         return I"BLOCK_QUOTE";
-		case UNORDERED_LIST_MIT:      return I"UNORDERED_LIST";
-		case ORDERED_LIST_MIT:        return I"ORDERED_LIST";
-		case UNORDERED_LIST_ITEM_MIT: return I"UNORDERED_LIST_ITEM";
-		case ORDERED_LIST_ITEM_MIT:   return I"ORDERED_LIST_ITEM";
-
-		case PARAGRAPH_MIT:           return I"PARAGRAPH";
-		case THEMATIC_MIT:            return I"THEMATIC";
-		case HEADING_MIT:             return I"HEADING";
-		case CODE_BLOCK_MIT:          return I"CODE_BLOCK";
-		case HTML_MIT:                return I"HTML";
-		case EMPTY_MIT:               return I"LINK_REF";
-
-		case MATERIAL_MIT:            return I"MATERIAL";
-
-		case PLAIN_MIT:               return I"PLAIN";
-		case LINE_BREAK_MIT:          return I"LINE_BREAK";
-		case SOFT_BREAK_MIT:          return I"SOFT_BREAK";
-
-		case EMPHASIS_MIT:            return I"EMPHASIS";
-		case STRONG_MIT:              return I"STRONG";
-		case CODE_MIT:                return I"CODE";
-
-		case URI_AUTOLINK_MIT:        return I"URI_AUTOLINK";
-		case EMAIL_AUTOLINK_MIT:      return I"EMAIL_AUTOLINK";
-		case INLINE_HTML_MIT:         return I"INLINE_HTML";
-
-		case LINK_MIT:                return I"LINK";
-		case IMAGE_MIT:               return I"IMAGE";
-
-		case LINK_DEST_MIT:           return I"LINK_DEST";
-		case LINK_TITLE_MIT:          return I"LINK_TITLE";
-
-		default:                      return I"<UNKNOWN>";
-	}
+	if ((t<1) || (t>NO_DEFINED_MIT_VALUES)) return I"<UNKNOWN>";
+	return markdown_type_metadata_registry[t].name;
 }
 
 int Markdown::item_type_container_block(int t) {
-	switch (t) {
-		case DOCUMENT_MIT:            return TRUE;
-		case BLOCK_QUOTE_MIT:         return TRUE;
-		case ORDERED_LIST_MIT:        return TRUE;
-		case UNORDERED_LIST_MIT:      return TRUE;
-		case ORDERED_LIST_ITEM_MIT:   return TRUE;
-		case UNORDERED_LIST_ITEM_MIT: return TRUE;
-	}
-	return FALSE;
+	if ((t<1) || (t>NO_DEFINED_MIT_VALUES)) return FALSE;
+	return markdown_type_metadata_registry[t].is_container;
 }
 
 int Markdown::item_type_leaf_block(int t) {
-	switch (t) {
-		case PARAGRAPH_MIT:           return TRUE;
-		case THEMATIC_MIT:            return TRUE;
-		case HEADING_MIT:             return TRUE;
-		case CODE_BLOCK_MIT:          return TRUE;
-		case HTML_MIT:                return TRUE;
-		case EMPTY_MIT:               return TRUE;
-	}
-	return FALSE;
+	if ((t<1) || (t>NO_DEFINED_MIT_VALUES)) return FALSE;
+	return ((markdown_type_metadata_registry[t].is_container == FALSE) &&
+			(markdown_type_metadata_registry[t].is_block));
 }
 
 @ All nodes other than blocks are "inline" items:
 
 =
 int Markdown::item_type_inline(int t) {
-	switch (t) {
-		case MATERIAL_MIT:            return TRUE;
-
-		case PLAIN_MIT:               return TRUE;
-		case LINE_BREAK_MIT:          return TRUE;
-		case SOFT_BREAK_MIT:          return TRUE;
-
-		case EMPHASIS_MIT:            return TRUE;
-		case STRONG_MIT:              return TRUE;
-		case CODE_MIT:                return TRUE;
-
-		case URI_AUTOLINK_MIT:        return TRUE;
-		case EMAIL_AUTOLINK_MIT:      return TRUE;
-		case INLINE_HTML_MIT:         return TRUE;
-
-		case LINK_MIT:                return TRUE;
-		case IMAGE_MIT:               return TRUE;
-
-		case LINK_DEST_MIT:           return TRUE;
-		case LINK_TITLE_MIT:          return TRUE;
-	}
-	return FALSE;
+	if ((t<1) || (t>NO_DEFINED_MIT_VALUES)) return FALSE;
+	return markdown_type_metadata_registry[t].is_inline;
 }
 
 @ A "plainish" item contains plain text and/or line breaks:
@@ -418,12 +437,8 @@ int Markdown::plainish(markdown_item *md) {
 }
 
 int Markdown::item_type_plainish(int t) {
-	switch (t) {
-		case PLAIN_MIT:               return TRUE;
-		case LINE_BREAK_MIT:          return TRUE;
-		case SOFT_BREAK_MIT:          return TRUE;
-	}
-	return FALSE;
+	if ((t<1) || (t>NO_DEFINED_MIT_VALUES)) return FALSE;
+	return markdown_type_metadata_registry[t].is_plainish;
 }
 
 @ A "quasi-plainish" item can also include autolinks:
@@ -435,13 +450,8 @@ int Markdown::quasi_plainish(markdown_item *md) {
 }
 
 int Markdown::item_type_quasi_plainish(int t) {
-	switch (t) {
-		case PLAIN_MIT:               return TRUE;
-		case LINE_BREAK_MIT:          return TRUE;
-		case SOFT_BREAK_MIT:          return TRUE;
-		case INLINE_HTML_MIT:         return TRUE;
-	}
-	return FALSE;
+	if ((t<1) || (t>NO_DEFINED_MIT_VALUES)) return FALSE;
+	return markdown_type_metadata_registry[t].is_quasiplainish;
 }
 
 @h Items.

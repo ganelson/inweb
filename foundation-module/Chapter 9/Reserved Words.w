@@ -70,6 +70,7 @@ of each C function.
 hash_table_entry *ReservedWords::find_hash_entry(hash_table *HT, text_stream *text, int create) {
 	int h = ReservedWords::hash_code_from_word(text);
 	if (h == NUMBER_HASH) return NULL;
+	if (HT == NULL) return NULL;
 	if ((h<0) || (h>=HASH_TAB_SIZE)) internal_error("hash code out of range");
 	if (HT->safety_code != HASH_SAFETY_CODE) internal_error("uninitialised HT");
 	if (HT->analysis_hash[h] != NULL) {

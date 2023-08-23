@@ -3,11 +3,43 @@ In this variant, entities like &#67; and &HilbertSpace; should be ignored.
 Similarly, inline HTML <img src="whatever"> should be thrown out, though
 autolinks like <https://this.com> or <whomever@wherever.com> ought to keep working.
 
+> This is some
+> sort of quotation.
+
+So now:
+
+	{*}"Bananas"
+	
+	This is all good stuff.
+
+But then again:
+
+	{**}And it resumes here.
+
 # Not a heading, either
 ! Solution
 <p>In this variant, entities like &amp;#67; and &amp;HilbertSpace; should be ignored.
 Similarly, inline HTML &lt;img src=&quot;whatever&quot;&gt; should be thrown out, though
 autolinks like <a href="https://this.com">https://this.com</a> or <a href="mailto:whomever@wherever.com">whomever@wherever.com</a>.</p>
+<div border="1">
+    <blockquote>
+    <p>This is some
+    sort of quotation.</p>
+    </blockquote>
+</div>
+<p>So now:</p>
+<a class="pastelink" href="javascript:pasteCode('"Bananas"
+
+This is all good stuff.
+And it resumes here.
+')"><img border=0 src=paste.png></a><pre><code>&quot;Bananas&quot;
+
+This is all good stuff.
+</code></pre>
+<p>But then again:</p>
+<a class="pastelink" href="javascript:pasteCode('And it resumes here.
+')"><img border=0 src=paste.png></a><pre><code>And it resumes here.
+</code></pre>
 <p># Not a heading, either</p>
 ! End
 
