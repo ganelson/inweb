@@ -16,6 +16,7 @@ void MarkdownVariations::start(void) {
 	Markdown::create_item_types();
 	for (int i=0; i<MAX_MARKDOWNFEATURES; i++) markdown_feature_registry[i] = NULL;
 	MarkdownVariations::define_CommonMark();
+	MarkdownVariations::define_GFM();
 }
 
 markdown_variation *CommonMark_variation = NULL, *GitHub_flavored_Markdown_variation = NULL;
@@ -162,8 +163,6 @@ void MarkdownVariations::define_CommonMark(void) {
 	entities_Markdown_feature =             MarkdownVariations::new_feature(I"entities",             ENTITIES_MARKDOWNFEATURE);
 
 	CommonMark_variation = MarkdownVariations::new(I"CommonMark 0.30");
-	GitHub_flavored_Markdown_variation = MarkdownVariations::new(I"GitHub-flavored Markdown 0.29");
-	MarkdownVariations::make_GitHub_features_active(GitHub_flavored_Markdown_variation);
 }
 
 void MarkdownVariations::make_baseline_features_active(markdown_variation *variation) {
@@ -196,11 +195,34 @@ since these have been added with more prudent syntax.
 
 @e STRIKETHROUGH_MARKDOWNFEATURE
 @e TABLES_MARKDOWNFEATURE
+@e TASK_LIST_ITEMS_MARKDOWNFEATURE
+@e EXTENDED_AUTOLINKS_MARKDOWNFEATURE
+@e DISALLOWED_RAW_HTML_MARKDOWNFEATURE
 
 =
+markdown_feature *strikethrough_Markdown_feature = NULL;
+markdown_feature *tables_Markdown_feature = NULL;
+markdown_feature *task_list_items_Markdown_feature = NULL;
+markdown_feature *extended_autolinks_Markdown_feature = NULL;
+markdown_feature *disallowed_raw_HTML_Markdown_feature = NULL;
+
+void MarkdownVariations::define_GFM(void) {
+	strikethrough_Markdown_feature =       MarkdownVariations::new_feature(I"strikethrough",       STRIKETHROUGH_MARKDOWNFEATURE);
+	tables_Markdown_feature =              MarkdownVariations::new_feature(I"tables",              TABLES_MARKDOWNFEATURE);
+	task_list_items_Markdown_feature =     MarkdownVariations::new_feature(I"task list items",     TASK_LIST_ITEMS_MARKDOWNFEATURE);
+	extended_autolinks_Markdown_feature =  MarkdownVariations::new_feature(I"extended autolinks",  EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
+	disallowed_raw_HTML_Markdown_feature = MarkdownVariations::new_feature(I"disallowed raw HTML", DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
+
+	GitHub_flavored_Markdown_variation = MarkdownVariations::new(I"GitHub-flavored Markdown 0.29");
+	MarkdownVariations::make_GitHub_features_active(GitHub_flavored_Markdown_variation);
+}
+
 void MarkdownVariations::make_GitHub_features_active(markdown_variation *variation) {
 	MarkdownVariations::add_feature(variation, STRIKETHROUGH_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, TABLES_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, TASK_LIST_ITEMS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
 }
 
 @h Methods for features.

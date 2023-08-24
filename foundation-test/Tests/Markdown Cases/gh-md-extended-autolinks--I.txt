@@ -1,0 +1,138 @@
+! GitHub 622
+www.commonmark.org
+! Solution
+<p><a href="http://www.commonmark.org">www.commonmark.org</a></p>
+! End
+
+! GitHub 623
+Visit www.commonmark.org/help for more information.
+! Solution
+<p>Visit <a href="http://www.commonmark.org/help">www.commonmark.org/help</a> for more information.</p>
+! End
+
+! GitHub 624
+Visit www.commonmark.org.
+
+Visit www.commonmark.org/a.b.
+! Solution
+<p>Visit <a href="http://www.commonmark.org">www.commonmark.org</a>.</p>
+<p>Visit <a href="http://www.commonmark.org/a.b">www.commonmark.org/a.b</a>.</p>
+! End
+
+! GitHub 625
+www.google.com/search?q=Markup+(business)
+
+www.google.com/search?q=Markup+(business)))
+
+(www.google.com/search?q=Markup+(business))
+
+(www.google.com/search?q=Markup+(business)
+! Solution
+<p><a href="http://www.google.com/search?q=Markup+(business)">www.google.com/search?q=Markup+(business)</a></p>
+<p><a href="http://www.google.com/search?q=Markup+(business)">www.google.com/search?q=Markup+(business)</a>))</p>
+<p>(<a href="http://www.google.com/search?q=Markup+(business)">www.google.com/search?q=Markup+(business)</a>)</p>
+<p>(<a href="http://www.google.com/search?q=Markup+(business)">www.google.com/search?q=Markup+(business)</a></p>
+! End
+
+! GitHub 626
+www.google.com/search?q=(business))+ok
+! Solution
+<p><a href="http://www.google.com/search?q=(business))+ok">www.google.com/search?q=(business))+ok</a></p>
+! End
+
+! GitHub 627
+www.google.com/search?q=commonmark&hl=en
+
+www.google.com/search?q=commonmark&hl;
+! Solution
+<p><a href="http://www.google.com/search?q=commonmark&amp;hl=en">www.google.com/search?q=commonmark&amp;hl=en</a></p>
+<p><a href="http://www.google.com/search?q=commonmark">www.google.com/search?q=commonmark</a>&amp;hl;</p>
+! End
+
+! GitHub 628
+www.commonmark.org/he<lp
+! Solution
+<p><a href="http://www.commonmark.org/he">www.commonmark.org/he</a>&lt;lp</p>
+! End
+
+! GitHub 629
+http://commonmark.org
+
+(Visit https://encrypted.google.com/search?q=Markup+(business))
+! Solution
+<p><a href="http://commonmark.org">http://commonmark.org</a></p>
+<p>(Visit <a href="https://encrypted.google.com/search?q=Markup+(business)">https://encrypted.google.com/search?q=Markup+(business)</a>)</p>
+! End
+
+! GitHub 630
+foo@bar.baz
+! Solution
+<p><a href="mailto:foo@bar.baz">foo@bar.baz</a></p>
+! End
+
+! GitHub 631
+hello@mail+xyz.example isn't valid, but hello+xyz@mail.example is.
+! Solution
+<p>hello@mail+xyz.example isn't valid, but <a href="mailto:hello+xyz@mail.example">hello+xyz@mail.example</a> is.</p>
+! End
+
+! GitHub 632
+a.b-c_d@a.b
+
+a.b-c_d@a.b.
+
+a.b-c_d@a.b-
+
+a.b-c_d@a.b_
+! Solution
+<p><a href="mailto:a.b-c_d@a.b">a.b-c_d@a.b</a></p>
+<p><a href="mailto:a.b-c_d@a.b">a.b-c_d@a.b</a>.</p>
+<p>a.b-c_d@a.b-</p>
+<p>a.b-c_d@a.b_</p>
+! End
+
+! GitHub 633
+mailto:foo@bar.baz
+
+mailto:a.b-c_d@a.b
+
+mailto:a.b-c_d@a.b.
+
+mailto:a.b-c_d@a.b/
+
+mailto:a.b-c_d@a.b-
+
+mailto:a.b-c_d@a.b_
+
+xmpp:foo@bar.baz
+
+xmpp:foo@bar.baz.
+! Solution
+<p><a href="mailto:foo@bar.baz">mailto:foo@bar.baz</a></p>
+<p><a href="mailto:a.b-c_d@a.b">mailto:a.b-c_d@a.b</a></p>
+<p><a href="mailto:a.b-c_d@a.b">mailto:a.b-c_d@a.b</a>.</p>
+<p><a href="mailto:a.b-c_d@a.b">mailto:a.b-c_d@a.b</a>/</p>
+<p>mailto:a.b-c_d@a.b-</p>
+<p>mailto:a.b-c_d@a.b_</p>
+<p><a href="xmpp:foo@bar.baz">xmpp:foo@bar.baz</a></p>
+<p><a href="xmpp:foo@bar.baz">xmpp:foo@bar.baz</a>.</p>
+! End
+
+! GitHub 634
+xmpp:foo@bar.baz/txt
+
+xmpp:foo@bar.baz/txt@bin
+
+xmpp:foo@bar.baz/txt@bin.com
+! Solution
+<p><a href="xmpp:foo@bar.baz/txt">xmpp:foo@bar.baz/txt</a></p>
+<p><a href="xmpp:foo@bar.baz/txt@bin">xmpp:foo@bar.baz/txt@bin</a></p>
+<p><a href="xmpp:foo@bar.baz/txt@bin.com">xmpp:foo@bar.baz/txt@bin.com</a></p>
+! End
+
+! GitHub 635
+xmpp:foo@bar.baz/txt/bin
+! Solution
+<p><a href="xmpp:foo@bar.baz/txt">xmpp:foo@bar.baz/txt</a>/bin</p>
+! End
+

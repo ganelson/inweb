@@ -2229,3 +2229,41 @@ void MDBlockParser::propagate_white_space_follows(md_doc_state *state, markdown_
 		if ((c->next == NULL) && (c->whitespace_follows))
 			MDBlockParser::mark_block_with_ws(state, at);
 }
+
+@ This detects task list items, a GitHub extension:
+
+"A task list item is a list item where the first block in it is a paragraph
+which begins with a task list item marker and at least one whitespace character
+before any other content.
+
+A task list item marker consists of an optional number of spaces, a left square bracket,
+either a whitespace character or the letter x in either lowercase or uppercase,
+and then a right square bracket."
+
+=
+void MDBlockParser::task_list_items(md_doc_state *state, markdown_item *at) {
+	if (at == NULL) return;
+	if ((at->type == ORDERED_LIST_ITEM_MIT) || (at->type == UNORDERED_LIST_ITEM_MIT)) {
+		if ((at->down) && (at->down->type == PARAGRAPH_MIT)) {
+			text_stream *X = at->down->stashed;
+			int i=0;
+			while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
+			if ((Str::get_at(X, i) == '[') && (Str::get_at(X, i+2) == ']')) {
+				wchar_t middle = Str::get_at(X, i+1);
+				int ticked = NOT_APPLICABLE;
+				if ((middle == 'x') || (middle == 'X')) ticked = TRUE;
+				if ((middle == ' ') || (middle == '\t')) ticked = FALSE;
+				if (ticked != NOT_APPLICABLE) {
+					markdown_item *tickbox = Markdown::new_item(TICKBOX_MIT);
+					Markdown::set_tick_state(tickbox, ticked);
+					at->down->down = tickbox;
+					i+=3;
+					while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
+					Str::delete_n_characters(X, i);
+				}
+			}
+		}
+	}
+	for (markdown_item *c = at->down; c; c = c->next)
+		MDBlockParser::task_list_items(state, c);
+}

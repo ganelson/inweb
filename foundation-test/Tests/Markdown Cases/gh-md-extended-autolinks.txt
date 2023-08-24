@@ -1,0 +1,92 @@
+! GitHub 622
+www.commonmark.org
+! End
+
+! GitHub 623
+Visit www.commonmark.org/help for more information.
+! End
+
+! GitHub 624
+Visit www.commonmark.org.
+
+Visit www.commonmark.org/a.b.
+! End
+
+! GitHub 625
+www.google.com/search?q=Markup+(business)
+
+www.google.com/search?q=Markup+(business)))
+
+(www.google.com/search?q=Markup+(business))
+
+(www.google.com/search?q=Markup+(business)
+! End
+
+! GitHub 626
+www.google.com/search?q=(business))+ok
+! End
+
+! GitHub 627
+www.google.com/search?q=commonmark&hl=en
+
+www.google.com/search?q=commonmark&hl;
+! End
+
+! GitHub 628
+www.commonmark.org/he<lp
+! End
+
+! GitHub 629
+http://commonmark.org
+
+(Visit https://encrypted.google.com/search?q=Markup+(business))
+! End
+
+! GitHub 630
+foo@bar.baz
+! End
+
+! GitHub 631
+hello@mail+xyz.example isn't valid, but hello+xyz@mail.example is.
+! End
+
+! GitHub 632
+a.b-c_d@a.b
+
+a.b-c_d@a.b.
+
+a.b-c_d@a.b-
+
+a.b-c_d@a.b_
+! End
+
+! GitHub 633
+mailto:foo@bar.baz
+
+mailto:a.b-c_d@a.b
+
+mailto:a.b-c_d@a.b.
+
+mailto:a.b-c_d@a.b/
+
+mailto:a.b-c_d@a.b-
+
+mailto:a.b-c_d@a.b_
+
+xmpp:foo@bar.baz
+
+xmpp:foo@bar.baz.
+! End
+
+! GitHub 634
+xmpp:foo@bar.baz/txt
+
+xmpp:foo@bar.baz/txt@bin
+
+xmpp:foo@bar.baz/txt@bin.com
+! End
+
+! GitHub 635
+xmpp:foo@bar.baz/txt/bin
+! End
+

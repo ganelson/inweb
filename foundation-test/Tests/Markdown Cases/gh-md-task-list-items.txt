@@ -1,0 +1,11 @@
+! GitHub 279
+- [ ] foo
+- [x] bar
+! End
+
+! GitHub 280
+- [x] foo
+  - [ ] bar
+  - [x] baz
+- [ ] bim
+! End

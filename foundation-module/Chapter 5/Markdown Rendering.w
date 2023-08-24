@@ -18,6 +18,7 @@ through the tree: it's a bitmap composed of the following.
 @d RAW_MDRMODE      0x0008     /* Treat all characters literally */
 @d LOOSE_MDRMODE    0x0010     /* Wrap list items in paragraph tags */
 @d ENTITIES_MDRMODE 0x0020     /* Convert |&entity;| to whatever it ought to represent */
+@d FILTERED_MDRMODE 0x0040     /* Make first |<| character safe as |&lt;| */
 
 =
 void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
@@ -49,6 +50,7 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 								        @<Recurse@>;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 								        break;
+		case TICKBOX_MIT:               @<Render a tickbox@>; break;
 		case HEADING_MIT:               @<Render a heading@>; break;
 		case CODE_BLOCK_MIT:            @<Render a code block@>; break;
 		case HTML_MIT:                  @<Render a raw HTML block@>; break;
@@ -83,8 +85,11 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 								        break;
 
 		case EMAIL_AUTOLINK_MIT:        @<Render email link@>; break;
+		case XMPP_AUTOLINK_MIT:         @<Render email link@>; break;
 		case URI_AUTOLINK_MIT:          @<Render URI link@>; break;
 		case INLINE_HTML_MIT:           mode = mode | RAW_MDRMODE;
+										if (Markdown::get_filtered_state(md))
+											mode = mode | FILTERED_MDRMODE;
 								       	mode = mode & (~ESCAPES_MDRMODE);
 								       	mode = mode & (~ENTITIES_MDRMODE);
 								       	MDRenderer::slice(OUT, md, mode);
@@ -138,14 +143,24 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	if (mode & TAGS_MDRMODE) HTML_OPEN("li");
 	int nl_issued = FALSE;
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
-		if (((mode & LOOSE_MDRMODE) == 0) && (ch->type == PARAGRAPH_MIT))
-			MDRenderer::recurse(OUT, ch->down, mode, variation);
-		else {
+		if (((mode & LOOSE_MDRMODE) == 0) && (ch->type == PARAGRAPH_MIT)) {
+			for (markdown_item *gch = ch->down; gch; gch = gch->next)
+				MDRenderer::recurse(OUT, gch, mode, variation);
+		} else {
 			if (nl_issued == FALSE) { nl_issued = TRUE; WRITE("\n"); }
 			MDRenderer::recurse(OUT, ch, mode, variation);
 		}
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("li");
 	WRITE("\n");
+
+@<Render a tickbox@> =
+	if (mode & TAGS_MDRMODE) {
+		if (Markdown::get_tick_state(md)) {
+			WRITE("<input checked=\"\" disabled=\"\" type=\"checkbox\"> ");
+		} else {
+			WRITE("<input disabled=\"\" type=\"checkbox\"> ");
+		}
+	}
 
 @<Render a heading@> =
 	char *h = "p";
@@ -201,7 +216,24 @@ been taken out at the parsing stage.)
 	WRITE("\n");
 
 @<Render a raw HTML block@> =
-	WRITE("%S", md->stashed);
+	if (MarkdownVariations::supports(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE)) {
+		for (int i=0; i<Str::len(md->stashed); i++)
+			if (Str::get_at(md->stashed, i) == '<') {
+				TEMPORARY_TEXT(tag)
+				for (int j=i+1; j<Str::len(md->stashed); j++)
+					if (Characters::is_ASCII_letter(Str::get_at(md->stashed, j)))
+						PUT_TO(tag, Str::get_at(md->stashed, j));
+					else
+						break;
+				if (Markdown::tag_should_be_filtered(tag)) WRITE("&lt;");
+				else PUT('<');
+				DISCARD_TEXT(tag)
+			} else {
+				PUT(Str::get_at(md->stashed, i));
+			}
+	} else {
+		WRITE("%S", md->stashed);
+	}
 
 @<Render a table@> =
 	markdown_item *alignment_markers = md->down;
@@ -252,11 +284,16 @@ been taken out at the parsing stage.)
 	}
 
 @<Render email link@> =
-	text_stream *supplied_scheme = I"mailto:";
+	text_stream *supplied_scheme = NULL;
+	if (Markdown::get_add_protocol_state(md)) {
+		supplied_scheme = I"mailto:";
+		if (md->type == XMPP_AUTOLINK_MIT) supplied_scheme = I"xmpp:";
+	}
 	@<Render autolink@>;
 
 @<Render URI link@> =
 	text_stream *supplied_scheme = NULL;
+	if (Markdown::get_add_protocol_state(md)) supplied_scheme = I"http://";
 	@<Render autolink@>;
 
 @<Render autolink@> =
@@ -336,6 +373,7 @@ end in a semicolon, such as |&copy| rather than |&copy;|.
 =
 void MDRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (md) {
+		int angles = 0;
 		for (int i=md->from; i<=md->to; i++) {
 			wchar_t c = Markdown::get_at(md, i);
 			if ((mode & ESCAPES_MDRMODE) && (c == '\\') && (i<md->to) &&
@@ -363,7 +401,10 @@ void MDRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 					}
 				}
 			}
-			MDRenderer::char(OUT, c, mode);
+			if ((c == '<') && (angles++ == 0) && (mode & FILTERED_MDRMODE))
+				MDRenderer::char(OUT, c, 0);
+			else
+				MDRenderer::char(OUT, c, mode);
 		}
 	}
 }

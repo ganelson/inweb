@@ -1,0 +1,27 @@
+! GitHub 279
+- [ ] foo
+- [x] bar
+! Solution
+<ul>
+<li><input disabled="" type="checkbox"> foo</li>
+<li><input checked="" disabled="" type="checkbox"> bar</li>
+</ul>
+! End
+
+! GitHub 280
+- [x] foo
+  - [ ] bar
+  - [x] baz
+- [ ] bim
+! Solution
+<ul>
+<li><input checked="" disabled="" type="checkbox"> foo
+<ul>
+<li><input disabled="" type="checkbox"> bar</li>
+<li><input checked="" disabled="" type="checkbox"> baz</li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> bim</li>
+</ul>
+! End
+

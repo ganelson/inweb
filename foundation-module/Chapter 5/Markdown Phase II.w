@@ -14,8 +14,10 @@ with the following function.
 void MDInlineParser::inline_recursion(markdown_variation *variation,
 	md_links_dictionary *link_refs, markdown_item *at) {
 	if (at == NULL) return;
-	if (at->type == PARAGRAPH_MIT)
-		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
+	if (at->type == PARAGRAPH_MIT) {
+		markdown_item *matter = MDInlineParser::inline(variation, link_refs, at->stashed);
+		Markdown::add_to(matter, at);
+	}
 	if (at->type == HEADING_MIT)
 		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
 	if ((at->type == TABLE_COLUMN_MIT) && (Str::len(at->stashed) > 0))
@@ -147,9 +149,11 @@ space characters, a single space character is removed from the front and back."
 	if ((all_spaces == FALSE) && (Str::get_first_char(codespan) == ' ')
 		 && (Str::get_last_char(codespan) == ' ')) {
 		markdown_item *md = Markdown::new_slice(CODE_MIT, codespan, 1, Str::len(codespan)-2);
+		Markdown::set_backtick_count(md, count);
 		Markdown::add_to(md, owner);		 
 	} else {
 		markdown_item *md = Markdown::new_slice(CODE_MIT, codespan, 0, Str::len(codespan)-1);
+		Markdown::set_backtick_count(md, count);
 		Markdown::add_to(md, owner);
 	}
 
@@ -177,7 +181,17 @@ space characters, a single space character is removed from the front and back."
 				break;
 		}
 	}
-
+	if (MarkdownVariations::supports(variation, EXTENDED_AUTOLINKS_MARKDOWNFEATURE)) {
+		if ((MDInlineParser::extended_autolink_domain_char(Str::get_at(text, i))) &&
+			((i == 0) ||
+				(Str::get_at(text, i-1) == '\n') ||
+				(Str::get_at(text, i-1) == '*') ||
+				(Str::get_at(text, i-1) == '_') ||
+				(Str::get_at(text, i-1) == '~') ||
+				((Str::get_at(text, i-1) == '(') && (Str::get_at(text, i-2) != ']')) ||
+				(Characters::is_Unicode_whitespace(Str::get_at(text, i-1)))))
+					@<Test for extended autolink@>;
+	}
 @ "A URI autolink consists of... a scheme followed by a colon followed by zero
 or more characters other than ASCII control characters, space, <, and >... a
 scheme is any sequence of 2–32 characters beginning with an ASCII letter and
@@ -245,6 +259,7 @@ period, or hyphen."
 			}
 			markdown_item *md = Markdown::new_slice(EMAIL_AUTOLINK_MIT,
 				text, link_from, link_to);
+			Markdown::set_add_protocol_state(md, TRUE);
 			Markdown::add_to(md, owner);
 			i = j+count; from = j+count;
 			if (tracing_Markdown_parser) PRINT("Found email\n");
@@ -311,8 +326,209 @@ but you absolutely can.
 	}
 	if (segment_length >= 64) domain_valid = FALSE;
 
+@ Extended autolinks are a GitHub-flavored Markdown extension, and allow (some)
+websites and email addresses to be turned into links without needing angle
+brackets around them. This part of GitHub's specification uses sloppily
+different criteria for what is a legal domain or email address, but I follow
+it as written.
+
+@<Test for extended autolink@> =
+	int domain_from = i, to = i;
+	int add_protocol = FALSE, email_address = FALSE, email_required = FALSE, xmpp = FALSE;
+	@<Look for a domain prefix@>;
+	if ((email_required) || (to == domain_from)) @<Look for an email address opening@>;
+	if (((email_required == FALSE) || (email_address)) && (to > domain_from)) {
+		if (tracing_Markdown_parser) {
+			PRINT("Found valid extended autolink prefix: ");
+			for (int j=domain_from; j<=to; j++) PUT_TO(STDOUT, Str::get_at(text, j));
+			PRINT("\n");
+		}
+		@<Look for the rest of the domain@>;
+		int domain_name_invalid = FALSE;
+		@<Test the domain name for validity@>;
+		if (domain_name_invalid == FALSE) {
+			@<Push the link forwards through URL or resource@>;
+			@<Insert as an extended autolink@>;
+		}
+	}
+
+@<Look for a domain prefix@> =
+	if ((Str::get_at(text, domain_from) == 'w') &&
+		(Str::get_at(text, domain_from+1) == 'w') &&
+		(Str::get_at(text, domain_from+2) == 'w') &&
+		(Str::get_at(text, domain_from+3) == '.') &&
+		(MDInlineParser::extended_autolink_domain_char(Str::get_at(text, domain_from+4)))) {
+		add_protocol = TRUE;
+		to = domain_from+4;
+	} else if ((Str::get_at(text, domain_from) == 'm') &&
+		(Str::get_at(text, domain_from+1) == 'a') &&
+		(Str::get_at(text, domain_from+2) == 'i') &&
+		(Str::get_at(text, domain_from+3) == 'l') &&
+		(Str::get_at(text, domain_from+4) == 't') &&
+		(Str::get_at(text, domain_from+5) == 'o') &&
+		(Str::get_at(text, domain_from+6) == ':') &&
+		(MDInlineParser::extended_autolink_domain_char(Str::get_at(text, domain_from+7)))) {
+		to = domain_from+7; email_required = TRUE;
+	} else if ((Str::get_at(text, domain_from) == 'x') &&
+		(Str::get_at(text, domain_from+1) == 'm') &&
+		(Str::get_at(text, domain_from+2) == 'p') &&
+		(Str::get_at(text, domain_from+3) == 'p') &&
+		(Str::get_at(text, domain_from+4) == ':') &&
+		(MDInlineParser::extended_autolink_domain_char(Str::get_at(text, domain_from+5)))) {
+		to = domain_from+5; email_required = TRUE; xmpp = TRUE;
+	} else if ((Str::get_at(text, domain_from) == 'h') &&
+		(Str::get_at(text, domain_from+1) == 't') &&
+		(Str::get_at(text, domain_from+2) == 't') &&
+		(Str::get_at(text, domain_from+3) == 'p') &&
+		(Str::get_at(text, domain_from+4) == ':') &&
+		(Str::get_at(text, domain_from+5) == '/') &&
+		(Str::get_at(text, domain_from+6) == '/') &&
+		(MDInlineParser::extended_autolink_domain_char(Str::get_at(text, domain_from+7)))) {
+		to = domain_from+7;
+	} else if ((Str::get_at(text, domain_from) == 'h') &&
+		(Str::get_at(text, domain_from+1) == 't') &&
+		(Str::get_at(text, domain_from+2) == 't') &&
+		(Str::get_at(text, domain_from+3) == 'p') &&
+		(Str::get_at(text, domain_from+4) == 's') &&
+		(Str::get_at(text, domain_from+5) == ':') &&
+		(Str::get_at(text, domain_from+6) == '/') &&
+		(Str::get_at(text, domain_from+7) == '/') &&
+		(MDInlineParser::extended_autolink_domain_char(Str::get_at(text, domain_from+8)))) {
+		to = domain_from+8;
+	}
+
+@<Look for an email address opening@> =
+	int j = to;
+	while ((MDInlineParser::extended_autolink_email_char(Str::get_at(text, j))) ||
+		(Str::get_at(text, j) == '+') ||
+		(Str::get_at(text, j) == '.')) j++;
+	if ((j > to) && (Str::get_at(text, j) == '@')) {
+		to = j+1; email_address = TRUE;
+		if (email_required == FALSE) add_protocol = TRUE;
+	}
+
+@<Look for the rest of the domain@> =
+	if (email_address) {
+		while (TRUE) {
+			if (MDInlineParser::extended_autolink_email_char(Str::get_at(text, to+1))) to++;
+			else if ((Str::get_at(text, to+1) == '.') && (Str::get_at(text, to) != '.')) to++;
+			else break;
+		}
+	} else {
+		while (TRUE) {
+			if (MDInlineParser::extended_autolink_domain_char(Str::get_at(text, to+1))) to++;
+			else if ((Str::get_at(text, to+1) == '.') && (Str::get_at(text, to) != '.')) to++;
+			else break;
+		}
+	}
+	if (Str::get_at(text, to) == '.') to--;
+
+@<Test the domain name for validity@> =
+	int dot_count = 0;
+	for (int j=domain_from; j<=to; j++) if (Str::get_at(text, j) == '.') dot_count++;
+	if (dot_count == 0) domain_name_invalid = TRUE;
+	if (email_address) {
+		if ((Str::get_at(text, to) == '_') || (Str::get_at(text, to) == '-'))
+			domain_name_invalid = TRUE;
+	} else {
+		for (int j=domain_from, dots_passed=0; j<=to; j++) {
+			wchar_t c = Str::get_at(text, j);
+			if (c == '.') dots_passed++;
+			if ((c == '_') && (dots_passed >= dot_count - 2)) domain_name_invalid = TRUE;
+		}
+	}
+
+@<Push the link forwards through URL or resource@> =
+	int domain_to = to;
+	if (email_address == FALSE) {
+		while ((Str::get_at(text, to+1) != 0) && (Str::get_at(text, to+1) != '<') &&
+			(Characters::is_Unicode_whitespace(Str::get_at(text, to+1)) == FALSE)) to++;
+		while (MDInlineParser::extended_autolink_trailing_punctuation_char(Str::get_at(text, to))) to--;
+	} else if (xmpp) {
+		if (Str::get_at(text, to+1) == '/') {
+			to++;
+			while (MDInlineParser::extended_autolink_xmpp_resource_char(Str::get_at(text, to+1))) to++;
+		}
+	}
+	while (TRUE) {
+		int initial_to = to;
+		if (Str::get_at(text, to) == ')') {
+			int bl = 0;
+			for (int j=domain_to+1; j<=to; j++) {
+				if (Str::get_at(text, j) == '(') bl++;
+				if (Str::get_at(text, j) == ')') bl--;
+				if (bl < 0) { to = j-1; break; }
+			}
+		} else if (Str::get_at(text, to) == ';') {
+			int b = to-1;
+			while (Characters::isalnum(Str::get_at(text, b))) b--;
+			if (Str::get_at(text, b) == '#') b--;
+			if (Str::get_at(text, b) == '&') to = b-1;
+		}
+		if (to == initial_to) break;
+	}
+
+@<Insert as an extended autolink@> =
+	if (i-1 >= from) {
+		markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+		Markdown::add_to(md, owner);
+	}
+	int link_from = domain_from, link_to = to;
+	i = link_to; from = link_to+1;
+	int type = URI_AUTOLINK_MIT;
+	if (email_address) type = EMAIL_AUTOLINK_MIT;
+	if (xmpp) type = XMPP_AUTOLINK_MIT;
+	markdown_item *md = Markdown::new_slice(type,
+		text, link_from, link_to);
+	Markdown::set_add_protocol_state(md, add_protocol);
+	Markdown::add_to(md, owner);
+	if (tracing_Markdown_parser) {
+		PRINT("Found extended autolink ");
+		for (int j=domain_from; j<=to; j++) PUT_TO(STDOUT, Str::get_at(text, j));
+		PRINT("\n");
+	}
+	goto ContinueOuter;
+
+@ "Alphanumeric characters, underscores and hyphens." It's not entirely clear
+what the GitHub-flavored Markdown specification means by "alphanumeric" here:
+are arbitrary Unicode letters and numerals allowed? I'm going to say not.
+
+=
+int MDInlineParser::extended_autolink_domain_char(wchar_t c) {
+	if ((Characters::isalnum(c)) || (c == '_') || (c == '-')) return TRUE;
+	return FALSE;
+}
+
+@ "One ore [sic] more characters which are alphanumeric, or ., -, _, or +."
+But we take care of |+| and |.| above.
+
+=
+int MDInlineParser::extended_autolink_email_char(wchar_t c) {
+	if ((Characters::isalnum(c)) || (c == '_') || (c == '-')) return TRUE;
+	return FALSE;
+}
+
+@ "The resource can contain all alphanumeric characters, as well as @ and .."
+
+=
+int MDInlineParser::extended_autolink_xmpp_resource_char(wchar_t c) {
+	if ((Characters::isalnum(c)) || (c == '@') || (c == '.')) return TRUE;
+	return FALSE;
+}
+
+@ "Trailing punctuation (specifically, ?, !, ., ,, :, *, _, and ~) will not be
+considered part of the autolink."
+
+=
+int MDInlineParser::extended_autolink_trailing_punctuation_char(wchar_t c) {
+	if ((c == '?') || (c == '!') || (c == ',') || (c == '.') ||
+		(c == ':') || (c == '*') || (c == '_') || (c == '~')) return TRUE;
+	return FALSE;
+}
+
 @<Does a raw HTML tag begin here?@> =
 	if (MarkdownVariations::supports(variation, INLINE_HTML_MARKDOWNFEATURE)) {
+		int filter = NOT_APPLICABLE;
 		if (Str::get_at(text, i) == '<') {
 			switch (Str::get_at(text, i+1)) {
 				case '?': @<Does a processing instruction begin here?@>; break;
@@ -380,6 +596,7 @@ but you absolutely can.
 
 @<Does an open tag begin here?@> =
 	int at = i+1;
+	filter = FALSE;
 	@<Advance past tag name@>;
 	@<Advance past attributes@>;
 	@<Advance past optional tag-whitespace@>;
@@ -401,8 +618,15 @@ but you absolutely can.
 @<Advance past tag name@> =
 	wchar_t c = Str::get_at(text, at);
 	if (Characters::is_ASCII_letter(c) == FALSE) goto NotATag;
-	while ((c == '-') || (Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c)))
+	TEMPORARY_TEXT(tag)
+	while ((c == '-') || (Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c))) {
+		PUT_TO(tag, c);
 		c = Str::get_at(text, ++at);
+	}
+	if ((filter == FALSE) &&
+		(MarkdownVariations::supports(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE)) &&
+		(Markdown::tag_should_be_filtered(tag))) filter = TRUE;
+	DISCARD_TEXT(tag)
 
 @<Advance past attributes@> =
 	while (TRUE) {
@@ -481,6 +705,7 @@ but you absolutely can.
 		Markdown::add_to(md, owner);
 	}
 	markdown_item *md = Markdown::new_slice(INLINE_HTML_MIT, text, tag_from, tag_to);
+	if (filter == TRUE) Markdown::set_filtered_state(md, TRUE);
 	Markdown::add_to(md, owner);
 	i = tag_to; from = tag_to + 1;
 	if (tracing_Markdown_parser) PRINT("Found raw HTML\n");

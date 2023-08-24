@@ -233,6 +233,8 @@ three lines of which the third is empty.
 	if (tracing_Markdown_parser) PRINT("======\nGathering lists\n");
 	MDBlockParser::gather_lists(state, tree);
 	MDBlockParser::propagate_white_space_follows(state, tree);
+	if (MarkdownVariations::supports(state->variation, TASK_LIST_ITEMS_MARKDOWNFEATURE))
+		MDBlockParser::task_list_items(state, tree);
 	MarkdownVariations::intervene_after_Phase_I(variation, tree, dict);
 
 @ Note that the Phase I parser state is not used in Phase II, which is
@@ -320,7 +322,9 @@ paragraph is inline content.
 @e TABLE_MIT
 @e TABLE_COLUMN_MIT
 @e TABLE_ROW_MIT
+@e TICKBOX_MIT
 @e STRIKETHROUGH_MIT
+@e XMPP_AUTOLINK_MIT
 
 @ Recapitulating all of that:
 
@@ -414,6 +418,8 @@ void Markdown::create_item_types(void) {
 	Markdown::new_leaf_block_type(TABLE_COLUMN_MIT, I"TABLE_COLUMN");
 	Markdown::new_leaf_block_type(TABLE_ROW_MIT, I"TABLE_ROW");
 	Markdown::new_inline_type(STRIKETHROUGH_MIT, I"STRIKETHROUGH");
+	Markdown::new_leaf_block_type(TICKBOX_MIT, I"TICKBOX");
+	Markdown::new_inline_type(XMPP_AUTOLINK_MIT, I"XMPP_AUTOLINK");
 }
 
 text_stream *Markdown::item_type_name(int t) {
@@ -594,6 +600,80 @@ int Markdown::get_alignment(markdown_item *md) {
 void Markdown::set_alignment(markdown_item *md, int L) {
 	if ((md == NULL) || (md->type != TABLE_COLUMN_MIT)) internal_error("not a table col");
 	if ((L < 0) || (L > 3)) internal_error("bad alignment");
+	md->details = L;
+}
+
+@ The |INLINE_HTML_MIT| item, and no other, can be "filtered" or not:
+
+=
+int Markdown::get_filtered_state(markdown_item *md) {
+	if ((md == NULL) || (md->type != INLINE_HTML_MIT)) return FALSE;
+	return md->details;
+}
+
+void Markdown::set_filtered_state(markdown_item *md, int L) {
+	if ((md == NULL) || (md->type != INLINE_HTML_MIT)) internal_error("not inline HTML");
+	if ((L != FALSE) && (L != TRUE)) internal_error("bad filtered state");
+	md->details = L;
+}
+
+int Markdown::tag_should_be_filtered(text_stream *tag) {
+	if (Str::eq_insensitive(tag, I"title")) return TRUE;
+	if (Str::eq_insensitive(tag, I"textarea")) return TRUE;
+	if (Str::eq_insensitive(tag, I"style")) return TRUE;
+	if (Str::eq_insensitive(tag, I"xmp")) return TRUE;
+	if (Str::eq_insensitive(tag, I"iframe")) return TRUE;
+	if (Str::eq_insensitive(tag, I"noembed")) return TRUE;
+	if (Str::eq_insensitive(tag, I"noframes")) return TRUE;
+	if (Str::eq_insensitive(tag, I"script")) return TRUE;
+	if (Str::eq_insensitive(tag, I"plaintext")) return TRUE;
+	return FALSE;
+}
+
+@ The autolink items can be marked to prefix with their respective protocols:
+
+=
+int Markdown::get_add_protocol_state(markdown_item *md) {
+	if ((md == NULL) ||
+		((md->type != URI_AUTOLINK_MIT) && (md->type != EMAIL_AUTOLINK_MIT) && (md->type != XMPP_AUTOLINK_MIT)))
+		return FALSE;
+	return md->details;
+}
+
+void Markdown::set_add_protocol_state(markdown_item *md, int L) {
+	if ((md == NULL) ||
+		((md->type != URI_AUTOLINK_MIT) && (md->type != EMAIL_AUTOLINK_MIT) && (md->type != XMPP_AUTOLINK_MIT)))
+		internal_error("not an autolink");
+	if ((L != FALSE) && (L != TRUE)) internal_error("bad add http state");
+	md->details = L;
+}
+
+@ The |TICKBOX_MIT| item, and no other, has a "state" which is |TRUE| or |FALSE|.
+
+=
+int Markdown::get_tick_state(markdown_item *md) {
+	if ((md == NULL) || (md->type != TICKBOX_MIT)) return FALSE;
+	return md->details;
+}
+
+void Markdown::set_tick_state(markdown_item *md, int L) {
+	if ((md == NULL) || (md->type != TICKBOX_MIT)) internal_error("not a tickbox");
+	if ((L != FALSE) && (L != TRUE)) internal_error("bad tick state");
+	md->details = L;
+}
+
+@ The |CODE_MIT| item, and no other, has a "backtick count" which is 1 or more,
+and means the number of backticks used to embrace it.
+
+=
+int Markdown::get_backtick_count(markdown_item *md) {
+	if ((md == NULL) || (md->type != CODE_MIT)) return FALSE;
+	return md->details;
+}
+
+void Markdown::set_backtick_count(markdown_item *md, int L) {
+	if ((md == NULL) || (md->type != CODE_MIT)) internal_error("not a code item");
+	if (L < 0) internal_error("bad backtick count");
 	md->details = L;
 }
 
@@ -1100,6 +1180,13 @@ void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
 		for (int i=0; i<Str::len(md->stashed); i++)
 			Markdown::debug_char_briefly(OUT, Str::get_at(md->stashed, i));
 		WRITE(")");
+	}
+	if (md->type == TICKBOX_MIT) {
+		if (Markdown::get_tick_state(md)) WRITE("-ticked");
+		else WRITE("-unticked");
+	}
+	if (md->type == INLINE_HTML_MIT) {
+		if (Markdown::get_filtered_state(md)) WRITE("-filtered");
 	}
 	if (md->whitespace_follows) WRITE("+ws");
 }
