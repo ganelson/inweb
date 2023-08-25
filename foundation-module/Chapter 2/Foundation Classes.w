@@ -27,6 +27,7 @@ here we are.
 @e heterogeneous_tree_CLASS
 @e HTML_file_state_CLASS
 @e HTML_tag_CLASS
+@e IFM_example_CLASS
 @e JSON_pair_requirement_CLASS
 @e JSON_requirement_CLASS
 @e JSON_single_requirement_CLASS
@@ -85,6 +86,7 @@ DECLARE_CLASS(filename)
 DECLARE_CLASS(hash_table_entry)
 DECLARE_CLASS(heterogeneous_tree)
 DECLARE_CLASS(HTML_file_state)
+DECLARE_CLASS(IFM_example)
 DECLARE_CLASS(JSON_pair_requirement)
 DECLARE_CLASS(JSON_requirement)
 DECLARE_CLASS(JSON_single_requirement)

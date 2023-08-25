@@ -59,6 +59,7 @@ Chapter 5: Generating Websites
 	Markdown Phase II
 	Markdown Rendering
 	Markdown Variations
+	Inform-Flavoured Markdown
 	Epub Ebooks
 
 Chapter 6: Media
