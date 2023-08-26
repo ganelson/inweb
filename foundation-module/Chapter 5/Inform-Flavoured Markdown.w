@@ -12,7 +12,9 @@ markdown_variation *Inform_flavoured_Markdown = NULL;
 markdown_variation *InformFlavouredMarkdown::variation(void) {
 	if (Inform_flavoured_Markdown) return Inform_flavoured_Markdown;
 	Inform_flavoured_Markdown = MarkdownVariations::new(I"Inform-flavoured Markdown");
-	MarkdownVariations::make_GitHub_features_active(Inform_flavoured_Markdown);
+	
+	MarkdownVariations::copy_features_of(Inform_flavoured_Markdown,
+		MarkdownVariations::GitHub_flavored_Markdown());
 
 	MarkdownVariations::remove_feature(Inform_flavoured_Markdown, HTML_BLOCKS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(Inform_flavoured_Markdown, INLINE_HTML_MARKDOWNFEATURE);

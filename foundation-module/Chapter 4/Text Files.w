@@ -334,3 +334,20 @@ in scientific notation.
 	if ((c >= 0x2018) && (c <= 0x2019)) return '\''; /* smart single quotes */
 	if ((c >= 0x201c) && (c <= 0x201d)) return '"'; /* smart double quotes */
 	if ((c >= 0x2028) && (c <= 0x2029)) return '\x0d'; /* fancy newlines */
+
+@h Simple text file extraction.
+Sometimes all we want is to copy a text file, line by line, into a text stream.
+This returns the number of lines read in, which will be 0 if the file does not
+exist.
+
+=
+int TextFiles::write_file_contents(OUTPUT_STREAM, filename *F) {
+	return TextFiles::read(F, FALSE, NULL, FALSE,
+		&TextFiles::write_file_contents_helper, NULL, OUT);
+}
+
+void TextFiles::write_file_contents_helper(text_stream *text, text_file_position *tfp,
+	void *state) {
+	text_stream *OUT = (text_stream *) state;
+	WRITE("%S\n", text);
+}

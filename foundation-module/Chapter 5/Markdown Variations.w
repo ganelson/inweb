@@ -63,6 +63,11 @@ void MarkdownVariations::remove_feature(markdown_variation *variation, int featu
 	variation->active_built_in_features[feature_id] = FALSE;
 }
 
+void MarkdownVariations::copy_features_of(markdown_variation *to, markdown_variation *from) {
+	for (int i=0; i<NO_DEFINED_MARKDOWNFEATURE_VALUES; i++)
+		to->active_built_in_features[i] = from->active_built_in_features[i];
+}
+
 @ A "feature" is an aspect of Markdown syntax or behaviour; any given variation
 can either support it or not.
 
