@@ -377,10 +377,14 @@ int Regexp::test_cclass(inchar32_t c, int chcl, int range_from, int range_to, in
 		case IDENTIFIER_CHARCLASS: if (Regexp::identifier_char(c)) match = TRUE; break;
 		case PREFORM_CHARCLASS: if ((c == '-') || (c == '_') ||
 			((c >= 'a') && (c <= 'z')) ||
-			((c >= '0') && (c <= '9'))) match = TRUE; break;
+			((c >= '0') && (c <= '9')))
+				match = TRUE;
+			break;
 		case PREFORMC_CHARCLASS: if ((c == '-') || (c == '_') || (c == ':') ||
 			((c >= 'a') && (c <= 'z')) ||
-			((c >= '0') && (c <= '9'))) match = TRUE; break;
+			((c >= '0') && (c <= '9')))
+				match = TRUE;
+			break;
 		case LITERAL_CHARCLASS:
 			if ((range_to > range_from) && (drawn_from[range_from] == '^')) {
 				range_from++; reverse = reverse?FALSE:TRUE;
