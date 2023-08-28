@@ -236,6 +236,7 @@ three lines of which the third is empty.
 	if (MarkdownVariations::supports(state->variation, TASK_LIST_ITEMS_MARKDOWNFEATURE))
 		MDBlockParser::task_list_items(state, tree);
 	MarkdownVariations::intervene_after_Phase_I(variation, tree, dict);
+	MarkdownVariations::multifile_mode(variation, tree, dict);
 
 @ Note that the Phase I parser state is not used in Phase II, which is
 context-free except for its use of the links dictionary:
@@ -263,9 +264,12 @@ tree structure, made of nodes called "items" which are |markdown_item| objects.
 Each node used by CommonMark has one of the following types, but variations
 can add their own further types.
 
-|DOCUMENT_MIT| is for the head node, and no other.
+|DOCUMENT_MIT| is for the head node, and no other. |FILE_MIT| is used as a
+marker by extensions which break up documents into multiple files: it renders
+to nothing in itself.
 
 @e DOCUMENT_MIT from 1
+@e FILE_MIT
 
 @ Next we have the (other) "container block" items, which can contain either
 other containers (though not |DOCUMENT_MIT) or leaf blocks. An |ORDERED_LIST_MIT|
@@ -383,6 +387,8 @@ void Markdown::create_item_types(void) {
 		Markdown::new_item_type(mit, I"?UNDEFINED");
 
 	Markdown::new_container_block_type(DOCUMENT_MIT, I"DOCUMENT");
+	Markdown::new_container_block_type(FILE_MIT, I"FILE");
+
 	Markdown::new_container_block_type(BLOCK_QUOTE_MIT, I"BLOCK_QUOTE");
 	Markdown::new_container_block_type(UNORDERED_LIST_MIT, I"UNORDERED_LIST");
 	Markdown::new_container_block_type(ORDERED_LIST_MIT, I"ORDERED_LIST");
@@ -735,6 +741,20 @@ int Markdown::unescaped_run(md_charpos pos, wchar_t of) {
 	while (Markdown::get_unescaped(pos, count) == of) count++;
 	if (Markdown::get_unescaped(pos, -1) == of) count = 0;
 	return count;
+}
+
+@h File markers.
+
+=
+markdown_item *Markdown::new_file_marker(filename *F) {
+	markdown_item *md = Markdown::new_item(FILE_MIT);
+	md->user_state = STORE_POINTER_filename(F);
+	return md;
+}
+
+filename *Markdown::get_filename(markdown_item *md) {
+	if ((md == NULL) || (md->type != FILE_MIT)) return NULL;
+	return RETRIEVE_POINTER_filename(md->user_state);
 }
 
 @h Working with slices.
@@ -1184,6 +1204,13 @@ void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
 	if (md->type == TICKBOX_MIT) {
 		if (Markdown::get_tick_state(md)) WRITE("-ticked");
 		else WRITE("-unticked");
+	}
+	if (md->type == FILE_MIT) {
+		WRITE(": %f", RETRIEVE_POINTER_filename(md->user_state));
+	}
+	if (md->type == GATE_MIT) {
+		if (md->details) WRITE("-if-true");
+		else WRITE("-if-false");
 	}
 	if (md->type == INLINE_HTML_MIT) {
 		if (Markdown::get_filtered_state(md)) WRITE("-filtered");

@@ -14,14 +14,12 @@ with the following function.
 void MDInlineParser::inline_recursion(markdown_variation *variation,
 	md_links_dictionary *link_refs, markdown_item *at) {
 	if (at == NULL) return;
-	if (at->type == PARAGRAPH_MIT) {
+	if ((at->type == PARAGRAPH_MIT) ||
+		(at->type == HEADING_MIT) ||
+		((at->type == TABLE_COLUMN_MIT) && (Str::len(at->stashed) > 0))) {
 		markdown_item *matter = MDInlineParser::inline(variation, link_refs, at->stashed);
 		Markdown::add_to(matter, at);
 	}
-	if (at->type == HEADING_MIT)
-		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
-	if ((at->type == TABLE_COLUMN_MIT) && (Str::len(at->stashed) > 0))
-		at->down = MDInlineParser::inline(variation, link_refs, at->stashed);
 	for (markdown_item *c = at->down; c; c = c->next)
 		MDInlineParser::inline_recursion(variation, link_refs, c);
 }
@@ -80,6 +78,7 @@ markdown_item *MDInlineParser::make_inline_chain(markdown_variation *variation,
 		} else {
 			if (escaped == FALSE) {
 				@<Does a backtick begin here?@>;
+				@<Does an index mark begin here?@>;
 				@<Does an autolink begin here?@>;
 				@<Does a raw HTML tag begin here?@>;
 			}
@@ -157,6 +156,68 @@ space characters, a single space character is removed from the front and back."
 		Markdown::add_to(md, owner);
 	}
 
+@ This provides an extension borrowed from traditional TeX manual-indexing
+notation, also used by indoc.
+
+@<Does an index mark begin here?@> =
+	if (MarkdownVariations::supports(variation, INDEXING_MARKS_MARKDOWNFEATURE)) {
+		if (Str::get_at(text, i) == '^') {
+			int j = i+1, count = 1;
+			if (Str::get_at(text, j) == '^') j++, count++;
+			if (Str::get_at(text, j) == '^') j++, count++;
+			if (Str::get_at(text, j) == '{') {
+				TEMPORARY_TEXT(lemma)
+				j++;
+				int escaped = FALSE, end_found = FALSE;
+				while (Str::get_at(text, j)) {
+					if ((escaped == FALSE) && (Str::get_at(text, j) == '\\'))
+						escaped = TRUE;
+					else {
+						if ((escaped == FALSE) && (Str::get_at(text, j) == '}')) {
+							end_found = TRUE; break;
+						}
+						PUT_TO(lemma, Str::get_at(text, j));
+						escaped = FALSE;
+					}
+					j++;
+				}
+				if (end_found) {
+					if (i-1 >= from) {
+						markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+						Markdown::add_to(md, owner);
+					}
+					@<Insert an index item@>;
+					i = j; from = j+1;
+				}
+				DISCARD_TEXT(lemma)
+				if (end_found) goto ContinueOuter;
+			}
+		}
+	}
+
+@<Insert an index item@> =
+	int name_inversion = FALSE;
+	if (Str::get_first_char(lemma) == '@') {
+		Str::delete_first_character(lemma);
+		name_inversion = TRUE;
+	}
+	markdown_item *md = Markdown::new_item(INDEX_MARKER_MIT);
+	md->stashed = Str::duplicate(lemma);
+	md->details = count;
+	if (name_inversion) {
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, md->stashed, L"(%c*) (%C+)")) {
+			Str::clear(md->stashed);
+			WRITE_TO(md->stashed, "%S, %S", mr.exp[1], mr.exp[0]);
+		}
+		Regexp::dispose_of(&mr);
+	}
+	Markdown::add_to(md, owner);
+	if (count == 1) {
+		markdown_item *md = Markdown::new_slice(PLAIN_MIT, Str::duplicate(lemma), 0, Str::len(lemma)-1);
+		Markdown::add_to(md, owner);
+	}
+	
 @<Does an autolink begin here?@> =
 	if (Str::get_at(text, i) == '<') {
 		for (int j=i+1; j<Str::len(text); j++) {
@@ -192,6 +253,7 @@ space characters, a single space character is removed from the front and back."
 				(Characters::is_Unicode_whitespace(Str::get_at(text, i-1)))))
 					@<Test for extended autolink@>;
 	}
+
 @ "A URI autolink consists of... a scheme followed by a colon followed by zero
 or more characters other than ASCII control characters, space, <, and >... a
 scheme is any sequence of 2–32 characters beginning with an ASCII letter and

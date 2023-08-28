@@ -1,0 +1,23 @@
+! Inform 1
+{xyzzy:}Only if XYZZY.
+
+{^xyzzy:}Only if not XYZZY.
+
+{^xyzzy,plugh:}Only if not XYZZY but PLUGH.
+
+{^xyzzy,^plugh:}Only if neither XYZZY nor PLUGH.
+
+{^xyzzy:}{^plugh:}Only if neither XYZZY nor PLUGH.
+! End
+
+! Inform-PLUGH 2
+{xyzzy:}Only if XYZZY.
+
+{^xyzzy:}Only if not XYZZY.
+
+{^xyzzy,plugh:}Only if not XYZZY but PLUGH.
+
+{^xyzzy,^plugh:}Only if neither XYZZY nor PLUGH.
+
+{^xyzzy:}{^plugh:}Only if neither XYZZY nor PLUGH.
+! End

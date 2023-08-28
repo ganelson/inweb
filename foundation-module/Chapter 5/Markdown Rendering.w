@@ -173,7 +173,20 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 		case 6: h = "h6"; break;
 	}
 	if (mode & TAGS_MDRMODE) HTML_OPEN(h);
+	TEMPORARY_TEXT(anchor)
+	text_stream *url = MarkdownVariations::URL_for_heading(md);
+	for (int i=0; i<Str::len(url); i++)
+		if (Str::get_at(url, i) == '#')
+			for (i++; i<Str::len(url); i++)
+				PUT_TO(anchor, Str::get_at(url, i));
+	if (Str::len(anchor) > 0) {
+		HTML_OPEN_WITH("span", "id=%S", anchor);
+	}
 	@<Recurse@>;
+	if (Str::len(anchor) > 0) {
+		HTML_CLOSE("span");
+	}
+	DISCARD_TEXT(anchor)
 	if (mode & TAGS_MDRMODE) HTML_CLOSE(h);
 	WRITE("\n");
 

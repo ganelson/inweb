@@ -20,10 +20,15 @@ markdown_variation *InformFlavouredMarkdown::variation(void) {
 	MarkdownVariations::remove_feature(Inform_flavoured_Markdown, INLINE_HTML_MARKDOWNFEATURE);
 
 	@<Add the formatting errors feature@>;
+	@<Add the old Indoc headings feature@>;
 	@<Add the descriptive headings feature@>;
 	@<Add the embedded examples feature@>;
 	@<Add the paste icons feature@>;
 	@<Add the phrase defn boxes feature@>;
+	@<Add the indexing marks feature@>;
+	@<Add the heading markers feature@>;
+	@<Add the paragraph gating feature@>;
+	@<Add multi-file splitting@>;
 	@<Add the Inform syntax-colouring feature@>;
 
 	return Inform_flavoured_Markdown;
@@ -62,6 +67,55 @@ int InformFlavouredMarkdown::render_errors(markdown_feature *feature, text_strea
 		return TRUE;
 	}
 	return FALSE;
+}
+
+@h Old-style Indoc headings.
+Indoc used to use a truly odd style for headings:
+= (text)
+	[Chapter: Things] Descriptions
+
+	[x] Rooms and the map
+=
+The second is a section heading, but the first is a sort of duplex containing
+both a chapter heading and a section heading, and thus needs to be expanded
+into two Markdown items, not one.
+
+@e OLD_INDOC_HEADINGS_MARKDOWNFEATURE
+
+@<Add the old Indoc headings feature@> =
+	markdown_feature *he = MarkdownVariations::new_feature(I"old Indoc headings",
+		OLD_INDOC_HEADINGS_MARKDOWNFEATURE);
+	METHOD_ADD(he, POST_PHASE_I_MARKDOWN_MTID,
+		InformFlavouredMarkdown::OIH_intervene_after_Phase_I);
+	MarkdownVariations::add_feature(Inform_flavoured_Markdown,
+		OLD_INDOC_HEADINGS_MARKDOWNFEATURE);
+
+@ =
+void InformFlavouredMarkdown::OIH_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_item *md, md_links_dictionary *link_references) {
+	if (md->type == PARAGRAPH_MIT) {
+		text_stream *line = md->stashed;
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, line, L"%[x%] *(%c+?)")) {
+			MDBlockParser::change_type(NULL, md, HEADING_MIT);
+			Markdown::set_heading_level(md, 2);
+			Str::clear(line);
+			WRITE_TO(line, "%S", mr.exp[0]);
+		} else if (Regexp::match(&mr, line, L"%[Chapter: *(%c+)%] *(%c+?)")) {
+			MDBlockParser::change_type(NULL, md, HEADING_MIT);
+			Markdown::set_heading_level(md, 1);
+			Str::clear(line);
+			WRITE_TO(line, "%S", mr.exp[0]);
+			markdown_item *sect = Markdown::new_item(HEADING_MIT);
+			Markdown::set_heading_level(sect, 2);
+			sect->stashed = Str::duplicate(mr.exp[1]);
+			sect->next = md->next; md->next = sect;
+		}
+		Regexp::dispose_of(&mr);
+	}
+	for (markdown_item *ch = md->down; ch; ch=ch->next) {
+		InformFlavouredMarkdown::OIH_intervene_after_Phase_I(feature, ch, link_references);
+	}
 }
 
 @h Descriptive headings.
@@ -140,9 +194,6 @@ void InformFlavouredMarkdown::number_headings_r(markdown_item *md,
 					Str::clear(latest);
 					WRITE_TO(latest, "Chapter %d: %S", *chapter_number, md->stashed);
 					md->stashed = Str::duplicate(latest);
-					text_stream *url = Str::new();
-					WRITE_TO(url, "chapter%d.html", *chapter_number);
-					md->user_state = STORE_POINTER_text_stream(url);
 				}
 				break;
 			}
@@ -157,11 +208,6 @@ void InformFlavouredMarkdown::number_headings_r(markdown_item *md,
 					if (*chapter_number > 0) WRITE_TO(latest, "%d.", *chapter_number);
 					WRITE_TO(latest, "%d: %S", *section_number, md->stashed);
 					md->stashed = Str::duplicate(latest);
-					text_stream *url = Str::new();
-					if (*chapter_number > 0)
-						WRITE_TO(url, "chapter%d.html", *chapter_number);
-					WRITE_TO(url, "#section%d", *section_number);
-					md->user_state = STORE_POINTER_text_stream(url);
 				}
 				break;
 			}
@@ -217,20 +263,19 @@ int InformFlavouredMarkdown::render_descriptive_headings(markdown_feature *featu
 			default: HTML_OPEN("h6"); break;
 		}
 		TEMPORARY_TEXT(anchor)
-		if (L <= 2) {
-			text_stream *url = RETRIEVE_POINTER_text_stream(md->user_state);
-			for (int i=0; i<Str::len(url); i++)
-				if (Str::get_at(url, i) == '#')
-					for (i++; i<Str::len(url); i++)
-						PUT_TO(anchor, Str::get_at(url, i));
-		}
+		text_stream *url = MarkdownVariations::URL_for_heading(md);
+		for (int i=0; i<Str::len(url); i++)
+			if (Str::get_at(url, i) == '#')
+				for (i++; i<Str::len(url); i++)
+					PUT_TO(anchor, Str::get_at(url, i));
 		if (Str::len(anchor) > 0) {
 			HTML_OPEN_WITH("span", "id=%S", anchor);
 		} else {
 			HTML_OPEN("span");
 		}
 		DISCARD_TEXT(anchor)
-		Markdown::render_extended(OUT, md->down, InformFlavouredMarkdown::variation());
+		for (markdown_item *ch = md->down; ch; ch = ch->next)
+			Markdown::render_extended(OUT, ch, InformFlavouredMarkdown::variation());
 		HTML_CLOSE("span");
 		switch (L) {
 			case 1: HTML_CLOSE("h2"); break;
@@ -239,6 +284,7 @@ int InformFlavouredMarkdown::render_descriptive_headings(markdown_feature *featu
 			case 4: HTML_CLOSE("h5"); break;
 			default: HTML_CLOSE("h6"); break;
 		}
+		WRITE("\n");
 		return TRUE;
 	}
 	return FALSE;
@@ -285,6 +331,8 @@ void InformFlavouredMarkdown::detect_embedded_examples_r(markdown_item *md, int 
 			int star_count = Str::len(mr.exp[0]);
 			IFM_example *new_eg = InformFlavouredMarkdown::new_example(mr.exp[1], NULL,
 				star_count, ++(*example_number));
+			new_eg->cue = NULL;
+			new_eg->header = md;
 			if (star_count == 0) {
 				markdown_item *E = InformFlavouredMarkdown::error_item(
 					I"this example should be marked (before the title) '*', '**', '***' or '****' for difficulty");
@@ -363,9 +411,11 @@ from 1, 2, ...; letters are unique from A, B, C, ...
 typedef struct IFM_example {
 	struct text_stream *name;
 	struct text_stream *description;
+	struct markdown_item *header;
+	struct markdown_item *cue;
 	int star_count;
 	int number;
-	char letter;
+	struct text_stream *insignia;
 	CLASS_DEFINITION
 } IFM_example;
 
@@ -374,9 +424,12 @@ IFM_example *InformFlavouredMarkdown::new_example(text_stream *title, text_strea
 	IFM_example *E = CREATE(IFM_example);
 	E->name = Str::duplicate(title);
 	E->description = Str::duplicate(desc);
+	E->header = NULL;
+	E->cue = NULL;
 	E->star_count = star_count;
 	E->number = ecount;
-	E->letter = 'A' + (char) ecount - 1;
+	E->insignia = Str::new();
+	WRITE_TO(E->insignia, "e%d", ecount);
 	return E;
 }
 
@@ -389,23 +442,34 @@ int InformFlavouredMarkdown::EE_render(markdown_feature *feature,
 	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
-		InformFlavouredMarkdown::render_example_heading(OUT, E, NULL);
+		InformFlavouredMarkdown::render_example_heading(OUT, E, FALSE);
 		return TRUE;
 	}
 	return FALSE;
 }
 
 void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example *E,
-	text_stream *link) {
+	int in_stand_alone_file) {
+	TEMPORARY_TEXT(link)
+	if (E->cue) {
+		if (in_stand_alone_file) {
+			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations::URL_for_heading(E->cue));
+		} else {
+			WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg_%S.html\"",
+				E->insignia);
+		}
+	}
+
 	HTML_TAG("hr"); /* rule a line before the example heading */
 	HTML_OPEN_WITH("div", "class=\"examplebox\"");
 
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("div", "class=\"exampleleft\"");
-	HTML_OPEN_WITH("span", "id=eg%d", E->number); /* provide the anchor point */
+	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
 	if (Str::len(link) > 0) HTML_OPEN_WITH("a", "%S", link);
 	HTML::begin_span(OUT, I"extensionexampleletter");
-	PUT(E->letter);
+	WRITE("%S", E->insignia);
 	HTML::end_span(OUT);
 	if (Str::len(link) > 0) HTML_CLOSE("a");
 	HTML_CLOSE("span"); /* end the textual link */
@@ -433,6 +497,7 @@ void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example 
 	HTML_CLOSE("div");
 
 	HTML_CLOSE("div");
+	DISCARD_TEXT(link)
 }
 
 @h Paste buttons.
@@ -530,6 +595,159 @@ int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *O
 	return FALSE;
 }
 
+@h Indexing marks for longer documentation.
+
+@e INDEXING_MARKS_MARKDOWNFEATURE
+@e INDEX_MARKER_MIT
+
+@<Add the indexing marks feature@> =
+	MarkdownVariations::new_feature(I"indexing marks", INDEXING_MARKS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(Inform_flavoured_Markdown,
+		INDEXING_MARKS_MARKDOWNFEATURE);
+	Markdown::new_quasiplainish_inline_type(INDEX_MARKER_MIT, I"INDEX_MARKER");
+
+@h Heading markers for longer documentation.
+This is a notation from indoc. When a heading ends with a |{tag}| of
+non-whitespace, non-brace characters in single braces, we extract that as
+metadata not passing through into rendering.
+
+@e HEADING_MARKERS_MARKDOWNFEATURE
+@e HEADING_MARKER_MIT
+
+@<Add the heading markers feature@> =
+	markdown_feature *he = MarkdownVariations::new_feature(I"heading markers",
+		HEADING_MARKERS_MARKDOWNFEATURE);
+	METHOD_ADD(he, POST_PHASE_I_MARKDOWN_MTID,
+		InformFlavouredMarkdown::HM_intervene_after_Phase_I);
+	MarkdownVariations::add_feature(Inform_flavoured_Markdown,
+		HEADING_MARKERS_MARKDOWNFEATURE);
+	Markdown::new_leaf_block_type(HEADING_MARKER_MIT, I"HEADING_MARKER");
+
+@ =
+void InformFlavouredMarkdown::HM_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_item *md, md_links_dictionary *link_references) {
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) <= 2)) {
+		text_stream *line = md->stashed;
+		match_results mr = Regexp::create_mr();
+		while (Regexp::match(&mr, line, L"(%c*) %{(%C+)%} *")) {
+			markdown_item *hm_item = Markdown::new_item(HEADING_MARKER_MIT);
+			hm_item->stashed = Str::duplicate(mr.exp[1]);
+			Str::clear(line); Str::copy(line, mr.exp[0]);
+			Markdown::add_to(hm_item, md);
+		}
+		Regexp::dispose_of(&mr);
+		Str::trim_white_space(line);
+	}
+	for (markdown_item *ch = md->down; ch; ch=ch->next) {
+		InformFlavouredMarkdown::HM_intervene_after_Phase_I(feature, ch, link_references);
+	}
+}
+
+@h Paragraph gating for multi-platform tweaks.
+Essentially, this allows paragraphs in the documentation to be rendered
+only on some platforms and not others: it's conditional compilation for text.
+
+@e PARAGRAPH_GATING_MARKDOWNFEATURE
+@e GATE_MIT
+
+@<Add the paragraph gating feature@> =
+	markdown_feature *pg = MarkdownVariations::new_feature(I"paragraph gating",
+		PARAGRAPH_GATING_MARKDOWNFEATURE);
+	METHOD_ADD(pg, POST_PHASE_I_MARKDOWN_MTID,
+		InformFlavouredMarkdown::PG_intervene_after_Phase_I);
+	MarkdownVariations::add_feature(Inform_flavoured_Markdown,
+		PARAGRAPH_GATING_MARKDOWNFEATURE);
+	METHOD_ADD(pg, RENDER_MARKDOWN_MTID, InformFlavouredMarkdown::PG_render);
+	Markdown::new_container_block_type(GATE_MIT, I"GATE");
+
+@ =
+void InformFlavouredMarkdown::PG_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_item *md, md_links_dictionary *link_references) {
+	if (md->type == PARAGRAPH_MIT) {
+		text_stream *line = md->stashed;
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, line, L"%{(%C+?):%} *(%c*)")) {
+			MDBlockParser::change_type(NULL, md, GATE_MIT);
+			md->details = TRUE;
+			Str::clear(line); Str::copy(line, mr.exp[0]);
+			markdown_item *gated_item = Markdown::new_item(PARAGRAPH_MIT);
+			gated_item->stashed = Str::duplicate(mr.exp[1]);
+			gated_item->down = md->down;
+			md->down = gated_item;
+			InformFlavouredMarkdown::expand_gate(md);
+		}
+		Regexp::dispose_of(&mr);
+	}
+	for (markdown_item *ch = md->down; ch; ch=ch->next) {
+		InformFlavouredMarkdown::PG_intervene_after_Phase_I(feature, ch, link_references);
+	}
+}
+
+void InformFlavouredMarkdown::expand_gate(markdown_item *md) {
+	if (Str::get_at(md->stashed, 0) == '^') {
+		md->details = FALSE;
+		Str::delete_first_character(md->stashed);
+	}
+	for (int i=0; i<Str::len(md->stashed); i++)
+		if (Str::get_at(md->stashed, i) == ',') {
+			markdown_item *subgate_item = Markdown::new_item(GATE_MIT);
+			subgate_item->stashed = Str::new();
+			for (int j=i+1; j<Str::len(md->stashed); j++)
+				PUT_TO(subgate_item->stashed, Str::get_at(md->stashed, j));
+			subgate_item->details = TRUE;
+			Str::truncate(md->stashed, i);
+			subgate_item->down = md->down; md->down = subgate_item;
+			InformFlavouredMarkdown::expand_gate(subgate_item);
+			break;
+		}
+}
+
+int (*IFM_gatekeeper)(text_stream *) = NULL;
+
+void InformFlavouredMarkdown::set_gatekeeper_function(int (gatekeeper)(text_stream *)) {
+	IFM_gatekeeper = gatekeeper;
+}
+
+int InformFlavouredMarkdown::PG_render(markdown_feature *feature, text_stream *OUT,
+	markdown_item *md, int mode) {
+	if (md->type == GATE_MIT) {
+		int decision = FALSE;
+		if (IFM_gatekeeper) decision = IFM_gatekeeper(md->stashed);
+		if (md->details == FALSE) decision = (decision)?FALSE:TRUE;
+		if (decision)
+			Markdown::render_extended(OUT, md->down, InformFlavouredMarkdown::variation());
+		return TRUE;
+	}
+	return FALSE;
+}
+
+@h Multi-file splitting.
+
+@e INDOC_FILE_DIVISIONS_MARKDOWNFEATURE
+
+@<Add multi-file splitting@> =
+	markdown_feature *indoc_chaps =
+		MarkdownVariations::new_feature(I"indoc file divisions", INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
+	METHOD_ADD(indoc_chaps, MULTIFILE_MARKDOWN_MTID, InformFlavouredMarkdown::IFD_multifile);
+	MarkdownVariations::add_feature(Inform_flavoured_Markdown, INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
+
+@ =
+int InformFlavouredMarkdown::IFD_multifile(markdown_feature *feature,
+	markdown_item *tree, md_links_dictionary *link_references) {
+	int N = 1;
+	for (markdown_item *prev_md = NULL, *md = tree->down; md; prev_md = md, md = md->next) {
+		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
+			TEMPORARY_TEXT(leaf)
+			WRITE_TO(leaf, "chapter%d.html", N++);
+			markdown_item *file_marker = Markdown::new_file_marker(Filenames::from_text(leaf));
+			DISCARD_TEXT(leaf)
+			if (prev_md) prev_md->next = file_marker; else tree->down = file_marker;
+			file_marker->next = md;
+		}
+	}
+	return TRUE;
+}
+
 @h Syntax-colouring for the Inform family.
 
 @e INFORM_SYNTAX_COLOURING_MARKDOWNFEATURE
@@ -602,8 +820,10 @@ use "transcript" instead.
 	if (Str::len(language) == 0) {
 		for (int i=0; i<Str::len(md->stashed); i++)
 			if ((Str::get_at(md->stashed, i) == '>') &&
-				((i==0) || (Str::get_at(md->stashed, i-1) == '\n')))
-					WRITE_TO(language, "transcript");
+				((i==0) || (Str::get_at(md->stashed, i-1) == '\n'))) {
+				Str::clear(language);
+				WRITE_TO(language, "transcript");
+			}
 		if (Str::len(language) == 0) WRITE_TO(language, "inform");
 	}
 
@@ -768,7 +988,6 @@ and this is fiddly but elementary in the usual way of HTML tables:
 		}
 		if ((k == Str::len(md->stashed) - 1) && (Str::len(line) > 0)) @<Render line as code@>;
 	}
-	HTML_CLOSE("span");
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");

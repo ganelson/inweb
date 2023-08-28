@@ -284,3 +284,105 @@ void MarkdownVariations::intervene_after_Phase_II(markdown_variation *variation,
 	}
 }
 
+@ |MULTIFILE_MARKDOWN_MTID| allows a feature to tell the parser that the content
+will end up being split across multiple HTML files. If a feature wants to do
+this, it should then set a "file point" at any top-level positions of its
+choice, and return |TRUE|.
+
+@e MULTIFILE_MARKDOWN_MTID
+
+=
+INT_METHOD_TYPE(MULTIFILE_MARKDOWN_MTID, markdown_feature *feature,
+	markdown_item *tree, md_links_dictionary *link_references)
+int MarkdownVariations::multifile_mode(markdown_variation *variation,
+	markdown_item *tree, md_links_dictionary *link_references) {
+	if (tree->down) {
+		markdown_feature *feature;
+		LOOP_OVER(feature, markdown_feature) {
+			if (MarkdownVariations::supports(variation, feature->feature_ID)) {
+				int rv = FALSE;
+				INT_METHOD_CALL(rv, feature, MULTIFILE_MARKDOWN_MTID, tree, link_references);
+				if (rv) {
+					@<Act on multifile mode@>;
+					return TRUE;
+				}
+			}
+		}
+	}
+	return FALSE;
+}
+
+@<Act on multifile mode@> =
+	if (tree->down->type != FILE_MIT) {
+		markdown_item *index = Markdown::new_file_marker(Filenames::from_text(I"index.html"));
+		index->next = tree->down; tree->down = index;
+	}
+	for (markdown_item *md = tree->down; md; md = md->next) {
+		if (md->type == FILE_MIT) {
+			md->down = md->next; md->next = NULL;
+			markdown_item *ch = md->down, *prev_ch = NULL;
+			while ((ch) && (ch->type != FILE_MIT)) { prev_ch = ch, ch = ch->next; }
+			if (ch) { prev_ch->next = NULL; md->next = ch; }
+		}
+	}
+	markdown_item *headings[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL };
+	MarkdownVariations::multifile_r(tree->down, link_references, headings, NULL);
+
+@
+
+=
+void MarkdownVariations::multifile_r(markdown_item *md, md_links_dictionary *link_references,
+	markdown_item *headings[7], markdown_item *file_item) {
+	int non_heading_found = FALSE;
+	for (; md; md = md->next) {
+		if (md->type == HEADING_MIT) {
+			int L = Markdown::get_heading_level(md);
+			headings[L] = md;
+			for (int i=L+1; i<=6; i++) headings[i] = NULL;
+			text_stream *URL = Str::new();
+			if (file_item) {
+				WRITE_TO(URL, "%f", Markdown::get_filename(file_item));
+			}
+			TEMPORARY_TEXT(xref)
+			TEMPORARY_TEXT(anchor)
+			match_results mr = Regexp::create_mr();
+			if (Regexp::match(&mr, md->stashed, L"Chapter (%d+): *(%c*)")) {
+				WRITE_TO(xref, "%S", mr.exp[1]);
+				WRITE_TO(anchor, "chapter%S", mr.exp[0]);
+			} else if (Regexp::match(&mr, md->stashed, L"Chapter (%d+)")) {
+				WRITE_TO(xref, "%S", md->stashed);
+				WRITE_TO(anchor, "chapter%S", mr.exp[0]);
+			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+).(%d+): *(%c*)")) {
+				WRITE_TO(xref, "%S", mr.exp[2]);
+				WRITE_TO(anchor, "c%Ss%S", mr.exp[0], mr.exp[1]);
+			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+).(%d+)")) {
+				WRITE_TO(xref, "%S", md->stashed);
+				WRITE_TO(anchor, "c%Ss%S", mr.exp[0], mr.exp[1]);
+			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+)")) {
+				WRITE_TO(xref, "%S", md->stashed);
+				WRITE_TO(anchor, "s%S", mr.exp[0]);
+			} else {
+				WRITE_TO(xref, "%S", md->stashed);
+				WRITE_TO(anchor, "heading%d", md->id);
+			}
+			Regexp::dispose_of(&mr);
+			if (non_heading_found) {
+				WRITE_TO(URL, "#%S", anchor);
+			}
+			md->user_state = STORE_POINTER_text_stream(URL);
+			Markdown::create(link_references, xref, URL, md->stashed);
+			DISCARD_TEXT(xref)
+			DISCARD_TEXT(anchor)
+		} else {
+			non_heading_found = TRUE;
+		}
+		MarkdownVariations::multifile_r(md->down, link_references, headings, (md->type == FILE_MIT)?md:NULL);
+	}
+}
+
+text_stream *MarkdownVariations::URL_for_heading(markdown_item *md) {
+	if ((md) && (md->type == HEADING_MIT) && (Markdown::get_heading_level(md) <= 2))
+		if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE)
+			return RETRIEVE_POINTER_text_stream(md->user_state);
+	return NULL;
+}

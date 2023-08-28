@@ -493,14 +493,19 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 markdown_variation *variation_to_test_against = NULL, *testy_Markdown = NULL;
 
 void Unit::test_Markdown(text_stream *arg) {
+	InformFlavouredMarkdown::variation();
+
 	variation_to_test_against = MarkdownVariations::CommonMark();
 	testy_Markdown = MarkdownVariations::new(I"Testy Markdown 1.0");
+	MarkdownVariations::make_GitHub_features_active(testy_Markdown);
+
 	MarkdownVariations::remove_feature(testy_Markdown, HTML_BLOCKS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, INLINE_HTML_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, ATX_HEADINGS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, ENTITIES_MARKDOWNFEATURE);
 
-	MarkdownVariations::make_GitHub_features_active(testy_Markdown);
+	MarkdownVariations::add_feature(testy_Markdown, DESCRIPTIVE_INFORM_HEADINGS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(testy_Markdown, INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
 
 	markdown_feature *boxed_quotes = MarkdownVariations::new_feature(I"boxed code blocks", BOXED_QUOTES_MARKDOWNFEATURE);
 	METHOD_ADD(boxed_quotes, RENDER_MARKDOWN_MTID, Unit::boxed_quote_renderer);
@@ -519,6 +524,11 @@ void Unit::test_Markdown(text_stream *arg) {
 	DISCARD_TEXT(MD)
 }
 
+int Unit::test_gatekeeper(text_stream *text) {
+	if (Str::eq_insensitive(text, I"PLUGH")) return TRUE;
+	return FALSE;
+}
+
 void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *state) {
 	text_stream *marked_up = (text_stream *) state;
 	if (Str::eq(text, I"! End")) {
@@ -531,12 +541,19 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 		Str::clear(marked_up);
 		Markdown::set_tracing(FALSE);
 		variation_to_test_against = MarkdownVariations::CommonMark();
+		InformFlavouredMarkdown::set_gatekeeper_function(NULL);
 	} else if ((Str::get_first_char(text) == '!') && (Str::get_at(text, 1) == ' ')) {
 		WRITE_TO(STDOUT, "%S\n", text); Str::clear(marked_up);
 		if (Str::includes(text, I"Variation"))
 			variation_to_test_against = testy_Markdown;
 		if (Str::includes(text, I"GitHub")) 
 			variation_to_test_against = MarkdownVariations::GitHub_flavored_Markdown();
+		if (Str::includes(text, I"Inform")) 
+			variation_to_test_against = InformFlavouredMarkdown::variation();
+		if (Str::includes(text, I"Inform-PLUGH")) {
+			variation_to_test_against = InformFlavouredMarkdown::variation();
+			InformFlavouredMarkdown::set_gatekeeper_function(&Unit::test_gatekeeper);
+		}
 		if (Str::get_last_char(text) == '*') Markdown::set_tracing(TRUE);
 	} else {
 		WRITE_TO(marked_up, "%S\n", text);
@@ -605,4 +622,20 @@ int Unit::paste_icons_renderer(markdown_feature *feature, text_stream *OUT,
 		}
 	}
 	return FALSE;
+}
+
+int Unit::IFD_multifile(markdown_feature *feature,
+	markdown_item *tree, md_links_dictionary *link_references) {
+	int N = 1;
+	for (markdown_item *prev_md = NULL, *md = tree->down; md; prev_md = md, md = md->next) {
+		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
+			TEMPORARY_TEXT(leaf)
+			WRITE_TO(leaf, "chapter%d.html", N++);
+			markdown_item *file_marker = Markdown::new_file_marker(Filenames::from_text(leaf));
+			DISCARD_TEXT(leaf)
+			if (prev_md) prev_md->next = file_marker; else tree->down = file_marker;
+			file_marker->next = md;
+		}
+	}
+	return TRUE;
 }

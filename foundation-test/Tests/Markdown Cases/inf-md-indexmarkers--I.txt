@@ -1,0 +1,14 @@
+! Inform 1
+This is ^{indexed}, and all. And ^{so is `\}` this}. But not \^{this}.^^{Dramatically!}
+Index marks can ^{run}^{together}.
+
+So says ^{@Emily Short}.
+
+An index mark can occur [inside ^{a link}^^{even invisibly}!^{...}](somewhere.html).
+! Solution
+<p>This is indexed, and all. And so is `}` this. But not ^{this}.
+Index marks can runtogether.</p>
+<p>So says Emily Short.</p>
+<p>An index mark can occur <a href="somewhere.html">inside a link!...</a>.</p>
+! End
+

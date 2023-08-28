@@ -1,0 +1,978 @@
+! Inform 1
+## Section
+
+## Section {marker1} 	{marker2}  
+
+! Solution
+<h3><span>Section 1: Section</span></h3>
+<h3><span>Section 2: Section</span></h3>
+! End
+
+! Inform 2
+# Welcome to Inform
+## Preface
+## Acknowledgements
+## The facing pages
+## The Go! button {PM_StartsOutsideRooms} {PM_NoStartRoom}
+## The Replay button
+## The Index and Results panels
+## The Skein
+# The Source Text
+## Creating the world {PM_NoSuchVerb} {PM_NoSuchVerbComma} {PM_NegatedVerb1} {PM_TwoLikelihoods} {PM_CantAssertAdjective} {PM_CantAssertNegatedEverywhere} {PM_CantAssertNegatedRelations} {PM_CantAssertNonKind} {PM_CantAssertQuantifier}
+## Making rules
+## Punctuation {PM_UnendingQuote} {PM_UnendingComment} {PM_TooMuchQuotedText} {PM_WordTooLong} {PM_EnigmaticPronoun} {PM_EnigmaticThey}
+## Problems
+## Headings {HEADINGS} {PM_HeadingOverLine} {PM_HeadingStopsBeforeEndOfLine} {PM_BadTitleSentence}
+## Why using headings is a good idea
+## The SHOWME command
+## The TEST command {PM_TestMultiWord} {PM_TestDuplicate} {PM_TestBadRequirements} {PM_TestContainsUndo} {PM_TestCommandTooLong} {PM_TestDoubleWith} {PM_UnknownInternalTest}
+## Material not for release
+## Installing extensions {PM_BogusExtension}
+## Including extensions {PM_IncludeExtQuoted} {PM_ExtVersionMalformed} {PM_ExtMiswordedBeginsHere} {PM_ExtInadequateVM} {PM_ExtMisidentifiedEnds}
+## Use options {PM_UONotNumerical} {PM_UnknownUseOption} {OPTIONS}
+## Administering classroom use {OPTIONSFILE}
+## Limits and the Settings panel {PM_BadICLIdentifier} {STORYFILES}
+## What to do about a bug
+## Does Inform really understand English?
+# Things
+## Descriptions
+## Rooms and the map {kind_room} {MAP} {PM_SameKindEquated} {PM_DescriptionsEquated}
+## One-way connections
+## Regions and the index map {kind_region} {REGIONS} {PM_ExistingRegion} {PM_RegionInTwoRegions} {PM_RegionRelation}
+## Kinds {KINDS} {PM_BothRoomAndSupporter} {PM_CantContainAndSupport} {PM_MiseEnAbyme} {PM_KindsIncompatible}
+## Either/or properties
+## Properties depend on kind {PM_PropertyNotPermitted}
+## Scenery
+## Backdrops {kind_backdrop} {PM_EverywhereNonBackdrop} {PM_CantChangeEverywhere} {PM_EverywhereMisapplied}
+## Properties holding text
+## Two descriptions of things {PM_TwoAppearances} {PM_TextWithoutSubject}
+## Doors {kind_door} {PM_BothWaysDoor} {PM_DoorUnconnected} {PM_DoorOverconnected} {PM_DoorToNonRoom} {PM_DoorInThirdRoom} {PM_RoomMissingDoor} {PM_BadMapCell}
+## Locks and keys
+## Devices and descriptions {kind_device}
+## Light and darkness
+## Vehicles and pushable things {kind_vehicle}
+## Men, women and animals {kind_person}
+## Articles and proper names
+## Carrying capacity
+## Possessions and clothing
+## The player's holdall {kind_player's}
+## Food
+## Parts of things {PM_PartOfRoom} {PM_RoomOrDoorAsPart}
+## Concealment
+## The location of something
+## Directions {kind_direction} {PM_TooManyDirections} {PM_ImproperlyMadeDirection} {PM_DirectionTooLong} {PM_NamelessDirection}
+# Kinds
+## New kinds {NEWKINDS}
+## Using new kinds
+## Degrees of certainty
+## Plural assertions {PM_PluralOfQuoted} {PM_PluralIsQuoted}
+## Kinds of value {KINDSVALUE}
+## Properties again {PM_ValueCantHaveProperties} {PM_ValueCantHaveVProperties}
+## New either/or properties {PM_EitherOrAsValue} {PM_QualifiedCanBe} {PM_NonObjectCanBe} {PM_MiscellaneousEOProblem} {PM_ThisIsEitherOr}
+## New value properties {PM_PropertyOfKind1} {PM_PropertyCalledArticle} {PM_PropertyCalledPresence} {PM_PropertyNameForbidden} {PM_PropertyUninitialisable} {PM_BadVisibilityWhen} {PM_PropertyTooSpecific} {PM_PropertyKindUnknown} {PM_PropertyKindVague} {PM_PropertyKindClashes} {PM_BadProvides} {PM_RedundantThatVaries}
+## Using new kinds of value in properties
+## Conditions of things {PM_EitherOnThree}
+## Default values of kinds
+## Values that vary {var_location} {VARIABLES} {PM_EmptyKind}
+## Values that never vary
+## Duplicates {PM_TooManyDuplicates}
+## Assemblies and body parts {PM_AssemblyLoop} {PM_AssemblyRegress} {PM_ComplexEvery}
+## Names made in assembly
+## Postscript on simulation
+# Text
+## Text with substitutions {PM_TSWithPunctuation}
+## How Inform reads quoted text
+## Text which names things
+## Text with numbers
+## Text with lists
+## Text with variations {PM_SayIfNested} {PM_SayOtherwiseWithoutIf} {PM_SayEndIfWithoutSayIf}
+## Text with random alternatives {PM_ComplicatedSayStructure} {PM_ComplicatedSayStructure2} {PM_ComplicatedSayStructure5} {PM_ComplicatedSayStructure4} {PM_ComplicatedSayStructure3}
+## Line breaks and paragraph breaks
+## Text with type styles
+## Accented letters
+## Unicode characters {PM_SayUnicode} {PM_MidTextUnicode} {PM_UnicodeOutOfRange}
+## Displaying quotations
+## Making new substitutions
+# Descriptions
+## What are descriptions? {DESCRIPTIONS}
+## Adjectives and nouns
+## Sources of adjectives
+## Defining new adjectives {PM_DefinitionBadCondition} {PM_DefinitionWithoutCondition} {PM_AdjDomainSlippery} {PM_AdjDomainSurreal} {PM_AdjDomainUnknown} {PM_ArticleAsAdjective}
+## Defining adjectives for values
+## Whereabouts on a scale?
+## Comparatives {PM_ComparativeMisapplied} {PM_GradingCalled} {PM_GradingMisphrased} {PM_GradingNonLiteral} {PM_GradingUnknownProperty} {PM_GradingUnless} {PM_GradingWrongKOV} {PM_MultiwordGrading}
+## Superlatives
+## Which and who
+## Existence and there {PM_OutOfPlay}
+## A word about in
+## A word about nothing
+## To be able to see and touch
+## Adjacent rooms and routes through the map
+## All, each and every {PM_ComplexDeterminer}
+## Counting while comparing
+# Basic Actions
+## Actions {ACTIONS} {kind_actionname} {PM_APWithNoParticiple} {PM_APUnknown} {PM_NonActionIn}
+## Instead rules {rules_instead}
+## Before rules {rules_before}
+## Try and try silently {PM_UnknownTryAction1} {PM_UnknownTryAction2} {PM_ActionNotSpecific} {PM_ActionTooSpecific}
+## After rules {rules_after}
+## Reading and talking
+## The other four senses
+## Rules applying to more than one action {PM_APWithDisjunction}  {PM_APWithImmiscible}
+## All actions and exceptional actions
+## The noun and the second noun {var_noun}
+## In rooms and regions
+## In the presence of, and when {PM_NonActionInPresenceOf} {PM_APWithBadWhen}
+## Going from, going to
+## Going by, going through, going with {PM_GoingWrongKind} {PM_GoingWithoutObject}
+## Kinds of action {PM_NamedAPWithActor} {KACTIONS}
+## Repeated actions
+## Actions on consecutive turns
+## Postscript on actions
+# Change
+## Change of values that vary
+## Changing the command prompt {var_prompt}
+## Changing the status line {var_sl}
+## Change of either/or properties
+## Change of properties with values
+## Whose property?
+## Moving things
+## Moving backdrops
+## Moving the player
+## Removing things from play
+## Now... {PM_BadNow1} {PM_BadNow2} {PM_BadNow3} {PM_CantForceRelation} {PM_CantForceExistence} {PM_CantForceGeneralised} {PM_CantForceCalling} {PM_CantChangeKind} {PM_RedefinedNow}
+## Increasing and decreasing
+## Checking on whereabouts
+## More flexible descriptions of whereabouts
+## Calling names {PM_CalledThe} {PM_CalledWithDash}
+## Counting the number of things
+## Looking at containment by hand
+## Randomness
+## Random choices of things {PM_RandomImpossible}
+# Time
+## When play begins {ROOMPLAYBEGINS} {rules_wpb}
+## Awarding points {var_score}
+## Introducing tables: rankings
+## When play ends {rules_wpe}
+## Every turn {rules_et} {PM_NumberOfTurns}
+## The time of day {kind_time} {var_time}
+## Telling the time
+## Approximate times, lengths of time
+## Comparing and shifting times
+## Calculating times
+## Future events {PM_AtWithoutTime} {PM_UnusedTimedEvent} {TIMEDEVENTS}
+## Actions as conditions {PM_PTAPTooComplex}
+## The past and perfect tenses {PM_PastSubordinate} {PM_PTAPMakesCallings} {PM_PastTableLookup} {PM_PastCallings}  {PM_PastActionCalled} {PM_NonPresentTense} {PM_PastTableEntries}
+## How many times?
+## How many turns?
+# Scenes
+## Introduction to scenes {SCENESINTRO} {kind_scene}
+## Creating a scene {PM_ScenesNotPlay} {PM_ScenesDisallowCalled} {PM_ScenesOnly} {PM_ScenesUnknownEnd} {PM_ScenesOversetEnd} {PM_ScenesBadCondition}
+## Using the Scene index
+## During scenes
+## Linking scenes together {LINKINGSCENES}
+## More general linkages
+## Multiple beginnings and repeats
+## Multiple endings
+## Why are scenes designed this way?
+# Phrases
+## What are phrases? {PHRASES}
+## The phrasebook {PM_BareTo}
+## Pattern matching {PM_TokenWithoutOpenBracket} {PM_TokenWithoutCloseBracket} {PM_TokenWithEmptyBrackets} {PM_TokenWithNestedBrackets} {PM_BadTypeIndication} {PM_TokenMisunderstood} {PM_PhraseTooLong} {PM_AdjacentTokens}  {PM_SaySlashed}
+## The showme phrase
+## Conditions and questions {kind_truthstate} {PM_TruthStateToDecide}
+## If {PM_IfOutsidePhrase}
+## Begin and end {PM_BeginWithoutEnd} {PM_BlockNestingTooDeep} {PM_EndWithoutBegin} {PM_WrongEnd} {PM_CantUseOutsideStructure} {PM_BothBlockSyntaxes} {PM_NotInOldSyntax} {PM_MisalignedIndentation} {PM_RunOnsInTabbedRoutine} {PM_EmptyIndentedBlock}
+## Otherwise {PM_NonCaseInIf} {PM_MisalignedOtherwise} {PM_MisalignedCase} {PM_MisarrangedOtherwise} {PM_DoubleOtherwise} {PM_OtherwiseIfAfterOtherwise} {PM_CaseValueNonConstant} {PM_CaseValueMismatch} {PM_OtherwiseWithoutIf} {PM_OtherwiseInNonIf}
+## While
+## Repeat {PM_CalledInRepeat}
+## Repeat running through {PM_BadRepeatDomain}
+## Next and break {PM_CantUseOutsideLoop}
+## Stop
+## Phrase options {PM_TooManyPhraseOptions} {PM_PhraseOptionsExclusive} {PM_NotAPhraseOption} {PM_NotTheOnlyPhraseOption} {PM_SayWithPhraseOptions}
+## Let and temporary variables
+## New conditions, new adjectives
+## Phrases to decide other things {PM_ReturnWrongKind} {PM_UnknownValueToDecide} {PM_RedundantReturnKOV}
+## The value after and the value before
+# Advanced Actions
+## A recap of actions
+## How actions are processed {ARSUMMARY}
+## Giving instructions to other people {var_person_asked}
+## Persuasion {rules_per}
+## Unsuccessful attempts {var_reason} {rules_fail}
+## Spontaneous actions by other people
+## New actions {NEWACTIONS} {PM_MatchedAsTooLong} {PM_MultiwordPastParticiple} {PM_GrammarMismatchesAction} {PM_ActionAlreadyExists} {PM_ActionBothValues} {PM_ActionClauseUnknown} {PM_ActionMisapplied}
+## Irregular English verbs
+## Check, carry out, report
+## Action variables {PM_ActionVarsPastTense} {PM_ActionVarAnd} {PM_ActionVarOverspecific} {PM_ActionVarUnknownKOV} {PM_ActionVarValue} {PM_BadMatchingSyntax}
+## Making actions work for other people
+## Check rules for actions by other people {PM_DuplicateRuleName} {PM_RuleWithComma}
+## Report rules for actions by other people
+## Actions for any actor
+## Out of world actions {OUTOFWORLD}
+## Reaching inside and reaching outside rules {rules_ri}
+## Visible vs touchable vs carried
+## Changing reachability {var_person_reaching}
+## Changing visibility {visibility}
+## Stored actions {kind_storedaction}
+## Guidelines on how to write rules about actions
+# Relations
+## Sentence verbs {VERBS} {PM_PropForBadKOV} {PM_RelationWithBadProperty} {PM_RelationWithEitherOrProperty} {PM_BadRelation} {PM_EveryWrongSide} {PM_KindRelatedToValue}
+## What sentences are made up from
+## What are relations? {RELATIONS}
+## To carry, to wear, to have
+## Making new relations {PM_RelationExists} {PM_FRFUnavailable} {PM_OneOrVariousWithWhen} {PM_BothOneAndMany} {PM_CantCallLeft} {PM_CantCallRight} {PM_CantCallBoth} {PM_OneToOneMiscalled} {PM_RelatedKindsUnknown} {PM_BadKOVForRelationProperty}
+## Making reciprocal relations
+## Relations in groups
+## The built-in verbs and their meanings
+## Defining new assertion verbs {PM_VerbRelationVague} {PM_VerbUnknownMeaning} {PM_VerbRelationUnknown} {PM_PresentPluralTwice} {PM_VerbMalformed} {PM_DuplicateVerbs1} {PM_PrepositionConjugated} {PM_PrepositionLong}
+## Defining new prepositions
+## Indirect relations
+## Relations which express conditions {PM_Unassertable2} {PM_BadRelationCondition}
+## Relations involving values
+## Relations as values in their own right
+## Temporary relations
+## What are relations for?
+# Adaptive Text and Responses
+## Tense and narrative viewpoint
+## Adaptive text
+## More on adapting verbs
+## Adapting text about the player
+## Adapting text referring to other things
+## Adapting demonstratives and possessives
+## Can, could, may, might, must, should, would
+## Adapting contractions
+## Verbs as values {kind_verb}
+## Responses
+## Changing the text of responses
+## The RESPONSES testing command
+# Numbers and Equations
+## How do we measure things?
+## Numbers and real numbers {kind_number} {kind_real_number} {PM_InequalityFailed} {PM_CantEquateValues} {PM_EvenOverflow-G} {PM_ZMachineOverflow} {PM_ElementOverflow} {PM_LiteralOverflow}
+## Real number conversions
+## Printing real numbers
+## Arithmetic
+## Powers and logarithms
+## Trigonometry
+## Units {PM_LPNotKOV} {PM_LPBuiltInKOV} {PM_LPEnumeration} {PM_NegationInternal} {PM_NegationForbidden}
+## Multiple notations {PM_DuplicateUnitSpec}
+## Scaling and equivalents {PM_LPCantScaleYet} {PM_LPCantScaleTwice} {PM_LPTooLittleAccuracy}
+## Named notations
+## Making the verb "to weigh"
+## The Metric Units extension
+## Notations including more than one number {PM_LPWithoutElement} {PM_LPElementTooLarge} {PM_LPTooManyElements} {PM_LPTooComplicated} {PM_LPNotAllNamed}
+## The parts of a number specification {PM_LPFirstOptional} {PM_LPMultipleOptional} {PM_BadLPPartOption} {PM_BadLPNameOption}
+## Understanding specified numbers
+## Totals {PM_TotalEitherOr} {PM_TotalTableColumn}
+## Equations {EQUATIONS} {PM_EquationMisnumbered} {PM_EquationMisnamed} {PM_EquationSymbolMisdeclared} {PM_EquationSymbolMalformed} {PM_EquationSymbolVague} {PM_EquationSymbolNonValue} {PM_EquationSymbolEqualsKOV} {PM_EquationSymbolNonNumeric} {PM_EquationSymbolBadSub} {PM_EquationSymbolSpurious} {PM_EquationTokenUnrecognised} {PM_EquationLeadingZero} {PM_EquationOperatorUnrecognised} {PM_EquationTooComplex} {PM_EquationMispunctuated} {PM_EquationDoesntEquate} {PM_EquationEquatesBadly} {PM_EquationEquatesMultiply} {PM_EquationIncomparable}  {PM_EquationDimensionPower} {PM_EquationBadArithmetic} {PM_EquationBadTarget} {PM_EquationInsoluble} {PM_EquationSymbolMissing} {PM_EquationSymbolWrongKOV}
+## Arithmetic with units
+## Multiplication of units {PM_DimensionRedundant} {PM_DimensionNotBaseKOV} {PM_NonDimensional} {PM_UnitSequenceOverflow} {PM_DimensionsInconsistent} {PM_BadLPEquivalent} {PM_BadLPOffset} {PM_MultiplyingNonKOVs} {PM_BadArithmetic} {ARITHMETIC}
+# Tables
+## Laying out tables {TABLES} {PM_TableCoincidesWithKind} {PM_TableColumnEmptyLists} {PM_TablePlayerEntry} {PM_TableVariableEntry} {PM_TableDescriptionEntry} {PM_TableUnknownEntry} {PM_TableIncompatibleEntry} {PM_TableMisnamed} {PM_TableNameDuplicate} {PM_TableNameAmbiguous} {PM_TableTooManyColumns} {PM_TableColumnArticle} {PM_TableColumnAlready} {PM_TableWithoutRows} {PM_TableUndefined} {PM_TableOfQuantifiedKind} {PM_TableOfBuiltInKind} {PM_TableOfExistingKind} {PM_TableDefiningObject} {PM_TableWithBlankNames} {PM_TableEntryGeneric} {PM_TableKindlessColumn}  {PM_TableColumnBrackets} {PM_TableRowFull}
+## Looking up entries
+## Corresponding entries
+## Changing entries
+## Choosing rows {PM_NoRowSelected}
+## Repeating through tables
+## Blank entries
+## Blank columns
+## Blank rows
+## Adding and removing rows
+## Sorting
+## Listed in...
+## Topic columns
+## Another scoring example
+## Varying which table to look at {kind_tablename}
+## Defining things with tables {PM_TableDefiningNothing} {PM_TableDefiningTheImpossible}
+## Defining values with tables
+## Table continuations {PM_TableNotContinuation}
+## Table amendments {PM_TableAmendmentMisfit} {PM_TableAmendmentMismatch}
+# Understanding
+## Understand {PM_OldVerbUsage} {PM_UnderstandCommandWhen} {PM_NotNewCommand} {PM_NotOldCommand} {PM_NontextualUnderstand} {PM_UnderstandMismatch} {PM_TextlessMistake} {PM_UnderstandAsActivity} {PM_UnderstandAsBadValue} {PM_UnderstandVague} {PM_LiteralPunctuation} {PM_UnderstandEmptyText} {PM_UnderstandCommaCommand} {PM_UnderstandAsCompoundText} {PM_ObsoleteHeldTokens} {PM_UseTextNotTopic} {PM_UseThingNotObject} {PM_UnparsableKind} {PM_UnknownToken} {PM_BizarreToken} {PM_OverComplexToken} {PM_TextTokenRestricted} {someone_token} {UNDERSTANDING}
+## New commands for old grammar {PM_ThreeValuedLine} {PM_TooManyAliases} {PM_TooManyGrammarLines} {PM_GrammarIllFounded}
+## Overriding existing commands
+## Standard tokens of grammar {things_token} {TOKENS}
+## The text token {text_token}
+## Actions applying to kinds of value
+## Understanding any, understanding rooms
+## Understanding names
+## Understanding kinds of value {var_understood}
+## Commands consisting only of nouns
+## Understanding values {PM_UnderstandAsQualified} {PM_UnderstandPluralValue}
+## This/that {PM_OverAmbitiousSlash} {PM_SlashedCommand}
+## New tokens {PM_MixedOutcome} {PM_TwoValuedToken} {NEWTOKENS}
+## Tokens can produce values
+## Understanding things by their properties {PM_UnknownUnderstandProperty} {PM_BadUnderstandProperty} {PM_BadUnderstandPropertyAs} {PM_BadReferringProperty} {PM_UnknownUnpermittedProperty}
+## Understanding things by their relations {PM_GrammarObjectlessRelation} {PM_GrammarBadRelation} {PM_GrammarValueRelation}
+## Context: understanding when {PM_BadWhen}
+## Changing the meaning of pronouns
+## Does the player mean... {rules_dtpm}
+## Multiple action processing
+## Understanding mistakes
+## Precedence
+# Activities
+## What are activities? {ACTIVITIES} {kind_activity} {PM_BadActivityName}
+## How activities work
+## Rules applied to activities
+## While clauses {PM_BadWhenWhile}
+## New activities {EXTACTIVITIES}
+## Activity variables {PM_ActivityVariableNameless} {PM_ActivityVarAnd} {PM_ActivityVarOverspecific} {PM_ActivityVarUnknownKOV} {PM_ActivityVarValue}
+## Beginning and ending activities manually
+## Introduction to the list of built-in activities
+## Deciding the concealed possessions of something {act_con} {var_particular}
+## Printing the name of something {act_pn}
+## Printing the plural name of something {act_ppn}
+## Printing a number of something {act_pan}
+## Listing contents of something {act_lc}
+## Grouping together something {act_gt}
+## Issuing the response text of something {act_resp}
+## Printing room description details of something {act_details}
+## Printing inventory details of something {act_idetails}
+## Printing a refusal to act in the dark {act_toodark}
+## Printing the announcement of darkness {act_nowdark}
+## Printing the announcement of light {act_nowlight}
+## Printing the name of a dark room {act_darkname}
+## Printing the description of a dark room {act_darkdesc}
+## Constructing the status line {act_csl}
+## Writing a paragraph about {act_wpa}
+## Listing nondescript items of something {act_lni}
+## Printing the locale description of something {act_pld}
+## Choosing notable locale objects for something {act_cnlo}
+## Printing a locale paragraph about {act_plp}
+## Deciding the scope of something {act_ds}
+## Clarifying the parser's choice of something {act_clarify}
+## Asking which do you mean {act_which}
+## Supplying a missing noun/second noun {act_smn}
+## Reading a command {act_reading} {var_command} {kind_snippet}
+## Implicitly taking something {act_implicitly}
+## Printing a parser error {act_parsererror}
+## Deciding whether all includes {act_all}
+## Printing the banner text {act_banner}
+## Printing the player's obituary {act_obit}
+## Amusing a victorious player {act_amuse}
+## Starting the virtual machine {act_startvm}
+# Rulebooks
+## On rules {kind_rule} {kind_rulebook} {RULEBOOKS} {PM_RulebookWithAt} {PM_RulebookWithDefinition} {PM_RulebookWithTo}
+## Named rules and rulebooks
+## New rules {PM_BadRulePreambleWhen} {PM_BadRulePreamble} {PM_RuleWithDefiniteArticle} {PM_RuleWithoutColon}
+## Listing rules explicitly {RLISTING} {PM_ImproperRulePlacement} {PM_BadRulePlacementNegation} {PM_UnspecifiedRulebookPlacement} {PM_NoSuchRuleExists} {PM_PlaceWithMissingRule}
+## Changing the behaviour of rules {rules_proc}
+## Sorting and indexing of rules
+## The preamble of a rule
+## New rulebooks {NEWRULEBOOKS}
+## Basis of a rulebook
+## Rulebook variables {PM_RulebookVariableAnd} {PM_RulebookVariableTooSpecific} {PM_RulebookVariableBadKind} {PM_RulebookVariableVague}
+## Success and failure {PM_DefaultOutcomeTwice} {PM_BadDefaultOutcome}
+## Named outcomes {PM_MisplacedRulebookOutcome} {PM_WrongEndToPhrase} {PM_BadOutcomeClarification} {PM_DefaultNamedOutcomeTwice} {PM_DefaultOutcomeAlready} {PM_DuplicateOutcome} {PM_NonOutcomeProperty}
+## Rulebooks producing values
+## Abide by
+## Two rulebooks used internally {rules_internal}
+## The Laws for Sorting Rulebooks
+# Advanced Text
+## Changing texts
+## Memory limitations
+## Characters, words, punctuated words, unpunctuated words, lines, paragraphs
+## Upper and lower case letters
+## Matching and exactly matching
+## Regular expression matching
+## Making new text with text substitutions
+## Replacements
+## Summary of regular expression notation
+# Lists
+## Lists and entries {kind_listof}
+## Constant lists {PM_CantLetEmptyList} {PM_BadConstantListEntry} {PM_NonconstantConstantListEntry} {PM_IncompatibleConstantListEntry}
+## Saying lists of values
+## Testing and iterating over lists
+## Building lists
+## Lists of objects
+## Lists of values matching a description
+## Sorting, reversing and rotating lists
+## Accessing entries in a list
+## Lengthening or shortening a list
+## Variations: arrays, logs, queues, stacks, sets, sieves and rings
+# Advanced Phrases
+## A review of kinds
+## Descriptions as values {kind_description}
+## Phrases as values
+## Default values for phrase kinds
+## Map, filter and reduce
+## Generic phrases
+## Kind variables
+## Matching the names of kinds
+## In what order?
+## Ambiguities
+# Figures, Sounds and Files
+## Beyond text
+## How IF views pictures
+## Virtual machines and story file formats {PM_UnknownVirtualMachine}
+## Gathering the figures {kind_figurename} {FIGURES}
+## Declaring and previewing the figures {PM_PictureDuplicate} {PM_PictureNotTextual}
+## Displaying the figures
+## Recorded sounds {kind_soundname} {SOUNDS}
+## Declaring and playing back sounds {PM_SoundDuplicate} {PM_SoundNotTextual}
+## Providing accessibility text
+## Some technicalities about figures and sounds
+## Files {EFILES}
+## Declaring files {kind_externalfile} {PM_BadFileIFID} {PM_BadFileOwner} {PM_FilenameDuplicate} {PM_FilenameNotTextual} {PM_FilenameUnsafe}
+## Writing and reading tables to external files
+## Writing, reading and appending text to files
+## Exchanging files with other programs
+# Testing and Debugging
+## Checking against the Index
+## Debugging features to use in source
+## High-level debugging commands
+## Low-level debugging commands
+## Adding new testing verbs and Release for Testing
+## Testing for thoroughness
+## Commands for beta-testers
+## Help from the user community
+# Releasing
+## The finished product
+## Bibliographic data {PM_BadEpisode}
+## Genres
+## The Library Card {LCARDS}
+## The Treaty of Babel and the IFID {IFIDS}
+## The Release button and the Materials folder {PM_NoSuchPublicRelease} {release_files}
+## The Joy of Feelies {PM_ReleaseAlong}
+## Cover art {release_cover}
+## An introductory booklet and postcard {release_booklet} {release_postcard}
+## A website {release_website}
+## A playable web page {release_interpreter}
+## Using Inform with Vorple
+## Website templates
+## Advanced website templates
+## Republishing existing works of IF {PM_RoomInIgnoredSource}
+## Walkthrough solutions {release_solution}
+## Releasing the source text {release_source} {release_card}
+## Improving the index map {MAPHINTS} {PM_MapFromNonRoom} {PM_MapToNonRoom} {PM_MapNonLateral} {PM_MapUnknownColour} {PM_MapUnknownOffset} {PM_MapUnknownOffsetBase} {PM_MapBadRubric} {PM_MapSettingOfUnknown} {PM_MapSettingUnknown} {PM_MapSettingTooLong} {PM_MapSettingTypeFailed} {PM_MapHintUnknown} {PM_MapDirectionClue} {PM_MapPlacement} {PM_MapPlacementDirection}
+## Producing an EPS format map {EPSMAP}
+## Settings in the map-maker
+## Table of map-maker settings
+## Kinds of value accepted by the map-maker
+## Titling and abbreviation
+## Rubrics
+# Publishing
+## Finding a readership
+## Editing and Quality Assurance
+## A Page of Its Own
+## The IF Archive
+## IFDB: The Interactive Fiction Database
+## Competitions, Exhibitions, and Jams
+## Meetups and Conferences
+## A short concluding homily
+# Extensions
+## The status of extensions {EXTENSIONS}
+## The Standard Rules {SRULES}
+## Built-in, installed and project-specific extensions
+## Authorship
+## A simple example extension {PM_ExtMultipleBeginsHere} {PM_ExtBeginsAfterEndsHere} {PM_ExtMultipleEndsHere} {PM_ExtNoBeginsHere} {PM_ExtNoEndsHere}
+## Version numbering {PM_ExtVersionTooLow}
+## Extensions and story file formats
+## Extensions can include other extensions
+## Extensions can interact with other extensions {PM_HeadingInPlaceOfUnincluded} {PM_HeadingInPlaceOfUnknown} {PM_UnequalHeadingInPlaceOf}
+## Extensions in the Index
+## Extension documentation
+## Examples and headings in extension documentation
+## Implications {PM_ImplicationCertain} {PM_ImplicationValueProperty}
+## Using Inform 6 within Inform 7
+## Defining phrases in Inform 6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
+## Phrases to decide in Inform 6
+## Handling phrase options
+## Making and testing use options
+## Longer extracts of Inform 6 code
+## Primitive Inform 6 declarations of rules
+## Inform 6 objects and classes {PM_BadObjectTranslation}
+## Inform 6 variables, properties, actions, and attributes {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
+## Inform 6 Understand tokens {PM_GrammarTranslatedAlready}
+## Inform 6 adjectives
+## Naming Unicode characters
+## Overriding definitions in kits {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
+## Translating the language of play
+## Segmented substitutions
+## Invocation labels, counters and storage {PM_LabelNamespaceTooLong}
+## To say one of
+! Solution
+<h2><span>Chapter 1: Welcome to Inform</span></h2>
+<h3><span>Section 1.1: Preface</span></h3>
+<h3><span>Section 1.2: Acknowledgements</span></h3>
+<h3><span>Section 1.3: The facing pages</span></h3>
+<h3><span>Section 1.4: The Go! button</span></h3>
+<h3><span>Section 1.5: The Replay button</span></h3>
+<h3><span>Section 1.6: The Index and Results panels</span></h3>
+<h3><span>Section 1.7: The Skein</span></h3>
+<h2><span>Chapter 2: The Source Text</span></h2>
+<h3><span>Section 2.1: Creating the world</span></h3>
+<h3><span>Section 2.2: Making rules</span></h3>
+<h3><span>Section 2.3: Punctuation</span></h3>
+<h3><span>Section 2.4: Problems</span></h3>
+<h3><span>Section 2.5: Headings</span></h3>
+<h3><span>Section 2.6: Why using headings is a good idea</span></h3>
+<h3><span>Section 2.7: The SHOWME command</span></h3>
+<h3><span>Section 2.8: The TEST command</span></h3>
+<h3><span>Section 2.9: Material not for release</span></h3>
+<h3><span>Section 2.10: Installing extensions</span></h3>
+<h3><span>Section 2.11: Including extensions</span></h3>
+<h3><span>Section 2.12: Use options</span></h3>
+<h3><span>Section 2.13: Administering classroom use</span></h3>
+<h3><span>Section 2.14: Limits and the Settings panel</span></h3>
+<h3><span>Section 2.15: What to do about a bug</span></h3>
+<h3><span>Section 2.16: Does Inform really understand English?</span></h3>
+<h2><span>Chapter 3: Things</span></h2>
+<h3><span>Section 3.1: Descriptions</span></h3>
+<h3><span>Section 3.2: Rooms and the map</span></h3>
+<h3><span>Section 3.3: One-way connections</span></h3>
+<h3><span>Section 3.4: Regions and the index map</span></h3>
+<h3><span>Section 3.5: Kinds</span></h3>
+<h3><span>Section 3.6: Either/or properties</span></h3>
+<h3><span>Section 3.7: Properties depend on kind</span></h3>
+<h3><span>Section 3.8: Scenery</span></h3>
+<h3><span>Section 3.9: Backdrops</span></h3>
+<h3><span>Section 3.10: Properties holding text</span></h3>
+<h3><span>Section 3.11: Two descriptions of things</span></h3>
+<h3><span>Section 3.12: Doors</span></h3>
+<h3><span>Section 3.13: Locks and keys</span></h3>
+<h3><span>Section 3.14: Devices and descriptions</span></h3>
+<h3><span>Section 3.15: Light and darkness</span></h3>
+<h3><span>Section 3.16: Vehicles and pushable things</span></h3>
+<h3><span>Section 3.17: Men, women and animals</span></h3>
+<h3><span>Section 3.18: Articles and proper names</span></h3>
+<h3><span>Section 3.19: Carrying capacity</span></h3>
+<h3><span>Section 3.20: Possessions and clothing</span></h3>
+<h3><span>Section 3.21: The player's holdall</span></h3>
+<h3><span>Section 3.22: Food</span></h3>
+<h3><span>Section 3.23: Parts of things</span></h3>
+<h3><span>Section 3.24: Concealment</span></h3>
+<h3><span>Section 3.25: The location of something</span></h3>
+<h3><span>Section 3.26: Directions</span></h3>
+<h2><span>Chapter 4: Kinds</span></h2>
+<h3><span>Section 4.1: New kinds</span></h3>
+<h3><span>Section 4.2: Using new kinds</span></h3>
+<h3><span>Section 4.3: Degrees of certainty</span></h3>
+<h3><span>Section 4.4: Plural assertions</span></h3>
+<h3><span>Section 4.5: Kinds of value</span></h3>
+<h3><span>Section 4.6: Properties again</span></h3>
+<h3><span>Section 4.7: New either/or properties</span></h3>
+<h3><span>Section 4.8: New value properties</span></h3>
+<h3><span>Section 4.9: Using new kinds of value in properties</span></h3>
+<h3><span>Section 4.10: Conditions of things</span></h3>
+<h3><span>Section 4.11: Default values of kinds</span></h3>
+<h3><span>Section 4.12: Values that vary</span></h3>
+<h3><span>Section 4.13: Values that never vary</span></h3>
+<h3><span>Section 4.14: Duplicates</span></h3>
+<h3><span>Section 4.15: Assemblies and body parts</span></h3>
+<h3><span>Section 4.16: Names made in assembly</span></h3>
+<h3><span>Section 4.17: Postscript on simulation</span></h3>
+<h2><span>Chapter 5: Text</span></h2>
+<h3><span>Section 5.1: Text with substitutions</span></h3>
+<h3><span>Section 5.2: How Inform reads quoted text</span></h3>
+<h3><span>Section 5.3: Text which names things</span></h3>
+<h3><span>Section 5.4: Text with numbers</span></h3>
+<h3><span>Section 5.5: Text with lists</span></h3>
+<h3><span>Section 5.6: Text with variations</span></h3>
+<h3><span>Section 5.7: Text with random alternatives</span></h3>
+<h3><span>Section 5.8: Line breaks and paragraph breaks</span></h3>
+<h3><span>Section 5.9: Text with type styles</span></h3>
+<h3><span>Section 5.10: Accented letters</span></h3>
+<h3><span>Section 5.11: Unicode characters</span></h3>
+<h3><span>Section 5.12: Displaying quotations</span></h3>
+<h3><span>Section 5.13: Making new substitutions</span></h3>
+<h2><span>Chapter 6: Descriptions</span></h2>
+<h3><span>Section 6.1: What are descriptions?</span></h3>
+<h3><span>Section 6.2: Adjectives and nouns</span></h3>
+<h3><span>Section 6.3: Sources of adjectives</span></h3>
+<h3><span>Section 6.4: Defining new adjectives</span></h3>
+<h3><span>Section 6.5: Defining adjectives for values</span></h3>
+<h3><span>Section 6.6: Whereabouts on a scale?</span></h3>
+<h3><span>Section 6.7: Comparatives</span></h3>
+<h3><span>Section 6.8: Superlatives</span></h3>
+<h3><span>Section 6.9: Which and who</span></h3>
+<h3><span>Section 6.10: Existence and there</span></h3>
+<h3><span>Section 6.11: A word about in</span></h3>
+<h3><span>Section 6.12: A word about nothing</span></h3>
+<h3><span>Section 6.13: To be able to see and touch</span></h3>
+<h3><span>Section 6.14: Adjacent rooms and routes through the map</span></h3>
+<h3><span>Section 6.15: All, each and every</span></h3>
+<h3><span>Section 6.16: Counting while comparing</span></h3>
+<h2><span>Chapter 7: Basic Actions</span></h2>
+<h3><span>Section 7.1: Actions</span></h3>
+<h3><span>Section 7.2: Instead rules</span></h3>
+<h3><span>Section 7.3: Before rules</span></h3>
+<h3><span>Section 7.4: Try and try silently</span></h3>
+<h3><span>Section 7.5: After rules</span></h3>
+<h3><span>Section 7.6: Reading and talking</span></h3>
+<h3><span>Section 7.7: The other four senses</span></h3>
+<h3><span>Section 7.8: Rules applying to more than one action</span></h3>
+<h3><span>Section 7.9: All actions and exceptional actions</span></h3>
+<h3><span>Section 7.10: The noun and the second noun</span></h3>
+<h3><span>Section 7.11: In rooms and regions</span></h3>
+<h3><span>Section 7.12: In the presence of, and when</span></h3>
+<h3><span>Section 7.13: Going from, going to</span></h3>
+<h3><span>Section 7.14: Going by, going through, going with</span></h3>
+<h3><span>Section 7.15: Kinds of action</span></h3>
+<h3><span>Section 7.16: Repeated actions</span></h3>
+<h3><span>Section 7.17: Actions on consecutive turns</span></h3>
+<h3><span>Section 7.18: Postscript on actions</span></h3>
+<h2><span>Chapter 8: Change</span></h2>
+<h3><span>Section 8.1: Change of values that vary</span></h3>
+<h3><span>Section 8.2: Changing the command prompt</span></h3>
+<h3><span>Section 8.3: Changing the status line</span></h3>
+<h3><span>Section 8.4: Change of either/or properties</span></h3>
+<h3><span>Section 8.5: Change of properties with values</span></h3>
+<h3><span>Section 8.6: Whose property?</span></h3>
+<h3><span>Section 8.7: Moving things</span></h3>
+<h3><span>Section 8.8: Moving backdrops</span></h3>
+<h3><span>Section 8.9: Moving the player</span></h3>
+<h3><span>Section 8.10: Removing things from play</span></h3>
+<h3><span>Section 8.11: Now...</span></h3>
+<h3><span>Section 8.12: Increasing and decreasing</span></h3>
+<h3><span>Section 8.13: Checking on whereabouts</span></h3>
+<h3><span>Section 8.14: More flexible descriptions of whereabouts</span></h3>
+<h3><span>Section 8.15: Calling names</span></h3>
+<h3><span>Section 8.16: Counting the number of things</span></h3>
+<h3><span>Section 8.17: Looking at containment by hand</span></h3>
+<h3><span>Section 8.18: Randomness</span></h3>
+<h3><span>Section 8.19: Random choices of things</span></h3>
+<h2><span>Chapter 9: Time</span></h2>
+<h3><span>Section 9.1: When play begins</span></h3>
+<h3><span>Section 9.2: Awarding points</span></h3>
+<h3><span>Section 9.3: Introducing tables: rankings</span></h3>
+<h3><span>Section 9.4: When play ends</span></h3>
+<h3><span>Section 9.5: Every turn</span></h3>
+<h3><span>Section 9.6: The time of day</span></h3>
+<h3><span>Section 9.7: Telling the time</span></h3>
+<h3><span>Section 9.8: Approximate times, lengths of time</span></h3>
+<h3><span>Section 9.9: Comparing and shifting times</span></h3>
+<h3><span>Section 9.10: Calculating times</span></h3>
+<h3><span>Section 9.11: Future events</span></h3>
+<h3><span>Section 9.12: Actions as conditions</span></h3>
+<h3><span>Section 9.13: The past and perfect tenses</span></h3>
+<h3><span>Section 9.14: How many times?</span></h3>
+<h3><span>Section 9.15: How many turns?</span></h3>
+<h2><span>Chapter 10: Scenes</span></h2>
+<h3><span>Section 10.1: Introduction to scenes</span></h3>
+<h3><span>Section 10.2: Creating a scene</span></h3>
+<h3><span>Section 10.3: Using the Scene index</span></h3>
+<h3><span>Section 10.4: During scenes</span></h3>
+<h3><span>Section 10.5: Linking scenes together</span></h3>
+<h3><span>Section 10.6: More general linkages</span></h3>
+<h3><span>Section 10.7: Multiple beginnings and repeats</span></h3>
+<h3><span>Section 10.8: Multiple endings</span></h3>
+<h3><span>Section 10.9: Why are scenes designed this way?</span></h3>
+<h2><span>Chapter 11: Phrases</span></h2>
+<h3><span>Section 11.1: What are phrases?</span></h3>
+<h3><span>Section 11.2: The phrasebook</span></h3>
+<h3><span>Section 11.3: Pattern matching</span></h3>
+<h3><span>Section 11.4: The showme phrase</span></h3>
+<h3><span>Section 11.5: Conditions and questions</span></h3>
+<h3><span>Section 11.6: If</span></h3>
+<h3><span>Section 11.7: Begin and end</span></h3>
+<h3><span>Section 11.8: Otherwise</span></h3>
+<h3><span>Section 11.9: While</span></h3>
+<h3><span>Section 11.10: Repeat</span></h3>
+<h3><span>Section 11.11: Repeat running through</span></h3>
+<h3><span>Section 11.12: Next and break</span></h3>
+<h3><span>Section 11.13: Stop</span></h3>
+<h3><span>Section 11.14: Phrase options</span></h3>
+<h3><span>Section 11.15: Let and temporary variables</span></h3>
+<h3><span>Section 11.16: New conditions, new adjectives</span></h3>
+<h3><span>Section 11.17: Phrases to decide other things</span></h3>
+<h3><span>Section 11.18: The value after and the value before</span></h3>
+<h2><span>Chapter 12: Advanced Actions</span></h2>
+<h3><span>Section 12.1: A recap of actions</span></h3>
+<h3><span>Section 12.2: How actions are processed</span></h3>
+<h3><span>Section 12.3: Giving instructions to other people</span></h3>
+<h3><span>Section 12.4: Persuasion</span></h3>
+<h3><span>Section 12.5: Unsuccessful attempts</span></h3>
+<h3><span>Section 12.6: Spontaneous actions by other people</span></h3>
+<h3><span>Section 12.7: New actions</span></h3>
+<h3><span>Section 12.8: Irregular English verbs</span></h3>
+<h3><span>Section 12.9: Check, carry out, report</span></h3>
+<h3><span>Section 12.10: Action variables</span></h3>
+<h3><span>Section 12.11: Making actions work for other people</span></h3>
+<h3><span>Section 12.12: Check rules for actions by other people</span></h3>
+<h3><span>Section 12.13: Report rules for actions by other people</span></h3>
+<h3><span>Section 12.14: Actions for any actor</span></h3>
+<h3><span>Section 12.15: Out of world actions</span></h3>
+<h3><span>Section 12.16: Reaching inside and reaching outside rules</span></h3>
+<h3><span>Section 12.17: Visible vs touchable vs carried</span></h3>
+<h3><span>Section 12.18: Changing reachability</span></h3>
+<h3><span>Section 12.19: Changing visibility</span></h3>
+<h3><span>Section 12.20: Stored actions</span></h3>
+<h3><span>Section 12.21: Guidelines on how to write rules about actions</span></h3>
+<h2><span>Chapter 13: Relations</span></h2>
+<h3><span>Section 13.1: Sentence verbs</span></h3>
+<h3><span>Section 13.2: What sentences are made up from</span></h3>
+<h3><span>Section 13.3: What are relations?</span></h3>
+<h3><span>Section 13.4: To carry, to wear, to have</span></h3>
+<h3><span>Section 13.5: Making new relations</span></h3>
+<h3><span>Section 13.6: Making reciprocal relations</span></h3>
+<h3><span>Section 13.7: Relations in groups</span></h3>
+<h3><span>Section 13.8: The built-in verbs and their meanings</span></h3>
+<h3><span>Section 13.9: Defining new assertion verbs</span></h3>
+<h3><span>Section 13.10: Defining new prepositions</span></h3>
+<h3><span>Section 13.11: Indirect relations</span></h3>
+<h3><span>Section 13.12: Relations which express conditions</span></h3>
+<h3><span>Section 13.13: Relations involving values</span></h3>
+<h3><span>Section 13.14: Relations as values in their own right</span></h3>
+<h3><span>Section 13.15: Temporary relations</span></h3>
+<h3><span>Section 13.16: What are relations for?</span></h3>
+<h2><span>Chapter 14: Adaptive Text and Responses</span></h2>
+<h3><span>Section 14.1: Tense and narrative viewpoint</span></h3>
+<h3><span>Section 14.2: Adaptive text</span></h3>
+<h3><span>Section 14.3: More on adapting verbs</span></h3>
+<h3><span>Section 14.4: Adapting text about the player</span></h3>
+<h3><span>Section 14.5: Adapting text referring to other things</span></h3>
+<h3><span>Section 14.6: Adapting demonstratives and possessives</span></h3>
+<h3><span>Section 14.7: Can, could, may, might, must, should, would</span></h3>
+<h3><span>Section 14.8: Adapting contractions</span></h3>
+<h3><span>Section 14.9: Verbs as values</span></h3>
+<h3><span>Section 14.10: Responses</span></h3>
+<h3><span>Section 14.11: Changing the text of responses</span></h3>
+<h3><span>Section 14.12: The RESPONSES testing command</span></h3>
+<h2><span>Chapter 15: Numbers and Equations</span></h2>
+<h3><span>Section 15.1: How do we measure things?</span></h3>
+<h3><span>Section 15.2: Numbers and real numbers</span></h3>
+<h3><span>Section 15.3: Real number conversions</span></h3>
+<h3><span>Section 15.4: Printing real numbers</span></h3>
+<h3><span>Section 15.5: Arithmetic</span></h3>
+<h3><span>Section 15.6: Powers and logarithms</span></h3>
+<h3><span>Section 15.7: Trigonometry</span></h3>
+<h3><span>Section 15.8: Units</span></h3>
+<h3><span>Section 15.9: Multiple notations</span></h3>
+<h3><span>Section 15.10: Scaling and equivalents</span></h3>
+<h3><span>Section 15.11: Named notations</span></h3>
+<h3><span>Section 15.12: Making the verb &quot;to weigh&quot;</span></h3>
+<h3><span>Section 15.13: The Metric Units extension</span></h3>
+<h3><span>Section 15.14: Notations including more than one number</span></h3>
+<h3><span>Section 15.15: The parts of a number specification</span></h3>
+<h3><span>Section 15.16: Understanding specified numbers</span></h3>
+<h3><span>Section 15.17: Totals</span></h3>
+<h3><span>Section 15.18: Equations</span></h3>
+<h3><span>Section 15.19: Arithmetic with units</span></h3>
+<h3><span>Section 15.20: Multiplication of units</span></h3>
+<h2><span>Chapter 16: Tables</span></h2>
+<h3><span>Section 16.1: Laying out tables</span></h3>
+<h3><span>Section 16.2: Looking up entries</span></h3>
+<h3><span>Section 16.3: Corresponding entries</span></h3>
+<h3><span>Section 16.4: Changing entries</span></h3>
+<h3><span>Section 16.5: Choosing rows</span></h3>
+<h3><span>Section 16.6: Repeating through tables</span></h3>
+<h3><span>Section 16.7: Blank entries</span></h3>
+<h3><span>Section 16.8: Blank columns</span></h3>
+<h3><span>Section 16.9: Blank rows</span></h3>
+<h3><span>Section 16.10: Adding and removing rows</span></h3>
+<h3><span>Section 16.11: Sorting</span></h3>
+<h3><span>Section 16.12: Listed in...</span></h3>
+<h3><span>Section 16.13: Topic columns</span></h3>
+<h3><span>Section 16.14: Another scoring example</span></h3>
+<h3><span>Section 16.15: Varying which table to look at</span></h3>
+<h3><span>Section 16.16: Defining things with tables</span></h3>
+<h3><span>Section 16.17: Defining values with tables</span></h3>
+<h3><span>Section 16.18: Table continuations</span></h3>
+<h3><span>Section 16.19: Table amendments</span></h3>
+<h2><span>Chapter 17: Understanding</span></h2>
+<h3><span>Section 17.1: Understand</span></h3>
+<h3><span>Section 17.2: New commands for old grammar</span></h3>
+<h3><span>Section 17.3: Overriding existing commands</span></h3>
+<h3><span>Section 17.4: Standard tokens of grammar</span></h3>
+<h3><span>Section 17.5: The text token</span></h3>
+<h3><span>Section 17.6: Actions applying to kinds of value</span></h3>
+<h3><span>Section 17.7: Understanding any, understanding rooms</span></h3>
+<h3><span>Section 17.8: Understanding names</span></h3>
+<h3><span>Section 17.9: Understanding kinds of value</span></h3>
+<h3><span>Section 17.10: Commands consisting only of nouns</span></h3>
+<h3><span>Section 17.11: Understanding values</span></h3>
+<h3><span>Section 17.12: This/that</span></h3>
+<h3><span>Section 17.13: New tokens</span></h3>
+<h3><span>Section 17.14: Tokens can produce values</span></h3>
+<h3><span>Section 17.15: Understanding things by their properties</span></h3>
+<h3><span>Section 17.16: Understanding things by their relations</span></h3>
+<h3><span>Section 17.17: Context: understanding when</span></h3>
+<h3><span>Section 17.18: Changing the meaning of pronouns</span></h3>
+<h3><span>Section 17.19: Does the player mean...</span></h3>
+<h3><span>Section 17.20: Multiple action processing</span></h3>
+<h3><span>Section 17.21: Understanding mistakes</span></h3>
+<h3><span>Section 17.22: Precedence</span></h3>
+<h2><span>Chapter 18: Activities</span></h2>
+<h3><span>Section 18.1: What are activities?</span></h3>
+<h3><span>Section 18.2: How activities work</span></h3>
+<h3><span>Section 18.3: Rules applied to activities</span></h3>
+<h3><span>Section 18.4: While clauses</span></h3>
+<h3><span>Section 18.5: New activities</span></h3>
+<h3><span>Section 18.6: Activity variables</span></h3>
+<h3><span>Section 18.7: Beginning and ending activities manually</span></h3>
+<h3><span>Section 18.8: Introduction to the list of built-in activities</span></h3>
+<h3><span>Section 18.9: Deciding the concealed possessions of something</span></h3>
+<h3><span>Section 18.10: Printing the name of something</span></h3>
+<h3><span>Section 18.11: Printing the plural name of something</span></h3>
+<h3><span>Section 18.12: Printing a number of something</span></h3>
+<h3><span>Section 18.13: Listing contents of something</span></h3>
+<h3><span>Section 18.14: Grouping together something</span></h3>
+<h3><span>Section 18.15: Issuing the response text of something</span></h3>
+<h3><span>Section 18.16: Printing room description details of something</span></h3>
+<h3><span>Section 18.17: Printing inventory details of something</span></h3>
+<h3><span>Section 18.18: Printing a refusal to act in the dark</span></h3>
+<h3><span>Section 18.19: Printing the announcement of darkness</span></h3>
+<h3><span>Section 18.20: Printing the announcement of light</span></h3>
+<h3><span>Section 18.21: Printing the name of a dark room</span></h3>
+<h3><span>Section 18.22: Printing the description of a dark room</span></h3>
+<h3><span>Section 18.23: Constructing the status line</span></h3>
+<h3><span>Section 18.24: Writing a paragraph about</span></h3>
+<h3><span>Section 18.25: Listing nondescript items of something</span></h3>
+<h3><span>Section 18.26: Printing the locale description of something</span></h3>
+<h3><span>Section 18.27: Choosing notable locale objects for something</span></h3>
+<h3><span>Section 18.28: Printing a locale paragraph about</span></h3>
+<h3><span>Section 18.29: Deciding the scope of something</span></h3>
+<h3><span>Section 18.30: Clarifying the parser's choice of something</span></h3>
+<h3><span>Section 18.31: Asking which do you mean</span></h3>
+<h3><span>Section 18.32: Supplying a missing noun/second noun</span></h3>
+<h3><span>Section 18.33: Reading a command</span></h3>
+<h3><span>Section 18.34: Implicitly taking something</span></h3>
+<h3><span>Section 18.35: Printing a parser error</span></h3>
+<h3><span>Section 18.36: Deciding whether all includes</span></h3>
+<h3><span>Section 18.37: Printing the banner text</span></h3>
+<h3><span>Section 18.38: Printing the player's obituary</span></h3>
+<h3><span>Section 18.39: Amusing a victorious player</span></h3>
+<h3><span>Section 18.40: Starting the virtual machine</span></h3>
+<h2><span>Chapter 19: Rulebooks</span></h2>
+<h3><span>Section 19.1: On rules</span></h3>
+<h3><span>Section 19.2: Named rules and rulebooks</span></h3>
+<h3><span>Section 19.3: New rules</span></h3>
+<h3><span>Section 19.4: Listing rules explicitly</span></h3>
+<h3><span>Section 19.5: Changing the behaviour of rules</span></h3>
+<h3><span>Section 19.6: Sorting and indexing of rules</span></h3>
+<h3><span>Section 19.7: The preamble of a rule</span></h3>
+<h3><span>Section 19.8: New rulebooks</span></h3>
+<h3><span>Section 19.9: Basis of a rulebook</span></h3>
+<h3><span>Section 19.10: Rulebook variables</span></h3>
+<h3><span>Section 19.11: Success and failure</span></h3>
+<h3><span>Section 19.12: Named outcomes</span></h3>
+<h3><span>Section 19.13: Rulebooks producing values</span></h3>
+<h3><span>Section 19.14: Abide by</span></h3>
+<h3><span>Section 19.15: Two rulebooks used internally</span></h3>
+<h3><span>Section 19.16: The Laws for Sorting Rulebooks</span></h3>
+<h2><span>Chapter 20: Advanced Text</span></h2>
+<h3><span>Section 20.1: Changing texts</span></h3>
+<h3><span>Section 20.2: Memory limitations</span></h3>
+<h3><span>Section 20.3: Characters, words, punctuated words, unpunctuated words, lines, paragraphs</span></h3>
+<h3><span>Section 20.4: Upper and lower case letters</span></h3>
+<h3><span>Section 20.5: Matching and exactly matching</span></h3>
+<h3><span>Section 20.6: Regular expression matching</span></h3>
+<h3><span>Section 20.7: Making new text with text substitutions</span></h3>
+<h3><span>Section 20.8: Replacements</span></h3>
+<h3><span>Section 20.9: Summary of regular expression notation</span></h3>
+<h2><span>Chapter 21: Lists</span></h2>
+<h3><span>Section 21.1: Lists and entries</span></h3>
+<h3><span>Section 21.2: Constant lists</span></h3>
+<h3><span>Section 21.3: Saying lists of values</span></h3>
+<h3><span>Section 21.4: Testing and iterating over lists</span></h3>
+<h3><span>Section 21.5: Building lists</span></h3>
+<h3><span>Section 21.6: Lists of objects</span></h3>
+<h3><span>Section 21.7: Lists of values matching a description</span></h3>
+<h3><span>Section 21.8: Sorting, reversing and rotating lists</span></h3>
+<h3><span>Section 21.9: Accessing entries in a list</span></h3>
+<h3><span>Section 21.10: Lengthening or shortening a list</span></h3>
+<h3><span>Section 21.11: Variations: arrays, logs, queues, stacks, sets, sieves and rings</span></h3>
+<h2><span>Chapter 22: Advanced Phrases</span></h2>
+<h3><span>Section 22.1: A review of kinds</span></h3>
+<h3><span>Section 22.2: Descriptions as values</span></h3>
+<h3><span>Section 22.3: Phrases as values</span></h3>
+<h3><span>Section 22.4: Default values for phrase kinds</span></h3>
+<h3><span>Section 22.5: Map, filter and reduce</span></h3>
+<h3><span>Section 22.6: Generic phrases</span></h3>
+<h3><span>Section 22.7: Kind variables</span></h3>
+<h3><span>Section 22.8: Matching the names of kinds</span></h3>
+<h3><span>Section 22.9: In what order?</span></h3>
+<h3><span>Section 22.10: Ambiguities</span></h3>
+<h2><span>Chapter 23: Figures, Sounds and Files</span></h2>
+<h3><span>Section 23.1: Beyond text</span></h3>
+<h3><span>Section 23.2: How IF views pictures</span></h3>
+<h3><span>Section 23.3: Virtual machines and story file formats</span></h3>
+<h3><span>Section 23.4: Gathering the figures</span></h3>
+<h3><span>Section 23.5: Declaring and previewing the figures</span></h3>
+<h3><span>Section 23.6: Displaying the figures</span></h3>
+<h3><span>Section 23.7: Recorded sounds</span></h3>
+<h3><span>Section 23.8: Declaring and playing back sounds</span></h3>
+<h3><span>Section 23.9: Providing accessibility text</span></h3>
+<h3><span>Section 23.10: Some technicalities about figures and sounds</span></h3>
+<h3><span>Section 23.11: Files</span></h3>
+<h3><span>Section 23.12: Declaring files</span></h3>
+<h3><span>Section 23.13: Writing and reading tables to external files</span></h3>
+<h3><span>Section 23.14: Writing, reading and appending text to files</span></h3>
+<h3><span>Section 23.15: Exchanging files with other programs</span></h3>
+<h2><span>Chapter 24: Testing and Debugging</span></h2>
+<h3><span>Section 24.1: Checking against the Index</span></h3>
+<h3><span>Section 24.2: Debugging features to use in source</span></h3>
+<h3><span>Section 24.3: High-level debugging commands</span></h3>
+<h3><span>Section 24.4: Low-level debugging commands</span></h3>
+<h3><span>Section 24.5: Adding new testing verbs and Release for Testing</span></h3>
+<h3><span>Section 24.6: Testing for thoroughness</span></h3>
+<h3><span>Section 24.7: Commands for beta-testers</span></h3>
+<h3><span>Section 24.8: Help from the user community</span></h3>
+<h2><span>Chapter 25: Releasing</span></h2>
+<h3><span>Section 25.1: The finished product</span></h3>
+<h3><span>Section 25.2: Bibliographic data</span></h3>
+<h3><span>Section 25.3: Genres</span></h3>
+<h3><span>Section 25.4: The Library Card</span></h3>
+<h3><span>Section 25.5: The Treaty of Babel and the IFID</span></h3>
+<h3><span>Section 25.6: The Release button and the Materials folder</span></h3>
+<h3><span>Section 25.7: The Joy of Feelies</span></h3>
+<h3><span>Section 25.8: Cover art</span></h3>
+<h3><span>Section 25.9: An introductory booklet and postcard</span></h3>
+<h3><span>Section 25.10: A website</span></h3>
+<h3><span>Section 25.11: A playable web page</span></h3>
+<h3><span>Section 25.12: Using Inform with Vorple</span></h3>
+<h3><span>Section 25.13: Website templates</span></h3>
+<h3><span>Section 25.14: Advanced website templates</span></h3>
+<h3><span>Section 25.15: Republishing existing works of IF</span></h3>
+<h3><span>Section 25.16: Walkthrough solutions</span></h3>
+<h3><span>Section 25.17: Releasing the source text</span></h3>
+<h3><span>Section 25.18: Improving the index map</span></h3>
+<h3><span>Section 25.19: Producing an EPS format map</span></h3>
+<h3><span>Section 25.20: Settings in the map-maker</span></h3>
+<h3><span>Section 25.21: Table of map-maker settings</span></h3>
+<h3><span>Section 25.22: Kinds of value accepted by the map-maker</span></h3>
+<h3><span>Section 25.23: Titling and abbreviation</span></h3>
+<h3><span>Section 25.24: Rubrics</span></h3>
+<h2><span>Chapter 26: Publishing</span></h2>
+<h3><span>Section 26.1: Finding a readership</span></h3>
+<h3><span>Section 26.2: Editing and Quality Assurance</span></h3>
+<h3><span>Section 26.3: A Page of Its Own</span></h3>
+<h3><span>Section 26.4: The IF Archive</span></h3>
+<h3><span>Section 26.5: IFDB: The Interactive Fiction Database</span></h3>
+<h3><span>Section 26.6: Competitions, Exhibitions, and Jams</span></h3>
+<h3><span>Section 26.7: Meetups and Conferences</span></h3>
+<h3><span>Section 26.8: A short concluding homily</span></h3>
+<h2><span>Chapter 27: Extensions</span></h2>
+<h3><span>Section 27.1: The status of extensions</span></h3>
+<h3><span>Section 27.2: The Standard Rules</span></h3>
+<h3><span>Section 27.3: Built-in, installed and project-specific extensions</span></h3>
+<h3><span>Section 27.4: Authorship</span></h3>
+<h3><span>Section 27.5: A simple example extension</span></h3>
+<h3><span>Section 27.6: Version numbering</span></h3>
+<h3><span>Section 27.7: Extensions and story file formats</span></h3>
+<h3><span>Section 27.8: Extensions can include other extensions</span></h3>
+<h3><span>Section 27.9: Extensions can interact with other extensions</span></h3>
+<h3><span>Section 27.10: Extensions in the Index</span></h3>
+<h3><span>Section 27.11: Extension documentation</span></h3>
+<h3><span>Section 27.12: Examples and headings in extension documentation</span></h3>
+<h3><span>Section 27.13: Implications</span></h3>
+<h3><span>Section 27.14: Using Inform 6 within Inform 7</span></h3>
+<h3><span>Section 27.15: Defining phrases in Inform 6</span></h3>
+<h3><span>Section 27.16: Phrases to decide in Inform 6</span></h3>
+<h3><span>Section 27.17: Handling phrase options</span></h3>
+<h3><span>Section 27.18: Making and testing use options</span></h3>
+<h3><span>Section 27.19: Longer extracts of Inform 6 code</span></h3>
+<h3><span>Section 27.20: Primitive Inform 6 declarations of rules</span></h3>
+<h3><span>Section 27.21: Inform 6 objects and classes</span></h3>
+<h3><span>Section 27.22: Inform 6 variables, properties, actions, and attributes</span></h3>
+<h3><span>Section 27.23: Inform 6 Understand tokens</span></h3>
+<h3><span>Section 27.24: Inform 6 adjectives</span></h3>
+<h3><span>Section 27.25: Naming Unicode characters</span></h3>
+<h3><span>Section 27.26: Overriding definitions in kits</span></h3>
+<h3><span>Section 27.27: Translating the language of play</span></h3>
+<h3><span>Section 27.28: Segmented substitutions</span></h3>
+<h3><span>Section 27.29: Invocation labels, counters and storage</span></h3>
+<h3><span>Section 27.30: To say one of</span></h3>
+! End
+
