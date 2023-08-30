@@ -416,6 +416,8 @@ typedef struct IFM_example {
 	int star_count;
 	int number;
 	struct text_stream *insignia;
+	struct text_stream *ex_index;
+	struct text_stream *ex_subtitle;
 	CLASS_DEFINITION
 } IFM_example;
 
@@ -429,6 +431,8 @@ IFM_example *InformFlavouredMarkdown::new_example(text_stream *title, text_strea
 	E->star_count = star_count;
 	E->number = ecount;
 	E->insignia = Str::new();
+	E->ex_index = Str::new();
+	E->ex_subtitle = Str::new();
 	WRITE_TO(E->insignia, "e%d", ecount);
 	return E;
 }
@@ -778,6 +782,9 @@ But this affects only the CSS class applied to it.
 	if (mode & TAGS_MDRMODE) {
 		if (Markdown::get_backtick_count(md) == 1) {
 			HTML_OPEN_WITH("code", "class=\"inlinesourcetext\"");
+		} else if (Markdown::get_backtick_count(md) == 2) {
+			HTML_OPEN_WITH("code", "class=\"inlinetranscript\"");
+			mode = mode | TOLOWER_MDRMODE;
 		} else {
 			HTML_OPEN_WITH("code", "class=\"inlinecode\"");
 		}
@@ -986,7 +993,8 @@ and this is fiddly but elementary in the usual way of HTML tables:
 		} else {
 			PUT_TO(line, Str::get_at(md->stashed, k));
 		}
-		if ((k == Str::len(md->stashed) - 1) && (Str::len(line) > 0)) @<Render line as code@>;
+		if ((k == Str::len(md->stashed) - 1) && (Str::len(line) > 0))
+			@<Render line as code@>;
 	}
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)

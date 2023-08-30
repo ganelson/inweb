@@ -19,6 +19,7 @@ through the tree: it's a bitmap composed of the following.
 @d LOOSE_MDRMODE    0x0010     /* Wrap list items in paragraph tags */
 @d ENTITIES_MDRMODE 0x0020     /* Convert |&entity;| to whatever it ought to represent */
 @d FILTERED_MDRMODE 0x0040     /* Make first |<| character safe as |&lt;| */
+@d TOLOWER_MDRMODE  0x0080     /* Force letters to lower case */
 
 =
 void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
@@ -427,6 +428,7 @@ ways to render characters: they all agree on ASCII digits and letters.
 
 =
 void MDRenderer::char(OUTPUT_STREAM, wchar_t c, int mode) {
+	if (mode & TOLOWER_MDRMODE) c = Characters::tolower(c);
 	if (mode & RAW_MDRMODE) {
 		PUT(c);
 	} else if (mode & URI_MDRMODE) {
