@@ -814,6 +814,8 @@ block (if there is one) names the language in use.
 	if ((Str::eq_insensitive(language, I"inform")) ||
 		(Str::eq_insensitive(language, I"inform7"))) {
 		@<Render as Inform 7 source text@>;
+	} else if (Str::eq_insensitive(language, I"problems")) {
+		@<Render as problem message@>;
 	} else {
 		@<Render as some other programming language content@>;
 	}
@@ -965,6 +967,15 @@ and this is fiddly but elementary in the usual way of HTML tables:
 @<End I7 table in extension documentation@> =
 	HTML::end_html_table(OUT);
 	HTML::begin_span(OUT, I"indexdullblue");
+
+@<Render as problem message@> =
+	if (mode & TAGS_MDRMODE)
+		HTML_OPEN_WITH("div", "class=\"extract-problems\"");
+	if (mode & TAGS_MDRMODE) HTML_OPEN("blockquote");
+	for (int k=0; k<Str::len(md->stashed); k++)
+		MDRenderer::char(OUT, Str::get_at(md->stashed, k), mode);
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("div");
 
 @<Render as some other programming language content@> =
 	programming_language *pl = NULL;
