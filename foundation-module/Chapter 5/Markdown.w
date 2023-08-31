@@ -190,8 +190,10 @@ markdown_item *Markdown::parse_general(markdown_item *tree, text_stream *text,
 			PRINT("======\nPhase II\n");
 		}
 	} else {
-		tree->down = Markdown::new_item(PARAGRAPH_MIT);
-		tree->down->stashed = Str::duplicate(text);
+		if (text != NULL) {
+			tree->down = Markdown::new_item(PARAGRAPH_MIT);
+			tree->down->stashed = Str::duplicate(text);
+		}
 	}
 	if (phase_II) {
 		if (tracing_Markdown_parser) PRINT("Markdown parse, phase II\n");

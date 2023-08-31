@@ -883,6 +883,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define LOOSE_MDRMODE 0x0010     /* Wrap list items in paragraph tags */
 #define ENTITIES_MDRMODE 0x0020     /* Convert |&entity;| to whatever it ought to represent */
 #define FILTERED_MDRMODE 0x0040     /* Make first |<| character safe as |&lt;| */
+#define TOLOWER_MDRMODE 0x0080     /* Force letters to lower case */
 #define MARKDOWN_URI_HEX(x) {\
     		unsigned int z = (unsigned int) x;\
     		PUT('%');\
@@ -1802,6 +1803,8 @@ typedef struct IFM_example {
 	int star_count;
 	int number;
 	struct text_stream *insignia;
+	struct text_stream *ex_index;
+	struct text_stream *ex_subtitle;
 	CLASS_DEFINITION
 } IFM_example;
 #line 23 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
@@ -4567,15 +4570,15 @@ int  MDInlineParser__can_open_emphasis(md_charpos pos, int count) ;
 int  MDInlineParser__can_close_emphasis(md_charpos pos, int count) ;
 #line 1676 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__penalty(markdown_item *md) ;
-#line 24 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 25 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__render_extended(OUTPUT_STREAM, markdown_item *md, 	markdown_variation *variation) ;
-#line 32 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 33 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode, 	markdown_variation *variation) ;
-#line 387 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 388 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__slice(OUTPUT_STREAM, markdown_item *md, int mode) ;
-#line 429 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 430 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__char(OUTPUT_STREAM, wchar_t c, int mode) ;
-#line 482 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 484 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__hex_digit(OUTPUT_STREAM, unsigned int x) ;
 #line 15 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__start(void) ;
@@ -4645,35 +4648,35 @@ void  InformFlavouredMarkdown__regroup_examples_r(markdown_item *md, int *exampl
 markdown_item * InformFlavouredMarkdown__find_example(markdown_item *tree, int eg) ;
 #line 396 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__find_e(markdown_item *md, int eg, markdown_item **result, 	int *counter) ;
-#line 422 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 424 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 IFM_example * InformFlavouredMarkdown__new_example(text_stream *title, text_stream *desc, 	int star_count, int ecount) ;
-#line 441 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 445 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__EE_render(markdown_feature *feature, 	text_stream *OUT, markdown_item *md, int mode) ;
-#line 451 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 455 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example *E, 	int in_stand_alone_file) ;
-#line 518 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 522 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
-#line 523 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 527 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__pbiapi_r(markdown_item *md) ;
-#line 571 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 575 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
-#line 627 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 631 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
-#line 664 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 668 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
-#line 686 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 690 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__expand_gate(markdown_item *md) ;
-#line 707 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__set_gatekeeper_function(int (gatekeeper)(text_stream *)) ;
 #line 711 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+void  InformFlavouredMarkdown__set_gatekeeper_function(int (gatekeeper)(text_stream *)) ;
+#line 715 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__PG_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
-#line 735 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 739 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__IFD_multifile(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
-#line 764 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 768 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
-#line 1007 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1015 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *text, 	text_stream *colouring, int from, int to, int mode) ;
-#line 1041 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1049 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__render_text(OUTPUT_STREAM, text_stream *text) ;
 #line 106 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 ebook * Epub__new(text_stream *title, char *prefix) ;
@@ -12335,11 +12338,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B41";
+			char *svn = "7.2.1-beta+1B43";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "26 August 2023";
+			char *d = "30 August 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -27229,7 +27232,7 @@ int MDInlineParser__penalty(markdown_item *md) {
 	return 0;
 }
 
-#line 24 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 25 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void MDRenderer__render_extended(OUTPUT_STREAM, markdown_item *md,
 	markdown_variation *variation) {
 	int default_mode = TAGS_MDRMODE | ESCAPES_MDRMODE;
@@ -27246,7 +27249,7 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	switch (md->type) {
 		case ORDERED_LIST_MIT:          
 {
-#line 111 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 112 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	if (mode & TAGS_MDRMODE) {
 		int start = Markdown__get_item_number(md->down);
 		if (start != 1) {
@@ -27258,7 +27261,7 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	WRITE("\n");
 	
 {
-#line 132 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 133 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	mode = mode & (~LOOSE_MDRMODE);
 	for (markdown_item *ch = md->down; ch; ch = ch->next) {
 		if ((ch->next) && (ch->whitespace_follows))
@@ -27269,26 +27272,26 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 	
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 140 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 141 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 
 }
-#line 120 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 121 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("ol");
 	WRITE("\n");
 
 }
-#line 38 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 39 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case ORDERED_LIST_ITEM_MIT:     
 {
-#line 143 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 144 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	if (mode & TAGS_MDRMODE) HTML_OPEN("li");
 	int nl_issued = FALSE;
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
@@ -27303,16 +27306,16 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	WRITE("\n");
 
 }
-#line 39 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 40 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case UNORDERED_LIST_MIT:        
 {
-#line 125 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 126 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	if (mode & TAGS_MDRMODE) HTML_OPEN("ul");
 	WRITE("\n");
 	
 {
-#line 132 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 133 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	mode = mode & (~LOOSE_MDRMODE);
 	for (markdown_item *ch = md->down; ch; ch = ch->next) {
 		if ((ch->next) && (ch->whitespace_follows))
@@ -27323,26 +27326,26 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 	
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 140 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 141 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 
 }
-#line 127 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 128 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("ul");
 	WRITE("\n");
 
 }
-#line 40 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 41 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case UNORDERED_LIST_ITEM_MIT:   
 {
-#line 143 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 144 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	if (mode & TAGS_MDRMODE) HTML_OPEN("li");
 	int nl_issued = FALSE;
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
@@ -27357,19 +27360,19 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	WRITE("\n");
 
 }
-#line 41 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 42 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 
 		case BLOCK_QUOTE_MIT:           if (mode & TAGS_MDRMODE) HTML_OPEN("blockquote");
 									    WRITE("\n");
 									    
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 45 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 46 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 									    if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
 								        break;
@@ -27377,18 +27380,18 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 		case PARAGRAPH_MIT:             if (mode & TAGS_MDRMODE) HTML_OPEN("p");
 								        
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 50 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 51 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 								        break;
 		case TICKBOX_MIT:               
 {
-#line 157 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 158 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	if (mode & TAGS_MDRMODE) {
 		if (Markdown__get_tick_state(md)) {
 			WRITE("<input checked=\"\" disabled=\"\" type=\"checkbox\"> ");
@@ -27398,11 +27401,11 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 
 }
-#line 53 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 54 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case HEADING_MIT:               
 {
-#line 166 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 167 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	char *h = "p";
 	switch (Markdown__get_heading_level(md)) {
 		case 1: h = "h1"; break;
@@ -27424,12 +27427,12 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 	
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 185 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 186 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 	if (Str__len(anchor) > 0) {
 		HTML_CLOSE("span");
@@ -27439,11 +27442,11 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	WRITE("\n");
 
 }
-#line 54 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 55 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case CODE_BLOCK_MIT:            
 {
-#line 201 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 202 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	mode = mode & (~ESCAPES_MDRMODE) & (~ENTITIES_MDRMODE);
 	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
 	TEMPORARY_TEXT(language)
@@ -27475,11 +27478,11 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	WRITE("\n");
 
 }
-#line 55 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 56 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case HTML_MIT:                  
 {
-#line 232 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 233 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	if (MarkdownVariations__supports(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE)) {
 		for (int i=0; i<Str__len(md->stashed); i++)
 			if (Str__get_at(md->stashed, i) == '<') {
@@ -27500,13 +27503,13 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 
 }
-#line 56 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 57 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case THEMATIC_MIT:              if (mode & TAGS_MDRMODE) WRITE("<hr />\n");
 		                                break;
 		case TABLE_MIT:					
 {
-#line 252 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 253 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	markdown_item *alignment_markers = md->down;
 	if (alignment_markers) {
 		int row_count = 0;
@@ -27555,7 +27558,7 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 
 }
-#line 59 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 60 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case EMPTY_MIT:                 break;
 
@@ -27568,36 +27571,36 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 		case EMPHASIS_MIT: 	            if (mode & TAGS_MDRMODE) HTML_OPEN("em");
 								        
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 69 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 70 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("em");
 								        break;
 		case STRONG_MIT:   	            if (mode & TAGS_MDRMODE) HTML_OPEN("strong");
 								        
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 73 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 74 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("strong");
 								        break;
 		case STRIKETHROUGH_MIT:   	    if (mode & TAGS_MDRMODE) HTML_OPEN("del");
 								        
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 77 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 78 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("del");
 								        break;
@@ -27610,7 +27613,7 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 
 		case EMAIL_AUTOLINK_MIT:        
 {
-#line 300 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 301 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	text_stream *supplied_scheme = NULL;
 	if (Markdown__get_add_protocol_state(md)) {
 		supplied_scheme = TL_IS_2419;
@@ -27618,7 +27621,7 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	}
 	
 {
-#line 313 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 314 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	TEMPORARY_TEXT(address)
 	MDRenderer__slice(address, md, (mode & (~ESCAPES_MDRMODE)) | URI_MDRMODE);
 	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S%S\"", supplied_scheme, address);
@@ -27627,45 +27630,23 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	DISCARD_TEXT(address)
 
 }
-#line 305 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
-;
-
-}
-#line 87 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
-; break;
-		case XMPP_AUTOLINK_MIT:         
-{
-#line 300 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
-	text_stream *supplied_scheme = NULL;
-	if (Markdown__get_add_protocol_state(md)) {
-		supplied_scheme = TL_IS_2419;
-		if (md->type == XMPP_AUTOLINK_MIT) supplied_scheme = TL_IS_2420;
-	}
-	
-{
-#line 313 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
-	TEMPORARY_TEXT(address)
-	MDRenderer__slice(address, md, (mode & (~ESCAPES_MDRMODE)) | URI_MDRMODE);
-	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S%S\"", supplied_scheme, address);
-	MDRenderer__slice(OUT, md, mode & (~ESCAPES_MDRMODE));
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
-	DISCARD_TEXT(address)
-
-}
-#line 305 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 306 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 
 }
 #line 88 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
-		case URI_AUTOLINK_MIT:          
+		case XMPP_AUTOLINK_MIT:         
 {
-#line 308 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 301 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	text_stream *supplied_scheme = NULL;
-	if (Markdown__get_add_protocol_state(md)) supplied_scheme = TL_IS_2421;
+	if (Markdown__get_add_protocol_state(md)) {
+		supplied_scheme = TL_IS_2419;
+		if (md->type == XMPP_AUTOLINK_MIT) supplied_scheme = TL_IS_2420;
+	}
 	
 {
-#line 313 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 314 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	TEMPORARY_TEXT(address)
 	MDRenderer__slice(address, md, (mode & (~ESCAPES_MDRMODE)) | URI_MDRMODE);
 	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S%S\"", supplied_scheme, address);
@@ -27674,11 +27655,33 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	DISCARD_TEXT(address)
 
 }
-#line 310 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 306 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ;
 
 }
 #line 89 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+; break;
+		case URI_AUTOLINK_MIT:          
+{
+#line 309 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+	text_stream *supplied_scheme = NULL;
+	if (Markdown__get_add_protocol_state(md)) supplied_scheme = TL_IS_2421;
+	
+{
+#line 314 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+	TEMPORARY_TEXT(address)
+	MDRenderer__slice(address, md, (mode & (~ESCAPES_MDRMODE)) | URI_MDRMODE);
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S%S\"", supplied_scheme, address);
+	MDRenderer__slice(OUT, md, mode & (~ESCAPES_MDRMODE));
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
+	DISCARD_TEXT(address)
+
+}
+#line 311 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+;
+
+}
+#line 90 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case INLINE_HTML_MIT:           mode = mode | RAW_MDRMODE;
 										if (Markdown__get_filtered_state(md))
@@ -27690,7 +27693,7 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 
 		case LINK_MIT:                  
 {
-#line 321 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 322 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	TEMPORARY_TEXT(URI)
 	TEMPORARY_TEXT(title)
 	if (md->down->next) {
@@ -27713,11 +27716,11 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	DISCARD_TEXT(title)
 
 }
-#line 98 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 99 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case IMAGE_MIT:                 
 {
-#line 343 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 344 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	TEMPORARY_TEXT(URI)
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(alt)
@@ -27749,35 +27752,35 @@ void MDRenderer__recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	DISCARD_TEXT(alt)
 
 }
-#line 99 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 100 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 		case LINK_DEST_MIT:             mode = mode | URI_MDRMODE;
 								       	MDRenderer__slice(OUT, md->down, mode);
 								       	break;
 		case LINK_TITLE_MIT:            
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 103 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 104 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 
 		default:                        
 {
-#line 376 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 377 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	for (markdown_item *c = md->down; c; c = c->next)
 		MDRenderer__recurse(OUT, c, mode, variation);
 
 }
-#line 105 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 106 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 ; break;
 	}
 	mode = old_mode;
 }
 
-#line 387 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 388 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void MDRenderer__slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (md) {
 		int angles = 0;
@@ -27816,8 +27819,9 @@ void MDRenderer__slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 	}
 }
 
-#line 429 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 430 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void MDRenderer__char(OUTPUT_STREAM, wchar_t c, int mode) {
+	if (mode & TOLOWER_MDRMODE) c = Characters__tolower(c);
 	if (mode & RAW_MDRMODE) {
 		PUT(c);
 	} else if (mode & URI_MDRMODE) {
@@ -27858,7 +27862,7 @@ void MDRenderer__char(OUTPUT_STREAM, wchar_t c, int mode) {
 	}
 }
 
-#line 482 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
+#line 484 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void MDRenderer__hex_digit(OUTPUT_STREAM, unsigned int x) {
 	x = x%16;
 	if (x<10) PUT('0'+(int) x);
@@ -28245,7 +28249,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 511 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 515 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *pi = MarkdownVariations__new_feature(TL_IS_2461,
 		PASTE_BUTTONS_MARKDOWNFEATURE);
 	METHOD_ADD(pi, POST_PHASE_I_MARKDOWN_MTID,
@@ -28257,7 +28261,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 565 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 569 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *pd = MarkdownVariations__new_feature(TL_IS_2464,
 		PHRASE_DEFN_BOXES_MARKDOWNFEATURE);
 	METHOD_ADD(pd, RENDER_MARKDOWN_MTID, InformFlavouredMarkdown__PD_render);
@@ -28268,7 +28272,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 604 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 608 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	MarkdownVariations__new_feature(TL_IS_2465, INDEXING_MARKS_MARKDOWNFEATURE);
 	MarkdownVariations__add_feature(Inform_flavoured_Markdown,
 		INDEXING_MARKS_MARKDOWNFEATURE);
@@ -28279,7 +28283,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 618 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 622 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *he = MarkdownVariations__new_feature(TL_IS_2467,
 		HEADING_MARKERS_MARKDOWNFEATURE);
 	METHOD_ADD(he, POST_PHASE_I_MARKDOWN_MTID,
@@ -28293,7 +28297,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 654 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 658 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *pg = MarkdownVariations__new_feature(TL_IS_2469,
 		PARAGRAPH_GATING_MARKDOWNFEATURE);
 	METHOD_ADD(pg, POST_PHASE_I_MARKDOWN_MTID,
@@ -28308,7 +28312,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 729 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 733 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *indoc_chaps =
 		MarkdownVariations__new_feature(TL_IS_2471, INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
 	METHOD_ADD(indoc_chaps, MULTIFILE_MARKDOWN_MTID, InformFlavouredMarkdown__IFD_multifile);
@@ -28319,7 +28323,7 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 756 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 760 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *sc =
 		MarkdownVariations__new_feature(TL_IS_2472,
 			INFORM_SYNTAX_COLOURING_MARKDOWNFEATURE);
@@ -28616,7 +28620,7 @@ void InformFlavouredMarkdown__find_e(markdown_item *md, int eg, markdown_item **
 	}
 }
 
-#line 421 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 423 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
 IFM_example *InformFlavouredMarkdown__new_example(text_stream *title, text_stream *desc,
 	int star_count, int ecount) {
@@ -28628,11 +28632,13 @@ IFM_example *InformFlavouredMarkdown__new_example(text_stream *title, text_strea
 	E->star_count = star_count;
 	E->number = ecount;
 	E->insignia = Str__new();
+	E->ex_index = Str__new();
+	E->ex_subtitle = Str__new();
 	WRITE_TO(E->insignia, "e%d", ecount);
 	return E;
 }
 
-#line 441 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 445 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__EE_render(markdown_feature *feature,
 	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
@@ -28695,9 +28701,9 @@ void InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example 
 	DISCARD_TEXT(link)
 }
 
-#line 509 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 513 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 518 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 522 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown__pbiapi_r(tree);
@@ -28740,9 +28746,9 @@ void InformFlavouredMarkdown__pbiapi_r(markdown_item *md) {
 	}
 }
 
-#line 563 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 567 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 571 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 575 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	if (md->type == BLOCK_QUOTE_MIT) {
@@ -28770,11 +28776,11 @@ int InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *O
 	return FALSE;
 }
 
-#line 602 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 606 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 616 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 620 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 627 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 631 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *md, md_links_dictionary *link_references) {
 	if ((md->type == HEADING_MIT) && (Markdown__get_heading_level(md) <= 2)) {
@@ -28794,9 +28800,9 @@ void InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *featu
 	}
 }
 
-#line 652 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 656 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 664 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 668 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == PARAGRAPH_MIT) {
@@ -28857,9 +28863,9 @@ int InformFlavouredMarkdown__PG_render(markdown_feature *feature, text_stream *O
 	return FALSE;
 }
 
-#line 727 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 731 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 735 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 739 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__IFD_multifile(markdown_feature *feature,
 	markdown_item *tree, md_links_dictionary *link_references) {
 	int N = 1;
@@ -28876,18 +28882,21 @@ int InformFlavouredMarkdown__IFD_multifile(markdown_feature *feature,
 	return TRUE;
 }
 
-#line 754 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 758 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 764 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 768 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	switch (md->type) {
 		case CODE_MIT:       
 {
-#line 778 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 782 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (mode & TAGS_MDRMODE) {
 		if (Markdown__get_backtick_count(md) == 1) {
 			HTML_OPEN_WITH("code", "class=\"inlinesourcetext\"");
+		} else if (Markdown__get_backtick_count(md) == 2) {
+			HTML_OPEN_WITH("code", "class=\"inlinetranscript\"");
+			mode = mode | TOLOWER_MDRMODE;
 		} else {
 			HTML_OPEN_WITH("code", "class=\"inlinecode\"");
 		}
@@ -28898,11 +28907,11 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
 
 }
-#line 767 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 771 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ; return TRUE;
 		case CODE_BLOCK_MIT: 
 {
-#line 794 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 801 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	TEMPORARY_TEXT(language_text)
 	TEMPORARY_TEXT(language)
 	for (int i=0; i<Str__len(md->info_string); i++) {
@@ -28917,7 +28926,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	}
 	
 {
-#line 820 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 827 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (Str__len(language) == 0) {
 		for (int i=0; i<Str__len(md->stashed); i++)
 			if ((Str__get_at(md->stashed, i) == '>') &&
@@ -28929,13 +28938,13 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	}
 
 }
-#line 806 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 813 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	if ((Str__eq_insensitive(language, TL_IS_2473)) ||
 		(Str__eq_insensitive(language, TL_IS_2474))) {
 		
 {
-#line 831 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 838 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML_OPEN("blockquote");
 	if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {
 		markdown_item *first = RETRIEVE_POINTER_markdown_item(md->user_state);
@@ -28980,7 +28989,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (Str__get_at(md->stashed, k) == '\n') {
 			
 {
-#line 889 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 896 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	line_count++;
 	if (Str__is_whitespace(line)) tabular = FALSE;
 	match_results mr = Regexp__create_mr();
@@ -28990,58 +28999,58 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (tabulating) {
 			
 {
-#line 953 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 960 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__first_html_column(OUT, 0);
 
 }
-#line 896 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 903 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		} else {
 			
 {
-#line 937 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 944 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_span(OUT);
 	HTML_TAG("br");
 	HTML__begin_plain_html_table(OUT);
 	HTML__first_html_column(OUT, 0);
 
 }
-#line 898 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 905 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			tabulating = TRUE;
 		}
 		int cell_from = 0, cell_to = 0, i = 0;
 		
 {
-#line 949 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 956 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	cell_from = i; cell_to = cell_from;
 	HTML__begin_span(OUT, TL_IS_2478);
 
 }
-#line 902 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 909 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		for (; i<Str__len(line); i++) {
 			if (Str__get_at(line, i) == '\t') {
 				
 {
-#line 943 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 950 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML__end_span(OUT);
 	HTML__next_html_column(OUT, 0);
 
 }
-#line 905 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 912 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				while (Str__get_at(line, i) == '\t') i++;
 				
 {
-#line 949 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 956 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	cell_from = i; cell_to = cell_from;
 	HTML__begin_span(OUT, TL_IS_2478);
 
 }
-#line 907 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 914 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				i--;
 			} else {
@@ -29050,158 +29059,34 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		}
 		
 {
-#line 943 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 950 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML__end_span(OUT);
 	HTML__next_html_column(OUT, 0);
 
 }
-#line 913 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 920 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		
 {
-#line 956 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 963 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_row(OUT);
 
 }
-#line 914 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 921 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	} else {
 		if (line_count > 1) HTML_TAG("br");
 		if (tabulating) {
 			
 {
-#line 959 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 966 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_table(OUT);
 	HTML__begin_span(OUT, TL_IS_2479);
 
 }
-#line 918 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-			tabulating = FALSE;
-		}
-		int indentation = 0;
-		int z=0, spaces = 0;
-		for (; z<Str__len(line); z++)
-			if (Str__get_at(line, z) == ' ') { spaces++; if (spaces == 4) { indentation++; spaces = 0; } }
-			else if (Str__get_at(line, z) == '\t') { indentation++; spaces = 0; }
-			else break;
-		for (int n=0; n<indentation; n++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-		InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
-			z, Str__len(line), mode);
-	}
-	WRITE("\n");
-
-}
-#line 873 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-			Str__clear(line);
-			Str__clear(line_colouring);
-		} else {
-			PUT_TO(line, Str__get_at(md->stashed, k));
-			PUT_TO(line_colouring, Str__get_at(colouring, k));
-		}
-		if ((k == Str__len(md->stashed) - 1) && (Str__len(line) > 0)) 
-{
-#line 889 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	line_count++;
-	if (Str__is_whitespace(line)) tabular = FALSE;
-	match_results mr = Regexp__create_mr();
-	if (Regexp__match(&mr, line, L"Table %c*")) tabular = TRUE;
-	Regexp__dispose_of(&mr);
-	if (tabular) {
-		if (tabulating) {
-			
-{
-#line 953 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	HTML__first_html_column(OUT, 0);
-
-}
-#line 896 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-		} else {
-			
-{
-#line 937 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	HTML__end_span(OUT);
-	HTML_TAG("br");
-	HTML__begin_plain_html_table(OUT);
-	HTML__first_html_column(OUT, 0);
-
-}
-#line 898 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-			tabulating = TRUE;
-		}
-		int cell_from = 0, cell_to = 0, i = 0;
-		
-{
-#line 949 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	cell_from = i; cell_to = cell_from;
-	HTML__begin_span(OUT, TL_IS_2478);
-
-}
-#line 902 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-		for (; i<Str__len(line); i++) {
-			if (Str__get_at(line, i) == '\t') {
-				
-{
-#line 943 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
-		cell_from, cell_to, mode);
-	HTML__end_span(OUT);
-	HTML__next_html_column(OUT, 0);
-
-}
-#line 905 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-				while (Str__get_at(line, i) == '\t') i++;
-				
-{
-#line 949 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	cell_from = i; cell_to = cell_from;
-	HTML__begin_span(OUT, TL_IS_2478);
-
-}
-#line 907 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-				i--;
-			} else {
-				cell_to++;
-			}
-		}
-		
-{
-#line 943 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
-		cell_from, cell_to, mode);
-	HTML__end_span(OUT);
-	HTML__next_html_column(OUT, 0);
-
-}
-#line 913 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-		
-{
-#line 956 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	HTML__end_html_row(OUT);
-
-}
-#line 914 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-;
-	} else {
-		if (line_count > 1) HTML_TAG("br");
-		if (tabulating) {
-			
-{
-#line 959 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	HTML__end_html_table(OUT);
-	HTML__begin_span(OUT, TL_IS_2479);
-
-}
-#line 918 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 925 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			tabulating = FALSE;
 		}
@@ -29220,28 +29105,152 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 }
 #line 880 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
-	}
-	HTML_CLOSE("span");
-	if (tabulating) 
+			Str__clear(line);
+			Str__clear(line_colouring);
+		} else {
+			PUT_TO(line, Str__get_at(md->stashed, k));
+			PUT_TO(line_colouring, Str__get_at(colouring, k));
+		}
+		if ((k == Str__len(md->stashed) - 1) && (Str__len(line) > 0)) 
 {
-#line 959 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 896 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	line_count++;
+	if (Str__is_whitespace(line)) tabular = FALSE;
+	match_results mr = Regexp__create_mr();
+	if (Regexp__match(&mr, line, L"Table %c*")) tabular = TRUE;
+	Regexp__dispose_of(&mr);
+	if (tabular) {
+		if (tabulating) {
+			
+{
+#line 960 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	HTML__first_html_column(OUT, 0);
+
+}
+#line 903 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+		} else {
+			
+{
+#line 944 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	HTML__end_span(OUT);
+	HTML_TAG("br");
+	HTML__begin_plain_html_table(OUT);
+	HTML__first_html_column(OUT, 0);
+
+}
+#line 905 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+			tabulating = TRUE;
+		}
+		int cell_from = 0, cell_to = 0, i = 0;
+		
+{
+#line 956 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	cell_from = i; cell_to = cell_from;
+	HTML__begin_span(OUT, TL_IS_2478);
+
+}
+#line 909 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+		for (; i<Str__len(line); i++) {
+			if (Str__get_at(line, i) == '\t') {
+				
+{
+#line 950 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
+		cell_from, cell_to, mode);
+	HTML__end_span(OUT);
+	HTML__next_html_column(OUT, 0);
+
+}
+#line 912 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+				while (Str__get_at(line, i) == '\t') i++;
+				
+{
+#line 956 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	cell_from = i; cell_to = cell_from;
+	HTML__begin_span(OUT, TL_IS_2478);
+
+}
+#line 914 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+				i--;
+			} else {
+				cell_to++;
+			}
+		}
+		
+{
+#line 950 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
+		cell_from, cell_to, mode);
+	HTML__end_span(OUT);
+	HTML__next_html_column(OUT, 0);
+
+}
+#line 920 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+		
+{
+#line 963 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	HTML__end_html_row(OUT);
+
+}
+#line 921 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+	} else {
+		if (line_count > 1) HTML_TAG("br");
+		if (tabulating) {
+			
+{
+#line 966 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_table(OUT);
 	HTML__begin_span(OUT, TL_IS_2479);
 
 }
-#line 883 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 925 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+			tabulating = FALSE;
+		}
+		int indentation = 0;
+		int z=0, spaces = 0;
+		for (; z<Str__len(line); z++)
+			if (Str__get_at(line, z) == ' ') { spaces++; if (spaces == 4) { indentation++; spaces = 0; } }
+			else if (Str__get_at(line, z) == '\t') { indentation++; spaces = 0; }
+			else break;
+		for (int n=0; n<indentation; n++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+		InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
+			z, Str__len(line), mode);
+	}
+	WRITE("\n");
+
+}
+#line 887 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+;
+	}
+	HTML_CLOSE("span");
+	if (tabulating) 
+{
+#line 966 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	HTML__end_html_table(OUT);
+	HTML__begin_span(OUT, TL_IS_2479);
+
+}
+#line 890 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	HTML_CLOSE("blockquote");
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)
 
 }
-#line 809 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 816 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	} else {
 		
 {
-#line 963 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 970 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	programming_language *pl = NULL;
 	if (Str__len(language) > 0) {
 		if (mode & TAGS_MDRMODE)
@@ -29264,7 +29273,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (Str__get_at(md->stashed, k) == '\n') {
 			
 {
-#line 1000 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1008 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (pl) Painter__syntax_colour(pl, NULL, line, line_colouring, FALSE);
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		0, Str__len(line), mode);
@@ -29272,16 +29281,17 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 
 
 }
-#line 983 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 990 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			Str__clear(line);
 			Str__clear(line_colouring);
 		} else {
 			PUT_TO(line, Str__get_at(md->stashed, k));
 		}
-		if ((k == Str__len(md->stashed) - 1) && (Str__len(line) > 0)) 
+		if ((k == Str__len(md->stashed) - 1) && (Str__len(line) > 0))
+			
 {
-#line 1000 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1008 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (pl) Painter__syntax_colour(pl, NULL, line, line_colouring, FALSE);
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		0, Str__len(line), mode);
@@ -29289,7 +29299,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 
 
 }
-#line 989 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 997 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	}
 	DISCARD_TEXT(line)
@@ -29301,20 +29311,20 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	}
 
 }
-#line 811 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 818 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	}
 	DISCARD_TEXT(language_text)
 	DISCARD_TEXT(language)
 
 }
-#line 768 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 772 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;   return TRUE;
 	}
 	return FALSE;
 }
 
-#line 1007 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1015 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *text,
 	text_stream *colouring, int from, int to, int mode) {
 	wchar_t current_col = 0;
@@ -29345,7 +29355,7 @@ void InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 	if (current_col) HTML_CLOSE("span");
 }
 
-#line 1041 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1049 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__render_text(OUTPUT_STREAM, text_stream *text) {
 	markdown_item *md = Markdown__parse_inline(text);
 	HTML_OPEN_WITH("span", "class=\"markdowncontent\"");
@@ -47898,7 +47908,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B41\t/built 26 August 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B43\t/built 30 August 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

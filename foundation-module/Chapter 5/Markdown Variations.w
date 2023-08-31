@@ -358,6 +358,9 @@ void MarkdownVariations::multifile_r(markdown_item *md, md_links_dictionary *lin
 			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+).(%d+)")) {
 				WRITE_TO(xref, "%S", md->stashed);
 				WRITE_TO(anchor, "c%Ss%S", mr.exp[0], mr.exp[1]);
+			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+): *(%c*)")) {
+				WRITE_TO(xref, "%S", mr.exp[1]);
+				WRITE_TO(anchor, "s%S", mr.exp[0]);
 			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+)")) {
 				WRITE_TO(xref, "%S", md->stashed);
 				WRITE_TO(anchor, "s%S", mr.exp[0]);
