@@ -10,7 +10,7 @@ words instead of bytes. The character values should be Unicode code points.
 =
 int Wide::len(const inchar32_t *p) {
 	int l = 0;
-	while (*(p++) != 0) l++;
+	while (p[l] != 0) l++;
 	return l;
 }
 
@@ -18,10 +18,12 @@ int Wide::len(const inchar32_t *p) {
 
 =
 int Wide::cmp(inchar32_t *A, inchar32_t *B) {
-	while ((*A != 0) && (*B != 0))
+	int i = 0;
+	while ((A[i] != 0) && (B[i] != 0))
 	{
-		if (*A > *B) return 1;
-		if (*A < *B) return -1;
+		if (A[i] > B[i]) return 1;
+		else if (A[i] < B[i]) return -1;
+		i++;
 	}
 	return 0;
 }
@@ -33,5 +35,11 @@ int Wide::atoi(inchar32_t *p) {
 
 @ =
 void Wide::copy(inchar32_t *to, inchar32_t *from) {
-	while (*from != 0) *(to++) = *(from++);
+	int i = 0;
+	while (1)
+	{
+		to[i] = from[i];
+		if (to[i] == 0) break;
+		i++;
+	}
 }

@@ -3694,9 +3694,9 @@ void  CStrings__free_ssas(void) ;
 int  Wide__len(const inchar32_t *p) ;
 #line 20 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__cmp(inchar32_t *A, inchar32_t *B) ;
-#line 30 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 32 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__atoi(inchar32_t *p) ;
-#line 35 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 37 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 void  Wide__copy(inchar32_t *to, inchar32_t *from) ;
 #line 38 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 text_stream * Str__new(void) ;
@@ -15812,28 +15812,36 @@ void CStrings__free_ssas(void) {
 #line 11 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int Wide__len(const inchar32_t *p) {
 	int l = 0;
-	while (*(p++) != 0) l++;
+	while (p[l] != 0) l++;
 	return l;
 }
 
 #line 20 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int Wide__cmp(inchar32_t *A, inchar32_t *B) {
-	while ((*A != 0) && (*B != 0))
+	int i = 0;
+	while ((A[i] != 0) && (B[i] != 0))
 	{
-		if (*A > *B) return 1;
-		if (*A < *B) return -1;
+		if (A[i] > B[i]) return 1;
+		else if (A[i] < B[i]) return -1;
+		i++;
 	}
 	return 0;
 }
 
-#line 30 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 32 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int Wide__atoi(inchar32_t *p) {
 	return 0;/*(int) wcstol(p, NULL, 10)*/
 }
 
-#line 35 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 37 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 void Wide__copy(inchar32_t *to, inchar32_t *from) {
-	while (*from != 0) *(to++) = *(from++);
+	int i = 0;
+	while (1)
+	{
+		to[i] = from[i];
+		if (to[i] == 0) break;
+		i++;
+	}
 }
 
 #line 38 "inweb/foundation-module/Chapter 4/String Manipulation.w"
