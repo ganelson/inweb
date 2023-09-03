@@ -238,7 +238,6 @@ three lines of which the third is empty.
 	if (MarkdownVariations::supports(state->variation, TASK_LIST_ITEMS_MARKDOWNFEATURE))
 		MDBlockParser::task_list_items(state, tree);
 	MarkdownVariations::intervene_after_Phase_I(variation, tree, dict);
-	MarkdownVariations::multifile_mode(variation, tree, dict);
 
 @ Note that the Phase I parser state is not used in Phase II, which is
 context-free except for its use of the links dictionary:
@@ -266,11 +265,12 @@ tree structure, made of nodes called "items" which are |markdown_item| objects.
 Each node used by CommonMark has one of the following types, but variations
 can add their own further types.
 
-|DOCUMENT_MIT| is for the head node, and no other. |FILE_MIT| is used as a
-marker by extensions which break up documents into multiple files: it renders
-to nothing in itself.
+|DOCUMENT_MIT| is for the head node, and no other. |VOLUME_MIT| and |FILE_MIT|
+are used as a marker by extensions which break up documents into multiple
+files: they render to nothing in themselves.
 
 @e DOCUMENT_MIT from 1
+@e VOLUME_MIT
 @e FILE_MIT
 
 @ Next we have the (other) "container block" items, which can contain either
@@ -389,6 +389,7 @@ void Markdown::create_item_types(void) {
 		Markdown::new_item_type(mit, I"?UNDEFINED");
 
 	Markdown::new_container_block_type(DOCUMENT_MIT, I"DOCUMENT");
+	Markdown::new_container_block_type(VOLUME_MIT, I"VOLUME");
 	Markdown::new_container_block_type(FILE_MIT, I"FILE");
 
 	Markdown::new_container_block_type(BLOCK_QUOTE_MIT, I"BLOCK_QUOTE");
@@ -748,6 +749,12 @@ int Markdown::unescaped_run(md_charpos pos, wchar_t of) {
 @h File markers.
 
 =
+markdown_item *Markdown::new_volume_marker(text_stream *title) {
+	markdown_item *md = Markdown::new_item(VOLUME_MIT);
+	md->stashed = Str::duplicate(title);
+	return md;
+}
+
 markdown_item *Markdown::new_file_marker(filename *F) {
 	markdown_item *md = Markdown::new_item(FILE_MIT);
 	md->user_state = STORE_POINTER_filename(F);

@@ -28,7 +28,6 @@ markdown_variation *InformFlavouredMarkdown::variation(void) {
 	@<Add the indexing marks feature@>;
 	@<Add the heading markers feature@>;
 	@<Add the paragraph gating feature@>;
-	@<Add multi-file splitting@>;
 	@<Add the Inform syntax-colouring feature@>;
 
 	return Inform_flavoured_Markdown;
@@ -143,15 +142,8 @@ as level 2.
 void InformFlavouredMarkdown::Inform_headings_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown::Inform_headings_r(tree);
-	int section_number = 0, chapter_number = 0;
-	TEMPORARY_TEXT(latest)
-	InformFlavouredMarkdown::number_headings_r(tree, &section_number, &chapter_number, latest, 0);
-	DISCARD_TEXT(latest)
 }
 
-@ The first recursion converts any such headings:
-
-=
 void InformFlavouredMarkdown::Inform_headings_r(markdown_item *md) {
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
@@ -176,12 +168,24 @@ void InformFlavouredMarkdown::Inform_headings_r(markdown_item *md) {
 	}
 }
 
-@ The second applies numbering to the level 1 and 2 headings: note that this
-applies to such headings whatever the notation they were written with.
+@ This function is not called by default. It applies numbering to the level 1
+and 2 headings: note that this applies to such headings whatever the notation
+they were written with.
 
 =
+void InformFlavouredMarkdown::number_headings(markdown_item *tree) {
+	int section_number = 0, chapter_number = 0;
+	TEMPORARY_TEXT(latest)
+	InformFlavouredMarkdown::number_headings_r(tree, &section_number, &chapter_number, latest, 0);
+	DISCARD_TEXT(latest)
+}
+
 void InformFlavouredMarkdown::number_headings_r(markdown_item *md,
 	int *section_number, int *chapter_number, text_stream *latest, int level) {
+	if (md->type == VOLUME_MIT) {
+		*section_number = 0;
+		*chapter_number = 0;
+	}
 	if (md->type == HEADING_MIT) {
 		switch (Markdown::get_heading_level(md)) {
 			case 1: {
@@ -220,10 +224,10 @@ void InformFlavouredMarkdown::number_headings_r(markdown_item *md,
 }
 
 @ =
-markdown_item *InformFlavouredMarkdown::find_section(markdown_item *tree, text_stream *name) {
+markdown_item *InformFlavouredMarkdown::find_section(markdown_item *md, text_stream *name) {
 	if (Str::len(name) == 0) return NULL;
 	markdown_item *result = NULL;
-	InformFlavouredMarkdown::find_s(tree, name, &result);
+	InformFlavouredMarkdown::find_s(md, name, &result);
 	return result;
 }
 
@@ -412,10 +416,12 @@ typedef struct IFM_example {
 	struct text_stream *name;
 	struct text_stream *description;
 	struct markdown_item *header;
+	struct markdown_item *secondary_header;
 	struct markdown_item *cue;
 	int star_count;
 	int number;
 	struct text_stream *insignia;
+	struct text_stream *URL;
 	struct text_stream *ex_index;
 	struct text_stream *ex_subtitle;
 	CLASS_DEFINITION
@@ -427,10 +433,12 @@ IFM_example *InformFlavouredMarkdown::new_example(text_stream *title, text_strea
 	E->name = Str::duplicate(title);
 	E->description = Str::duplicate(desc);
 	E->header = NULL;
+	E->secondary_header = NULL;
 	E->cue = NULL;
 	E->star_count = star_count;
 	E->number = ecount;
 	E->insignia = Str::new();
+	E->URL = Str::new(); WRITE_TO(E->URL, "eg_%d.html", ecount);
 	E->ex_index = Str::new();
 	E->ex_subtitle = Str::new();
 	WRITE_TO(E->insignia, "e%d", ecount);
@@ -460,8 +468,8 @@ void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example 
 			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
 				MarkdownVariations::URL_for_heading(E->cue));
 		} else {
-			WRITE_TO(link, "style=\"text-decoration: none\" href=\"eg_%S.html\"",
-				E->insignia);
+			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
+				E->URL);
 		}
 	}
 
@@ -723,33 +731,6 @@ int InformFlavouredMarkdown::PG_render(markdown_feature *feature, text_stream *O
 		return TRUE;
 	}
 	return FALSE;
-}
-
-@h Multi-file splitting.
-
-@e INDOC_FILE_DIVISIONS_MARKDOWNFEATURE
-
-@<Add multi-file splitting@> =
-	markdown_feature *indoc_chaps =
-		MarkdownVariations::new_feature(I"indoc file divisions", INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
-	METHOD_ADD(indoc_chaps, MULTIFILE_MARKDOWN_MTID, InformFlavouredMarkdown::IFD_multifile);
-	MarkdownVariations::add_feature(Inform_flavoured_Markdown, INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
-
-@ =
-int InformFlavouredMarkdown::IFD_multifile(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
-	int N = 1;
-	for (markdown_item *prev_md = NULL, *md = tree->down; md; prev_md = md, md = md->next) {
-		if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 1)) {
-			TEMPORARY_TEXT(leaf)
-			WRITE_TO(leaf, "chapter%d.html", N++);
-			markdown_item *file_marker = Markdown::new_file_marker(Filenames::from_text(leaf));
-			DISCARD_TEXT(leaf)
-			if (prev_md) prev_md->next = file_marker; else tree->down = file_marker;
-			file_marker->next = md;
-		}
-	}
-	return TRUE;
 }
 
 @h Syntax-colouring for the Inform family.

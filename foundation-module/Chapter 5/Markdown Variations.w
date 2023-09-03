@@ -303,7 +303,7 @@ int MarkdownVariations::multifile_mode(markdown_variation *variation,
 				int rv = FALSE;
 				INT_METHOD_CALL(rv, feature, MULTIFILE_MARKDOWN_MTID, tree, link_references);
 				if (rv) {
-					@<Act on multifile mode@>;
+					MarkdownVariations::assign_URLs_to_headings(tree, link_references);
 					return TRUE;
 				}
 			}
@@ -312,21 +312,46 @@ int MarkdownVariations::multifile_mode(markdown_variation *variation,
 	return FALSE;
 }
 
-@<Act on multifile mode@> =
-	if (tree->down->type != FILE_MIT) {
-		markdown_item *index = Markdown::new_file_marker(Filenames::from_text(I"index.html"));
+void MarkdownVariations::assign_URLs_to_headings(markdown_item *tree,
+	md_links_dictionary *link_references) {
+	if (tree->down->type != VOLUME_MIT) {
+		markdown_item *index = Markdown::new_volume_marker(I"all in one");
 		index->next = tree->down; tree->down = index;
 	}
 	for (markdown_item *md = tree->down; md; md = md->next) {
-		if (md->type == FILE_MIT) {
+		if (md->type == VOLUME_MIT) {
 			md->down = md->next; md->next = NULL;
 			markdown_item *ch = md->down, *prev_ch = NULL;
-			while ((ch) && (ch->type != FILE_MIT)) { prev_ch = ch, ch = ch->next; }
+			while ((ch) && (ch->type != VOLUME_MIT)) { prev_ch = ch, ch = ch->next; }
 			if (ch) { prev_ch->next = NULL; md->next = ch; }
 		}
 	}
+	for (markdown_item *vol = tree->down; vol; vol = vol->next) {
+		if (vol->type == VOLUME_MIT) {
+			if ((vol->down) && (vol->down->type != FILE_MIT)) {
+				#ifdef SUPERVISOR_MODULE
+				text_stream *home_URL = DocumentationCompiler::home_URL_at_volume_item(vol);
+				#endif
+				#ifndef SUPERVISOR_MODULE
+				text_stream *home_URL = I"index.html";
+				#endif
+				markdown_item *index = Markdown::new_file_marker(Filenames::from_text(home_URL));
+				index->next = vol->down; vol->down = index;
+			}
+			for (markdown_item *md = vol->down; md; md = md->next) {
+				if (md->type == FILE_MIT) {
+					md->down = md->next; md->next = NULL;
+					markdown_item *ch = md->down, *prev_ch = NULL;
+					while ((ch) && (ch->type != FILE_MIT) && (ch->type != VOLUME_MIT)) { prev_ch = ch, ch = ch->next; }
+					if (ch) { prev_ch->next = NULL; md->next = ch; }
+				}
+			}
+		}
+	}
+	
 	markdown_item *headings[7] = { NULL, NULL, NULL, NULL, NULL, NULL, NULL };
 	MarkdownVariations::multifile_r(tree->down, link_references, headings, NULL);
+}
 
 @
 
