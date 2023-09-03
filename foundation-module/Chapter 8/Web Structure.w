@@ -181,7 +181,7 @@ would be "elctrcty", since we don't count "y" as a vowel here.
 		else {
 			if (letters_from_current_word < letters_from_each_word) {
 				if (Str::get_at(from, sn) != '-') {
-					wchar_t l = Characters::tolower(Str::get_at(from, sn));
+					inchar32_t l = Characters::tolower(Str::get_at(from, sn));
 					if ((letters_from_current_word == 0) ||
 						((l != 'a') && (l != 'e') && (l != 'i') &&
 							(l != 'o') && (l != 'u'))) {
@@ -386,7 +386,7 @@ variables with fixed names; a blank line ends the block.
 @<Read the bibliographic data block at the top@> =
 	if (RS->main_web_not_module) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, line, L"(%c+?): (%c+?) *")) {
+		if (Regexp::match(&mr, line, U"(%c+?): (%c+?) *")) {
 			TEMPORARY_TEXT(key)
 			Str::copy(key, mr.exp[0]);
 			TEMPORARY_TEXT(value)
@@ -406,7 +406,7 @@ variables with fixed names; a blank line ends the block.
 @<Set bibliographic key-value pair@> =
 	if (Bibliographic::datum_can_be_declared(RS->Wm, key)) {
 		if (Bibliographic::datum_on_or_off(RS->Wm, key)) {
-			if ((Str::ne_wide_string(value, L"On")) && (Str::ne_wide_string(value, L"Off"))) {
+			if ((Str::ne_wide_string(value, U"On")) && (Str::ne_wide_string(value, U"Off"))) {
 				TEMPORARY_TEXT(err)
 				WRITE_TO(err, "this setting must be 'On' or 'Off': %S", key);
 				Errors::in_text_file_S(err, tfp);
@@ -457,7 +457,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 	text_stream *language_name = NULL;
 
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c*%C) %(Independent(%c*)%)")) {
+	if (Regexp::match(&mr, line, U"(%c*%C) %(Independent(%c*)%)")) {
 		text_stream *title_alone = mr.exp[0];
 		language_name = mr.exp[1];
 		@<Mark this chapter as an independent tangle target@>;
@@ -465,34 +465,34 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 	}
 	int this_is_a_chapter = TRUE;
 	Str::clear(RS->chapter_dir_name);
-	if (Str::eq_wide_string(line, L"Sections")) {
+	if (Str::eq_wide_string(line, U"Sections")) {
 		WRITE_TO(new_chapter_range, "S");
 		WRITE_TO(RS->chapter_dir_name, "Sections");
 		WRITE_TO(pdf_leafname, "Sections.pdf");
 		RS->Wm->chaptered = FALSE;
 		Str::clear(RS->titling_line_to_insert);
-	} else if (Str::eq_wide_string(line, L"Preliminaries")) {
+	} else if (Str::eq_wide_string(line, U"Preliminaries")) {
 		WRITE_TO(new_chapter_range, "P");
 		WRITE_TO(RS->chapter_dir_name, "Preliminaries");
 		Str::clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Preliminaries.pdf");
 		RS->Wm->chaptered = TRUE;
-	} else if (Str::eq_wide_string(line, L"Manual")) {
+	} else if (Str::eq_wide_string(line, U"Manual")) {
 		WRITE_TO(new_chapter_range, "M");
 		WRITE_TO(RS->chapter_dir_name, "Manual");
 		Str::clear(RS->titling_line_to_insert);
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Manual.pdf");
 		RS->Wm->chaptered = TRUE;
-	} else if (Regexp::match(&mr, line, L"Header: (%c+)")) {
+	} else if (Regexp::match(&mr, line, U"Header: (%c+)")) {
 		pathname *P = RS->path_to;
 		if (P == NULL) P = RS->Wm->path_to_web;
 		P = Pathnames::down(P, I"Headers");
 		filename *HF = Filenames::in(P, mr.exp[0]);
 		ADD_TO_LINKED_LIST(HF, filename, RS->Wm->header_filenames);
 		this_is_a_chapter = FALSE;
-	} else if (Regexp::match(&mr, line, L"Import: (%c+)")) {
+	} else if (Regexp::match(&mr, line, U"Import: (%c+)")) {
 		if (RS->halt_at_at)
 			Errors::in_text_file_S(I"single-file webs cannot Import modules", tfp);
 		else if (RS->import_from) {
@@ -514,7 +514,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 			}
 		}
 		this_is_a_chapter = FALSE;
-	} else if (Regexp::match(&mr, line, L"Chapter (%d+): %c+")) {
+	} else if (Regexp::match(&mr, line, U"Chapter (%d+): %c+")) {
 		int n = Str::atoi(mr.exp[0], 0);
 		WRITE_TO(new_chapter_range, "%d", n);
 		WRITE_TO(RS->chapter_dir_name, "Chapter %d", n);
@@ -522,7 +522,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		WRITE_TO(RS->titling_line_to_insert, "%S.", line);
 		WRITE_TO(pdf_leafname, "Chapter-%d.pdf", n);
 		RS->Wm->chaptered = TRUE;
-	} else if (Regexp::match(&mr, line, L"Appendix (%c): %c+")) {
+	} else if (Regexp::match(&mr, line, U"Appendix (%c): %c+")) {
 		text_stream *letter = mr.exp[0];
 		Str::copy(new_chapter_range, letter);
 		WRITE_TO(RS->chapter_dir_name, "Appendix %S", letter);
@@ -550,9 +550,9 @@ with the same language as the main web unless stated otherwise.
 
 @<Mark this chapter as an independent tangle target@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, language_name, L" *"))
+	if (Regexp::match(&mr, language_name, U" *"))
 		language_name = Bibliographic::get_datum(RS->Wm, I"Language");
-	else if (Regexp::match(&mr, language_name, L" *(%c*?) *"))
+	else if (Regexp::match(&mr, language_name, U" *(%c*?) *"))
 		language_name = mr.exp[0];
 	Regexp::dispose_of(&mr);
 
@@ -562,7 +562,7 @@ with the same language as the main web unless stated otherwise.
 	if (line == NULL) PRINT("Nullity!\n");
 	Cm->ch_title = Str::duplicate(line);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, Cm->ch_title, L"(%c*?): *(%c*)")) {
+	if (Regexp::match(&mr, Cm->ch_title, U"(%c*?): *(%c*)")) {
 		Cm->ch_basic_title = Str::duplicate(mr.exp[0]);
 		Cm->ch_decorated_title = Str::duplicate(mr.exp[1]);
 	} else {
@@ -602,7 +602,7 @@ we also read in and process its file.
 	Str::clear(RS->titling_line_to_insert);
 
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c+) %^\"(%c+)\" *")) {
+	if (Regexp::match(&mr, line, U"(%c+) %^\"(%c+)\" *")) {
 		Sm->sect_title = Str::duplicate(mr.exp[0]);
 		Sm->tag_name = Str::duplicate(mr.exp[1]);
 	} else {
@@ -623,7 +623,7 @@ we also read in and process its file.
 @<Work out the language and tangle target for the section@> =
 	Sm->sect_language_name = RS->chapter_being_scanned->ch_language_name; /* by default */
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c*%C) %(Independent (%c*) *%)")) {
+	if (Regexp::match(&mr, line, U"(%c*%C) %(Independent (%c*) *%)")) {
 		text_stream *title_alone = mr.exp[0];
 		text_stream *language_name = mr.exp[1];
 		@<Mark this section as an independent tangle target@>;

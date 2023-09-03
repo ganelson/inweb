@@ -112,11 +112,11 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 
 	wp->commands++;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
+	if (Regexp::match(&mr, line, U"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
 		if ((Str::eq_insensitive(key, I"name")) && (wp->commands == 1)) {
 			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, value, L"(%c+?) based on (%c+)")) {
+			if (Regexp::match(&mr2, value, U"(%c+?) based on (%c+)")) {
 				if (Str::ne_insensitive(mr2.exp[0], wp->pattern_name)) {
 					Errors::in_text_file("wrong pattern name", tfp);
 				}
@@ -157,7 +157,7 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 			ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->post_commands);
 		} else if (Str::eq_insensitive(key, I"bibliographic data")) {
 			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, value, L"(%c+?) = (%c+)")) {
+			if (Regexp::match(&mr2, value, U"(%c+?) = (%c+)")) {
 				Bibliographic::set_datum(wp->patterned_for->md, mr2.exp[0], mr2.exp[1]);
 			} else {
 				Errors::in_text_file("syntax is 'bibliographic data: X = Y'", tfp);
@@ -165,7 +165,7 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 			Regexp::dispose_of(&mr2);
 		} else if (Str::eq_insensitive(key, I"assets")) {
 			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, value, L"(.%C+?) (%c+)")) {
+			if (Regexp::match(&mr2, value, U"(.%C+?) (%c+)")) {
 				Assets::add_asset_rule(wp->asset_rules, mr2.exp[0], mr2.exp[1], tfp);
 			} else {
 				Errors::in_text_file("syntax is 'assets: .EXT COMMAND'", tfp);
@@ -190,7 +190,7 @@ int Patterns::yes_or_no(text_stream *arg, text_file_position *tfp) {
 
 text_stream *Patterns::plugin_name(text_stream *arg, text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, arg, L"(%i+)")) {
+	if (Regexp::match(&mr, arg, U"(%i+)")) {
 		if (Str::eq_insensitive(arg, I"none")) return NULL;
 	} else {
 		Errors::in_text_file("plugin names must be single alphanumeric words", tfp);

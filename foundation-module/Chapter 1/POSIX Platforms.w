@@ -78,7 +78,7 @@ slashes, meaning a folder (i.e. directory) divide in either case. So:
 (b) When testing for such a divider, call the following.
 
 =
-int Platform::is_folder_separator(wchar_t c) {
+int Platform::is_folder_separator(inchar32_t c) {
 	return (c == FOLDER_SEPARATOR);
 }
 
@@ -112,7 +112,7 @@ always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 
 =
-void Platform::where_am_i(wchar_t *p, size_t length) {
+void Platform::where_am_i(inchar32_t *p, size_t length) {
     char buffer[PATH_MAX + 1];
     @<Follow the proc filesystem symlink to the real filesystem's file@>;
 	@<Transcode buffer, which is locale-encoded, into the wide-char buffer@>;
@@ -141,7 +141,7 @@ string.
 = (very early code)
 int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
 
-void Platform::where_am_i(wchar_t *p, size_t length) {
+void Platform::where_am_i(inchar32_t *p, size_t length) {
     char relative_path[4 * PATH_MAX + 1];
     char absolute_path[PATH_MAX + 1];
     size_t convert_len;
@@ -163,14 +163,14 @@ void Platform::where_am_i(wchar_t *p, size_t length) {
 @ For Unix, there's nothing we can generically do. ^"ifdef-PLATFORM_UNIX"
  
 =
-void Platform::where_am_i(wchar_t *p, size_t length) {
+void Platform::where_am_i(inchar32_t *p, size_t length) {
 	@<Fail@>;
 }
 
 @ On Android, there's no real need for this. ^"ifdef-PLATFORM_ANDROID"
  
 =
-void Platform::where_am_i(wchar_t *p, size_t length) {
+void Platform::where_am_i(inchar32_t *p, size_t length) {
 	@<Fail@>;
 }
 

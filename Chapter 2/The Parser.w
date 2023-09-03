@@ -63,7 +63,7 @@ yet exist -- it will only exist when the line has been fully parsed.)
 @<Remove tag list, if any@> =
 	if (Str::get_first_char(L->text) == '@') {
 		match_results mr = Regexp::create_mr();
-		while (Regexp::match(&mr, L->text, L"(%c*?)( *%^\"%c+?\")(%c*)")) {
+		while (Regexp::match(&mr, L->text, U"(%c*?)( *%^\"%c+?\")(%c*)")) {
 			if (S->md->using_syntax < V2_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "tags written ^\"thus\"", V2_SYNTAX);
 			Str::clear(L->text);
@@ -78,7 +78,7 @@ now points to the para which was created by this line, not the one before.
 
 @<Apply tag list, if any@> =
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, tag_list, L" *%^\"(%c+?)\" *(%c*)")) {
+	while (Regexp::match(&mr, tag_list, U" *%^\"(%c+?)\" *(%c*)")) {
 		Tags::add_by_name(current_paragraph, mr.exp[0]);
 		Str::copy(tag_list, mr.exp[1]);
 	}
@@ -121,11 +121,11 @@ immediately adjacent on the same line.
 	match_results mr = Regexp::create_mr();
 	if ((PL) && (PL->category == CODE_BODY_LCAT) &&
 		(Str::get_first_char(L->text) == '@') && (Str::get_at(L->text, 1) == '<') &&
-		(Regexp::match(&mr, L->text, L"%c<(%c+)@> *= *")) &&
+		(Regexp::match(&mr, L->text, U"%c<(%c+)@> *= *")) &&
 		(S->md->using_syntax >= V2_SYNTAX)) {
 		@<Insert an implied paragraph break@>;
 	}
-	if ((PL) && (Regexp::match(&mr, L->text, L"@ *= *"))) {
+	if ((PL) && (Regexp::match(&mr, L->text, U"@ *= *"))) {
 		Str::clear(L->text);
 		Str::copy(L->text, I"=");
 		if (S->md->using_syntax < V2_SYNTAX)
@@ -177,7 +177,7 @@ code, definition, what?
 come literally from the source web.
 
 @<Parse the line as a probable chapter heading@> =
-	if (Str::eq_wide_string(L->text, L"Chapter Heading")) {
+	if (Str::eq_wide_string(L->text, U"Chapter Heading")) {
 		comment_mode = TRUE;
 		extract_mode = FALSE;
 		L->is_commentary = TRUE;
@@ -190,13 +190,13 @@ namespace for its functions.
 
 @<Parse the line as a probable section heading@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L"Implied Purpose: (%c+)")) {
+	if (Regexp::match(&mr, L->text, U"Implied Purpose: (%c+)")) {
 		S->sect_purpose = Str::duplicate(mr.exp[0]);
 		if (Str::len(S->sect_purpose) > 0) {
 			L->category = PURPOSE_LCAT;
 			L->is_commentary = TRUE;
 		}
-	} else if (Regexp::match(&mr, L->text, L"%[(%C+)%] (%C+/%C+): (%c+).")) {
+	} else if (Regexp::match(&mr, L->text, U"%[(%C+)%] (%C+/%C+): (%c+).")) {
 		if (S->md->using_syntax >= V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L,
 			"section range in header line", V1_SYNTAX);
@@ -206,7 +206,7 @@ namespace for its functions.
 		L->text_operand = Str::duplicate(mr.exp[2]);
 		L->category = SECTION_HEADING_LCAT;
 		L->owning_paragraph = NULL;
-	} else if (Regexp::match(&mr, L->text, L"(%C+/%C+): (%c+).")) {
+	} else if (Regexp::match(&mr, L->text, U"(%C+/%C+): (%c+).")) {
 		if (S->md->using_syntax >= V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L,
 			"section range in header line", V1_SYNTAX);
@@ -215,13 +215,13 @@ namespace for its functions.
 		L->text_operand = Str::duplicate(mr.exp[1]);
 		L->category = SECTION_HEADING_LCAT;
 		L->owning_paragraph = NULL;
-	} else if (Regexp::match(&mr, L->text, L"%[(%C+::)%] (%c+).")) {
+	} else if (Regexp::match(&mr, L->text, U"%[(%C+::)%] (%c+).")) {
 		S->sect_namespace = Str::duplicate(mr.exp[0]);
 		S->md->sect_title = Str::duplicate(mr.exp[1]);
 		L->text_operand = Str::duplicate(mr.exp[1]);
 		L->category = SECTION_HEADING_LCAT;
 		L->owning_paragraph = NULL;
-	} else if (Regexp::match(&mr, L->text, L"(%c+).")) {
+	} else if (Regexp::match(&mr, L->text, U"(%c+).")) {
 		S->md->sect_title = Str::duplicate(mr.exp[0]);
 		L->text_operand = Str::duplicate(mr.exp[0]);
 		L->category = SECTION_HEADING_LCAT;
@@ -235,28 +235,28 @@ In version 2, this notation is never used.
 
 @<Parse the line as a possible Inweb command@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L"%[%[(%c+)%]%]")) {
+	if (Regexp::match(&mr, L->text, U"%[%[(%c+)%]%]")) {
 		TEMPORARY_TEXT(full_command)
 		TEMPORARY_TEXT(command_text)
 		Str::copy(full_command, mr.exp[0]);
 		Str::copy(command_text, mr.exp[0]);
 		L->category = COMMAND_LCAT;
-		if (Regexp::match(&mr, command_text, L"(%c+?): *(%c+)")) {
+		if (Regexp::match(&mr, command_text, U"(%c+?): *(%c+)")) {
 			Str::copy(command_text, mr.exp[0]);
 			L->text_operand = Str::duplicate(mr.exp[1]);
 		}
-		if (Str::eq_wide_string(command_text, L"Page Break")) {
+		if (Str::eq_wide_string(command_text, U"Page Break")) {
 			if (S->md->using_syntax > V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "[[Page Break]]", V1_SYNTAX);
 			L->command_code = PAGEBREAK_CMD;
-		} else if (Str::eq_wide_string(command_text, L"Grammar Index"))
+		} else if (Str::eq_wide_string(command_text, U"Grammar Index"))
 			L->command_code = GRAMMAR_INDEX_CMD;
-		else if (Str::eq_wide_string(command_text, L"Tag")) {
+		else if (Str::eq_wide_string(command_text, U"Tag")) {
 			if (S->md->using_syntax > V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "[[Tag...]]", V1_SYNTAX);
 			Tags::add_by_name(L->owning_paragraph, L->text_operand);
 			L->command_code = TAG_CMD;
-		} else if (Str::eq_wide_string(command_text, L"Figure")) {
+		} else if (Str::eq_wide_string(command_text, U"Figure")) {
 			if (S->md->using_syntax > V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "[[Figure...]]", V1_SYNTAX);
 			Tags::add_by_name(L->owning_paragraph, I"Figures");
@@ -276,7 +276,7 @@ handling. We'll call these "paragraph macros".
 @<Parse the line as a possible paragraph macro definition@> =
 	match_results mr = Regexp::create_mr();
 	if ((Str::get_first_char(L->text) == '@') && (Str::get_at(L->text, 1) == '<') &&
-		(Regexp::match(&mr, L->text, L"%c<(%c+)@> *= *"))) {
+		(Regexp::match(&mr, L->text, U"%c<(%c+)@> *= *"))) {
 		TEMPORARY_TEXT(para_macro_name)
 		Str::copy(para_macro_name, mr.exp[0]);
 		L->category = MACRO_DEFINITION_LCAT;
@@ -303,7 +303,7 @@ division in the current section.
 	Str::delete_first_character(command_text); /* i.e., strip the at-sign from the front */
 	TEMPORARY_TEXT(remainder)
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, command_text, L"(%C*) *(%c*?)")) {
+	if (Regexp::match(&mr, command_text, U"(%C*) *(%c*?)")) {
 		Str::copy(command_text, mr.exp[0]);
 		Str::copy(remainder, mr.exp[1]);
 	}
@@ -331,56 +331,56 @@ division in the current section.
 	comment_mode = FALSE;
 	match_results mr = Regexp::create_mr();
 	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L"= *(%c+) *")) {
+	if (Regexp::match(&mr, L->text, U"= *(%c+) *")) {
 		if ((current_paragraph) && (Str::eq(mr.exp[0], I"(very early code)"))) {
 			current_paragraph->placed_very_early = TRUE;
 		} else if ((current_paragraph) && (Str::eq(mr.exp[0], I"(early code)"))) {
 			current_paragraph->placed_early = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
 			code_pl_for_body = NULL;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text to *(%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text to *(%c+)%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = Str::duplicate(mr2.exp[1]);
 			code_pl_for_body = Analyser::find_by_name(I"Extracts", W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as code%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text as code%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
 			code_pl_for_body = S->sect_language;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text as (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text as (%c+)%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
 			code_pl_for_body = Analyser::find_by_name(mr2.exp[1], W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as code%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text from (%c+) as code%)"))) {
 			@<Make plainer@>;
 			code_pl_for_body = S->sect_language;
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+) as (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text from (%c+) as (%c+)%)"))) {
 			@<Make plainer@>;
 			code_pl_for_body = Analyser::find_by_name(mr2.exp[2], W, TRUE);
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%((%c*?) *text from (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text from (%c+)%)"))) {
 			@<Make plainer@>;
 			code_pl_for_body = NULL;
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(figure (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(figure (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Figures");
 			L->command_code = FIGURE_CMD;
 			L->category = COMMAND_LCAT;
@@ -388,7 +388,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(html (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(html (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"HTML");
 			L->command_code = HTML_CMD;
 			L->category = COMMAND_LCAT;
@@ -396,7 +396,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(audio (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(audio (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Audio");
 			L->command_code = AUDIO_CMD;
 			L->category = COMMAND_LCAT;
@@ -404,7 +404,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(video (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(video (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Video");
 			L->command_code = VIDEO_CMD;
 			L->category = COMMAND_LCAT;
@@ -412,7 +412,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(download (%c+) \"(%c*)\"%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(download (%c+) \"(%c*)\"%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Download");
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
@@ -421,7 +421,7 @@ division in the current section.
 			L->text_operand2 = Str::duplicate(mr2.exp[1]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(download (%c+)%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(download (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Download");
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
@@ -430,7 +430,7 @@ division in the current section.
 			L->text_operand2 = Str::new();
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(carousel%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(carousel%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_UNCAPTIONED_CMD;
 			L->category = COMMAND_LCAT;
@@ -438,7 +438,7 @@ division in the current section.
 			L->text_operand = Str::new();
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(carousel \"(%c+)\" below%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\" below%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_BELOW_CMD;
 			L->category = COMMAND_LCAT;
@@ -446,7 +446,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(carousel \"(%c+)\" above%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\" above%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_ABOVE_CMD;
 			L->category = COMMAND_LCAT;
@@ -454,7 +454,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(carousel \"(%c+)\"%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\"%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_CMD;
 			L->category = COMMAND_LCAT;
@@ -462,15 +462,15 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], L"%(carousel end%)"))) {
+			(Regexp::match(&mr2, mr.exp[0], U"%(carousel end%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_END_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			((Regexp::match(&mr2, mr.exp[0], L"%(embedded (%C+) video (%c+)%)")) ||
-				(Regexp::match(&mr2, mr.exp[0], L"%(embedded (%C+) audio (%c+)%)")))) {
+			((Regexp::match(&mr2, mr.exp[0], U"%(embedded (%C+) video (%c+)%)")) ||
+				(Regexp::match(&mr2, mr.exp[0], U"%(embedded (%C+) audio (%c+)%)")))) {
 			Tags::add_by_name(L->owning_paragraph, I"Videos");
 			L->command_code = EMBED_CMD;
 			L->category = COMMAND_LCAT;
@@ -481,7 +481,7 @@ division in the current section.
 		} else {
 			Main::error_in_web(I"unknown bracketed annotation", L);
 		}
-	} else if (Regexp::match(&mr, L->text, L"= *%C%c*")) {
+	} else if (Regexp::match(&mr, L->text, U"= *%C%c*")) {
 		Main::error_in_web(I"unknown material after '='", L);
 	}
 	code_plainness_for_body = L->plainer;
@@ -493,7 +493,7 @@ division in the current section.
 @<Make plainer@> =
 	match_results mr3 = Regexp::create_mr();
 	while (TRUE) {
-		if (Regexp::match(&mr3, mr2.exp[0], L" *(%C+) *(%c*?)")) {
+		if (Regexp::match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
 			if (Str::eq(mr3.exp[0], I"undisplayed")) L->plainer = TRUE;
 			else if (Str::eq(mr3.exp[0], I"hyperlinked")) L->enable_hyperlinks = TRUE;
 			else {
@@ -536,41 +536,41 @@ long forms |@define|, |@enum| and |@heading|, and plain old |@| remain.
 
 @<Deal with a structural marker@> =
 	extract_mode = FALSE;
-	if (Str::eq_wide_string(command_text, L"Purpose:")) @<Deal with Purpose@>
-	else if (Str::eq_wide_string(command_text, L"Interface:")) @<Deal with Interface@>
-	else if (Str::eq_wide_string(command_text, L"Definitions:")) @<Deal with Definitions@>
-	else if (Regexp::match(&mr, command_text, L"----+")) @<Deal with the bar@>
-	else if ((Str::eq_wide_string(command_text, L"c")) ||
-			(Str::eq_wide_string(command_text, L"x")) ||
-			((S->md->using_syntax == V1_SYNTAX) && (Str::eq_wide_string(command_text, L"e"))))
+	if (Str::eq_wide_string(command_text, U"Purpose:")) @<Deal with Purpose@>
+	else if (Str::eq_wide_string(command_text, U"Interface:")) @<Deal with Interface@>
+	else if (Str::eq_wide_string(command_text, U"Definitions:")) @<Deal with Definitions@>
+	else if (Regexp::match(&mr, command_text, U"----+")) @<Deal with the bar@>
+	else if ((Str::eq_wide_string(command_text, U"c")) ||
+			(Str::eq_wide_string(command_text, U"x")) ||
+			((S->md->using_syntax == V1_SYNTAX) && (Str::eq_wide_string(command_text, U"e"))))
 				@<Deal with the code and extract markers@>
-	else if (Str::eq_wide_string(command_text, L"d")) @<Deal with the define marker@>
-	else if (Str::eq_wide_string(command_text, L"define")) {
+	else if (Str::eq_wide_string(command_text, U"d")) @<Deal with the define marker@>
+	else if (Str::eq_wide_string(command_text, U"define")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "'@define' for definitions (use '@d' instead)", V2_SYNTAX);
 		@<Deal with the define marker@>;
-	} else if (Str::eq_wide_string(command_text, L"default")) {
+	} else if (Str::eq_wide_string(command_text, U"default")) {
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "'@default' for definitions", V2_SYNTAX);
 		L->default_defn = TRUE;
 		@<Deal with the define marker@>;
-	} else if (Str::eq_wide_string(command_text, L"enum")) @<Deal with the enumeration marker@>
-	else if ((Str::eq_wide_string(command_text, L"e")) && (S->md->using_syntax >= V2_SYNTAX))
+	} else if (Str::eq_wide_string(command_text, U"enum")) @<Deal with the enumeration marker@>
+	else if ((Str::eq_wide_string(command_text, U"e")) && (S->md->using_syntax >= V2_SYNTAX))
 		@<Deal with the enumeration marker@>
 	else {
 		int weight = -1, new_page = FALSE;
-		if (Str::eq_wide_string(command_text, L"")) weight = ORDINARY_WEIGHT;
-		if ((Str::eq_wide_string(command_text, L"h")) || (Str::eq_wide_string(command_text, L"heading"))) {
+		if (Str::eq_wide_string(command_text, U"")) weight = ORDINARY_WEIGHT;
+		if ((Str::eq_wide_string(command_text, U"h")) || (Str::eq_wide_string(command_text, U"heading"))) {
 			if (S->md->using_syntax < V2_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "'@h' or '@heading' for headings (use '@p' instead)", V2_SYNTAX);
 			weight = SUBHEADING_WEIGHT;
 		}
-		if (Str::eq_wide_string(command_text, L"p")) {
+		if (Str::eq_wide_string(command_text, U"p")) {
 			if (S->md->using_syntax > V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "'@p' for headings (use '@h' instead)", V1_SYNTAX);
 			weight = SUBHEADING_WEIGHT;
 		}
-		if (Str::eq_wide_string(command_text, L"pp")) {
+		if (Str::eq_wide_string(command_text, U"pp")) {
 			if (S->md->using_syntax > V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "'@pp' for super-headings", V1_SYNTAX);
 			weight = SUBHEADING_WEIGHT; new_page = TRUE;
@@ -641,9 +641,9 @@ follows:
 	if (S->md->using_syntax > V1_SYNTAX)
 		Parser::wrong_version(S->md->using_syntax, L, "'@c' and '@x'", V1_SYNTAX);
 	L->category = BEGIN_CODE_LCAT;
-	if ((Str::eq_wide_string(command_text, L"e")) && (current_paragraph))
+	if ((Str::eq_wide_string(command_text, U"e")) && (current_paragraph))
 		current_paragraph->placed_early = TRUE;
-	if (Str::eq_wide_string(command_text, L"x")) code_lcat_for_body = TEXT_EXTRACT_LCAT;
+	if (Str::eq_wide_string(command_text, U"x")) code_lcat_for_body = TEXT_EXTRACT_LCAT;
 	else code_lcat_for_body = CODE_BODY_LCAT;
 	code_pl_for_body = NULL;
 	comment_mode = FALSE;
@@ -658,7 +658,7 @@ C preprocessor macros, Inform 6 |Constant|s, and so on.
 	code_lcat_for_body = CONT_DEFINITION_LCAT;
 	code_pl_for_body = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, remainder, L"(%C+) (%c+)")) {
+	if (Regexp::match(&mr, remainder, U"(%C+) (%c+)")) {
 		L->text_operand = Str::duplicate(mr.exp[0]); /* name of term defined */
 		L->text_operand2 = Str::duplicate(mr.exp[1]); /* Value */
 	} else {
@@ -688,10 +688,10 @@ enumerated sort of |@d|.
 	DISCARD_TEXT(before)
 	DISCARD_TEXT(after)
 	Str::trim_white_space(L->text_operand);
-	if (Regexp::match(&mr, L->text_operand, L"(%C+) from (%c+)")) {
+	if (Regexp::match(&mr, L->text_operand, U"(%C+) from (%c+)")) {
 		from = mr.exp[1];
 		Str::copy(L->text_operand, mr.exp[0]);
-	} else if (Regexp::match(&mr, L->text_operand, L"(%C+) (%c+)")) {
+	} else if (Regexp::match(&mr, L->text_operand, U"(%C+) (%c+)")) {
 		Main::error_in_web(I"enumeration constants can't supply a value", L);
 	}
 	L->text_operand2 = Str::new();
@@ -734,10 +734,10 @@ will be woven exactly as the succeeding lines will be.
 	if (weight == SUBHEADING_WEIGHT) L->category = HEADING_START_LCAT;
 	L->text_operand = Str::new(); /* title */
 	match_results mr = Regexp::create_mr();
-	if ((weight == SUBHEADING_WEIGHT) && (Regexp::match(&mr, remainder, L"(%c+). (%c+)"))) {
+	if ((weight == SUBHEADING_WEIGHT) && (Regexp::match(&mr, remainder, U"(%c+). (%c+)"))) {
 		L->text_operand = Str::duplicate(mr.exp[0]);
 		L->text_operand2 = Str::duplicate(mr.exp[1]);
-	} else if ((weight == SUBHEADING_WEIGHT) && (Regexp::match(&mr, remainder, L"(%c+). *"))) {
+	} else if ((weight == SUBHEADING_WEIGHT) && (Regexp::match(&mr, remainder, U"(%c+). *"))) {
 		L->text_operand = Str::duplicate(mr.exp[0]);
 		L->text_operand2 = Str::new();
 	} else {
@@ -818,7 +818,7 @@ typedef struct paragraph {
 
 @<This is a line destined for commentary@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L">> (%c+)")) {
+	if (Regexp::match(&mr, L->text, U">> (%c+)")) {
 		L->category = SOURCE_DISPLAY_LCAT;
 		L->text_operand = Str::duplicate(mr.exp[0]);
 	}
@@ -856,7 +856,7 @@ is not elegant but handles the back end of both possibilities.
 text_stream *Parser::extract_purpose(text_stream *prologue, source_line *XL, section *S, source_line **adjust) {
 	text_stream *P = Str::duplicate(prologue);
 	while ((XL) && (XL->next_line) && (XL->owning_section == S) &&
-		(((adjust) && (isalnum(Str::get_first_char(XL->text)))) ||
+		(((adjust) && (Characters::isalnum(Str::get_first_char(XL->text)))) ||
 		 ((!adjust) && (XL->category == COMMENT_BODY_LCAT)))) {
 		WRITE_TO(P, " %S", XL->text);
 		XL->category = PURPOSE_BODY_LCAT;
@@ -990,34 +990,34 @@ text_stream *Parser::dimensions(text_stream *item, int *w, int *h, source_line *
 	*w = -1; *h = -1;
 	text_stream *use = item;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, item, L"(%c+) at (%d+) by (%d+)")) {
+	if (Regexp::match(&mr, item, U"(%c+) at (%d+) by (%d+)")) {
 		if (sv < V2_SYNTAX)
 			Parser::wrong_version(sv, L, "at X by Y", V2_SYNTAX);
 		*w = Str::atoi(mr.exp[1], 0);
 		*h = Str::atoi(mr.exp[2], 0);
 		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)")) {
+	} else if (Regexp::match(&mr, item, U"(%c+) at height (%d+)")) {
 		if (sv < V2_SYNTAX)
 			Parser::wrong_version(sv, L, "at height Y", V2_SYNTAX);
 		*h = Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)")) {
+	} else if (Regexp::match(&mr, item, U"(%c+) at width (%d+)")) {
 		if (sv < V2_SYNTAX)
 			Parser::wrong_version(sv, L, "at width Y", V2_SYNTAX);
 		*w = Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at (%d+)cm by (%d+)cm")) {
+	} else if (Regexp::match(&mr, item, U"(%c+) at (%d+)cm by (%d+)cm")) {
 		if (sv < V2_SYNTAX)
 			Parser::wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
 		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
 		*h = POINTS_PER_CM*Str::atoi(mr.exp[2], 0);
 		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at height (%d+)cm")) {
+	} else if (Regexp::match(&mr, item, U"(%c+) at height (%d+)cm")) {
 		if (sv < V2_SYNTAX)
 			Parser::wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
 		*h = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, item, L"(%c+) at width (%d+)cm")) {
+	} else if (Regexp::match(&mr, item, U"(%c+) at width (%d+)cm")) {
 		if (sv < V2_SYNTAX)
 			Parser::wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
 		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);

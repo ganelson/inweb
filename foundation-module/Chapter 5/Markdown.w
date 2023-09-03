@@ -222,7 +222,7 @@ three lines of which the third is empty.
 @<Phase I@> =
 	TEMPORARY_TEXT(line)
 	LOOP_THROUGH_TEXT(pos, text) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '\n') {
 			MDBlockParser::add_to_document(state, line);
 			Str::clear(line);
@@ -694,7 +694,7 @@ int Markdown::get_item_number(markdown_item *md) {
 	return md->details;
 }
 
-wchar_t Markdown::get_item_flavour(markdown_item *md) {
+inchar32_t Markdown::get_item_flavour(markdown_item *md) {
 	if ((md == NULL) ||
 		((md->type != ORDERED_LIST_ITEM_MIT) && (md->type != UNORDERED_LIST_ITEM_MIT)))
 		return 0;
@@ -702,10 +702,10 @@ wchar_t Markdown::get_item_flavour(markdown_item *md) {
 		if (md->details >= 0) return ')';
 		return '.';
 	}
-	return (wchar_t) md->details;
+	return (inchar32_t) md->details;
 }
 
-void Markdown::set_item_number_and_flavour(markdown_item *md, int L, wchar_t f) {
+void Markdown::set_item_number_and_flavour(markdown_item *md, int L, inchar32_t f) {
 	if (md->type == ORDERED_LIST_ITEM_MIT) {
 		if (L < 0) internal_error("bad list item number");
 		if (f == ')') md->details = L;
@@ -713,7 +713,7 @@ void Markdown::set_item_number_and_flavour(markdown_item *md, int L, wchar_t f) 
 	}
 	if (md->type == UNORDERED_LIST_ITEM_MIT) {
 		if (L != 0) internal_error("inappropriate list item number");
-		md->details = f;
+		md->details = (int)f;
 	}
 }
 
@@ -725,8 +725,8 @@ This function returns a harmless letter for an escaped active character, so
 that it can be used to test for unescaped active characters.
 
 =
-wchar_t Markdown::get_unescaped(md_charpos pos, int offset) {
-	wchar_t c = Markdown::get_offset(pos, offset);
+inchar32_t Markdown::get_unescaped(md_charpos pos, int offset) {
+	inchar32_t c = Markdown::get_offset(pos, offset);
 	int preceding_backslashes = 0;
 	while (Markdown::get_offset(pos, offset - 1 - preceding_backslashes) == '\\')
 		preceding_backslashes++;
@@ -738,7 +738,7 @@ wchar_t Markdown::get_unescaped(md_charpos pos, int offset) {
 must be non-zero, which are not escaped with a backslash.
 
 =
-int Markdown::unescaped_run(md_charpos pos, wchar_t of) {
+int Markdown::unescaped_run(md_charpos pos, inchar32_t of) {
 	int count = 0;
 	while (Markdown::get_unescaped(pos, count) == of) count++;
 	if (Markdown::get_unescaped(pos, -1) == of) count = 0;
@@ -780,7 +780,7 @@ range being sliced: this is intentional and is needed for some of the
 delimiter-scanning.
 
 =
-wchar_t Markdown::get_at(markdown_item *md, int at) {
+inchar32_t Markdown::get_at(markdown_item *md, int at) {
 	if (md == NULL) return 0;
 	if (Str::len(md->sliced_from) == 0) return 0;
 	return Str::get_at(md->sliced_from, at);
@@ -796,7 +796,7 @@ int Markdown::width(markdown_item *md) {
 		int width = 0;
 		if (md->type == PLAIN_MIT) {
 			for (int i=md->from; i<=md->to; i++) {
-				wchar_t c = Markdown::get_at(md, i);
+				inchar32_t c = Markdown::get_at(md, i);
 				if (c == '\\') i++;
 				width++;
 			}
@@ -947,20 +947,20 @@ md_charpos Markdown::advance_up_to_quasi_plainish_only(md_charpos pos, md_charpo
 @ The character at a given position:
 
 =
-wchar_t Markdown::get(md_charpos pos) {
+inchar32_t Markdown::get(md_charpos pos) {
 	return Markdown::get_offset(pos, 0);
 }
 
-wchar_t Markdown::get_offset(md_charpos pos, int by) {
+inchar32_t Markdown::get_offset(md_charpos pos, int by) {
 	if (Markdown::somewhere(pos)) return Markdown::get_at(pos.md, pos.at + by);
 	return 0;
 }
 
-void Markdown::put(md_charpos pos, wchar_t c) {
+void Markdown::put(md_charpos pos, inchar32_t c) {
 	Markdown::put_offset(pos, 0, c);
 }
 
-void Markdown::put_offset(md_charpos pos, int by, wchar_t c) {
+void Markdown::put_offset(md_charpos pos, int by, inchar32_t c) {
 	if (Markdown::somewhere(pos)) Str::put_at(pos.md->sliced_from, pos.at + by, c);
 }
 
@@ -1118,14 +1118,14 @@ space."
 void Markdown::normalise_link_label(text_stream *label) {
 	TEMPORARY_TEXT(normal)
 	for (int i=0, ws = FALSE; i<Str::len(label); i++) {
-		wchar_t c = Str::get_at(label, i);
+		inchar32_t c = Str::get_at(label, i);
 		if ((c == ' ') || (c == '\t') || (c == '\n')) {
 			ws = TRUE; continue;
 		} else if (ws) {
 			PUT_TO(normal, ' ');
 		}
 		ws = FALSE;
-		wchar_t F[4];
+		inchar32_t F[4];
 		Characters::full_Unicode_fold(c, F);
 		for (int j=0; j<4; j++) if (F[j]) PUT_TO(normal, F[j]);
 	}
@@ -1138,7 +1138,7 @@ This prints the internal tree representation of Markdown: none of this code
 is needed either for parsing or rendering.
 
 =
-void Markdown::debug_char(OUTPUT_STREAM, wchar_t c) {
+void Markdown::debug_char(OUTPUT_STREAM, inchar32_t c) {
 	switch (c) {
 		case 0:    WRITE("NULL"); break;
 		case '\n': WRITE("NEWLINE"); break;
@@ -1149,7 +1149,7 @@ void Markdown::debug_char(OUTPUT_STREAM, wchar_t c) {
 	}
 }
 
-void Markdown::debug_char_briefly(OUTPUT_STREAM, wchar_t c) {
+void Markdown::debug_char_briefly(OUTPUT_STREAM, inchar32_t c) {
 	switch (c) {
 		case 0:    WRITE("\\x0000"); break;
 		case '\n': WRITE("\\n"); break;

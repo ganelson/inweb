@@ -47,17 +47,17 @@ but we'll give it some command-line options anyway. Foundation will add also
 
 @<Read the command line@> =
 	CommandLine::declare_heading(
-		L"eastertide: an Easter date calculator\n\n"
-		L"usage: eastertide [OPTIONS] year1 year2 ...\n");
+		U"eastertide: an Easter date calculator\n\n"
+		U"usage: eastertide [OPTIONS] year1 year2 ...\n");
 
-	CommandLine::declare_switch(CALENDAR_FILE_CLSW, L"calendar-file", 2,
-		L"specify file X as a list of year requests, one per line");
+	CommandLine::declare_switch(CALENDAR_FILE_CLSW, U"calendar-file", 2,
+		U"specify file X as a list of year requests, one per line");
 
 	CommandLine::begin_group(QUALIFYING_CLSG, I"for qualifying the output");
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"print output verbosely", FALSE);
-	CommandLine::declare_boolean_switch(AMERICAN_CLSW, L"american", 1,
-		L"print dates in American MM/DD format", FALSE);
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"print output verbosely", FALSE);
+	CommandLine::declare_boolean_switch(AMERICAN_CLSW, U"american", 1,
+		U"print dates in American MM/DD format", FALSE);
 	CommandLine::end_group();
 	CommandLine::read(argc, argv, NULL, &Main::switch, &Main::bareword);
 

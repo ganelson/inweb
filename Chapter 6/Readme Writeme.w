@@ -71,7 +71,7 @@ writeme_asset *Readme::find_asset(text_stream *program) {
 }
 
 @<Read in the asset@> =
-	if (Str::ends_with_wide_string(program, L".i7x")) {
+	if (Str::ends_with_wide_string(program, U".i7x")) {
 		@<Read in the extension file@>;
 	} else {
 		if (WebMetadata::directory_looks_like_a_web(Pathnames::from_text(program))) {
@@ -112,7 +112,7 @@ void Readme::extension_harvester(text_stream *text, text_file_position *tfp, voi
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp::create_mr();
 	if (Str::len(text) == 0) return;
-	if (Regexp::match(&mr, text, L" *Version (%c*?) of %c*begins here. *"))
+	if (Regexp::match(&mr, text, U" *Version (%c*?) of %c*begins here. *"))
 		A->version = Str::duplicate(mr.exp[0]);
 	Regexp::dispose_of(&mr);
 }
@@ -124,9 +124,9 @@ void Readme::header_harvester(text_stream *text, text_file_position *tfp, void *
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp::create_mr();
 	if (Str::len(text) == 0) return;
-	if (Regexp::match(&mr, text, L"#define RELEASE_NUMBER (%c*?) *"))
+	if (Regexp::match(&mr, text, U"#define RELEASE_NUMBER (%c*?) *"))
 		A->version = Str::duplicate(mr.exp[0]);
-	if (Regexp::match(&mr, text, L"#define RELEASE_DATE \"(%c*?)\" *"))
+	if (Regexp::match(&mr, text, U"#define RELEASE_DATE \"(%c*?)\" *"))
 		A->date = Str::duplicate(mr.exp[0]);
 	Regexp::dispose_of(&mr);
 }
@@ -138,7 +138,7 @@ void Readme::template_harvester(text_stream *text, text_file_position *tfp, void
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp::create_mr();
 	if (Str::len(text) == 0) return;
-	if (Regexp::match(&mr, text, L"%[INTERPRETERVERSION%]")) {
+	if (Regexp::match(&mr, text, U"%[INTERPRETERVERSION%]")) {
 		A->next_is_version = TRUE;
 	} else if (A->next_is_version) {
 		A->version = Str::duplicate(text);
@@ -154,8 +154,8 @@ void Readme::readme_harvester(text_stream *text, text_file_position *tfp, void *
 	writeme_asset *A = (writeme_asset *) state;
 	match_results mr = Regexp::create_mr();
 	if (Str::len(text) == 0) return;
-	if ((Regexp::match(&mr, text, L"CheapGlk Library: version (%c*?) *")) ||
-		(Regexp::match(&mr, text, L"- Version (%c*?) *")))
+	if ((Regexp::match(&mr, text, U"CheapGlk Library: version (%c*?) *")) ||
+		(Regexp::match(&mr, text, U"- Version (%c*?) *")))
 		A->version = Str::duplicate(mr.exp[0]);
 	Regexp::dispose_of(&mr);
 }

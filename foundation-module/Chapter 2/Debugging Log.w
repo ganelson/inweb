@@ -61,7 +61,7 @@ trace-sentences mode, that is, between asterisk sentences.
 int das_created = FALSE;
 debugging_aspect the_debugging_aspects[NO_DEFINED_DA_VALUES];
 
-void Log::declare_aspect(int a, wchar_t *name, int def, int alt) {
+void Log::declare_aspect(int a, inchar32_t *name, int def, int alt) {
 	if (das_created == FALSE) {
 		das_created = TRUE;
 		@<Empty the aspects table@>;
@@ -85,7 +85,7 @@ void Log::declare_aspect(int a, wchar_t *name, int def, int alt) {
 @<Set up the new aspect@> =
 	WRITE_TO(da->negated_name, "no-");
 	for (int i=0; name[i]; i++) {
-		wchar_t c = name[i];
+		inchar32_t c = name[i];
 		PUT_TO(da->unhyphenated_name, c);
 		if (Characters::is_space_or_tab(c)) c = '-';
 		PUT_TO(da->hyphenated_name, c);
@@ -209,9 +209,9 @@ print out a list of debugging aspects to |STDOUT|.
 =
 int Log::set_aspect_from_command_line(text_stream *name, int give_error) {
 	int list_mode = FALSE;
-	if (Str::eq_wide_string(name, L"everything")) { Log::set_all_aspects(TRUE); return TRUE; }
-	if (Str::eq_wide_string(name, L"nothing")) { Log::set_all_aspects(FALSE); return TRUE; }
-	if (Str::eq_wide_string(name, L"list")) list_mode = TRUE;
+	if (Str::eq_wide_string(name, U"everything")) { Log::set_all_aspects(TRUE); return TRUE; }
+	if (Str::eq_wide_string(name, U"nothing")) { Log::set_all_aspects(FALSE); return TRUE; }
+	if (Str::eq_wide_string(name, U"list")) list_mode = TRUE;
 
 	for (int i=0; i<NO_DEFINED_DA_VALUES; i++) {
 		debugging_aspect *da = &(the_debugging_aspects[i]);

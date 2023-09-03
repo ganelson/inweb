@@ -115,7 +115,7 @@ ebook *Epub::new(text_stream *title, char *prefix) {
 	B->current_chapter = NULL;
 	B->eventual_epub = NULL;
 	B->prefix = prefix;
-	Epub::attach_metadata(B, L"title", title);
+	Epub::attach_metadata(B, U"title", title);
 	return B;
 }
 
@@ -127,7 +127,7 @@ void Epub::use_CSS(ebook_volume *V, filename *F) {
 	V->CSS_file = F;
 }
 
-text_stream *Epub::attach_metadata(ebook *B, wchar_t *K, text_stream *V) {
+text_stream *Epub::attach_metadata(ebook *B, inchar32_t *K, text_stream *V) {
 	ebook_datum *D = NULL;
 	LOOP_OVER_LINKED_LIST(D, ebook_datum, B->metadata_list)
 		if (Str::eq_wide_string(D->key, K)) {
@@ -141,7 +141,7 @@ text_stream *Epub::attach_metadata(ebook *B, wchar_t *K, text_stream *V) {
 	return D->value;
 }
 
-text_stream *Epub::get_metadata(ebook *B, wchar_t *K) {
+text_stream *Epub::get_metadata(ebook *B, inchar32_t *K) {
 	ebook_datum *D = NULL;
 	LOOP_OVER_LINKED_LIST(D, ebook_datum, B->metadata_list)
 		if (Str::eq_wide_string(D->key, K))
@@ -149,7 +149,7 @@ text_stream *Epub::get_metadata(ebook *B, wchar_t *K) {
 	return NULL;
 }
 
-text_stream *Epub::ensure_metadata(ebook *B, wchar_t *K) {
+text_stream *Epub::ensure_metadata(ebook *B, inchar32_t *K) {
 	text_stream *S = Epub::get_metadata(B, K);
 	if (S == NULL) S = Epub::attach_metadata(B, K, NULL);
 	return S;
@@ -168,7 +168,7 @@ ebook_page *Epub::note_page(ebook *B, filename *F, text_stream *title, text_stre
 	WRITE_TO(P->page_ID, B->prefix);
 	Filenames::write_unextended_leafname(P->page_ID, F);
 	LOOP_THROUGH_TEXT(pos, P->page_ID) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c == '-') || (c == ' ')) Str::put(pos, '_');
 	}
 	ADD_TO_LINKED_LIST(P, ebook_page, B->ebook_page_list);
@@ -224,7 +224,7 @@ pathname *Epub::begin_construction(ebook *B, pathname *P, filename *cover_image)
 	if (Pathnames::create_in_file_system(P) == FALSE) return NULL;
 
 	TEMPORARY_TEXT(TEMP)
-	WRITE_TO(TEMP, "%S.epub", Epub::get_metadata(B, L"title"));
+	WRITE_TO(TEMP, "%S.epub", Epub::get_metadata(B, U"title"));
 	B->eventual_epub = Filenames::in(P, TEMP);
 	DISCARD_TEXT(TEMP)
 
@@ -296,7 +296,7 @@ images" at the ThreePress Consulting blog.)
 	HTML::end_head(OUT);
 	HTML::begin_body(OUT, NULL);
 	HTML_OPEN_WITH("div", "id=\"cover-image\"");
-	HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\"", cover_image, Epub::get_metadata(B, L"title"));
+	HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\"", cover_image, Epub::get_metadata(B, U"title"));
 	WRITE("\n");
 	HTML_CLOSE("div");
 	HTML::end_body(OUT);
@@ -312,7 +312,7 @@ void Epub::end_construction(ebook *B) {
 }
 
 @<Attach default metadata@> =
-	text_stream *datestamp = Epub::ensure_metadata(B, L"date");
+	text_stream *datestamp = Epub::ensure_metadata(B, U"date");
 	if (Str::len(datestamp) == 0) {
 		WRITE_TO(datestamp, "%04d-%02d-%02d", the_present->tm_year + 1900,
 			(the_present->tm_mon)+1, the_present->tm_mday);
@@ -320,15 +320,15 @@ void Epub::end_construction(ebook *B) {
 
 	TEMPORARY_TEXT(TEMP)
 	WRITE_TO(TEMP, "urn:www.inform7.com:");
-	text_stream *identifier = Epub::ensure_metadata(B, L"identifier");
+	text_stream *identifier = Epub::ensure_metadata(B, U"identifier");
 	if (Str::len(identifier) == 0)
-		WRITE_TO(TEMP, "%S", Epub::get_metadata(B, L"title"));
+		WRITE_TO(TEMP, "%S", Epub::get_metadata(B, U"title"));
 	else
 		WRITE_TO(TEMP, "%S", identifier);
 	Str::copy(identifier, TEMP);
 	DISCARD_TEXT(TEMP)
 
-	text_stream *lang = Epub::ensure_metadata(B, L"language");
+	text_stream *lang = Epub::ensure_metadata(B, U"language");
 	if (Str::len(lang) == 0) WRITE_TO(lang, "en-UK");
 
 @<Write the EPUB OPF file@> =
@@ -358,7 +358,7 @@ void Epub::end_construction(ebook *B) {
 	ebook_datum *D = NULL;
 	LOOP_OVER_LINKED_LIST(D, ebook_datum, B->metadata_list) {
 		WRITE("<dc:%S", D->key);
-		if (Str::eq_wide_string(D->key, L"identifier")) WRITE(" id=\"bookid\"");
+		if (Str::eq_wide_string(D->key, U"identifier")) WRITE(" id=\"bookid\"");
 		WRITE(">");
 		WRITE("%S</dc:%S>\n", D->value, D->key);
 	}
@@ -454,13 +454,13 @@ impaired people.
 
 @<Write the NCX metadata@> =
 	WRITE("<head>\n"); INDENT;
-	WRITE("<meta name=\"dtb:uid\" content=\"%S\"/>\n", Epub::get_metadata(B, L"identifier"));
+	WRITE("<meta name=\"dtb:uid\" content=\"%S\"/>\n", Epub::get_metadata(B, U"identifier"));
 	WRITE("<meta name=\"dtb:depth\" content=\"%d\"/>\n", depth);
 	WRITE("<meta name=\"dtb:totalPageCount\" content=\"0\"/>\n");
 	WRITE("<meta name=\"dtb:maxPageNumber\" content=\"0\"/>\n");
 	OUTDENT; WRITE("</head>\n");
 	WRITE("<docTitle>\n"); INDENT;
-	WRITE("<text>%S</text>\n", Epub::get_metadata(B, L"title"));
+	WRITE("<text>%S</text>\n", Epub::get_metadata(B, U"title"));
 	OUTDENT; WRITE("</docTitle>\n");
 
 @<Write the NCX navigation map@> =
@@ -486,8 +486,8 @@ impaired people.
 	ebook_page *P;
 	LOOP_OVER_LINKED_LIST(P, ebook_page, B->ebook_page_list) {
 		int in_phase = 1;
-		if ((Str::eq_wide_string(P->page_ID, L"cover")) ||
-			(Str::eq_wide_string(P->page_ID, L"index")))
+		if ((Str::eq_wide_string(P->page_ID, U"cover")) ||
+			(Str::eq_wide_string(P->page_ID, U"index")))
 			in_phase = 0;
 		if ((in_phase == phase) && (P->nav_entry_written == FALSE)) {
 			@<Begin navPoint@>;

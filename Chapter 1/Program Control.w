@@ -197,7 +197,7 @@ line , but otherwise we impose a sensible choice based on the target.
 @<Tangle the web@> =
 	TEMPORARY_TEXT(tangle_leaf)
 	tangle_target *tn = NULL;
-	if (Str::eq_wide_string(ins->chosen_range, L"0")) {
+	if (Str::eq_wide_string(ins->chosen_range, U"0")) {
 		@<Work out main tangle destination@>;
 	} else if (Reader::get_section_for_range(W, ins->chosen_range)) {
 		@<Work out an independent tangle destination, from one section of the web@>;

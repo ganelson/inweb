@@ -87,8 +87,8 @@ void Writers::register_logger_I(int esc, void (*f)(text_stream *, int)) {
 void Writers::register_writer_p(int set, int esc, void *f, int cat) {
 	if (escapes_registered == FALSE) @<Initialise the table of escapes@>;
 	if ((esc < 0) || (esc >= 128) ||
-		((Characters::isalpha((wchar_t) esc) == FALSE) &&
-			(Characters::isdigit((wchar_t) esc) == FALSE)))
+		((Characters::isalpha((inchar32_t) esc) == FALSE) &&
+			(Characters::isdigit((inchar32_t) esc) == FALSE)))
 		internal_error("nonalphabetic escape");
 	if (escapes_category[set][esc] != VACANT_ECAT) {
 		WRITE_TO(STDERR, "Clashing escape is %s%c\n", (set == 0)?"%":"$", esc);
@@ -148,12 +148,12 @@ void Writers::printf(text_stream *stream, char *fmt, ...) {
 			case '"':
 				if (stream->stream_flags & USES_I6_ESCAPES_STRF)
 					Streams::putc('~', stream);
-				else Streams::putc(*p, stream);
+				else Streams::putci(*p, stream);
 				break;
 			case '\n':
-				Streams::putc(*p, stream);
+				Streams::putci(*p, stream);
 				break;
-			default: Streams::putc(*p, stream); break;
+			default: Streams::putci(*p, stream); break;
 		}
 	}
 	va_end(ap); /* macro to end variable argument processing */
@@ -239,28 +239,28 @@ file encodings, but expanding |%s| does not.
 	switch (esc_number) {
 		case 'c': { /* |char| is promoted to |int| in variable arguments */
 			int ival = va_arg(ap, int);
-			Streams::putc(ival, stream);
+			Streams::putci(ival, stream);
 			break;
 		}
 		case 'd': case 'i': case 'x': {
 			int ival = va_arg(ap, int);
 			char temp[256];
 			if (snprintf(temp, 255, format_string, ival) >= 255) strcpy(temp, "?");
-			for (int j = 0; temp[j]; j++) Streams::putc(temp[j], stream);
+			for (int j = 0; temp[j]; j++) Streams::putci(temp[j], stream);
 			break;
 		}
 		case 'g': {
 			double dval = va_arg(ap, double);
 			char temp[256];
 			if (snprintf(temp, 255, format_string, dval) >= 255) strcpy(temp, "?");
-			for (int j = 0; temp[j]; j++) Streams::putc(temp[j], stream);
+			for (int j = 0; temp[j]; j++) Streams::putci(temp[j], stream);
 			break;
 		}
 		case 's':
-			for (char *sval = va_arg(ap, char *); *sval; sval++) Streams::putc(*sval, stream);
+			for (char *sval = va_arg(ap, char *); *sval; sval++) Streams::putci(*sval, stream);
 			break;
 		case 'w': {
-			wchar_t *W = (wchar_t *) va_arg(ap, wchar_t *);
+			inchar32_t *W = (inchar32_t *) va_arg(ap, inchar32_t *);
 			for (int j = 0; W[j]; j++) Streams::putc(W[j], stream);
 			break;
 		}

@@ -146,7 +146,7 @@ semantic_version_number VersionNumbers::from_text(text_stream *T) {
 	int part = MMP_SEMVERPART;
 	TEMPORARY_TEXT(prerelease)
 	LOOP_THROUGH_TEXT(pos, T) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		switch (part) {
 			case MMP_SEMVERPART: 
 				if (c == '.') dots_used++;
@@ -159,7 +159,7 @@ semantic_version_number VersionNumbers::from_text(text_stream *T) {
 					if (c == '-') part = PRE_SEMVERPART;
 					if (c == '+') part = BM_SEMVERPART;
 				} else if (Characters::isdigit(c)) {
-					int digit = c - '0';
+					int digit = (int) (c - '0');
 					if ((val == 0) && (slashes_used == 0))
 						return VersionNumbers::null();
 					if (val < 0) val = digit; else val = 10*val + digit;
@@ -267,7 +267,7 @@ int VersionNumbers::strict_atoi(text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T)
 		if (Characters::isdigit(Str::get(pos)) == FALSE)
 			return -1;
-	wchar_t c = Str::get_first_char(T);
+	inchar32_t c = Str::get_first_char(T);
 	if ((c == '0') && (Str::len(T) > 1)) return -1;
 	return Str::atoi(T, 0);
 }

@@ -203,7 +203,7 @@ been taken out at the parsing stage.)
 	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
 	TEMPORARY_TEXT(language)
 	for (int i=0; i<Str::len(md->info_string); i++) {
-		wchar_t c = Str::get_at(md->info_string, i);
+		inchar32_t c = Str::get_at(md->info_string, i);
 		if ((c == ' ') || (c == '\t')) break;
 		PUT_TO(language, c);
 	}
@@ -389,21 +389,21 @@ void MDRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 	if (md) {
 		int angles = 0;
 		for (int i=md->from; i<=md->to; i++) {
-			wchar_t c = Markdown::get_at(md, i);
+			inchar32_t c = Markdown::get_at(md, i);
 			if ((mode & ESCAPES_MDRMODE) && (c == '\\') && (i<md->to) &&
 				(Characters::is_ASCII_punctuation(Markdown::get_at(md, i+1))))
 				c = Markdown::get_at(md, ++i);
 			else if ((mode & ENTITIES_MDRMODE) && (c == '&') && (i+2<=md->to)) {
 				int at = i;
 				TEMPORARY_TEXT(entity)
-				wchar_t d = c;
+				inchar32_t d = c;
 				while ((d != 0) && (d != ';')) {
 					if (at > md->to) break;
 					d = Markdown::get_at(md, at++);
 					PUT_TO(entity, d);
 				}
 				if (d == ';') {
-					wchar_t A = 0, B = 0;
+					inchar32_t A = 0, B = 0;
 					int valid = HTMLEntities::parse(entity, &A, &B);
 					DISCARD_TEXT(entity)
 					if (valid) {
@@ -427,7 +427,7 @@ void MDRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 ways to render characters: they all agree on ASCII digits and letters.
 
 =
-void MDRenderer::char(OUTPUT_STREAM, wchar_t c, int mode) {
+void MDRenderer::char(OUTPUT_STREAM, inchar32_t c, int mode) {
 	if (mode & TOLOWER_MDRMODE) c = Characters::tolower(c);
 	if (mode & RAW_MDRMODE) {
 		PUT(c);
@@ -483,6 +483,6 @@ CommonMark test examples, so:
 =
 void MDRenderer::hex_digit(OUTPUT_STREAM, unsigned int x) {
 	x = x%16;
-	if (x<10) PUT('0'+(int) x);
-	else PUT('A'+((int) x-10));
+	if (x<10) PUT('0'+x);
+	else PUT('A'+(x-10));
 }

@@ -141,11 +141,11 @@ void Collater::process(text_stream *OUT, collater_state *cls) {
 }
 
 @<Make any necessary substitutions to turn tl into final output@> =
-	if (Regexp::match(&mr, tl, L"(%c*?) ")) Str::copy(tl, mr.exp[0]); /* Strip trailing spaces */
+	if (Regexp::match(&mr, tl, U"(%c*?) ")) Str::copy(tl, mr.exp[0]); /* Strip trailing spaces */
 	if (TRACE_COLLATER_EXECUTION)
 		@<Print line and contents of repeat stack@>;
-	if ((Regexp::match(&mr, tl, L"%[%[(%c+)%]%]")) ||
-		(Regexp::match(&mr, tl, L" %[%[(%c+)%]%]"))) {
+	if ((Regexp::match(&mr, tl, U"%[%[(%c+)%]%]")) ||
+		(Regexp::match(&mr, tl, U" %[%[(%c+)%]%]"))) {
 		TEMPORARY_TEXT(command)
 		Str::copy(command, mr.exp[0]);
 		@<Deal with a Select command@>;
@@ -186,7 +186,7 @@ chapter as its value during the sole iteration.
 
 @<Deal with a Select command@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, command, L"Select (%c*)")) {
+	if (Regexp::match(&mr, command, U"Select (%c*)")) {
 		chapter *C;
 		section *S;
 		LOOP_OVER_LINKED_LIST(C, chapter, cls->for_web->chapters)
@@ -211,7 +211,7 @@ chapter as its value during the sole iteration.
 @ Conditionals:
 
 @<Deal with an If command@> =
-	if (Regexp::match(&mr, command, L"If (%c*)")) {
+	if (Regexp::match(&mr, command, U"If (%c*)")) {
 		text_stream *condition = mr.exp[0];
 		int level = IF_FALSE_LEVEL;
 		if (Str::eq(condition, I"Chapters")) {
@@ -254,7 +254,7 @@ chapter as its value during the sole iteration.
 	}
 
 @<Deal with an Else command@> =
-	if (Regexp::match(&mr, command, L"Else")) {
+	if (Regexp::match(&mr, command, U"Else")) {
 		if (cls->sp <= 0) {
 			Errors::at_position("Else without If",
 				cls->errors_at, lpos);
@@ -277,9 +277,9 @@ chapter as its value during the sole iteration.
 
 @<Deal with a Repeat command@> =
 	int loop_level = 0;
-	if (Regexp::match(&mr, command, L"Repeat Module")) loop_level = MODULE_LEVEL;
-	if (Regexp::match(&mr, command, L"Repeat Chapter")) loop_level = CHAPTER_LEVEL;
-	if (Regexp::match(&mr, command, L"Repeat Section")) loop_level = SECTION_LEVEL;
+	if (Regexp::match(&mr, command, U"Repeat Module")) loop_level = MODULE_LEVEL;
+	if (Regexp::match(&mr, command, U"Repeat Chapter")) loop_level = CHAPTER_LEVEL;
+	if (Regexp::match(&mr, command, U"Repeat Section")) loop_level = SECTION_LEVEL;
 	if (loop_level != 0) {
 		linked_list_item *from = NULL, *to = NULL;
 		linked_list_item *CI = FIRST_ITEM_IN_LINKED_LIST(chapter, cls->for_web->chapters);
@@ -299,7 +299,7 @@ chapter as its value during the sole iteration.
 @<Begin a chapter repeat@> =
 	from = CI;
 	to = LAST_ITEM_IN_LINKED_LIST(chapter, cls->for_web->chapters);
-	if (Str::eq_wide_string(cls->restrict_to_range, L"0") == FALSE) {
+	if (Str::eq_wide_string(cls->restrict_to_range, U"0") == FALSE) {
 		chapter *C;
 		LOOP_OVER_LINKED_LIST(C, chapter, cls->for_web->chapters)
 			if (Str::eq(C->md->ch_range, cls->restrict_to_range)) {
@@ -328,9 +328,9 @@ chapter as its value during the sole iteration.
 
 @<Deal with a Repeat End command@> =
 	int end_form = -1;
-	if (Regexp::match(&mr, command, L"End Repeat")) end_form = 1;
-	if (Regexp::match(&mr, command, L"End Select")) end_form = 2;
-	if (Regexp::match(&mr, command, L"End If")) end_form = 3;
+	if (Regexp::match(&mr, command, U"End Repeat")) end_form = 1;
+	if (Regexp::match(&mr, command, U"End Select")) end_form = 2;
+	if (Regexp::match(&mr, command, U"End If")) end_form = 3;
 	if (end_form > 0) {
 		if (cls->sp <= 0) {
 			Errors::at_position("stack underflow on contents template",
@@ -475,44 +475,44 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 		match_results mr = Regexp::create_mr();
 		if (Bibliographic::data_exists(cls->for_web->md, varname)) {
 			@<Substitute any bibliographic datum named@>;
-		} else if (Regexp::match(&mr, varname, L"Navigation")) {
+		} else if (Regexp::match(&mr, varname, U"Navigation")) {
 			@<Substitute Navigation@>;
-		} else if (Regexp::match(&mr, varname, L"Breadcrumbs")) {
+		} else if (Regexp::match(&mr, varname, U"Breadcrumbs")) {
 			@<Substitute Breadcrumbs@>;
-		} else if (Str::eq_wide_string(varname, L"Plugins")) {
+		} else if (Str::eq_wide_string(varname, U"Plugins")) {
 			@<Substitute Plugins@>;
-		} else if (Regexp::match(&mr, varname, L"Complete (%c+)")) {
+		} else if (Regexp::match(&mr, varname, U"Complete (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a detail about the complete PDF@>;
-		} else if (Regexp::match(&mr, varname, L"Module (%c+)")) {
+		} else if (Regexp::match(&mr, varname, U"Module (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a Module@>;
-		} else if (Regexp::match(&mr, varname, L"Chapter (%c+)")) {
+		} else if (Regexp::match(&mr, varname, U"Chapter (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a Chapter@>;
-		} else if (Regexp::match(&mr, varname, L"Section (%c+)")) {
+		} else if (Regexp::match(&mr, varname, U"Section (%c+)")) {
 			text_stream *detail = mr.exp[0];
 			@<Substitute a Section@>;
-		} else if (Regexp::match(&mr, varname, L"Docs")) {
+		} else if (Regexp::match(&mr, varname, U"Docs")) {
 			@<Substitute a Docs@>;
-		} else if (Regexp::match(&mr, varname, L"Assets")) {
+		} else if (Regexp::match(&mr, varname, U"Assets")) {
 			@<Substitute an Assets@>;
-		} else if (Regexp::match(&mr, varname, L"URL \"(%c+)\"")) {
+		} else if (Regexp::match(&mr, varname, U"URL \"(%c+)\"")) {
 			text_stream *link_text = mr.exp[0];
 			@<Substitute a URL@>;
-		} else if (Regexp::match(&mr, varname, L"Link \"(%c+)\"")) {
+		} else if (Regexp::match(&mr, varname, U"Link \"(%c+)\"")) {
 			text_stream *link_text = mr.exp[0];
 			@<Substitute a Link@>;
-		} else if (Regexp::match(&mr, varname, L"Menu \"(%c+)\"")) {
+		} else if (Regexp::match(&mr, varname, U"Menu \"(%c+)\"")) {
 			text_stream *menu_name = mr.exp[0];
 			@<Substitute a Menu@>;
-		} else if (Regexp::match(&mr, varname, L"Item \"(%c+)\"")) {
+		} else if (Regexp::match(&mr, varname, U"Item \"(%c+)\"")) {
 			text_stream *item_name = mr.exp[0];
 			text_stream *icon_text = NULL;
 			@<Look for icon text@>;
 			text_stream *link_text = item_name;
 			@<Substitute a member Item@>;
-		} else if (Regexp::match(&mr, varname, L"Item \"(%c+)\" -> (%c+)")) {
+		} else if (Regexp::match(&mr, varname, U"Item \"(%c+)\" -> (%c+)")) {
 			text_stream *item_name = mr.exp[0];
 			text_stream *link_text = mr.exp[1];
 			text_stream *icon_text = NULL;
@@ -520,7 +520,7 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 			@<Substitute a general Item@>;
 		} else {
 			WRITE_TO(substituted, "%S", varname);
-			if (Regexp::match(&mr, varname, L"%i+%c*"))
+			if (Regexp::match(&mr, varname, U"%i+%c*"))
 				PRINT("Warning: unable to resolve command '%S'\n", varname);
 		}
 		Regexp::dispose_of(&mr);
@@ -583,14 +583,14 @@ this will recursively call The Collater, in fact.
 	else @<Substitute a detail about the currently selected Module@>;
 
 @<Substitute a detail about the currently selected Module@> =
-	if (Str::eq_wide_string(detail, L"Title")) {
+	if (Str::eq_wide_string(detail, U"Title")) {
 		text_stream *owner = Collater::module_owner(M, cls->for_web);
 		if (Str::len(owner) > 0) WRITE_TO(substituted, "%S/", owner);
 		WRITE_TO(substituted, "%S", M->module_name);
-	} else if (Str::eq_wide_string(detail, L"Page")) {
+	} else if (Str::eq_wide_string(detail, U"Page")) {
 		if (Colonies::find(M->module_name))
 			Colonies::reference_URL(substituted, M->module_name, cls->into_file);
-	} else if (Str::eq_wide_string(detail, L"Purpose")) {
+	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%p", M->module_location);
 		Readme::write_var(substituted, url, I"Purpose");
@@ -610,11 +610,11 @@ this will recursively call The Collater, in fact.
 	else @<Substitute a detail about the currently selected Chapter@>;
 
 @<Substitute a detail about the currently selected Chapter@> =
-	if (Str::eq_wide_string(detail, L"Title")) {
+	if (Str::eq_wide_string(detail, U"Title")) {
 		Str::copy(substituted, C->md->ch_title);
-	} else if (Str::eq_wide_string(detail, L"Code")) {
+	} else if (Str::eq_wide_string(detail, U"Code")) {
 		Str::copy(substituted, C->md->ch_range);
-	} else if (Str::eq_wide_string(detail, L"Purpose")) {
+	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		Str::copy(substituted, C->md->rubric);
 	} else if (Formats::substitute_post_processing_data(substituted,
 		C->ch_weave, detail, cls->nav_pattern)) {
@@ -634,21 +634,21 @@ this will recursively call The Collater, in fact.
 	else @<Substitute a detail about the currently selected Section@>;
 
 @<Substitute a detail about the currently selected Section@> =
-	if (Str::eq_wide_string(detail, L"Title")) {
+	if (Str::eq_wide_string(detail, U"Title")) {
 		Str::copy(substituted, S->md->sect_title);
-	} else if (Str::eq_wide_string(detail, L"Purpose")) {
+	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		Str::copy(substituted, S->sect_purpose);
-	} else if (Str::eq_wide_string(detail, L"Code")) {
+	} else if (Str::eq_wide_string(detail, U"Code")) {
 		Str::copy(substituted, S->md->sect_range);
-	} else if (Str::eq_wide_string(detail, L"Lines")) {
+	} else if (Str::eq_wide_string(detail, U"Lines")) {
 		WRITE_TO(substituted, "%d", S->sect_extent);
-	} else if (Str::eq_wide_string(detail, L"Source")) {
+	} else if (Str::eq_wide_string(detail, U"Source")) {
 		WRITE_TO(substituted, "%f", S->md->source_file_for_section);
-	} else if (Str::eq_wide_string(detail, L"Page")) {
+	} else if (Str::eq_wide_string(detail, U"Page")) {
 		Colonies::section_URL(substituted, S->md);
-	} else if (Str::eq_wide_string(detail, L"Paragraphs")) {
+	} else if (Str::eq_wide_string(detail, U"Paragraphs")) {
 		WRITE_TO(substituted, "%d", S->sect_paragraphs);
-	} else if (Str::eq_wide_string(detail, L"Mean")) {
+	} else if (Str::eq_wide_string(detail, U"Mean")) {
 		int denom = S->sect_paragraphs;
 		if (denom == 0) denom = 1;
 		WRITE_TO(substituted, "%d", S->sect_extent/denom);
@@ -690,10 +690,10 @@ navigation purposes.
 
 @<Look for icon text@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, item_name, L"<(%i+.%i+)> *(%c*)")) {
+	if (Regexp::match(&mr, item_name, U"<(%i+.%i+)> *(%c*)")) {
 		icon_text = Str::duplicate(mr.exp[0]);
 		item_name = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, item_name, L"(%c*?) *<(%i+.%i+)>")) {
+	} else if (Regexp::match(&mr, item_name, U"(%c*?) *<(%i+.%i+)>")) {
 		icon_text = Str::duplicate(mr.exp[1]);
 		item_name = Str::duplicate(mr.exp[0]);
 	}

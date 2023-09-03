@@ -129,8 +129,8 @@ typedef struct programming_language {
 	text_stream *end_ifdef;
 	text_stream *start_ifndef;
 	text_stream *end_ifndef;
-	wchar_t type_notation[MAX_ILDF_REGEXP_LENGTH];
-	wchar_t function_notation[MAX_ILDF_REGEXP_LENGTH];
+	inchar32_t type_notation[MAX_ILDF_REGEXP_LENGTH];
+	inchar32_t function_notation[MAX_ILDF_REGEXP_LENGTH];
 
 	int suppress_disclaimer;
 	int C_like; /* languages with this set have access to extra features */
@@ -239,15 +239,15 @@ void Languages::read_definition_line(text_stream *line, text_file_position *tfp,
 declare a reserved keyword, or set a key to a value.
 
 @<Syntax outside a colouring program@> =
-	if (Regexp::match(&mr, line, L"colouring {")) {
+	if (Regexp::match(&mr, line, U"colouring {")) {
 		if (pl->program) Errors::in_text_file("duplicate colouring program", tfp);
 		pl->program = Languages::new_block(NULL, WHOLE_LINE_CRULE_RUN);
 		state->current_block = pl->program;
-	} else if (Regexp::match(&mr, line, L"keyword (%C+) of (%c+?)")) {
+	} else if (Regexp::match(&mr, line, U"keyword (%C+) of (%c+?)")) {
 		Languages::reserved(pl, Languages::text(mr.exp[0], tfp, FALSE), Languages::colour(mr.exp[1], tfp), tfp);
-	} else if (Regexp::match(&mr, line, L"keyword (%C+)")) {
+	} else if (Regexp::match(&mr, line, U"keyword (%C+)")) {
 		Languages::reserved(pl, Languages::text(mr.exp[0], tfp, FALSE), RESERVED_COLOUR, tfp);
-	} else if (Regexp::match(&mr, line, L"(%c+) *: *(%c+?)")) {
+	} else if (Regexp::match(&mr, line, U"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
 		if (Str::eq(key, I"Name")) pl->language_name = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Details"))
@@ -324,34 +324,34 @@ runs of a given colour, or give an if-X-then-Y rule:
 @<Syntax inside a colouring program@> =
 	if (Str::eq(line, I"}")) {
 		state->current_block = state->current_block->parent;
-	} else if (Regexp::match(&mr, line, L"characters {")) {
+	} else if (Regexp::match(&mr, line, U"characters {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block =
 			Languages::new_block(state->current_block, CHARACTERS_CRULE_RUN);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, line, L"characters in (%c+) {")) {
+	} else if (Regexp::match(&mr, line, U"characters in (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block =
 			Languages::new_block(state->current_block, CHARACTERS_IN_CRULE_RUN);
 		rule->execute_block->char_set = Languages::text(mr.exp[0], tfp, FALSE);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, line, L"runs of (%c+) {")) {
+	} else if (Regexp::match(&mr, line, U"runs of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
-		wchar_t r = UNQUOTED_COLOUR;
+		inchar32_t r = UNQUOTED_COLOUR;
 		if (Str::ne(mr.exp[0], I"unquoted")) r = Languages::colour(mr.exp[0], tfp);
 		rule->execute_block = Languages::new_block(state->current_block, (int) r);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, line, L"instances of (%c+) {")) {
+	} else if (Regexp::match(&mr, line, U"instances of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block = Languages::new_block(state->current_block, INSTANCES_CRULE_RUN);
 		rule->execute_block->run_instance = Languages::text(mr.exp[0], tfp, FALSE);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, line, L"matches of (%c+) {")) {
+	} else if (Regexp::match(&mr, line, U"matches of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block = Languages::new_block(state->current_block, MATCHES_CRULE_RUN);
 		Languages::regexp(rule->execute_block->match_regexp_text, mr.exp[0], tfp);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, line, L"brackets in (%c+) {")) {
+	} else if (Regexp::match(&mr, line, U"brackets in (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block = Languages::new_block(state->current_block, BRACKETS_CRULE_RUN);
 		Languages::regexp(rule->execute_block->match_regexp_text, mr.exp[0], tfp);
@@ -395,7 +395,7 @@ typedef struct colouring_language_block {
 	int run; /* one of the |*_CRULE_RUN| values, or else a colour */
 	struct text_stream *run_instance; /* used only for |INSTANCES_CRULE_RUN| */
 	struct text_stream *char_set; /* used only for |CHARACTERS_IN_CRULE_RUN| */
-	wchar_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH]; /* used for |MATCHES_CRULE_RUN|, |BRACKETS_CRULE_RUN| */
+	inchar32_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH]; /* used for |MATCHES_CRULE_RUN|, |BRACKETS_CRULE_RUN| */
 	
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
@@ -436,18 +436,18 @@ Note that rules can be unconditional, in that the premiss always passes.
 typedef struct colouring_rule {
 	/* the premiss: */
 	int sense; /* |FALSE| to negate the condition */
-	wchar_t match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
-	wchar_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
+	inchar32_t match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
+	inchar32_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
 	struct text_stream *match_text; /* or length 0 to mean "anything" */
 	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
-	wchar_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH];
+	inchar32_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH];
 	int number; /* for |number N| rules; 0 for others */
 	int number_of; /* for |number N of M| rules; 0 for others */
 
 	/* the conclusion: */
 	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
-	wchar_t set_to_colour; /* ...paint the snippet in this colour */
-	wchar_t set_prefix_to_colour; /* ...also paint this (same for suffix) */
+	inchar32_t set_to_colour; /* ...paint the snippet in this colour */
+	inchar32_t set_prefix_to_colour; /* ...also paint this (same for suffix) */
 	int debug; /* ...or print debugging text to console */
 	
 	/* workspace during painting */
@@ -492,40 +492,40 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 }
 
 @<Parse the premiss@> =
-	while (Regexp::match(&mr, premiss, L"not (%c+)")) {
+	while (Regexp::match(&mr, premiss, U"not (%c+)")) {
 		rule->sense = (rule->sense)?FALSE:TRUE;
 		Str::clear(premiss); Str::copy(premiss, mr.exp[0]);
 	}
-	if (Regexp::match(&mr, premiss, L"number (%d+)")) {
+	if (Regexp::match(&mr, premiss, U"number (%d+)")) {
 		rule->number = Str::atoi(mr.exp[0], 0);
-	} else if (Regexp::match(&mr, premiss, L"number (%d+) of (%d+)")) {
+	} else if (Regexp::match(&mr, premiss, U"number (%d+) of (%d+)")) {
 		rule->number = Str::atoi(mr.exp[0], 0);
 		rule->number_of = Str::atoi(mr.exp[1], 0);
-	} else if (Regexp::match(&mr, premiss, L"keyword of (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"keyword of (%c+)")) {
 		rule->match_keyword_of_colour = Languages::colour(mr.exp[0], tfp);
-	} else if (Regexp::match(&mr, premiss, L"keyword")) {
+	} else if (Regexp::match(&mr, premiss, U"keyword")) {
 		Errors::in_text_file("ambiguous: make it keyword of !reserved or \"keyword\"", tfp);
-	} else if (Regexp::match(&mr, premiss, L"prefix (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"prefix (%c+)")) {
 		rule->match_prefix = UNSPACED_RULE_PREFIX;
 		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
-	} else if (Regexp::match(&mr, premiss, L"matching (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"matching (%c+)")) {
 		Languages::regexp(rule->match_regexp_text, mr.exp[0], tfp);
-	} else if (Regexp::match(&mr, premiss, L"spaced prefix (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"spaced prefix (%c+)")) {
 		rule->match_prefix = SPACED_RULE_PREFIX;
 		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
-	} else if (Regexp::match(&mr, premiss, L"optionally spaced prefix (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"optionally spaced prefix (%c+)")) {
 		rule->match_prefix = OPTIONALLY_SPACED_RULE_PREFIX;
 		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
-	} else if (Regexp::match(&mr, premiss, L"suffix (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"suffix (%c+)")) {
 		rule->match_prefix = UNSPACED_RULE_SUFFIX;
 		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
-	} else if (Regexp::match(&mr, premiss, L"spaced suffix (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"spaced suffix (%c+)")) {
 		rule->match_prefix = SPACED_RULE_SUFFIX;
 		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
-	} else if (Regexp::match(&mr, premiss, L"optionally spaced suffix (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"optionally spaced suffix (%c+)")) {
 		rule->match_prefix = OPTIONALLY_SPACED_RULE_SUFFIX;
 		rule->match_text = Languages::text(mr.exp[0], tfp, FALSE);
-	} else if (Regexp::match(&mr, premiss, L"coloured (%c+)")) {
+	} else if (Regexp::match(&mr, premiss, U"coloured (%c+)")) {
 		rule->match_colour = Languages::colour(mr.exp[0], tfp);
 	} else if (Str::len(premiss) > 0) {
 		rule->match_text = Languages::text(premiss, tfp, FALSE);
@@ -536,11 +536,11 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 		rule->execute_block =
 			Languages::new_block(state->current_block, WHOLE_LINE_CRULE_RUN);
 		state->current_block = rule->execute_block;
-	} else if (Regexp::match(&mr, action, L"(!%c+) on prefix")) {
+	} else if (Regexp::match(&mr, action, U"(!%c+) on prefix")) {
 		rule->set_prefix_to_colour = Languages::colour(mr.exp[0], tfp);
-	} else if (Regexp::match(&mr, action, L"(!%c+) on suffix")) {
+	} else if (Regexp::match(&mr, action, U"(!%c+) on suffix")) {
 		rule->set_prefix_to_colour = Languages::colour(mr.exp[0], tfp);
-	} else if (Regexp::match(&mr, action, L"(!%c+) on both")) {
+	} else if (Regexp::match(&mr, action, U"(!%c+) on both")) {
 		rule->set_to_colour = Languages::colour(mr.exp[0], tfp);
 		rule->set_prefix_to_colour = rule->set_to_colour;
 	} else if (Str::get_first_char(action) == '!') {
@@ -561,7 +561,7 @@ typedef struct reserved_word {
 	CLASS_DEFINITION
 } reserved_word;
 
-reserved_word *Languages::reserved(programming_language *pl, text_stream *W, wchar_t C,
+reserved_word *Languages::reserved(programming_language *pl, text_stream *W, inchar32_t C,
 	text_file_position *tfp) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
@@ -598,7 +598,7 @@ but which are not expressible in the syntax of this file.
 @d UNQUOTED_COLOUR '_'
 
 =
-wchar_t Languages::colour(text_stream *T, text_file_position *tfp) {
+inchar32_t Languages::colour(text_stream *T, text_file_position *tfp) {
 	if (Str::get_first_char(T) != '!') {
 		Errors::in_text_file("colour names must begin with !", tfp);
 		return PLAIN_COLOUR;
@@ -646,7 +646,7 @@ text_stream *Languages::text(text_stream *T, text_file_position *tfp, int allow)
 			bareword = FALSE; from++; to--;
 		}
 		for (int i=from; i<=to; i++) {
-			wchar_t c = Str::get_at(T, i);
+			inchar32_t c = Str::get_at(T, i);
 			if (c == ' ') spaced = TRUE;
 			if ((c == '\\') && (Str::get_at(T, i+1) == 'n')) {
 				PUT_TO(V, '\n');
@@ -724,7 +724,7 @@ text_stream *Languages::text(text_stream *T, text_file_position *tfp, int allow)
 @ And regular expressions.
 
 =
-void Languages::regexp(wchar_t *write_to, text_stream *T, text_file_position *tfp) {
+void Languages::regexp(inchar32_t *write_to, text_stream *T, text_file_position *tfp) {
 	if (write_to == NULL) internal_error("no buffer");
 	write_to[0] = 0;
 	if (Str::len(T) > 0) {
@@ -733,9 +733,9 @@ void Languages::regexp(wchar_t *write_to, text_stream *T, text_file_position *tf
 			(Str::get_at(T, from) == '/') && (Str::get_at(T, to) == '/')) {
 			from++; to--;
 			for (int i=from; i<=to; i++) {
-				wchar_t c = Str::get_at(T, i);
+				inchar32_t c = Str::get_at(T, i);
 				if (c == '\\') {
-					wchar_t w = Str::get_at(T, i+1);
+					inchar32_t w = Str::get_at(T, i+1);
 					if (w == '\\') {
 						x = Languages::add_to_regexp(write_to, x, w);
 					} else if (w == 'd') {
@@ -774,12 +774,12 @@ void Languages::regexp(wchar_t *write_to, text_stream *T, text_file_position *tf
 	}
 }
 
-int Languages::add_to_regexp(wchar_t *write_to, int i, wchar_t c) {
+int Languages::add_to_regexp(inchar32_t *write_to, int i, inchar32_t c) {
 	if (i < MAX_ILDF_REGEXP_LENGTH) write_to[i++] = c;
 	return i;
 }
 
-int Languages::add_escape_to_regexp(wchar_t *write_to, int i, wchar_t c) {
+int Languages::add_escape_to_regexp(inchar32_t *write_to, int i, inchar32_t c) {
 	i = Languages::add_to_regexp(write_to, i, '%');
 	i = Languages::add_to_regexp(write_to, i, c);
 	return i;

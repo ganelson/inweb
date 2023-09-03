@@ -131,7 +131,7 @@ text_stream *Filenames::get_leafname(filename *F) {
 
 void Filenames::write_unextended_leafname(OUTPUT_STREAM, filename *F) {
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '.') return;
 		PUT(c);
 	}
@@ -148,7 +148,7 @@ as equivalent to |frog.jpg| when deciding the likely file format.
 void Filenames::write_extension(OUTPUT_STREAM, filename *F) {
 	int on = FALSE;
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '.') on = TRUE;
 		if (on) PUT(c);
 	}
@@ -157,7 +157,7 @@ void Filenames::write_extension(OUTPUT_STREAM, filename *F) {
 filename *Filenames::set_extension(filename *F, text_stream *extension) {
 	TEMPORARY_TEXT(NEWLEAF)
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '.') break;
 		PUT_TO(NEWLEAF, c);
 	}
@@ -192,25 +192,25 @@ int Filenames::guess_format(filename *F) {
 	Filenames::write_extension(EXT, F);
 	TEMPORARY_TEXT(NORMALISED)
 	LOOP_THROUGH_TEXT(pos, EXT) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c != ' ') PUT_TO(NORMALISED, Characters::tolower(c));
 	}
 	DISCARD_TEXT(EXT)
 
 	int verdict = FORMAT_UNRECOGNISED;
-	if (Str::eq_wide_string(NORMALISED, L".html")) verdict = FORMAT_PERHAPS_HTML;
-	else if (Str::eq_wide_string(NORMALISED, L".htm")) verdict = FORMAT_PERHAPS_HTML;
-	else if (Str::eq_wide_string(NORMALISED, L".jpg")) verdict = FORMAT_PERHAPS_JPEG;
-	else if (Str::eq_wide_string(NORMALISED, L".jpeg")) verdict = FORMAT_PERHAPS_JPEG;
-	else if (Str::eq_wide_string(NORMALISED, L".png")) verdict = FORMAT_PERHAPS_PNG;
-	else if (Str::eq_wide_string(NORMALISED, L".ogg")) verdict = FORMAT_PERHAPS_OGG;
-	else if (Str::eq_wide_string(NORMALISED, L".aiff")) verdict = FORMAT_PERHAPS_AIFF;
-	else if (Str::eq_wide_string(NORMALISED, L".aif")) verdict = FORMAT_PERHAPS_AIFF;
-	else if (Str::eq_wide_string(NORMALISED, L".midi")) verdict = FORMAT_PERHAPS_MIDI;
-	else if (Str::eq_wide_string(NORMALISED, L".mid")) verdict = FORMAT_PERHAPS_MIDI;
-	else if (Str::eq_wide_string(NORMALISED, L".mod")) verdict = FORMAT_PERHAPS_MOD;
-	else if (Str::eq_wide_string(NORMALISED, L".svg")) verdict = FORMAT_PERHAPS_SVG;
-	else if (Str::eq_wide_string(NORMALISED, L".gif")) verdict = FORMAT_PERHAPS_GIF;
+	if (Str::eq_wide_string(NORMALISED, U".html")) verdict = FORMAT_PERHAPS_HTML;
+	else if (Str::eq_wide_string(NORMALISED, U".htm")) verdict = FORMAT_PERHAPS_HTML;
+	else if (Str::eq_wide_string(NORMALISED, U".jpg")) verdict = FORMAT_PERHAPS_JPEG;
+	else if (Str::eq_wide_string(NORMALISED, U".jpeg")) verdict = FORMAT_PERHAPS_JPEG;
+	else if (Str::eq_wide_string(NORMALISED, U".png")) verdict = FORMAT_PERHAPS_PNG;
+	else if (Str::eq_wide_string(NORMALISED, U".ogg")) verdict = FORMAT_PERHAPS_OGG;
+	else if (Str::eq_wide_string(NORMALISED, U".aiff")) verdict = FORMAT_PERHAPS_AIFF;
+	else if (Str::eq_wide_string(NORMALISED, U".aif")) verdict = FORMAT_PERHAPS_AIFF;
+	else if (Str::eq_wide_string(NORMALISED, U".midi")) verdict = FORMAT_PERHAPS_MIDI;
+	else if (Str::eq_wide_string(NORMALISED, U".mid")) verdict = FORMAT_PERHAPS_MIDI;
+	else if (Str::eq_wide_string(NORMALISED, U".mod")) verdict = FORMAT_PERHAPS_MOD;
+	else if (Str::eq_wide_string(NORMALISED, U".svg")) verdict = FORMAT_PERHAPS_SVG;
+	else if (Str::eq_wide_string(NORMALISED, U".gif")) verdict = FORMAT_PERHAPS_GIF;
 	else if (Str::len(NORMALISED) > 0) {
 		if ((Str::get(Str::at(NORMALISED, 0)) == '.') &&
 			(Str::get(Str::at(NORMALISED, 1)) == 'z') &&

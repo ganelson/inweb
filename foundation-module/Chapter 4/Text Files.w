@@ -141,7 +141,7 @@ values returned by |ftell| into this field.
 			@<Update the text file position@>;
 			i = 0;
 		} else {
-			Str::put_at(line, i++, (wchar_t) c);
+			Str::put_at(line, i++, (inchar32_t) c);
 		}
 	}
 	if ((i > 0) && (tfp.actively_scanning))
@@ -189,7 +189,7 @@ void TextFiles::read_line(OUTPUT_STREAM, int escape_oddities, text_file_position
 			i = 0;
 			tfp->line_count++; return;
 		}
-		Str::put_at(OUT, i++, (wchar_t) c);
+		Str::put_at(OUT, i++, (inchar32_t) c);
 	}
 	if ((i > 0) && (tfp->actively_scanning)) tfp->line_count++;
 }

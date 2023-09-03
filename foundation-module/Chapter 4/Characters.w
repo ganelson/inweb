@@ -5,32 +5,31 @@ Individual characters.
 @h Character classes.
 
 =
-wchar_t Characters::tolower(wchar_t c) {
-	return (wchar_t) tolower((int) c);
+inchar32_t Characters::tolower(inchar32_t c) {
+	return (inchar32_t) tolower((int) c);
 }
-wchar_t Characters::toupper(wchar_t c) {
-	return (wchar_t) toupper((int) c);
+inchar32_t Characters::toupper(inchar32_t c) {
+	return (inchar32_t) toupper((int) c);
 }
-int Characters::isalpha(wchar_t c) {
+int Characters::isalpha(inchar32_t c) {
 	return isalpha((int) c);
 }
-int Characters::isdigit(wchar_t c) {
+int Characters::isdigit(inchar32_t c) {
 	return isdigit((int) c);
 }
-int Characters::isupper(wchar_t c) {
+int Characters::isupper(inchar32_t c) {
 	return isupper((int) c);
 }
-int Characters::islower(wchar_t c) {
+int Characters::islower(inchar32_t c) {
 	return islower((int) c);
 }
-int Characters::isalnum(wchar_t c) {
+int Characters::isalnum(inchar32_t c) {
 	return isalnum((int) c);
 }
-int Characters::iscntrl(wchar_t c) {
-	int i = c;
-	return ((i >= 0) && (i < 32));
+int Characters::iscntrl(inchar32_t c) {
+	return (c < 32);
 }
-int Characters::vowel(wchar_t c) {
+int Characters::vowel(inchar32_t c) {
 	if ((c == 'a') || (c == 'e') || (c == 'i') || (c == 'o') || (c == 'u')) return TRUE;
 	return FALSE;
 }
@@ -38,11 +37,11 @@ int Characters::vowel(wchar_t c) {
 @ White space classes:
 
 =
-int Characters::is_space_or_tab(int c) {
+int Characters::is_space_or_tab(inchar32_t c) {
 	if ((c == ' ') || (c == '\t')) return TRUE;
 	return FALSE;
 }
-int Characters::is_whitespace(int c) {
+int Characters::is_whitespace(inchar32_t c) {
 	if ((c == ' ') || (c == '\t') || (c == '\n')) return TRUE;
 	return FALSE;
 }
@@ -52,7 +51,7 @@ sense of the Treaty of Babel rules on leading and trailing spaces in
 iFiction records.
 
 =
-int Characters::is_babel_whitespace(int c) {
+int Characters::is_babel_whitespace(inchar32_t c) {
 	if ((c == ' ') || (c == '\t') || (c == '\x0a')
 		|| (c == '\x0d') || (c == NEWLINE_IN_STRING)) return TRUE;
 	return FALSE;
@@ -62,7 +61,7 @@ int Characters::is_babel_whitespace(int c) {
 non-ASCII Unicode characters of category Zs.
 
 =
-int Characters::is_Unicode_whitespace(wchar_t c) {
+int Characters::is_Unicode_whitespace(inchar32_t c) {
 	if (c == 0x0009) return TRUE;
 	if (c == 0x000A) return TRUE;
 	if (c == 0x000C) return TRUE;
@@ -91,7 +90,7 @@ int Characters::is_Unicode_whitespace(wchar_t c) {
 "ASCII punctuation" from the CommonMark standard:
 
 =
-int Characters::is_ASCII_punctuation(wchar_t c) {
+int Characters::is_ASCII_punctuation(inchar32_t c) {
 	if ((c >= 0x0021) && (c <= 0x002F)) return TRUE;
 	if ((c >= 0x003A) && (c <= 0x0040)) return TRUE;
 	if ((c >= 0x005B) && (c <= 0x0060)) return TRUE;
@@ -104,8 +103,8 @@ Pc, Pd, Pe, Pf, Pi, Po, or Ps. After all, we wouldn't want to get old Assyrian
 cuneiform spacing indicators wrong, would we? Or the Imperial Aramaic section sign?
 
 =
-int Characters::is_Unicode_punctuation(wchar_t c) {
-	if ((c >= 0) && (c < 0x80)) return Characters::is_ASCII_punctuation(c);
+int Characters::is_Unicode_punctuation(inchar32_t c) {
+	if (c < 0x80) return Characters::is_ASCII_punctuation(c);
 	if (c == 0x00A1) return TRUE; // INVERTED EXCLAMATION MARK
 	if (c == 0x00A7) return TRUE; // SECTION SIGN
 	if (c == 0x00AB) return TRUE; // LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
@@ -935,9 +934,9 @@ defined by Unicode 15.0, turning |c| into a run of up to four characters
 representing its canonical upper-case form.
 
 =
-void Characters::full_Unicode_fold(wchar_t c, wchar_t *F) {
+void Characters::full_Unicode_fold(inchar32_t c, inchar32_t *F) {
 	F[1] = 0; F[2] = 0; F[3] = 0;
-	if ((c >= 0) && (c < 0x0100)) {
+	if (c < 0x0100) {
 		if ((c >= 0x0041) && (c <= 0x005A)) { F[0] = 0x0061 + (c - 0x0041); return; } /* LATIN CAPITAL LETTER A to LATIN CAPITAL LETTER Z */
 		if (c == 0x00B5) { F[0] = 0x03BC; return; } /* MICRO SIGN */
 		if ((c >= 0x00C0) && (c <= 0x00D6)) { F[0] = 0x00E0 + (c - 0x00C0); return; } /* LATIN CAPITAL LETTER A WITH GRAVE to LATIN CAPITAL LETTER O WITH DIAERESIS */
@@ -1752,18 +1751,18 @@ void Characters::full_Unicode_fold(wchar_t c, wchar_t *F) {
 @ Whereas these are fairly unarguable.
 
 =
-int Characters::is_ASCII_letter(wchar_t c) {
+int Characters::is_ASCII_letter(inchar32_t c) {
 	if ((c >= 'a') && (c <= 'z')) return TRUE;
 	if ((c >= 'A') && (c <= 'Z')) return TRUE;
 	return FALSE;
 }
 
-int Characters::is_ASCII_digit(wchar_t c) {
+int Characters::is_ASCII_digit(inchar32_t c) {
 	if ((c >= '0') && (c <= '9')) return TRUE;
 	return FALSE;
 }
 
-int Characters::is_control_character(wchar_t c) {
+int Characters::is_control_character(inchar32_t c) {
 	if ((c >= 0x0001) && (c <= 0x001f)) return TRUE;
 	if (c == 0x007f) return TRUE;
 	return FALSE;
@@ -1776,7 +1775,7 @@ Returns a combined character code, or 0 if there is no combining
 to be done.
 
 =
-int Characters::combine_accent(int accent, int letter) {
+int Characters::combine_accent(inchar32_t accent, inchar32_t letter) {
 	switch(accent) {
 		case 0x0300: /* Unicode combining grave */
 			switch(letter) {
@@ -1836,7 +1835,7 @@ int Characters::make_filename_safe(int charcode) {
 	return charcode;
 }
 
-wchar_t Characters::make_wchar_t_filename_safe(wchar_t charcode) {
+inchar32_t Characters::make_wchar_t_filename_safe(inchar32_t charcode) {
 	charcode = Characters::remove_wchar_t_accent(charcode);
 	if (charcode >= 128) charcode = '-';
 	return charcode;
@@ -1872,14 +1871,14 @@ int Characters::remove_accent(int charcode) {
 	return charcode;
 }
 
-wchar_t Characters::remove_wchar_t_accent(wchar_t charcode) {
-	return (wchar_t) Characters::remove_accent((int) charcode);
+inchar32_t Characters::remove_wchar_t_accent(inchar32_t charcode) {
+	return (inchar32_t) Characters::remove_accent((int) charcode);
 }
 
 @ This will do until we properly use Unicode character classes some day:
 
 =
 int Characters::isalphabetic(int letter) {
-	return Characters::isalpha((wchar_t) Characters::remove_accent(letter));
+	return Characters::isalpha((inchar32_t) Characters::remove_accent(letter));
 }
 

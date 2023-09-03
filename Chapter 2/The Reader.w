@@ -360,11 +360,11 @@ translates to when it's used on the command line.
 
 =
 int Reader::range_within(text_stream *range1, text_stream *range2) {
-	if (Str::eq_wide_string(range2, L"0")) return TRUE;
+	if (Str::eq_wide_string(range2, U"0")) return TRUE;
 	if (Str::eq(range1, range2)) return TRUE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, range2, L"%c+/%c+")) { Regexp::dispose_of(&mr); return FALSE; }
-	if (Regexp::match(&mr, range1, L"(%c+)/%c+")) {
+	if (Regexp::match(&mr, range2, U"%c+/%c+")) { Regexp::dispose_of(&mr); return FALSE; }
+	if (Regexp::match(&mr, range1, U"(%c+)/%c+")) {
 		if (Str::eq(mr.exp[0], range2)) { Regexp::dispose_of(&mr); return TRUE; }
 	}
 	return FALSE;

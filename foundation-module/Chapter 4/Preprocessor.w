@@ -26,7 +26,7 @@ one of |UTF8_ENC| or |ISO_ENC|.
 
 =
 void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *header,
-	linked_list *special_macros, general_pointer specifics, wchar_t comment_char,
+	linked_list *special_macros, general_pointer specifics, inchar32_t comment_char,
 	int encoding) {
 	struct text_stream processed_file;
 	if (STREAM_OPEN_TO_FILE(&processed_file, F, encoding) == FALSE)
@@ -39,7 +39,7 @@ void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *hea
 	TextFiles::read(prototype, FALSE, "can't open prototype file",
 		TRUE, Preprocessor::scan_line, NULL, &PPS);
 	for (int i=0; i<Str::len(PPS.dest); i++) {
-		wchar_t c = Str::get_at(PPS.dest, i);
+		inchar32_t c = Str::get_at(PPS.dest, i);
 		if (c == PROTECTED_OPEN_BRACE_PPCHAR) PUT('{');
 		else if (c == PROTECTED_CLOSE_BRACE_PPCHAR) PUT('}');
 		else if (c != PROTECTED_BLANK_PPCHAR) PUT(c);
@@ -65,7 +65,7 @@ typedef struct preprocessor_state {
 	struct preprocessor_variable_set *stack_frame;
 	struct linked_list *known_macros; /* of |preprocessor_macro| */
 	struct general_pointer specifics;
-	wchar_t comment_character;
+	inchar32_t comment_character;
 } preprocessor_state;
 
 typedef struct preprocessor_loop {
@@ -121,16 +121,16 @@ is the special comment character: often |#|, but not necessarily.
 
 @<Skip comments@> =
 	LOOP_THROUGH_TEXT(pos, line) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == PPS->comment_character) return;
 		if (Characters::is_whitespace(c) == FALSE) break;
 	}
 
 @<Make backslash literals safe@> =
 	for (int i = 0; i < Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		if (c == '\\') {
-			wchar_t d = Str::get_at(line, i+1);
+			inchar32_t d = Str::get_at(line, i+1);
 			switch (d) {
 				case '{':
 					Str::put_at(line, i, PROTECTED_OPEN_BRACE_PPCHAR);
@@ -153,9 +153,9 @@ is the special comment character: often |#|, but not necessarily.
 
 @<Deal with textual definitions of new macros@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L" *{define: *(%C+) *} *")) @<Begin a bare definition@>;
-	if (Regexp::match(&mr, line, L" *{define: *(%C+) (%c*)} *")) @<Begin a definition@>;
-	if (Regexp::match(&mr, line, L" *{end-define} *")) @<End a definition@>;
+	if (Regexp::match(&mr, line, U" *{define: *(%C+) *} *")) @<Begin a bare definition@>;
+	if (Regexp::match(&mr, line, U" *{define: *(%C+) (%c*)} *")) @<Begin a definition@>;
+	if (Regexp::match(&mr, line, U" *{end-define} *")) @<End a definition@>;
 	if (PPS->defining) @<Continue a definition@>;
 	Regexp::dispose_of(&mr);
 
@@ -221,7 +221,7 @@ void Preprocessor::expand(text_stream *text, text_file_position *tfp, preprocess
 	TEMPORARY_TEXT(after_matter)
 	int bl = 0, after_times = FALSE;
 	for (int i = 0; i < Str::len(text); i++) {
-		wchar_t c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if (after_times) PUT_TO(after_matter, c);
 		else if (c == '{') {
 			bl++;
@@ -258,7 +258,7 @@ and the |after_matter| will be | ocean {BEHAVIOUR}|.
 		text_stream *identifier = braced_matter;
 		text_stream *parameter_settings = NULL;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, identifier, L"(%C+) (%c*)")) {
+		if (Regexp::match(&mr, identifier, U"(%C+) (%c*)")) {
 			identifier = mr.exp[0];
 			parameter_settings = mr.exp[1];
 		}
@@ -389,12 +389,12 @@ So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
 
 @<Parse the parameters supplied@> =
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, parameter_settings, L" *(%C+): *(%c*)")) {
+	while (Regexp::match(&mr, parameter_settings, U" *(%C+): *(%c*)")) {
 		text_stream *setting = mr.exp[0];
 		text_stream *value = mr.exp[1];
 		text_stream *remainder = NULL;
 		match_results mr3 = Regexp::create_mr();
-		if (Regexp::match(&mr3, value, L"(%c+?) *(%C+:[^/]%c*)")) {
+		if (Regexp::match(&mr3, value, U"(%c+?) *(%C+:[^/]%c*)")) {
 			value = mr3.exp[0];
 			remainder = mr3.exp[1];
 		}
@@ -456,7 +456,7 @@ Names of variables should conform to:
 =
 int Preprocessor::acceptable_variable_name(text_stream *name) {
 	LOOP_THROUGH_TEXT(pos, name) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if ((c >= '0') && (c <= '9')) continue;
 		if ((c >= 'A') && (c <= 'Z')) continue;
 		if (c == '_') continue;
@@ -632,7 +632,7 @@ preprocessor_macro *Preprocessor::new_macro(linked_list *L, text_stream *name,
 @<Parse the parameter list@> =
 	text_stream *spec = Str::duplicate(parameter_specification);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, spec, L" *(%C+): *(%C+) *(%c*)")) {
+	while (Regexp::match(&mr, spec, U" *(%C+): *(%C+) *(%c*)")) {
 		text_stream *par_name = mr.exp[0];
 		text_stream *token_name = mr.exp[1];
 		Str::clear(spec);
@@ -790,7 +790,7 @@ void Preprocessor::repeat_expander(preprocessor_macro *mm, preprocessor_state *P
 	text_stream *in = parameter_values[1];
 	Preprocessor::set_loop_var_name(loop, with);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, in, L"(%c*?),(%c*)")) {
+	while (Regexp::match(&mr, in, U"(%c*?),(%c*)")) {
 		text_stream *value = mr.exp[0];
 		Str::trim_white_space(value);
 		Preprocessor::add_loop_iteration(loop, value);

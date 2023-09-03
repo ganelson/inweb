@@ -62,7 +62,7 @@ void Analyser::catalogue_the_sections(web *W, text_stream *range, int form) {
 			DISCARD_TEXT(main_title)
 		}
 	LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
-		if ((Str::eq_wide_string(range, L"0")) || (Str::eq(range, C->md->ch_range))) {
+		if ((Str::eq_wide_string(range, U"0")) || (Str::eq(range, C->md->ch_range))) {
 			PRINT("      -----\n");
 			LOOP_OVER_LINKED_LIST(S, section, C->sections) {
 				TEMPORARY_TEXT(main_title)

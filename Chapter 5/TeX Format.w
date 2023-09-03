@@ -401,7 +401,7 @@ void TeX::general_heading(text_stream *OUT, weave_order *wv,
 	text_stream *TeX_macro = NULL;
 	@<Choose which TeX macro to use in order to typeset the new paragraph heading@>;
 	
-	if (P_literal == NULL) P_literal = Str::new_from_wide_string(L"P");
+	if (P_literal == NULL) P_literal = Str::new_from_wide_string(U"P");
 	text_stream *orn = (P)?(P->ornament):P_literal;
 	text_stream *N = (P)?(P->paragraph_number):NULL;
 	TEMPORARY_TEXT(mark)
@@ -409,7 +409,7 @@ void TeX::general_heading(text_stream *OUT, weave_order *wv,
 	TEMPORARY_TEXT(modified)
 	Str::copy(modified, heading_text);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, modified, L"(%c*?): (%c*)")) {
+	if (Regexp::match(&mr, modified, U"(%c*?): (%c*)")) {
 		Str::clear(modified);
 		WRITE_TO(modified, "{\\sinchhigh %S}\\quad %S", mr.exp[0], mr.exp[1]);
 	}
@@ -497,7 +497,7 @@ void TeX::source_code(text_stream *OUT, weave_order *wv,
 	text_stream *matter, text_stream *colouring, int starts) {
 	int current_colour = PLAIN_COLOUR, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(matter); i++) {
-		colour_wanted = Str::get_at(colouring, i);
+		colour_wanted = (int) Str::get_at(colouring, i);
 		@<Adjust code colour as necessary@>;
 		if (Str::get_at(matter, i) == '|') WRITE("|\\||");
 		else WRITE("%c", Str::get_at(matter, i));
@@ -615,23 +615,23 @@ int TeX::preform_document(weave_format *self, text_stream *OUT, web *W,
 @<Weave a line from the body of the nonterminal definition@> =
 	TEMPORARY_TEXT(problem)
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, matter, L"Issue (%c*?) problem"))
+	if (Regexp::match(&mr, matter, U"Issue (%c*?) problem"))
 		Str::copy(problem, mr.exp[0]);
-	else if (Regexp::match(&mr, matter, L"FAIL_NONTERMINAL %+"))
+	else if (Regexp::match(&mr, matter, U"FAIL_NONTERMINAL %+"))
 		WRITE_TO(problem, "fail and skip");
-	else if (Regexp::match(&mr, matter, L"FAIL_NONTERMINAL"))
+	else if (Regexp::match(&mr, matter, U"FAIL_NONTERMINAL"))
 		WRITE_TO(problem, "fail");
 	preform_production_count++;
 	WRITE_TO(matter, "|%S|", L->text_operand);
-	while (Regexp::match(&mr, matter, L"(%c+?)|(%c+)")) {
+	while (Regexp::match(&mr, matter, U"(%c+?)|(%c+)")) {
 		Str::clear(matter);
 		WRITE_TO(matter, "%S___stroke___%S", mr.exp[0], mr.exp[1]);
 	}
-	while (Regexp::match(&mr, matter, L"(%c*?)___stroke___(%c*)")) {
+	while (Regexp::match(&mr, matter, U"(%c*?)___stroke___(%c*)")) {
 		Str::clear(matter);
 		WRITE_TO(matter, "%S|\\||%S", mr.exp[0], mr.exp[1]);
 	}
-	while (Regexp::match(&mr, matter, L"(%c*)<(%c*?)>(%c*)")) {
+	while (Regexp::match(&mr, matter, U"(%c*)<(%c*?)>(%c*)")) {
 		Str::clear(matter);
 		WRITE_TO(matter, "%S|\\nonterminal{%S}|%S",
 			mr.exp[0], mr.exp[1], mr.exp[2]);

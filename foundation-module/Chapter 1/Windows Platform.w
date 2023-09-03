@@ -27,26 +27,6 @@ on a POSIX operating system.
 #undef IN
 #undef OUT
 
-@ A Windows-safe form of |isdigit|. Annoyingly, the C specification allows
-the implementation to have |char| either signed or unsigned. On Windows it's
-generally signed. Now, consider what happens with a character value of
-acute-e. This has an |unsigned char| value of 233. When stored in a |char|
-on Windows, this becomes a value of |-23|. When this is passed to |isdigit()|,
-we need to consider the prototype for |isdigit()|:
-
-|int isdigit(int);|
-
-So, when casting to int we get |-23|, not |233|. Unfortunately the return value
-from |isdigit()| is only defined by the C specification for values in the
-range 0 to 255 (and also EOF), so the return value for |-23| is undefined.
-
-@d isdigit(x) Platform::Windows_isdigit(x)
-
-=
-int Platform::Windows_isdigit(int c) {
-	return ((c >= '0') && (c <= '9')) ? 1 : 0;
-}
-
 @h Folder separator.
 When using a Unix-like system such as Cygwin or MSYS2 on Windows, it's
 inevitable that paths will sometimes contain backslashes and sometimes forward
@@ -55,7 +35,7 @@ slashes, meaning a folder (i.e. directory) divide in either case. So:
 (b) When testing for such a divider, call the following.
 
 =
-int Platform::is_folder_separator(wchar_t c) {
+int Platform::is_folder_separator(inchar32_t c) {
 	return ((c == '\\') || (c == '/'));
 }
 
@@ -87,9 +67,20 @@ always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 
 =
-void Platform::where_am_i(wchar_t *p, size_t length) {
-	DWORD result = GetModuleFileNameW(NULL, p, (DWORD)length);	
-	if ((result == 0) || (result == length)) p[0] = 0;
+void Platform::where_am_i(inchar32_t *p, size_t length) {
+  char path[_MAX_PATH];
+	DWORD result = GetModuleFileName(NULL, path, _MAX_PATH);
+	if ((result == 0) || (result >= length))
+    p[0] = 0;
+  else
+  {
+    for (int i = 0;; i++)
+    {
+      p[i] = (inchar32_t)path[i];
+      if (p[i] == '\0')
+        break;
+    }
+  }
 }
 
 @h Shell commands.

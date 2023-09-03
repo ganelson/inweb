@@ -138,28 +138,28 @@ and details of any cover-sheet to use.
 
 @<Translate the subweb range into details of what to weave@> =
 	match_results mr = Regexp::create_mr();
-	if (Str::eq_wide_string(range, L"0")) {
+	if (Str::eq_wide_string(range, U"0")) {
 		if (W->md->single_file) {
 			wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W->md, I"Title"));
 			Filenames::write_unextended_leafname(leafname, W->md->single_file);
 		} else {
-			wv->booklet_title = Str::new_from_wide_string(L"Complete Program");
+			wv->booklet_title = Str::new_from_wide_string(U"Complete Program");
 			WRITE_TO(leafname, "Complete");
 		}
 		if (wv->theme_match) @<Change the titling and leafname to match the tagged theme@>;
-	} else if (Regexp::match(&mr, range, L"%d+")) {
+	} else if (Regexp::match(&mr, range, U"%d+")) {
 		Str::clear(wv->booklet_title);
 		WRITE_TO(wv->booklet_title, "Chapter %S", range);
 		Str::copy(leafname, wv->booklet_title);
-	} else if (Regexp::match(&mr, range, L"%[A-O]")) {
+	} else if (Regexp::match(&mr, range, U"%[A-O]")) {
 		Str::clear(wv->booklet_title);
 		WRITE_TO(wv->booklet_title, "Appendix %S", range);
 		Str::copy(leafname, wv->booklet_title);
-	} else if (Str::eq_wide_string(range, L"P")) {
-		wv->booklet_title = Str::new_from_wide_string(L"Preliminaries");
+	} else if (Str::eq_wide_string(range, U"P")) {
+		wv->booklet_title = Str::new_from_wide_string(U"Preliminaries");
 		Str::copy(leafname, wv->booklet_title);
-	} else if (Str::eq_wide_string(range, L"M")) {
-		wv->booklet_title = Str::new_from_wide_string(L"Manual");
+	} else if (Str::eq_wide_string(range, U"M")) {
+		wv->booklet_title = Str::new_from_wide_string(U"Manual");
 		Str::copy(leafname, wv->booklet_title);
 	} else {
 		section *S = Reader::get_section_for_range(W, range);

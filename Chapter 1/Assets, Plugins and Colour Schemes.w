@@ -223,7 +223,7 @@ asset_rule *Assets::new_rule(linked_list *L, text_stream *ext, text_stream *line
 	text_stream *cmd = line;
 	text_stream *detail = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c+?) *= *(%c*)")) {
+	if (Regexp::match(&mr, line, U"(%c+?) *= *(%c*)")) {
 		cmd = mr.exp[0];
 		detail = mr.exp[1];
 	}
@@ -363,12 +363,12 @@ void Assets::transformer(text_stream *line, text_file_position *tfp, void *X) {
 	text_stream *OUT = cft->OUT;
 	match_results mr = Regexp::create_mr();
 	TEMPORARY_TEXT(spanned)
-	while (Regexp::match(&mr, line, L"(%c*?span.)(%i+)(%c*?)")) {
+	while (Regexp::match(&mr, line, U"(%c*?span.)(%i+)(%c*?)")) {
 		WRITE_TO(spanned, "%S%S%S", mr.exp[0], cft->trans, mr.exp[1]);
 		Str::clear(line); Str::copy(line, mr.exp[2]);
 	}
 	WRITE_TO(spanned, "%S\n", line);
-	while (Regexp::match(&mr, spanned, L"(%c*?pre.)(%i+)(%c*?)")) {
+	while (Regexp::match(&mr, spanned, U"(%c*?pre.)(%i+)(%c*?)")) {
 		WRITE("%S%S%S", mr.exp[0], cft->trans, mr.exp[1]);
 		Str::clear(spanned); Str::copy(spanned, mr.exp[2]);
 	}

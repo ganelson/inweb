@@ -78,20 +78,20 @@ but optionally a question mark |?| to indicate voracity.
 
 @<Parse a Preform nonterminal header line@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L"(<%p+>) ::=%c*")) {
+	if (Regexp::match(&mr, L->text, U"(<%p+>) ::=%c*")) {
 		form = A_GRAMMAR_NONTERMINAL;
 		Str::copy(pntname, mr.exp[0]);
 		Str::copy(header, mr.exp[0]);
 		@<Parse the subsequent lines as Preform grammar@>;
-	} else if (Regexp::match(&mr, L->text, L"((<%p+>) internal %?) {%c*")) {
+	} else if (Regexp::match(&mr, L->text, U"((<%p+>) internal %?) {%c*")) {
 		form = A_VORACIOUS_NONTERMINAL;
 		Str::copy(pntname, mr.exp[1]);
 		Str::copy(header, mr.exp[0]);
-	} else if (Regexp::match(&mr, L->text, L"((<%p+>) internal) {%c*")) {
+	} else if (Regexp::match(&mr, L->text, U"((<%p+>) internal) {%c*")) {
 		form = A_FLEXIBLE_NONTERMINAL;
 		Str::copy(pntname, mr.exp[1]);
 		Str::copy(header, mr.exp[0]);
-	} else if (Regexp::match(&mr, L->text, L"((<%p+>) internal (%d+)) {%c*")) {
+	} else if (Regexp::match(&mr, L->text, U"((<%p+>) internal (%d+)) {%c*")) {
 		form = Str::atoi(mr.exp[2], 0);
 		Str::copy(pntname, mr.exp[1]);
 		Str::copy(header, mr.exp[0]);
@@ -134,7 +134,7 @@ typedef struct preform_nonterminal {
 
 @<Apply unangling cream to name@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, pntname, L"%<(%c*)%>")) pnt->unangled_name = Str::duplicate(mr.exp[0]);
+	if (Regexp::match(&mr, pntname, U"%<(%c*)%>")) pnt->unangled_name = Str::duplicate(mr.exp[0]);
 	Regexp::dispose_of(&mr);
 
 @ When the program we are tangling is eventually running, each nonterminal
@@ -163,8 +163,8 @@ the following definition:
 
 	pnt->takes_pointer_result = FALSE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, pnt->nt_name, L"<k-%c+")) pnt->takes_pointer_result = TRUE;
-	if (Regexp::match(&mr, pnt->nt_name, L"<s-%c+")) pnt->takes_pointer_result = TRUE;
+	if (Regexp::match(&mr, pnt->nt_name, U"<k-%c+")) pnt->takes_pointer_result = TRUE;
+	if (Regexp::match(&mr, pnt->nt_name, U"<s-%c+")) pnt->takes_pointer_result = TRUE;
 	Regexp::dispose_of(&mr);
 
 	int min = 1, max = form;
@@ -221,7 +221,7 @@ then the text on the left goes into |text_operand| and the right into
 		if (Regexp::string_is_white_space(AL->text)) break;
 		AL->category = PREFORM_GRAMMAR_LCAT;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, AL->text, L"(%c+?) ==> (%c*)")) {
+		if (Regexp::match(&mr, AL->text, U"(%c+?) ==> (%c*)")) {
 			AL->text_operand = Str::duplicate(mr.exp[0]);
 			AL->text_operand2 = Str::duplicate(mr.exp[1]);
 		} else {
@@ -242,7 +242,7 @@ trust me, it's correct.
 
 @<Remove any C comment from the left side of the arrow@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, AL->text_operand, L"(%c*)%/%*%c*%*%/ *"))
+	if (Regexp::match(&mr, AL->text_operand, U"(%c*)%/%*%c*%*%/ *"))
 		AL->text_operand = Str::duplicate(mr.exp[0]);
 	Regexp::dispose_of(&mr);
 
@@ -253,11 +253,11 @@ they have the type |structure *|.
 @<Detect any nonterminal variables being set on the right side of the arrow@> =
 	TEMPORARY_TEXT(to_scan) Str::copy(to_scan, AL->text_operand2);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, to_scan, L"%c*?<<(%P+?)>> =(%c*)")) {
+	while (Regexp::match(&mr, to_scan, U"%c*?<<(%P+?)>> =(%c*)")) {
 		TEMPORARY_TEXT(var_given) Str::copy(var_given, mr.exp[0]);
 		TEMPORARY_TEXT(type_given) WRITE_TO(type_given, "int");
 		Str::copy(to_scan, mr.exp[1]);
-		if (Regexp::match(&mr, var_given, L"(%p+):%p+")) {
+		if (Regexp::match(&mr, var_given, U"(%p+):%p+")) {
 			Str::clear(type_given);
 			WRITE_TO(type_given, "%S *", mr.exp[0]);
 		}
@@ -390,11 +390,11 @@ in any program using Preform. For the Inform project, that's done in the
 
 =
 int InCSupport::special_tangle_command(programming_language *me, OUTPUT_STREAM, text_stream *data) {
-	if (Str::eq_wide_string(data, L"nonterminals")) {
+	if (Str::eq_wide_string(data, U"nonterminals")) {
 		WRITE("register_tangled_nonterminals();\n");
 		return TRUE;
 	}
-	if (Str::eq_wide_string(data, L"textliterals")) {
+	if (Str::eq_wide_string(data, U"textliterals")) {
 		WRITE("register_tangled_text_literals();\n");
 		return TRUE;
 	}
@@ -427,7 +427,7 @@ void InCSupport::additional_predeclarations(programming_language *self, text_str
 	LOOP_OVER(ntv, nonterminal_variable)
 		WRITE("%S %S = %s;\n",
 			ntv->ntv_type, ntv->ntv_identifier,
-			(Str::eq_wide_string(ntv->ntv_type, L"int"))?"0":"NULL");
+			(Str::eq_wide_string(ntv->ntv_type, U"int"))?"0":"NULL");
 
 	WRITE("void register_tangled_nonterminals(void);\n");
 
@@ -451,13 +451,13 @@ void InCSupport::gnabehs(programming_language *self, text_stream *OUT, web *W) {
 			preform_nonterminal *pnt = L->preform_nonterminal_defined;
 			LanguageMethods::insert_line_marker(OUT, W->main_language, L);
 			if (pnt->as_function) {
-				WRITE("\tINTERNAL_NONTERMINAL(L\"%S\", %S, %d, %d);\n",
+				WRITE("\tINTERNAL_NONTERMINAL(U\"%S\", %S, %d, %d);\n",
 					pnt->nt_name, pnt->as_C_identifier,
 					pnt->min_word_count, pnt->max_word_count);
 				WRITE("\t%S->voracious = %d;\n",
 					pnt->as_C_identifier, pnt->voracious);
 			} else {
-				WRITE("\tREGISTER_NONTERMINAL(L\"%S\", %S);\n",
+				WRITE("\tREGISTER_NONTERMINAL(U\"%S\", %S);\n",
 					pnt->nt_name, pnt->as_C_identifier);
 			}
 		}
@@ -465,7 +465,7 @@ void InCSupport::gnabehs(programming_language *self, text_stream *OUT, web *W) {
 	WRITE("void register_tangled_text_literals(void) {\n"); INDENT;
 	text_literal *tl;
 	LOOP_OVER(tl, text_literal)
-		WRITE("%S = Str::literal(L\"%S\");\n", tl->tl_identifier, tl->tl_content);
+		WRITE("%S = Str::literal(U\"%S\");\n", tl->tl_identifier, tl->tl_content);
 	OUTDENT; WRITE("}\n");
 }
 
@@ -611,7 +611,7 @@ nonterminal being parsed.)
 
 @<Tangle the formula on the right-hand side of the arrow@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, formula, L"{ *(%c*?) *} *(%c*)")) {
+	if (Regexp::match(&mr, formula, U"{ *(%c*?) *} *(%c*)")) {
 		TEMPORARY_TEXT(rewritten)
 		WRITE_TO(rewritten, "==");
 		WRITE_TO(rewritten, "> { %S }", mr.exp[0]);
@@ -619,7 +619,7 @@ nonterminal being parsed.)
 		InCSupport::expand_formula(OUT, AL, pnt, mr.exp[1], TRUE);
 		DISCARD_TEXT(rewritten)
 	} else {
-		if (!Regexp::match(&mr, formula, L"@<%c*")) {
+		if (!Regexp::match(&mr, formula, U"@<%c*")) {
 			if (pnt->takes_pointer_result) WRITE("*XP = ");
 			else WRITE("*X = ");
 		}
@@ -636,7 +636,7 @@ void InCSupport::expand_formula(text_stream *OUT, source_line *AL, preform_nonte
 	for (int i=0; i < Str::len(formula); i++) {
 		if ((Str::get_at(formula, i) == 'W') && (Str::get_at(formula, i+1) == 'R') &&
 			(Str::get_at(formula, i+2) == '[') &&
-			(isdigit(Str::get_at(formula, i+3))) && (Str::get_at(formula, i+4) == ']')) {
+			(Characters::isdigit(Str::get_at(formula, i+3))) && (Str::get_at(formula, i+4) == ']')) {
 				if (pnt == NULL) {
 					Main::error_in_web(I"'WR[...]' notation unavailable", AL);
 					if (AL == NULL) WRITE_TO(STDERR, "%S\n", formula);
@@ -701,7 +701,8 @@ Inform, where no misreadings occur.
 
 @<Double-colons are namespace dividers in function names@> =
 	if ((i > 0) && (Str::get_at(original, i) == ':') && (Str::get_at(original, i+1) == ':') &&
-		(isalpha(Str::get_at(original, i+2))) && (isalnum(Str::get_at(original, i-1)))) {
+		(Characters::isalpha(Str::get_at(original, i+2))) &&
+		(Characters::isalnum(Str::get_at(original, i-1)))) {
 		WRITE("__"); i++;
 		continue;
 	}
@@ -739,7 +740,7 @@ commas need to be outside of any parentheses.
 	clause[0] = Str::new();
 	int bl = 0;
 	for (int j = i+5; j < Str::len(original); j++) {
-		wchar_t c = Str::get_at(original, j);
+		inchar32_t c = Str::get_at(original, j);
 		if ((c == ',') && (bl == 0)) {
 			if (clauses >= MAX_PREFORM_RESULT_CLAUSES) err = TRUE;
 			else { clause[clauses] = Str::new(); clauses++; }
@@ -823,7 +824,7 @@ alter |*XP|, and sets |<<to>>| to |R[2]|.
 					WRITE(";"); break;
 				default: {
 					match_results mr = Regexp::create_mr();
-					if (Regexp::match(&mr, clause[c], L"<<(%P+)>> = *(%c*)")) {
+					if (Regexp::match(&mr, clause[c], U"<<(%P+)>> = *(%c*)")) {
 						text_stream *putative = mr.exp[0];
 						text_stream *pv_identifier =
 							InCSupport::nonterminal_variable_identifier(putative);
@@ -850,7 +851,7 @@ just |<<fish>>|.
 	match_results mr = Regexp::create_mr();
 	TEMPORARY_TEXT(check_this)
 	Str::substr(check_this, Str::at(original, i), Str::end(original));
-	if (Regexp::match(&mr, check_this, L"<<(%P+)>>%c*")) {
+	if (Regexp::match(&mr, check_this, U"<<(%P+)>>%c*")) {
 		text_stream *putative = mr.exp[0];
 		text_stream *pv_identifier = InCSupport::nonterminal_variable_identifier(putative);
 		if (pv_identifier) {
@@ -882,7 +883,7 @@ and Inform doesn't cause any trouble.
 	match_results mr = Regexp::create_mr();
 	TEMPORARY_TEXT(check_this)
 	Str::substr(check_this, Str::at(original, i), Str::end(original));
-	if (Regexp::match(&mr, check_this, L"(<%p+>)%c*")) {
+	if (Regexp::match(&mr, check_this, U"(<%p+>)%c*")) {
 		text_stream *putative = mr.exp[0];
 		preform_nonterminal *pnt = InCSupport::nonterminal_by_name(putative);
 		if (pnt) {
@@ -928,8 +929,8 @@ not by Inweb.
 
 =
 text_stream *InCSupport::nonterminal_variable_identifier(text_stream *name) {
-	if (Str::eq_wide_string(name, L"r")) return I"most_recent_result";
-	if (Str::eq_wide_string(name, L"rp")) return I"most_recent_result_p";
+	if (Str::eq_wide_string(name, U"r")) return I"most_recent_result";
+	if (Str::eq_wide_string(name, U"rp")) return I"most_recent_result_p";
 	nonterminal_variable *ntv;
 	LOOP_OVER(ntv, nonterminal_variable)
 		if (Str::eq(ntv->ntv_name, name))
@@ -997,7 +998,7 @@ assume.)
 				AL = AL->next_line) {
 				WRITE("%S", AL->text_operand);
 				match_results mr = Regexp::create_mr();
-				if (Regexp::match(&mr, AL->text_operand2, L"%c+Issue (%c+) problem%c+"))
+				if (Regexp::match(&mr, AL->text_operand2, U"%c+Issue (%c+) problem%c+"))
 					WRITE("[issues %S]", mr.exp[0]);
 				WRITE("\n");
 				Regexp::dispose_of(&mr);
@@ -1092,10 +1093,10 @@ int skipping_internal = FALSE, preform_production_count = 0;
 int InCSupport::skip_in_weaving(programming_language *self, weave_order *wv, source_line *L) {
 	if ((Preform_theme) && (wv->theme_match == Preform_theme)) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, L->text, L"}%c*")) {
+		if (Regexp::match(&mr, L->text, U"}%c*")) {
 			skipping_internal = FALSE; Regexp::dispose_of(&mr); return TRUE; }
 		if (skipping_internal) { Regexp::dispose_of(&mr); return TRUE; }
-		if (Regexp::match(&mr, L->text, L"<%c*?> internal%c*")) skipping_internal = TRUE;
+		if (Regexp::match(&mr, L->text, U"<%c*?> internal%c*")) skipping_internal = TRUE;
 		Regexp::dispose_of(&mr);
 	}
 	return FALSE;
@@ -1119,7 +1120,7 @@ exists. We watch for it here:
 
 =
 void InCSupport::new_tag_declared(programming_language *self, theme_tag *tag) {
-	if (Str::eq_wide_string(tag->tag_name, L"Preform")) Preform_theme = tag;
+	if (Str::eq_wide_string(tag->tag_name, U"Preform")) Preform_theme = tag;
 }
 
 @h Analysis methods.
@@ -1133,11 +1134,11 @@ void InCSupport::analyse_code(programming_language *self, web *W) {
 }
 
 int InCSupport::share_element(programming_language *self, text_stream *elname) {
-	if (Str::eq_wide_string(elname, L"word_ref1")) return TRUE;
-	if (Str::eq_wide_string(elname, L"word_ref2")) return TRUE;
-	if (Str::eq_wide_string(elname, L"next")) return TRUE;
-	if (Str::eq_wide_string(elname, L"down")) return TRUE;
-	if (Str::eq_wide_string(elname, L"allocation_id")) return TRUE;
-	if (Str::eq_wide_string(elname, L"method_set")) return TRUE;
+	if (Str::eq_wide_string(elname, U"word_ref1")) return TRUE;
+	if (Str::eq_wide_string(elname, U"word_ref2")) return TRUE;
+	if (Str::eq_wide_string(elname, U"next")) return TRUE;
+	if (Str::eq_wide_string(elname, U"down")) return TRUE;
+	if (Str::eq_wide_string(elname, U"allocation_id")) return TRUE;
+	if (Str::eq_wide_string(elname, U"method_set")) return TRUE;
 	return FALSE;
 }

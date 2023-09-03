@@ -164,106 +164,106 @@ provides automatically.
 @e MEMBER_CLSW
 
 @<Declare the command-line switches specific to Inweb@> =
-	CommandLine::declare_heading(L"inweb: a tool for literate programming\n\n"
-		L"Usage: inweb WEB OPTIONS RANGE\n\n"
-		L"WEB must be a directory holding a literate program (a 'web')\n\n"
-		L"The legal RANGEs are:\n"
-		L"   all: complete web (the default if no TARGETS set)\n"
-		L"   P: all preliminaries\n"
-		L"   1: Chapter 1 (and so on)\n"
-		L"   A: Appendix A (and so on, up to Appendix O)\n"
-		L"   3/eg: section with abbreviated name \"3/eg\" (and so on)\n"
-		L"You can also, or instead, specify:\n"
-		L"   index: to weave an HTML page indexing the project\n"
-		L"   chapters: to weave all chapters as individual documents\n"
-		L"   sections: ditto with sections\n");
+	CommandLine::declare_heading(U"inweb: a tool for literate programming\n\n"
+		U"Usage: inweb WEB OPTIONS RANGE\n\n"
+		U"WEB must be a directory holding a literate program (a 'web')\n\n"
+		U"The legal RANGEs are:\n"
+		U"   all: complete web (the default if no TARGETS set)\n"
+		U"   P: all preliminaries\n"
+		U"   1: Chapter 1 (and so on)\n"
+		U"   A: Appendix A (and so on, up to Appendix O)\n"
+		U"   3/eg: section with abbreviated name \"3/eg\" (and so on)\n"
+		U"You can also, or instead, specify:\n"
+		U"   index: to weave an HTML page indexing the project\n"
+		U"   chapters: to weave all chapters as individual documents\n"
+		U"   sections: ditto with sections\n");
 
 	CommandLine::begin_group(LANGUAGES_CLSG,
 		I"for locating programming language definitions");
-	CommandLine::declare_switch(LANGUAGE_CLSW, L"read-language", 2,
-		L"read language definition from file X");
-	CommandLine::declare_switch(LANGUAGES_CLSW, L"read-languages", 2,
-		L"read all language definitions in path X");
-	CommandLine::declare_switch(SHOW_LANGUAGES_CLSW, L"show-languages", 1,
-		L"list programming languages supported by Inweb");
-	CommandLine::declare_switch(TEST_LANGUAGE_CLSW, L"test-language", 2,
-		L"test language X on...");
-	CommandLine::declare_switch(TEST_LANGUAGE_ON_CLSW, L"test-language-on", 2,
-		L"...the code in the file X");
+	CommandLine::declare_switch(LANGUAGE_CLSW, U"read-language", 2,
+		U"read language definition from file X");
+	CommandLine::declare_switch(LANGUAGES_CLSW, U"read-languages", 2,
+		U"read all language definitions in path X");
+	CommandLine::declare_switch(SHOW_LANGUAGES_CLSW, U"show-languages", 1,
+		U"list programming languages supported by Inweb");
+	CommandLine::declare_switch(TEST_LANGUAGE_CLSW, U"test-language", 2,
+		U"test language X on...");
+	CommandLine::declare_switch(TEST_LANGUAGE_ON_CLSW, U"test-language-on", 2,
+		U"...the code in the file X");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(ANALYSIS_CLSG,
 		I"for analysing a web");
-	CommandLine::declare_switch(CATALOGUE_CLSW, L"catalogue", 1,
-		L"list the sections in the web");
-	CommandLine::declare_switch(CATALOGUE_CLSW, L"catalog", 1,
-		L"same as '-catalogue'");
-	CommandLine::declare_switch(MAKEFILE_CLSW, L"makefile", 2,
-		L"write a makefile for this web and store it in X");
-	CommandLine::declare_switch(GITIGNORE_CLSW, L"gitignore", 2,
-		L"write a .gitignore file for this web and store it in X");
-	CommandLine::declare_switch(ADVANCE_FILE_CLSW, L"advance-build-file", 2,
-		L"increment daily build code in file X");
-	CommandLine::declare_switch(WRITEME_CLSW, L"write-me", 2,
-		L"write a read-me file following instructions in file X");
-	CommandLine::declare_switch(PLATFORM_CLSW, L"platform", 2,
-		L"use platform X (e.g. 'windows') when making e.g. makefiles");
-	CommandLine::declare_switch(PROTOTYPE_CLSW, L"prototype", 2,
-		L"translate makefile from prototype X");
-	CommandLine::declare_switch(FUNCTIONS_CLSW, L"functions", 1,
-		L"catalogue the functions in the web");
-	CommandLine::declare_switch(STRUCTURES_CLSW, L"structures", 1,
-		L"catalogue the structures in the web");
-	CommandLine::declare_switch(ADVANCE_CLSW, L"advance-build", 1,
-		L"increment daily build code for the web");
-	CommandLine::declare_switch(SCAN_CLSW, L"scan", 1,
-		L"scan the web");
+	CommandLine::declare_switch(CATALOGUE_CLSW, U"catalogue", 1,
+		U"list the sections in the web");
+	CommandLine::declare_switch(CATALOGUE_CLSW, U"catalog", 1,
+		U"same as '-catalogue'");
+	CommandLine::declare_switch(MAKEFILE_CLSW, U"makefile", 2,
+		U"write a makefile for this web and store it in X");
+	CommandLine::declare_switch(GITIGNORE_CLSW, U"gitignore", 2,
+		U"write a .gitignore file for this web and store it in X");
+	CommandLine::declare_switch(ADVANCE_FILE_CLSW, U"advance-build-file", 2,
+		U"increment daily build code in file X");
+	CommandLine::declare_switch(WRITEME_CLSW, U"write-me", 2,
+		U"write a read-me file following instructions in file X");
+	CommandLine::declare_switch(PLATFORM_CLSW, U"platform", 2,
+		U"use platform X (e.g. 'windows') when making e.g. makefiles");
+	CommandLine::declare_switch(PROTOTYPE_CLSW, U"prototype", 2,
+		U"translate makefile from prototype X");
+	CommandLine::declare_switch(FUNCTIONS_CLSW, U"functions", 1,
+		U"catalogue the functions in the web");
+	CommandLine::declare_switch(STRUCTURES_CLSW, U"structures", 1,
+		U"catalogue the structures in the web");
+	CommandLine::declare_switch(ADVANCE_CLSW, U"advance-build", 1,
+		U"increment daily build code for the web");
+	CommandLine::declare_switch(SCAN_CLSW, U"scan", 1,
+		U"scan the web");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(WEAVING_CLSG,
 		I"for weaving a web");
-	CommandLine::declare_switch(WEAVE_CLSW, L"weave", 1,
-		L"weave the web into human-readable form");
-	CommandLine::declare_switch(WEAVE_INTO_CLSW, L"weave-into", 2,
-		L"weave, but into directory X");
-	CommandLine::declare_switch(WEAVE_TO_CLSW, L"weave-to", 2,
-		L"weave, but to filename X (for single files only)");
-	CommandLine::declare_switch(OPEN_CLSW, L"open", 1,
-		L"weave then open woven file");
-	CommandLine::declare_switch(WEAVE_AS_CLSW, L"weave-as", 2,
-		L"set weave pattern to X (default is 'HTML')");
-	CommandLine::declare_switch(WEAVE_TAG_CLSW, L"weave-tag", 2,
-		L"weave, but only using material tagged as X");
-	CommandLine::declare_switch(BREADCRUMB_CLSW, L"breadcrumb", 2,
-		L"use the text X as a breadcrumb in overhead navigation");
-	CommandLine::declare_switch(NAVIGATION_CLSW, L"navigation", 2,
-		L"use the file X as a column of navigation links");
+	CommandLine::declare_switch(WEAVE_CLSW, U"weave", 1,
+		U"weave the web into human-readable form");
+	CommandLine::declare_switch(WEAVE_INTO_CLSW, U"weave-into", 2,
+		U"weave, but into directory X");
+	CommandLine::declare_switch(WEAVE_TO_CLSW, U"weave-to", 2,
+		U"weave, but to filename X (for single files only)");
+	CommandLine::declare_switch(OPEN_CLSW, U"open", 1,
+		U"weave then open woven file");
+	CommandLine::declare_switch(WEAVE_AS_CLSW, U"weave-as", 2,
+		U"set weave pattern to X (default is 'HTML')");
+	CommandLine::declare_switch(WEAVE_TAG_CLSW, U"weave-tag", 2,
+		U"weave, but only using material tagged as X");
+	CommandLine::declare_switch(BREADCRUMB_CLSW, U"breadcrumb", 2,
+		U"use the text X as a breadcrumb in overhead navigation");
+	CommandLine::declare_switch(NAVIGATION_CLSW, U"navigation", 2,
+		U"use the file X as a column of navigation links");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(TANGLING_CLSG,
 		I"for tangling a web");
-	CommandLine::declare_switch(TANGLE_CLSW, L"tangle", 1,
-		L"tangle the web into machine-compilable form");
-	CommandLine::declare_switch(TANGLE_TO_CLSW, L"tangle-to", 2,
-		L"tangle, but to filename X");
-	CommandLine::declare_switch(CTAGS_TO_CLSW, L"ctags-to", 2,
-		L"tangle, but write Universal Ctags file to X not to 'tags'");
-	CommandLine::declare_boolean_switch(CTAGS_CLSW, L"ctags", 1,
-		L"write a Universal Ctags file when tangling", TRUE);
+	CommandLine::declare_switch(TANGLE_CLSW, U"tangle", 1,
+		U"tangle the web into machine-compilable form");
+	CommandLine::declare_switch(TANGLE_TO_CLSW, U"tangle-to", 2,
+		U"tangle, but to filename X");
+	CommandLine::declare_switch(CTAGS_TO_CLSW, U"ctags-to", 2,
+		U"tangle, but write Universal Ctags file to X not to 'tags'");
+	CommandLine::declare_boolean_switch(CTAGS_CLSW, U"ctags", 1,
+		U"write a Universal Ctags file when tangling", TRUE);
 	CommandLine::end_group();
 
 	CommandLine::begin_group(COLONIAL_CLSG,
 		I"for dealing with colonies of webs together");
-	CommandLine::declare_switch(COLONY_CLSW, L"colony", 2,
-		L"use the file X as a list of webs in this colony");
-	CommandLine::declare_switch(MEMBER_CLSW, L"member", 2,
-		L"use member X from the colony as our web");
+	CommandLine::declare_switch(COLONY_CLSW, U"colony", 2,
+		U"use the file X as a list of webs in this colony");
+	CommandLine::declare_switch(MEMBER_CLSW, U"member", 2,
+		U"use member X from the colony as our web");
 	CommandLine::end_group();
 
-	CommandLine::declare_boolean_switch(VERBOSE_CLSW, L"verbose", 1,
-		L"explain what inweb is doing", FALSE);
-	CommandLine::declare_switch(IMPORT_FROM_CLSW, L"import-from", 2,
-		L"specify that imported modules are at pathname X");
+	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
+		U"explain what inweb is doing", FALSE);
+	CommandLine::declare_switch(IMPORT_FROM_CLSW, U"import-from", 2,
+		U"specify that imported modules are at pathname X");
 
 @ Foundation calls this on any |-switch| argument read:
 
@@ -423,18 +423,18 @@ Otherwise, a range is a chapter number/letter, or a section range.
 =
 void Configuration::set_range(inweb_instructions *args, text_stream *opt) {
 	match_results mr = Regexp::create_mr();
-	if (Str::eq_wide_string(opt, L"index")) {
+	if (Str::eq_wide_string(opt, U"index")) {
 		args->swarm_mode = SWARM_INDEX_SWM;
-	} else if (Str::eq_wide_string(opt, L"chapters")) {
+	} else if (Str::eq_wide_string(opt, U"chapters")) {
 		args->swarm_mode = SWARM_CHAPTERS_SWM;
-	} else if (Str::eq_wide_string(opt, L"sections")) {
+	} else if (Str::eq_wide_string(opt, U"sections")) {
 		args->swarm_mode = SWARM_SECTIONS_SWM;
 	} else {
 		if (++args->targets > 1) Errors::fatal("at most one target may be given");
-		if (Str::eq_wide_string(opt, L"all")) {
+		if (Str::eq_wide_string(opt, U"all")) {
 			Str::copy(args->chosen_range, I"0");
-		} else if (((isalnum(Str::get_first_char(opt))) && (Str::len(opt) == 1))
-			|| (Regexp::match(&mr, opt, L"%i+/%i+"))) {
+		} else if (((Characters::isalnum(Str::get_first_char(opt))) && (Str::len(opt) == 1))
+			|| (Regexp::match(&mr, opt, U"%i+/%i+"))) {
 			Str::copy(args->chosen_range, opt);
 			string_position P = Str::start(args->chosen_range);
 			Str::put(P, Characters::toupper(Str::get(P)));

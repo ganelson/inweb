@@ -205,7 +205,7 @@ can recognise any folder separator character.
 char *CIFilingSystem::strrchr(const char *p) {
 	const char *q = NULL;
 	while (*p) {
-		if (Platform::is_folder_separator((wchar_t) (*p))) q = p;
+		if (Platform::is_folder_separator((inchar32_t) (*p))) q = p;
 		p++;
 	}
 	return (char *) q;

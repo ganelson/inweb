@@ -41,11 +41,11 @@ void BuildFiles::build_file_helper(text_stream *text, text_file_position *tfp, v
 	build_file_data *bfd = (build_file_data *) state;
 	if (Str::len(text) == 0) return;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"Build Date: *(%c*)")) {
+	if (Regexp::match(&mr, text, U"Build Date: *(%c*)")) {
 		bfd->build_date = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, text, L"Build Number: *(%c*)")) {
+	} else if (Regexp::match(&mr, text, U"Build Number: *(%c*)")) {
 		bfd->build_code = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, text, L"Prerelease: *(%c*)")) {
+	} else if (Regexp::match(&mr, text, U"Prerelease: *(%c*)")) {
 		bfd->prerelease_text = Str::duplicate(mr.exp[0]);
 	} else {
 		Errors::in_text_file("can't parse build file line", tfp);
@@ -174,12 +174,11 @@ some 58 years.
 void BuildFiles::increment(text_stream *T) {
 	if (Str::len(T) != 4) Errors::with_text("build code malformed: %S", T);
 	else {
-		int N = Str::get_at(T, 0) - '0';
-		int L = Str::get_at(T, 1);
-		int M1 = Str::get_at(T, 2) - '0';
-		int M2 = Str::get_at(T, 3) - '0';
-		if ((N < 0) || (N > 9) || (L < 'A') || (L > 'Z') ||
-			(M1 < 0) || (M1 > 9) || (M2 < 0) || (M2 > 9)) {
+		inchar32_t N = Str::get_at(T, 0) - '0';
+		inchar32_t L = Str::get_at(T, 1);
+		inchar32_t M1 = Str::get_at(T, 2) - '0';
+		inchar32_t M2 = Str::get_at(T, 3) - '0';
+		if ((N > 9) || (L < 'A') || (L > 'Z') || (M1 > 9) || (M2 > 9)) {
 			Errors::with_text("build code malformed: %S", T);
 		} else {
 			M2++;

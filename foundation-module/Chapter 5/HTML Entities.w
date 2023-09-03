@@ -13,7 +13,7 @@ If the |entity| is not valid, neither |A| nor |B| is written to, and |FALSE|
 is returned.
 
 =
-int HTMLEntities::parse(text_stream *entity, wchar_t *A, wchar_t *B) {
+int HTMLEntities::parse(text_stream *entity, inchar32_t *A, inchar32_t *B) {
 	if (Str::get_at(entity, 0) != '&') return FALSE;
 	if (Str::get_at(entity, 1) == '#') {
 		int base = 10, from = 2;
@@ -23,7 +23,7 @@ int HTMLEntities::parse(text_stream *entity, wchar_t *A, wchar_t *B) {
 		int total = 0, dc = 0;
 		while (Str::get_at(entity, from)) {
 			int dval = -1;
-			wchar_t digit = Str::get_at(entity, from);
+			inchar32_t digit = Str::get_at(entity, from);
 			if ((digit >= '0') && (digit <= '9')) dval = (int) digit - (int) '0';
 			else if ((base == 16) && (digit >= 'a') && (digit <= 'f')) dval = 10 + (int) digit - (int) 'a';
 			else if ((base == 16) && (digit >= 'A') && (digit <= 'F')) dval = 10 + (int) digit - (int) 'A';
@@ -34,7 +34,7 @@ int HTMLEntities::parse(text_stream *entity, wchar_t *A, wchar_t *B) {
 			if (dc > 7) return FALSE;
 		}
 		if (dc == 0) return FALSE;
-		if (A) *A = total; if (B) *B = 0;
+		if (A) *A = (inchar32_t)total; if (B) *B = 0;
 		return TRUE;
 	} else {
 		switch (Str::get_at(entity, 1)) {

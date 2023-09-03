@@ -153,7 +153,7 @@ void Ctags::write_line_ref(OUTPUT_STREAM, source_line *L, pathname *P) {
 	WRITE("%S\t/^", fn);
 	DISCARD_TEXT(fn)
 	for (int i = 0; i < Str::len(L->text); i++) {
-		wchar_t c = Str::get_at(L->text, i);
+		inchar32_t c = Str::get_at(L->text, i);
 		switch (c) {
 			case '/': PUT('\\'); PUT(c); break;
 			case '^': if (i == 0) PUT('\\'); PUT(c); break;

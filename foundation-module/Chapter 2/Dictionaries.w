@@ -97,21 +97,21 @@ as wide text (so that we can use literals like |L"my-key"|) instead of text
 streams. So we also offer versions suffixed |_literal|:
 
 =
-dict_entry *Dictionaries::find_literal(dictionary *D, wchar_t *lit) {
+dict_entry *Dictionaries::find_literal(dictionary *D, inchar32_t *lit) {
 	TEMPORARY_TEXT(K)
 	WRITE_TO(K, "%w", lit);
 	dict_entry *E = Dictionaries::find(D, K);
 	DISCARD_TEXT(K)
 	return E;
 }
-dict_entry *Dictionaries::create_literal(dictionary *D, wchar_t *lit) {
+dict_entry *Dictionaries::create_literal(dictionary *D, inchar32_t *lit) {
 	TEMPORARY_TEXT(K)
 	WRITE_TO(K, "%w", lit);
 	dict_entry *E = Dictionaries::create(D, K);
 	DISCARD_TEXT(K)
 	return E;
 }
-void Dictionaries::destroy_literal(dictionary *D, wchar_t *lit) {
+void Dictionaries::destroy_literal(dictionary *D, inchar32_t *lit) {
 	TEMPORARY_TEXT(K)
 	WRITE_TO(K, "%w", lit);
 	Dictionaries::destroy(D, K);
@@ -212,7 +212,7 @@ void *Dictionaries::read_value(dictionary *D, text_stream *key) {
 	if (E->vacant) internal_error("read vacant dictionary entry");
 	return E->value;
 }
-void *Dictionaries::read_value_literal(dictionary *D, wchar_t *key) {
+void *Dictionaries::read_value_literal(dictionary *D, inchar32_t *key) {
 	if (D == NULL) return NULL;
 	if (D->textual) internal_error("textual dictionary accessed as pointy");
 	dict_entry *E = Dictionaries::find_literal(D, key);
@@ -229,7 +229,7 @@ void Dictionaries::write_value(dictionary *D, text_stream *key, void *val) {
 	if (E->vacant) internal_error("wrote vacant dictionary entry");
 	E->value = val;
 }
-void Dictionaries::write_value_literal(dictionary *D, wchar_t *key, void *val) {
+void Dictionaries::write_value_literal(dictionary *D, inchar32_t *key, void *val) {
 	if (D == NULL) internal_error("wrote to null dictionary");
 	if (D->textual) internal_error("textual dictionary accessed as pointy");
 	dict_entry *E = Dictionaries::find_literal(D, key);
@@ -248,7 +248,7 @@ text_stream *Dictionaries::create_text(dictionary *D, text_stream *key) {
 	dict_entry *E = Dictionaries::create(D, key);
 	return (text_stream *) E->value;
 }
-text_stream *Dictionaries::create_text_literal(dictionary *D, wchar_t *lit) {
+text_stream *Dictionaries::create_text_literal(dictionary *D, inchar32_t *lit) {
 	if (D == NULL) internal_error("wrote to null dictionary");
 	if (D->textual == FALSE) internal_error("pointy dictionary accessed as textual");
 	dict_entry *E = Dictionaries::create_literal(D, lit);
@@ -267,7 +267,7 @@ text_stream *Dictionaries::get_text(dictionary *D, text_stream *key) {
 	return (text_stream *) E->value;
 }
 
-text_stream *Dictionaries::get_text_literal(dictionary *D, wchar_t *lit) {
+text_stream *Dictionaries::get_text_literal(dictionary *D, inchar32_t *lit) {
 	if (D == NULL) return NULL;
 	if (D->textual == FALSE) internal_error("pointy dictionary accessed as textual");
 	dict_entry *E = Dictionaries::find_literal(D, lit);

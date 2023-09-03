@@ -137,12 +137,13 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(argument)
 	int skip_part = FALSE, extract = FALSE;
-	int col = 1, cr, prev_cr = 0, line_count = 1, sfp = 0, final_newline = FALSE;
+	int col = 1, line_count = 1, sfp = 0, final_newline = FALSE;
+  inchar32_t cr = 0, prev_cr = 0;
 	do {
 		Str::clear(command);
 		Str::clear(argument);
 		@<Read next character@>;
-		NewCharacter: if (cr == EOF) break;
+		NewCharacter: if (cr == (inchar32_t) EOF) break;
 		if (((cr == '@') || (cr == '=')) && (col == 1)) {
 			int inweb_syntax = -1;
 			if (cr == '=') @<Read the rest of line as an equals-heading@>
@@ -151,7 +152,7 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 			continue;
 		}
 		if (comment == FALSE) @<Deal with material which isn't commentary@>;
-	} while (cr != EOF);
+	} while (cr != (inchar32_t) EOF);
 	DISCARD_TEXT(command)
 	DISCARD_TEXT(argument)
 
@@ -164,16 +165,16 @@ increment the line count in such cases.)
 @<Read next character@> =
 	if (Input_File) {
 		if (final_newline) {
-			cr = EOF;
+			cr = (inchar32_t) EOF;
 		} else {
-			cr = fgetc(Input_File);
-			if ((cr == EOF) && (prev_cr != 10) && (prev_cr != 13)) {
+			cr = (inchar32_t) fgetc(Input_File);
+			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
 				final_newline = TRUE; cr = '\n';
 			}
 		}
 	} else if (text) {
-		cr = Str::get_at(text, sfp); if (cr == 0) cr = EOF; else sfp++;
-	} else cr = EOF;
+		cr = Str::get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
+	} else cr = (inchar32_t) EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -199,17 +200,17 @@ commands can be used, at least.
 	while (TRUE) {
 		@<Read next character@>;
 		if ((committed == FALSE) && ((cr == 10) || (cr == 13) || (cr == ' '))) {
-			if (Str::eq_wide_string(at_cmd, L""))
+			if (Str::eq_wide_string(at_cmd, U""))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
-			else if (Str::eq_wide_string(at_cmd, L"p"))
+			else if (Str::eq_wide_string(at_cmd, U"p"))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
-			else if (Str::eq_wide_string(at_cmd, L"h"))
+			else if (Str::eq_wide_string(at_cmd, U"h"))
 				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
-			else if (Str::eq_wide_string(at_cmd, L"c"))
+			else if (Str::eq_wide_string(at_cmd, U"c"))
 				inweb_syntax = INWEB_CODE_SYNTAX;
 			else if (Str::get_first_char(at_cmd) == '-')
 				inweb_syntax = INWEB_DASH_SYNTAX;
-			else if (Str::begins_with_wide_string(at_cmd, L"Purpose:"))
+			else if (Str::begins_with_wide_string(at_cmd, U"Purpose:"))
 				inweb_syntax = INWEB_PURPOSE_SYNTAX;
 			committed = TRUE;
 			if (inweb_syntax == -1) {
@@ -243,11 +244,11 @@ commands can be used, at least.
 		PUT_TO(equals_cmd, cr);
 	}
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, equals_cmd, L" %(text%c*%) *")) {
+	if (Regexp::match(&mr, equals_cmd, U" %(text%c*%) *")) {
 		inweb_syntax = INWEB_EXTRACT_SYNTAX;
-	} else if (Regexp::match(&mr, equals_cmd, L" %(figure%c*%) *")) {
+	} else if (Regexp::match(&mr, equals_cmd, U" %(figure%c*%) *")) {
 		inweb_syntax = INWEB_FIGURE_SYNTAX;
-	} else if (Regexp::match(&mr, equals_cmd, L" %(%c*%) *")) {
+	} else if (Regexp::match(&mr, equals_cmd, U" %(%c*%) *")) {
 		(*(docket->error_callback))(
 			"unsupported '= (...)' marker at column 0", NULL);
 	} else {
@@ -261,7 +262,7 @@ commands can be used, at least.
 		case INWEB_PARAGRAPH_SYNTAX: {
 			TEMPORARY_TEXT(heading_name)
 			Str::copy_tail(heading_name, command, 2);
-			int c;
+			inchar32_t c;
 			while (((c = Str::get_last_char(heading_name)) != 0) &&
 				((c == ' ') || (c == '\t') || (c == '.')))
 				Str::delete_last_character(heading_name);
@@ -333,7 +334,7 @@ be the empty string: see above). The argument must not include |}|.
 	int com_mode = TRUE;
 	while (TRUE) {
 		@<Read next character@>;
-		if ((cr == '}') || (cr == EOF)) break;
+		if ((cr == '}') || (cr == (inchar32_t) EOF)) break;
 		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
 		if (com_mode) PUT_TO(command, cr);
 		else PUT_TO(argument, cr);
@@ -346,7 +347,7 @@ I7 material within I6:
 	TEMPORARY_TEXT(material)
 	while (TRUE) {
 		@<Read next character@>;
-		if (cr == EOF) break;
+		if (cr == (inchar32_t) EOF) break;
 		if ((cr == ')') && (Str::get_last_char(material) == '+')) {
 			Str::delete_last_character(material); break; }
 		PUT_TO(material, cr);

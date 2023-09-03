@@ -122,14 +122,14 @@ For slicing, see the //string_position// type, representing positions for the
 benefit of functions like //Str::substr//.
 
 @ Individual characters are represented in Foundation using the standard
-POSIX type |wchar_t|, which on all modern systems is a very wide integer,
+POSIX type |inchar32_t|, which on all modern systems is a very wide integer,
 whether or not signed. It's safe to assume it can hold all normal Unicode
 code points. See //Characters// for class functions like //Characters::isdigit//,
 which have been carefully written to work equivalently on either Windows or
 Unix-based systems.
 
 //C Strings// and //Wide Strings// provide bare-minimum facilities for handling
-traditional null-terminated |char| and |wchar_t| arrays, but don't use these.
+traditional null-terminated |char| and |inchar32_t| arrays, but don't use these.
 Texts are just better.
 
 @h Objects.

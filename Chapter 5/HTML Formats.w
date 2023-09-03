@@ -340,8 +340,8 @@ int HTMLFormat::render_visit(tree_node *N, void *state, int L) {
 	} else {
 		while (TRUE) {
 			int c = getc(B);
-    		if (c == EOF) break;
-    		PUT((wchar_t) c);
+			if (c == EOF) break;
+			PUT((inchar32_t) c);
 		}
 		BinaryFiles::close(B);
 	}
@@ -763,7 +763,7 @@ that service uses to identify the video/audio in question.
 	if (N == N->parent->child) starts = TRUE;
 		int current_colour = -1, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(C->matter); i++) {
-		colour_wanted = Str::get_at(C->colouring, i);
+		colour_wanted = (int) Str::get_at(C->colouring, i);
 		if (colour_wanted != current_colour) {
 			if (current_colour >= 0) HTML_CLOSE("span");
 			HTMLFormat::change_colour(OUT, colour_wanted, hrs->colours);
@@ -1003,7 +1003,7 @@ int HTMLFormat::begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *patt
 	W->as_ebook = Epub::new(T, "P");
 	filename *CSS = Patterns::find_file_in_subdirectory(pattern, I"Base", I"Base.css");
 	Epub::use_CSS_throughout(W->as_ebook, CSS);
-	Epub::attach_metadata(W->as_ebook, L"identifier", T);
+	Epub::attach_metadata(W->as_ebook, U"identifier", T);
 	DISCARD_TEXT(T)
 
 	pathname *P = Reader::woven_folder(W);

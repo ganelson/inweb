@@ -361,7 +361,7 @@ add a vertical skip between them to show the division more clearly.
 		if ((L->next_line) && (L->next_line->category == COMMENT_BODY_LCAT)) {
 			match_results mr = Regexp::create_mr();
 			if ((state->kind_of_material != CODE_MATERIAL) ||
-				(Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)")))
+				(Regexp::match(&mr, matter, U"\t|(%c*)|(%c*?)")))
 				Trees::make_child(WeaveTree::vskip(tree, TRUE), state->ap);
 			Regexp::dispose_of(&mr);	
 		}
@@ -373,19 +373,19 @@ add a vertical skip between them to show the division more clearly.
 
 @<Weave bracketed list indications at start of line into items@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, matter, L"%(-...%) (%c*)")) { /* continue double */
+	if (Regexp::match(&mr, matter, U"%(-...%) (%c*)")) { /* continue double */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 2, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
-	} else if (Regexp::match(&mr, matter, L"%(...%) (%c*)")) { /* continue single */
+	} else if (Regexp::match(&mr, matter, U"%(...%) (%c*)")) { /* continue single */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 1, I""), state->ap);
 		Str::copy(matter, mr.exp[0]);
-	} else if (Regexp::match(&mr, matter, L"%(-([a-zA-Z0-9*]+)%) (%c*)")) { /* begin double */
+	} else if (Regexp::match(&mr, matter, U"%(-([a-zA-Z0-9*]+)%) (%c*)")) { /* begin double */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 2, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
-	} else if (Regexp::match(&mr, matter, L"%(([a-zA-Z0-9*]+)%) (%c*)")) { /* begin single */
+	} else if (Regexp::match(&mr, matter, U"%(([a-zA-Z0-9*]+)%) (%c*)")) { /* begin single */
 		Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
 		Trees::make_child(WeaveTree::weave_item_node(tree, 1, mr.exp[0]), state->ap);
 		Str::copy(matter, mr.exp[1]);
@@ -397,7 +397,7 @@ in the source is set indented in code style.
 
 @<Weave tabbed code material as a new indented paragraph@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, matter, L"\t|(%c*)|(%c*?)")) {
+	if (Regexp::match(&mr, matter, U"\t|(%c*)|(%c*?)")) {
 		TEMPORARY_TEXT(original)
 		Weaver::change_material(tree, state, CODE_MATERIAL, FALSE, NULL, NULL);
  		Str::copy(original, mr.exp[0]);
@@ -528,15 +528,15 @@ example, or flush left.
 @<Give constant definition lines slightly fancier openings@> =
 	if (L->category == BEGIN_DEFINITION_LCAT) {
 		match_results mr = Regexp::create_mr();
-		if ((Regexp::match(&mr, matter, L"@d (%c*)")) ||
-			(Regexp::match(&mr, matter, L"@define (%c*)"))) {
+		if ((Regexp::match(&mr, matter, U"@d (%c*)")) ||
+			(Regexp::match(&mr, matter, U"@define (%c*)"))) {
 			Str::copy(prefatory, I"define");
 			Str::copy(matter, mr.exp[0]);
-		} else if (Regexp::match(&mr, matter, L"@default (%c*)")) {
+		} else if (Regexp::match(&mr, matter, U"@default (%c*)")) {
 			Str::copy(prefatory, I"default");
 			Str::copy(matter, mr.exp[0]);
-		} else if ((Regexp::match(&mr, matter, L"@e (%c*)")) ||
-			(Regexp::match(&mr, matter, L"@enum (%c*)"))) {
+		} else if ((Regexp::match(&mr, matter, U"@e (%c*)")) ||
+			(Regexp::match(&mr, matter, U"@enum (%c*)"))) {
 			Str::copy(prefatory, I"enum");
 			Str::copy(matter, mr.exp[0]);
 		}
@@ -556,7 +556,7 @@ example, or flush left.
 
 @<Find macro usages and adjust syntax colouring accordingly@> =
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, matter, L"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
+	while (Regexp::match(&mr, matter, U"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
 		para_macro *pmac = Macros::find_by_name(mr.exp[1], S);
 		if (pmac) {
 			TEMPORARY_TEXT(front_colouring)

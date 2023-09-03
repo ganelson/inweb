@@ -96,12 +96,12 @@ void InformFlavouredMarkdown::OIH_intervene_after_Phase_I(markdown_feature *feat
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, line, L"%[x%] *(%c+?)")) {
+		if (Regexp::match(&mr, line, U"%[x%] *(%c+?)")) {
 			MDBlockParser::change_type(NULL, md, HEADING_MIT);
 			Markdown::set_heading_level(md, 2);
 			Str::clear(line);
 			WRITE_TO(line, "%S", mr.exp[0]);
-		} else if (Regexp::match(&mr, line, L"%[Chapter: *(%c+)%] *(%c+?)")) {
+		} else if (Regexp::match(&mr, line, U"%[Chapter: *(%c+)%] *(%c+?)")) {
 			MDBlockParser::change_type(NULL, md, HEADING_MIT);
 			Markdown::set_heading_level(md, 1);
 			Str::clear(line);
@@ -156,14 +156,14 @@ void InformFlavouredMarkdown::Inform_headings_r(markdown_item *md) {
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
-		if ((Regexp::match(&mr, line, L"Section *: *(%c+?)")) ||
-			(Regexp::match(&mr, line, L"Section *- *(%c+?)"))) {
+		if ((Regexp::match(&mr, line, U"Section *: *(%c+?)")) ||
+			(Regexp::match(&mr, line, U"Section *- *(%c+?)"))) {
 			MDBlockParser::change_type(NULL, md, HEADING_MIT);
 			Markdown::set_heading_level(md, 2);
 			Str::clear(line);
 			WRITE_TO(line, "%S", mr.exp[0]);
-		} else if ((Regexp::match(&mr, line, L"Chapter *: *(%c+?)")) ||
-			(Regexp::match(&mr, line, L"Chapter *- *(%c+?)"))) {
+		} else if ((Regexp::match(&mr, line, U"Chapter *: *(%c+?)")) ||
+			(Regexp::match(&mr, line, U"Chapter *- *(%c+?)"))) {
 			MDBlockParser::change_type(NULL, md, HEADING_MIT);
 			Markdown::set_heading_level(md, 1);
 			Str::clear(line);
@@ -325,8 +325,8 @@ void InformFlavouredMarkdown::detect_embedded_examples_r(markdown_item *md, int 
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
-		if ((Regexp::match(&mr, line, L"Example *: *(%**) *(%c+?)")) ||
-			(Regexp::match(&mr, line, L"Example *- *(%**) *(%c+?)"))) {
+		if ((Regexp::match(&mr, line, U"Example *: *(%**) *(%c+?)")) ||
+			(Regexp::match(&mr, line, U"Example *- *(%**) *(%c+?)"))) {
 			MDBlockParser::change_type(NULL, md, INFORM_EXAMPLE_HEADING_MIT);
 			int star_count = Str::len(mr.exp[0]);
 			IFM_example *new_eg = InformFlavouredMarkdown::new_example(mr.exp[1], NULL,
@@ -545,7 +545,7 @@ void InformFlavouredMarkdown::pbiapi_r(markdown_item *md) {
 		if (ch->type == CODE_BLOCK_MIT) {
 			TEMPORARY_TEXT(detabbed)
 			for (int i=0, margin=0; i<Str::len(ch->stashed); i++) {
-				wchar_t c = Str::get_at(ch->stashed, i);
+				inchar32_t c = Str::get_at(ch->stashed, i);
 				if (c == '\t') {
 					PUT_TO(detabbed, ' '); margin++;
 					while (margin % 4 != 0) { PUT_TO(detabbed, ' '); margin++; }
@@ -577,8 +577,8 @@ int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *O
 	if (md->type == BLOCK_QUOTE_MIT) {
 		if ((md->down) && (md->down->type == PARAGRAPH_MIT)) {
 			match_results mr = Regexp::create_mr();
-			if ((Regexp::match(&mr, md->down->stashed, L"phrase: *{(%c*?)} *(%c+?)\n(%c*)")) ||
-				(Regexp::match(&mr, md->down->stashed, L"(phrase): *(%c+?)\n(%c*)"))) {
+			if ((Regexp::match(&mr, md->down->stashed, U"phrase: *{(%c*?)} *(%c+?)\n(%c*)")) ||
+				(Regexp::match(&mr, md->down->stashed, U"(phrase): *(%c+?)\n(%c*)"))) {
 				HTML_OPEN_WITH("div", "class=\"definition\"");
 				HTML_OPEN_WITH("p", "class=\"defnprototype\"");
 				WRITE("%S", mr.exp[1]);
@@ -633,7 +633,7 @@ void InformFlavouredMarkdown::HM_intervene_after_Phase_I(markdown_feature *featu
 	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) <= 2)) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
-		while (Regexp::match(&mr, line, L"(%c*) %{(%C+)%} *")) {
+		while (Regexp::match(&mr, line, U"(%c*) %{(%C+)%} *")) {
 			markdown_item *hm_item = Markdown::new_item(HEADING_MARKER_MIT);
 			hm_item->stashed = Str::duplicate(mr.exp[1]);
 			Str::clear(line); Str::copy(line, mr.exp[0]);
@@ -670,7 +670,7 @@ void InformFlavouredMarkdown::PG_intervene_after_Phase_I(markdown_feature *featu
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, line, L"%{(%C+?):%} *(%c*)")) {
+		if (Regexp::match(&mr, line, U"%{(%C+?):%} *(%c*)")) {
 			MDBlockParser::change_type(NULL, md, GATE_MIT);
 			md->details = TRUE;
 			Str::clear(line); Str::copy(line, mr.exp[0]);
@@ -801,7 +801,7 @@ block (if there is one) names the language in use.
 	TEMPORARY_TEXT(language_text)
 	TEMPORARY_TEXT(language)
 	for (int i=0; i<Str::len(md->info_string); i++) {
-		wchar_t c = Str::get_at(md->info_string, i);
+		inchar32_t c = Str::get_at(md->info_string, i);
 		if ((c == ' ') || (c == '\t')) break;
 		PUT_TO(language_text, c);
 	}
@@ -865,7 +865,7 @@ use "transcript" instead.
 			int ts = FALSE;
 			for (int i=0; i<Str::len(colouring); i++) {
 				if (Str::get_at(colouring, i) == STRING_COLOUR) {
-					wchar_t c = Str::get_at(md->stashed, i);
+					inchar32_t c = Str::get_at(md->stashed, i);
 					if (c == '[') ts = TRUE;
 					if (ts) Str::put_at(colouring, i, EXTRACT_COLOUR);
 					if (c == ']') ts = FALSE;
@@ -898,7 +898,7 @@ use "transcript" instead.
 	line_count++;
 	if (Str::is_whitespace(line)) tabular = FALSE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"Table %c*")) tabular = TRUE;
+	if (Regexp::match(&mr, line, U"Table %c*")) tabular = TRUE;
 	Regexp::dispose_of(&mr);
 	if (tabular) {
 		if (tabulating) {
@@ -1025,10 +1025,10 @@ and this is fiddly but elementary in the usual way of HTML tables:
 @ =
 void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, text_stream *text,
 	text_stream *colouring, int from, int to, int mode) {
-	wchar_t current_col = 0;
+	inchar32_t current_col = 0;
 	for (int i=from; i<to; i++) {
-		wchar_t c = Str::get_at(text, i);
-		wchar_t col = Str::get_at(colouring, i);
+		inchar32_t c = Str::get_at(text, i);
+		inchar32_t col = Str::get_at(colouring, i);
 		if (col != current_col) {
 			if (current_col) HTML_CLOSE("span");
 			text_stream *span_class = NULL;

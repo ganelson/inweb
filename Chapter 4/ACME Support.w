@@ -63,7 +63,7 @@ void ACMESupport::expand(OUTPUT_STREAM, text_stream *prototype, text_stream *S,
 	int N, filename *F) {
 	if (Str::len(prototype) > 0) {
 		for (int i=0; i<Str::len(prototype); i++) {
-			wchar_t c = Str::get_at(prototype, i);
+			inchar32_t c = Str::get_at(prototype, i);
 			if ((c == '%') && (Str::get_at(prototype, i+1) == 'S') && (S)) {
 				WRITE("%S", S);
 				i++;
@@ -207,7 +207,7 @@ bibliographic variable, but don't do that.
 =
 void ACMESupport::post_analysis(programming_language *self, web *W) {
 	int check_namespaces = FALSE;
-	if (Str::eq_wide_string(Bibliographic::get_datum(W->md, I"Namespaces"), L"On"))
+	if (Str::eq_wide_string(Bibliographic::get_datum(W->md, I"Namespaces"), U"On"))
 		check_namespaces = TRUE;
 	language_function *fn;
 	LOOP_OVER(fn, language_function) {
