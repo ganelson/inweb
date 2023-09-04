@@ -3694,9 +3694,9 @@ void  CStrings__free_ssas(void) ;
 int  Wide__len(const inchar32_t *p) ;
 #line 20 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__cmp(inchar32_t *A, inchar32_t *B) ;
-#line 32 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 40 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__atoi(inchar32_t *p) ;
-#line 37 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 57 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 void  Wide__copy(inchar32_t *to, inchar32_t *from) ;
 #line 38 "inweb/foundation-module/Chapter 4/String Manipulation.w"
 text_stream * Str__new(void) ;
@@ -15819,27 +15819,47 @@ int Wide__len(const inchar32_t *p) {
 #line 20 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int Wide__cmp(inchar32_t *A, inchar32_t *B) {
 	int i = 0;
-	while ((A[i] != 0) && (B[i] != 0))
+	while (1)
 	{
-		if (A[i] > B[i]) return 1;
-		else if (A[i] < B[i]) return -1;
+		inchar32_t a = A[i];
+		inchar32_t b = B[i];
+		if (a == b)
+		{
+			if (a == 0) return 0;
+		}
+		else
+		{
+			return (a > b) ? 1 : -1;
+		}
 		i++;
 	}
 	return 0;
 }
 
-#line 32 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 40 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int Wide__atoi(inchar32_t *p) {
-	return 0;/*(int) wcstol(p, NULL, 10)*/
+	int val = 0, sign = 1;
+	while (Characters__is_whitespace(*p)) p++;
+	if (*p == '-')
+	{
+		sign = -1;
+		p++;
+	}
+	while (Characters__isdigit(*p))
+	{
+		val = (val * 10) + (int) (*p - '0');
+		p++;
+	}
+	return val * sign;
 }
 
-#line 37 "inweb/foundation-module/Chapter 4/Wide Strings.w"
+#line 57 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 void Wide__copy(inchar32_t *to, inchar32_t *from) {
 	int i = 0;
 	while (1)
 	{
 		to[i] = from[i];
-		if (to[i] == 0) break;
+		if (to[i] == 0) return;
 		i++;
 	}
 }
