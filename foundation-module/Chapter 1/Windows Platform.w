@@ -387,7 +387,11 @@ void Platform::configure_terminal(void) {
 
 = (very early code)
 typedef HANDLE foundation_thread;
-typedef int foundation_thread_attributes;
+typedef struct Win32_Thread_Attrs
+{
+	SIZE_T StackSize;
+}
+foundation_thread_attributes;
 
 struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
@@ -405,7 +409,7 @@ int Platform::create_thread(foundation_thread *pt, const foundation_thread_attri
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*) malloc(sizeof (struct Win32_Thread_Start));
 	start->fn = fn;
 	start->arg = arg;
-	HANDLE thread = CreateThread(0, 0, Platform::Win32_Thread_Func, start, 0, 0);
+	HANDLE thread = CreateThread(0, pa->StackSize, Platform::Win32_Thread_Func, start, 0, 0);
 	if (thread == 0) {
 		free(start);
 		return 1;
@@ -420,10 +424,11 @@ int Platform::join_thread(foundation_thread pt, void** rv) {
 }
 
 void Platform::init_thread(foundation_thread_attributes* pa, size_t size) {
+	pa->StackSize = size;
 }
 
 size_t Platform::get_thread_stack_size(foundation_thread_attributes* pa) {
-	return 1000000; /* 1Mb, the Windows default */
+	return pa->StackSize;
 }
 
 @ This function returns the number of logical cores in the host computer --

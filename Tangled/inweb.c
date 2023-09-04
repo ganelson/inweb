@@ -258,13 +258,17 @@ int Platform__system(const char *cmd) {
 #ifdef PLATFORM_WINDOWS
 #line 389 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
-typedef int foundation_thread_attributes;
+typedef struct Win32_Thread_Attrs
+{
+	SIZE_T StackSize;
+}
+foundation_thread_attributes;
 
 struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 490 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 495 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -3057,35 +3061,35 @@ void  Platform__Win32_ResetConsole(void) ;
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 403 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 407 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 418 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 422 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 422 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 426 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 425 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 430 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 435 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 440 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 456 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 461 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 460 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 465 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 466 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 471 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -9501,7 +9505,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 396 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 400 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -9514,7 +9518,7 @@ int Platform__create_thread(foundation_thread *pt, const foundation_thread_attri
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*) malloc(sizeof (struct Win32_Thread_Start));
 	start->fn = fn;
 	start->arg = arg;
-	HANDLE thread = CreateThread(0, 0, Platform__Win32_Thread_Func, start, 0, 0);
+	HANDLE thread = CreateThread(0, pa->StackSize, Platform__Win32_Thread_Func, start, 0, 0);
 	if (thread == 0) {
 		free(start);
 		return 1;
@@ -9529,15 +9533,16 @@ int Platform__join_thread(foundation_thread pt, void** rv) {
 }
 
 void Platform__init_thread(foundation_thread_attributes* pa, size_t size) {
+	pa->StackSize = size;
 }
 
 size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
-	return 1000000; /* 1Mb, the Windows default */
+	return pa->StackSize;
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 435 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 440 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__get_core_count(void) {
 	int count = 0;
 	SYSTEM_INFO sysInfo;
@@ -9553,7 +9558,7 @@ int Platform__get_core_count(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 456 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 461 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
