@@ -505,7 +505,6 @@ void Unit::test_Markdown(text_stream *arg) {
 	MarkdownVariations::remove_feature(testy_Markdown, ENTITIES_MARKDOWNFEATURE);
 
 	MarkdownVariations::add_feature(testy_Markdown, DESCRIPTIVE_INFORM_HEADINGS_MARKDOWNFEATURE);
-	MarkdownVariations::add_feature(testy_Markdown, INDOC_FILE_DIVISIONS_MARKDOWNFEATURE);
 
 	markdown_feature *boxed_quotes = MarkdownVariations::new_feature(I"boxed code blocks", BOXED_QUOTES_MARKDOWNFEATURE);
 	METHOD_ADD(boxed_quotes, RENDER_MARKDOWN_MTID, Unit::boxed_quote_renderer);
