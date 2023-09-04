@@ -68,19 +68,26 @@ just that installation and use of Foundation-built tools is less convenient.)
 
 =
 void Platform::where_am_i(inchar32_t *p, size_t length) {
-  char path[_MAX_PATH];
-	DWORD result = GetModuleFileName(NULL, path, _MAX_PATH);
-	if ((result == 0) || (result >= length))
-    p[0] = 0;
-  else
-  {
-    for (int i = 0;; i++)
-    {
-      p[i] = (inchar32_t)path[i];
-      if (p[i] == '\0')
-        break;
-    }
-  }
+	WCHAR path[_MAX_PATH];
+	DWORD result = GetModuleFileNameW(NULL, path, _MAX_PATH);
+	if ((result == 0) || (result >= _MAX_PATH))
+	{
+		p[0] = 0;
+		return;
+	}
+
+	size_t i = 0;
+	while (1)
+	{
+		if ((i >= length) || (i >= _MAX_PATH))
+		{
+			p[0] = 0;
+			return;
+		}
+		p[i] = (inchar32_t)path[i];
+		if (p[i] == '\0') return;
+		i++;
+	}
 }
 
 @h Shell commands.
