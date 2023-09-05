@@ -1878,7 +1878,7 @@ inchar32_t Characters::remove_wchar_t_accent(inchar32_t charcode) {
 @ This will do until we properly use Unicode character classes some day:
 
 =
-int Characters::isalphabetic(int letter) {
-	return Characters::isalpha((inchar32_t) Characters::remove_accent(letter));
+int Characters::isalphabetic(inchar32_t letter) {
+	return Characters::isalpha(Characters::remove_wchar_t_accent(letter));
 }
 

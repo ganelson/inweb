@@ -3673,7 +3673,7 @@ int  Characters__remove_accent(int charcode) ;
 #line 1874 "inweb/foundation-module/Chapter 4/Characters.w"
 inchar32_t  Characters__remove_wchar_t_accent(inchar32_t charcode) ;
 #line 1881 "inweb/foundation-module/Chapter 4/Characters.w"
-int  Characters__isalphabetic(int letter) ;
+int  Characters__isalphabetic(inchar32_t letter) ;
 #line 25 "inweb/foundation-module/Chapter 4/C Strings.w"
 int  CStrings__strlen_unbounded(const char *p) ;
 #line 35 "inweb/foundation-module/Chapter 4/C Strings.w"
@@ -15733,8 +15733,8 @@ inchar32_t Characters__remove_wchar_t_accent(inchar32_t charcode) {
 }
 
 #line 1881 "inweb/foundation-module/Chapter 4/Characters.w"
-int Characters__isalphabetic(int letter) {
-	return Characters__isalpha((inchar32_t) Characters__remove_accent(letter));
+int Characters__isalphabetic(inchar32_t letter) {
+	return Characters__isalpha(Characters__remove_wchar_t_accent(letter));
 }
 
 
