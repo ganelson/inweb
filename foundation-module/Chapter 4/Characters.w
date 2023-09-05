@@ -1775,7 +1775,7 @@ Returns a combined character code, or 0 if there is no combining
 to be done.
 
 =
-int Characters::combine_accent(inchar32_t accent, inchar32_t letter) {
+inchar32_t Characters::combine_accent(inchar32_t accent, inchar32_t letter) {
 	switch(accent) {
 		case 0x0300: /* Unicode combining grave */
 			switch(letter) {
@@ -1829,14 +1829,8 @@ It's occasionally useful to simplify text used as a filename by removing
 the more obvious accents from it.
 
 =
-int Characters::make_filename_safe(int charcode) {
+inchar32_t Characters::make_filename_safe(inchar32_t charcode) {
 	charcode = Characters::remove_accent(charcode);
-	if (charcode >= 128) charcode = '-';
-	return charcode;
-}
-
-inchar32_t Characters::make_wchar_t_filename_safe(inchar32_t charcode) {
-	charcode = Characters::remove_wchar_t_accent(charcode);
 	if (charcode >= 128) charcode = '-';
 	return charcode;
 }
@@ -1844,7 +1838,7 @@ inchar32_t Characters::make_wchar_t_filename_safe(inchar32_t charcode) {
 @ The following strips the accent, if present, from an ISO Latin-1 character:
 
 =
-int Characters::remove_accent(int charcode) {
+inchar32_t Characters::remove_accent(inchar32_t charcode) {
 	switch (charcode) {
 		case 0xC0: case 0xC1: case 0xC2: case 0xC3:
 		case 0xC4: case 0xC5: charcode = 'A'; break;
@@ -1871,14 +1865,10 @@ int Characters::remove_accent(int charcode) {
 	return charcode;
 }
 
-inchar32_t Characters::remove_wchar_t_accent(inchar32_t charcode) {
-	return (inchar32_t) Characters::remove_accent((int) charcode);
-}
-
 @ This will do until we properly use Unicode character classes some day:
 
 =
 int Characters::isalphabetic(inchar32_t letter) {
-	return Characters::isalpha(Characters::remove_wchar_t_accent(letter));
+	return Characters::isalpha(Characters::remove_accent(letter));
 }
 

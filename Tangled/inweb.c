@@ -3663,16 +3663,12 @@ int  Characters__is_ASCII_digit(inchar32_t c) ;
 #line 1765 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__is_control_character(inchar32_t c) ;
 #line 1778 "inweb/foundation-module/Chapter 4/Characters.w"
-int  Characters__combine_accent(inchar32_t accent, inchar32_t letter) ;
+inchar32_t  Characters__combine_accent(inchar32_t accent, inchar32_t letter) ;
 #line 1832 "inweb/foundation-module/Chapter 4/Characters.w"
-int  Characters__make_filename_safe(int charcode) ;
-#line 1838 "inweb/foundation-module/Chapter 4/Characters.w"
-inchar32_t  Characters__make_wchar_t_filename_safe(inchar32_t charcode) ;
-#line 1847 "inweb/foundation-module/Chapter 4/Characters.w"
-int  Characters__remove_accent(int charcode) ;
-#line 1874 "inweb/foundation-module/Chapter 4/Characters.w"
-inchar32_t  Characters__remove_wchar_t_accent(inchar32_t charcode) ;
-#line 1881 "inweb/foundation-module/Chapter 4/Characters.w"
+inchar32_t  Characters__make_filename_safe(inchar32_t charcode) ;
+#line 1841 "inweb/foundation-module/Chapter 4/Characters.w"
+inchar32_t  Characters__remove_accent(inchar32_t charcode) ;
+#line 1871 "inweb/foundation-module/Chapter 4/Characters.w"
 int  Characters__isalphabetic(inchar32_t letter) ;
 #line 25 "inweb/foundation-module/Chapter 4/C Strings.w"
 int  CStrings__strlen_unbounded(const char *p) ;
@@ -15638,7 +15634,7 @@ int Characters__is_control_character(inchar32_t c) {
 }
 
 #line 1778 "inweb/foundation-module/Chapter 4/Characters.w"
-int Characters__combine_accent(inchar32_t accent, inchar32_t letter) {
+inchar32_t Characters__combine_accent(inchar32_t accent, inchar32_t letter) {
 	switch(accent) {
 		case 0x0300: /* Unicode combining grave */
 			switch(letter) {
@@ -15688,20 +15684,14 @@ int Characters__combine_accent(inchar32_t accent, inchar32_t letter) {
 }
 
 #line 1832 "inweb/foundation-module/Chapter 4/Characters.w"
-int Characters__make_filename_safe(int charcode) {
+inchar32_t Characters__make_filename_safe(inchar32_t charcode) {
 	charcode = Characters__remove_accent(charcode);
 	if (charcode >= 128) charcode = '-';
 	return charcode;
 }
 
-inchar32_t Characters__make_wchar_t_filename_safe(inchar32_t charcode) {
-	charcode = Characters__remove_wchar_t_accent(charcode);
-	if (charcode >= 128) charcode = '-';
-	return charcode;
-}
-
-#line 1847 "inweb/foundation-module/Chapter 4/Characters.w"
-int Characters__remove_accent(int charcode) {
+#line 1841 "inweb/foundation-module/Chapter 4/Characters.w"
+inchar32_t Characters__remove_accent(inchar32_t charcode) {
 	switch (charcode) {
 		case 0xC0: case 0xC1: case 0xC2: case 0xC3:
 		case 0xC4: case 0xC5: charcode = 'A'; break;
@@ -15728,13 +15718,9 @@ int Characters__remove_accent(int charcode) {
 	return charcode;
 }
 
-inchar32_t Characters__remove_wchar_t_accent(inchar32_t charcode) {
-	return (inchar32_t) Characters__remove_accent((int) charcode);
-}
-
-#line 1881 "inweb/foundation-module/Chapter 4/Characters.w"
+#line 1871 "inweb/foundation-module/Chapter 4/Characters.w"
 int Characters__isalphabetic(inchar32_t letter) {
-	return Characters__isalpha(Characters__remove_wchar_t_accent(letter));
+	return Characters__isalpha(Characters__remove_accent(letter));
 }
 
 
