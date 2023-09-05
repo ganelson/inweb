@@ -190,6 +190,21 @@ void Pathnames::to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	DISCARD_TEXT(pt)
 }
 
+void Pathnames::to_text_relative_forward_slashed(OUTPUT_STREAM, pathname *P, pathname *R) {
+	TEMPORARY_TEXT(rt)
+	TEMPORARY_TEXT(pt)
+	WRITE_TO(rt, "%/p", R);
+	WRITE_TO(pt, "%/p", P);
+	int n = Str::len(pt);
+	if ((Str::prefix_eq(rt, pt, n)) && (Str::get_at(rt, n) == '/')) {
+		Str::delete_n_characters(rt, n+1);
+		WRITE("%S", rt);
+	} else if (Str::eq(rt, pt) == FALSE)
+		internal_error("pathname not relative to pathname");
+	DISCARD_TEXT(rt)
+	DISCARD_TEXT(pt)
+}
+
 pathname *Pathnames::up(pathname *P) {
 	if (P == NULL) internal_error("can't go up from root directory");
 	return P->pathname_of_parent;
