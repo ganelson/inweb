@@ -133,7 +133,7 @@ encoding, and possibly in a multibyte encoding such as UTF-8) to a wide-char
 string.
 
 @<Transcode buffer, which is locale-encoded, into the wide-char buffer@> =
-    size_t convert_len = mbstowcs(p, buffer, length);
+    size_t convert_len = mbstowcs((wchar_t *) p, buffer, length);
     if (convert_len == (size_t)-1) @<Fail@>; // wouldn't fit
 
 @ And now the Mac version: ^"ifdef-PLATFORM_MACOS"
@@ -156,7 +156,7 @@ void Platform::where_am_i(inchar32_t *p, size_t length) {
 
     /* Next, convert the obtained buffer (which is a string in the local
      * filename encoding, possibly multibyte) to a wide-char string. */
-    convert_len = mbstowcs(p, absolute_path, length);
+    convert_len = mbstowcs((wchar_t *) p, absolute_path, length);
     if (convert_len == (size_t)-1) @<Fail@>;
 }
 

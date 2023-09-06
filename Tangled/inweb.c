@@ -96,7 +96,7 @@ void Platform__where_am_i(inchar32_t *p, size_t length) {
 
     /* Next, convert the obtained buffer (which is a string in the local
      * filename encoding, possibly multibyte) to a wide-char string. */
-    convert_len = mbstowcs(p, absolute_path, length);
+    convert_len = mbstowcs((wchar_t *) p, absolute_path, length);
     if (convert_len == (size_t)-1) 
 {
 #ifdef PLATFORM_POSIX
@@ -8979,7 +8979,7 @@ void Platform__where_am_i(inchar32_t *p, size_t length) {
 {
 #ifdef PLATFORM_POSIX
 #line 136 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-    size_t convert_len = mbstowcs(p, buffer, length);
+    size_t convert_len = mbstowcs((wchar_t *) p, buffer, length);
     if (convert_len == (size_t)-1) 
 {
 #ifdef PLATFORM_POSIX
