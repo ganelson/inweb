@@ -965,6 +965,8 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 	wchar_t prev_c = 0;
 	md_charpos prev_pos = Markdown::nowhere();
 	int escaped = FALSE;
+	while ((Markdown::somewhere(from)) && (Markdown::plainish(from.md) == FALSE))
+		from = Markdown::advance_up_to(from, to);
 	for (md_charpos pos = from; Markdown::somewhere(pos); pos = Markdown::advance_up_to(pos, to)) {
 		wchar_t c = Markdown::get(pos);
 		if ((c == '\\') && (escaped == FALSE)) escaped = TRUE;
@@ -1444,9 +1446,11 @@ typedef struct md_emphasis_delimiter {
 } md_emphasis_delimiter;
 
 @<Find the possible emphasis delimiters@> =
-	int open_count[3] = { 0, 0, 0 }, close_count[3] = { 0, 0, 0 }, both_count[3] = { 0, 0, 0 }; 
-	for (md_charpos pos = Markdown::left_edge_of(owner->down);
-		Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
+	int open_count[3] = { 0, 0, 0 }, close_count[3] = { 0, 0, 0 }, both_count[3] = { 0, 0, 0 };
+	md_charpos from = Markdown::left_edge_of(owner->down);
+	while ((Markdown::somewhere(from)) && (Markdown::plainish(from.md) == FALSE))
+		from = Markdown::advance(from);
+	for (md_charpos pos = from; Markdown::somewhere(pos); pos = Markdown::advance(pos)) {
 		int run = MDInlineParser::delimiter_run(pos, mask);
 		if (run != 0) {
 			if (no_delimiters >= MAX_MD_EMPHASIS_DELIMITERS) break;
