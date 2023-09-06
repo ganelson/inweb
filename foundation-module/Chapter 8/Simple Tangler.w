@@ -143,7 +143,7 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 		Str::clear(command);
 		Str::clear(argument);
 		@<Read next character@>;
-		NewCharacter: if (cr == (inchar32_t) EOF) break;
+		NewCharacter: if (cr == CH32EOF) break;
 		if (((cr == '@') || (cr == '=')) && (col == 1)) {
 			int inweb_syntax = -1;
 			if (cr == '=') @<Read the rest of line as an equals-heading@>
@@ -152,7 +152,7 @@ from a web |W|, we translate that into the path |W/Sections/Juggling.i6t|.
 			continue;
 		}
 		if (comment == FALSE) @<Deal with material which isn't commentary@>;
-	} while (cr != (inchar32_t) EOF);
+	} while (cr != CH32EOF);
 	DISCARD_TEXT(command)
 	DISCARD_TEXT(argument)
 
@@ -165,7 +165,7 @@ increment the line count in such cases.)
 @<Read next character@> =
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -173,8 +173,8 @@ increment the line count in such cases.)
 			}
 		}
 	} else if (text) {
-		cr = Str::get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str::get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -334,7 +334,7 @@ be the empty string: see above). The argument must not include |}|.
 	int com_mode = TRUE;
 	while (TRUE) {
 		@<Read next character@>;
-		if ((cr == '}') || (cr == (inchar32_t) EOF)) break;
+		if ((cr == '}') || (cr == CH32EOF)) break;
 		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
 		if (com_mode) PUT_TO(command, cr);
 		else PUT_TO(argument, cr);
@@ -347,7 +347,7 @@ I7 material within I6:
 	TEMPORARY_TEXT(material)
 	while (TRUE) {
 		@<Read next character@>;
-		if (cr == (inchar32_t) EOF) break;
+		if (cr == CH32EOF) break;
 		if ((cr == ')') && (Str::get_last_char(material) == '+')) {
 			Str::delete_last_character(material); break; }
 		PUT_TO(material, cr);

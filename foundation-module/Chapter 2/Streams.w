@@ -511,9 +511,9 @@ int Streams::open_from_UTF8_string(text_stream *stream, const char *c_string) {
 
 void Streams::write_UTF8_string(text_stream *stream, const char *c_string) {
 	unicode_file_buffer ufb = TextFiles::create_ufb();
-	int c;
+	inchar32_t c;
 	while ((c = TextFiles::utf8_fgetc(NULL, &c_string, &ufb)) != 0)
-		Streams::putci(c, stream);
+		Streams::putc(c, stream);
 }
 
 @ ...all of which use:

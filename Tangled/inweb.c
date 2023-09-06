@@ -759,6 +759,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     	for (string_position P = Str__start(ST); P.index < Str__len(P.S); P.index++)
 #define LOOP_BACKWARDS_THROUGH_TEXT(P, ST)\
     	for (string_position P = Str__back(Str__end(ST)); P.index >= 0; P.index--)
+#define CH32EOF 0xFFFFFFFFU /* We need an EOF marker that will fit in an inchar32_t. */
 #define NONE_UFBHM 1
 #define ZSCII_UFBHM 2
 #define UNICODE_UFBHM 3
@@ -1471,7 +1472,7 @@ typedef struct tabbed_string_iterator {
 	int line_position;
 	int tab_spacing;
 } tabbed_string_iterator;
-#line 233 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 237 "inweb/foundation-module/Chapter 4/Text Files.w"
 typedef struct unicode_file_buffer {
 	char unicode_feed_buffer[32]; /* holds a single escape such as "[unicode 3106]" */
 	int ufb_counter; /* position in the unicode feed buffer */
@@ -1484,7 +1485,7 @@ typedef struct text_file_position {
 	struct unicode_file_buffer ufb;
 	int line_count; /* counting from 1 */
 	int line_position;
-	int skip_terminator;
+	inchar32_t skip_terminator;
 	int actively_scanning; /* whether we are still interested in the rest of the file */
 } text_file_position;
 #line 71 "inweb/foundation-module/Chapter 4/Preprocessor.w"
@@ -3880,19 +3881,19 @@ text_file_position  TextFiles__nowhere(void) ;
 text_file_position  TextFiles__at(filename *F, int line) ;
 #line 84 "inweb/foundation-module/Chapter 4/Text Files.w"
 int  TextFiles__read(filename *F, int escape_oddities, char *message, int serious, 	void (iterator)(text_stream *, text_file_position *, void *), 	text_file_position *start_at, void *state) ;
-#line 177 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 180 "inweb/foundation-module/Chapter 4/Text Files.w"
 void  TextFiles__read_line(OUTPUT_STREAM, int escape_oddities, text_file_position *tfp) ;
-#line 201 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 205 "inweb/foundation-module/Chapter 4/Text Files.w"
 void  TextFiles__lose_interest(text_file_position *tfp) ;
-#line 239 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 243 "inweb/foundation-module/Chapter 4/Text Files.w"
 unicode_file_buffer  TextFiles__create_ufb(void) ;
-#line 246 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 250 "inweb/foundation-module/Chapter 4/Text Files.w"
 unicode_file_buffer  TextFiles__create_filtered_ufb(int mode) ;
-#line 252 "inweb/foundation-module/Chapter 4/Text Files.w"
-int  TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) ;
-#line 344 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 256 "inweb/foundation-module/Chapter 4/Text Files.w"
+inchar32_t  TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) ;
+#line 348 "inweb/foundation-module/Chapter 4/Text Files.w"
 int  TextFiles__write_file_contents(OUTPUT_STREAM, filename *F) ;
-#line 349 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 353 "inweb/foundation-module/Chapter 4/Text Files.w"
 void  TextFiles__write_file_contents_helper(text_stream *text, text_file_position *tfp, 	void *state) ;
 #line 28 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 void  Preprocessor__preprocess(filename *prototype, filename *F, text_stream *header, 	linked_list *special_macros, general_pointer specifics, inchar32_t comment_char, 	int encoding) ;
@@ -10619,9 +10620,9 @@ int Streams__open_from_UTF8_string(text_stream *stream, const char *c_string) {
 
 void Streams__write_UTF8_string(text_stream *stream, const char *c_string) {
 	unicode_file_buffer ufb = TextFiles__create_ufb();
-	int c;
+	inchar32_t c;
 	while ((c = TextFiles__utf8_fgetc(NULL, &c_string, &ufb)) != 0)
-		Streams__putci(c, stream);
+		Streams__putc(c, stream);
 }
 
 #line 531 "inweb/foundation-module/Chapter 2/Streams.w"
@@ -16626,29 +16627,30 @@ int TextFiles__read(filename *F, int escape_oddities, char *message, int serious
 ;
 	
 {
-#line 130 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 132 "inweb/foundation-module/Chapter 4/Text Files.w"
 	TEMPORARY_TEXT(line)
-	int i = 0, c = ' ';
-	while ((c != EOF) && (tfp.actively_scanning)) {
+	int i = 0;
+	inchar32_t c = ' ';
+	while ((c != CH32EOF) && (tfp.actively_scanning)) {
 		c = TextFiles__utf8_fgetc(tfp.handle_when_open, NULL, &tfp.ufb);
-		if ((c == EOF) || (c == '\x0a') || (c == '\x0d')) {
+		if ((c == CH32EOF) || (c == '\x0a') || (c == '\x0d')) {
 			Str__put_at(line, i, 0);
 			if ((i > 0) || (c != tfp.skip_terminator)) {
 				
 {
-#line 154 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 157 "inweb/foundation-module/Chapter 4/Text Files.w"
 	iterator(line, &tfp, state);
 	tfp.line_count++;
 
 }
-#line 137 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 140 "inweb/foundation-module/Chapter 4/Text Files.w"
 ;
 				if (c == '\x0a') tfp.skip_terminator = '\x0d';
 				if (c == '\x0d') tfp.skip_terminator = '\x0a';
 			} else tfp.skip_terminator = 'X';
 			
 {
-#line 168 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 171 "inweb/foundation-module/Chapter 4/Text Files.w"
 	tfp.line_position = (int) (ftell(tfp.handle_when_open));
 	if (tfp.line_position == -1) {
 		if (serious)
@@ -16658,22 +16660,22 @@ int TextFiles__read(filename *F, int escape_oddities, char *message, int serious
 	}
 
 }
-#line 141 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 144 "inweb/foundation-module/Chapter 4/Text Files.w"
 ;
 			i = 0;
 		} else {
-			Str__put_at(line, i++, (inchar32_t) c);
+			Str__put_at(line, i++, c);
 		}
 	}
 	if ((i > 0) && (tfp.actively_scanning))
 		
 {
-#line 154 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 157 "inweb/foundation-module/Chapter 4/Text Files.w"
 	iterator(line, &tfp, state);
 	tfp.line_count++;
 
 }
-#line 148 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 151 "inweb/foundation-module/Chapter 4/Text Files.w"
 ;
 	DISCARD_TEXT(line)
 
@@ -16684,13 +16686,14 @@ int TextFiles__read(filename *F, int escape_oddities, char *message, int serious
 	return tfp.line_count;
 }
 
-#line 177 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 180 "inweb/foundation-module/Chapter 4/Text Files.w"
 void TextFiles__read_line(OUTPUT_STREAM, int escape_oddities, text_file_position *tfp) {
 	Str__clear(OUT);
-	int i = 0, c = ' ';
-	while ((c != EOF) && (tfp->actively_scanning)) {
+	int i = 0;
+	inchar32_t c = ' ';
+	while ((c != CH32EOF) && (tfp->actively_scanning)) {
 		c = TextFiles__utf8_fgetc(tfp->handle_when_open, NULL, &tfp->ufb);
-		if ((c == EOF) || (c == '\x0a') || (c == '\x0d')) {
+		if ((c == CH32EOF) || (c == '\x0a') || (c == '\x0d')) {
 			Str__put_at(OUT, i, 0);
 			if ((i > 0) || (c != tfp->skip_terminator)) {
 				if (c == '\x0a') tfp->skip_terminator = '\x0d';
@@ -16700,19 +16703,19 @@ void TextFiles__read_line(OUTPUT_STREAM, int escape_oddities, text_file_position
 			i = 0;
 			tfp->line_count++; return;
 		}
-		Str__put_at(OUT, i++, (inchar32_t) c);
+		Str__put_at(OUT, i++, c);
 	}
 	if ((i > 0) && (tfp->actively_scanning)) tfp->line_count++;
 }
 
-#line 201 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 205 "inweb/foundation-module/Chapter 4/Text Files.w"
 void TextFiles__lose_interest(text_file_position *tfp) {
 	tfp->actively_scanning = FALSE;
 }
 
-#line 231 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 235 "inweb/foundation-module/Chapter 4/Text Files.w"
 
-#line 238 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 242 "inweb/foundation-module/Chapter 4/Text Files.w"
 
 unicode_file_buffer TextFiles__create_ufb(void) {
 	unicode_file_buffer ufb;
@@ -16727,19 +16730,19 @@ unicode_file_buffer TextFiles__create_filtered_ufb(int mode) {
 	return ufb;
 }
 
-int TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) {
+inchar32_t TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) {
 	int c = EOF, conts, mode = (ufb)?ufb->handling_mode:NONE_UFBHM;
 	if ((ufb) && (ufb->ufb_counter >= 0)) {
 		if (ufb->unicode_feed_buffer[ufb->ufb_counter] == 0) ufb->ufb_counter = -1;
-		else return ufb->unicode_feed_buffer[ufb->ufb_counter++];
+		else return (inchar32_t) ufb->unicode_feed_buffer[ufb->ufb_counter++];
 	}
 	if (from) c = fgetc(from); else if (or_from) c = ((unsigned char) *((*or_from)++));
-	if (c == EOF) return c; /* ruling out EOF leaves a genuine byte from the file */
-	if (c<0x80) return c; /* in all other cases, a UTF-8 continuation sequence begins */
+	if (c == EOF) return CH32EOF; /* ruling out EOF leaves a genuine byte from the file */
+	if (c<0x80) return (inchar32_t) c; /* in all other cases, a UTF-8 continuation sequence begins */
 
 	
 {
-#line 286 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 290 "inweb/foundation-module/Chapter 4/Text Files.w"
     if (c<0xC0) return '?'; /* malformed UTF-8 */
 	if (c<0xE0) { c = c & 0x1f; conts = 1; }
 	else if (c<0xF0) { c = c & 0xf; conts = 2; }
@@ -16756,13 +16759,13 @@ int TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer 
 	}
 
 }
-#line 262 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 266 "inweb/foundation-module/Chapter 4/Text Files.w"
 ;
-	if (c == 0xFEFF) return c; /* the Unicode BOM non-character */
+	if (c == 0xFEFF) return (inchar32_t) c; /* the Unicode BOM non-character */
 
     if (mode != NONE_UFBHM) 
 {
-#line 329 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 333 "inweb/foundation-module/Chapter 4/Text Files.w"
 	if (c == 0x85) return '\x0d'; /* NEL, or "next line" */
 	if (c == 0xa0) return ' '; /* non-breaking space */
 	if (c == 0xd7) return 'x'; /* convert multiplication sign to lower case "x" */
@@ -16773,23 +16776,23 @@ int TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer 
 	if ((c >= 0x2028) && (c <= 0x2029)) return '\x0d'; /* fancy newlines */
 
 }
-#line 265 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 269 "inweb/foundation-module/Chapter 4/Text Files.w"
 ;
 
 	if (mode == ZSCII_UFBHM) {
 	    
 {
-#line 311 "inweb/foundation-module/Chapter 4/Text Files.w"
-	if ((c == 0xa1) || (c == 0xa3) || (c == 0xbf)) return c; /* pound sign, inverted ! and ? */
+#line 315 "inweb/foundation-module/Chapter 4/Text Files.w"
+	if ((c == 0xa1) || (c == 0xa3) || (c == 0xbf)) return (inchar32_t) c; /* pound sign, inverted ! and ? */
 	if ((c >= 0xc0) && (c <= 0xff)) { /* accented West European letters, but... */
 		if ((c != 0xd0) && (c != 0xf0) && /* not Icelandic eths */
 		    (c != 0xde) && (c != 0xfe) && /* nor Icelandic thorns */
 			(c != 0xf7)) /* nor division signs */
-			return c;
+			return (inchar32_t) c;
 	}
 
 }
-#line 268 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 272 "inweb/foundation-module/Chapter 4/Text Files.w"
 ;
 		if (ufb) {
 			sprintf(ufb->unicode_feed_buffer, "[unicode %d]", c);
@@ -16798,10 +16801,10 @@ int TextFiles__utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer 
 		}
 		return '?';
 	}
-	return c;
+	return (inchar32_t) c;
 }
 
-#line 344 "inweb/foundation-module/Chapter 4/Text Files.w"
+#line 348 "inweb/foundation-module/Chapter 4/Text Files.w"
 int TextFiles__write_file_contents(OUTPUT_STREAM, filename *F) {
 	return TextFiles__read(F, FALSE, NULL, FALSE,
 		&TextFiles__write_file_contents_helper, NULL, OUT);
@@ -33044,7 +33047,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33052,8 +33055,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33065,7 +33068,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 }
 #line 145 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
-		NewCharacter: if (cr == (inchar32_t) EOF) break;
+		NewCharacter: if (cr == CH32EOF) break;
 		if (((cr == '@') || (cr == '=')) && (col == 1)) {
 			int inweb_syntax = -1;
 			if (cr == '=') 
@@ -33078,7 +33081,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33086,8 +33089,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33130,7 +33133,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33138,8 +33141,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33265,7 +33268,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33273,8 +33276,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33299,7 +33302,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33307,8 +33310,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33320,7 +33323,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 }
 #line 336 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
-		if ((cr == '}') || (cr == (inchar32_t) EOF)) break;
+		if ((cr == '}') || (cr == CH32EOF)) break;
 		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
 		if (com_mode) PUT_TO(command, cr);
 		else PUT_TO(argument, cr);
@@ -33343,7 +33346,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33351,8 +33354,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33375,7 +33378,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 #line 166 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 	if (Input_File) {
 		if (final_newline) {
-			cr = (inchar32_t) EOF;
+			cr = CH32EOF;
 		} else {
 			cr = (inchar32_t) fgetc(Input_File);
 			if ((cr == (inchar32_t) EOF) && (prev_cr != 10) && (prev_cr != 13)) {
@@ -33383,8 +33386,8 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 			}
 		}
 	} else if (text) {
-		cr = Str__get_at(text, sfp); if (cr == 0) cr = (inchar32_t) EOF; else sfp++;
-	} else cr = (inchar32_t) EOF;
+		cr = Str__get_at(text, sfp); if (cr == 0) cr = CH32EOF; else sfp++;
+	} else cr = CH32EOF;
 	col++;
 	if ((cr == 10) || (cr == 13)) {
 		col = 0;
@@ -33396,7 +33399,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 }
 #line 349 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
-		if (cr == (inchar32_t) EOF) break;
+		if (cr == CH32EOF) break;
 		if ((cr == ')') && (Str__get_last_char(material) == '+')) {
 			Str__delete_last_character(material); break; }
 		PUT_TO(material, cr);
@@ -33418,7 +33421,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 }
 #line 154 "inweb/foundation-module/Chapter 8/Simple Tangler.w"
 ;
-	} while (cr != (inchar32_t) EOF);
+	} while (cr != CH32EOF);
 	DISCARD_TEXT(command)
 	DISCARD_TEXT(argument)
 
