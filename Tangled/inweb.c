@@ -1773,7 +1773,7 @@ typedef struct md_link_parse {
 	struct md_link_dictionary_entry *link_reference; /* or |NULL| if it's not by reference */
 	struct md_charpos last; /* rightmost character of the whole construct */
 } md_link_parse;
-#line 1437 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1439 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 typedef struct md_emphasis_delimiter {
 	struct md_charpos pos; /* first character in the run */
 	int width;             /* for example, 7 for a run of seven asterisks */
@@ -3499,16 +3499,18 @@ void  Pathnames__writer_r(OUTPUT_STREAM, pathname *P, inchar32_t divider) ;
 #line 178 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) ;
 #line 193 "inweb/foundation-module/Chapter 3/Pathnames.w"
+void  Pathnames__to_text_relative_forward_slashed(OUTPUT_STREAM, pathname *P, pathname *R) ;
+#line 208 "inweb/foundation-module/Chapter 3/Pathnames.w"
 pathname * Pathnames__up(pathname *P) ;
-#line 198 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 213 "inweb/foundation-module/Chapter 3/Pathnames.w"
 text_stream * Pathnames__directory_name(pathname *P) ;
-#line 209 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 224 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) ;
-#line 245 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 260 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int  Pathnames__create_in_file_system(pathname *P) ;
-#line 263 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 278 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__rsync(pathname *source, pathname *dest) ;
-#line 280 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 295 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int  Pathnames__move_directory(pathname *from, pathname *to) ;
 #line 22 "inweb/foundation-module/Chapter 3/Filenames.w"
 filename * Filenames__in(pathname *P, text_stream *file_name) ;
@@ -4558,19 +4560,19 @@ int  MDInlineParser__extended_autolink_trailing_punctuation_char(inchar32_t c) ;
 void  MDInlineParser__links_and_images(markdown_variation *variation, 	md_links_dictionary *link_refs, markdown_item *owner, int images_only) ;
 #line 960 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 md_link_parse  MDInlineParser__first_valid_link(markdown_variation *variation, 	md_links_dictionary *link_refs, md_charpos from, md_charpos to, 	int images_only, int links_only) ;
-#line 1274 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1276 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 void  MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owner, 	int mask) ;
-#line 1304 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1306 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__delimiter_run(md_charpos pos, int mask) ;
-#line 1335 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1337 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__left_flanking(md_charpos pos, int count) ;
-#line 1347 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1349 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__right_flanking(md_charpos pos, int count) ;
-#line 1362 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1364 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__can_open_emphasis(md_charpos pos, int count) ;
-#line 1371 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1373 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__can_close_emphasis(md_charpos pos, int count) ;
-#line 1676 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1680 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__penalty(markdown_item *md) ;
 #line 25 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__render_extended(OUTPUT_STREAM, markdown_item *md, 	markdown_variation *variation) ;
@@ -12359,11 +12361,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B47";
+			char *svn = "7.2.1-beta+1B49";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "4 September 2023";
+			char *d = "6 September 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -12652,6 +12654,21 @@ void Pathnames__to_text_relative(OUTPUT_STREAM, pathname *P, pathname *R) {
 	DISCARD_TEXT(pt)
 }
 
+void Pathnames__to_text_relative_forward_slashed(OUTPUT_STREAM, pathname *P, pathname *R) {
+	TEMPORARY_TEXT(rt)
+	TEMPORARY_TEXT(pt)
+	WRITE_TO(rt, "%/p", R);
+	WRITE_TO(pt, "%/p", P);
+	int n = Str__len(pt);
+	if ((Str__prefix_eq(rt, pt, n)) && (Str__get_at(rt, n) == '/')) {
+		Str__delete_n_characters(rt, n+1);
+		WRITE("%S", rt);
+	} else if (Str__eq(rt, pt) == FALSE)
+		internal_error("pathname not relative to pathname");
+	DISCARD_TEXT(rt)
+	DISCARD_TEXT(pt)
+}
+
 pathname *Pathnames__up(pathname *P) {
 	if (P == NULL) internal_error("can't go up from root directory");
 	return P->pathname_of_parent;
@@ -12662,7 +12679,7 @@ text_stream *Pathnames__directory_name(pathname *P) {
 	return P->intermediate;
 }
 
-#line 209 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 224 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 	TEMPORARY_TEXT(url)
 	int found = FALSE;
@@ -12694,7 +12711,7 @@ void Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) {
 	DISCARD_TEXT(url)
 }
 
-#line 245 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 260 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int Pathnames__create_in_file_system(pathname *P) {
 	if (P == NULL) return TRUE; /* the root of the file system always exists */
 	if (P->known_to_exist) return TRUE;
@@ -12707,7 +12724,7 @@ int Pathnames__create_in_file_system(pathname *P) {
 	return P->known_to_exist;
 }
 
-#line 263 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 278 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void Pathnames__rsync(pathname *source, pathname *dest) {
 	char transcoded_source[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(pn)
@@ -12722,7 +12739,7 @@ void Pathnames__rsync(pathname *source, pathname *dest) {
 	Platform__rsync(transcoded_source, transcoded_dest);
 }
 
-#line 280 "inweb/foundation-module/Chapter 3/Pathnames.w"
+#line 295 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int Pathnames__move_directory(pathname *from, pathname *to) {
 	TEMPORARY_TEXT(from_path)
 	TEMPORARY_TEXT(to_path)
@@ -26610,7 +26627,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	md_link_parse result;
 	
 {
-#line 996 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 998 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	result.is_link = NOT_APPLICABLE;
 	result.first = Markdown__nowhere();
 	result.link_text_from = Markdown__nowhere();
@@ -26631,6 +26648,8 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	inchar32_t prev_c = 0;
 	md_charpos prev_pos = Markdown__nowhere();
 	int escaped = FALSE;
+	while ((Markdown__somewhere(from)) && (Markdown__plainish(from.md) == FALSE))
+		from = Markdown__advance_up_to(from, to);
 	for (md_charpos pos = from; Markdown__somewhere(pos); pos = Markdown__advance_up_to(pos, to)) {
 		inchar32_t c = Markdown__get(pos);
 		if ((c == '\\') && (escaped == FALSE)) escaped = TRUE;
@@ -26646,7 +26665,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 					if (pass == 2) pos = pass_pos;
 					
 {
-#line 1017 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1019 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (((links_only == FALSE) || (prev_c != '!')) &&
 		((images_only == FALSE) || (prev_c == '!'))) {
 		int link_rather_than_image = TRUE, uses = LINKS_MARKDOWNFEATURE;
@@ -26665,7 +26684,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 			md_charpos abandon_at = pos;
 			
 {
-#line 1069 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1071 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	inchar32_t c = Markdown__get(pos);
 	md_charpos prev_pos = pos;
 	result.link_text_from = Markdown__advance_up_to(pos, to);
@@ -26697,12 +26716,12 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	pos = Markdown__advance_up_to_plainish_only(pos, to);
 
 }
-#line 1033 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1035 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 			if (Markdown__get(pos) == '[') {
 				
 {
-#line 1100 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1102 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	md_charpos prev_pos = pos;
 	pos = Markdown__advance_up_to_plainish_only(pos, to);
 	result.link_destination_from = pos;
@@ -26741,7 +26760,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	result.link_reference = ref;
 
 }
-#line 1035 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1037 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 			} else {
 				if ((Markdown__get(pos) != '(') || (pass == 2)) {
@@ -26753,7 +26772,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 					}
 					
 {
-#line 1141 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1143 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	TEMPORARY_TEXT(to)
 	for (int i=0; i<Str__len(label); i++) {
 		if ((Str__get_at(label, i) == '\\') &&
@@ -26767,7 +26786,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	DISCARD_TEXT(to)
 
 }
-#line 1044 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1046 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					md_link_dictionary_entry *ref = Markdown__look_up(link_refs, label);
 					if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
@@ -26779,7 +26798,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 					pos = Markdown__advance_up_to_quasi_plainish_only(pos, to);
 					
 {
-#line 1255 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1257 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int line_endings = 0;
 	inchar32_t c = Markdown__get(pos);
 	while ((c == ' ') || (c == '\t') || (c == '\n')) {
@@ -26789,11 +26808,11 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	}
 
 }
-#line 1053 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1055 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					if (Markdown__get(pos) != ')') 
 {
-#line 1154 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1156 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (Markdown__get(pos) == '<') {
 		pos = Markdown__advance_up_to_quasi_plainish_only(pos, to);
 		result.link_destination_from = pos;
@@ -26835,11 +26854,11 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	}
 
 }
-#line 1054 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1056 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					
 {
-#line 1255 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1257 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int line_endings = 0;
 	inchar32_t c = Markdown__get(pos);
 	while ((c == ' ') || (c == '\t') || (c == '\n')) {
@@ -26849,11 +26868,11 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	}
 
 }
-#line 1055 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1057 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					if (Markdown__get(pos) != ')') 
 {
-#line 1195 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1197 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (Markdown__get(pos) == '"') {
 		pos = Markdown__advance_up_to_plainish_only(pos, to);
 		result.link_title_from = pos;
@@ -26914,11 +26933,11 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	}
 
 }
-#line 1056 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1058 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					
 {
-#line 1255 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1257 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int line_endings = 0;
 	inchar32_t c = Markdown__get(pos);
 	while ((c == ' ') || (c == '\t') || (c == '\n')) {
@@ -26928,7 +26947,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	}
 
 }
-#line 1057 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1059 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					if (Markdown__get(pos) != ')') ABANDON_LINK("no ')'");
 				}
@@ -26941,7 +26960,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	}
 
 }
-#line 981 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 983 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 					AbandonHope: ;
 				}
@@ -26956,7 +26975,7 @@ md_link_parse MDInlineParser__first_valid_link(markdown_variation *variation,
 	return result;
 }
 
-#line 1274 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1276 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owner,
 	int mask) {
 	for (markdown_item *md = owner->down; md; md = md->next)
@@ -26970,15 +26989,17 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 	
 {
-#line 1392 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1394 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int no_delimiters = 0;
 	md_emphasis_delimiter delimiters[MAX_MD_EMPHASIS_DELIMITERS];
 	
 {
-#line 1447 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1449 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int open_count[3] = { 0, 0, 0 }, close_count[3] = { 0, 0, 0 }, both_count[3] = { 0, 0, 0 };
-	for (md_charpos pos = Markdown__left_edge_of(owner->down);
-		Markdown__somewhere(pos); pos = Markdown__advance(pos)) {
+	md_charpos from = Markdown__left_edge_of(owner->down);
+	while ((Markdown__somewhere(from)) && (Markdown__plainish(from.md) == FALSE))
+		from = Markdown__advance(from);
+	for (md_charpos pos = from; Markdown__somewhere(pos); pos = Markdown__advance(pos)) {
 		int run = MDInlineParser__delimiter_run(pos, mask);
 		if (run != 0) {
 			if (no_delimiters >= MAX_MD_EMPHASIS_DELIMITERS) break;
@@ -27021,7 +27042,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1394 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1396 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	markdown_item *options[MAX_MD_EMPHASIS_DELIMITERS];
@@ -27034,7 +27055,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 			if (CD->can_close == FALSE) continue;
 			
 {
-#line 1503 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1507 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (CD->type != OD->type) continue;
 	if ((CD->can_open) || (OD->can_close)) {
 		int sum = OD->width + CD->width;
@@ -27045,14 +27066,14 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1404 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1406 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 			if (tracing_Markdown_parser) {
 				WRITE("Option %d is to pair D%d with D%d\n", no_options, open_i, close_i);
 			}
 			
 {
-#line 1522 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1526 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	markdown_item *option = Markdown__deep_copy(owner);
 	options[no_options++] = option;
 	markdown_item *OI = NULL, *CI = NULL;
@@ -27069,7 +27090,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	md_charpos last_trimmed_char_right;
 	
 {
-#line 1565 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1569 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int O_start = OD->pos.at, O_width = OD->width;
 	if (O_start < OI->from) { O_width -= (OI->from - O_start); O_start = OI->from; }
 
@@ -27092,25 +27113,25 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1536 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1540 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	
 {
-#line 1587 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1591 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	for (int w=0; w<width; w++) {
 		Markdown__put_offset(first_trimmed_char_left, w, ':');
 		Markdown__put_offset(first_trimmed_char_right, w, ':');
 	}
 
 }
-#line 1538 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1542 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	markdown_item *em_top, *em_bottom;
 	
 {
-#line 1606 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1610 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (OD->type == 0) {
 		em_top = Markdown__new_item(STRIKETHROUGH_MIT);
 		em_bottom = em_top;
@@ -27125,11 +27146,11 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1541 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1545 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 	
 {
-#line 1620 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1624 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	markdown_item *chain = option->down;
 	if (tracing_Markdown_parser) {
 		Markdown__debug_chain_label(OUT, chain, TL_IS_2416);
@@ -27162,7 +27183,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	em_bottom->down = emphasis;
 
 }
-#line 1542 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1546 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	MDInlineParser__emphasis(variation, em_bottom, mask);
@@ -27177,13 +27198,13 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1408 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1410 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 		}
 	}
 	if (no_options > 0) 
 {
-#line 1652 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1656 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int best_is = 1, best_score = 100000000;
 	for (int pair_i = 0; pair_i < no_options; pair_i++) {
 		int score = MDInlineParser__penalty(options[pair_i]);
@@ -27195,11 +27216,11 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	owner->down = options[best_is]->down;
 
 }
-#line 1411 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1413 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 }
-#line 1285 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1287 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 	if (tracing_Markdown_parser) {
 		OUTDENT;
@@ -27207,7 +27228,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 }
 
-#line 1304 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1306 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int MDInlineParser__delimiter_run(md_charpos pos, int mask) {
 	int count = 0;
 	if (mask & ASTERISK_EMPHASIS_BIT) {
@@ -27226,7 +27247,7 @@ int MDInlineParser__delimiter_run(md_charpos pos, int mask) {
 	return 0;
 }
 
-#line 1335 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1337 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int MDInlineParser__left_flanking(md_charpos pos, int count) {
 	if (count == 0) return FALSE;
 	if (count < 0) count = -count;
@@ -27251,7 +27272,7 @@ int MDInlineParser__right_flanking(md_charpos pos, int count) {
 	return FALSE;
 }
 
-#line 1362 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1364 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int MDInlineParser__can_open_emphasis(md_charpos pos, int count) {
 	if (MDInlineParser__left_flanking(pos, count) == FALSE) return FALSE;
 	if (count > 0) return TRUE;
@@ -27270,9 +27291,9 @@ int MDInlineParser__can_close_emphasis(md_charpos pos, int count) {
 	return FALSE;
 }
 
-#line 1445 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1447 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 
-#line 1676 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1680 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int MDInlineParser__penalty(markdown_item *md) {
 	if (md) {
 		int penalty = 0;
@@ -47986,7 +48007,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B47\t/built 4 September 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B49\t/built 6 September 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
