@@ -34459,7 +34459,7 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_PREFIX)) {
 			int pos = from;
 			if (rule->match_prefix != UNSPACED_RULE_PREFIX) {
-				while ((pos > 0) && (Characters__is_whitespace(pos-1))) pos--;
+				while ((pos > 0) && (Characters__is_whitespace(Str__get_at(rule->match_text, pos-1)))) pos--;
 				if ((rule->match_prefix == SPACED_RULE_PREFIX) && (pos == from))
 					return FALSE;
 			}
@@ -34472,7 +34472,7 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_SUFFIX)) {
 			int pos = to + 1;
 			if (rule->match_prefix != UNSPACED_RULE_SUFFIX) {
-				while ((pos < Str__len(rule->match_text)) && (Characters__is_whitespace(pos))) pos++;
+				while ((pos < Str__len(rule->match_text)) && (Characters__is_whitespace(Str__get_at(rule->match_text, pos)))) pos++;
 				if ((rule->match_prefix == SPACED_RULE_SUFFIX) && (pos == from))
 					return FALSE;
 			}
