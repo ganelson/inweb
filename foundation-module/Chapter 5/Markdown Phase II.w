@@ -197,6 +197,7 @@ notation, also used by indoc.
 
 @<Insert an index item@> =
 	int name_inversion = FALSE;
+
 	if (Str::get_first_char(lemma) == '@') {
 		Str::delete_first_character(lemma);
 		name_inversion = TRUE;

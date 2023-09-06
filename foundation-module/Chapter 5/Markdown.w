@@ -554,6 +554,7 @@ markdown_item *Markdown::deep_copy(markdown_item *md) {
 	}
 	copied->from = md->from;
 	copied->to = md->to;
+	copied->stashed = md->stashed;
 	copied->copied_from = md;
 	for (markdown_item *c = md->down; c; c = c->next)
 		Markdown::add_to(Markdown::deep_copy(c), copied);

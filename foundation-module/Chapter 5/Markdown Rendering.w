@@ -423,6 +423,14 @@ void MDRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {
 	}
 }
 
+@ Alternatively:
+
+=
+void MDRenderer::stream(OUTPUT_STREAM, text_stream *stream, int mode) {
+	for (int i=0; i<Str::len(stream); i++)
+		MDRenderer::char(OUT, Str::get_at(stream, i), mode);
+}
+
 @ Down at the individual character level, there are three mutually exclusive
 ways to render characters: they all agree on ASCII digits and letters.
 

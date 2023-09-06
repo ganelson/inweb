@@ -572,37 +572,84 @@ void InformFlavouredMarkdown::pbiapi_r(markdown_item *md) {
 @h Phrase definition boxes.
 
 @e PHRASE_DEFN_BOXES_MARKDOWNFEATURE
+@e PHRASE_HEADER_MIT
 
 @<Add the phrase defn boxes feature@> =
 	markdown_feature *pd = MarkdownVariations::new_feature(I"phrase defn boxes",
 		PHRASE_DEFN_BOXES_MARKDOWNFEATURE);
+	METHOD_ADD(pd, POST_PHASE_I_MARKDOWN_MTID,
+		InformFlavouredMarkdown::PD_intervene_after_Phase_I);
 	METHOD_ADD(pd, RENDER_MARKDOWN_MTID, InformFlavouredMarkdown::PD_render);
 	MarkdownVariations::add_feature(Inform_flavoured_Markdown, PHRASE_DEFN_BOXES_MARKDOWNFEATURE);
+	Markdown::new_leaf_block_type(PHRASE_HEADER_MIT, I"PHRASE_HEADER");
 
 @ =
-int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *OUT,
-	markdown_item *md, int mode) {
+void InformFlavouredMarkdown::PD_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == BLOCK_QUOTE_MIT) {
 		if ((md->down) && (md->down->type == PARAGRAPH_MIT)) {
 			match_results mr = Regexp::create_mr();
-			if ((Regexp::match(&mr, md->down->stashed, L"phrase: *{(%c*?)} *(%c+?)\n(%c*)")) ||
-				(Regexp::match(&mr, md->down->stashed, L"(phrase): *(%c+?)\n(%c*)"))) {
-				HTML_OPEN_WITH("div", "class=\"definition\"");
-				HTML_OPEN_WITH("p", "class=\"defnprototype\"");
-				WRITE("%S", mr.exp[1]);
-				HTML_CLOSE("p");
-				HTML_TAG("br");
-				markdown_item *remainder =
-					Markdown::parse_inline_extended(mr.exp[2], InformFlavouredMarkdown::variation());
-				Markdown::render_extended(OUT, remainder, InformFlavouredMarkdown::variation());
-				for (markdown_item *ch = md->down->next; ch; ch = ch->next)
-					Markdown::render_extended(OUT, ch, InformFlavouredMarkdown::variation());
-				HTML_CLOSE("div");
-				Regexp::dispose_of(&mr);
-				return TRUE;
+			if ((Regexp::match(&mr, md->down->stashed, L"phrase: *%{(%c*?)%} *(%c+?)")) ||
+				(Regexp::match(&mr, md->down->stashed, L"(phrase): *(%c+?)"))) {
+				markdown_item *join_to = NULL;
+				TEMPORARY_TEXT(phrase)
+				for (int i=0; i<Str::len(mr.exp[1]); i++) {
+					if (Str::get_at(mr.exp[1], i) == '&') {
+						@<Insert a phrase header here@>;
+						Str::clear(phrase);
+					} else {
+						PUT_TO(phrase, Str::get_at(mr.exp[1], i));
+					}
+				}
+				@<Insert a phrase header here@>;
+				DISCARD_TEXT(phrase)
 			}
-			Regexp::dispose_of(&mr);
 		}
+	}
+	for (markdown_item *ch = md->down; ch; ch=ch->next) {
+		InformFlavouredMarkdown::PD_intervene_after_Phase_I(feature, ch, link_references);
+	}
+}
+
+@<Insert a phrase header here@> =
+	Str::trim_white_space(phrase);
+	if (Str::len(phrase) > 0) {
+		markdown_item *ph = Markdown::new_item(PHRASE_HEADER_MIT);
+		ph->stashed = Str::duplicate(phrase);
+		if (join_to == NULL) { ph->next = md->down->next; md->down = ph; }
+		else { ph->next = join_to->next; join_to->next = ph; }
+		join_to = ph; 
+
+		markdown_item *im = Markdown::new_item(INDEX_MARKER_MIT);
+		im->stashed = Str::new();
+		text_stream *category = I"+to+";
+		if (Str::begins_with(phrase, I"if ")) category = I"+toif+";
+		if (Str::begins_with(phrase, I"say ")) category = I"+tosay+";
+		WRITE_TO(im->stashed, "%S%S", category, phrase);
+		if (Str::get_last_char(im->stashed) == ':')
+			Str::delete_last_character(im->stashed);
+		im->details = 1;
+		im->next = join_to->next; join_to->next = im;
+		join_to = im; 
+	}
+
+@
+
+=
+int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *OUT,
+	markdown_item *md, int mode) {
+	if ((md->type == BLOCK_QUOTE_MIT) && (md->down) && (md->down->type == PHRASE_HEADER_MIT)) {
+		HTML_OPEN_WITH("div", "class=\"definition\"");
+		for (markdown_item *ch = md->down; ch; ch = ch->next)
+			Markdown::render_extended(OUT, ch, InformFlavouredMarkdown::variation());
+		HTML_CLOSE("div");
+		return TRUE;
+	}
+	if (md->type == PHRASE_HEADER_MIT) {
+		HTML_OPEN_WITH("p", "class=\"defnprototype\"");
+		MDRenderer::stream(OUT, md->stashed, mode);
+		HTML_CLOSE("p");
+		return TRUE;
 	}
 	return FALSE;
 }
