@@ -336,6 +336,7 @@ void InformFlavouredMarkdown::detect_embedded_examples_r(markdown_item *md, int 
 			IFM_example *new_eg = InformFlavouredMarkdown::new_example(mr.exp[1], NULL,
 				star_count, ++(*example_number));
 			new_eg->cue = NULL;
+			new_eg->secondary_cue = NULL;
 			new_eg->header = md;
 			if (star_count == 0) {
 				markdown_item *E = InformFlavouredMarkdown::error_item(
@@ -418,6 +419,9 @@ typedef struct IFM_example {
 	struct markdown_item *header;
 	struct markdown_item *secondary_header;
 	struct markdown_item *cue;
+	struct markdown_item *secondary_cue;
+	struct text_stream *primary_label;
+	struct text_stream *secondary_label;
 	int star_count;
 	int number;
 	struct text_stream *insignia;
@@ -435,6 +439,9 @@ IFM_example *InformFlavouredMarkdown::new_example(text_stream *title, text_strea
 	E->header = NULL;
 	E->secondary_header = NULL;
 	E->cue = NULL;
+	E->secondary_cue = NULL;
+	E->primary_label = NULL;
+	E->secondary_label = NULL;
 	E->star_count = star_count;
 	E->number = ecount;
 	E->insignia = Str::new();
@@ -453,42 +460,61 @@ CSS is now much more reliable.
 int InformFlavouredMarkdown::EE_render(markdown_feature *feature,
 	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		HTML_TAG("hr"); /* rule a line before the example heading */
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
-		InformFlavouredMarkdown::render_example_heading(OUT, E, FALSE);
+		InformFlavouredMarkdown::render_example_heading(OUT, E, md);
 		return TRUE;
 	}
 	return FALSE;
 }
 
 void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example *E,
-	int in_stand_alone_file) {
+	markdown_item *md) {
 	TEMPORARY_TEXT(link)
-	if (E->cue) {
-		if (in_stand_alone_file) {
-			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
+	TEMPORARY_TEXT(linkl)
+	TEMPORARY_TEXT(linkr)
+	text_stream *label = E->secondary_label;
+	if (md == NULL) {
+		if (E->cue) {
+			WRITE_TO(linkl, "style=\"text-decoration: none\" href=\"%S\"",
 				MarkdownVariations::URL_for_heading(E->cue));
-		} else {
-			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
-				E->URL);
+		}
+		if (E->secondary_cue) {
+			WRITE_TO(linkr, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations::URL_for_heading(E->secondary_cue));
+		}
+	} else {
+		WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
+			E->URL);
+		if ((md == E->header) && (E->secondary_cue)) {
+			WRITE_TO(linkl, "%S", link);
+			WRITE_TO(linkr, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations::URL_for_heading(E->secondary_cue));
+			label = E->secondary_label;
+		}
+		if ((md == E->secondary_header) && (E->cue)) {
+			WRITE_TO(linkl, "%S", link);
+			WRITE_TO(linkr, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations::URL_for_heading(E->cue));
+			label = E->primary_label;
 		}
 	}
 
-	HTML_TAG("hr"); /* rule a line before the example heading */
 	HTML_OPEN_WITH("div", "class=\"examplebox\"");
 
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("div", "class=\"exampleleft\"");
 	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
-	if (Str::len(link) > 0) HTML_OPEN_WITH("a", "%S", link);
+	if (Str::len(linkl) > 0) HTML_OPEN_WITH("a", "%S", linkl);
 	HTML::begin_span(OUT, I"extensionexampleletter");
 	WRITE("%S", E->insignia);
 	HTML::end_span(OUT);
-	if (Str::len(link) > 0) HTML_CLOSE("a");
+	if (Str::len(linkl) > 0) HTML_CLOSE("a");
 	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("div");
 
-	/* Right hand cell: the asterisks and title, with rubric underneath */
-	HTML_OPEN_WITH("div", "class=\"exampleright\"");
+	/* Middle cell: the asterisks and title, with rubric underneath */
+	HTML_OPEN_WITH("div", "class=\"examplemiddle\"");
 	if (Str::len(link) > 0) HTML_OPEN_WITH("a", "%S", link);
 	for (int asterisk = 0; asterisk < E->star_count; asterisk++)
 		PUT(0x2605); /* the Unicode for "black star" emoji */
@@ -501,15 +527,30 @@ void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example 
 	HTML::end_span(OUT);
 	HTML::begin_span(OUT, I"indexblack");
 	InformFlavouredMarkdown::render_text(OUT, E->name);
-	HTML_TAG("br");
-	InformFlavouredMarkdown::render_text(OUT, E->description);
 	HTML::end_span(OUT);
 	HTML_CLOSE("b");
+	HTML_TAG("br");
+	HTML::begin_span(OUT, I"indexblack");
+	InformFlavouredMarkdown::render_text(OUT, E->description);
+	HTML::end_span(OUT);
 	if (Str::len(link) > 0) HTML_CLOSE("a");
+	HTML_CLOSE("div");
+
+	/* Right hand cell: the cross-reference */
+	HTML_OPEN_WITH("div", "class=\"exampleright\"");
+	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
+	if (Str::len(linkr) > 0) HTML_OPEN_WITH("a", "%S", linkr);
+	HTML::begin_span(OUT, I"extensionexampleseealso");
+	WRITE("%S", label);
+	HTML::end_span(OUT);
+	if (Str::len(linkr) > 0) HTML_CLOSE("a");
+	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("div");
 
 	HTML_CLOSE("div");
 	DISCARD_TEXT(link)
+	DISCARD_TEXT(linkl)
+	DISCARD_TEXT(linkr)
 }
 
 @h Paste buttons.
