@@ -1798,13 +1798,16 @@ typedef struct markdown_feature {
 	struct method_set *methods;
 	CLASS_DEFINITION
 } markdown_feature;
-#line 415 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 416 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 typedef struct IFM_example {
 	struct text_stream *name;
 	struct text_stream *description;
 	struct markdown_item *header;
 	struct markdown_item *secondary_header;
 	struct markdown_item *cue;
+	struct markdown_item *secondary_cue;
+	struct text_stream *primary_label;
+	struct text_stream *secondary_label;
 	int star_count;
 	int number;
 	struct text_stream *insignia;
@@ -4654,41 +4657,41 @@ int  InformFlavouredMarkdown__render_descriptive_headings(markdown_feature *feat
 void  InformFlavouredMarkdown__EE_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
 #line 328 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__detect_embedded_examples_r(markdown_item *md, int *example_number) ;
-#line 365 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 366 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__regroup_examples_r(markdown_item *md, int *example_number) ;
-#line 392 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 393 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 markdown_item * InformFlavouredMarkdown__find_example(markdown_item *tree, int eg) ;
-#line 400 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 401 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__find_e(markdown_item *md, int eg, markdown_item **result, 	int *counter) ;
-#line 430 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 434 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 IFM_example * InformFlavouredMarkdown__new_example(text_stream *title, text_stream *desc, 	int star_count, int ecount) ;
-#line 453 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 460 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__EE_render(markdown_feature *feature, 	text_stream *OUT, markdown_item *md, int mode) ;
-#line 463 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example *E, 	int in_stand_alone_file) ;
-#line 530 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 471 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+void  InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example *E, 	markdown_item *md) ;
+#line 571 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
-#line 535 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 576 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__pbiapi_r(markdown_item *md) ;
-#line 587 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 628 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
-#line 639 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 680 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
-#line 686 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 727 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
-#line 723 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 764 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
-#line 745 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 786 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__expand_gate(markdown_item *md) ;
-#line 766 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 807 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__set_gatekeeper_function(int (gatekeeper)(text_stream *)) ;
-#line 770 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 811 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__PG_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
-#line 796 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 837 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
-#line 1054 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1095 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *text, 	text_stream *colouring, int from, int to, int mode) ;
-#line 1088 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1129 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__render_text(OUTPUT_STREAM, text_stream *text) ;
 #line 106 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 ebook * Epub__new(text_stream *title, char *prefix) ;
@@ -8837,6 +8840,8 @@ text_stream *TL_IS_3164 = NULL;
 text_stream *TL_IS_3165 = NULL;
 text_stream *TL_IS_3166 = NULL;
 text_stream *TL_IS_3167 = NULL;
+text_stream *TL_IS_3168 = NULL;
+text_stream *TL_IS_3169 = NULL;
 void register_tangled_text_literals(void);
 #line 57 "inweb/foundation-module/Chapter 2/Streams.w"
 #define WRITE(args...) Writers__printf(OUT, args)
@@ -12373,11 +12378,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B49";
+			char *svn = "7.2.1-beta+1B50";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "6 September 2023";
+			char *d = "9 September 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -28376,8 +28381,8 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 523 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	markdown_feature *pi = MarkdownVariations__new_feature(TL_IS_2463,
+#line 564 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	markdown_feature *pi = MarkdownVariations__new_feature(TL_IS_2465,
 		PASTE_BUTTONS_MARKDOWNFEATURE);
 	METHOD_ADD(pi, POST_PHASE_I_MARKDOWN_MTID,
 		InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I);
@@ -28388,63 +28393,63 @@ markdown_variation *InformFlavouredMarkdown__variation(void) {
 ;
 	
 {
-#line 578 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	markdown_feature *pd = MarkdownVariations__new_feature(TL_IS_2466,
+#line 619 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	markdown_feature *pd = MarkdownVariations__new_feature(TL_IS_2468,
 		PHRASE_DEFN_BOXES_MARKDOWNFEATURE);
 	METHOD_ADD(pd, POST_PHASE_I_MARKDOWN_MTID,
 		InformFlavouredMarkdown__PD_intervene_after_Phase_I);
 	METHOD_ADD(pd, RENDER_MARKDOWN_MTID, InformFlavouredMarkdown__PD_render);
 	MarkdownVariations__add_feature(Inform_flavoured_Markdown, PHRASE_DEFN_BOXES_MARKDOWNFEATURE);
-	Markdown__new_leaf_block_type(PHRASE_HEADER_MIT, TL_IS_2467);
+	Markdown__new_leaf_block_type(PHRASE_HEADER_MIT, TL_IS_2469);
 
 }
 #line 27 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	
 {
-#line 663 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	MarkdownVariations__new_feature(TL_IS_2473, INDEXING_MARKS_MARKDOWNFEATURE);
+#line 704 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	MarkdownVariations__new_feature(TL_IS_2475, INDEXING_MARKS_MARKDOWNFEATURE);
 	MarkdownVariations__add_feature(Inform_flavoured_Markdown,
 		INDEXING_MARKS_MARKDOWNFEATURE);
-	Markdown__new_quasiplainish_inline_type(INDEX_MARKER_MIT, TL_IS_2474);
+	Markdown__new_quasiplainish_inline_type(INDEX_MARKER_MIT, TL_IS_2476);
 
 }
 #line 28 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	
 {
-#line 677 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	markdown_feature *he = MarkdownVariations__new_feature(TL_IS_2475,
+#line 718 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	markdown_feature *he = MarkdownVariations__new_feature(TL_IS_2477,
 		HEADING_MARKERS_MARKDOWNFEATURE);
 	METHOD_ADD(he, POST_PHASE_I_MARKDOWN_MTID,
 		InformFlavouredMarkdown__HM_intervene_after_Phase_I);
 	MarkdownVariations__add_feature(Inform_flavoured_Markdown,
 		HEADING_MARKERS_MARKDOWNFEATURE);
-	Markdown__new_leaf_block_type(HEADING_MARKER_MIT, TL_IS_2476);
+	Markdown__new_leaf_block_type(HEADING_MARKER_MIT, TL_IS_2478);
 
 }
 #line 29 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	
 {
-#line 713 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-	markdown_feature *pg = MarkdownVariations__new_feature(TL_IS_2477,
+#line 754 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+	markdown_feature *pg = MarkdownVariations__new_feature(TL_IS_2479,
 		PARAGRAPH_GATING_MARKDOWNFEATURE);
 	METHOD_ADD(pg, POST_PHASE_I_MARKDOWN_MTID,
 		InformFlavouredMarkdown__PG_intervene_after_Phase_I);
 	MarkdownVariations__add_feature(Inform_flavoured_Markdown,
 		PARAGRAPH_GATING_MARKDOWNFEATURE);
 	METHOD_ADD(pg, RENDER_MARKDOWN_MTID, InformFlavouredMarkdown__PG_render);
-	Markdown__new_container_block_type(GATE_MIT, TL_IS_2478);
+	Markdown__new_container_block_type(GATE_MIT, TL_IS_2480);
 
 }
 #line 30 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	
 {
-#line 788 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 829 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	markdown_feature *sc =
-		MarkdownVariations__new_feature(TL_IS_2479,
+		MarkdownVariations__new_feature(TL_IS_2481,
 			INFORM_SYNTAX_COLOURING_MARKDOWNFEATURE);
 	METHOD_ADD(sc, RENDER_MARKDOWN_MTID, InformFlavouredMarkdown__SC_render);
 	MarkdownVariations__add_feature(Inform_flavoured_Markdown,
@@ -28680,6 +28685,7 @@ void InformFlavouredMarkdown__detect_embedded_examples_r(markdown_item *md, int 
 			IFM_example *new_eg = InformFlavouredMarkdown__new_example(mr.exp[1], NULL,
 				star_count, ++(*example_number));
 			new_eg->cue = NULL;
+			new_eg->secondary_cue = NULL;
 			new_eg->header = md;
 			if (star_count == 0) {
 				markdown_item *E = InformFlavouredMarkdown__error_item(
@@ -28700,7 +28706,7 @@ void InformFlavouredMarkdown__detect_embedded_examples_r(markdown_item *md, int 
 	}
 }
 
-#line 365 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 366 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__regroup_examples_r(markdown_item *md, int *example_number) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
 		if (md->down == NULL) {
@@ -28725,7 +28731,7 @@ void InformFlavouredMarkdown__regroup_examples_r(markdown_item *md, int *example
 	}
 }
 
-#line 392 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 393 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 markdown_item *InformFlavouredMarkdown__find_example(markdown_item *tree, int eg) {
 	if (eg <= 0) return NULL;
 	markdown_item *result = NULL;
@@ -28745,7 +28751,7 @@ void InformFlavouredMarkdown__find_e(markdown_item *md, int eg, markdown_item **
 	}
 }
 
-#line 429 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 433 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
 IFM_example *InformFlavouredMarkdown__new_example(text_stream *title, text_stream *desc,
 	int star_count, int ecount) {
@@ -28755,6 +28761,9 @@ IFM_example *InformFlavouredMarkdown__new_example(text_stream *title, text_strea
 	E->header = NULL;
 	E->secondary_header = NULL;
 	E->cue = NULL;
+	E->secondary_cue = NULL;
+	E->primary_label = NULL;
+	E->secondary_label = NULL;
 	E->star_count = star_count;
 	E->number = ecount;
 	E->insignia = Str__new();
@@ -28765,46 +28774,65 @@ IFM_example *InformFlavouredMarkdown__new_example(text_stream *title, text_strea
 	return E;
 }
 
-#line 453 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 460 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__EE_render(markdown_feature *feature,
 	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
+		HTML_TAG("hr"); /* rule a line before the example heading */
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
-		InformFlavouredMarkdown__render_example_heading(OUT, E, FALSE);
+		InformFlavouredMarkdown__render_example_heading(OUT, E, md);
 		return TRUE;
 	}
 	return FALSE;
 }
 
 void InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example *E,
-	int in_stand_alone_file) {
+	markdown_item *md) {
 	TEMPORARY_TEXT(link)
-	if (E->cue) {
-		if (in_stand_alone_file) {
-			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
+	TEMPORARY_TEXT(linkl)
+	TEMPORARY_TEXT(linkr)
+	text_stream *label = E->secondary_label;
+	if (md == NULL) {
+		if (E->cue) {
+			WRITE_TO(linkl, "style=\"text-decoration: none\" href=\"%S\"",
 				MarkdownVariations__URL_for_heading(E->cue));
-		} else {
-			WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
-				E->URL);
+		}
+		if (E->secondary_cue) {
+			WRITE_TO(linkr, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations__URL_for_heading(E->secondary_cue));
+		}
+	} else {
+		WRITE_TO(link, "style=\"text-decoration: none\" href=\"%S\"",
+			E->URL);
+		if ((md == E->header) && (E->secondary_cue)) {
+			WRITE_TO(linkl, "%S", link);
+			WRITE_TO(linkr, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations__URL_for_heading(E->secondary_cue));
+			label = E->secondary_label;
+		}
+		if ((md == E->secondary_header) && (E->cue)) {
+			WRITE_TO(linkl, "%S", link);
+			WRITE_TO(linkr, "style=\"text-decoration: none\" href=\"%S\"",
+				MarkdownVariations__URL_for_heading(E->cue));
+			label = E->primary_label;
 		}
 	}
 
-	HTML_TAG("hr"); /* rule a line before the example heading */
 	HTML_OPEN_WITH("div", "class=\"examplebox\"");
 
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("div", "class=\"exampleleft\"");
 	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
-	if (Str__len(link) > 0) HTML_OPEN_WITH("a", "%S", link);
+	if (Str__len(linkl) > 0) HTML_OPEN_WITH("a", "%S", linkl);
 	HTML__begin_span(OUT, TL_IS_2460);
 	WRITE("%S", E->insignia);
 	HTML__end_span(OUT);
-	if (Str__len(link) > 0) HTML_CLOSE("a");
+	if (Str__len(linkl) > 0) HTML_CLOSE("a");
 	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("div");
 
-	/* Right hand cell: the asterisks and title, with rubric underneath */
-	HTML_OPEN_WITH("div", "class=\"exampleright\"");
+	/* Middle cell: the asterisks and title, with rubric underneath */
+	HTML_OPEN_WITH("div", "class=\"examplemiddle\"");
 	if (Str__len(link) > 0) HTML_OPEN_WITH("a", "%S", link);
 	for (int asterisk = 0; asterisk < E->star_count; asterisk++)
 		PUT(0x2605); /* the Unicode for "black star" emoji */
@@ -28817,20 +28845,35 @@ void InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example 
 	HTML__end_span(OUT);
 	HTML__begin_span(OUT, TL_IS_2462);
 	InformFlavouredMarkdown__render_text(OUT, E->name);
-	HTML_TAG("br");
-	InformFlavouredMarkdown__render_text(OUT, E->description);
 	HTML__end_span(OUT);
 	HTML_CLOSE("b");
+	HTML_TAG("br");
+	HTML__begin_span(OUT, TL_IS_2463);
+	InformFlavouredMarkdown__render_text(OUT, E->description);
+	HTML__end_span(OUT);
 	if (Str__len(link) > 0) HTML_CLOSE("a");
+	HTML_CLOSE("div");
+
+	/* Right hand cell: the cross-reference */
+	HTML_OPEN_WITH("div", "class=\"exampleright\"");
+	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
+	if (Str__len(linkr) > 0) HTML_OPEN_WITH("a", "%S", linkr);
+	HTML__begin_span(OUT, TL_IS_2464);
+	WRITE("%S", label);
+	HTML__end_span(OUT);
+	if (Str__len(linkr) > 0) HTML_CLOSE("a");
+	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("div");
 
 	HTML_CLOSE("div");
 	DISCARD_TEXT(link)
+	DISCARD_TEXT(linkl)
+	DISCARD_TEXT(linkr)
 }
 
-#line 521 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 562 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 530 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 571 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown__pbiapi_r(tree);
@@ -28839,14 +28882,14 @@ void InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_fea
 void InformFlavouredMarkdown__pbiapi_r(markdown_item *md) {
 	markdown_item *current_sample = NULL;
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		if ((ch->type == CODE_BLOCK_MIT) && (Str__prefix_eq(ch->stashed, TL_IS_2464, 3))) {
+		if ((ch->type == CODE_BLOCK_MIT) && (Str__prefix_eq(ch->stashed, TL_IS_2466, 3))) {
 			ch->user_state = STORE_POINTER_markdown_item(ch);
 			current_sample = ch;
 			Str__delete_first_character(ch->stashed);
 			Str__delete_first_character(ch->stashed);
 			Str__delete_first_character(ch->stashed);
 		} else if ((ch->type == CODE_BLOCK_MIT) &&
-			(Str__prefix_eq(ch->stashed, TL_IS_2465, 3)) && (current_sample)) {
+			(Str__prefix_eq(ch->stashed, TL_IS_2467, 3)) && (current_sample)) {
 			ch->user_state = STORE_POINTER_markdown_item(current_sample);
 			Str__delete_first_character(ch->stashed);
 			Str__delete_first_character(ch->stashed);
@@ -28873,9 +28916,9 @@ void InformFlavouredMarkdown__pbiapi_r(markdown_item *md) {
 	}
 }
 
-#line 576 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 617 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 587 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 628 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == BLOCK_QUOTE_MIT) {
@@ -28889,7 +28932,7 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 					if (Str__get_at(mr.exp[1], i) == '&') {
 						
 {
-#line 615 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 656 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	Str__trim_white_space(phrase);
 	if (Str__len(phrase) > 0) {
 		markdown_item *ph = Markdown__new_item(PHRASE_HEADER_MIT);
@@ -28900,9 +28943,9 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 
 		markdown_item *im = Markdown__new_item(INDEX_MARKER_MIT);
 		im->stashed = Str__new();
-		text_stream *category = TL_IS_2468;
-		if (Str__begins_with(phrase, TL_IS_2469)) category = TL_IS_2470;
+		text_stream *category = TL_IS_2470;
 		if (Str__begins_with(phrase, TL_IS_2471)) category = TL_IS_2472;
+		if (Str__begins_with(phrase, TL_IS_2473)) category = TL_IS_2474;
 		WRITE_TO(im->stashed, "%S%S", category, phrase);
 		if (Str__get_last_char(im->stashed) == ':')
 			Str__delete_last_character(im->stashed);
@@ -28912,7 +28955,7 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 	}
 
 }
-#line 598 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 639 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 						Str__clear(phrase);
 					} else {
@@ -28921,7 +28964,7 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 				}
 				
 {
-#line 615 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 656 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	Str__trim_white_space(phrase);
 	if (Str__len(phrase) > 0) {
 		markdown_item *ph = Markdown__new_item(PHRASE_HEADER_MIT);
@@ -28932,9 +28975,9 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 
 		markdown_item *im = Markdown__new_item(INDEX_MARKER_MIT);
 		im->stashed = Str__new();
-		text_stream *category = TL_IS_2468;
-		if (Str__begins_with(phrase, TL_IS_2469)) category = TL_IS_2470;
+		text_stream *category = TL_IS_2470;
 		if (Str__begins_with(phrase, TL_IS_2471)) category = TL_IS_2472;
+		if (Str__begins_with(phrase, TL_IS_2473)) category = TL_IS_2474;
 		WRITE_TO(im->stashed, "%S%S", category, phrase);
 		if (Str__get_last_char(im->stashed) == ':')
 			Str__delete_last_character(im->stashed);
@@ -28944,7 +28987,7 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 	}
 
 }
-#line 604 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 645 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				DISCARD_TEXT(phrase)
 			}
@@ -28955,7 +28998,7 @@ void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *featu
 	}
 }
 
-#line 639 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 680 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	if ((md->type == BLOCK_QUOTE_MIT) && (md->down) && (md->down->type == PHRASE_HEADER_MIT)) {
@@ -28974,11 +29017,11 @@ int InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *O
 	return FALSE;
 }
 
-#line 661 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 702 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 675 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 716 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 686 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 727 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *md, md_links_dictionary *link_references) {
 	if ((md->type == HEADING_MIT) && (Markdown__get_heading_level(md) <= 2)) {
@@ -28998,9 +29041,9 @@ void InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *featu
 	}
 }
 
-#line 711 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 752 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 723 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 764 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == PARAGRAPH_MIT) {
@@ -29061,15 +29104,15 @@ int InformFlavouredMarkdown__PG_render(markdown_feature *feature, text_stream *O
 	return FALSE;
 }
 
-#line 786 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 827 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 
-#line 796 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 837 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	switch (md->type) {
 		case CODE_MIT:       
 {
-#line 810 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 851 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (mode & TAGS_MDRMODE) {
 		if (Markdown__get_backtick_count(md) == 1) {
 			HTML_OPEN_WITH("code", "class=\"inlinesourcetext\"");
@@ -29086,11 +29129,11 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
 
 }
-#line 799 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 840 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ; return TRUE;
 		case CODE_BLOCK_MIT: 
 {
-#line 829 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 870 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	TEMPORARY_TEXT(language_text)
 	TEMPORARY_TEXT(language)
 	for (int i=0; i<Str__len(md->info_string); i++) {
@@ -29105,7 +29148,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	}
 	
 {
-#line 857 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 898 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (Str__len(language) == 0) {
 		for (int i=0; i<Str__len(md->stashed); i++)
 			if ((Str__get_at(md->stashed, i) == '>') &&
@@ -29117,13 +29160,13 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	}
 
 }
-#line 841 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 882 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
-	if ((Str__eq_insensitive(language, TL_IS_2480)) ||
-		(Str__eq_insensitive(language, TL_IS_2481))) {
+	if ((Str__eq_insensitive(language, TL_IS_2482)) ||
+		(Str__eq_insensitive(language, TL_IS_2483))) {
 		
 {
-#line 868 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 909 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML_OPEN("blockquote");
 	if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {
 		markdown_item *first = RETRIEVE_POINTER_markdown_item(md->user_state);
@@ -29142,13 +29185,13 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		DISCARD_TEXT(accumulated)
 	}
 	TEMPORARY_TEXT(colouring)
-	programming_language *default_language = Languages__find_by_name(TL_IS_2483, NULL, FALSE);
+	programming_language *default_language = Languages__find_by_name(TL_IS_2485, NULL, FALSE);
 
 	programming_language *pl = default_language;
 	if (pl) {
 		Painter__reset_syntax_colouring(pl);
 		Painter__syntax_colour(pl, NULL, md->stashed, colouring, FALSE);
-		if (Str__eq(pl->language_name, TL_IS_2484)) {
+		if (Str__eq(pl->language_name, TL_IS_2486)) {
 			int ts = FALSE;
 			for (int i=0; i<Str__len(colouring); i++) {
 				if (Str__get_at(colouring, i) == STRING_COLOUR) {
@@ -29160,7 +29203,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 			}
 		}
 	}
-	HTML__begin_span(OUT, TL_IS_2485);
+	HTML__begin_span(OUT, TL_IS_2487);
 	int tabulating = FALSE, tabular = FALSE, line_count = 0;
 	TEMPORARY_TEXT(line)
 	TEMPORARY_TEXT(line_colouring)
@@ -29168,7 +29211,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (Str__get_at(md->stashed, k) == '\n') {
 			
 {
-#line 926 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 967 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	line_count++;
 	if (Str__is_whitespace(line)) tabular = FALSE;
 	match_results mr = Regexp__create_mr();
@@ -29178,58 +29221,58 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (tabulating) {
 			
 {
-#line 990 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1031 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__first_html_column(OUT, 0);
 
 }
-#line 933 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 974 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		} else {
 			
 {
-#line 974 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1015 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_span(OUT);
 	HTML_TAG("br");
 	HTML__begin_plain_html_table(OUT);
 	HTML__first_html_column(OUT, 0);
 
 }
-#line 935 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 976 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			tabulating = TRUE;
 		}
 		int cell_from = 0, cell_to = 0, i = 0;
 		
 {
-#line 986 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1027 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	cell_from = i; cell_to = cell_from;
-	HTML__begin_span(OUT, TL_IS_2486);
+	HTML__begin_span(OUT, TL_IS_2488);
 
 }
-#line 939 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 980 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		for (; i<Str__len(line); i++) {
 			if (Str__get_at(line, i) == '\t') {
 				
 {
-#line 980 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1021 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML__end_span(OUT);
 	HTML__next_html_column(OUT, 0);
 
 }
-#line 942 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 983 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				while (Str__get_at(line, i) == '\t') i++;
 				
 {
-#line 986 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1027 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	cell_from = i; cell_to = cell_from;
-	HTML__begin_span(OUT, TL_IS_2486);
+	HTML__begin_span(OUT, TL_IS_2488);
 
 }
-#line 944 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 985 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				i--;
 			} else {
@@ -29238,34 +29281,34 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		}
 		
 {
-#line 980 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1021 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML__end_span(OUT);
 	HTML__next_html_column(OUT, 0);
 
 }
-#line 950 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 991 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		
 {
-#line 993 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1034 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_row(OUT);
 
 }
-#line 951 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 992 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	} else {
 		if (line_count > 1) HTML_TAG("br");
 		if (tabulating) {
 			
 {
-#line 996 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1037 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_table(OUT);
-	HTML__begin_span(OUT, TL_IS_2487);
+	HTML__begin_span(OUT, TL_IS_2489);
 
 }
-#line 955 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 996 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			tabulating = FALSE;
 		}
@@ -29282,7 +29325,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	WRITE("\n");
 
 }
-#line 910 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 951 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			Str__clear(line);
 			Str__clear(line_colouring);
@@ -29292,7 +29335,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		}
 		if ((k == Str__len(md->stashed) - 1) && (Str__len(line) > 0)) 
 {
-#line 926 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 967 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	line_count++;
 	if (Str__is_whitespace(line)) tabular = FALSE;
 	match_results mr = Regexp__create_mr();
@@ -29302,58 +29345,58 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (tabulating) {
 			
 {
-#line 990 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1031 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__first_html_column(OUT, 0);
 
 }
-#line 933 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 974 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		} else {
 			
 {
-#line 974 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1015 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_span(OUT);
 	HTML_TAG("br");
 	HTML__begin_plain_html_table(OUT);
 	HTML__first_html_column(OUT, 0);
 
 }
-#line 935 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 976 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			tabulating = TRUE;
 		}
 		int cell_from = 0, cell_to = 0, i = 0;
 		
 {
-#line 986 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1027 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	cell_from = i; cell_to = cell_from;
-	HTML__begin_span(OUT, TL_IS_2486);
+	HTML__begin_span(OUT, TL_IS_2488);
 
 }
-#line 939 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 980 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		for (; i<Str__len(line); i++) {
 			if (Str__get_at(line, i) == '\t') {
 				
 {
-#line 980 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1021 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML__end_span(OUT);
 	HTML__next_html_column(OUT, 0);
 
 }
-#line 942 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 983 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				while (Str__get_at(line, i) == '\t') i++;
 				
 {
-#line 986 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1027 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	cell_from = i; cell_to = cell_from;
-	HTML__begin_span(OUT, TL_IS_2486);
+	HTML__begin_span(OUT, TL_IS_2488);
 
 }
-#line 944 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 985 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 				i--;
 			} else {
@@ -29362,34 +29405,34 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		}
 		
 {
-#line 980 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1021 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML__end_span(OUT);
 	HTML__next_html_column(OUT, 0);
 
 }
-#line 950 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 991 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 		
 {
-#line 993 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1034 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_row(OUT);
 
 }
-#line 951 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 992 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	} else {
 		if (line_count > 1) HTML_TAG("br");
 		if (tabulating) {
 			
 {
-#line 996 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1037 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_table(OUT);
-	HTML__begin_span(OUT, TL_IS_2487);
+	HTML__begin_span(OUT, TL_IS_2489);
 
 }
-#line 955 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 996 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			tabulating = FALSE;
 		}
@@ -29406,30 +29449,30 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	WRITE("\n");
 
 }
-#line 917 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 958 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	}
 	HTML_CLOSE("span");
 	if (tabulating) 
 {
-#line 996 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1037 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	HTML__end_html_table(OUT);
-	HTML__begin_span(OUT, TL_IS_2487);
+	HTML__begin_span(OUT, TL_IS_2489);
 
 }
-#line 920 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 961 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	HTML_CLOSE("blockquote");
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)
 
 }
-#line 844 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 885 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
-	} else if (Str__eq_insensitive(language, TL_IS_2482)) {
+	} else if (Str__eq_insensitive(language, TL_IS_2484)) {
 		
 {
-#line 1000 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1041 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (mode & TAGS_MDRMODE)
 		HTML_OPEN_WITH("div", "class=\"extract-problems\"");
 	if (mode & TAGS_MDRMODE) HTML_OPEN("blockquote");
@@ -29439,12 +29482,12 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("div");
 
 }
-#line 846 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 887 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	} else {
 		
 {
-#line 1009 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1050 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	programming_language *pl = NULL;
 	if (Str__len(language) > 0) {
 		if (mode & TAGS_MDRMODE)
@@ -29467,7 +29510,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if (Str__get_at(md->stashed, k) == '\n') {
 			
 {
-#line 1047 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1088 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (pl) Painter__syntax_colour(pl, NULL, line, line_colouring, FALSE);
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		0, Str__len(line), mode);
@@ -29475,7 +29518,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 
 
 }
-#line 1029 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1070 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 			Str__clear(line);
 			Str__clear(line_colouring);
@@ -29485,7 +29528,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 		if ((k == Str__len(md->stashed) - 1) && (Str__len(line) > 0))
 			
 {
-#line 1047 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1088 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 	if (pl) Painter__syntax_colour(pl, NULL, line, line_colouring, FALSE);
 	InformFlavouredMarkdown__syntax_coloured_code(OUT, line, line_colouring,
 		0, Str__len(line), mode);
@@ -29493,7 +29536,7 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 
 
 }
-#line 1036 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1077 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	}
 	DISCARD_TEXT(line)
@@ -29505,20 +29548,20 @@ int InformFlavouredMarkdown__SC_render(markdown_feature *feature, text_stream *O
 	}
 
 }
-#line 848 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 889 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;
 	}
 	DISCARD_TEXT(language_text)
 	DISCARD_TEXT(language)
 
 }
-#line 800 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 841 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 ;   return TRUE;
 	}
 	return FALSE;
 }
 
-#line 1054 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1095 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *text,
 	text_stream *colouring, int from, int to, int mode) {
 	inchar32_t current_col = 0;
@@ -29529,17 +29572,17 @@ void InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 			if (current_col) HTML_CLOSE("span");
 			text_stream *span_class = NULL;
 			switch (col) {
-				case DEFINITION_COLOUR: span_class = TL_IS_2488; break;
-				case FUNCTION_COLOUR:   span_class = TL_IS_2489; break;
-				case RESERVED_COLOUR:   span_class = TL_IS_2490; break;
-				case ELEMENT_COLOUR:    span_class = TL_IS_2491; break;
-				case IDENTIFIER_COLOUR: span_class = TL_IS_2492; break;
-				case CHARACTER_COLOUR:  span_class = TL_IS_2493; break;
-				case CONSTANT_COLOUR:   span_class = TL_IS_2494; break;
-				case STRING_COLOUR:     span_class = TL_IS_2495; break;
-				case PLAIN_COLOUR:      span_class = TL_IS_2496; break;
-				case EXTRACT_COLOUR:    span_class = TL_IS_2497; break;
-				case COMMENT_COLOUR:    span_class = TL_IS_2498; break;
+				case DEFINITION_COLOUR: span_class = TL_IS_2490; break;
+				case FUNCTION_COLOUR:   span_class = TL_IS_2491; break;
+				case RESERVED_COLOUR:   span_class = TL_IS_2492; break;
+				case ELEMENT_COLOUR:    span_class = TL_IS_2493; break;
+				case IDENTIFIER_COLOUR: span_class = TL_IS_2494; break;
+				case CHARACTER_COLOUR:  span_class = TL_IS_2495; break;
+				case CONSTANT_COLOUR:   span_class = TL_IS_2496; break;
+				case STRING_COLOUR:     span_class = TL_IS_2497; break;
+				case PLAIN_COLOUR:      span_class = TL_IS_2498; break;
+				case EXTRACT_COLOUR:    span_class = TL_IS_2499; break;
+				case COMMENT_COLOUR:    span_class = TL_IS_2500; break;
 			}
 			HTML_OPEN_WITH("span", "class=\"%S\"", span_class);
 			current_col = col;
@@ -29549,7 +29592,7 @@ void InformFlavouredMarkdown__syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 	if (current_col) HTML_CLOSE("span");
 }
 
-#line 1088 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
+#line 1129 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__render_text(OUTPUT_STREAM, text_stream *text) {
 	markdown_item *md = Markdown__parse_inline(text);
 	HTML_OPEN_WITH("span", "class=\"markdowncontent\"");
@@ -29692,14 +29735,14 @@ pathname *Epub__begin_construction(ebook *B, pathname *P, filename *cover_image)
 	B->eventual_epub = Filenames__in(P, TEMP);
 	DISCARD_TEXT(TEMP)
 
-	pathname *Holder = Pathnames__down(P, TL_IS_2499);
+	pathname *Holder = Pathnames__down(P, TL_IS_2501);
 	if (Pathnames__create_in_file_system(Holder) == FALSE) return NULL;
 	B->holder = Holder;
 
 	
 {
 #line 245 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
-	filename *Mimetype = Filenames__in(Holder, TL_IS_2501);
+	filename *Mimetype = Filenames__in(Holder, TL_IS_2503);
 	text_stream EM_struct; text_stream *OUT = &EM_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, Mimetype, ISO_ENC) == FALSE)
 		Errors__fatal_with_file("unable to open mimetype file for output: %f",
@@ -29713,9 +29756,9 @@ pathname *Epub__begin_construction(ebook *B, pathname *P, filename *cover_image)
 	
 {
 #line 254 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
-	pathname *META_INF = Pathnames__down(Holder, TL_IS_2502);
+	pathname *META_INF = Pathnames__down(Holder, TL_IS_2504);
 	if (Pathnames__create_in_file_system(META_INF) == FALSE) return NULL;
-	filename *container = Filenames__in(META_INF, TL_IS_2503);
+	filename *container = Filenames__in(META_INF, TL_IS_2505);
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, container, ISO_ENC) == FALSE)
 		Errors__fatal_with_file("unable to open container file for output: %f",
@@ -29735,18 +29778,18 @@ pathname *Epub__begin_construction(ebook *B, pathname *P, filename *cover_image)
 }
 #line 236 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 ;
-	pathname *OEBPS = Pathnames__down(Holder, TL_IS_2500);
+	pathname *OEBPS = Pathnames__down(Holder, TL_IS_2502);
 	if (Pathnames__create_in_file_system(OEBPS) == FALSE) return NULL;
 	if (cover_image) 
 {
 #line 280 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
-	filename *cover = Filenames__in(OEBPS, TL_IS_2504);
+	filename *cover = Filenames__in(OEBPS, TL_IS_2506);
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, cover, ISO_ENC) == FALSE)
 		Errors__fatal_with_file("unable to open cover file for output: %f",
 			cover);
 
-	Epub__note_page(B, cover, TL_IS_2505, TL_IS_2506);
+	Epub__note_page(B, cover, TL_IS_2507, TL_IS_2508);
 
 	HTML__declare_as_HTML(OUT, TRUE);
 	HTML__begin_head(OUT, NULL);
@@ -29803,7 +29846,7 @@ void Epub__end_construction(ebook *B) {
 	
 {
 #line 335 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
-	filename *content = Filenames__in(B->OEBPS_path, TL_IS_2507);
+	filename *content = Filenames__in(B->OEBPS_path, TL_IS_2509);
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, content, UTF8_ENC) == FALSE)
 		Errors__fatal_with_file("unable to open content file for output: %f",
@@ -29928,7 +29971,7 @@ void Epub__end_construction(ebook *B) {
 	
 {
 #line 434 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
-	filename *toc = Filenames__in(B->OEBPS_path, TL_IS_2508);
+	filename *toc = Filenames__in(B->OEBPS_path, TL_IS_2510);
 	text_stream C_struct; text_stream *OUT = &C_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, toc, UTF8_ENC) == FALSE)
 		Errors__fatal_with_file("unable to open ncx file for output: %f",
@@ -30196,7 +30239,7 @@ void Epub__end_construction(ebook *B) {
 	
 {
 #line 551 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
-	pathname *up = Pathnames__from_text(TL_IS_2509);
+	pathname *up = Pathnames__from_text(TL_IS_2511);
 	filename *ePub_relative =
 		Filenames__in(up, Filenames__get_leafname(B->eventual_epub));
 	
@@ -31648,7 +31691,7 @@ semver_range *VersionNumberRanges__compatibility_range(semantic_version_number V
 		semantic_version_number W = VersionNumbers__null();
 		W.version_numbers[0] = V.version_numbers[0] + 1;
 		W.prerelease_segments = NEW_LINKED_LIST(text_stream);
-		ADD_TO_LINKED_LIST(TL_IS_2510, text_stream, W.prerelease_segments);
+		ADD_TO_LINKED_LIST(TL_IS_2512, text_stream, W.prerelease_segments);
 		R->upper.end_value = W;
 	}
 	return R;
@@ -31812,7 +31855,7 @@ web_md *WebMetadata__get(pathname *P, filename *alt_F, int syntax_version,
 {
 #line 141 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	int sequential = FALSE; /* are we numbering sections sequentially? */
-	if (Str__eq(Bibliographic__get_datum(Wm, TL_IS_2511), TL_IS_2512))
+	if (Str__eq(Bibliographic__get_datum(Wm, TL_IS_2513), TL_IS_2514))
 		sequential = TRUE;
 	chapter_md *Cm;
 	section_md *Sm;
@@ -31979,9 +32022,9 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 	
 {
 #line 346 "inweb/foundation-module/Chapter 8/Web Structure.w"
-	if (Str__eq(line, TL_IS_2513))
+	if (Str__eq(line, TL_IS_2515))
 		RS->Wm->default_syntax = V1_SYNTAX;
-	else if (Str__eq(line, TL_IS_2514))
+	else if (Str__eq(line, TL_IS_2516))
 		RS->Wm->default_syntax = V2_SYNTAX;
 
 }
@@ -31995,9 +32038,9 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 {
 #line 357 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	RS->halted = TRUE;
-	text_stream *new_chapter_range = TL_IS_2515;
+	text_stream *new_chapter_range = TL_IS_2517;
 	text_stream *language_name = NULL;
-	line = TL_IS_2516;
+	line = TL_IS_2518;
 	
 {
 #line 560 "inweb/foundation-module/Chapter 8/Web Structure.w"
@@ -32027,7 +32070,7 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 }
 #line 361 "inweb/foundation-module/Chapter 8/Web Structure.w"
 ;
-	line = TL_IS_2517;
+	line = TL_IS_2519;
 	filename_of_single_file_web = tfp->text_file_filename;
 	
 {
@@ -32082,7 +32125,7 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 {
 #line 635 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	text_stream *p = language_name;
-	if (Str__len(p) == 0) p = Bibliographic__get_datum(RS->Wm, TL_IS_2521);
+	if (Str__len(p) == 0) p = Bibliographic__get_datum(RS->Wm, TL_IS_2523);
 	Sm->sect_independent_language = Str__duplicate(p);
 
 }
@@ -32225,7 +32268,7 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 #line 552 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, language_name, U" *"))
-		language_name = Bibliographic__get_datum(RS->Wm, TL_IS_2520);
+		language_name = Bibliographic__get_datum(RS->Wm, TL_IS_2522);
 	else if (Regexp__match(&mr, language_name, U" *(%c*?) *"))
 		language_name = mr.exp[0];
 	Regexp__dispose_of(&mr);
@@ -32260,13 +32303,13 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 	} else if (Regexp__match(&mr, line, U"Header: (%c+)")) {
 		pathname *P = RS->path_to;
 		if (P == NULL) P = RS->Wm->path_to_web;
-		P = Pathnames__down(P, TL_IS_2518);
+		P = Pathnames__down(P, TL_IS_2520);
 		filename *HF = Filenames__in(P, mr.exp[0]);
 		ADD_TO_LINKED_LIST(HF, filename, RS->Wm->header_filenames);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp__match(&mr, line, U"Import: (%c+)")) {
 		if (RS->halt_at_at)
-			Errors__in_text_file_S(TL_IS_2519, tfp);
+			Errors__in_text_file_S(TL_IS_2521, tfp);
 		else if (RS->import_from) {
 			module *imported =
 				WebModules__find(RS->Wm, RS->import_from, mr.exp[0], RS->path_to_inweb);
@@ -32401,7 +32444,7 @@ void WebMetadata__read_contents_line(text_stream *line, text_file_position *tfp,
 {
 #line 635 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	text_stream *p = language_name;
-	if (Str__len(p) == 0) p = Bibliographic__get_datum(RS->Wm, TL_IS_2521);
+	if (Str__len(p) == 0) p = Bibliographic__get_datum(RS->Wm, TL_IS_2523);
 	Sm->sect_independent_language = Str__duplicate(p);
 
 }
@@ -32456,7 +32499,7 @@ int WebMetadata__directory_looks_like_a_web(pathname *P) {
 }
 
 filename *WebMetadata__contents_filename(pathname *P) {
-	return Filenames__in(P, TL_IS_2522);
+	return Filenames__in(P, TL_IS_2524);
 }
 
 #line 673 "inweb/foundation-module/Chapter 8/Web Structure.w"
@@ -32495,38 +32538,38 @@ int Bibliographic__datum_on_or_off(web_md *Wm, text_stream *key) {
 void Bibliographic__initialise_data(web_md *Wm) {
 	web_bibliographic_datum *bd;
 
-	bd = Bibliographic__set_datum(Wm, TL_IS_2523, NULL); bd->declaration_mandatory = TRUE;
-	bd = Bibliographic__set_datum(Wm, TL_IS_2524, NULL); bd->declaration_mandatory = TRUE;
-	bd = Bibliographic__set_datum(Wm, TL_IS_2525, TL_IS_2526);
+	bd = Bibliographic__set_datum(Wm, TL_IS_2525, NULL); bd->declaration_mandatory = TRUE;
+	bd = Bibliographic__set_datum(Wm, TL_IS_2526, NULL); bd->declaration_mandatory = TRUE;
 	bd = Bibliographic__set_datum(Wm, TL_IS_2527, TL_IS_2528);
+	bd = Bibliographic__set_datum(Wm, TL_IS_2529, TL_IS_2530);
 
-	bd = Bibliographic__set_datum(Wm, TL_IS_2529, NULL);
-	bd->alias = Bibliographic__set_datum(Wm, TL_IS_2530, NULL); /* alias US to UK spelling */
+	bd = Bibliographic__set_datum(Wm, TL_IS_2531, NULL);
+	bd->alias = Bibliographic__set_datum(Wm, TL_IS_2532, NULL); /* alias US to UK spelling */
 
-	Bibliographic__set_datum(Wm, TL_IS_2531, NULL);
-	Bibliographic__set_datum(Wm, TL_IS_2532, NULL);
 	Bibliographic__set_datum(Wm, TL_IS_2533, NULL);
 	Bibliographic__set_datum(Wm, TL_IS_2534, NULL);
 	Bibliographic__set_datum(Wm, TL_IS_2535, NULL);
 	Bibliographic__set_datum(Wm, TL_IS_2536, NULL);
-	Bibliographic__set_datum(Wm, TL_IS_2537, TL_IS_2538);
-	Bibliographic__set_datum(Wm, TL_IS_2539, NULL);
-	Bibliographic__set_datum(Wm, TL_IS_2540, NULL);
+	Bibliographic__set_datum(Wm, TL_IS_2537, NULL);
+	Bibliographic__set_datum(Wm, TL_IS_2538, NULL);
+	Bibliographic__set_datum(Wm, TL_IS_2539, TL_IS_2540);
 	Bibliographic__set_datum(Wm, TL_IS_2541, NULL);
+	Bibliographic__set_datum(Wm, TL_IS_2542, NULL);
+	Bibliographic__set_datum(Wm, TL_IS_2543, NULL);
 
-	bd = Bibliographic__set_datum(Wm, TL_IS_2542, TL_IS_2543); bd->on_or_off = TRUE;
 	bd = Bibliographic__set_datum(Wm, TL_IS_2544, TL_IS_2545); bd->on_or_off = TRUE;
 	bd = Bibliographic__set_datum(Wm, TL_IS_2546, TL_IS_2547); bd->on_or_off = TRUE;
 	bd = Bibliographic__set_datum(Wm, TL_IS_2548, TL_IS_2549); bd->on_or_off = TRUE;
-	bd = Bibliographic__set_datum(Wm, TL_IS_2550, TL_IS_2551);
+	bd = Bibliographic__set_datum(Wm, TL_IS_2550, TL_IS_2551); bd->on_or_off = TRUE;
 	bd = Bibliographic__set_datum(Wm, TL_IS_2552, TL_IS_2553);
 	bd = Bibliographic__set_datum(Wm, TL_IS_2554, TL_IS_2555);
 	bd = Bibliographic__set_datum(Wm, TL_IS_2556, TL_IS_2557);
 	bd = Bibliographic__set_datum(Wm, TL_IS_2558, TL_IS_2559);
 	bd = Bibliographic__set_datum(Wm, TL_IS_2560, TL_IS_2561);
 	bd = Bibliographic__set_datum(Wm, TL_IS_2562, TL_IS_2563);
-	bd = Bibliographic__set_datum(Wm, TL_IS_2564, NULL);
-	bd = Bibliographic__set_datum(Wm, TL_IS_2565, TL_IS_2566);
+	bd = Bibliographic__set_datum(Wm, TL_IS_2564, TL_IS_2565);
+	bd = Bibliographic__set_datum(Wm, TL_IS_2566, NULL);
+	bd = Bibliographic__set_datum(Wm, TL_IS_2567, TL_IS_2568);
 }
 
 #line 86 "inweb/foundation-module/Chapter 8/Bibliographic Data for Webs.w"
@@ -32588,7 +32631,7 @@ web_bibliographic_datum *Bibliographic__set_datum(web_md *Wm, text_stream *key, 
 	Str__copy(recapped, val);
 	LOOP_THROUGH_TEXT(P, recapped)
 		Str__put(P, Characters__toupper(Str__get(P)));
-	Bibliographic__set_datum(Wm, TL_IS_2567, recapped);
+	Bibliographic__set_datum(Wm, TL_IS_2569, recapped);
 	DISCARD_TEXT(recapped)
 
 }
@@ -32606,7 +32649,7 @@ module *WebModules__new(text_stream *name, pathname *at, int m) {
 	M->module_name = Str__duplicate(name);
 	M->dependencies = NEW_LINKED_LIST(module);
 	M->origin_marker = m;
-	M->module_tag = TL_IS_2568;
+	M->module_tag = TL_IS_2570;
 	M->chapters_md = NEW_LINKED_LIST(chapter_md);
 	M->sections_md = NEW_LINKED_LIST(section_md);
 	return M;
@@ -32614,7 +32657,7 @@ module *WebModules__new(text_stream *name, pathname *at, int m) {
 
 #line 52 "inweb/foundation-module/Chapter 8/Web Modules.w"
 module *WebModules__create_main_module(web_md *WS) {
-	return WebModules__new(TL_IS_2569, WS->path_to_web, READING_WEB_MOM);
+	return WebModules__new(TL_IS_2571, WS->path_to_web, READING_WEB_MOM);
 }
 
 #line 63 "inweb/foundation-module/Chapter 8/Web Modules.w"
@@ -32883,9 +32926,9 @@ int WebModules__named_reference(module **return_M, section_md **return_Sm,
 
 #line 10 "inweb/foundation-module/Chapter 8/Build Files.w"
 filename *BuildFiles__build_file_for_web(web_md *WS) {
-	filename *F = Filenames__in(WS->path_to_web, TL_IS_2570);
+	filename *F = Filenames__in(WS->path_to_web, TL_IS_2572);
 	if (TextFiles__exists(F)) return F;
-	F = Filenames__in(NULL, TL_IS_2571);
+	F = Filenames__in(NULL, TL_IS_2573);
 	if (TextFiles__exists(F)) return F;
 	return NULL;
 }
@@ -32939,25 +32982,25 @@ void BuildFiles__set_bibliographic_data_for(web_md *WS) {
 	if (F) {
 		build_file_data bfd = BuildFiles__read(F);
 		if (Str__len(bfd.prerelease_text) > 0)
-			Bibliographic__set_datum(WS, TL_IS_2572, bfd.prerelease_text);
+			Bibliographic__set_datum(WS, TL_IS_2574, bfd.prerelease_text);
 		if (Str__len(bfd.build_code) > 0)
-			Bibliographic__set_datum(WS, TL_IS_2573, bfd.build_code);
+			Bibliographic__set_datum(WS, TL_IS_2575, bfd.build_code);
 		if (Str__len(bfd.build_date) > 0)
-			Bibliographic__set_datum(WS, TL_IS_2574, bfd.build_date);
+			Bibliographic__set_datum(WS, TL_IS_2576, bfd.build_date);
 	}
 }
 
 #line 99 "inweb/foundation-module/Chapter 8/Build Files.w"
 void BuildFiles__deduce_semver(web_md *WS) {
 	TEMPORARY_TEXT(combined)
-	text_stream *s = Bibliographic__get_datum(WS, TL_IS_2575);
+	text_stream *s = Bibliographic__get_datum(WS, TL_IS_2577);
 	if (Str__len(s) > 0) WRITE_TO(combined, "%S", s);
 	else {
-		text_stream *v = Bibliographic__get_datum(WS, TL_IS_2576);
+		text_stream *v = Bibliographic__get_datum(WS, TL_IS_2578);
 		if (Str__len(v) > 0) WRITE_TO(combined, "%S", v);
-		text_stream *p = Bibliographic__get_datum(WS, TL_IS_2577);
+		text_stream *p = Bibliographic__get_datum(WS, TL_IS_2579);
 		if (Str__len(p) > 0) WRITE_TO(combined, "-%S", p);
-		text_stream *b = Bibliographic__get_datum(WS, TL_IS_2578);
+		text_stream *b = Bibliographic__get_datum(WS, TL_IS_2580);
 		if (Str__len(b) > 0) WRITE_TO(combined, "+%S", b);
 	}
 	if (Str__len(combined) > 0) {
@@ -32967,7 +33010,7 @@ void BuildFiles__deduce_semver(web_md *WS) {
 				"Combined version '%S' does not comply with the semver standard",
 				combined);
 		} else {
-			Bibliographic__set_datum(WS, TL_IS_2579, combined);
+			Bibliographic__set_datum(WS, TL_IS_2581, combined);
 		}
 	}
 	DISCARD_TEXT(combined)
@@ -33112,7 +33155,7 @@ void SimpleTangler__tangle_L3(OUTPUT_STREAM, text_stream *text,
 		docket->current_filename = F;
 		Input_File = Filenames__fopen(F, "r");
 	} else if (Str__len(leafname) > 0) {
-		pathname *P = Pathnames__down(docket->web_path, TL_IS_2580);
+		pathname *P = Pathnames__down(docket->web_path, TL_IS_2582);
 		docket->current_filename = Filenames__in(P, leafname);
 		Input_File = Filenames__fopen(docket->current_filename, "r");
 	}
@@ -33692,7 +33735,7 @@ programming_language *Languages__read_definition(filename *F) {
 #line 215 "inweb/foundation-module/Chapter 9/Programming Languages.w"
 	#ifdef THIS_IS_INWEB
 	if (pl->C_like) CLike__make_c_like(pl);
-	if (Str__eq(pl->language_name, TL_IS_2581)) InCSupport__add_features(pl);
+	if (Str__eq(pl->language_name, TL_IS_2583)) InCSupport__add_features(pl);
 	ACMESupport__add_fallbacks(pl);
 	#endif
 
@@ -33715,7 +33758,7 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	if (state->current_block) 
 {
 #line 325 "inweb/foundation-module/Chapter 9/Programming Languages.w"
-	if (Str__eq(line, TL_IS_2613)) {
+	if (Str__eq(line, TL_IS_2615)) {
 		state->current_block = state->current_block->parent;
 	} else if (Regexp__match(&mr, line, U"characters {")) {
 		colouring_rule *rule = Languages__new_rule(state->current_block);
@@ -33731,7 +33774,7 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	} else if (Regexp__match(&mr, line, U"runs of (%c+) {")) {
 		colouring_rule *rule = Languages__new_rule(state->current_block);
 		inchar32_t r = UNQUOTED_COLOUR;
-		if (Str__ne(mr.exp[0], TL_IS_2614)) r = Languages__colour(mr.exp[0], tfp);
+		if (Str__ne(mr.exp[0], TL_IS_2616)) r = Languages__colour(mr.exp[0], tfp);
 		rule->execute_block = Languages__new_block(state->current_block, (int) r);
 		state->current_block = rule->execute_block;
 	} else if (Regexp__match(&mr, line, U"instances of (%c+) {")) {
@@ -33786,66 +33829,66 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 		Languages__reserved(pl, Languages__text(mr.exp[0], tfp, FALSE), RESERVED_COLOUR, tfp);
 	} else if (Regexp__match(&mr, line, U"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str__duplicate(mr.exp[1]);
-		if (Str__eq(key, TL_IS_2582)) pl->language_name = Languages__text(value, tfp, TRUE);
-		else if (Str__eq(key, TL_IS_2583))
-			pl->language_details = Languages__text(value, tfp, TRUE);
-		else if (Str__eq(key, TL_IS_2584))
-			pl->file_extension = Languages__text(value, tfp, TRUE);
+		if (Str__eq(key, TL_IS_2584)) pl->language_name = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2585))
-			pl->line_comment = Languages__text(value, tfp, TRUE);
+			pl->language_details = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2586))
-			pl->whole_line_comment = Languages__text(value, tfp, TRUE);
+			pl->file_extension = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2587))
-			pl->multiline_comment_open = Languages__text(value, tfp, TRUE);
+			pl->line_comment = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2588))
-			pl->multiline_comment_close = Languages__text(value, tfp, TRUE);
+			pl->whole_line_comment = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2589))
-			pl->string_literal = Languages__text(value, tfp, TRUE);
+			pl->multiline_comment_open = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2590))
-			pl->string_literal_escape = Languages__text(value, tfp, TRUE);
+			pl->multiline_comment_close = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2591))
-			pl->character_literal = Languages__text(value, tfp, TRUE);
+			pl->string_literal = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2592))
-			pl->character_literal_escape = Languages__text(value, tfp, TRUE);
+			pl->string_literal_escape = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2593))
-			pl->binary_literal_prefix = Languages__text(value, tfp, TRUE);
+			pl->character_literal = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2594))
-			pl->octal_literal_prefix = Languages__text(value, tfp, TRUE);
+			pl->character_literal_escape = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2595))
-			pl->hexadecimal_literal_prefix = Languages__text(value, tfp, TRUE);
+			pl->binary_literal_prefix = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2596))
-			pl->negative_literal_prefix = Languages__text(value, tfp, TRUE);
+			pl->octal_literal_prefix = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2597))
-			pl->shebang = Languages__text(value, tfp, TRUE);
+			pl->hexadecimal_literal_prefix = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2598))
-			pl->line_marker = Languages__text(value, tfp, TRUE);
+			pl->negative_literal_prefix = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2599))
-			pl->before_macro_expansion = Languages__text(value, tfp, TRUE);
+			pl->shebang = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2600))
-			pl->after_macro_expansion = Languages__text(value, tfp, TRUE);
+			pl->line_marker = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2601))
-			pl->start_definition = Languages__text(value, tfp, TRUE);
+			pl->before_macro_expansion = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2602))
-			pl->prolong_definition = Languages__text(value, tfp, TRUE);
+			pl->after_macro_expansion = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2603))
-			pl->end_definition = Languages__text(value, tfp, TRUE);
+			pl->start_definition = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2604))
-			pl->start_ifdef = Languages__text(value, tfp, TRUE);
+			pl->prolong_definition = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2605))
-			pl->start_ifndef = Languages__text(value, tfp, TRUE);
+			pl->end_definition = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2606))
-			pl->end_ifdef = Languages__text(value, tfp, TRUE);
+			pl->start_ifdef = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2607))
-			pl->end_ifndef = Languages__text(value, tfp, TRUE);
+			pl->start_ifndef = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2608))
-			pl->C_like = Languages__boolean(value, tfp);
+			pl->end_ifdef = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2609))
-			pl->suppress_disclaimer = Languages__boolean(value, tfp);
+			pl->end_ifndef = Languages__text(value, tfp, TRUE);
 		else if (Str__eq(key, TL_IS_2610))
-			pl->supports_namespaces = Languages__boolean(value, tfp);
+			pl->C_like = Languages__boolean(value, tfp);
 		else if (Str__eq(key, TL_IS_2611))
-			Languages__regexp(pl->function_notation, value, tfp);
+			pl->suppress_disclaimer = Languages__boolean(value, tfp);
 		else if (Str__eq(key, TL_IS_2612))
+			pl->supports_namespaces = Languages__boolean(value, tfp);
+		else if (Str__eq(key, TL_IS_2613))
+			Languages__regexp(pl->function_notation, value, tfp);
+		else if (Str__eq(key, TL_IS_2614))
 			Languages__regexp(pl->type_notation, value, tfp);
 		else {
 			Errors__in_text_file("unknown property name before ':'", tfp);
@@ -33955,7 +33998,7 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 	
 {
 #line 535 "inweb/foundation-module/Chapter 9/Programming Languages.w"
-	if (Str__eq(action, TL_IS_2615)) {
+	if (Str__eq(action, TL_IS_2617)) {
 		rule->execute_block =
 			Languages__new_block(state->current_block, WHOLE_LINE_CRULE_RUN);
 		state->current_block = rule->execute_block;
@@ -33968,7 +34011,7 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 		rule->set_prefix_to_colour = rule->set_to_colour;
 	} else if (Str__get_first_char(action) == '!') {
 		rule->set_to_colour = Languages__colour(action, tfp);
-	} else if (Str__eq(action, TL_IS_2616)) {
+	} else if (Str__eq(action, TL_IS_2618)) {
 		rule->debug = TRUE;
 	} else {
 		Errors__in_text_file("action after '=>' illegible", tfp);
@@ -34003,17 +34046,17 @@ inchar32_t Languages__colour(text_stream *T, text_file_position *tfp) {
 		Errors__in_text_file("colour names must begin with !", tfp);
 		return PLAIN_COLOUR;
 	}
-	if (Str__eq(T, TL_IS_2617)) return STRING_COLOUR;
-	else if (Str__eq(T, TL_IS_2618)) return FUNCTION_COLOUR;
-	else if (Str__eq(T, TL_IS_2619)) return DEFINITION_COLOUR;
-	else if (Str__eq(T, TL_IS_2620)) return RESERVED_COLOUR;
-	else if (Str__eq(T, TL_IS_2621)) return ELEMENT_COLOUR;
-	else if (Str__eq(T, TL_IS_2622)) return IDENTIFIER_COLOUR;
-	else if (Str__eq(T, TL_IS_2623)) return CHARACTER_COLOUR;
-	else if (Str__eq(T, TL_IS_2624)) return CONSTANT_COLOUR;
-	else if (Str__eq(T, TL_IS_2625)) return PLAIN_COLOUR;
-	else if (Str__eq(T, TL_IS_2626)) return EXTRACT_COLOUR;
-	else if (Str__eq(T, TL_IS_2627)) return COMMENT_COLOUR;
+	if (Str__eq(T, TL_IS_2619)) return STRING_COLOUR;
+	else if (Str__eq(T, TL_IS_2620)) return FUNCTION_COLOUR;
+	else if (Str__eq(T, TL_IS_2621)) return DEFINITION_COLOUR;
+	else if (Str__eq(T, TL_IS_2622)) return RESERVED_COLOUR;
+	else if (Str__eq(T, TL_IS_2623)) return ELEMENT_COLOUR;
+	else if (Str__eq(T, TL_IS_2624)) return IDENTIFIER_COLOUR;
+	else if (Str__eq(T, TL_IS_2625)) return CHARACTER_COLOUR;
+	else if (Str__eq(T, TL_IS_2626)) return CONSTANT_COLOUR;
+	else if (Str__eq(T, TL_IS_2627)) return PLAIN_COLOUR;
+	else if (Str__eq(T, TL_IS_2628)) return EXTRACT_COLOUR;
+	else if (Str__eq(T, TL_IS_2629)) return COMMENT_COLOUR;
 	else {
 		Errors__in_text_file("no such !colour", tfp);
 		return PLAIN_COLOUR;
@@ -34022,8 +34065,8 @@ inchar32_t Languages__colour(text_stream *T, text_file_position *tfp) {
 
 #line 626 "inweb/foundation-module/Chapter 9/Programming Languages.w"
 int Languages__boolean(text_stream *T, text_file_position *tfp) {
-	if (Str__eq(T, TL_IS_2628)) return TRUE;
-	else if (Str__eq(T, TL_IS_2629)) return FALSE;
+	if (Str__eq(T, TL_IS_2630)) return TRUE;
+	else if (Str__eq(T, TL_IS_2631)) return FALSE;
 	else {
 		Errors__in_text_file("must be true or false", tfp);
 		return FALSE;
@@ -34081,8 +34124,6 @@ text_stream *Languages__text(text_stream *T, text_file_position *tfp, int allow)
 		}
 		if (bareword) {
 			int rw = FALSE;
-			if (Str__eq(V, TL_IS_2630)) rw = TRUE;
-			if (Str__eq(V, TL_IS_2631)) rw = TRUE;
 			if (Str__eq(V, TL_IS_2632)) rw = TRUE;
 			if (Str__eq(V, TL_IS_2633)) rw = TRUE;
 			if (Str__eq(V, TL_IS_2634)) rw = TRUE;
@@ -34103,6 +34144,8 @@ text_stream *Languages__text(text_stream *T, text_file_position *tfp, int allow)
 			if (Str__eq(V, TL_IS_2649)) rw = TRUE;
 			if (Str__eq(V, TL_IS_2650)) rw = TRUE;
 			if (Str__eq(V, TL_IS_2651)) rw = TRUE;
+			if (Str__eq(V, TL_IS_2652)) rw = TRUE;
+			if (Str__eq(V, TL_IS_2653)) rw = TRUE;
 
 			if (rw) {
 				TEMPORARY_TEXT(err)
@@ -34893,14 +34936,14 @@ int main(int argc, char **argv) {
 	inweb_instructions args = Configuration__read(argc, argv);
 	verbose_mode = args.verbose_switch;
 	fundamental_mode = args.inweb_mode;
-	path_to_inweb = Pathnames__installation_path("INWEB_PATH", TL_IS_2652);
+	path_to_inweb = Pathnames__installation_path("INWEB_PATH", TL_IS_2654);
 	if (verbose_mode) {
 		PRINT("Installation path is %p\n", path_to_inweb);
 		Locales__write_locales(STDOUT);
 	}
-	path_to_inweb_patterns = Pathnames__down(path_to_inweb, TL_IS_2653);
-	path_to_inweb_materials = Pathnames__down(path_to_inweb, TL_IS_2654);
-	Languages__set_default_directory(Pathnames__down(path_to_inweb, TL_IS_2655));
+	path_to_inweb_patterns = Pathnames__down(path_to_inweb, TL_IS_2655);
+	path_to_inweb_materials = Pathnames__down(path_to_inweb, TL_IS_2656);
+	Languages__set_default_directory(Pathnames__down(path_to_inweb, TL_IS_2657));
 
 	Main__follow_instructions(&args);
 
@@ -34930,11 +34973,11 @@ void Main__follow_instructions(inweb_instructions *ins) {
 {
 #line 116 "inweb/Chapter 1/Program Control.w"
 	if ((ins->makefile_setting) && (ins->prototype_setting == NULL))
-		ins->prototype_setting = Filenames__from_text(TL_IS_2656);
-	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
-		ins->prototype_setting = Filenames__from_text(TL_IS_2657);
-	if ((ins->writeme_setting) && (ins->prototype_setting == NULL))
 		ins->prototype_setting = Filenames__from_text(TL_IS_2658);
+	if ((ins->gitignore_setting) && (ins->prototype_setting == NULL))
+		ins->prototype_setting = Filenames__from_text(TL_IS_2659);
+	if ((ins->writeme_setting) && (ins->prototype_setting == NULL))
+		ins->prototype_setting = Filenames__from_text(TL_IS_2660);
 	if (ins->makefile_setting)
 		Makefiles__write(W, ins->prototype_setting, ins->makefile_setting,
 			WebModules__make_search_path(ins->import_setting), ins->platform_setting);
@@ -35014,10 +35057,10 @@ void Main__follow_instructions(inweb_instructions *ins) {
 {
 #line 222 "inweb/Chapter 1/Program Control.w"
 	tn = NULL;
-	if (Bibliographic__data_exists(W->md, TL_IS_2659))
-		Str__copy(tangle_leaf, Bibliographic__get_datum(W->md, TL_IS_2660));
+	if (Bibliographic__data_exists(W->md, TL_IS_2661))
+		Str__copy(tangle_leaf, Bibliographic__get_datum(W->md, TL_IS_2662));
 	else
-		Str__copy(tangle_leaf, Bibliographic__get_datum(W->md, TL_IS_2661));
+		Str__copy(tangle_leaf, Bibliographic__get_datum(W->md, TL_IS_2663));
 	Str__concatenate(tangle_leaf, W->main_language->file_extension);
 
 }
@@ -35174,7 +35217,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 		U"   sections: ditto with sections\n");
 
 	CommandLine__begin_group(LANGUAGES_CLSG,
-		TL_IS_2663);
+		TL_IS_2665);
 	CommandLine__declare_switch(LANGUAGE_CLSW, U"read-language", 2,
 		U"read language definition from file X");
 	CommandLine__declare_switch(LANGUAGES_CLSW, U"read-languages", 2,
@@ -35188,7 +35231,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	CommandLine__end_group();
 
 	CommandLine__begin_group(ANALYSIS_CLSG,
-		TL_IS_2664);
+		TL_IS_2666);
 	CommandLine__declare_switch(CATALOGUE_CLSW, U"catalogue", 1,
 		U"list the sections in the web");
 	CommandLine__declare_switch(CATALOGUE_CLSW, U"catalog", 1,
@@ -35216,7 +35259,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	CommandLine__end_group();
 
 	CommandLine__begin_group(WEAVING_CLSG,
-		TL_IS_2665);
+		TL_IS_2667);
 	CommandLine__declare_switch(WEAVE_CLSW, U"weave", 1,
 		U"weave the web into human-readable form");
 	CommandLine__declare_switch(WEAVE_INTO_CLSW, U"weave-into", 2,
@@ -35236,7 +35279,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	CommandLine__end_group();
 
 	CommandLine__begin_group(TANGLING_CLSG,
-		TL_IS_2666);
+		TL_IS_2668);
 	CommandLine__declare_switch(TANGLE_CLSW, U"tangle", 1,
 		U"tangle the web into machine-compilable form");
 	CommandLine__declare_switch(TANGLE_TO_CLSW, U"tangle-to", 2,
@@ -35248,7 +35291,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 	CommandLine__end_group();
 
 	CommandLine__begin_group(COLONIAL_CLSG,
-		TL_IS_2667);
+		TL_IS_2669);
 	CommandLine__declare_switch(COLONY_CLSW, U"colony", 2,
 		U"use the file X as a list of webs in this colony");
 	CommandLine__declare_switch(MEMBER_CLSW, U"member", 2,
@@ -35273,7 +35316,7 @@ inweb_instructions Configuration__read(int argc, char **argv) {
 			args.inweb_mode = NO_MODE;
 	}
 	if (Str__len(args.chosen_range) == 0) {
-		Str__copy(args.chosen_range, TL_IS_2662);
+		Str__copy(args.chosen_range, TL_IS_2664);
 	}
 	return args;
 }
@@ -35435,7 +35478,7 @@ void Configuration__member_and_colony(inweb_instructions *args) {
 void Configuration__bareword(int id, text_stream *opt, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
 	if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
-		if (Str__suffix_eq(opt, TL_IS_2668, 6))
+		if (Str__suffix_eq(opt, TL_IS_2670, 6))
 			args->chosen_file = Filenames__from_text(opt);
 		else
 			args->chosen_web = Pathnames__from_text(opt);
@@ -35454,7 +35497,7 @@ void Configuration__set_range(inweb_instructions *args, text_stream *opt) {
 	} else {
 		if (++args->targets > 1) Errors__fatal("at most one target may be given");
 		if (Str__eq_wide_string(opt, U"all")) {
-			Str__copy(args->chosen_range, TL_IS_2669);
+			Str__copy(args->chosen_range, TL_IS_2671);
 		} else if (((Characters__isalnum(Str__get_first_char(opt))) && (Str__len(opt) == 1))
 			|| (Regexp__match(&mr, opt, U"%i+/%i+"))) {
 			Str__copy(args->chosen_range, opt);
@@ -35552,7 +35595,7 @@ weave_order *Swarm__weave_subset(web *W, text_stream *range, int open_afterwards
 	match_results mr = Regexp__create_mr();
 	if (Str__eq_wide_string(range, U"0")) {
 		if (W->md->single_file) {
-			wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W->md, TL_IS_2670));
+			wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W->md, TL_IS_2672));
 			Filenames__write_unextended_leafname(leafname, W->md->single_file);
 		} else {
 			wv->booklet_title = Str__new_from_wide_string(U"Complete Program");
@@ -35588,7 +35631,7 @@ weave_order *Swarm__weave_subset(web *W, text_stream *range, int open_afterwards
 		else Str__copy(wv->booklet_title, range);
 		Str__copy(leafname, range);
 	}
-	Bibliographic__set_datum(W->md, TL_IS_2671, wv->booklet_title);
+	Bibliographic__set_datum(W->md, TL_IS_2673, wv->booklet_title);
 	LOOP_THROUGH_TEXT(P, leafname)
 		if ((Str__get(P) == '/') || (Str__get(P) == ' '))
 			Str__put(P, '-');
@@ -35655,12 +35698,12 @@ colour_scheme *Swarm__ensure_colour_scheme(weave_order *wv, text_stream *name,
 			return existing;
 	colour_scheme *cs = Assets__find_colour_scheme(wv->pattern, name, pre);
 	if (cs == NULL) {
-		if (Str__eq(name, TL_IS_2672)) {
+		if (Str__eq(name, TL_IS_2674)) {
 			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found", name);
 			Main__error_in_web(err, NULL);
 		} else {
-			return Swarm__ensure_colour_scheme(wv, TL_IS_2673, TL_IS_2674);
+			return Swarm__ensure_colour_scheme(wv, TL_IS_2675, TL_IS_2676);
 		}
 	}
 	if (cs) ADD_TO_LINKED_LIST(cs, colour_scheme, wv->colour_schemes);
@@ -35679,18 +35722,18 @@ void Swarm__include_plugins(OUTPUT_STREAM, web *W, weave_order *wv, filename *fr
 #line 231 "inweb/Chapter 1/The Swarm.w"
 void Swarm__weave_index_templates(web *W, text_stream *range, weave_pattern *pattern,
 	pathname *into, filename *nav, linked_list *crumbs) {
-	if (!(Bibliographic__data_exists(W->md, TL_IS_2675)))
-		Bibliographic__set_datum(W->md, TL_IS_2676, TL_IS_2677);
-	filename *INF = Patterns__find_template(pattern, TL_IS_2678);
+	if (!(Bibliographic__data_exists(W->md, TL_IS_2677)))
+		Bibliographic__set_datum(W->md, TL_IS_2678, TL_IS_2679);
+	filename *INF = Patterns__find_template(pattern, TL_IS_2680);
 	if (INF) {
 		pathname *H = W->redirect_weaves_to;
 		if (H == NULL) H = Reader__woven_folder(W);
-		filename *Contents = Filenames__in(H, TL_IS_2679);
+		filename *Contents = Filenames__in(H, TL_IS_2681);
 		text_stream TO_struct; text_stream *OUT = &TO_struct;
 		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
 			Errors__fatal_with_file("unable to write contents file", Contents);
 		if (W->as_ebook)
-			Epub__note_page(W->as_ebook, Contents, TL_IS_2680, TL_IS_2681);
+			Epub__note_page(W->as_ebook, Contents, TL_IS_2682, TL_IS_2683);
 		PRINT("[Index file: %f]\n", Contents);
 		Collater__collate(OUT, W, range, INF, pattern, nav, crumbs, NULL, Contents);
 		STREAM_CLOSE(OUT);
@@ -35716,7 +35759,7 @@ weave_pattern *Patterns__find(web *W, text_stream *name) {
 	wp->number_sections = FALSE;
 	wp->footnotes_plugin = NULL;
 	wp->mathematics_plugin = NULL;
-	wp->default_range = Str__duplicate(TL_IS_2682);
+	wp->default_range = Str__duplicate(TL_IS_2684);
 	wp->initial_extension = NULL;
 	wp->post_commands = NEW_LINKED_LIST(text_stream);
 	wp->blocked_templates = NEW_LINKED_LIST(text_stream);
@@ -35733,19 +35776,19 @@ weave_pattern *Patterns__find(web *W, text_stream *name) {
 	pathname *CP = Colonies__patterns_path();
 	if (CP) {
 		wp->pattern_location = Pathnames__down(CP, name);
-		pattern_file = Filenames__in(wp->pattern_location, TL_IS_2683);
-		if (TextFiles__exists(pattern_file) == FALSE) wp->pattern_location = NULL;
-	}
-	if (wp->pattern_location == NULL) {
-		wp->pattern_location = Pathnames__down(
-			Pathnames__down(W->md->path_to_web, TL_IS_2684), name);
 		pattern_file = Filenames__in(wp->pattern_location, TL_IS_2685);
 		if (TextFiles__exists(pattern_file) == FALSE) wp->pattern_location = NULL;
 	}
 	if (wp->pattern_location == NULL) {
 		wp->pattern_location = Pathnames__down(
+			Pathnames__down(W->md->path_to_web, TL_IS_2686), name);
+		pattern_file = Filenames__in(wp->pattern_location, TL_IS_2687);
+		if (TextFiles__exists(pattern_file) == FALSE) wp->pattern_location = NULL;
+	}
+	if (wp->pattern_location == NULL) {
+		wp->pattern_location = Pathnames__down(
 			path_to_inweb_patterns, name);
-		pattern_file = Filenames__in(wp->pattern_location, TL_IS_2686);
+		pattern_file = Filenames__in(wp->pattern_location, TL_IS_2688);
 		if (TextFiles__exists(pattern_file) == FALSE) wp->pattern_location = NULL;
 	}
 	if (wp->pattern_location == NULL)
@@ -35783,7 +35826,7 @@ void Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, U"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str__duplicate(mr.exp[1]);
-		if ((Str__eq_insensitive(key, TL_IS_2687)) && (wp->commands == 1)) {
+		if ((Str__eq_insensitive(key, TL_IS_2689)) && (wp->commands == 1)) {
 			match_results mr2 = Regexp__create_mr();
 			if (Regexp__match(&mr2, value, U"(%c+?) based on (%c+)")) {
 				if (Str__ne_insensitive(mr2.exp[0], wp->pattern_name)) {
@@ -35802,29 +35845,29 @@ void Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 			}
 			Regexp__dispose_of(&mr2);
 			wp->name_command_given = TRUE;
-		} else if (Str__eq_insensitive(key, TL_IS_2688)) {
+		} else if (Str__eq_insensitive(key, TL_IS_2690)) {
 			text_stream *name = Patterns__plugin_name(value, tfp);
 			if (Str__len(name) > 0) {
 				weave_plugin *plugin = Assets__new(name);
 				ADD_TO_LINKED_LIST(plugin, weave_plugin, wp->plugins);
 			}
-		} else if (Str__eq_insensitive(key, TL_IS_2689)) {
-			wp->pattern_format = Formats__find_by_name(value);
-		} else if (Str__eq_insensitive(key, TL_IS_2690)) {
-			wp->number_sections = Patterns__yes_or_no(value, tfp);
 		} else if (Str__eq_insensitive(key, TL_IS_2691)) {
-			wp->default_range = Str__duplicate(value);
+			wp->pattern_format = Formats__find_by_name(value);
 		} else if (Str__eq_insensitive(key, TL_IS_2692)) {
-			wp->initial_extension = Str__duplicate(value);
+			wp->number_sections = Patterns__yes_or_no(value, tfp);
 		} else if (Str__eq_insensitive(key, TL_IS_2693)) {
-			wp->mathematics_plugin = Patterns__plugin_name(value, tfp);
+			wp->default_range = Str__duplicate(value);
 		} else if (Str__eq_insensitive(key, TL_IS_2694)) {
-			wp->footnotes_plugin = Patterns__plugin_name(value, tfp);
+			wp->initial_extension = Str__duplicate(value);
 		} else if (Str__eq_insensitive(key, TL_IS_2695)) {
-			ADD_TO_LINKED_LIST(Str__duplicate(value), text_stream, wp->blocked_templates);
+			wp->mathematics_plugin = Patterns__plugin_name(value, tfp);
 		} else if (Str__eq_insensitive(key, TL_IS_2696)) {
-			ADD_TO_LINKED_LIST(Str__duplicate(value), text_stream, wp->post_commands);
+			wp->footnotes_plugin = Patterns__plugin_name(value, tfp);
 		} else if (Str__eq_insensitive(key, TL_IS_2697)) {
+			ADD_TO_LINKED_LIST(Str__duplicate(value), text_stream, wp->blocked_templates);
+		} else if (Str__eq_insensitive(key, TL_IS_2698)) {
+			ADD_TO_LINKED_LIST(Str__duplicate(value), text_stream, wp->post_commands);
+		} else if (Str__eq_insensitive(key, TL_IS_2699)) {
 			match_results mr2 = Regexp__create_mr();
 			if (Regexp__match(&mr2, value, U"(%c+?) = (%c+)")) {
 				Bibliographic__set_datum(wp->patterned_for->md, mr2.exp[0], mr2.exp[1]);
@@ -35832,7 +35875,7 @@ void Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 				Errors__in_text_file("syntax is 'bibliographic data: X = Y'", tfp);
 			}
 			Regexp__dispose_of(&mr2);
-		} else if (Str__eq_insensitive(key, TL_IS_2698)) {
+		} else if (Str__eq_insensitive(key, TL_IS_2700)) {
 			match_results mr2 = Regexp__create_mr();
 			if (Regexp__match(&mr2, value, U"(.%C+?) (%c+)")) {
 				Assets__add_asset_rule(wp->asset_rules, mr2.exp[0], mr2.exp[1], tfp);
@@ -35851,8 +35894,8 @@ void Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 
 #line 184 "inweb/Chapter 1/Patterns.w"
 int Patterns__yes_or_no(text_stream *arg, text_file_position *tfp) {
-	if (Str__eq(arg, TL_IS_2699)) return TRUE;
-	if (Str__eq(arg, TL_IS_2700)) return FALSE;
+	if (Str__eq(arg, TL_IS_2701)) return TRUE;
+	if (Str__eq(arg, TL_IS_2702)) return FALSE;
 	Errors__in_text_file("setting must be 'yes' or 'no'", tfp);
 	return FALSE;
 }
@@ -35860,7 +35903,7 @@ int Patterns__yes_or_no(text_stream *arg, text_file_position *tfp) {
 text_stream *Patterns__plugin_name(text_stream *arg, text_file_position *tfp) {
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, arg, U"(%i+)")) {
-		if (Str__eq_insensitive(arg, TL_IS_2701)) return NULL;
+		if (Str__eq_insensitive(arg, TL_IS_2703)) return NULL;
 	} else {
 		Errors__in_text_file("plugin names must be single alphanumeric words", tfp);
 		arg = NULL;
@@ -35876,10 +35919,10 @@ void Patterns__post_process(weave_pattern *pattern, weave_order *wv) {
 		filename *last_F = NULL;
 		TEMPORARY_TEXT(cmd)
 		for (int i=0; i<Str__len(T); i++) {
-			if (Str__includes_at(T, i, TL_IS_2702)) {
+			if (Str__includes_at(T, i, TL_IS_2704)) {
 				Shell__quote_path(cmd, Filenames__up(wv->weave_to));
 				i += 8;
-			} else if (Str__includes_at(T, i, TL_IS_2703)) {
+			} else if (Str__includes_at(T, i, TL_IS_2705)) {
 				filename *W = wv->weave_to;
 				i += 5;
 				if (Str__get_at(T, i) == '.') {
@@ -35895,7 +35938,7 @@ void Patterns__post_process(weave_pattern *pattern, weave_order *wv) {
 				i--;
 			} else PUT_TO(cmd, Str__get_at(T, i));
 		}
-		if ((Str__includes_at(cmd, 0, TL_IS_2704)) && (last_F)) {
+		if ((Str__includes_at(cmd, 0, TL_IS_2706)) && (last_F)) {
 			TeXUtilities__post_process_weave(wv, last_F);
 		} else {
 			if (verbose_mode) PRINT("(%S)\n", cmd);
@@ -35967,8 +36010,8 @@ colour_scheme *Assets__find_colour_scheme(weave_pattern *pattern,
 			return cs;
 	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", name);
-	filename *F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2705, css);
-	if (F == NULL) F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2706, css);
+	filename *F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2707, css);
+	if (F == NULL) F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2708, css);
 	DISCARD_TEXT(css)
 	if (F == NULL) return NULL;
 	cs = CREATE(colour_scheme);
@@ -36034,8 +36077,8 @@ void Assets__include_colour_scheme(OUTPUT_STREAM, web *W, colour_scheme *cs,
 	if (verbose_mode) PRINT("Include colour scheme '%S'\n", cs->scheme_name);
 	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", cs->scheme_name);
-	filename *F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2707, css);
-	if (F == NULL) F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2708, css);
+	filename *F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2709, css);
+	if (F == NULL) F = Patterns__find_file_in_subdirectory(pattern, TL_IS_2710, css);
 	if (F == NULL) {
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found",
@@ -36055,7 +36098,7 @@ void Assets__include_colour_scheme(OUTPUT_STREAM, web *W, colour_scheme *cs,
 #line 184 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 linked_list *Assets__new_asset_rules_list(void) {
 	linked_list *L = NEW_LINKED_LIST(asset_rule);
-	Assets__add_asset_rule(L, TL_IS_2709, TL_IS_2710, NULL);
+	Assets__add_asset_rule(L, TL_IS_2711, TL_IS_2712, NULL);
 	return L;
 }
 
@@ -36082,7 +36125,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 		cmd = mr.exp[0];
 		detail = mr.exp[1];
 	}
-	if (Str__eq(cmd, TL_IS_2711)) {
+	if (Str__eq(cmd, TL_IS_2713)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36094,7 +36137,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 231 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2712)) {
+	} else if (Str__eq(cmd, TL_IS_2714)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36106,7 +36149,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 233 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = PRIVATE_COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2713)) {
+	} else if (Str__eq(cmd, TL_IS_2715)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36118,7 +36161,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 235 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = EMBED_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2714)) {
+	} else if (Str__eq(cmd, TL_IS_2716)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36130,11 +36173,11 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 237 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = COLLATE_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2715)) {
-		R->pre = Str__duplicate(detail);
-	} else if (Str__eq(cmd, TL_IS_2716)) {
-		R->post = Str__duplicate(detail);
 	} else if (Str__eq(cmd, TL_IS_2717)) {
+		R->pre = Str__duplicate(detail);
+	} else if (Str__eq(cmd, TL_IS_2718)) {
+		R->post = Str__duplicate(detail);
+	} else if (Str__eq(cmd, TL_IS_2719)) {
 		R->transform_names = TRUE;
 	} else Errors__in_text_file("no such asset command", tfp);
 	Regexp__dispose_of(&mr);
@@ -36167,7 +36210,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 		cmd = mr.exp[0];
 		detail = mr.exp[1];
 	}
-	if (Str__eq(cmd, TL_IS_2711)) {
+	if (Str__eq(cmd, TL_IS_2713)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36179,7 +36222,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 231 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2712)) {
+	} else if (Str__eq(cmd, TL_IS_2714)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36191,7 +36234,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 233 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = PRIVATE_COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2713)) {
+	} else if (Str__eq(cmd, TL_IS_2715)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36203,7 +36246,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 235 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = EMBED_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2714)) {
+	} else if (Str__eq(cmd, TL_IS_2716)) {
 		
 {
 #line 217 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
@@ -36215,11 +36258,11 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 }
 #line 237 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 ; R->method = COLLATE_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_2715)) {
-		R->pre = Str__duplicate(detail);
-	} else if (Str__eq(cmd, TL_IS_2716)) {
-		R->post = Str__duplicate(detail);
 	} else if (Str__eq(cmd, TL_IS_2717)) {
+		R->pre = Str__duplicate(detail);
+	} else if (Str__eq(cmd, TL_IS_2718)) {
+		R->post = Str__duplicate(detail);
+	} else if (Str__eq(cmd, TL_IS_2719)) {
 		R->transform_names = TRUE;
 	} else Errors__in_text_file("no such asset command", tfp);
 	Regexp__dispose_of(&mr);
@@ -36242,7 +36285,7 @@ asset_rule *Assets__applicable_rule(weave_pattern *pattern, filename *F) {
 	}
 	asset_rule *R;
 	LOOP_OVER_LINKED_LIST(R, asset_rule, pattern->asset_rules)
-		if (Str__eq_insensitive(R->applies_to, TL_IS_2718))
+		if (Str__eq_insensitive(R->applies_to, TL_IS_2720))
 			return R;
 	internal_error("no default asset rule");
 	return NULL;
@@ -36262,7 +36305,7 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *
 {
 #line 296 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 	for (int i=0; i<Str__len(R->pre); i++) {
-		if (Str__includes_at(R->pre, i, TL_IS_2719)) {
+		if (Str__includes_at(R->pre, i, TL_IS_2721)) {
 			WRITE("%S", url);
 			i += 2;
 		} else PUT(Str__get_at(R->pre, i));
@@ -36348,7 +36391,7 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, web *W, filename *
 {
 #line 334 "inweb/Chapter 1/Assets, Plugins and Colour Schemes.w"
 	for (int i=0; i<Str__len(R->post); i++) {
-		if (Str__includes_at(R->post, i, TL_IS_2720)) {
+		if (Str__includes_at(R->post, i, TL_IS_2722)) {
 			WRITE("%S", url);
 			i += 2;
 		} else PUT(Str__get_at(R->post, i));
@@ -36416,7 +36459,7 @@ web *Reader__load_web(pathname *P, filename *alt_F, module_search *I,
 #line 134 "inweb/Chapter 2/The Reader.w"
 	TEMPORARY_TEXT(IB)
 	WRITE_TO(IB, "7.2.1");
-	web_bibliographic_datum *bd = Bibliographic__set_datum(W->md, TL_IS_2721, IB);
+	web_bibliographic_datum *bd = Bibliographic__set_datum(W->md, TL_IS_2723, IB);
 	bd->declaration_permitted = FALSE;
 	DISCARD_TEXT(IB)
 
@@ -36435,7 +36478,7 @@ web *Reader__load_web(pathname *P, filename *alt_F, module_search *I,
 	W->redirect_weaves_to = NULL;
 	W->main_language = Analyser__default_language(W);
 	W->web_extent = 0; W->no_paragraphs = 0;
-	text_stream *language_name = Bibliographic__get_datum(W->md, TL_IS_2722);
+	text_stream *language_name = Bibliographic__get_datum(W->md, TL_IS_2724);
 	if (Str__len(language_name) > 0)
 		W->main_language = Analyser__find_by_name(language_name, W, TRUE);
 	main_target = Reader__add_tangle_target(W, W->main_language);
@@ -36609,7 +36652,7 @@ void Reader__read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 }
 #line 253 "inweb/Chapter 2/The Reader.w"
 ;
-	text_stream *purpose = Bibliographic__get_datum(W->md, TL_IS_2723);
+	text_stream *purpose = Bibliographic__get_datum(W->md, TL_IS_2725);
 	if (Str__len(purpose) > 0) {
 		Str__clear(line);
 		WRITE_TO(line, "Implied Purpose: %S", purpose);
@@ -36688,13 +36731,13 @@ void Reader__scan_source_line(text_stream *line, text_file_position *tfp, void *
 
 #line 296 "inweb/Chapter 2/The Reader.w"
 pathname *Reader__woven_folder(web *W) {
-	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_2724);
+	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_2726);
 	if (Pathnames__create_in_file_system(P) == FALSE)
 		Errors__fatal_with_path("unable to create Woven subdirectory", P);
 	return P;
 }
 pathname *Reader__tangled_folder(web *W) {
-	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_2725);
+	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_2727);
 	if (Pathnames__create_in_file_system(P) == FALSE)
 		Errors__fatal_with_path("unable to create Tangled subdirectory", P);
 	return P;
@@ -36773,7 +36816,7 @@ int Reader__web_has_one_section(web *W) {
 
 #line 430 "inweb/Chapter 2/The Reader.w"
 void Reader__print_web_statistics(web *W) {
-	PRINT("web \"%S\": ", Bibliographic__get_datum(W->md, TL_IS_2726));
+	PRINT("web \"%S\": ", Bibliographic__get_datum(W->md, TL_IS_2728));
 	int c = WebMetadata__chapter_count(W->md);
 	int s = WebMetadata__section_count(W->md);
 	if (W->md->chaptered) PRINT("%d chapter%s : ",
@@ -36924,7 +36967,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		
 {
 #line 141 "inweb/Chapter 2/The Parser.w"
-	source_line *NL = Lines__new_source_line_in(TL_IS_2729, &(L->source), S);
+	source_line *NL = Lines__new_source_line_in(TL_IS_2731, &(L->source), S);
 	PL->next_line = NL;
 	NL->next_line = L;
 	L = PL;
@@ -36937,13 +36980,13 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	}
 	if ((PL) && (Regexp__match(&mr, L->text, U"@ *= *"))) {
 		Str__clear(L->text);
-		Str__copy(L->text, TL_IS_2728);
+		Str__copy(L->text, TL_IS_2730);
 		if (S->md->using_syntax < V2_SYNTAX)
 			Parser__wrong_version(S->md->using_syntax, L, "implied paragraph breaks", V2_SYNTAX);
 		
 {
 #line 141 "inweb/Chapter 2/The Parser.w"
-	source_line *NL = Lines__new_source_line_in(TL_IS_2729, &(L->source), S);
+	source_line *NL = Lines__new_source_line_in(TL_IS_2731, &(L->source), S);
 	PL->next_line = NL;
 	NL->next_line = L;
 	L = PL;
@@ -37055,10 +37098,10 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		} else if (Str__eq_wide_string(command_text, U"Figure")) {
 			if (S->md->using_syntax > V1_SYNTAX)
 				Parser__wrong_version(S->md->using_syntax, L, "[[Figure...]]", V1_SYNTAX);
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2730);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2732);
 			L->command_code = FIGURE_CMD;
 		} else {
-			Main__error_in_web(TL_IS_2731, L);
+			Main__error_in_web(TL_IS_2733, L);
 		}
 		L->is_commentary = TRUE;
 		DISCARD_TEXT(command_text)
@@ -37079,7 +37122,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		Str__copy(para_macro_name, mr.exp[0]);
 		L->category = MACRO_DEFINITION_LCAT;
 		if (current_paragraph == NULL)
-			Main__error_in_web(TL_IS_2732, L);
+			Main__error_in_web(TL_IS_2734, L);
 		else Macros__create(S, current_paragraph, L, para_macro_name);
 		comment_mode = FALSE; extract_mode = FALSE;
 		L->is_commentary = FALSE;
@@ -37121,9 +37164,9 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr = Regexp__create_mr();
 	match_results mr2 = Regexp__create_mr();
 	if (Regexp__match(&mr, L->text, U"= *(%c+) *")) {
-		if ((current_paragraph) && (Str__eq(mr.exp[0], TL_IS_2733))) {
+		if ((current_paragraph) && (Str__eq(mr.exp[0], TL_IS_2735))) {
 			current_paragraph->placed_very_early = TRUE;
-		} else if ((current_paragraph) && (Str__eq(mr.exp[0], TL_IS_2734))) {
+		} else if ((current_paragraph) && (Str__eq(mr.exp[0], TL_IS_2736))) {
 			current_paragraph->placed_early = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%((%c*?) *text%)"))) {
@@ -37133,11 +37176,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37160,11 +37203,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37177,7 +37220,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 ;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = Str__duplicate(mr2.exp[1]);
-			code_pl_for_body = Analyser__find_by_name(TL_IS_2735, W, TRUE);
+			code_pl_for_body = Analyser__find_by_name(TL_IS_2737, W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%((%c*?) *text as code%)"))) {
@@ -37187,11 +37230,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37214,11 +37257,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37241,11 +37284,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37275,7 +37318,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		latest->next_line = TL;
 		latest = TL;
 	}
-	source_line *EEL = Lines__new_source_line_in(TL_IS_2753, &(L->source), S);
+	source_line *EEL = Lines__new_source_line_in(TL_IS_2755, &(L->source), S);
 	EEL->next_line = latest->next_line;
 	latest->next_line = EEL;
 	code_lcat_for_body = TEXT_EXTRACT_LCAT;
@@ -37292,11 +37335,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37326,7 +37369,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		latest->next_line = TL;
 		latest = TL;
 	}
-	source_line *EEL = Lines__new_source_line_in(TL_IS_2753, &(L->source), S);
+	source_line *EEL = Lines__new_source_line_in(TL_IS_2755, &(L->source), S);
 	EEL->next_line = latest->next_line;
 	latest->next_line = EEL;
 	code_lcat_for_body = TEXT_EXTRACT_LCAT;
@@ -37343,11 +37386,11 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	match_results mr3 = Regexp__create_mr();
 	while (TRUE) {
 		if (Regexp__match(&mr3, mr2.exp[0], U" *(%C+) *(%c*?)")) {
-			if (Str__eq(mr3.exp[0], TL_IS_2750)) L->plainer = TRUE;
-			else if (Str__eq(mr3.exp[0], TL_IS_2751)) L->enable_hyperlinks = TRUE;
+			if (Str__eq(mr3.exp[0], TL_IS_2752)) L->plainer = TRUE;
+			else if (Str__eq(mr3.exp[0], TL_IS_2753)) L->enable_hyperlinks = TRUE;
 			else {
 				Main__error_in_web(
-					TL_IS_2752, L);
+					TL_IS_2754, L);
 			}
 		} else break;
 		Str__clear(mr2.exp[0]);
@@ -37377,7 +37420,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		latest->next_line = TL;
 		latest = TL;
 	}
-	source_line *EEL = Lines__new_source_line_in(TL_IS_2753, &(L->source), S);
+	source_line *EEL = Lines__new_source_line_in(TL_IS_2755, &(L->source), S);
 	EEL->next_line = latest->next_line;
 	latest->next_line = EEL;
 	code_lcat_for_body = TEXT_EXTRACT_LCAT;
@@ -37388,7 +37431,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 ;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(figure (%c+)%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2736);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2738);
 			L->command_code = FIGURE_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37396,7 +37439,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(html (%c+)%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2737);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2739);
 			L->command_code = HTML_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37404,7 +37447,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(audio (%c+)%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2738);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2740);
 			L->command_code = AUDIO_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37412,7 +37455,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(video (%c+)%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2739);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2741);
 			L->command_code = VIDEO_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37420,7 +37463,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(download (%c+) \"(%c*)\"%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2740);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2742);
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37429,7 +37472,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(download (%c+)%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2741);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2743);
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37438,7 +37481,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(carousel%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2742);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2744);
 			L->command_code = CAROUSEL_UNCAPTIONED_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37446,7 +37489,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\" below%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2743);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2745);
 			L->command_code = CAROUSEL_BELOW_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37454,7 +37497,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\" above%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2744);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2746);
 			L->command_code = CAROUSEL_ABOVE_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37462,7 +37505,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\"%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2745);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2747);
 			L->command_code = CAROUSEL_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37470,7 +37513,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
 			(Regexp__match(&mr2, mr.exp[0], U"%(carousel end%)"))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2746);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2748);
 			L->command_code = CAROUSEL_END_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37478,7 +37521,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		} else if ((current_paragraph) &&
 			((Regexp__match(&mr2, mr.exp[0], U"%(embedded (%C+) video (%c+)%)")) ||
 				(Regexp__match(&mr2, mr.exp[0], U"%(embedded (%C+) audio (%c+)%)")))) {
-			Tags__add_by_name(L->owning_paragraph, TL_IS_2747);
+			Tags__add_by_name(L->owning_paragraph, TL_IS_2749);
 			L->command_code = EMBED_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
@@ -37486,10 +37529,10 @@ void Parser__parse_web(web *W, int inweb_mode) {
 			L->text_operand2 = Str__duplicate(mr2.exp[1]);
 			comment_mode = TRUE;
 		} else {
-			Main__error_in_web(TL_IS_2748, L);
+			Main__error_in_web(TL_IS_2750, L);
 		}
 	} else if (Regexp__match(&mr, L->text, U"= *%C%c*")) {
-		Main__error_in_web(TL_IS_2749, L);
+		Main__error_in_web(TL_IS_2751, L);
 	}
 	code_plainness_for_body = L->plainer;
 	hyperlink_body = L->enable_hyperlinks;
@@ -37523,7 +37566,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 	if (Str__eq_wide_string(command_text, U"Purpose:")) 
 {
 #line 586 "inweb/Chapter 2/The Parser.w"
-	if (before_bar == FALSE) Main__error_in_web(TL_IS_2755, L);
+	if (before_bar == FALSE) Main__error_in_web(TL_IS_2757, L);
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@Purpose'", V1_SYNTAX);
 	L->category = PURPOSE_LCAT;
@@ -37539,7 +37582,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 #line 595 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@Interface'", V1_SYNTAX);
-	if (before_bar == FALSE) Main__error_in_web(TL_IS_2756, L);
+	if (before_bar == FALSE) Main__error_in_web(TL_IS_2758, L);
 	L->category = INTERFACE_LCAT;
 	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
@@ -37559,7 +37602,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 #line 610 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "'@Definitions' headings", V1_SYNTAX);
-	if (before_bar == FALSE) Main__error_in_web(TL_IS_2757, L);
+	if (before_bar == FALSE) Main__error_in_web(TL_IS_2759, L);
 	L->category = DEFINITIONS_LCAT;
 	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
@@ -37574,7 +37617,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 #line 623 "inweb/Chapter 2/The Parser.w"
 	if (S->md->using_syntax >= V2_SYNTAX)
 		Parser__wrong_version(S->md->using_syntax, L, "the bar '----...'", V1_SYNTAX);
-	if (before_bar == FALSE) Main__error_in_web(TL_IS_2758, L);
+	if (before_bar == FALSE) Main__error_in_web(TL_IS_2760, L);
 	L->category = BAR_LCAT;
 	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
@@ -37703,7 +37746,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		from = mr.exp[1];
 		Str__copy(L->text_operand, mr.exp[0]);
 	} else if (Regexp__match(&mr, L->text_operand, U"(%C+) (%c+)")) {
-		Main__error_in_web(TL_IS_2759, L);
+		Main__error_in_web(TL_IS_2761, L);
 	}
 	L->text_operand2 = Str__new();
 	if (inweb_mode == TANGLE_MODE)
@@ -37738,7 +37781,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		from = mr.exp[1];
 		Str__copy(L->text_operand, mr.exp[0]);
 	} else if (Regexp__match(&mr, L->text_operand, U"(%C+) (%c+)")) {
-		Main__error_in_web(TL_IS_2759, L);
+		Main__error_in_web(TL_IS_2761, L);
 	}
 	L->text_operand2 = Str__new();
 	if (inweb_mode == TANGLE_MODE)
@@ -37803,13 +37846,13 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		P->placed_very_early = FALSE;
 	}
 	P->invisible = FALSE;
-	if (Str__eq(Bibliographic__get_datum(W->md, TL_IS_2760), TL_IS_2761))
+	if (Str__eq(Bibliographic__get_datum(W->md, TL_IS_2762), TL_IS_2763))
 		P->invisible = TRUE;
 	P->heading_text = Str__duplicate(L->text_operand);
 	if ((S->md->using_syntax == V1_SYNTAX) && (before_bar))
-		P->ornament = Str__duplicate(TL_IS_2762);
+		P->ornament = Str__duplicate(TL_IS_2764);
 	else
-		P->ornament = Str__duplicate(TL_IS_2763);
+		P->ornament = Str__duplicate(TL_IS_2765);
 	WRITE_TO(P->paragraph_number, "%d", next_par_number++);
 	P->parent_paragraph = NULL;
 	P->next_child_number = 1;
@@ -37839,7 +37882,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 }
 #line 578 "inweb/Chapter 2/The Parser.w"
 
-		else Main__error_in_web(TL_IS_2754, L);
+		else Main__error_in_web(TL_IS_2756, L);
 	}
 
 }
@@ -37904,7 +37947,7 @@ void Parser__parse_web(web *W, int inweb_mode) {
 		source_line *L = S->first_line;
 		if ((L) && (L->category == CHAPTER_HEADING_LCAT)) L = L->next_line;
 		if (Str__len(S->sect_purpose) == 0) {
-			S->sect_purpose = Parser__extract_purpose(TL_IS_2727, L?L->next_line: NULL, S, NULL);
+			S->sect_purpose = Parser__extract_purpose(TL_IS_2729, L?L->next_line: NULL, S, NULL);
 			if (Str__len(S->sect_purpose) > 0) L->next_line->category = PURPOSE_LCAT;
 		}
 	}
@@ -38018,10 +38061,10 @@ text_stream *Parser__extract_purpose(text_stream *prologue, source_line *XL, sec
 int Parser__detect_footnote(web *W, text_stream *matter, text_stream *before,
 	text_stream *cue, text_stream *after) {
 	text_stream *fn_on_notation =
-		Bibliographic__get_datum(W->md, TL_IS_2764);
+		Bibliographic__get_datum(W->md, TL_IS_2766);
 	text_stream *fn_off_notation =
-		Bibliographic__get_datum(W->md, TL_IS_2765);
-	if (Str__ne(fn_on_notation, TL_IS_2766)) {
+		Bibliographic__get_datum(W->md, TL_IS_2767);
+	if (Str__ne(fn_on_notation, TL_IS_2768)) {
 		int N1 = Str__len(fn_on_notation);
 		int N2 = Str__len(fn_off_notation);
 		if ((N1 > 0) && (N2 > 0))
@@ -38156,10 +38199,10 @@ theme_tag *Tags__find_by_name(text_stream *name, int creating_if_necessary) {
 		tag->tag_name = Str__duplicate(name);
 		tag->ifdef_positive = NOT_APPLICABLE;
 		tag->ifdef_symbol = Str__new();
-		if (Str__prefix_eq(name, TL_IS_2767, 6)) {
+		if (Str__prefix_eq(name, TL_IS_2769, 6)) {
 			Str__substr(tag->ifdef_symbol, Str__at(name, 6), Str__end(name));
 			tag->ifdef_positive = TRUE;
-		} else if (Str__prefix_eq(name, TL_IS_2768, 7)) {
+		} else if (Str__prefix_eq(name, TL_IS_2770, 7)) {
 			Str__substr(tag->ifdef_symbol, Str__at(name, 7), Str__end(name));
 			tag->ifdef_positive = FALSE;
 		}
@@ -38254,20 +38297,20 @@ void Tags__show_endnote_on_ifdefs(heterogeneous_tree *tree, tree_node *ap, parag
 					if (d++ == 0) {
 						tree_node *E = WeaveTree__endnote(tree);
 						Trees__make_child(E, ap); ap = E;
-						TextWeaver__commentary_text(tree, ap, TL_IS_2770);
+						TextWeaver__commentary_text(tree, ap, TL_IS_2772);
 					} else {
-						TextWeaver__commentary_text(tree, ap, TL_IS_2771);
+						TextWeaver__commentary_text(tree, ap, TL_IS_2773);
 					}
 				} else {
-					TextWeaver__commentary_text(tree, ap, TL_IS_2772);
+					TextWeaver__commentary_text(tree, ap, TL_IS_2774);
 				}
 				TextWeaver__commentary_text(tree, ap, pt->the_tag->ifdef_symbol);
 			}
 	if (c > 0) {
-		if (c == 1) TextWeaver__commentary_text(tree, ap, TL_IS_2773);
-		else TextWeaver__commentary_text(tree, ap, TL_IS_2774);
-		if (sense) TextWeaver__commentary_text(tree, ap, TL_IS_2775);
+		if (c == 1) TextWeaver__commentary_text(tree, ap, TL_IS_2775);
 		else TextWeaver__commentary_text(tree, ap, TL_IS_2776);
+		if (sense) TextWeaver__commentary_text(tree, ap, TL_IS_2777);
+		else TextWeaver__commentary_text(tree, ap, TL_IS_2778);
 	}
 
 }
@@ -38286,26 +38329,26 @@ void Tags__show_endnote_on_ifdefs(heterogeneous_tree *tree, tree_node *ap, parag
 					if (d++ == 0) {
 						tree_node *E = WeaveTree__endnote(tree);
 						Trees__make_child(E, ap); ap = E;
-						TextWeaver__commentary_text(tree, ap, TL_IS_2770);
+						TextWeaver__commentary_text(tree, ap, TL_IS_2772);
 					} else {
-						TextWeaver__commentary_text(tree, ap, TL_IS_2771);
+						TextWeaver__commentary_text(tree, ap, TL_IS_2773);
 					}
 				} else {
-					TextWeaver__commentary_text(tree, ap, TL_IS_2772);
+					TextWeaver__commentary_text(tree, ap, TL_IS_2774);
 				}
 				TextWeaver__commentary_text(tree, ap, pt->the_tag->ifdef_symbol);
 			}
 	if (c > 0) {
-		if (c == 1) TextWeaver__commentary_text(tree, ap, TL_IS_2773);
-		else TextWeaver__commentary_text(tree, ap, TL_IS_2774);
-		if (sense) TextWeaver__commentary_text(tree, ap, TL_IS_2775);
+		if (c == 1) TextWeaver__commentary_text(tree, ap, TL_IS_2775);
 		else TextWeaver__commentary_text(tree, ap, TL_IS_2776);
+		if (sense) TextWeaver__commentary_text(tree, ap, TL_IS_2777);
+		else TextWeaver__commentary_text(tree, ap, TL_IS_2778);
 	}
 
 }
 #line 139 "inweb/Chapter 2/Tags.w"
 ;
-	if (d > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2769);
+	if (d > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2771);
 }
 
 #line 22 "inweb/Chapter 2/Enumerated Constants.w"
@@ -38329,7 +38372,7 @@ void Enumerations__define(OUTPUT_STREAM, text_stream *symbol,
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, symbol, U"%c*_(%C+?)")) Str__copy(pf, mr.exp[0]);
 	else {
-		Main__error_in_web(TL_IS_2777, L);
+		Main__error_in_web(TL_IS_2779, L);
 		WRITE_TO(pf, "BOGUS");
 	}
 	Regexp__dispose_of(&mr);
@@ -38345,7 +38388,7 @@ void Enumerations__define(OUTPUT_STREAM, text_stream *symbol,
 		if (es->stub) WRITE("(%S+", es->stub);
 		WRITE("%d", es->next_free_value++);
 		if (es->stub) WRITE(")");
-	} else Main__error_in_web(TL_IS_2778, L);
+	} else Main__error_in_web(TL_IS_2780, L);
 
 }
 #line 45 "inweb/Chapter 2/Enumerated Constants.w"
@@ -38353,7 +38396,7 @@ void Enumerations__define(OUTPUT_STREAM, text_stream *symbol,
 	else 
 {
 #line 70 "inweb/Chapter 2/Enumerated Constants.w"
-	if (es) Main__error_in_web(TL_IS_2779, L);
+	if (es) Main__error_in_web(TL_IS_2781, L);
 	else {
 		es = CREATE(enumeration_set);
 		es->postfix = Str__duplicate(pf);
@@ -38653,7 +38696,7 @@ void Analyser__analyse_code(web *W) {
 		if ((L->category == INTERFACE_BODY_LCAT) &&
 			(L->interface_line_identified == FALSE) &&
 			(Regexp__string_is_white_space(L->text) == FALSE))
-			Main__error_in_web(TL_IS_2780, L);
+			Main__error_in_web(TL_IS_2782, L);
 
 }
 #line 109 "inweb/Chapter 3/The Analyser.w"
@@ -38827,14 +38870,14 @@ void Analyser__write_makefile(web *W, filename *F, module_search *I, text_stream
 	pathname *P = W->md->path_to_web;
 	text_stream *short_name = Pathnames__directory_name(P);
 	if ((Str__len(short_name) == 0) ||
-		(Str__eq(short_name, TL_IS_2781)) || (Str__eq(short_name, TL_IS_2782)))
-		short_name = TL_IS_2783;
+		(Str__eq(short_name, TL_IS_2783)) || (Str__eq(short_name, TL_IS_2784)))
+		short_name = TL_IS_2785;
 	TEMPORARY_TEXT(leafname)
 	WRITE_TO(leafname, "%S.mkscript", short_name);
 	filename *prototype = Filenames__in(P, leafname);
 	DISCARD_TEXT(leafname)
 	if (!(TextFiles__exists(prototype)))
-		prototype = Filenames__in(path_to_inweb_materials, TL_IS_2784);
+		prototype = Filenames__in(path_to_inweb_materials, TL_IS_2786);
 	Makefiles__write(W, prototype, F, I, platform);
 }
 
@@ -38842,32 +38885,32 @@ void Analyser__write_gitignore(web *W, filename *F) {
 	pathname *P = W->md->path_to_web;
 	text_stream *short_name = Pathnames__directory_name(P);
 	if ((Str__len(short_name) == 0) ||
-		(Str__eq(short_name, TL_IS_2785)) || (Str__eq(short_name, TL_IS_2786)))
-		short_name = TL_IS_2787;
+		(Str__eq(short_name, TL_IS_2787)) || (Str__eq(short_name, TL_IS_2788)))
+		short_name = TL_IS_2789;
 	TEMPORARY_TEXT(leafname)
 	WRITE_TO(leafname, "%S.giscript", short_name);
 	filename *prototype = Filenames__in(P, leafname);
 	DISCARD_TEXT(leafname)
 	if (!(TextFiles__exists(prototype)))
-		prototype = Filenames__in(path_to_inweb_materials, TL_IS_2788);
+		prototype = Filenames__in(path_to_inweb_materials, TL_IS_2790);
 	Git__write_gitignore(W, prototype, F);
 }
 
 #line 330 "inweb/Chapter 3/The Analyser.w"
 programming_language *Analyser__default_language(web *W) {
-	return Analyser__find_by_name(TL_IS_2789, W, TRUE);
+	return Analyser__find_by_name(TL_IS_2791, W, TRUE);
 }
 
 programming_language *Analyser__find_by_name(text_stream *lname, web *W,
 	int error_if_not_found) {
-	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_2790);
+	pathname *P = Pathnames__down(W->md->path_to_web, TL_IS_2792);
 	return Languages__find_by_name(lname, P, error_if_not_found);
 }
 
 #line 19 "inweb/Chapter 3/The Collater.w"
 void Collater__for_web_and_pattern(text_stream *OUT, web *W,
 	weave_pattern *pattern, filename *F, filename *into) {
-	Collater__collate(OUT, W, TL_IS_2791, F, pattern, NULL, NULL, NULL, into);
+	Collater__collate(OUT, W, TL_IS_2793, F, pattern, NULL, NULL, NULL, into);
 }
 
 void Collater__for_order(text_stream *OUT, weave_order *wv,
@@ -39022,33 +39065,33 @@ void Collater__process(text_stream *OUT, collater_state *cls) {
 	if (Regexp__match(&mr, command, U"If (%c*)")) {
 		text_stream *condition = mr.exp[0];
 		int level = IF_FALSE_LEVEL;
-		if (Str__eq(condition, TL_IS_2792)) {
+		if (Str__eq(condition, TL_IS_2794)) {
 			if (cls->for_web->md->chaptered) level = IF_TRUE_LEVEL;
-		} else if (Str__eq(condition, TL_IS_2793)) {
+		} else if (Str__eq(condition, TL_IS_2795)) {
 			if (LinkedLists__len(cls->modules) > 0)
 				level = IF_TRUE_LEVEL;
-		} else if (Str__eq(condition, TL_IS_2794)) {
+		} else if (Str__eq(condition, TL_IS_2796)) {
 			module *M = CONTENT_IN_ITEM(
 				Collater__heading_topmost_on_stack(cls, MODULE_LEVEL), module);
 			if ((M) && (Colonies__find(M->module_name)))
 				level = IF_TRUE_LEVEL;
-		} else if (Str__eq(condition, TL_IS_2795)) {
+		} else if (Str__eq(condition, TL_IS_2797)) {
 			module *M = CONTENT_IN_ITEM(
 				Collater__heading_topmost_on_stack(cls, MODULE_LEVEL), module);
 			if (M) {
 				TEMPORARY_TEXT(url)
 				TEMPORARY_TEXT(purpose)
 				WRITE_TO(url, "%p", M->module_location);
-				Readme__write_var(purpose, url, TL_IS_2796);
+				Readme__write_var(purpose, url, TL_IS_2798);
 				if (Str__len(purpose) > 0) level = IF_TRUE_LEVEL;
 				DISCARD_TEXT(url)
 				DISCARD_TEXT(purpose)
 			}
-		} else if (Str__eq(condition, TL_IS_2797)) {
+		} else if (Str__eq(condition, TL_IS_2799)) {
 			chapter *C = CONTENT_IN_ITEM(
 				Collater__heading_topmost_on_stack(cls, CHAPTER_LEVEL), chapter);
 			if ((C) && (Str__len(C->md->rubric) > 0)) level = IF_TRUE_LEVEL;
-		} else if (Str__eq(condition, TL_IS_2798)) {
+		} else if (Str__eq(condition, TL_IS_2800)) {
 			section *S = CONTENT_IN_ITEM(
 				Collater__heading_topmost_on_stack(cls, SECTION_LEVEL), section);
 			if ((S) && (Str__len(S->sect_purpose) > 0)) level = IF_TRUE_LEVEL;
@@ -39379,7 +39422,7 @@ void Collater__process(text_stream *OUT, collater_state *cls) {
 	} else if (Str__eq_wide_string(detail, U"Purpose")) {
 		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%p", M->module_location);
-		Readme__write_var(substituted, url, TL_IS_2799);
+		Readme__write_var(substituted, url, TL_IS_2801);
 		DISCARD_TEXT(url)
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, M->module_name);
@@ -39579,7 +39622,7 @@ void Collater__process(text_stream *OUT, collater_state *cls) {
 #line 720 "inweb/Chapter 3/The Collater.w"
 ;
 		WRITE_TO(substituted, "</span>");
-	} else if (Str__eq(url, TL_IS_2800)) {
+	} else if (Str__eq(url, TL_IS_2802)) {
 		WRITE_TO(substituted, "<a href=\"%S\">", url);
 		WRITE_TO(substituted, "<span class=\"selectedlink\">");
 		
@@ -39680,7 +39723,7 @@ void Collater__process(text_stream *OUT, collater_state *cls) {
 #line 720 "inweb/Chapter 3/The Collater.w"
 ;
 		WRITE_TO(substituted, "</span>");
-	} else if (Str__eq(url, TL_IS_2800)) {
+	} else if (Str__eq(url, TL_IS_2802)) {
 		WRITE_TO(substituted, "<a href=\"%S\">", url);
 		WRITE_TO(substituted, "<span class=\"selectedlink\">");
 		
@@ -39819,11 +39862,11 @@ int Collater__cmp_owners(text_stream *O1, text_stream *O2) {
 		return 0;
 	}
 	if (Str__len(O2) == 0) return 1;
-	if (Str__eq_insensitive(O1, TL_IS_2801)) {
-		if (Str__eq_insensitive(O2, TL_IS_2802) == FALSE) return 1;
+	if (Str__eq_insensitive(O1, TL_IS_2803)) {
+		if (Str__eq_insensitive(O2, TL_IS_2804) == FALSE) return 1;
 		return 0;
 	}
-	if (Str__eq_insensitive(O2, TL_IS_2803)) return -1;
+	if (Str__eq_insensitive(O2, TL_IS_2805)) return -1;
 	return Str__cmp_insensitive(O1, O2);
 }
 
@@ -39835,7 +39878,7 @@ int Weaver__weave(weave_order *wv) {
 	tree_node *H = WeaveTree__head(tree, banner);
 	DISCARD_TEXT(banner)
 	tree_node *B = WeaveTree__body(tree);
-	tree_node *T = WeaveTree__tail(tree, TL_IS_2804);
+	tree_node *T = WeaveTree__tail(tree, TL_IS_2806);
 	Trees__make_child(H, tree->root);
 	Trees__make_child(B, tree->root);
 	Trees__make_child(T, tree->root);
@@ -39949,7 +39992,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 		continue;
 	}
 	if (LLL->category == DEFINITIONS_LCAT) {
-		Weaver__weave_subheading(tree, wv, state->ap, TL_IS_2805);
+		Weaver__weave_subheading(tree, wv, state->ap, TL_IS_2807);
 		state->next_heading_without_vertical_skip = TRUE;
 		state->horizontal_rule_just_drawn = FALSE;
 		continue;
@@ -39989,7 +40032,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 	source_line *L = LLL;
 	if ((L->category != HEADING_START_LCAT) &&
 		(L->category != PARAGRAPH_START_LCAT))
-		Main__error_in_web(TL_IS_2806, L); /* should never happen */
+		Main__error_in_web(TL_IS_2808, L); /* should never happen */
 
 	
 {
@@ -40219,11 +40262,11 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, matter, U"%(-...%) (%c*)")) { /* continue double */
 		Weaver__change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
-		Trees__make_child(WeaveTree__weave_item_node(tree, 2, TL_IS_2807), state->ap);
+		Trees__make_child(WeaveTree__weave_item_node(tree, 2, TL_IS_2809), state->ap);
 		Str__copy(matter, mr.exp[0]);
 	} else if (Regexp__match(&mr, matter, U"%(...%) (%c*)")) { /* continue single */
 		Weaver__change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
-		Trees__make_child(WeaveTree__weave_item_node(tree, 1, TL_IS_2808), state->ap);
+		Trees__make_child(WeaveTree__weave_item_node(tree, 1, TL_IS_2810), state->ap);
 		Str__copy(matter, mr.exp[0]);
 	} else if (Regexp__match(&mr, matter, U"%(-([a-zA-Z0-9*]+)%) (%c*)")) { /* begin double */
 		Weaver__change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
@@ -40272,7 +40315,7 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 		footnote *F = L->footnote_text;
 		tree_node *FN = WeaveTree__footnote(tree, F->cue_text);
 		Trees__make_child(FN, state->material_node);
-		if (F->cued_already == FALSE) Main__error_in_web(TL_IS_2809, L);
+		if (F->cued_already == FALSE) Main__error_in_web(TL_IS_2811, L);
 		state->ap = FN;
 	}
 
@@ -40306,10 +40349,10 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 		programming_language *pl = L->colour_as;
 		if (pl == NULL) pl = S->sect_language;
 		if (will_be != CODE_MATERIAL) pl = NULL;
-		theme_tag *T = Tags__find_by_name(TL_IS_2810, FALSE);
+		theme_tag *T = Tags__find_by_name(TL_IS_2812, FALSE);
 		if ((T) && (Tags__tagged_with(L->owning_paragraph, T))) {
 			programming_language *prepl =
-				Analyser__find_by_name(TL_IS_2811, wv->weave_web, FALSE);
+				Analyser__find_by_name(TL_IS_2813, wv->weave_web, FALSE);
 			if (prepl) pl = prepl;
 		}
 		text_stream *note = NULL;
@@ -40369,14 +40412,14 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 		match_results mr = Regexp__create_mr();
 		if ((Regexp__match(&mr, matter, U"@d (%c*)")) ||
 			(Regexp__match(&mr, matter, U"@define (%c*)"))) {
-			Str__copy(prefatory, TL_IS_2812);
+			Str__copy(prefatory, TL_IS_2814);
 			Str__copy(matter, mr.exp[0]);
 		} else if (Regexp__match(&mr, matter, U"@default (%c*)")) {
-			Str__copy(prefatory, TL_IS_2813);
+			Str__copy(prefatory, TL_IS_2815);
 			Str__copy(matter, mr.exp[0]);
 		} else if ((Regexp__match(&mr, matter, U"@e (%c*)")) ||
 			(Regexp__match(&mr, matter, U"@enum (%c*)"))) {
-			Str__copy(prefatory, TL_IS_2814);
+			Str__copy(prefatory, TL_IS_2816);
 			Str__copy(matter, mr.exp[0]);
 		}
 		Regexp__dispose_of(&mr);
@@ -40503,23 +40546,23 @@ int Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *bo
 void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	weave_order *wv, tree_node *ap, paragraph *P) {
 	tree_node *body = ap;
-	theme_tag *T = Tags__find_by_name(TL_IS_2815, FALSE);
+	theme_tag *T = Tags__find_by_name(TL_IS_2817, FALSE);
 	if ((T) && (Tags__tagged_with(P, T)))
 		
 {
 #line 597 "inweb/Chapter 3/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
-	TextWeaver__commentary_text(tree, ap, TL_IS_2816);
+	TextWeaver__commentary_text(tree, ap, TL_IS_2818);
 	TEMPORARY_TEXT(url)
 	int ext = FALSE;
 	if (Colonies__resolve_reference_in_weave(url, NULL, wv->weave_to,
-		TL_IS_2817, wv->weave_web->md, NULL, &ext))
-		Trees__make_child(WeaveTree__url(tree, url, TL_IS_2818, ext), ap);
+		TL_IS_2819, wv->weave_web->md, NULL, &ext))
+		Trees__make_child(WeaveTree__url(tree, url, TL_IS_2820, ext), ap);
 	else
-		TextWeaver__commentary_text(tree, ap, TL_IS_2819);
+		TextWeaver__commentary_text(tree, ap, TL_IS_2821);
 	DISCARD_TEXT(url)
-	TextWeaver__commentary_text(tree, ap, TL_IS_2820);
+	TextWeaver__commentary_text(tree, ap, TL_IS_2822);
 
 }
 #line 584 "inweb/Chapter 3/The Weaver.w"
@@ -40531,30 +40574,30 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 #line 611 "inweb/Chapter 3/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
-	TextWeaver__commentary_text(tree, ap, TL_IS_2821);
+	TextWeaver__commentary_text(tree, ap, TL_IS_2823);
 	int ct = 0;
 	macro_usage *mu;
 	LOOP_OVER_LINKED_LIST(mu, macro_usage, P->defines_macro->macro_usages)
 		ct++;
-	if (ct == 1) TextWeaver__commentary_text(tree, ap, TL_IS_2822);
+	if (ct == 1) TextWeaver__commentary_text(tree, ap, TL_IS_2824);
 	else {
 		int k = 0, used_flag = FALSE;
 		LOOP_OVER_LINKED_LIST(mu, macro_usage, P->defines_macro->macro_usages)
 			if (P != mu->used_in_paragraph) {
 				if (used_flag) {
-					if (k < ct-1) TextWeaver__commentary_text(tree, ap, TL_IS_2823);
-					else TextWeaver__commentary_text(tree, ap, TL_IS_2824);
+					if (k < ct-1) TextWeaver__commentary_text(tree, ap, TL_IS_2825);
+					else TextWeaver__commentary_text(tree, ap, TL_IS_2826);
 				} else {
-					TextWeaver__commentary_text(tree, ap, TL_IS_2825);
+					TextWeaver__commentary_text(tree, ap, TL_IS_2827);
 				}
 				Trees__make_child(WeaveTree__locale(tree, mu->used_in_paragraph, NULL), ap);
 				used_flag = TRUE; k++;
 				switch (mu->multiplicity) {
 					case 1: break;
-					case 2: TextWeaver__commentary_text(tree, ap, TL_IS_2826); break;
-					case 3: TextWeaver__commentary_text(tree, ap, TL_IS_2827); break;
-					case 4: TextWeaver__commentary_text(tree, ap, TL_IS_2828); break;
-					case 5: TextWeaver__commentary_text(tree, ap, TL_IS_2829); break;
+					case 2: TextWeaver__commentary_text(tree, ap, TL_IS_2828); break;
+					case 3: TextWeaver__commentary_text(tree, ap, TL_IS_2829); break;
+					case 4: TextWeaver__commentary_text(tree, ap, TL_IS_2830); break;
+					case 5: TextWeaver__commentary_text(tree, ap, TL_IS_2831); break;
 					default: {
 						TEMPORARY_TEXT(mt)
 						WRITE_TO(mt, " (%d times)", mu->multiplicity);
@@ -40565,7 +40608,7 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 				}
 			}
 	}
-	TextWeaver__commentary_text(tree, ap, TL_IS_2830);
+	TextWeaver__commentary_text(tree, ap, TL_IS_2832);
 
 }
 #line 587 "inweb/Chapter 3/The Weaver.w"
@@ -40588,7 +40631,7 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 #line 654 "inweb/Chapter 3/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
-	TextWeaver__commentary_text(tree, ap, TL_IS_2831);
+	TextWeaver__commentary_text(tree, ap, TL_IS_2833);
 	TextWeaver__commentary_text(tree, ap, st->structure_name);
 
 	section *S;
@@ -40612,18 +40655,18 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 			usage_count++;
 			if (S != P->under_section) external++;
 		}
-	if (external == 0) TextWeaver__commentary_text(tree, ap, TL_IS_2832);
+	if (external == 0) TextWeaver__commentary_text(tree, ap, TL_IS_2834);
 	else {
-		TextWeaver__commentary_text(tree, ap, TL_IS_2833);
+		TextWeaver__commentary_text(tree, ap, TL_IS_2835);
 		int c = 0;
 		LOOP_OVER(S, section)
 			if ((S->scratch_flag) && (S != P->under_section)) {
-				if (c++ > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2834);
+				if (c++ > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2836);
 				TextWeaver__commentary_text(tree, ap, S->md->sect_range);
 			}
-		if (P->under_section->scratch_flag) TextWeaver__commentary_text(tree, ap, TL_IS_2835);
+		if (P->under_section->scratch_flag) TextWeaver__commentary_text(tree, ap, TL_IS_2837);
 	}
-	TextWeaver__commentary_text(tree, ap, TL_IS_2836);
+	TextWeaver__commentary_text(tree, ap, TL_IS_2838);
 
 }
 #line 593 "inweb/Chapter 3/The Weaver.w"
@@ -40641,7 +40684,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	if (as_list == FALSE) {
 		tree_node *E = WeaveTree__endnote(tree);
 		Trees__make_child(E, body); ap = E;
-		TextWeaver__commentary_text(tree, ap, TL_IS_2837);
+		TextWeaver__commentary_text(tree, ap, TL_IS_2839);
 		TextWeaver__commentary_text(tree, ap, fn->function_name);
 	}
 	int used_flag = FALSE;
@@ -40655,7 +40698,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 {
 #line 733 "inweb/Chapter 3/The Weaver.w"
 	if (as_list == FALSE) {
-		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2842);
+		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2844);
 	}
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -40663,17 +40706,17 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 		count_under = 0;
 		if (last_cited_in) {
 			if (as_list == FALSE) {
-				if (last_cited_in != P->under_section) TextWeaver__commentary_text(tree, ap, TL_IS_2843);
-				else TextWeaver__commentary_text(tree, ap, TL_IS_2844);
+				if (last_cited_in != P->under_section) TextWeaver__commentary_text(tree, ap, TL_IS_2845);
+				else TextWeaver__commentary_text(tree, ap, TL_IS_2846);
 			} else {
 				Trees__make_child(WeaveTree__linebreak(tree), ap);
 			}
 		}
 		TextWeaver__commentary_text(tree, ap, hteu->usage_recorded_at->under_section->md->sect_title);
-		if (as_list == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2845);
-		else TextWeaver__commentary_text(tree, ap, TL_IS_2846);
+		if (as_list == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2847);
+		else TextWeaver__commentary_text(tree, ap, TL_IS_2848);
 	}
-	if (count_under++ > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2847);
+	if (count_under++ > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2849);
 	Trees__make_child(WeaveTree__locale(tree, hteu->usage_recorded_at, NULL), ap);
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
@@ -40686,7 +40729,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 {
 #line 733 "inweb/Chapter 3/The Weaver.w"
 	if (as_list == FALSE) {
-		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2842);
+		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2844);
 	}
 	used_flag = TRUE;
 	section *S = hteu->usage_recorded_at->under_section;
@@ -40694,17 +40737,17 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 		count_under = 0;
 		if (last_cited_in) {
 			if (as_list == FALSE) {
-				if (last_cited_in != P->under_section) TextWeaver__commentary_text(tree, ap, TL_IS_2843);
-				else TextWeaver__commentary_text(tree, ap, TL_IS_2844);
+				if (last_cited_in != P->under_section) TextWeaver__commentary_text(tree, ap, TL_IS_2845);
+				else TextWeaver__commentary_text(tree, ap, TL_IS_2846);
 			} else {
 				Trees__make_child(WeaveTree__linebreak(tree), ap);
 			}
 		}
 		TextWeaver__commentary_text(tree, ap, hteu->usage_recorded_at->under_section->md->sect_title);
-		if (as_list == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2845);
-		else TextWeaver__commentary_text(tree, ap, TL_IS_2846);
+		if (as_list == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_2847);
+		else TextWeaver__commentary_text(tree, ap, TL_IS_2848);
 	}
-	if (count_under++ > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2847);
+	if (count_under++ > 0) TextWeaver__commentary_text(tree, ap, TL_IS_2849);
 	Trees__make_child(WeaveTree__locale(tree, hteu->usage_recorded_at, NULL), ap);
 	last_cited_in = hteu->usage_recorded_at->under_section;
 
@@ -40713,15 +40756,15 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 ;
 	if (used_flag == FALSE) {
 		if (as_list == FALSE) {
-			TextWeaver__commentary_text(tree, ap, TL_IS_2838);
+			TextWeaver__commentary_text(tree, ap, TL_IS_2840);
 		} else {
-			TextWeaver__commentary_text(tree, ap, TL_IS_2839);
+			TextWeaver__commentary_text(tree, ap, TL_IS_2841);
 		}
 	}
 	if (as_list == FALSE) {
 		if ((last_cited_in != P->under_section) && (last_cited_in))
-			TextWeaver__commentary_text(tree, ap, TL_IS_2840);
-		TextWeaver__commentary_text(tree, ap, TL_IS_2841);
+			TextWeaver__commentary_text(tree, ap, TL_IS_2842);
+		TextWeaver__commentary_text(tree, ap, TL_IS_2843);
 	}
 }
 
@@ -40803,8 +40846,8 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	weave_order *wv = C->wv;
 	text_stream *code_in_comments_notation =
 		Bibliographic__get_datum(wv->weave_web->md,
-		(in_code)?(TL_IS_2848):(TL_IS_2849));
-	if (Str__ne(code_in_comments_notation, TL_IS_2850)) 
+		(in_code)?(TL_IS_2850):(TL_IS_2851));
+	if (Str__ne(code_in_comments_notation, TL_IS_2852)) 
 {
 #line 51 "inweb/Chapter 3/The Weaver of Text.w"
 	for (int i=0; i < Str__len(matter); i++) {
@@ -40829,8 +40872,8 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 
 	int display_flag = TRUE;
 	text_stream *tex_notation = Bibliographic__get_datum(wv->weave_web->md,
-		TL_IS_2851);
-	if (Str__ne(tex_notation, TL_IS_2852)) 
+		TL_IS_2853);
+	if (Str__ne(tex_notation, TL_IS_2854)) 
 {
 #line 99 "inweb/Chapter 3/The Weaver of Text.w"
 	int N = Str__len(tex_notation);
@@ -40865,8 +40908,8 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 ;
 	display_flag = FALSE;
 	tex_notation = Bibliographic__get_datum(wv->weave_web->md,
-		TL_IS_2853);
-	if (Str__ne(tex_notation, TL_IS_2854)) 
+		TL_IS_2855);
+	if (Str__ne(tex_notation, TL_IS_2856)) 
 {
 #line 99 "inweb/Chapter 3/The Weaver of Text.w"
 	int N = Str__len(tex_notation);
@@ -40901,8 +40944,8 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 ;
 
 	text_stream *xref_notation = Bibliographic__get_datum(wv->weave_web->md,
-		TL_IS_2855);
-	if (Str__ne(xref_notation, TL_IS_2856)) 
+		TL_IS_2857);
+	if (Str__ne(xref_notation, TL_IS_2858)) 
 {
 #line 150 "inweb/Chapter 3/The Weaver of Text.w"
 	int N = Str__len(xref_notation);
@@ -40962,8 +41005,8 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 {
 #line 68 "inweb/Chapter 3/The Weaver of Text.w"
 	for (int i=0; i < Str__len(matter); i++) {
-		if ((Str__includes_at(matter, i, TL_IS_2857)) ||
-				(Str__includes_at(matter, i, TL_IS_2858))) {
+		if ((Str__includes_at(matter, i, TL_IS_2859)) ||
+				(Str__includes_at(matter, i, TL_IS_2860))) {
 			TEMPORARY_TEXT(before)
 			Str__copy(before, matter); Str__truncate(before, i);
 			TEMPORARY_TEXT(after)
@@ -41011,7 +41054,7 @@ void TextWeaver__commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 			Trees__make_child(WeaveTree__footnote_cue(tree, F->cue_text), ap);
 			TextWeaver__commentary_r(tree, ap, after, within, in_code);
 		} else {
-			Main__error_in_web(TL_IS_2859, wv->current_weave_line);
+			Main__error_in_web(TL_IS_2861, wv->current_weave_line);
 		}
 	}
 	DISCARD_TEXT(before)
@@ -41065,8 +41108,8 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 			
 {
 #line 261 "inweb/Chapter 3/The Weaver of Text.w"
-	if ((Str__includes_at(matter, i, TL_IS_2862)) ||
-		(Str__includes_at(matter, i, TL_IS_2863))) {
+	if ((Str__includes_at(matter, i, TL_IS_2864)) ||
+		(Str__includes_at(matter, i, TL_IS_2865))) {
 		TEMPORARY_TEXT(after)
 		Str__substr(after, Str__at(matter, i), Str__end(matter));
 		match_results mr = Regexp__create_mr();
@@ -41084,8 +41127,8 @@ void TextWeaver__source_code(heterogeneous_tree *tree, tree_node *ap,
 #line 237 "inweb/Chapter 3/The Weaver of Text.w"
 ;
 			text_stream *xref_notation = Bibliographic__get_datum(wv->weave_web->md,
-				TL_IS_2860);
-			if (Str__ne(xref_notation, TL_IS_2861))
+				TL_IS_2862);
+			if (Str__ne(xref_notation, TL_IS_2863))
 				
 {
 #line 277 "inweb/Chapter 3/The Weaver of Text.w"
@@ -41222,7 +41265,7 @@ void Tangler__tangle(web *W, tangle_target *target, filename *dest_file) {
 				
 {
 #line 88 "inweb/Chapter 3/The Tangler.w"
-	if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_2864, L);
+	if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_2866, L);
 	else Tags__open_ifdefs(OUT, L->owning_paragraph);
 	LanguageMethods__start_definition(OUT, lang,
 		L->text_operand,
@@ -41244,7 +41287,7 @@ void Tangler__tangle(web *W, tangle_target *target, filename *dest_file) {
 				
 {
 #line 88 "inweb/Chapter 3/The Tangler.w"
-	if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_2864, L);
+	if (L->owning_paragraph == NULL) Main__error_in_web(TL_IS_2866, L);
 	else Tags__open_ifdefs(OUT, L->owning_paragraph);
 	LanguageMethods__start_definition(OUT, lang,
 		L->text_operand,
@@ -41395,7 +41438,7 @@ void Tangler__tangle_line(OUTPUT_STREAM, text_stream *original, section *S, sour
 		LanguageMethods__after_macro_expansion(OUT, lang, pmac);
 		LanguageMethods__insert_line_marker(OUT, lang, L);
 	} else {
-		Main__error_in_web(TL_IS_2865, L);
+		Main__error_in_web(TL_IS_2867, L);
 		WRITE_TO(STDERR, "Macro is '%S'\n", temp);
 		LanguageMethods__comment(OUT, lang, temp); /* recover by putting macro name in comment */
 	}
@@ -41470,7 +41513,7 @@ language_type *Functions__new_struct(web *W, text_stream *name, source_line *L) 
 	
 {
 #line 40 "inweb/Chapter 4/Types and Functions.w"
-	Tags__add_by_name(L->owning_paragraph, TL_IS_2866);
+	Tags__add_by_name(L->owning_paragraph, TL_IS_2868);
 	ADD_TO_LINKED_LIST(str, language_type, W->language_types);
 	ADD_TO_LINKED_LIST(str, language_type, L->owning_paragraph->structures);
 
@@ -41595,7 +41638,7 @@ language_function *Functions__new_function(text_stream *fname, source_line *L) {
 		fn->within_namespace = TRUE;
 	} else if ((Str__eq_wide_string(fname, U"main")) &&
 		(Str__eq_wide_string(ambient_namespace, U"Main::")))
-		declared_namespace = TL_IS_2867;
+		declared_namespace = TL_IS_2869;
 	if ((Str__ne(declared_namespace, ambient_namespace)) &&
 		(L->owning_paragraph->placed_very_early == FALSE)) {
 		TEMPORARY_TEXT(err_mess)
@@ -41708,7 +41751,7 @@ void LanguageMethods__disclaimer(text_stream *OUT, programming_language *pl, web
 	int rv = FALSE;
 	INT_METHOD_CALL_WITHOUT_ARGUMENTS(rv, pl, SUPPRESS_DISCLAIMER_TAN_MTID);
 	if (rv == FALSE)
-		LanguageMethods__comment(OUT, pl, TL_IS_2868);
+		LanguageMethods__comment(OUT, pl, TL_IS_2870);
 }
 
 #line 127 "inweb/Chapter 4/Language Methods.w"
@@ -41731,7 +41774,7 @@ void LanguageMethods__start_definition(OUTPUT_STREAM, programming_language *pl,
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, pl, START_DEFN_TAN_MTID, OUT, term, start, S, L);
 	if (rv == FALSE)
-		Main__error_in_web(TL_IS_2869, L);
+		Main__error_in_web(TL_IS_2871, L);
 }
 
 void LanguageMethods__prolong_definition(OUTPUT_STREAM, programming_language *pl,
@@ -41739,7 +41782,7 @@ void LanguageMethods__prolong_definition(OUTPUT_STREAM, programming_language *pl
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, pl, PROLONG_DEFN_TAN_MTID, OUT, more, S, L);
 	if (rv == FALSE)
-		Main__error_in_web(TL_IS_2870, L);
+		Main__error_in_web(TL_IS_2872, L);
 }
 
 void LanguageMethods__end_definition(OUTPUT_STREAM, programming_language *pl,
@@ -41894,9 +41937,9 @@ int LanguageMethods__syntax_colour(programming_language *pl,
 	int rv = FALSE;
 	programming_language *colour_as = pl;
 	if (L->category == TEXT_EXTRACT_LCAT) colour_as = L->colour_as;
-	theme_tag *T = Tags__find_by_name(TL_IS_2871, FALSE);
+	theme_tag *T = Tags__find_by_name(TL_IS_2873, FALSE);
 	if ((T) && (Tags__tagged_with(L->owning_paragraph, T))) {
-		programming_language *prepl = Analyser__find_by_name(TL_IS_2872, wv->weave_web, FALSE);
+		programming_language *prepl = Analyser__find_by_name(TL_IS_2874, wv->weave_web, FALSE);
 		if ((L->category == PREFORM_LCAT) || (L->category == PREFORM_GRAMMAR_LCAT))
 			if (prepl) colour_as = prepl;
 	}
@@ -42136,7 +42179,7 @@ void ACMESupport__parse_functions(programming_language *self, web *W) {
 #line 208 "inweb/Chapter 4/ACME Support.w"
 void ACMESupport__post_analysis(programming_language *self, web *W) {
 	int check_namespaces = FALSE;
-	if (Str__eq_wide_string(Bibliographic__get_datum(W->md, TL_IS_2873), U"On"))
+	if (Str__eq_wide_string(Bibliographic__get_datum(W->md, TL_IS_2875), U"On"))
 		check_namespaces = TRUE;
 	language_function *fn;
 	LOOP_OVER(fn, language_function) {
@@ -42156,11 +42199,11 @@ void ACMESupport__post_analysis(programming_language *self, web *W) {
 			&& (fn->call_freely == FALSE)) {
 			if (fn->within_namespace)
 				Main__error_in_web(
-					TL_IS_2874,
+					TL_IS_2876,
 					fn->function_header_at);
 			else
 				Main__error_in_web(
-					TL_IS_2875,
+					TL_IS_2877,
 					fn->function_header_at);
 		}
 	}
@@ -42231,7 +42274,7 @@ void CLike__parse_types(programming_language *self, web *W) {
 
 			if (Regexp__match(&mr, L->text, U"typedef struct (%i+) %c*{%c*")) {
 				current_str = Functions__new_struct(W, mr.exp[0], L);
-				Tags__add_by_name(L->owning_paragraph, TL_IS_2876);
+				Tags__add_by_name(L->owning_paragraph, TL_IS_2878);
 			} else if ((Str__get_first_char(L->text) == '}') && (current_str)) {
 				current_str->typedef_ends = L;
 				current_str = NULL;
@@ -42367,14 +42410,14 @@ void CLike__parse_functions(programming_language *self, web *W) {
 	if ((Regexp__match(&mr, L->text, U" *#ifn*def %c+")) ||
 		(Regexp__match(&mr, L->text, U" *#IFN*DEF %c+"))) {
 		if (cc_sp >= MAX_CONDITIONAL_COMPILATION_STACK)
-			Main__error_in_web(TL_IS_2878, L);
+			Main__error_in_web(TL_IS_2880, L);
 		else
 			cc_stack[cc_sp++] = L;
 	}
 	if ((Regexp__match(&mr, L->text, U" *#endif *")) ||
 		(Regexp__match(&mr, L->text, U" *#ENDIF *"))) {
 		if (cc_sp <= 0)
-			Main__error_in_web(TL_IS_2879, L);
+			Main__error_in_web(TL_IS_2881, L);
 		else
 			cc_sp--;
 	}
@@ -42468,7 +42511,7 @@ void CLike__parse_functions(programming_language *self, web *W) {
 ;
 		}
 	if (cc_sp > 0)
-		Main__error_in_web(TL_IS_2877, NULL);
+		Main__error_in_web(TL_IS_2879, NULL);
 }
 
 #line 316 "inweb/Chapter 4/C-Like Languages.w"
@@ -42642,7 +42685,7 @@ void InCSupport__further_parsing(programming_language *self, web *W) {
 		
 {
 #line 218 "inweb/Chapter 4/InC Support.w"
-	Tags__add_by_name(L->owning_paragraph, TL_IS_2880);
+	Tags__add_by_name(L->owning_paragraph, TL_IS_2882);
 	source_line *AL;
 	for (AL = L; (AL) && (AL->category == CODE_BODY_LCAT); AL = AL->next_line) {
 		if (Regexp__string_is_white_space(AL->text)) break;
@@ -43070,7 +43113,7 @@ void InCSupport__expand_formula(text_stream *OUT, source_line *AL, preform_nonte
 			(Str__get_at(formula, i+2) == '[') &&
 			(Characters__isdigit(Str__get_at(formula, i+3))) && (Str__get_at(formula, i+4) == ']')) {
 				if (pnt == NULL) {
-					Main__error_in_web(TL_IS_2881, AL);
+					Main__error_in_web(TL_IS_2883, AL);
 					if (AL == NULL) WRITE_TO(STDERR, "%S\n", formula);
 				} else {
 					WRITE_TO(expanded,
@@ -43150,25 +43193,25 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 		if (clauses == 1) 
 {
 #line 766 "inweb/Chapter 4/InC Support.w"
-	if (Str__eq(clause[0], TL_IS_2883)) {
+	if (Str__eq(clause[0], TL_IS_2885)) {
 		clause[1] = Str__new(); clauses = 2;
 		WRITE_TO(extra, "return FAIL_NONTERMINAL;");
 		Str__clear(clause[0]);
 		WRITE_TO(clause[0], "-");
 		WRITE_TO(clause[1], "-");
-	} else if (Str__eq(clause[0], TL_IS_2884)) {
+	} else if (Str__eq(clause[0], TL_IS_2886)) {
 		clause[1] = Str__new(); clauses = 2;
 		WRITE_TO(extra, "return FALSE;");
 		Str__clear(clause[0]);
 		WRITE_TO(clause[0], "-");
 		WRITE_TO(clause[1], "-");
-	} else if (Str__eq(clause[0], TL_IS_2885)) {
+	} else if (Str__eq(clause[0], TL_IS_2887)) {
 		clause[1] = Str__new(); clauses = 2;
 		WRITE_TO(extra, "return FALSE;");
 		Str__clear(clause[0]);
 		WRITE_TO(clause[0], "-");
 		WRITE_TO(clause[1], "-");
-	} else if (Str__prefix_eq(clause[0], TL_IS_2886, 8)) {
+	} else if (Str__prefix_eq(clause[0], TL_IS_2888, 8)) {
 		clause[1] = Str__new(); clauses = 2;
 		WRITE_TO(extra, "return FAIL_NONTERMINAL + ");
 		Str__substr(extra, Str__at(clause[0], 8), Str__end(clause[0]));
@@ -43176,7 +43219,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 		Str__clear(clause[0]);
 		WRITE_TO(clause[0], "0");
 		WRITE_TO(clause[1], "NULL");
-	} else if (Str__prefix_eq(clause[0], TL_IS_2887, 5)) {
+	} else if (Str__prefix_eq(clause[0], TL_IS_2889, 5)) {
 		clause[1] = Str__new(); clauses = 2;
 		TEMPORARY_TEXT(from)
 		Str__substr(from, Str__at(clause[0], 5), Str__end(clause[0]));
@@ -43184,7 +43227,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 		WRITE_TO(clause[0], "R[%S]", from);
 		WRITE_TO(clause[1], "RP[%S]", from);
 		DISCARD_TEXT(from)
-	} else if (Str__eq(clause[0], TL_IS_2888)) {
+	} else if (Str__eq(clause[0], TL_IS_2890)) {
 		clause[1] = Str__new(); clauses = 2;
 		Str__clear(clause[0]);
 		WRITE_TO(clause[0], "0");
@@ -43200,7 +43243,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 {
 #line 816 "inweb/Chapter 4/InC Support.w"
 	for (int c=0; c<clauses; c++) {
-		if (Str__ne(clause[c], TL_IS_2889)) {
+		if (Str__ne(clause[c], TL_IS_2891)) {
 			switch (c) {
 				case 0: WRITE("*X = ");
 					InCSupport__expand_formula(OUT, AL, pnt, clause[c], FALSE);
@@ -43224,7 +43267,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 			}
 		}
 	}
-	if (Str__ne(extra, TL_IS_2890)) {
+	if (Str__ne(extra, TL_IS_2892)) {
 		InCSupport__expand_formula(OUT, AL, pnt, extra, FALSE);
 	}
 
@@ -43232,7 +43275,7 @@ void InCSupport__tangle_line_inner(text_stream *OUT, source_line *AL, preform_no
 #line 727 "inweb/Chapter 4/InC Support.w"
 ;
 		if (err) {
-			Main__error_in_web(TL_IS_2882, AL);
+			Main__error_in_web(TL_IS_2884, AL);
 			if (AL == NULL) WRITE_TO(STDERR, "%S\n", original);
 		}
 		continue;
@@ -43321,8 +43364,8 @@ preform_nonterminal *InCSupport__nonterminal_by_name(text_stream *name) {
 
 #line 931 "inweb/Chapter 4/InC Support.w"
 text_stream *InCSupport__nonterminal_variable_identifier(text_stream *name) {
-	if (Str__eq_wide_string(name, U"r")) return TL_IS_2891;
-	if (Str__eq_wide_string(name, U"rp")) return TL_IS_2892;
+	if (Str__eq_wide_string(name, U"r")) return TL_IS_2893;
+	if (Str__eq_wide_string(name, U"rp")) return TL_IS_2894;
 	nonterminal_variable *ntv;
 	LOOP_OVER(ntv, nonterminal_variable)
 		if (Str__eq(ntv->ntv_name, name))
@@ -43334,7 +43377,7 @@ text_stream *InCSupport__nonterminal_variable_identifier(text_stream *name) {
 void InCSupport__additional_tangling(programming_language *self, web *W, tangle_target *target) {
 	if (NUMBER_CREATED(preform_nonterminal) > 0) {
 		pathname *P = Reader__tangled_folder(W);
-		filename *Syntax = Filenames__in(P, TL_IS_2893);
+		filename *Syntax = Filenames__in(P, TL_IS_2895);
 
 		text_stream TO_struct;
 		text_stream *OUT = &TO_struct;
@@ -43345,8 +43388,8 @@ void InCSupport__additional_tangling(programming_language *self, web *W, tangle_
 
 		WRITE("[Preform syntax generated by inweb: do not edit.]\n\n");
 
-		if (Bibliographic__data_exists(W->md, TL_IS_2894))
-			WRITE("language %S\n", Bibliographic__get_datum(W->md, TL_IS_2895));
+		if (Bibliographic__data_exists(W->md, TL_IS_2896))
+			WRITE("language %S\n", Bibliographic__get_datum(W->md, TL_IS_2897));
 
 		
 {
@@ -43650,101 +43693,101 @@ tree_node_type *weave_maths_node_type = NULL;
 
 heterogeneous_tree *WeaveTree__new_tree(weave_order *wv) {
 	if (weave_tree_type == NULL) {
-		weave_tree_type = Trees__new_type(TL_IS_2896, NULL);
+		weave_tree_type = Trees__new_type(TL_IS_2898, NULL);
 		weave_document_node_type =
-			Trees__new_node_type(TL_IS_2897, weave_document_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2899, weave_document_node_CLASS, NULL);
 		weave_head_node_type =
-			Trees__new_node_type(TL_IS_2898, weave_head_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2900, weave_head_node_CLASS, NULL);
 		weave_body_node_type =
-			Trees__new_node_type(TL_IS_2899, weave_body_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2901, weave_body_node_CLASS, NULL);
 		weave_tail_node_type =
-			Trees__new_node_type(TL_IS_2900, weave_tail_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2902, weave_tail_node_CLASS, NULL);
 		weave_chapter_footer_node_type =
-			Trees__new_node_type(TL_IS_2901, weave_chapter_footer_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2903, weave_chapter_footer_node_CLASS, NULL);
 		weave_chapter_header_node_type =
-			Trees__new_node_type(TL_IS_2902, weave_chapter_header_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2904, weave_chapter_header_node_CLASS, NULL);
 		weave_section_footer_node_type =
-			Trees__new_node_type(TL_IS_2903, weave_section_footer_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2905, weave_section_footer_node_CLASS, NULL);
 		weave_section_header_node_type =
-			Trees__new_node_type(TL_IS_2904, weave_section_header_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2906, weave_section_header_node_CLASS, NULL);
 		weave_section_purpose_node_type =
-			Trees__new_node_type(TL_IS_2905, weave_section_purpose_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2907, weave_section_purpose_node_CLASS, NULL);
 
 		weave_subheading_node_type =
-			Trees__new_node_type(TL_IS_2906, weave_subheading_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2908, weave_subheading_node_CLASS, NULL);
 		weave_bar_node_type =
-			Trees__new_node_type(TL_IS_2907, weave_bar_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2909, weave_bar_node_CLASS, NULL);
 		weave_pagebreak_node_type =
-			Trees__new_node_type(TL_IS_2908, weave_pagebreak_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2910, weave_pagebreak_node_CLASS, NULL);
 		weave_linebreak_node_type =
-			Trees__new_node_type(TL_IS_2909, weave_linebreak_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2911, weave_linebreak_node_CLASS, NULL);
 		weave_paragraph_heading_node_type =
-			Trees__new_node_type(TL_IS_2910, weave_paragraph_heading_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2912, weave_paragraph_heading_node_CLASS, NULL);
 		weave_endnote_node_type =
-			Trees__new_node_type(TL_IS_2911, weave_endnote_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2913, weave_endnote_node_CLASS, NULL);
 		weave_figure_node_type =
-			Trees__new_node_type(TL_IS_2912, weave_figure_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2914, weave_figure_node_CLASS, NULL);
 		weave_extract_node_type =
-			Trees__new_node_type(TL_IS_2913, weave_extract_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2915, weave_extract_node_CLASS, NULL);
 		weave_audio_node_type =
-			Trees__new_node_type(TL_IS_2914, weave_audio_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2916, weave_audio_node_CLASS, NULL);
 		weave_video_node_type =
-			Trees__new_node_type(TL_IS_2915, weave_video_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2917, weave_video_node_CLASS, NULL);
 		weave_download_node_type =
-			Trees__new_node_type(TL_IS_2916, weave_download_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2918, weave_download_node_CLASS, NULL);
 		weave_material_node_type =
-			Trees__new_node_type(TL_IS_2917, weave_material_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2919, weave_material_node_CLASS, NULL);
 		weave_embed_node_type =
-			Trees__new_node_type(TL_IS_2918, weave_embed_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2920, weave_embed_node_CLASS, NULL);
 		weave_pmac_node_type =
-			Trees__new_node_type(TL_IS_2919, weave_pmac_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2921, weave_pmac_node_CLASS, NULL);
 		weave_vskip_node_type =
-			Trees__new_node_type(TL_IS_2920, weave_vskip_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2922, weave_vskip_node_CLASS, NULL);
 		weave_chapter_node_type =
-			Trees__new_node_type(TL_IS_2921, weave_chapter_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2923, weave_chapter_node_CLASS, NULL);
 		weave_section_node_type =
-			Trees__new_node_type(TL_IS_2922, weave_section_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2924, weave_section_node_CLASS, NULL);
 		weave_code_line_node_type =
-			Trees__new_node_type(TL_IS_2923, weave_code_line_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2925, weave_code_line_node_CLASS, NULL);
 		weave_function_usage_node_type =
-			Trees__new_node_type(TL_IS_2924, weave_function_usage_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2926, weave_function_usage_node_CLASS, NULL);
 		weave_commentary_node_type =
-			Trees__new_node_type(TL_IS_2925, weave_commentary_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2927, weave_commentary_node_CLASS, NULL);
 		weave_carousel_slide_node_type =
-			Trees__new_node_type(TL_IS_2926, weave_carousel_slide_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2928, weave_carousel_slide_node_CLASS, NULL);
 		weave_toc_node_type =
-			Trees__new_node_type(TL_IS_2927, weave_toc_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2929, weave_toc_node_CLASS, NULL);
 		weave_toc_line_node_type =
-			Trees__new_node_type(TL_IS_2928, weave_toc_line_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2930, weave_toc_line_node_CLASS, NULL);
 		weave_chapter_title_page_node_type =
-			Trees__new_node_type(TL_IS_2929, weave_chapter_title_page_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2931, weave_chapter_title_page_node_CLASS, NULL);
 		weave_defn_node_type =
-			Trees__new_node_type(TL_IS_2930, weave_defn_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2932, weave_defn_node_CLASS, NULL);
 		weave_source_code_node_type =
-			Trees__new_node_type(TL_IS_2931, weave_source_code_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2933, weave_source_code_node_CLASS, NULL);
 		weave_url_node_type =
-			Trees__new_node_type(TL_IS_2932, weave_url_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2934, weave_url_node_CLASS, NULL);
 		weave_footnote_cue_node_type =
-			Trees__new_node_type(TL_IS_2933, weave_footnote_cue_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2935, weave_footnote_cue_node_CLASS, NULL);
 		weave_begin_footnote_text_node_type =
-			Trees__new_node_type(TL_IS_2934, weave_begin_footnote_text_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2936, weave_begin_footnote_text_node_CLASS, NULL);
 		weave_display_line_node_type =
-			Trees__new_node_type(TL_IS_2935, weave_display_line_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2937, weave_display_line_node_CLASS, NULL);
 		weave_function_defn_node_type =
-			Trees__new_node_type(TL_IS_2936, weave_function_defn_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2938, weave_function_defn_node_CLASS, NULL);
 		weave_item_node_type =
-			Trees__new_node_type(TL_IS_2937, weave_item_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2939, weave_item_node_CLASS, NULL);
 		weave_grammar_index_node_type =
-			Trees__new_node_type(TL_IS_2938, weave_grammar_index_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2940, weave_grammar_index_node_CLASS, NULL);
 		weave_inline_node_type =
-			Trees__new_node_type(TL_IS_2939, weave_inline_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2941, weave_inline_node_CLASS, NULL);
 		weave_locale_node_type =
-			Trees__new_node_type(TL_IS_2940, weave_locale_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2942, weave_locale_node_CLASS, NULL);
 		weave_maths_node_type =
-			Trees__new_node_type(TL_IS_2941, weave_maths_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2943, weave_maths_node_CLASS, NULL);
 
 		weave_verbatim_node_type =
-			Trees__new_node_type(TL_IS_2942, weave_verbatim_node_CLASS, NULL);
+			Trees__new_node_type(TL_IS_2944, weave_verbatim_node_CLASS, NULL);
 	}
 	heterogeneous_tree *tree = Trees__new(weave_tree_type);
 	Trees__make_root(tree, WeaveTree__document(tree, wv));
@@ -44184,7 +44227,7 @@ void Formats__render(text_stream *OUT, heterogeneous_tree *tree, filename *into)
 	filename *F = Patterns__find_template(C->wv->pattern, template);
 	TEMPORARY_TEXT(interior)
 	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
-	Bibliographic__set_datum(C->wv->weave_web->md, TL_IS_2943, interior);
+	Bibliographic__set_datum(C->wv->weave_web->md, TL_IS_2945, interior);
 	if (F) Collater__for_order(OUT, C->wv, F, into);
 	else WRITE("%S", interior);
 	DISCARD_TEXT(interior)
@@ -44238,7 +44281,7 @@ int Formats__substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 
 #line 9 "inweb/Chapter 5/Plain Text Format.w"
 void PlainText__create(void) {
-	weave_format *wf = Formats__create_weave_format(TL_IS_2944, TL_IS_2945);
+	weave_format *wf = Formats__create_weave_format(TL_IS_2946, TL_IS_2947);
 	METHOD_ADD(wf, RENDER_FOR_MTID, PlainText__render);
 }
 
@@ -44562,7 +44605,7 @@ int PlainText__render_visit(tree_node *N, void *state, int L) {
 
 #line 9 "inweb/Chapter 5/TeX Format.w"
 void TeX__create(void) {
-	weave_format *wf = Formats__create_weave_format(TL_IS_2946, TL_IS_2947);
+	weave_format *wf = Formats__create_weave_format(TL_IS_2948, TL_IS_2949);
 	METHOD_ADD(wf, RENDER_FOR_MTID, TeX__render_TeX);
 	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeX__preform_document);
 }
@@ -44640,7 +44683,7 @@ int TeX__render_visit(tree_node *N, void *state, int L) {
 {
 #line 115 "inweb/Chapter 5/TeX Format.w"
 	weave_chapter_header_node *C = RETRIEVE_POINTER_weave_chapter_header_node(N->content);
-	if (Str__ne(C->chap->md->ch_range, TL_IS_2948)) {
+	if (Str__ne(C->chap->md->ch_range, TL_IS_2950)) {
 		TeX__general_heading(OUT, trs->wv,
 			FIRST_IN_LINKED_LIST(section, C->chap->sections), NULL, C->chap->md->ch_title,
 			3, FALSE);
@@ -44714,7 +44757,7 @@ int TeX__render_visit(tree_node *N, void *state, int L) {
 	weave_paragraph_heading_node *C =
 		RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
 	TeX__general_heading(OUT, trs->wv, C->para->under_section,
-		C->para, TL_IS_2949, 0, FALSE);
+		C->para, TL_IS_2951, 0, FALSE);
 
 }
 #line 76 "inweb/Chapter 5/TeX Format.w"
@@ -44744,7 +44787,7 @@ int TeX__render_visit(tree_node *N, void *state, int L) {
 #line 172 "inweb/Chapter 5/TeX Format.w"
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
 	filename *F = Filenames__in(
-		Pathnames__down(trs->wv->weave_web->md->path_to_web, TL_IS_2950),
+		Pathnames__down(trs->wv->weave_web->md->path_to_web, TL_IS_2952),
 		C->figname);
 	WRITE("\\pdfximage");
 	if (C->w >= 0) WRITE(" width %d cm{%f}\n", C->w/POINTS_PER_CM, F);
@@ -45151,23 +45194,23 @@ void TeX__general_heading(text_stream *OUT, weave_order *wv,
 {
 #line 443 "inweb/Chapter 5/TeX Format.w"
 	switch (weight) {
-		case 0: TeX_macro = TL_IS_2951; break;
-		case 1: TeX_macro = TL_IS_2952; break;
-		case 2: TeX_macro = TL_IS_2953; break;
-		default: TeX_macro = TL_IS_2954; break;
+		case 0: TeX_macro = TL_IS_2953; break;
+		case 1: TeX_macro = TL_IS_2954; break;
+		case 2: TeX_macro = TL_IS_2955; break;
+		default: TeX_macro = TL_IS_2956; break;
 	}
 	if (wv->theme_match) {
 		switch (weight) {
-			case 0: TeX_macro = TL_IS_2955; break;
-			case 1: TeX_macro = TL_IS_2956; break;
-			case 2: TeX_macro = TL_IS_2957; break;
-			default: TeX_macro = TL_IS_2958; break;
+			case 0: TeX_macro = TL_IS_2957; break;
+			case 1: TeX_macro = TL_IS_2958; break;
+			case 2: TeX_macro = TL_IS_2959; break;
+			default: TeX_macro = TL_IS_2960; break;
 		}
 	}
 	if (no_skip) {
 		switch (weight) {
-			case 0: TeX_macro = TL_IS_2959; break;
-			case 1: TeX_macro = TL_IS_2960; break;
+			case 0: TeX_macro = TL_IS_2961; break;
+			case 1: TeX_macro = TL_IS_2962; break;
 		}
 	}
 
@@ -45404,7 +45447,7 @@ void HTMLFormat__create(void) {
 	
 {
 #line 15 "inweb/Chapter 5/HTML Formats.w"
-	weave_format *wf = Formats__create_weave_format(TL_IS_2961, TL_IS_2962);
+	weave_format *wf = Formats__create_weave_format(TL_IS_2963, TL_IS_2964);
 	METHOD_ADD(wf, RENDER_FOR_MTID, HTMLFormat__render);
 
 }
@@ -45413,7 +45456,7 @@ void HTMLFormat__create(void) {
 	
 {
 #line 19 "inweb/Chapter 5/HTML Formats.w"
-	weave_format *wf = Formats__create_weave_format(TL_IS_2963, TL_IS_2964);
+	weave_format *wf = Formats__create_weave_format(TL_IS_2965, TL_IS_2966);
 	METHOD_ADD(wf, RENDER_FOR_MTID, HTMLFormat__render_EPUB);
 	METHOD_ADD(wf, BEGIN_WEAVING_FOR_MTID, HTMLFormat__begin_weaving_EPUB);
 	METHOD_ADD(wf, END_WEAVING_FOR_MTID, HTMLFormat__end_weaving_EPUB);
@@ -45437,10 +45480,10 @@ HTML_render_state HTMLFormat__initial_state(text_stream *OUT, weave_order *wv,
 	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
-	hrs.copy_rule = Assets__new_rule(NULL, TL_IS_2965, TL_IS_2966, NULL);
+	hrs.copy_rule = Assets__new_rule(NULL, TL_IS_2967, TL_IS_2968, NULL);
 
-	Swarm__ensure_plugin(wv, TL_IS_2967);
-	hrs.colours = Swarm__ensure_colour_scheme(wv, TL_IS_2968, TL_IS_2969);
+	Swarm__ensure_plugin(wv, TL_IS_2969);
+	hrs.colours = Swarm__ensure_colour_scheme(wv, TL_IS_2970, TL_IS_2971);
 	return hrs;
 }
 
@@ -45457,7 +45500,7 @@ void HTMLFormat__render_EPUB(weave_format *self, text_stream *OUT, heterogeneous
 	HTML__declare_as_HTML(OUT, TRUE);
 	HTML_render_state hrs = HTMLFormat__initial_state(OUT, C->wv, TRUE, C->wv->weave_to);
 	Trees__traverse_from(tree->root, &HTMLFormat__render_visit, (void *) &hrs, 0);
-	Epub__note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, TL_IS_2970);
+	Epub__note_page(C->wv->weave_web->as_ebook, C->wv->weave_to, C->wv->booklet_title, TL_IS_2972);
 	HTML__completed(OUT);
 }
 
@@ -45514,16 +45557,16 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	if (hrs->EPUB_flag == FALSE) {
 		weave_section_header_node *C =
 			RETRIEVE_POINTER_weave_section_header_node(N->content);
-		Swarm__ensure_plugin(hrs->wv, TL_IS_2971);
+		Swarm__ensure_plugin(hrs->wv, TL_IS_2973);
 		HTML_OPEN_WITH("div", "class=\"breadcrumbs\"");
 		HTML_OPEN_WITH("ul", "class=\"crumbs\"");
 		Colonies__drop_initial_breadcrumbs(OUT,
 			hrs->wv->weave_to, hrs->wv->breadcrumbs);
-		text_stream *bct = Bibliographic__get_datum(hrs->wv->weave_web->md, TL_IS_2972);
-		if (Str__len(Bibliographic__get_datum(hrs->wv->weave_web->md, TL_IS_2973)) > 0)
-			bct = Bibliographic__get_datum(hrs->wv->weave_web->md, TL_IS_2974);
+		text_stream *bct = Bibliographic__get_datum(hrs->wv->weave_web->md, TL_IS_2974);
+		if (Str__len(Bibliographic__get_datum(hrs->wv->weave_web->md, TL_IS_2975)) > 0)
+			bct = Bibliographic__get_datum(hrs->wv->weave_web->md, TL_IS_2976);
 		if (hrs->wv->self_contained == FALSE) {
-			Colonies__write_breadcrumb(OUT, bct, TL_IS_2975);
+			Colonies__write_breadcrumb(OUT, bct, TL_IS_2977);
 			if (hrs->wv->weave_web->md->chaptered) {
 				TEMPORARY_TEXT(chapter_link)
 				WRITE_TO(chapter_link, "index.html#%s%S",
@@ -45586,7 +45629,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 		chapter *Ch;
 		LOOP_OVER_LINKED_LIST(Ch, chapter, hrs->wv->weave_web->chapters) {
 			if (Ch->md->imported == FALSE) {
-				if (Str__ne(Ch->md->ch_range, TL_IS_2976)) {
+				if (Str__ne(Ch->md->ch_range, TL_IS_2978)) {
 					if (Ch == C->sect->owning_chapter) {
 						HTML_OPEN_WITH("li", "class=\"progresscurrentchapter\"");
 					} else {
@@ -45617,7 +45660,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 							else if (on) PUT_TO(label, Str__get(pos));
 						}
 						if (Str__eq(Bibliographic__get_datum(hrs->wv->weave_web->md,
-							TL_IS_2977), TL_IS_2978))
+							TL_IS_2979), TL_IS_2980))
 							Str__delete_first_character(label);
 						if (S == C->sect) {
 							HTML_OPEN_WITH("li", "class=\"progresscurrent\"");
@@ -45744,7 +45787,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 #line 318 "inweb/Chapter 5/HTML Formats.w"
 	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
 	filename *F = Filenames__in(
-		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2979),
+		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2981),
 		C->figname);
 	filename *RF = Filenames__from_text(C->figname);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
@@ -45762,12 +45805,12 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 #line 331 "inweb/Chapter 5/HTML Formats.w"
 	weave_extract_node *C = RETRIEVE_POINTER_weave_extract_node(N->content);
 	filename *F = Filenames__in(
-		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2980),
+		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2982),
 		C->extract);
 	HTML_OPEN_WITH("div", "class=\"inweb-extract\"");
 	FILE *B = BinaryFiles__try_to_open_for_reading(F);
 	if (B == NULL) {
-		Main__error_in_web(TL_IS_2981,
+		Main__error_in_web(TL_IS_2983,
 			hrs->wv->current_weave_line);
 	} else {
 		while (TRUE) {
@@ -45788,7 +45831,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 #line 352 "inweb/Chapter 5/HTML Formats.w"
 	weave_audio_node *C = RETRIEVE_POINTER_weave_audio_node(N->content);
 	filename *F = Filenames__in(
-		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2982),
+		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2984),
 		C->audio_name);
 	Assets__include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 		hrs->wv->pattern, hrs->wv->weave_to);
@@ -45808,7 +45851,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 #line 367 "inweb/Chapter 5/HTML Formats.w"
 	weave_video_node *C = RETRIEVE_POINTER_weave_video_node(N->content);
 	filename *F = Filenames__in(
-		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2983),
+		Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2985),
 		C->video_name);
 	Assets__include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 		hrs->wv->pattern, hrs->wv->weave_to);
@@ -45834,14 +45877,14 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 {
 #line 389 "inweb/Chapter 5/HTML Formats.w"
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
-	pathname *P = Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2984);
+	pathname *P = Pathnames__down(hrs->wv->weave_web->md->path_to_web, TL_IS_2986);
 	filename *F = Filenames__in(P, C->download_name);
-	filename *TF = Patterns__find_file_in_subdirectory(hrs->wv->pattern, TL_IS_2985,
-		TL_IS_2986);
+	filename *TF = Patterns__find_file_in_subdirectory(hrs->wv->pattern, TL_IS_2987,
+		TL_IS_2988);
 	if (TF == NULL) {
-		Main__error_in_web(TL_IS_2987, hrs->wv->current_weave_line);
+		Main__error_in_web(TL_IS_2989, hrs->wv->current_weave_line);
 	} else {
-		Swarm__ensure_plugin(hrs->wv, TL_IS_2988);
+		Swarm__ensure_plugin(hrs->wv, TL_IS_2990);
 		pathname *TOP =
 			Assets__include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 				hrs->wv->pattern, hrs->wv->weave_to);
@@ -45857,11 +45900,11 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	WRITE_TO(size, " (");
 	if (Str__len(C->filetype) > 0) WRITE_TO(size, "%S, ", C->filetype);
 	int x = 0, y = 0;
-	text_stream *unit = TL_IS_2993; x = N; y = 0;
-	if (N > 1) { unit = TL_IS_2994; }
-	if (N >= 1024) { unit = TL_IS_2995; x = 10*N/1024; y = x%10; x = x/10; }
-	if (N >= 1024*1024) { unit = TL_IS_2996; x = 10*N/1024/1024; y = x%10; x = x/10; }
-	if (N >= 1024*1024*1024) { unit = TL_IS_2997; x = 10*N/1024/1024/1024; y = x%10; x = x/10; }
+	text_stream *unit = TL_IS_2995; x = N; y = 0;
+	if (N > 1) { unit = TL_IS_2996; }
+	if (N >= 1024) { unit = TL_IS_2997; x = 10*N/1024; y = x%10; x = x/10; }
+	if (N >= 1024*1024) { unit = TL_IS_2998; x = 10*N/1024/1024; y = x%10; x = x/10; }
+	if (N >= 1024*1024*1024) { unit = TL_IS_2999; x = 10*N/1024/1024/1024; y = x%10; x = x/10; }
 	WRITE_TO(size, "%d", x);
 	if (y > 0) WRITE_TO(size, ".%d", y);
 	WRITE_TO(size, "%S", unit);
@@ -45870,13 +45913,13 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 }
 #line 407 "inweb/Chapter 5/HTML Formats.w"
 
-		else Main__error_in_web(TL_IS_2989,
+		else Main__error_in_web(TL_IS_2991,
 				hrs->wv->current_weave_line);
 		filename *D = Filenames__from_text(C->download_name);
-		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_2990,
+		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_2992,
 			Filenames__get_leafname(D));
-		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_2991, url);
-		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_2992, size);
+		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_2993, url);
+		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_2994, size);
 		Collater__for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
 			TF, hrs->into_file);
 		WRITE("\n");
@@ -46153,20 +46196,20 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 {
 #line 566 "inweb/Chapter 5/HTML Formats.w"
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	text_stream *CH = TL_IS_2998;
-	text_stream *CW = TL_IS_2999;
+	text_stream *CH = TL_IS_3000;
+	text_stream *CW = TL_IS_3001;
 	if (C->w > 0) { Str__clear(CW); WRITE_TO(CW, "%d", C->w); }
 	if (C->h > 0) { Str__clear(CH); WRITE_TO(CH, "%d", C->h); }
 	TEMPORARY_TEXT(embed_leaf)
 	WRITE_TO(embed_leaf, "%S.html", C->service);
-	filename *F = Patterns__find_file_in_subdirectory(hrs->wv->pattern, TL_IS_3000, embed_leaf);
+	filename *F = Patterns__find_file_in_subdirectory(hrs->wv->pattern, TL_IS_3002, embed_leaf);
 	DISCARD_TEXT(embed_leaf)
 	if (F == NULL) {
-		Main__error_in_web(TL_IS_3001, hrs->wv->current_weave_line);
+		Main__error_in_web(TL_IS_3003, hrs->wv->current_weave_line);
 	} else {
-		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_3002, C->ID);
-		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_3003, CW);
-		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_3004, CH);
+		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_3004, C->ID);
+		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_3005, CW);
+		Bibliographic__set_datum(hrs->wv->weave_web->md, TL_IS_3006, CH);
 		HTML_OPEN_WITH("p", "class=\"center-p\"");
 		Collater__for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
 			F, hrs->into_file);
@@ -46186,7 +46229,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	if (C->defn == FALSE) {
 		TEMPORARY_TEXT(url)
 		Colonies__paragraph_URL(url, P, hrs->wv->weave_to);
-		HTML__begin_link_with_class(OUT, TL_IS_3005, url);
+		HTML__begin_link_with_class(OUT, TL_IS_3007, url);
 		DISCARD_TEXT(url)
 	}
 	HTML_OPEN_WITH("span", "class=\"%s\"",
@@ -46246,7 +46289,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 {
 #line 626 "inweb/Chapter 5/HTML Formats.w"
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
-	HTML__begin_link_with_class(OUT, TL_IS_3006, C->url);
+	HTML__begin_link_with_class(OUT, TL_IS_3008, C->url);
 	HTMLFormat__change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 	WRITE("%S", C->fn->function_name);
 	HTMLFormat__change_colour(OUT, -1, hrs->colours);
@@ -46284,17 +46327,17 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 {
 #line 654 "inweb/Chapter 5/HTML Formats.w"
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
-	Swarm__ensure_plugin(hrs->wv, TL_IS_3007);
+	Swarm__ensure_plugin(hrs->wv, TL_IS_3009);
 	TEMPORARY_TEXT(carousel_id)
 	TEMPORARY_TEXT(carousel_dots_id)
 	text_stream *caption_class = NULL;
-	text_stream *slide_count_class = TL_IS_3008;
+	text_stream *slide_count_class = TL_IS_3010;
 	switch (C->caption_command) {
-		case CAROUSEL_CMD: caption_class = TL_IS_3009; break;
-		case CAROUSEL_ABOVE_CMD: caption_class = TL_IS_3010;
-			slide_count_class = TL_IS_3011; break;
-		case CAROUSEL_BELOW_CMD: caption_class = TL_IS_3012;
+		case CAROUSEL_CMD: caption_class = TL_IS_3011; break;
+		case CAROUSEL_ABOVE_CMD: caption_class = TL_IS_3012;
 			slide_count_class = TL_IS_3013; break;
+		case CAROUSEL_BELOW_CMD: caption_class = TL_IS_3014;
+			slide_count_class = TL_IS_3015; break;
 	}
 	WRITE_TO(carousel_id, "carousel-no-%d", hrs->carousel_number);
 	WRITE_TO(carousel_dots_id, "carousel-dots-no-%d", hrs->carousel_number);
@@ -46455,7 +46498,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 {
 #line 780 "inweb/Chapter 5/HTML Formats.w"
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
-	HTML__begin_link_with_class(OUT, (C->external)?TL_IS_3014:TL_IS_3015, C->url);
+	HTML__begin_link_with_class(OUT, (C->external)?TL_IS_3016:TL_IS_3017, C->url);
 	WRITE("%S", C->content);
 	HTML__end_link(OUT);
 
@@ -46535,7 +46578,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	if ((Functions__used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
-		Swarm__ensure_plugin(hrs->wv, TL_IS_3016);
+		Swarm__ensure_plugin(hrs->wv, TL_IS_3018);
 		HTMLFormat__change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 		WRITE("%S", C->fn->function_name);
 		WRITE("</span>");
@@ -46577,7 +46620,7 @@ int HTMLFormat__render_visit(tree_node *N, void *state, int L) {
 {
 #line 861 "inweb/Chapter 5/HTML Formats.w"
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
-	if (Str__eq(C->label, TL_IS_3017)) WRITE("&#9679; ");
+	if (Str__eq(C->label, TL_IS_3019)) WRITE("&#9679; ");
 	else if (Str__len(C->label) > 0) WRITE("(%S) ", C->label);
 	else WRITE(" ");
 
@@ -46686,7 +46729,7 @@ void HTMLFormat__go_to_depth(HTML_render_state *hrs, int from_depth, int to_dept
 void HTMLFormat__paragraph_number(text_stream *OUT, paragraph *P) {
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_anchor(TEMP, P);
-	HTML__anchor_with_class(OUT, TEMP, TL_IS_3018);
+	HTML__anchor_with_class(OUT, TEMP, TL_IS_3020);
 	DISCARD_TEXT(TEMP)
 	if (P->invisible == FALSE) {
 		HTML_OPEN("b");
@@ -46734,9 +46777,9 @@ void HTMLFormat__escape_text(text_stream *OUT, text_stream *id) {
 #line 1000 "inweb/Chapter 5/HTML Formats.w"
 int HTMLFormat__begin_weaving_EPUB(weave_format *wf, web *W, weave_pattern *pattern) {
 	TEMPORARY_TEXT(T)
-	WRITE_TO(T, "%S", Bibliographic__get_datum(W->md, TL_IS_3019));
+	WRITE_TO(T, "%S", Bibliographic__get_datum(W->md, TL_IS_3021));
 	W->as_ebook = Epub__new(T, "P");
-	filename *CSS = Patterns__find_file_in_subdirectory(pattern, TL_IS_3020, TL_IS_3021);
+	filename *CSS = Patterns__find_file_in_subdirectory(pattern, TL_IS_3022, TL_IS_3023);
 	Epub__use_CSS_throughout(W->as_ebook, CSS);
 	Epub__attach_metadata(W->as_ebook, U"identifier", T);
 	DISCARD_TEXT(T)
@@ -46753,7 +46796,7 @@ void HTMLFormat__end_weaving_EPUB(weave_format *wf, web *W, weave_pattern *patte
 
 #line 9 "inweb/Chapter 5/Debugging Format.w"
 void Debugging__create(void) {
-	weave_format *wf = Formats__create_weave_format(TL_IS_3022, TL_IS_3023);
+	weave_format *wf = Formats__create_weave_format(TL_IS_3024, TL_IS_3025);
 	METHOD_ADD(wf, RENDER_FOR_MTID, Debugging__render);
 }
 
@@ -47227,7 +47270,7 @@ tex_results *TeXUtilities__new_results(weave_order *wv, filename *CF) {
 	res->tex_error_count = 0;
 	res->page_count = 0;
 	res->pdf_size = 0;
-	res->PDF_filename = Filenames__set_extension(CF, TL_IS_3024);
+	res->PDF_filename = Filenames__set_extension(CF, TL_IS_3026);
 	return res;
 }
 
@@ -47423,7 +47466,7 @@ void TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 	i++;
 	while ((i < Str__len(text)) && (Characters__isalpha(Str__get_at(text, i))))
 		PUT_TO(macro, Str__get_at(text, i++));
-	if (Str__eq(macro, TL_IS_3025)) 
+	if (Str__eq(macro, TL_IS_3027)) 
 {
 #line 364 "inweb/Chapter 5/TeX Utilities.w"
 	if (Str__get_at(text, i) == '\\') {
@@ -47431,8 +47474,8 @@ void TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 		i++;
 		while ((i < Str__len(text)) && (Characters__isalpha(Str__get_at(text, i))))
 			PUT_TO(macro, Str__get_at(text, i++));
-		if (Str__eq(macro, TL_IS_3121)) PUT((inchar32_t) 0x2204);
-		else if (Str__eq(macro, TL_IS_3122)) { PUT((inchar32_t) 0x00AC); PUT((inchar32_t) 0x2200); }
+		if (Str__eq(macro, TL_IS_3123)) PUT((inchar32_t) 0x2204);
+		else if (Str__eq(macro, TL_IS_3124)) { PUT((inchar32_t) 0x00AC); PUT((inchar32_t) 0x2200); }
 		else {
 			PRINT("Don't know how to apply '\\not' to '\\%S'\n", macro);
 		}
@@ -47446,99 +47489,99 @@ void TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 	else 
 {
 #line 251 "inweb/Chapter 5/TeX Utilities.w"
-	if (Str__eq(macro, TL_IS_3026)) WRITE("<=");
-	else if (Str__eq(macro, TL_IS_3027)) WRITE(">=");
-	else if (Str__eq(macro, TL_IS_3028)) WRITE("~");
-	else if (Str__eq(macro, TL_IS_3029)) WRITE("");
-	else if (Str__eq(macro, TL_IS_3030)) WRITE("");
+	if (Str__eq(macro, TL_IS_3028)) WRITE("<=");
+	else if (Str__eq(macro, TL_IS_3029)) WRITE(">=");
+	else if (Str__eq(macro, TL_IS_3030)) WRITE("~");
 	else if (Str__eq(macro, TL_IS_3031)) WRITE("");
-	else if (Str__eq(macro, TL_IS_3032)) WRITE("=>");
-	else if (Str__eq(macro, TL_IS_3033)) WRITE("<=>");
-	else if (Str__eq(macro, TL_IS_3034)) WRITE("-->");
-	else if (Str__eq(macro, TL_IS_3035)) WRITE("-->");
+	else if (Str__eq(macro, TL_IS_3032)) WRITE("");
+	else if (Str__eq(macro, TL_IS_3033)) WRITE("");
+	else if (Str__eq(macro, TL_IS_3034)) WRITE("=>");
+	else if (Str__eq(macro, TL_IS_3035)) WRITE("<=>");
 	else if (Str__eq(macro, TL_IS_3036)) WRITE("-->");
-	else if (Str__eq(macro, TL_IS_3037)) WRITE("<--");
-	else if (Str__eq(macro, TL_IS_3038)) WRITE("<--");
-	else if (Str__eq(macro, TL_IS_3039)) WRITE("{");
-	else if (Str__eq(macro, TL_IS_3040)) WRITE("|");
-	else if (Str__eq(macro, TL_IS_3041)) WRITE("}");
-	else if (Str__eq(macro, TL_IS_3042)) WRITE(".");
-	else if (Str__eq(macro, TL_IS_3043)) WRITE("...");
-	else if (Str__eq(macro, TL_IS_3044)) WRITE("...");
-	else if (Str__eq(macro, TL_IS_3045)) WRITE("*");
-	else if (Str__eq(macro, TL_IS_3046)) WRITE("  ");
-	else if (Str__eq(macro, TL_IS_3047)) WRITE("    ");
-	else if (Str__eq(macro, TL_IS_3048)) WRITE("TeX");
-	else if (Str__eq(macro, TL_IS_3049)) WRITE("!=");
-	else if (Str__eq(macro, TL_IS_3050)) WRITE("!=");
-	else if (Str__eq(macro, TL_IS_3051)) WRITE("l");
-	else if (Str__eq(macro, TL_IS_3052)) WRITE("log");
-	else if (Str__eq(macro, TL_IS_3053)) WRITE("exp");
-	else if (Str__eq(macro, TL_IS_3054)) WRITE("sin");
-	else if (Str__eq(macro, TL_IS_3055)) WRITE("cos");
-	else if (Str__eq(macro, TL_IS_3056)) WRITE("tan");
-	else if (Str__eq(macro, TL_IS_3057)) WRITE("T");
-	else if (Str__eq(macro, TL_IS_3058)) PUT((inchar32_t) 0x0391);
-	else if (Str__eq(macro, TL_IS_3059)) PUT((inchar32_t) 0x0392);
-	else if (Str__eq(macro, TL_IS_3060)) PUT((inchar32_t) 0x0393);
-	else if (Str__eq(macro, TL_IS_3061)) PUT((inchar32_t) 0x0394);
-	else if (Str__eq(macro, TL_IS_3062)) PUT((inchar32_t) 0x0395);
-	else if (Str__eq(macro, TL_IS_3063)) PUT((inchar32_t) 0x0396);
-	else if (Str__eq(macro, TL_IS_3064)) PUT((inchar32_t) 0x0397);
-	else if (Str__eq(macro, TL_IS_3065)) PUT((inchar32_t) 0x0398);
-	else if (Str__eq(macro, TL_IS_3066)) PUT((inchar32_t) 0x0399);
-	else if (Str__eq(macro, TL_IS_3067)) PUT((inchar32_t) 0x039A);
-	else if (Str__eq(macro, TL_IS_3068)) PUT((inchar32_t) 0x039B);
-	else if (Str__eq(macro, TL_IS_3069)) PUT((inchar32_t) 0x039C);
-	else if (Str__eq(macro, TL_IS_3070)) PUT((inchar32_t) 0x039D);
-	else if (Str__eq(macro, TL_IS_3071)) PUT((inchar32_t) 0x039E);
-	else if (Str__eq(macro, TL_IS_3072)) PUT((inchar32_t) 0x039F);
-	else if (Str__eq(macro, TL_IS_3073)) PUT((inchar32_t) 0x03A0);
-	else if (Str__eq(macro, TL_IS_3074)) PUT((inchar32_t) 0x03A1);
-	else if (Str__eq(macro, TL_IS_3075)) PUT((inchar32_t) 0x03A2);
-	else if (Str__eq(macro, TL_IS_3076)) PUT((inchar32_t) 0x03A3);
-	else if (Str__eq(macro, TL_IS_3077)) PUT((inchar32_t) 0x03A4);
-	else if (Str__eq(macro, TL_IS_3078)) PUT((inchar32_t) 0x03A5);
-	else if (Str__eq(macro, TL_IS_3079)) PUT((inchar32_t) 0x03A6);
-	else if (Str__eq(macro, TL_IS_3080)) PUT((inchar32_t) 0x03A7);
-	else if (Str__eq(macro, TL_IS_3081)) PUT((inchar32_t) 0x03A8);
-	else if (Str__eq(macro, TL_IS_3082)) PUT((inchar32_t) 0x03A9);
-	else if (Str__eq(macro, TL_IS_3083)) PUT((inchar32_t) 0x03B1);
-	else if (Str__eq(macro, TL_IS_3084)) PUT((inchar32_t) 0x03B2);
-	else if (Str__eq(macro, TL_IS_3085)) PUT((inchar32_t) 0x03B3);
-	else if (Str__eq(macro, TL_IS_3086)) PUT((inchar32_t) 0x03B4);
-	else if (Str__eq(macro, TL_IS_3087)) PUT((inchar32_t) 0x03B5);
-	else if (Str__eq(macro, TL_IS_3088)) PUT((inchar32_t) 0x03B6);
-	else if (Str__eq(macro, TL_IS_3089)) PUT((inchar32_t) 0x03B7);
-	else if (Str__eq(macro, TL_IS_3090)) PUT((inchar32_t) 0x03B8);
-	else if (Str__eq(macro, TL_IS_3091)) PUT((inchar32_t) 0x03B9);
-	else if (Str__eq(macro, TL_IS_3092)) PUT((inchar32_t) 0x03BA);
-	else if (Str__eq(macro, TL_IS_3093)) PUT((inchar32_t) 0x03BB);
-	else if (Str__eq(macro, TL_IS_3094)) PUT((inchar32_t) 0x03BC);
-	else if (Str__eq(macro, TL_IS_3095)) PUT((inchar32_t) 0x03BD);
-	else if (Str__eq(macro, TL_IS_3096)) PUT((inchar32_t) 0x03BE);
-	else if (Str__eq(macro, TL_IS_3097)) PUT((inchar32_t) 0x03BF);
-	else if (Str__eq(macro, TL_IS_3098)) PUT((inchar32_t) 0x03C0);
-	else if (Str__eq(macro, TL_IS_3099)) PUT((inchar32_t) 0x03C1);
-	else if (Str__eq(macro, TL_IS_3100)) PUT((inchar32_t) 0x03C2);
-	else if (Str__eq(macro, TL_IS_3101)) PUT((inchar32_t) 0x03C3);
-	else if (Str__eq(macro, TL_IS_3102)) PUT((inchar32_t) 0x03C4);
-	else if (Str__eq(macro, TL_IS_3103)) PUT((inchar32_t) 0x03C5);
-	else if (Str__eq(macro, TL_IS_3104)) PUT((inchar32_t) 0x03C6);
-	else if (Str__eq(macro, TL_IS_3105)) PUT((inchar32_t) 0x03C7);
-	else if (Str__eq(macro, TL_IS_3106)) PUT((inchar32_t) 0x03C8);
-	else if (Str__eq(macro, TL_IS_3107)) PUT((inchar32_t) 0x03C9);
-	else if (Str__eq(macro, TL_IS_3108)) PUT((inchar32_t) 0x2203);
-	else if (Str__eq(macro, TL_IS_3109)) PUT((inchar32_t) 0x2208);
-	else if (Str__eq(macro, TL_IS_3110)) PUT((inchar32_t) 0x2200);
-	else if (Str__eq(macro, TL_IS_3111)) PUT((inchar32_t) 0x2229);
-	else if (Str__eq(macro, TL_IS_3112)) PUT((inchar32_t) 0x2205);
-	else if (Str__eq(macro, TL_IS_3113)) PUT((inchar32_t) 0x2286);
-	else if (Str__eq(macro, TL_IS_3114)) PUT((inchar32_t) 0x2227);
-	else if (Str__eq(macro, TL_IS_3115)) PUT((inchar32_t) 0x2228);
-	else if (Str__eq(macro, TL_IS_3116)) PUT((inchar32_t) 0x00AC);
-	else if (Str__eq(macro, TL_IS_3117)) PUT((inchar32_t) 0x03A3);
-	else if (Str__eq(macro, TL_IS_3118)) PUT((inchar32_t) 0x03A0);
+	else if (Str__eq(macro, TL_IS_3037)) WRITE("-->");
+	else if (Str__eq(macro, TL_IS_3038)) WRITE("-->");
+	else if (Str__eq(macro, TL_IS_3039)) WRITE("<--");
+	else if (Str__eq(macro, TL_IS_3040)) WRITE("<--");
+	else if (Str__eq(macro, TL_IS_3041)) WRITE("{");
+	else if (Str__eq(macro, TL_IS_3042)) WRITE("|");
+	else if (Str__eq(macro, TL_IS_3043)) WRITE("}");
+	else if (Str__eq(macro, TL_IS_3044)) WRITE(".");
+	else if (Str__eq(macro, TL_IS_3045)) WRITE("...");
+	else if (Str__eq(macro, TL_IS_3046)) WRITE("...");
+	else if (Str__eq(macro, TL_IS_3047)) WRITE("*");
+	else if (Str__eq(macro, TL_IS_3048)) WRITE("  ");
+	else if (Str__eq(macro, TL_IS_3049)) WRITE("    ");
+	else if (Str__eq(macro, TL_IS_3050)) WRITE("TeX");
+	else if (Str__eq(macro, TL_IS_3051)) WRITE("!=");
+	else if (Str__eq(macro, TL_IS_3052)) WRITE("!=");
+	else if (Str__eq(macro, TL_IS_3053)) WRITE("l");
+	else if (Str__eq(macro, TL_IS_3054)) WRITE("log");
+	else if (Str__eq(macro, TL_IS_3055)) WRITE("exp");
+	else if (Str__eq(macro, TL_IS_3056)) WRITE("sin");
+	else if (Str__eq(macro, TL_IS_3057)) WRITE("cos");
+	else if (Str__eq(macro, TL_IS_3058)) WRITE("tan");
+	else if (Str__eq(macro, TL_IS_3059)) WRITE("T");
+	else if (Str__eq(macro, TL_IS_3060)) PUT((inchar32_t) 0x0391);
+	else if (Str__eq(macro, TL_IS_3061)) PUT((inchar32_t) 0x0392);
+	else if (Str__eq(macro, TL_IS_3062)) PUT((inchar32_t) 0x0393);
+	else if (Str__eq(macro, TL_IS_3063)) PUT((inchar32_t) 0x0394);
+	else if (Str__eq(macro, TL_IS_3064)) PUT((inchar32_t) 0x0395);
+	else if (Str__eq(macro, TL_IS_3065)) PUT((inchar32_t) 0x0396);
+	else if (Str__eq(macro, TL_IS_3066)) PUT((inchar32_t) 0x0397);
+	else if (Str__eq(macro, TL_IS_3067)) PUT((inchar32_t) 0x0398);
+	else if (Str__eq(macro, TL_IS_3068)) PUT((inchar32_t) 0x0399);
+	else if (Str__eq(macro, TL_IS_3069)) PUT((inchar32_t) 0x039A);
+	else if (Str__eq(macro, TL_IS_3070)) PUT((inchar32_t) 0x039B);
+	else if (Str__eq(macro, TL_IS_3071)) PUT((inchar32_t) 0x039C);
+	else if (Str__eq(macro, TL_IS_3072)) PUT((inchar32_t) 0x039D);
+	else if (Str__eq(macro, TL_IS_3073)) PUT((inchar32_t) 0x039E);
+	else if (Str__eq(macro, TL_IS_3074)) PUT((inchar32_t) 0x039F);
+	else if (Str__eq(macro, TL_IS_3075)) PUT((inchar32_t) 0x03A0);
+	else if (Str__eq(macro, TL_IS_3076)) PUT((inchar32_t) 0x03A1);
+	else if (Str__eq(macro, TL_IS_3077)) PUT((inchar32_t) 0x03A2);
+	else if (Str__eq(macro, TL_IS_3078)) PUT((inchar32_t) 0x03A3);
+	else if (Str__eq(macro, TL_IS_3079)) PUT((inchar32_t) 0x03A4);
+	else if (Str__eq(macro, TL_IS_3080)) PUT((inchar32_t) 0x03A5);
+	else if (Str__eq(macro, TL_IS_3081)) PUT((inchar32_t) 0x03A6);
+	else if (Str__eq(macro, TL_IS_3082)) PUT((inchar32_t) 0x03A7);
+	else if (Str__eq(macro, TL_IS_3083)) PUT((inchar32_t) 0x03A8);
+	else if (Str__eq(macro, TL_IS_3084)) PUT((inchar32_t) 0x03A9);
+	else if (Str__eq(macro, TL_IS_3085)) PUT((inchar32_t) 0x03B1);
+	else if (Str__eq(macro, TL_IS_3086)) PUT((inchar32_t) 0x03B2);
+	else if (Str__eq(macro, TL_IS_3087)) PUT((inchar32_t) 0x03B3);
+	else if (Str__eq(macro, TL_IS_3088)) PUT((inchar32_t) 0x03B4);
+	else if (Str__eq(macro, TL_IS_3089)) PUT((inchar32_t) 0x03B5);
+	else if (Str__eq(macro, TL_IS_3090)) PUT((inchar32_t) 0x03B6);
+	else if (Str__eq(macro, TL_IS_3091)) PUT((inchar32_t) 0x03B7);
+	else if (Str__eq(macro, TL_IS_3092)) PUT((inchar32_t) 0x03B8);
+	else if (Str__eq(macro, TL_IS_3093)) PUT((inchar32_t) 0x03B9);
+	else if (Str__eq(macro, TL_IS_3094)) PUT((inchar32_t) 0x03BA);
+	else if (Str__eq(macro, TL_IS_3095)) PUT((inchar32_t) 0x03BB);
+	else if (Str__eq(macro, TL_IS_3096)) PUT((inchar32_t) 0x03BC);
+	else if (Str__eq(macro, TL_IS_3097)) PUT((inchar32_t) 0x03BD);
+	else if (Str__eq(macro, TL_IS_3098)) PUT((inchar32_t) 0x03BE);
+	else if (Str__eq(macro, TL_IS_3099)) PUT((inchar32_t) 0x03BF);
+	else if (Str__eq(macro, TL_IS_3100)) PUT((inchar32_t) 0x03C0);
+	else if (Str__eq(macro, TL_IS_3101)) PUT((inchar32_t) 0x03C1);
+	else if (Str__eq(macro, TL_IS_3102)) PUT((inchar32_t) 0x03C2);
+	else if (Str__eq(macro, TL_IS_3103)) PUT((inchar32_t) 0x03C3);
+	else if (Str__eq(macro, TL_IS_3104)) PUT((inchar32_t) 0x03C4);
+	else if (Str__eq(macro, TL_IS_3105)) PUT((inchar32_t) 0x03C5);
+	else if (Str__eq(macro, TL_IS_3106)) PUT((inchar32_t) 0x03C6);
+	else if (Str__eq(macro, TL_IS_3107)) PUT((inchar32_t) 0x03C7);
+	else if (Str__eq(macro, TL_IS_3108)) PUT((inchar32_t) 0x03C8);
+	else if (Str__eq(macro, TL_IS_3109)) PUT((inchar32_t) 0x03C9);
+	else if (Str__eq(macro, TL_IS_3110)) PUT((inchar32_t) 0x2203);
+	else if (Str__eq(macro, TL_IS_3111)) PUT((inchar32_t) 0x2208);
+	else if (Str__eq(macro, TL_IS_3112)) PUT((inchar32_t) 0x2200);
+	else if (Str__eq(macro, TL_IS_3113)) PUT((inchar32_t) 0x2229);
+	else if (Str__eq(macro, TL_IS_3114)) PUT((inchar32_t) 0x2205);
+	else if (Str__eq(macro, TL_IS_3115)) PUT((inchar32_t) 0x2286);
+	else if (Str__eq(macro, TL_IS_3116)) PUT((inchar32_t) 0x2227);
+	else if (Str__eq(macro, TL_IS_3117)) PUT((inchar32_t) 0x2228);
+	else if (Str__eq(macro, TL_IS_3118)) PUT((inchar32_t) 0x00AC);
+	else if (Str__eq(macro, TL_IS_3119)) PUT((inchar32_t) 0x03A3);
+	else if (Str__eq(macro, TL_IS_3120)) PUT((inchar32_t) 0x03A0);
 	else {
 		if (Str__len(macro) > 0) {
 			int suspect = TRUE;
@@ -47548,8 +47591,8 @@ void TeXUtilities__remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 				if ((c >= 'a') && (c <= 'z')) continue;
 				suspect = FALSE;
 			}
-			if (Str__eq(macro, TL_IS_3119)) suspect = FALSE;
-			if (Str__eq(macro, TL_IS_3120)) suspect = FALSE;
+			if (Str__eq(macro, TL_IS_3121)) suspect = FALSE;
+			if (Str__eq(macro, TL_IS_3122)) suspect = FALSE;
 			if (suspect)
 				PRINT("[Passing through unknown TeX macro \\%S:\n  %S\n", macro, text);
 		}
@@ -47575,23 +47618,23 @@ void Makefiles__write(web *W, filename *prototype, filename *F, module_search *I
 	text_stream *platform) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor__new_macro(L,
-		TL_IS_3123, NULL,
+		TL_IS_3125, NULL,
 		Makefiles__platform_settings_expander, NULL);
 	Preprocessor__new_macro(L,
-		TL_IS_3124, NULL,
+		TL_IS_3126, NULL,
 		Makefiles__identity_settings_expander, NULL);
 	preprocessor_macro *mf = Preprocessor__new_macro(L,
-		TL_IS_3125, TL_IS_3126,
+		TL_IS_3127, TL_IS_3128,
 		Makefiles__modify_filenames_expander, NULL);
 	Preprocessor__do_not_suppress_whitespace(mf);
 	Preprocessor__new_macro(L,
-		TL_IS_3127, TL_IS_3128,
+		TL_IS_3129, TL_IS_3130,
 		Makefiles__component_expander, NULL);
 	Preprocessor__new_macro(L,
-		TL_IS_3129, TL_IS_3130,
+		TL_IS_3131, TL_IS_3132,
 		Makefiles__dependent_files_expander, NULL);
 	Preprocessor__new_loop_macro(L,
-		TL_IS_3131, TL_IS_3132,
+		TL_IS_3133, TL_IS_3134,
 		Makefiles__components_expander, NULL);
 
 	makefile_specifics *specifics = CREATE(makefile_specifics);
@@ -47626,7 +47669,7 @@ void Makefiles__identity_settings_expander(preprocessor_macro *mm, preprocessor_
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
 	text_stream *OUT = PPS->dest;
 	WRITE("INWEB = "); Makefiles__pathname_slashed(OUT, path_to_inweb); WRITE("/Tangled/inweb\n");
-	pathname *path_to_intest = Pathnames__down(Pathnames__up(path_to_inweb), TL_IS_3133);
+	pathname *path_to_intest = Pathnames__down(Pathnames__up(path_to_inweb), TL_IS_3135);
 	WRITE("INTEST = "); Makefiles__pathname_slashed(OUT, path_to_intest); WRITE("/Tangled/intest\n");
 	if (specifics->for_web) {
 		WRITE("MYNAME = %S\n", Pathnames__directory_name(specifics->for_web->md->path_to_web));
@@ -47642,7 +47685,7 @@ void Makefiles__platform_settings_expander(preprocessor_macro *mm, preprocessor_
 	makefile_specifics *specifics = RETRIEVE_POINTER_makefile_specifics(PPS->specifics);
 	text_stream *INWEBPLATFORM = Str__duplicate(specifics->which_platform);
 	if (Str__len(INWEBPLATFORM) == 0) {
-		filename *ps = Filenames__in(path_to_inweb, TL_IS_3134);
+		filename *ps = Filenames__in(path_to_inweb, TL_IS_3136);
 		TextFiles__read(ps, FALSE, "can't open platform settings file",
 			TRUE, Makefiles__seek_INWEBPLATFORM, NULL, INWEBPLATFORM);
 	}
@@ -47650,8 +47693,8 @@ void Makefiles__platform_settings_expander(preprocessor_macro *mm, preprocessor_
 		Errors__in_text_file(
 			"found platform settings file, but it does not set INWEBPLATFORM", tfp);
 	} else {
-		pathname *P = Pathnames__down(path_to_inweb, TL_IS_3135);
-		P = Pathnames__down(P, TL_IS_3136);
+		pathname *P = Pathnames__down(path_to_inweb, TL_IS_3137);
+		P = Pathnames__down(P, TL_IS_3138);
 		WRITE_TO(INWEBPLATFORM, ".mkscript");
 		filename *F = Filenames__in(P, INWEBPLATFORM);
 		TextFiles__read(F, FALSE, "can't open platform definitions file",
@@ -47772,7 +47815,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 	text_stream *set = parameter_values[3];
 	text_stream *category = parameter_values[4];
 
-	if (Str__eq(category, TL_IS_3137)) {
+	if (Str__eq(category, TL_IS_3139)) {
 		int marker = MAKEFILE_TOOL_MOM;
 		dictionary *D = specifics->tools_dictionary;
 		
@@ -47800,7 +47843,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 }
 #line 201 "inweb/Chapter 6/Makefiles.w"
 ;
-	} else if (Str__eq(category, TL_IS_3138)) {
+	} else if (Str__eq(category, TL_IS_3140)) {
 		int marker = MAKEFILE_WEB_MOM;
 		dictionary *D = specifics->webs_dictionary;
 		
@@ -47828,7 +47871,7 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 }
 #line 206 "inweb/Chapter 6/Makefiles.w"
 ;
-	} else if (Str__eq(category, TL_IS_3139)) {
+	} else if (Str__eq(category, TL_IS_3141)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		dictionary *D = specifics->modules_dictionary;
 		
@@ -47865,11 +47908,11 @@ void Makefiles__component_expander(preprocessor_macro *mm, preprocessor_state *P
 #line 236 "inweb/Chapter 6/Makefiles.w"
 void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
-	Preprocessor__set_loop_var_name(loop, TL_IS_3140);
+	Preprocessor__set_loop_var_name(loop, TL_IS_3142);
 	text_stream *category = parameter_values[0];
 	text_stream *set = parameter_values[1];
-	if (Str__len(set) == 0) set = TL_IS_3141;
-	if (Str__eq(category, TL_IS_3142)) {
+	if (Str__len(set) == 0) set = TL_IS_3143;
+	if (Str__eq(category, TL_IS_3144)) {
 		int marker = MAKEFILE_TOOL_MOM;
 		
 {
@@ -47877,7 +47920,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
-			((Str__eq(set, TL_IS_3145)) || (Str__eq(set, M->module_tag)))) {
+			((Str__eq(set, TL_IS_3147)) || (Str__eq(set, M->module_tag)))) {
 			text_stream *value = M->module_name;
 			Preprocessor__add_loop_iteration(loop, value);
 		}
@@ -47886,7 +47929,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 }
 #line 244 "inweb/Chapter 6/Makefiles.w"
 ;
-	} else if (Str__eq(category, TL_IS_3143)) {
+	} else if (Str__eq(category, TL_IS_3145)) {
 		int marker = MAKEFILE_WEB_MOM;
 		
 {
@@ -47894,7 +47937,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
-			((Str__eq(set, TL_IS_3145)) || (Str__eq(set, M->module_tag)))) {
+			((Str__eq(set, TL_IS_3147)) || (Str__eq(set, M->module_tag)))) {
 			text_stream *value = M->module_name;
 			Preprocessor__add_loop_iteration(loop, value);
 		}
@@ -47903,7 +47946,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 }
 #line 247 "inweb/Chapter 6/Makefiles.w"
 ;
-	} else if (Str__eq(category, TL_IS_3144)) {
+	} else if (Str__eq(category, TL_IS_3146)) {
 		int marker = MAKEFILE_MODULE_MOM;
 		
 {
@@ -47911,7 +47954,7 @@ void Makefiles__components_expander(preprocessor_macro *mm, preprocessor_state *
 	module *M;
 	LOOP_OVER(M, module) {
 		if ((M->origin_marker == marker) &&
-			((Str__eq(set, TL_IS_3145)) || (Str__eq(set, M->module_tag)))) {
+			((Str__eq(set, TL_IS_3147)) || (Str__eq(set, M->module_tag)))) {
 			text_stream *value = M->module_name;
 			Preprocessor__add_loop_iteration(loop, value);
 		}
@@ -48064,7 +48107,7 @@ void Makefiles__pathname_slashed(OUTPUT_STREAM, pathname *P) {
 #line 8 "inweb/Chapter 6/Git Support.w"
 void Git__write_gitignore(web *W, filename *prototype, filename *F) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
-	Preprocessor__new_macro(L, TL_IS_3146, NULL, Git__basics_expander, NULL);
+	Preprocessor__new_macro(L, TL_IS_3148, NULL, Git__basics_expander, NULL);
 	text_stream *header = Str__new();
 	WRITE_TO(header, "# This gitignore was automatically written by inweb -gitignore\n");
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
@@ -48075,7 +48118,7 @@ void Git__write_gitignore(web *W, filename *prototype, filename *F) {
 #line 22 "inweb/Chapter 6/Git Support.w"
 void Git__basics_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
-	filename *prototype = Filenames__in(path_to_inweb_materials, TL_IS_3147);
+	filename *prototype = Filenames__in(path_to_inweb_materials, TL_IS_3149);
 	TextFiles__read(prototype, FALSE, "can't open basic .gitignore file",
 		TRUE, Preprocessor__scan_line, NULL, PPS);
 	WRITE_TO(STDOUT, "(Read basics.giscript from inweb/");
@@ -48091,7 +48134,7 @@ void Ctags__write(web *W, filename *F) {
 		P = Filenames__up(F);
 	} else {
 		P = W->md->path_to_web;
-		F = Filenames__in(P, TL_IS_3148);
+		F = Filenames__in(P, TL_IS_3150);
 	}
 	text_stream *OUT = &ctags_file;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE)
@@ -48103,7 +48146,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B49\t/built 6 September 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B50\t/built 9 September 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
@@ -48194,7 +48237,7 @@ void Ctags__note_defined_constant(source_line *L, text_stream *name) {
 void Readme__write(filename *prototype, filename *F) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	preprocessor_macro *mm = Preprocessor__new_macro(L,
-		TL_IS_3149, TL_IS_3150,
+		TL_IS_3151, TL_IS_3152,
 		Readme__bibliographic_expander, NULL);
 	Preprocessor__do_not_suppress_whitespace(mm);
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
@@ -48209,8 +48252,8 @@ void Readme__bibliographic_expander(preprocessor_macro *mm, preprocessor_state *
 	text_stream *OUT = PPS->dest;
 	writeme_asset *A = Readme__find_asset(asset_name);
 	if (A->if_web) WRITE("%S", Bibliographic__get_datum(A->if_web, datum));
-	else if (Str__eq(datum, TL_IS_3151)) WRITE("%S", A->date);
-	else if (Str__eq(datum, TL_IS_3152)) WRITE("%S", A->version);
+	else if (Str__eq(datum, TL_IS_3153)) WRITE("%S", A->date);
+	else if (Str__eq(datum, TL_IS_3154)) WRITE("%S", A->version);
 }
 
 #line 49 "inweb/Chapter 6/Readme Writeme.w"
@@ -48218,8 +48261,8 @@ void Readme__bibliographic_expander(preprocessor_macro *mm, preprocessor_state *
 void Readme__write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme__find_asset(program);
 	if (A->if_web) WRITE("%S", Bibliographic__get_datum(A->if_web, datum));
-	else if (Str__eq(datum, TL_IS_3153)) WRITE("%S", A->date);
-	else if (Str__eq(datum, TL_IS_3154)) WRITE("%S", A->version);
+	else if (Str__eq(datum, TL_IS_3155)) WRITE("%S", A->date);
+	else if (Str__eq(datum, TL_IS_3156)) WRITE("%S", A->version);
 }
 
 #line 60 "inweb/Chapter 6/Readme Writeme.w"
@@ -48250,7 +48293,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 			A->if_web = WebMetadata__get_without_modules(Pathnames__from_text(program), NULL);
 		} else {
 			filename *I6_vn = Filenames__in(
-				Pathnames__down(Pathnames__from_text(program), TL_IS_3155), TL_IS_3156);
+				Pathnames__down(Pathnames__from_text(program), TL_IS_3157), TL_IS_3158);
 			if (TextFiles__exists(I6_vn)) 
 {
 #line 97 "inweb/Chapter 6/Readme Writeme.w"
@@ -48260,7 +48303,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 }
 #line 82 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			filename *template_vn = Filenames__in(Pathnames__from_text(program), TL_IS_3157);
+			filename *template_vn = Filenames__in(Pathnames__from_text(program), TL_IS_3159);
 			if (TextFiles__exists(template_vn)) 
 {
 #line 101 "inweb/Chapter 6/Readme Writeme.w"
@@ -48270,7 +48313,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 }
 #line 84 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			filename *rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_3158);
+			filename *rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_3160);
 			if (TextFiles__exists(rmt_vn)) 
 {
 #line 105 "inweb/Chapter 6/Readme Writeme.w"
@@ -48280,7 +48323,7 @@ writeme_asset *Readme__find_asset(text_stream *program) {
 }
 #line 86 "inweb/Chapter 6/Readme Writeme.w"
 ;
-			rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_3159);
+			rmt_vn = Filenames__in(Pathnames__from_text(program), TL_IS_3161);
 			if (TextFiles__exists(rmt_vn)) 
 {
 #line 105 "inweb/Chapter 6/Readme Writeme.w"
@@ -48355,7 +48398,7 @@ void Readme__readme_harvester(text_stream *text, text_file_position *tfp, void *
 void Colonies__load(filename *F) {
 	colony *C = CREATE(colony);
 	C->members = NEW_LINKED_LIST(colony_member);
-	C->home = TL_IS_3160;
+	C->home = TL_IS_3162;
 	C->assets_path = NULL;
 	C->patterns_path = NULL;
 	colony_reader_state crs;
@@ -48379,8 +48422,8 @@ void Colonies__read_line(text_stream *line, text_file_position *tfp, void *v_crs
 	match_results mr = Regexp__create_mr();
 	if (Regexp__match(&mr, line, U"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\"")) {
 		colony_member *CM = CREATE(colony_member);
-		if (Str__eq(mr.exp[0], TL_IS_3161)) CM->web_rather_than_module = TRUE;
-		else if (Str__eq(mr.exp[0], TL_IS_3162)) CM->web_rather_than_module = FALSE;
+		if (Str__eq(mr.exp[0], TL_IS_3163)) CM->web_rather_than_module = TRUE;
+		else if (Str__eq(mr.exp[0], TL_IS_3164)) CM->web_rather_than_module = FALSE;
 		else {
 			CM->web_rather_than_module = FALSE;
 			Errors__in_text_file("text before ':' must be 'web' or 'module'", tfp);
@@ -48388,7 +48431,7 @@ void Colonies__read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		CM->name = Str__duplicate(mr.exp[1]);
 		CM->path = Str__duplicate(mr.exp[2]);
 		CM->home_leaf = Str__new();
-		if (Str__suffix_eq(CM->path, TL_IS_3163, 6)) {
+		if (Str__suffix_eq(CM->path, TL_IS_3165, 6)) {
 			filename *F = Filenames__from_text(CM->path);
 			Filenames__write_unextended_leafname(CM->home_leaf, F);
 			WRITE_TO(CM->home_leaf, ".html");
@@ -48528,7 +48571,7 @@ module *Colonies__as_module(colony_member *CM, source_line *L, web_md *Wm) {
 #line 254 "inweb/Chapter 6/Colonies.w"
 	filename *F = NULL;
 	pathname *P = NULL;
-	if (Str__suffix_eq(CM->path, TL_IS_3164, 6))
+	if (Str__suffix_eq(CM->path, TL_IS_3166, 6))
 		F = Filenames__from_text(CM->path);
 	else
 		P = Pathnames__from_text(CM->path);
@@ -48555,7 +48598,7 @@ text_stream *Colonies__home(void) {
 	colony *C;
 	LOOP_OVER(C, colony)
 		return C->home;
-	return TL_IS_3165;
+	return TL_IS_3167;
 }
 
 pathname *Colonies__assets_path(void) {
@@ -48747,7 +48790,7 @@ int Colonies__resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 		return FALSE;
 	}
 	if (N > 1) {
-		Main__error_in_web(TL_IS_3166, L);
+		Main__error_in_web(TL_IS_3168, L);
 		WebModules__named_reference(&found_M, &found_Sm, &bare_module_name,
 			title, search_M, text, TRUE, FALSE);
 		return FALSE;
@@ -48829,7 +48872,7 @@ void Colonies__paragraph_URL(OUTPUT_STREAM, paragraph *P, filename *from) {
 	if (P == NULL) internal_error("no para");
 	section *to_S = P->under_section;
 	module *to_M = to_S->md->owning_module;
-	if (Str__ne(to_M->module_name, TL_IS_3167)) {
+	if (Str__ne(to_M->module_name, TL_IS_3169)) {
 		colony_member *to_C = Colonies__find(to_M->module_name);
 		if (to_C) {
 			pathname *from_path = Filenames__up(from);
@@ -51321,709 +51364,711 @@ void register_tangled_text_literals(void) {
     TL_IS_2460 = Str__literal(U"extensionexampleletter");
     TL_IS_2461 = Str__literal(U"indexdarkgrey");
     TL_IS_2462 = Str__literal(U"indexblack");
-    TL_IS_2463 = Str__literal(U"paste buttons");
-    TL_IS_2464 = Str__literal(U"{*}");
-    TL_IS_2465 = Str__literal(U"{**}");
-    TL_IS_2466 = Str__literal(U"phrase defn boxes");
-    TL_IS_2467 = Str__literal(U"PHRASE_HEADER");
-    TL_IS_2468 = Str__literal(U"+to+");
-    TL_IS_2469 = Str__literal(U"if ");
-    TL_IS_2470 = Str__literal(U"+toif+");
-    TL_IS_2471 = Str__literal(U"say ");
-    TL_IS_2472 = Str__literal(U"+tosay+");
-    TL_IS_2473 = Str__literal(U"indexing marks");
-    TL_IS_2474 = Str__literal(U"INDEX_MARKER");
-    TL_IS_2475 = Str__literal(U"heading markers");
-    TL_IS_2476 = Str__literal(U"HEADING_MARKER");
-    TL_IS_2477 = Str__literal(U"paragraph gating");
-    TL_IS_2478 = Str__literal(U"GATE");
-    TL_IS_2479 = Str__literal(U"Inform syntax-colouring");
-    TL_IS_2480 = Str__literal(U"inform");
-    TL_IS_2481 = Str__literal(U"inform7");
-    TL_IS_2482 = Str__literal(U"problems");
-    TL_IS_2483 = Str__literal(U"Inform");
-    TL_IS_2484 = Str__literal(U"Inform");
-    TL_IS_2485 = Str__literal(U"indexdullblue");
-    TL_IS_2486 = Str__literal(U"indexdullblue");
+    TL_IS_2463 = Str__literal(U"indexblack");
+    TL_IS_2464 = Str__literal(U"extensionexampleseealso");
+    TL_IS_2465 = Str__literal(U"paste buttons");
+    TL_IS_2466 = Str__literal(U"{*}");
+    TL_IS_2467 = Str__literal(U"{**}");
+    TL_IS_2468 = Str__literal(U"phrase defn boxes");
+    TL_IS_2469 = Str__literal(U"PHRASE_HEADER");
+    TL_IS_2470 = Str__literal(U"+to+");
+    TL_IS_2471 = Str__literal(U"if ");
+    TL_IS_2472 = Str__literal(U"+toif+");
+    TL_IS_2473 = Str__literal(U"say ");
+    TL_IS_2474 = Str__literal(U"+tosay+");
+    TL_IS_2475 = Str__literal(U"indexing marks");
+    TL_IS_2476 = Str__literal(U"INDEX_MARKER");
+    TL_IS_2477 = Str__literal(U"heading markers");
+    TL_IS_2478 = Str__literal(U"HEADING_MARKER");
+    TL_IS_2479 = Str__literal(U"paragraph gating");
+    TL_IS_2480 = Str__literal(U"GATE");
+    TL_IS_2481 = Str__literal(U"Inform syntax-colouring");
+    TL_IS_2482 = Str__literal(U"inform");
+    TL_IS_2483 = Str__literal(U"inform7");
+    TL_IS_2484 = Str__literal(U"problems");
+    TL_IS_2485 = Str__literal(U"Inform");
+    TL_IS_2486 = Str__literal(U"Inform");
     TL_IS_2487 = Str__literal(U"indexdullblue");
-    TL_IS_2488 = Str__literal(U"syntaxdefinition");
-    TL_IS_2489 = Str__literal(U"syntaxfunction");
-    TL_IS_2490 = Str__literal(U"syntaxreserved");
-    TL_IS_2491 = Str__literal(U"syntaxelement");
-    TL_IS_2492 = Str__literal(U"syntaxidentifier");
-    TL_IS_2493 = Str__literal(U"syntaxcharacter");
-    TL_IS_2494 = Str__literal(U"syntaxconstant");
-    TL_IS_2495 = Str__literal(U"syntaxstring");
-    TL_IS_2496 = Str__literal(U"syntaxplain");
-    TL_IS_2497 = Str__literal(U"syntaxextract");
-    TL_IS_2498 = Str__literal(U"syntaxcomment");
-    TL_IS_2499 = Str__literal(U"ePub");
-    TL_IS_2500 = Str__literal(U"OEBPS");
-    TL_IS_2501 = Str__literal(U"mimetype");
-    TL_IS_2502 = Str__literal(U"META-INF");
-    TL_IS_2503 = Str__literal(U"container.xml");
-    TL_IS_2504 = Str__literal(U"cover.html");
-    TL_IS_2505 = Str__literal(U"Cover");
-    TL_IS_2506 = Str__literal(U"cover");
-    TL_IS_2507 = Str__literal(U"content.opf");
-    TL_IS_2508 = Str__literal(U"toc.ncx");
-    TL_IS_2509 = Str__literal(U"..");
-    TL_IS_2510 = Str__literal(U"A");
-    TL_IS_2511 = Str__literal(U"Sequential Section Ranges");
-    TL_IS_2512 = Str__literal(U"On");
-    TL_IS_2513 = Str__literal(U"Web Syntax Version: 1");
-    TL_IS_2514 = Str__literal(U"Web Syntax Version: 2");
-    TL_IS_2515 = Str__literal(U"S");
-    TL_IS_2516 = Str__literal(U"Sections");
-    TL_IS_2517 = Str__literal(U"All");
-    TL_IS_2518 = Str__literal(U"Headers");
-    TL_IS_2519 = Str__literal(U"single-file webs cannot Import modules");
-    TL_IS_2520 = Str__literal(U"Language");
-    TL_IS_2521 = Str__literal(U"Language");
-    TL_IS_2522 = Str__literal(U"Contents.w");
-    TL_IS_2523 = Str__literal(U"Title");
-    TL_IS_2524 = Str__literal(U"Author");
-    TL_IS_2525 = Str__literal(U"Language");
-    TL_IS_2526 = Str__literal(U"None");
-    TL_IS_2527 = Str__literal(U"Purpose");
-    TL_IS_2528 = Str__literal(U"");
-    TL_IS_2529 = Str__literal(U"License");
-    TL_IS_2530 = Str__literal(U"Licence");
-    TL_IS_2531 = Str__literal(U"Short Title");
-    TL_IS_2532 = Str__literal(U"Capitalized Title");
-    TL_IS_2533 = Str__literal(U"Build Date");
-    TL_IS_2534 = Str__literal(U"Build Number");
-    TL_IS_2535 = Str__literal(U"Prerelease");
-    TL_IS_2536 = Str__literal(U"Semantic Version Number");
-    TL_IS_2537 = Str__literal(U"Version Number");
-    TL_IS_2538 = Str__literal(U"1");
-    TL_IS_2539 = Str__literal(U"Version Name");
-    TL_IS_2540 = Str__literal(U"Index Template");
-    TL_IS_2541 = Str__literal(U"Preform Language");
-    TL_IS_2542 = Str__literal(U"Declare Section Usage");
-    TL_IS_2543 = Str__literal(U"Off");
-    TL_IS_2544 = Str__literal(U"Namespaces");
+    TL_IS_2488 = Str__literal(U"indexdullblue");
+    TL_IS_2489 = Str__literal(U"indexdullblue");
+    TL_IS_2490 = Str__literal(U"syntaxdefinition");
+    TL_IS_2491 = Str__literal(U"syntaxfunction");
+    TL_IS_2492 = Str__literal(U"syntaxreserved");
+    TL_IS_2493 = Str__literal(U"syntaxelement");
+    TL_IS_2494 = Str__literal(U"syntaxidentifier");
+    TL_IS_2495 = Str__literal(U"syntaxcharacter");
+    TL_IS_2496 = Str__literal(U"syntaxconstant");
+    TL_IS_2497 = Str__literal(U"syntaxstring");
+    TL_IS_2498 = Str__literal(U"syntaxplain");
+    TL_IS_2499 = Str__literal(U"syntaxextract");
+    TL_IS_2500 = Str__literal(U"syntaxcomment");
+    TL_IS_2501 = Str__literal(U"ePub");
+    TL_IS_2502 = Str__literal(U"OEBPS");
+    TL_IS_2503 = Str__literal(U"mimetype");
+    TL_IS_2504 = Str__literal(U"META-INF");
+    TL_IS_2505 = Str__literal(U"container.xml");
+    TL_IS_2506 = Str__literal(U"cover.html");
+    TL_IS_2507 = Str__literal(U"Cover");
+    TL_IS_2508 = Str__literal(U"cover");
+    TL_IS_2509 = Str__literal(U"content.opf");
+    TL_IS_2510 = Str__literal(U"toc.ncx");
+    TL_IS_2511 = Str__literal(U"..");
+    TL_IS_2512 = Str__literal(U"A");
+    TL_IS_2513 = Str__literal(U"Sequential Section Ranges");
+    TL_IS_2514 = Str__literal(U"On");
+    TL_IS_2515 = Str__literal(U"Web Syntax Version: 1");
+    TL_IS_2516 = Str__literal(U"Web Syntax Version: 2");
+    TL_IS_2517 = Str__literal(U"S");
+    TL_IS_2518 = Str__literal(U"Sections");
+    TL_IS_2519 = Str__literal(U"All");
+    TL_IS_2520 = Str__literal(U"Headers");
+    TL_IS_2521 = Str__literal(U"single-file webs cannot Import modules");
+    TL_IS_2522 = Str__literal(U"Language");
+    TL_IS_2523 = Str__literal(U"Language");
+    TL_IS_2524 = Str__literal(U"Contents.w");
+    TL_IS_2525 = Str__literal(U"Title");
+    TL_IS_2526 = Str__literal(U"Author");
+    TL_IS_2527 = Str__literal(U"Language");
+    TL_IS_2528 = Str__literal(U"None");
+    TL_IS_2529 = Str__literal(U"Purpose");
+    TL_IS_2530 = Str__literal(U"");
+    TL_IS_2531 = Str__literal(U"License");
+    TL_IS_2532 = Str__literal(U"Licence");
+    TL_IS_2533 = Str__literal(U"Short Title");
+    TL_IS_2534 = Str__literal(U"Capitalized Title");
+    TL_IS_2535 = Str__literal(U"Build Date");
+    TL_IS_2536 = Str__literal(U"Build Number");
+    TL_IS_2537 = Str__literal(U"Prerelease");
+    TL_IS_2538 = Str__literal(U"Semantic Version Number");
+    TL_IS_2539 = Str__literal(U"Version Number");
+    TL_IS_2540 = Str__literal(U"1");
+    TL_IS_2541 = Str__literal(U"Version Name");
+    TL_IS_2542 = Str__literal(U"Index Template");
+    TL_IS_2543 = Str__literal(U"Preform Language");
+    TL_IS_2544 = Str__literal(U"Declare Section Usage");
     TL_IS_2545 = Str__literal(U"Off");
-    TL_IS_2546 = Str__literal(U"Sequential Section Ranges");
+    TL_IS_2546 = Str__literal(U"Namespaces");
     TL_IS_2547 = Str__literal(U"Off");
-    TL_IS_2548 = Str__literal(U"Strict Usage Rules");
+    TL_IS_2548 = Str__literal(U"Sequential Section Ranges");
     TL_IS_2549 = Str__literal(U"Off");
-    TL_IS_2550 = Str__literal(U"TeX Mathematics Notation");
-    TL_IS_2551 = Str__literal(U"$");
-    TL_IS_2552 = Str__literal(U"TeX Mathematics Displayed Notation");
-    TL_IS_2553 = Str__literal(U"$$");
-    TL_IS_2554 = Str__literal(U"Footnote Begins Notation");
-    TL_IS_2555 = Str__literal(U"[");
-    TL_IS_2556 = Str__literal(U"Footnote Ends Notation");
-    TL_IS_2557 = Str__literal(U"]");
-    TL_IS_2558 = Str__literal(U"Code In Commentary Notation");
-    TL_IS_2559 = Str__literal(U"|");
-    TL_IS_2560 = Str__literal(U"Code In Code Comments Notation");
+    TL_IS_2550 = Str__literal(U"Strict Usage Rules");
+    TL_IS_2551 = Str__literal(U"Off");
+    TL_IS_2552 = Str__literal(U"TeX Mathematics Notation");
+    TL_IS_2553 = Str__literal(U"$");
+    TL_IS_2554 = Str__literal(U"TeX Mathematics Displayed Notation");
+    TL_IS_2555 = Str__literal(U"$$");
+    TL_IS_2556 = Str__literal(U"Footnote Begins Notation");
+    TL_IS_2557 = Str__literal(U"[");
+    TL_IS_2558 = Str__literal(U"Footnote Ends Notation");
+    TL_IS_2559 = Str__literal(U"]");
+    TL_IS_2560 = Str__literal(U"Code In Commentary Notation");
     TL_IS_2561 = Str__literal(U"|");
-    TL_IS_2562 = Str__literal(U"Cross-References Notation");
-    TL_IS_2563 = Str__literal(U"//");
-    TL_IS_2564 = Str__literal(U"Web Syntax Version");
-    TL_IS_2565 = Str__literal(U"Paragraph Numbers Visibility");
-    TL_IS_2566 = Str__literal(U"On");
-    TL_IS_2567 = Str__literal(U"Capitalized Title");
-    TL_IS_2568 = Str__literal(U"miscellaneous");
-    TL_IS_2569 = Str__literal(U"(main)");
-    TL_IS_2570 = Str__literal(U"build.txt");
-    TL_IS_2571 = Str__literal(U"build.txt");
-    TL_IS_2572 = Str__literal(U"Prerelease");
-    TL_IS_2573 = Str__literal(U"Build Number");
-    TL_IS_2574 = Str__literal(U"Build Date");
-    TL_IS_2575 = Str__literal(U"Semantic Version Number");
-    TL_IS_2576 = Str__literal(U"Version Number");
-    TL_IS_2577 = Str__literal(U"Prerelease");
-    TL_IS_2578 = Str__literal(U"Build Number");
-    TL_IS_2579 = Str__literal(U"Semantic Version Number");
-    TL_IS_2580 = Str__literal(U"Sections");
-    TL_IS_2581 = Str__literal(U"InC");
-    TL_IS_2582 = Str__literal(U"Name");
-    TL_IS_2583 = Str__literal(U"Details");
-    TL_IS_2584 = Str__literal(U"Extension");
-    TL_IS_2585 = Str__literal(U"Line Comment");
-    TL_IS_2586 = Str__literal(U"Whole Line Comment");
-    TL_IS_2587 = Str__literal(U"Multiline Comment Open");
-    TL_IS_2588 = Str__literal(U"Multiline Comment Close");
-    TL_IS_2589 = Str__literal(U"String Literal");
-    TL_IS_2590 = Str__literal(U"String Literal Escape");
-    TL_IS_2591 = Str__literal(U"Character Literal");
-    TL_IS_2592 = Str__literal(U"Character Literal Escape");
-    TL_IS_2593 = Str__literal(U"Binary Literal Prefix");
-    TL_IS_2594 = Str__literal(U"Octal Literal Prefix");
-    TL_IS_2595 = Str__literal(U"Hexadecimal Literal Prefix");
-    TL_IS_2596 = Str__literal(U"Negative Literal Prefix");
-    TL_IS_2597 = Str__literal(U"Shebang");
-    TL_IS_2598 = Str__literal(U"Line Marker");
-    TL_IS_2599 = Str__literal(U"Before Named Paragraph Expansion");
-    TL_IS_2600 = Str__literal(U"After Named Paragraph Expansion");
-    TL_IS_2601 = Str__literal(U"Start Definition");
-    TL_IS_2602 = Str__literal(U"Prolong Definition");
-    TL_IS_2603 = Str__literal(U"End Definition");
-    TL_IS_2604 = Str__literal(U"Start Ifdef");
-    TL_IS_2605 = Str__literal(U"Start Ifndef");
-    TL_IS_2606 = Str__literal(U"End Ifdef");
-    TL_IS_2607 = Str__literal(U"End Ifndef");
-    TL_IS_2608 = Str__literal(U"C-Like");
-    TL_IS_2609 = Str__literal(U"Suppress Disclaimer");
-    TL_IS_2610 = Str__literal(U"Supports Namespaces");
-    TL_IS_2611 = Str__literal(U"Function Declaration Notation");
-    TL_IS_2612 = Str__literal(U"Type Declaration Notation");
-    TL_IS_2613 = Str__literal(U"}");
-    TL_IS_2614 = Str__literal(U"unquoted");
-    TL_IS_2615 = Str__literal(U"{");
-    TL_IS_2616 = Str__literal(U"debug");
-    TL_IS_2617 = Str__literal(U"!string");
-    TL_IS_2618 = Str__literal(U"!function");
-    TL_IS_2619 = Str__literal(U"!definition");
-    TL_IS_2620 = Str__literal(U"!reserved");
-    TL_IS_2621 = Str__literal(U"!element");
-    TL_IS_2622 = Str__literal(U"!identifier");
-    TL_IS_2623 = Str__literal(U"!character");
-    TL_IS_2624 = Str__literal(U"!constant");
-    TL_IS_2625 = Str__literal(U"!plain");
-    TL_IS_2626 = Str__literal(U"!extract");
-    TL_IS_2627 = Str__literal(U"!comment");
-    TL_IS_2628 = Str__literal(U"true");
-    TL_IS_2629 = Str__literal(U"false");
-    TL_IS_2630 = Str__literal(U"both");
-    TL_IS_2631 = Str__literal(U"brackets");
-    TL_IS_2632 = Str__literal(U"characters");
-    TL_IS_2633 = Str__literal(U"coloured");
-    TL_IS_2634 = Str__literal(U"colouring");
-    TL_IS_2635 = Str__literal(U"debug");
-    TL_IS_2636 = Str__literal(U"false");
-    TL_IS_2637 = Str__literal(U"in");
-    TL_IS_2638 = Str__literal(U"instances");
-    TL_IS_2639 = Str__literal(U"keyword");
-    TL_IS_2640 = Str__literal(U"matches");
-    TL_IS_2641 = Str__literal(U"matching");
-    TL_IS_2642 = Str__literal(U"not");
-    TL_IS_2643 = Str__literal(U"of");
-    TL_IS_2644 = Str__literal(U"on");
-    TL_IS_2645 = Str__literal(U"optionally");
-    TL_IS_2646 = Str__literal(U"prefix");
-    TL_IS_2647 = Str__literal(U"runs");
-    TL_IS_2648 = Str__literal(U"spaced");
-    TL_IS_2649 = Str__literal(U"suffix");
-    TL_IS_2650 = Str__literal(U"true");
-    TL_IS_2651 = Str__literal(U"unquoted");
-    TL_IS_2652 = Str__literal(U"inweb");
-    TL_IS_2653 = Str__literal(U"Patterns");
-    TL_IS_2654 = Str__literal(U"Materials");
-    TL_IS_2655 = Str__literal(U"Languages");
-    TL_IS_2656 = Str__literal(U"script.mkscript");
-    TL_IS_2657 = Str__literal(U"script.giscript");
-    TL_IS_2658 = Str__literal(U"script.rmscript");
-    TL_IS_2659 = Str__literal(U"Short Title");
-    TL_IS_2660 = Str__literal(U"Short Title");
-    TL_IS_2661 = Str__literal(U"Title");
-    TL_IS_2662 = Str__literal(U"0");
-    TL_IS_2663 = Str__literal(U"for locating programming language definitions");
-    TL_IS_2664 = Str__literal(U"for analysing a web");
-    TL_IS_2665 = Str__literal(U"for weaving a web");
-    TL_IS_2666 = Str__literal(U"for tangling a web");
-    TL_IS_2667 = Str__literal(U"for dealing with colonies of webs together");
-    TL_IS_2668 = Str__literal(U".inweb");
-    TL_IS_2669 = Str__literal(U"0");
-    TL_IS_2670 = Str__literal(U"Title");
-    TL_IS_2671 = Str__literal(U"Booklet Title");
-    TL_IS_2672 = Str__literal(U"Colours");
-    TL_IS_2673 = Str__literal(U"Colours");
-    TL_IS_2674 = Str__literal(U"");
-    TL_IS_2675 = Str__literal(U"Version Number");
-    TL_IS_2676 = Str__literal(U"Version Number");
-    TL_IS_2677 = Str__literal(U" ");
-    TL_IS_2678 = Str__literal(U"template-index.html");
-    TL_IS_2679 = Str__literal(U"index.html");
-    TL_IS_2680 = Str__literal(U"Index");
-    TL_IS_2681 = Str__literal(U"index");
-    TL_IS_2682 = Str__literal(U"0");
-    TL_IS_2683 = Str__literal(U"pattern.txt");
-    TL_IS_2684 = Str__literal(U"Patterns");
+    TL_IS_2562 = Str__literal(U"Code In Code Comments Notation");
+    TL_IS_2563 = Str__literal(U"|");
+    TL_IS_2564 = Str__literal(U"Cross-References Notation");
+    TL_IS_2565 = Str__literal(U"//");
+    TL_IS_2566 = Str__literal(U"Web Syntax Version");
+    TL_IS_2567 = Str__literal(U"Paragraph Numbers Visibility");
+    TL_IS_2568 = Str__literal(U"On");
+    TL_IS_2569 = Str__literal(U"Capitalized Title");
+    TL_IS_2570 = Str__literal(U"miscellaneous");
+    TL_IS_2571 = Str__literal(U"(main)");
+    TL_IS_2572 = Str__literal(U"build.txt");
+    TL_IS_2573 = Str__literal(U"build.txt");
+    TL_IS_2574 = Str__literal(U"Prerelease");
+    TL_IS_2575 = Str__literal(U"Build Number");
+    TL_IS_2576 = Str__literal(U"Build Date");
+    TL_IS_2577 = Str__literal(U"Semantic Version Number");
+    TL_IS_2578 = Str__literal(U"Version Number");
+    TL_IS_2579 = Str__literal(U"Prerelease");
+    TL_IS_2580 = Str__literal(U"Build Number");
+    TL_IS_2581 = Str__literal(U"Semantic Version Number");
+    TL_IS_2582 = Str__literal(U"Sections");
+    TL_IS_2583 = Str__literal(U"InC");
+    TL_IS_2584 = Str__literal(U"Name");
+    TL_IS_2585 = Str__literal(U"Details");
+    TL_IS_2586 = Str__literal(U"Extension");
+    TL_IS_2587 = Str__literal(U"Line Comment");
+    TL_IS_2588 = Str__literal(U"Whole Line Comment");
+    TL_IS_2589 = Str__literal(U"Multiline Comment Open");
+    TL_IS_2590 = Str__literal(U"Multiline Comment Close");
+    TL_IS_2591 = Str__literal(U"String Literal");
+    TL_IS_2592 = Str__literal(U"String Literal Escape");
+    TL_IS_2593 = Str__literal(U"Character Literal");
+    TL_IS_2594 = Str__literal(U"Character Literal Escape");
+    TL_IS_2595 = Str__literal(U"Binary Literal Prefix");
+    TL_IS_2596 = Str__literal(U"Octal Literal Prefix");
+    TL_IS_2597 = Str__literal(U"Hexadecimal Literal Prefix");
+    TL_IS_2598 = Str__literal(U"Negative Literal Prefix");
+    TL_IS_2599 = Str__literal(U"Shebang");
+    TL_IS_2600 = Str__literal(U"Line Marker");
+    TL_IS_2601 = Str__literal(U"Before Named Paragraph Expansion");
+    TL_IS_2602 = Str__literal(U"After Named Paragraph Expansion");
+    TL_IS_2603 = Str__literal(U"Start Definition");
+    TL_IS_2604 = Str__literal(U"Prolong Definition");
+    TL_IS_2605 = Str__literal(U"End Definition");
+    TL_IS_2606 = Str__literal(U"Start Ifdef");
+    TL_IS_2607 = Str__literal(U"Start Ifndef");
+    TL_IS_2608 = Str__literal(U"End Ifdef");
+    TL_IS_2609 = Str__literal(U"End Ifndef");
+    TL_IS_2610 = Str__literal(U"C-Like");
+    TL_IS_2611 = Str__literal(U"Suppress Disclaimer");
+    TL_IS_2612 = Str__literal(U"Supports Namespaces");
+    TL_IS_2613 = Str__literal(U"Function Declaration Notation");
+    TL_IS_2614 = Str__literal(U"Type Declaration Notation");
+    TL_IS_2615 = Str__literal(U"}");
+    TL_IS_2616 = Str__literal(U"unquoted");
+    TL_IS_2617 = Str__literal(U"{");
+    TL_IS_2618 = Str__literal(U"debug");
+    TL_IS_2619 = Str__literal(U"!string");
+    TL_IS_2620 = Str__literal(U"!function");
+    TL_IS_2621 = Str__literal(U"!definition");
+    TL_IS_2622 = Str__literal(U"!reserved");
+    TL_IS_2623 = Str__literal(U"!element");
+    TL_IS_2624 = Str__literal(U"!identifier");
+    TL_IS_2625 = Str__literal(U"!character");
+    TL_IS_2626 = Str__literal(U"!constant");
+    TL_IS_2627 = Str__literal(U"!plain");
+    TL_IS_2628 = Str__literal(U"!extract");
+    TL_IS_2629 = Str__literal(U"!comment");
+    TL_IS_2630 = Str__literal(U"true");
+    TL_IS_2631 = Str__literal(U"false");
+    TL_IS_2632 = Str__literal(U"both");
+    TL_IS_2633 = Str__literal(U"brackets");
+    TL_IS_2634 = Str__literal(U"characters");
+    TL_IS_2635 = Str__literal(U"coloured");
+    TL_IS_2636 = Str__literal(U"colouring");
+    TL_IS_2637 = Str__literal(U"debug");
+    TL_IS_2638 = Str__literal(U"false");
+    TL_IS_2639 = Str__literal(U"in");
+    TL_IS_2640 = Str__literal(U"instances");
+    TL_IS_2641 = Str__literal(U"keyword");
+    TL_IS_2642 = Str__literal(U"matches");
+    TL_IS_2643 = Str__literal(U"matching");
+    TL_IS_2644 = Str__literal(U"not");
+    TL_IS_2645 = Str__literal(U"of");
+    TL_IS_2646 = Str__literal(U"on");
+    TL_IS_2647 = Str__literal(U"optionally");
+    TL_IS_2648 = Str__literal(U"prefix");
+    TL_IS_2649 = Str__literal(U"runs");
+    TL_IS_2650 = Str__literal(U"spaced");
+    TL_IS_2651 = Str__literal(U"suffix");
+    TL_IS_2652 = Str__literal(U"true");
+    TL_IS_2653 = Str__literal(U"unquoted");
+    TL_IS_2654 = Str__literal(U"inweb");
+    TL_IS_2655 = Str__literal(U"Patterns");
+    TL_IS_2656 = Str__literal(U"Materials");
+    TL_IS_2657 = Str__literal(U"Languages");
+    TL_IS_2658 = Str__literal(U"script.mkscript");
+    TL_IS_2659 = Str__literal(U"script.giscript");
+    TL_IS_2660 = Str__literal(U"script.rmscript");
+    TL_IS_2661 = Str__literal(U"Short Title");
+    TL_IS_2662 = Str__literal(U"Short Title");
+    TL_IS_2663 = Str__literal(U"Title");
+    TL_IS_2664 = Str__literal(U"0");
+    TL_IS_2665 = Str__literal(U"for locating programming language definitions");
+    TL_IS_2666 = Str__literal(U"for analysing a web");
+    TL_IS_2667 = Str__literal(U"for weaving a web");
+    TL_IS_2668 = Str__literal(U"for tangling a web");
+    TL_IS_2669 = Str__literal(U"for dealing with colonies of webs together");
+    TL_IS_2670 = Str__literal(U".inweb");
+    TL_IS_2671 = Str__literal(U"0");
+    TL_IS_2672 = Str__literal(U"Title");
+    TL_IS_2673 = Str__literal(U"Booklet Title");
+    TL_IS_2674 = Str__literal(U"Colours");
+    TL_IS_2675 = Str__literal(U"Colours");
+    TL_IS_2676 = Str__literal(U"");
+    TL_IS_2677 = Str__literal(U"Version Number");
+    TL_IS_2678 = Str__literal(U"Version Number");
+    TL_IS_2679 = Str__literal(U" ");
+    TL_IS_2680 = Str__literal(U"template-index.html");
+    TL_IS_2681 = Str__literal(U"index.html");
+    TL_IS_2682 = Str__literal(U"Index");
+    TL_IS_2683 = Str__literal(U"index");
+    TL_IS_2684 = Str__literal(U"0");
     TL_IS_2685 = Str__literal(U"pattern.txt");
-    TL_IS_2686 = Str__literal(U"pattern.txt");
-    TL_IS_2687 = Str__literal(U"name");
-    TL_IS_2688 = Str__literal(U"plugin");
-    TL_IS_2689 = Str__literal(U"format");
-    TL_IS_2690 = Str__literal(U"number sections");
-    TL_IS_2691 = Str__literal(U"default range");
-    TL_IS_2692 = Str__literal(U"initial extension");
-    TL_IS_2693 = Str__literal(U"mathematics plugin");
-    TL_IS_2694 = Str__literal(U"footnotes plugin");
-    TL_IS_2695 = Str__literal(U"block template");
-    TL_IS_2696 = Str__literal(U"command");
-    TL_IS_2697 = Str__literal(U"bibliographic data");
-    TL_IS_2698 = Str__literal(U"assets");
-    TL_IS_2699 = Str__literal(U"yes");
-    TL_IS_2700 = Str__literal(U"no");
-    TL_IS_2701 = Str__literal(U"none");
-    TL_IS_2702 = Str__literal(U"WOVENPATH");
-    TL_IS_2703 = Str__literal(U"WOVEN");
-    TL_IS_2704 = Str__literal(U"PROCESS ");
-    TL_IS_2705 = Str__literal(U"Colouring");
-    TL_IS_2706 = Str__literal(U"Coloring");
+    TL_IS_2686 = Str__literal(U"Patterns");
+    TL_IS_2687 = Str__literal(U"pattern.txt");
+    TL_IS_2688 = Str__literal(U"pattern.txt");
+    TL_IS_2689 = Str__literal(U"name");
+    TL_IS_2690 = Str__literal(U"plugin");
+    TL_IS_2691 = Str__literal(U"format");
+    TL_IS_2692 = Str__literal(U"number sections");
+    TL_IS_2693 = Str__literal(U"default range");
+    TL_IS_2694 = Str__literal(U"initial extension");
+    TL_IS_2695 = Str__literal(U"mathematics plugin");
+    TL_IS_2696 = Str__literal(U"footnotes plugin");
+    TL_IS_2697 = Str__literal(U"block template");
+    TL_IS_2698 = Str__literal(U"command");
+    TL_IS_2699 = Str__literal(U"bibliographic data");
+    TL_IS_2700 = Str__literal(U"assets");
+    TL_IS_2701 = Str__literal(U"yes");
+    TL_IS_2702 = Str__literal(U"no");
+    TL_IS_2703 = Str__literal(U"none");
+    TL_IS_2704 = Str__literal(U"WOVENPATH");
+    TL_IS_2705 = Str__literal(U"WOVEN");
+    TL_IS_2706 = Str__literal(U"PROCESS ");
     TL_IS_2707 = Str__literal(U"Colouring");
     TL_IS_2708 = Str__literal(U"Coloring");
-    TL_IS_2709 = Str__literal(U"");
-    TL_IS_2710 = Str__literal(U"copy");
-    TL_IS_2711 = Str__literal(U"copy");
-    TL_IS_2712 = Str__literal(U"private copy");
-    TL_IS_2713 = Str__literal(U"embed");
-    TL_IS_2714 = Str__literal(U"collate");
-    TL_IS_2715 = Str__literal(U"prefix");
-    TL_IS_2716 = Str__literal(U"suffix");
-    TL_IS_2717 = Str__literal(U"transform names");
-    TL_IS_2718 = Str__literal(U"");
-    TL_IS_2719 = Str__literal(U"URL");
-    TL_IS_2720 = Str__literal(U"URL");
-    TL_IS_2721 = Str__literal(U"Inweb Version");
-    TL_IS_2722 = Str__literal(U"Language");
-    TL_IS_2723 = Str__literal(U"Purpose");
-    TL_IS_2724 = Str__literal(U"Woven");
-    TL_IS_2725 = Str__literal(U"Tangled");
-    TL_IS_2726 = Str__literal(U"Title");
-    TL_IS_2727 = Str__literal(U"");
-    TL_IS_2728 = Str__literal(U"=");
-    TL_IS_2729 = Str__literal(U"@");
-    TL_IS_2730 = Str__literal(U"Figures");
-    TL_IS_2731 = Str__literal(U"unknown [[command]]");
-    TL_IS_2732 = Str__literal(U"<...> definition begins outside of a paragraph");
-    TL_IS_2733 = Str__literal(U"(very early code)");
-    TL_IS_2734 = Str__literal(U"(early code)");
-    TL_IS_2735 = Str__literal(U"Extracts");
-    TL_IS_2736 = Str__literal(U"Figures");
-    TL_IS_2737 = Str__literal(U"HTML");
-    TL_IS_2738 = Str__literal(U"Audio");
-    TL_IS_2739 = Str__literal(U"Video");
-    TL_IS_2740 = Str__literal(U"Download");
-    TL_IS_2741 = Str__literal(U"Download");
-    TL_IS_2742 = Str__literal(U"Carousels");
-    TL_IS_2743 = Str__literal(U"Carousels");
+    TL_IS_2709 = Str__literal(U"Colouring");
+    TL_IS_2710 = Str__literal(U"Coloring");
+    TL_IS_2711 = Str__literal(U"");
+    TL_IS_2712 = Str__literal(U"copy");
+    TL_IS_2713 = Str__literal(U"copy");
+    TL_IS_2714 = Str__literal(U"private copy");
+    TL_IS_2715 = Str__literal(U"embed");
+    TL_IS_2716 = Str__literal(U"collate");
+    TL_IS_2717 = Str__literal(U"prefix");
+    TL_IS_2718 = Str__literal(U"suffix");
+    TL_IS_2719 = Str__literal(U"transform names");
+    TL_IS_2720 = Str__literal(U"");
+    TL_IS_2721 = Str__literal(U"URL");
+    TL_IS_2722 = Str__literal(U"URL");
+    TL_IS_2723 = Str__literal(U"Inweb Version");
+    TL_IS_2724 = Str__literal(U"Language");
+    TL_IS_2725 = Str__literal(U"Purpose");
+    TL_IS_2726 = Str__literal(U"Woven");
+    TL_IS_2727 = Str__literal(U"Tangled");
+    TL_IS_2728 = Str__literal(U"Title");
+    TL_IS_2729 = Str__literal(U"");
+    TL_IS_2730 = Str__literal(U"=");
+    TL_IS_2731 = Str__literal(U"@");
+    TL_IS_2732 = Str__literal(U"Figures");
+    TL_IS_2733 = Str__literal(U"unknown [[command]]");
+    TL_IS_2734 = Str__literal(U"<...> definition begins outside of a paragraph");
+    TL_IS_2735 = Str__literal(U"(very early code)");
+    TL_IS_2736 = Str__literal(U"(early code)");
+    TL_IS_2737 = Str__literal(U"Extracts");
+    TL_IS_2738 = Str__literal(U"Figures");
+    TL_IS_2739 = Str__literal(U"HTML");
+    TL_IS_2740 = Str__literal(U"Audio");
+    TL_IS_2741 = Str__literal(U"Video");
+    TL_IS_2742 = Str__literal(U"Download");
+    TL_IS_2743 = Str__literal(U"Download");
     TL_IS_2744 = Str__literal(U"Carousels");
     TL_IS_2745 = Str__literal(U"Carousels");
     TL_IS_2746 = Str__literal(U"Carousels");
-    TL_IS_2747 = Str__literal(U"Videos");
-    TL_IS_2748 = Str__literal(U"unknown bracketed annotation");
-    TL_IS_2749 = Str__literal(U"unknown material after '='");
-    TL_IS_2750 = Str__literal(U"undisplayed");
-    TL_IS_2751 = Str__literal(U"hyperlinked");
-    TL_IS_2752 = Str__literal(U"only 'undisplayed' and/or 'hyperlinked' can precede 'text' here");
-    TL_IS_2753 = Str__literal(U"=");
-    TL_IS_2754 = Str__literal(U"don't understand @command");
-    TL_IS_2755 = Str__literal(U"Purpose used after bar");
-    TL_IS_2756 = Str__literal(U"Interface used after bar");
-    TL_IS_2757 = Str__literal(U"Definitions used after bar");
-    TL_IS_2758 = Str__literal(U"second bar in the same section");
-    TL_IS_2759 = Str__literal(U"enumeration constants can't supply a value");
-    TL_IS_2760 = Str__literal(U"Paragraph Numbers Visibility");
-    TL_IS_2761 = Str__literal(U"Off");
-    TL_IS_2762 = Str__literal(U"P");
-    TL_IS_2763 = Str__literal(U"S");
-    TL_IS_2764 = Str__literal(U"Footnote Begins Notation");
-    TL_IS_2765 = Str__literal(U"Footnote Ends Notation");
-    TL_IS_2766 = Str__literal(U"Off");
-    TL_IS_2767 = Str__literal(U"ifdef-");
-    TL_IS_2768 = Str__literal(U"ifndef-");
-    TL_IS_2769 = Str__literal(U".");
-    TL_IS_2770 = Str__literal(U"This paragraph is used only if ");
-    TL_IS_2771 = Str__literal(U" and if ");
-    TL_IS_2772 = Str__literal(U" and ");
-    TL_IS_2773 = Str__literal(U" is");
-    TL_IS_2774 = Str__literal(U" are");
-    TL_IS_2775 = Str__literal(U" defined");
-    TL_IS_2776 = Str__literal(U" undefined");
-    TL_IS_2777 = Str__literal(U"enumeration constants must belong to a _FAMILY");
-    TL_IS_2778 = Str__literal(U"this enumeration _FAMILY is unknown");
-    TL_IS_2779 = Str__literal(U"this enumeration _FAMILY already exists");
-    TL_IS_2780 = Str__literal(U"unrecognised interface line");
-    TL_IS_2781 = Str__literal(U".");
-    TL_IS_2782 = Str__literal(U"..");
-    TL_IS_2783 = Str__literal(U"web");
-    TL_IS_2784 = Str__literal(U"default.mkscript");
-    TL_IS_2785 = Str__literal(U".");
-    TL_IS_2786 = Str__literal(U"..");
-    TL_IS_2787 = Str__literal(U"web");
-    TL_IS_2788 = Str__literal(U"default.giscript");
-    TL_IS_2789 = Str__literal(U"C");
-    TL_IS_2790 = Str__literal(U"Dialects");
-    TL_IS_2791 = Str__literal(U"");
-    TL_IS_2792 = Str__literal(U"Chapters");
-    TL_IS_2793 = Str__literal(U"Modules");
-    TL_IS_2794 = Str__literal(U"Module Page");
-    TL_IS_2795 = Str__literal(U"Module Purpose");
-    TL_IS_2796 = Str__literal(U"Purpose");
-    TL_IS_2797 = Str__literal(U"Chapter Purpose");
-    TL_IS_2798 = Str__literal(U"Section Purpose");
-    TL_IS_2799 = Str__literal(U"Purpose");
-    TL_IS_2800 = Str__literal(U"index.html");
-    TL_IS_2801 = Str__literal(U"inweb");
-    TL_IS_2802 = Str__literal(U"inweb");
+    TL_IS_2747 = Str__literal(U"Carousels");
+    TL_IS_2748 = Str__literal(U"Carousels");
+    TL_IS_2749 = Str__literal(U"Videos");
+    TL_IS_2750 = Str__literal(U"unknown bracketed annotation");
+    TL_IS_2751 = Str__literal(U"unknown material after '='");
+    TL_IS_2752 = Str__literal(U"undisplayed");
+    TL_IS_2753 = Str__literal(U"hyperlinked");
+    TL_IS_2754 = Str__literal(U"only 'undisplayed' and/or 'hyperlinked' can precede 'text' here");
+    TL_IS_2755 = Str__literal(U"=");
+    TL_IS_2756 = Str__literal(U"don't understand @command");
+    TL_IS_2757 = Str__literal(U"Purpose used after bar");
+    TL_IS_2758 = Str__literal(U"Interface used after bar");
+    TL_IS_2759 = Str__literal(U"Definitions used after bar");
+    TL_IS_2760 = Str__literal(U"second bar in the same section");
+    TL_IS_2761 = Str__literal(U"enumeration constants can't supply a value");
+    TL_IS_2762 = Str__literal(U"Paragraph Numbers Visibility");
+    TL_IS_2763 = Str__literal(U"Off");
+    TL_IS_2764 = Str__literal(U"P");
+    TL_IS_2765 = Str__literal(U"S");
+    TL_IS_2766 = Str__literal(U"Footnote Begins Notation");
+    TL_IS_2767 = Str__literal(U"Footnote Ends Notation");
+    TL_IS_2768 = Str__literal(U"Off");
+    TL_IS_2769 = Str__literal(U"ifdef-");
+    TL_IS_2770 = Str__literal(U"ifndef-");
+    TL_IS_2771 = Str__literal(U".");
+    TL_IS_2772 = Str__literal(U"This paragraph is used only if ");
+    TL_IS_2773 = Str__literal(U" and if ");
+    TL_IS_2774 = Str__literal(U" and ");
+    TL_IS_2775 = Str__literal(U" is");
+    TL_IS_2776 = Str__literal(U" are");
+    TL_IS_2777 = Str__literal(U" defined");
+    TL_IS_2778 = Str__literal(U" undefined");
+    TL_IS_2779 = Str__literal(U"enumeration constants must belong to a _FAMILY");
+    TL_IS_2780 = Str__literal(U"this enumeration _FAMILY is unknown");
+    TL_IS_2781 = Str__literal(U"this enumeration _FAMILY already exists");
+    TL_IS_2782 = Str__literal(U"unrecognised interface line");
+    TL_IS_2783 = Str__literal(U".");
+    TL_IS_2784 = Str__literal(U"..");
+    TL_IS_2785 = Str__literal(U"web");
+    TL_IS_2786 = Str__literal(U"default.mkscript");
+    TL_IS_2787 = Str__literal(U".");
+    TL_IS_2788 = Str__literal(U"..");
+    TL_IS_2789 = Str__literal(U"web");
+    TL_IS_2790 = Str__literal(U"default.giscript");
+    TL_IS_2791 = Str__literal(U"C");
+    TL_IS_2792 = Str__literal(U"Dialects");
+    TL_IS_2793 = Str__literal(U"");
+    TL_IS_2794 = Str__literal(U"Chapters");
+    TL_IS_2795 = Str__literal(U"Modules");
+    TL_IS_2796 = Str__literal(U"Module Page");
+    TL_IS_2797 = Str__literal(U"Module Purpose");
+    TL_IS_2798 = Str__literal(U"Purpose");
+    TL_IS_2799 = Str__literal(U"Chapter Purpose");
+    TL_IS_2800 = Str__literal(U"Section Purpose");
+    TL_IS_2801 = Str__literal(U"Purpose");
+    TL_IS_2802 = Str__literal(U"index.html");
     TL_IS_2803 = Str__literal(U"inweb");
-    TL_IS_2804 = Str__literal(U"End of weave");
-    TL_IS_2805 = Str__literal(U"Definitions");
-    TL_IS_2806 = Str__literal(U"bad start to paragraph");
-    TL_IS_2807 = Str__literal(U"");
-    TL_IS_2808 = Str__literal(U"");
-    TL_IS_2809 = Str__literal(U"footnote never cued");
-    TL_IS_2810 = Str__literal(U"Preform");
-    TL_IS_2811 = Str__literal(U"Preform");
-    TL_IS_2812 = Str__literal(U"define");
-    TL_IS_2813 = Str__literal(U"default");
-    TL_IS_2814 = Str__literal(U"enum");
-    TL_IS_2815 = Str__literal(U"Preform");
-    TL_IS_2816 = Str__literal(U"This is ");
-    TL_IS_2817 = Str__literal(U"words: About Preform");
-    TL_IS_2818 = Str__literal(U"Preform grammar");
-    TL_IS_2819 = Str__literal(U"Preform grammar");
-    TL_IS_2820 = Str__literal(U", not regular C code.");
-    TL_IS_2821 = Str__literal(U"This code is ");
-    TL_IS_2822 = Str__literal(U"never used");
-    TL_IS_2823 = Str__literal(U", ");
-    TL_IS_2824 = Str__literal(U" and ");
-    TL_IS_2825 = Str__literal(U"used in ");
-    TL_IS_2826 = Str__literal(U" (twice)");
-    TL_IS_2827 = Str__literal(U" (three times)");
-    TL_IS_2828 = Str__literal(U" (four times)");
-    TL_IS_2829 = Str__literal(U" (five times)");
-    TL_IS_2830 = Str__literal(U".");
-    TL_IS_2831 = Str__literal(U"The structure ");
-    TL_IS_2832 = Str__literal(U" is private to this section");
-    TL_IS_2833 = Str__literal(U" is accessed in ");
-    TL_IS_2834 = Str__literal(U", ");
-    TL_IS_2835 = Str__literal(U" and here");
-    TL_IS_2836 = Str__literal(U".");
-    TL_IS_2837 = Str__literal(U"The function ");
-    TL_IS_2838 = Str__literal(U" appears nowhere else");
-    TL_IS_2839 = Str__literal(U"none");
-    TL_IS_2840 = Str__literal(U")");
-    TL_IS_2841 = Str__literal(U".");
-    TL_IS_2842 = Str__literal(U" is used in ");
-    TL_IS_2843 = Str__literal(U"), ");
-    TL_IS_2844 = Str__literal(U", ");
-    TL_IS_2845 = Str__literal(U" (");
-    TL_IS_2846 = Str__literal(U" - ");
-    TL_IS_2847 = Str__literal(U", ");
-    TL_IS_2848 = Str__literal(U"Code In Code Comments Notation");
-    TL_IS_2849 = Str__literal(U"Code In Commentary Notation");
-    TL_IS_2850 = Str__literal(U"Off");
-    TL_IS_2851 = Str__literal(U"TeX Mathematics Displayed Notation");
+    TL_IS_2804 = Str__literal(U"inweb");
+    TL_IS_2805 = Str__literal(U"inweb");
+    TL_IS_2806 = Str__literal(U"End of weave");
+    TL_IS_2807 = Str__literal(U"Definitions");
+    TL_IS_2808 = Str__literal(U"bad start to paragraph");
+    TL_IS_2809 = Str__literal(U"");
+    TL_IS_2810 = Str__literal(U"");
+    TL_IS_2811 = Str__literal(U"footnote never cued");
+    TL_IS_2812 = Str__literal(U"Preform");
+    TL_IS_2813 = Str__literal(U"Preform");
+    TL_IS_2814 = Str__literal(U"define");
+    TL_IS_2815 = Str__literal(U"default");
+    TL_IS_2816 = Str__literal(U"enum");
+    TL_IS_2817 = Str__literal(U"Preform");
+    TL_IS_2818 = Str__literal(U"This is ");
+    TL_IS_2819 = Str__literal(U"words: About Preform");
+    TL_IS_2820 = Str__literal(U"Preform grammar");
+    TL_IS_2821 = Str__literal(U"Preform grammar");
+    TL_IS_2822 = Str__literal(U", not regular C code.");
+    TL_IS_2823 = Str__literal(U"This code is ");
+    TL_IS_2824 = Str__literal(U"never used");
+    TL_IS_2825 = Str__literal(U", ");
+    TL_IS_2826 = Str__literal(U" and ");
+    TL_IS_2827 = Str__literal(U"used in ");
+    TL_IS_2828 = Str__literal(U" (twice)");
+    TL_IS_2829 = Str__literal(U" (three times)");
+    TL_IS_2830 = Str__literal(U" (four times)");
+    TL_IS_2831 = Str__literal(U" (five times)");
+    TL_IS_2832 = Str__literal(U".");
+    TL_IS_2833 = Str__literal(U"The structure ");
+    TL_IS_2834 = Str__literal(U" is private to this section");
+    TL_IS_2835 = Str__literal(U" is accessed in ");
+    TL_IS_2836 = Str__literal(U", ");
+    TL_IS_2837 = Str__literal(U" and here");
+    TL_IS_2838 = Str__literal(U".");
+    TL_IS_2839 = Str__literal(U"The function ");
+    TL_IS_2840 = Str__literal(U" appears nowhere else");
+    TL_IS_2841 = Str__literal(U"none");
+    TL_IS_2842 = Str__literal(U")");
+    TL_IS_2843 = Str__literal(U".");
+    TL_IS_2844 = Str__literal(U" is used in ");
+    TL_IS_2845 = Str__literal(U"), ");
+    TL_IS_2846 = Str__literal(U", ");
+    TL_IS_2847 = Str__literal(U" (");
+    TL_IS_2848 = Str__literal(U" - ");
+    TL_IS_2849 = Str__literal(U", ");
+    TL_IS_2850 = Str__literal(U"Code In Code Comments Notation");
+    TL_IS_2851 = Str__literal(U"Code In Commentary Notation");
     TL_IS_2852 = Str__literal(U"Off");
-    TL_IS_2853 = Str__literal(U"TeX Mathematics Notation");
+    TL_IS_2853 = Str__literal(U"TeX Mathematics Displayed Notation");
     TL_IS_2854 = Str__literal(U"Off");
-    TL_IS_2855 = Str__literal(U"Cross-References Notation");
+    TL_IS_2855 = Str__literal(U"TeX Mathematics Notation");
     TL_IS_2856 = Str__literal(U"Off");
-    TL_IS_2857 = Str__literal(U"http://");
-    TL_IS_2858 = Str__literal(U"https://");
-    TL_IS_2859 = Str__literal(U"this is a cue for a missing note");
-    TL_IS_2860 = Str__literal(U"Cross-References Notation");
-    TL_IS_2861 = Str__literal(U"Off");
-    TL_IS_2862 = Str__literal(U"http://");
-    TL_IS_2863 = Str__literal(U"https://");
-    TL_IS_2864 = Str__literal(U"misplaced definition");
-    TL_IS_2865 = Str__literal(U"unknown macro");
-    TL_IS_2866 = Str__literal(U"Structures");
-    TL_IS_2867 = Str__literal(U"Main::");
-    TL_IS_2868 = Str__literal(U"Tangled output generated by inweb: do not edit");
-    TL_IS_2869 = Str__literal(U"this programming language does not support @d");
-    TL_IS_2870 = Str__literal(U"this programming language does not support multiline @d");
-    TL_IS_2871 = Str__literal(U"Preform");
-    TL_IS_2872 = Str__literal(U"Preform");
-    TL_IS_2873 = Str__literal(U"Namespaces");
-    TL_IS_2874 = Str__literal(U"Being internally called, this function mustn't belong to a :: namespace");
-    TL_IS_2875 = Str__literal(U"Being externally called, this function must belong to a :: namespace");
-    TL_IS_2876 = Str__literal(U"Structures");
-    TL_IS_2877 = Str__literal(U"program ended with conditional compilation open");
-    TL_IS_2878 = Str__literal(U"conditional compilation too deeply nested");
-    TL_IS_2879 = Str__literal(U"found #endif without #ifdef or #ifndef");
-    TL_IS_2880 = Str__literal(U"Preform");
-    TL_IS_2881 = Str__literal(U"'WR[...]' notation unavailable");
-    TL_IS_2882 = Str__literal(U"malformed '{ , }' formula");
-    TL_IS_2883 = Str__literal(U"fail");
-    TL_IS_2884 = Str__literal(U"fail production");
-    TL_IS_2885 = Str__literal(U"fail nonterminal");
-    TL_IS_2886 = Str__literal(U"advance ");
-    TL_IS_2887 = Str__literal(U"pass ");
-    TL_IS_2888 = Str__literal(U"lookahead");
-    TL_IS_2889 = Str__literal(U"-");
-    TL_IS_2890 = Str__literal(U"-");
-    TL_IS_2891 = Str__literal(U"most_recent_result");
-    TL_IS_2892 = Str__literal(U"most_recent_result_p");
-    TL_IS_2893 = Str__literal(U"Syntax.preform");
-    TL_IS_2894 = Str__literal(U"Preform Language");
-    TL_IS_2895 = Str__literal(U"Preform Language");
-    TL_IS_2896 = Str__literal(U"weave tree");
-    TL_IS_2897 = Str__literal(U"document");
-    TL_IS_2898 = Str__literal(U"head");
-    TL_IS_2899 = Str__literal(U"body");
-    TL_IS_2900 = Str__literal(U"tail");
-    TL_IS_2901 = Str__literal(U"chapter footer");
-    TL_IS_2902 = Str__literal(U"chapter header");
-    TL_IS_2903 = Str__literal(U"section footer");
-    TL_IS_2904 = Str__literal(U"section header");
-    TL_IS_2905 = Str__literal(U"section purpose");
-    TL_IS_2906 = Str__literal(U"subheading");
-    TL_IS_2907 = Str__literal(U"bar");
-    TL_IS_2908 = Str__literal(U"pagebreak");
-    TL_IS_2909 = Str__literal(U"linebreak");
-    TL_IS_2910 = Str__literal(U"paragraph");
-    TL_IS_2911 = Str__literal(U"endnote");
-    TL_IS_2912 = Str__literal(U"figure");
-    TL_IS_2913 = Str__literal(U"extract");
-    TL_IS_2914 = Str__literal(U"audio");
-    TL_IS_2915 = Str__literal(U"video");
-    TL_IS_2916 = Str__literal(U"download");
-    TL_IS_2917 = Str__literal(U"material");
-    TL_IS_2918 = Str__literal(U"embed");
-    TL_IS_2919 = Str__literal(U"pmac");
-    TL_IS_2920 = Str__literal(U"vskip");
-    TL_IS_2921 = Str__literal(U"chapter");
-    TL_IS_2922 = Str__literal(U"section");
-    TL_IS_2923 = Str__literal(U"code line");
-    TL_IS_2924 = Str__literal(U"function usage");
-    TL_IS_2925 = Str__literal(U"commentary");
-    TL_IS_2926 = Str__literal(U"carousel slide");
-    TL_IS_2927 = Str__literal(U"toc");
-    TL_IS_2928 = Str__literal(U"toc line");
-    TL_IS_2929 = Str__literal(U"chapter_title_page");
-    TL_IS_2930 = Str__literal(U"defn");
-    TL_IS_2931 = Str__literal(U"source_code");
-    TL_IS_2932 = Str__literal(U"url");
-    TL_IS_2933 = Str__literal(U"footnote_cue");
-    TL_IS_2934 = Str__literal(U"footnote");
-    TL_IS_2935 = Str__literal(U"display line");
-    TL_IS_2936 = Str__literal(U"function defn");
-    TL_IS_2937 = Str__literal(U"item");
-    TL_IS_2938 = Str__literal(U"grammar index");
-    TL_IS_2939 = Str__literal(U"inline");
-    TL_IS_2940 = Str__literal(U"locale");
-    TL_IS_2941 = Str__literal(U"mathematics");
-    TL_IS_2942 = Str__literal(U"verbatim");
-    TL_IS_2943 = Str__literal(U"Weave Content");
-    TL_IS_2944 = Str__literal(U"plain");
-    TL_IS_2945 = Str__literal(U".txt");
-    TL_IS_2946 = Str__literal(U"TeX");
-    TL_IS_2947 = Str__literal(U".tex");
-    TL_IS_2948 = Str__literal(U"S");
-    TL_IS_2949 = Str__literal(U"");
-    TL_IS_2950 = Str__literal(U"Figures");
-    TL_IS_2951 = Str__literal(U"weavesection");
-    TL_IS_2952 = Str__literal(U"weavesections");
-    TL_IS_2953 = Str__literal(U"weavesectionss");
-    TL_IS_2954 = Str__literal(U"weavesectionsss");
-    TL_IS_2955 = Str__literal(U"tweavesection");
-    TL_IS_2956 = Str__literal(U"tweavesections");
-    TL_IS_2957 = Str__literal(U"tweavesectionss");
-    TL_IS_2958 = Str__literal(U"tweavesectionsss");
-    TL_IS_2959 = Str__literal(U"nsweavesection");
-    TL_IS_2960 = Str__literal(U"nsweavesections");
-    TL_IS_2961 = Str__literal(U"HTML");
-    TL_IS_2962 = Str__literal(U".html");
-    TL_IS_2963 = Str__literal(U"ePub");
+    TL_IS_2857 = Str__literal(U"Cross-References Notation");
+    TL_IS_2858 = Str__literal(U"Off");
+    TL_IS_2859 = Str__literal(U"http://");
+    TL_IS_2860 = Str__literal(U"https://");
+    TL_IS_2861 = Str__literal(U"this is a cue for a missing note");
+    TL_IS_2862 = Str__literal(U"Cross-References Notation");
+    TL_IS_2863 = Str__literal(U"Off");
+    TL_IS_2864 = Str__literal(U"http://");
+    TL_IS_2865 = Str__literal(U"https://");
+    TL_IS_2866 = Str__literal(U"misplaced definition");
+    TL_IS_2867 = Str__literal(U"unknown macro");
+    TL_IS_2868 = Str__literal(U"Structures");
+    TL_IS_2869 = Str__literal(U"Main::");
+    TL_IS_2870 = Str__literal(U"Tangled output generated by inweb: do not edit");
+    TL_IS_2871 = Str__literal(U"this programming language does not support @d");
+    TL_IS_2872 = Str__literal(U"this programming language does not support multiline @d");
+    TL_IS_2873 = Str__literal(U"Preform");
+    TL_IS_2874 = Str__literal(U"Preform");
+    TL_IS_2875 = Str__literal(U"Namespaces");
+    TL_IS_2876 = Str__literal(U"Being internally called, this function mustn't belong to a :: namespace");
+    TL_IS_2877 = Str__literal(U"Being externally called, this function must belong to a :: namespace");
+    TL_IS_2878 = Str__literal(U"Structures");
+    TL_IS_2879 = Str__literal(U"program ended with conditional compilation open");
+    TL_IS_2880 = Str__literal(U"conditional compilation too deeply nested");
+    TL_IS_2881 = Str__literal(U"found #endif without #ifdef or #ifndef");
+    TL_IS_2882 = Str__literal(U"Preform");
+    TL_IS_2883 = Str__literal(U"'WR[...]' notation unavailable");
+    TL_IS_2884 = Str__literal(U"malformed '{ , }' formula");
+    TL_IS_2885 = Str__literal(U"fail");
+    TL_IS_2886 = Str__literal(U"fail production");
+    TL_IS_2887 = Str__literal(U"fail nonterminal");
+    TL_IS_2888 = Str__literal(U"advance ");
+    TL_IS_2889 = Str__literal(U"pass ");
+    TL_IS_2890 = Str__literal(U"lookahead");
+    TL_IS_2891 = Str__literal(U"-");
+    TL_IS_2892 = Str__literal(U"-");
+    TL_IS_2893 = Str__literal(U"most_recent_result");
+    TL_IS_2894 = Str__literal(U"most_recent_result_p");
+    TL_IS_2895 = Str__literal(U"Syntax.preform");
+    TL_IS_2896 = Str__literal(U"Preform Language");
+    TL_IS_2897 = Str__literal(U"Preform Language");
+    TL_IS_2898 = Str__literal(U"weave tree");
+    TL_IS_2899 = Str__literal(U"document");
+    TL_IS_2900 = Str__literal(U"head");
+    TL_IS_2901 = Str__literal(U"body");
+    TL_IS_2902 = Str__literal(U"tail");
+    TL_IS_2903 = Str__literal(U"chapter footer");
+    TL_IS_2904 = Str__literal(U"chapter header");
+    TL_IS_2905 = Str__literal(U"section footer");
+    TL_IS_2906 = Str__literal(U"section header");
+    TL_IS_2907 = Str__literal(U"section purpose");
+    TL_IS_2908 = Str__literal(U"subheading");
+    TL_IS_2909 = Str__literal(U"bar");
+    TL_IS_2910 = Str__literal(U"pagebreak");
+    TL_IS_2911 = Str__literal(U"linebreak");
+    TL_IS_2912 = Str__literal(U"paragraph");
+    TL_IS_2913 = Str__literal(U"endnote");
+    TL_IS_2914 = Str__literal(U"figure");
+    TL_IS_2915 = Str__literal(U"extract");
+    TL_IS_2916 = Str__literal(U"audio");
+    TL_IS_2917 = Str__literal(U"video");
+    TL_IS_2918 = Str__literal(U"download");
+    TL_IS_2919 = Str__literal(U"material");
+    TL_IS_2920 = Str__literal(U"embed");
+    TL_IS_2921 = Str__literal(U"pmac");
+    TL_IS_2922 = Str__literal(U"vskip");
+    TL_IS_2923 = Str__literal(U"chapter");
+    TL_IS_2924 = Str__literal(U"section");
+    TL_IS_2925 = Str__literal(U"code line");
+    TL_IS_2926 = Str__literal(U"function usage");
+    TL_IS_2927 = Str__literal(U"commentary");
+    TL_IS_2928 = Str__literal(U"carousel slide");
+    TL_IS_2929 = Str__literal(U"toc");
+    TL_IS_2930 = Str__literal(U"toc line");
+    TL_IS_2931 = Str__literal(U"chapter_title_page");
+    TL_IS_2932 = Str__literal(U"defn");
+    TL_IS_2933 = Str__literal(U"source_code");
+    TL_IS_2934 = Str__literal(U"url");
+    TL_IS_2935 = Str__literal(U"footnote_cue");
+    TL_IS_2936 = Str__literal(U"footnote");
+    TL_IS_2937 = Str__literal(U"display line");
+    TL_IS_2938 = Str__literal(U"function defn");
+    TL_IS_2939 = Str__literal(U"item");
+    TL_IS_2940 = Str__literal(U"grammar index");
+    TL_IS_2941 = Str__literal(U"inline");
+    TL_IS_2942 = Str__literal(U"locale");
+    TL_IS_2943 = Str__literal(U"mathematics");
+    TL_IS_2944 = Str__literal(U"verbatim");
+    TL_IS_2945 = Str__literal(U"Weave Content");
+    TL_IS_2946 = Str__literal(U"plain");
+    TL_IS_2947 = Str__literal(U".txt");
+    TL_IS_2948 = Str__literal(U"TeX");
+    TL_IS_2949 = Str__literal(U".tex");
+    TL_IS_2950 = Str__literal(U"S");
+    TL_IS_2951 = Str__literal(U"");
+    TL_IS_2952 = Str__literal(U"Figures");
+    TL_IS_2953 = Str__literal(U"weavesection");
+    TL_IS_2954 = Str__literal(U"weavesections");
+    TL_IS_2955 = Str__literal(U"weavesectionss");
+    TL_IS_2956 = Str__literal(U"weavesectionsss");
+    TL_IS_2957 = Str__literal(U"tweavesection");
+    TL_IS_2958 = Str__literal(U"tweavesections");
+    TL_IS_2959 = Str__literal(U"tweavesectionss");
+    TL_IS_2960 = Str__literal(U"tweavesectionsss");
+    TL_IS_2961 = Str__literal(U"nsweavesection");
+    TL_IS_2962 = Str__literal(U"nsweavesections");
+    TL_IS_2963 = Str__literal(U"HTML");
     TL_IS_2964 = Str__literal(U".html");
-    TL_IS_2965 = Str__literal(U"");
-    TL_IS_2966 = Str__literal(U"private copy");
-    TL_IS_2967 = Str__literal(U"Base");
-    TL_IS_2968 = Str__literal(U"Colours");
-    TL_IS_2969 = Str__literal(U"");
-    TL_IS_2970 = Str__literal(U"");
-    TL_IS_2971 = Str__literal(U"Breadcrumbs");
-    TL_IS_2972 = Str__literal(U"Title");
-    TL_IS_2973 = Str__literal(U"Short Title");
-    TL_IS_2974 = Str__literal(U"Short Title");
-    TL_IS_2975 = Str__literal(U"index.html");
-    TL_IS_2976 = Str__literal(U"S");
-    TL_IS_2977 = Str__literal(U"Sequential Section Ranges");
-    TL_IS_2978 = Str__literal(U"On");
-    TL_IS_2979 = Str__literal(U"Figures");
-    TL_IS_2980 = Str__literal(U"HTML");
-    TL_IS_2981 = Str__literal(U"Unable to find this HTML extract");
-    TL_IS_2982 = Str__literal(U"Audio");
-    TL_IS_2983 = Str__literal(U"Video");
-    TL_IS_2984 = Str__literal(U"Downloads");
-    TL_IS_2985 = Str__literal(U"Embedding");
-    TL_IS_2986 = Str__literal(U"Download.html");
-    TL_IS_2987 = Str__literal(U"Downloads are not supported");
-    TL_IS_2988 = Str__literal(U"Downloads");
-    TL_IS_2989 = Str__literal(U"Download file missing or empty");
-    TL_IS_2990 = Str__literal(U"File Name");
-    TL_IS_2991 = Str__literal(U"File URL");
-    TL_IS_2992 = Str__literal(U"File Details");
-    TL_IS_2993 = Str__literal(U" byte");
-    TL_IS_2994 = Str__literal(U" bytes");
-    TL_IS_2995 = Str__literal(U"kB");
-    TL_IS_2996 = Str__literal(U"MB");
-    TL_IS_2997 = Str__literal(U"GB");
-    TL_IS_2998 = Str__literal(U"405");
-    TL_IS_2999 = Str__literal(U"720");
-    TL_IS_3000 = Str__literal(U"Embedding");
-    TL_IS_3001 = Str__literal(U"This is not a supported service");
-    TL_IS_3002 = Str__literal(U"Content ID");
-    TL_IS_3003 = Str__literal(U"Content Width");
-    TL_IS_3004 = Str__literal(U"Content Height");
-    TL_IS_3005 = Str__literal(U"named-paragraph-link");
-    TL_IS_3006 = Str__literal(U"function-link");
-    TL_IS_3007 = Str__literal(U"Carousel");
-    TL_IS_3008 = Str__literal(U"carousel-number");
-    TL_IS_3009 = Str__literal(U"carousel-caption");
-    TL_IS_3010 = Str__literal(U"carousel-caption-above");
-    TL_IS_3011 = Str__literal(U"carousel-number-above");
-    TL_IS_3012 = Str__literal(U"carousel-caption-below");
-    TL_IS_3013 = Str__literal(U"carousel-number-below");
-    TL_IS_3014 = Str__literal(U"external");
-    TL_IS_3015 = Str__literal(U"internal");
-    TL_IS_3016 = Str__literal(U"Popups");
-    TL_IS_3017 = Str__literal(U"*");
-    TL_IS_3018 = Str__literal(U"paragraph-anchor");
-    TL_IS_3019 = Str__literal(U"Title");
-    TL_IS_3020 = Str__literal(U"Base");
-    TL_IS_3021 = Str__literal(U"Base.css");
-    TL_IS_3022 = Str__literal(U"TestingInweb");
-    TL_IS_3023 = Str__literal(U".txt");
-    TL_IS_3024 = Str__literal(U".pdf");
-    TL_IS_3025 = Str__literal(U"not");
-    TL_IS_3026 = Str__literal(U"leq");
-    TL_IS_3027 = Str__literal(U"geq");
-    TL_IS_3028 = Str__literal(U"sim");
-    TL_IS_3029 = Str__literal(U"hbox");
-    TL_IS_3030 = Str__literal(U"left");
-    TL_IS_3031 = Str__literal(U"right");
-    TL_IS_3032 = Str__literal(U"Rightarrow");
-    TL_IS_3033 = Str__literal(U"Leftrightarrow");
-    TL_IS_3034 = Str__literal(U"to");
-    TL_IS_3035 = Str__literal(U"rightarrow");
-    TL_IS_3036 = Str__literal(U"longrightarrow");
-    TL_IS_3037 = Str__literal(U"leftarrow");
-    TL_IS_3038 = Str__literal(U"longleftarrow");
-    TL_IS_3039 = Str__literal(U"lbrace");
-    TL_IS_3040 = Str__literal(U"mid");
-    TL_IS_3041 = Str__literal(U"rbrace");
-    TL_IS_3042 = Str__literal(U"cdot");
-    TL_IS_3043 = Str__literal(U"cdots");
-    TL_IS_3044 = Str__literal(U"dots");
-    TL_IS_3045 = Str__literal(U"times");
-    TL_IS_3046 = Str__literal(U"quad");
-    TL_IS_3047 = Str__literal(U"qquad");
-    TL_IS_3048 = Str__literal(U"TeX");
-    TL_IS_3049 = Str__literal(U"neq");
-    TL_IS_3050 = Str__literal(U"noteq");
-    TL_IS_3051 = Str__literal(U"ell");
-    TL_IS_3052 = Str__literal(U"log");
-    TL_IS_3053 = Str__literal(U"exp");
-    TL_IS_3054 = Str__literal(U"sin");
-    TL_IS_3055 = Str__literal(U"cos");
-    TL_IS_3056 = Str__literal(U"tan");
-    TL_IS_3057 = Str__literal(U"top");
-    TL_IS_3058 = Str__literal(U"Alpha");
-    TL_IS_3059 = Str__literal(U"Beta");
-    TL_IS_3060 = Str__literal(U"Gamma");
-    TL_IS_3061 = Str__literal(U"Delta");
-    TL_IS_3062 = Str__literal(U"Epsilon");
-    TL_IS_3063 = Str__literal(U"Zeta");
-    TL_IS_3064 = Str__literal(U"Eta");
-    TL_IS_3065 = Str__literal(U"Theta");
-    TL_IS_3066 = Str__literal(U"Iota");
-    TL_IS_3067 = Str__literal(U"Kappa");
-    TL_IS_3068 = Str__literal(U"Lambda");
-    TL_IS_3069 = Str__literal(U"Mu");
-    TL_IS_3070 = Str__literal(U"Nu");
-    TL_IS_3071 = Str__literal(U"Xi");
-    TL_IS_3072 = Str__literal(U"Omicron");
-    TL_IS_3073 = Str__literal(U"Pi");
-    TL_IS_3074 = Str__literal(U"Rho");
-    TL_IS_3075 = Str__literal(U"Varsigma");
-    TL_IS_3076 = Str__literal(U"Sigma");
-    TL_IS_3077 = Str__literal(U"Tau");
-    TL_IS_3078 = Str__literal(U"Upsilon");
-    TL_IS_3079 = Str__literal(U"Phi");
-    TL_IS_3080 = Str__literal(U"Chi");
-    TL_IS_3081 = Str__literal(U"Psi");
-    TL_IS_3082 = Str__literal(U"Omega");
-    TL_IS_3083 = Str__literal(U"alpha");
-    TL_IS_3084 = Str__literal(U"beta");
-    TL_IS_3085 = Str__literal(U"gamma");
-    TL_IS_3086 = Str__literal(U"delta");
-    TL_IS_3087 = Str__literal(U"epsilon");
-    TL_IS_3088 = Str__literal(U"zeta");
-    TL_IS_3089 = Str__literal(U"eta");
-    TL_IS_3090 = Str__literal(U"theta");
-    TL_IS_3091 = Str__literal(U"iota");
-    TL_IS_3092 = Str__literal(U"kappa");
-    TL_IS_3093 = Str__literal(U"lambda");
-    TL_IS_3094 = Str__literal(U"mu");
-    TL_IS_3095 = Str__literal(U"nu");
-    TL_IS_3096 = Str__literal(U"xi");
-    TL_IS_3097 = Str__literal(U"omicron");
-    TL_IS_3098 = Str__literal(U"pi");
-    TL_IS_3099 = Str__literal(U"rho");
-    TL_IS_3100 = Str__literal(U"varsigma");
-    TL_IS_3101 = Str__literal(U"sigma");
-    TL_IS_3102 = Str__literal(U"tau");
-    TL_IS_3103 = Str__literal(U"upsilon");
-    TL_IS_3104 = Str__literal(U"phi");
-    TL_IS_3105 = Str__literal(U"chi");
-    TL_IS_3106 = Str__literal(U"psi");
-    TL_IS_3107 = Str__literal(U"omega");
-    TL_IS_3108 = Str__literal(U"exists");
-    TL_IS_3109 = Str__literal(U"in");
-    TL_IS_3110 = Str__literal(U"forall");
-    TL_IS_3111 = Str__literal(U"cap");
-    TL_IS_3112 = Str__literal(U"emptyset");
-    TL_IS_3113 = Str__literal(U"subseteq");
-    TL_IS_3114 = Str__literal(U"land");
-    TL_IS_3115 = Str__literal(U"lor");
-    TL_IS_3116 = Str__literal(U"lnot");
-    TL_IS_3117 = Str__literal(U"sum");
-    TL_IS_3118 = Str__literal(U"prod");
-    TL_IS_3119 = Str__literal(U"n");
-    TL_IS_3120 = Str__literal(U"t");
-    TL_IS_3121 = Str__literal(U"exists");
-    TL_IS_3122 = Str__literal(U"forall");
-    TL_IS_3123 = Str__literal(U"platform-settings");
-    TL_IS_3124 = Str__literal(U"identity-settings");
-    TL_IS_3125 = Str__literal(U"modify-filenames");
-    TL_IS_3126 = Str__literal(U"original: ORIGINAL ?suffix: SUFFIX ?prefix: PREFIX");
-    TL_IS_3127 = Str__literal(U"component");
-    TL_IS_3128 = Str__literal(U"symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE");
-    TL_IS_3129 = Str__literal(U"dependent-files");
-    TL_IS_3130 = Str__literal(U"?tool: TOOL ?module: MODULES ?tool-and-modules: BOTH");
-    TL_IS_3131 = Str__literal(U"components");
-    TL_IS_3132 = Str__literal(U"type: TYPE ?set: SET");
-    TL_IS_3133 = Str__literal(U"intest");
-    TL_IS_3134 = Str__literal(U"platform-settings.mk");
-    TL_IS_3135 = Str__literal(U"Materials");
-    TL_IS_3136 = Str__literal(U"platforms");
-    TL_IS_3137 = Str__literal(U"tool");
-    TL_IS_3138 = Str__literal(U"web");
-    TL_IS_3139 = Str__literal(U"module");
-    TL_IS_3140 = Str__literal(U"SYMBOL");
-    TL_IS_3141 = Str__literal(U"all");
-    TL_IS_3142 = Str__literal(U"tool");
-    TL_IS_3143 = Str__literal(U"web");
-    TL_IS_3144 = Str__literal(U"module");
-    TL_IS_3145 = Str__literal(U"all");
-    TL_IS_3146 = Str__literal(U"basics");
-    TL_IS_3147 = Str__literal(U"default.giscript");
-    TL_IS_3148 = Str__literal(U"tags");
-    TL_IS_3149 = Str__literal(U"bibliographic");
-    TL_IS_3150 = Str__literal(U"datum: DATUM of: ASSET");
-    TL_IS_3151 = Str__literal(U"Build Date");
-    TL_IS_3152 = Str__literal(U"Version Number");
+    TL_IS_2965 = Str__literal(U"ePub");
+    TL_IS_2966 = Str__literal(U".html");
+    TL_IS_2967 = Str__literal(U"");
+    TL_IS_2968 = Str__literal(U"private copy");
+    TL_IS_2969 = Str__literal(U"Base");
+    TL_IS_2970 = Str__literal(U"Colours");
+    TL_IS_2971 = Str__literal(U"");
+    TL_IS_2972 = Str__literal(U"");
+    TL_IS_2973 = Str__literal(U"Breadcrumbs");
+    TL_IS_2974 = Str__literal(U"Title");
+    TL_IS_2975 = Str__literal(U"Short Title");
+    TL_IS_2976 = Str__literal(U"Short Title");
+    TL_IS_2977 = Str__literal(U"index.html");
+    TL_IS_2978 = Str__literal(U"S");
+    TL_IS_2979 = Str__literal(U"Sequential Section Ranges");
+    TL_IS_2980 = Str__literal(U"On");
+    TL_IS_2981 = Str__literal(U"Figures");
+    TL_IS_2982 = Str__literal(U"HTML");
+    TL_IS_2983 = Str__literal(U"Unable to find this HTML extract");
+    TL_IS_2984 = Str__literal(U"Audio");
+    TL_IS_2985 = Str__literal(U"Video");
+    TL_IS_2986 = Str__literal(U"Downloads");
+    TL_IS_2987 = Str__literal(U"Embedding");
+    TL_IS_2988 = Str__literal(U"Download.html");
+    TL_IS_2989 = Str__literal(U"Downloads are not supported");
+    TL_IS_2990 = Str__literal(U"Downloads");
+    TL_IS_2991 = Str__literal(U"Download file missing or empty");
+    TL_IS_2992 = Str__literal(U"File Name");
+    TL_IS_2993 = Str__literal(U"File URL");
+    TL_IS_2994 = Str__literal(U"File Details");
+    TL_IS_2995 = Str__literal(U" byte");
+    TL_IS_2996 = Str__literal(U" bytes");
+    TL_IS_2997 = Str__literal(U"kB");
+    TL_IS_2998 = Str__literal(U"MB");
+    TL_IS_2999 = Str__literal(U"GB");
+    TL_IS_3000 = Str__literal(U"405");
+    TL_IS_3001 = Str__literal(U"720");
+    TL_IS_3002 = Str__literal(U"Embedding");
+    TL_IS_3003 = Str__literal(U"This is not a supported service");
+    TL_IS_3004 = Str__literal(U"Content ID");
+    TL_IS_3005 = Str__literal(U"Content Width");
+    TL_IS_3006 = Str__literal(U"Content Height");
+    TL_IS_3007 = Str__literal(U"named-paragraph-link");
+    TL_IS_3008 = Str__literal(U"function-link");
+    TL_IS_3009 = Str__literal(U"Carousel");
+    TL_IS_3010 = Str__literal(U"carousel-number");
+    TL_IS_3011 = Str__literal(U"carousel-caption");
+    TL_IS_3012 = Str__literal(U"carousel-caption-above");
+    TL_IS_3013 = Str__literal(U"carousel-number-above");
+    TL_IS_3014 = Str__literal(U"carousel-caption-below");
+    TL_IS_3015 = Str__literal(U"carousel-number-below");
+    TL_IS_3016 = Str__literal(U"external");
+    TL_IS_3017 = Str__literal(U"internal");
+    TL_IS_3018 = Str__literal(U"Popups");
+    TL_IS_3019 = Str__literal(U"*");
+    TL_IS_3020 = Str__literal(U"paragraph-anchor");
+    TL_IS_3021 = Str__literal(U"Title");
+    TL_IS_3022 = Str__literal(U"Base");
+    TL_IS_3023 = Str__literal(U"Base.css");
+    TL_IS_3024 = Str__literal(U"TestingInweb");
+    TL_IS_3025 = Str__literal(U".txt");
+    TL_IS_3026 = Str__literal(U".pdf");
+    TL_IS_3027 = Str__literal(U"not");
+    TL_IS_3028 = Str__literal(U"leq");
+    TL_IS_3029 = Str__literal(U"geq");
+    TL_IS_3030 = Str__literal(U"sim");
+    TL_IS_3031 = Str__literal(U"hbox");
+    TL_IS_3032 = Str__literal(U"left");
+    TL_IS_3033 = Str__literal(U"right");
+    TL_IS_3034 = Str__literal(U"Rightarrow");
+    TL_IS_3035 = Str__literal(U"Leftrightarrow");
+    TL_IS_3036 = Str__literal(U"to");
+    TL_IS_3037 = Str__literal(U"rightarrow");
+    TL_IS_3038 = Str__literal(U"longrightarrow");
+    TL_IS_3039 = Str__literal(U"leftarrow");
+    TL_IS_3040 = Str__literal(U"longleftarrow");
+    TL_IS_3041 = Str__literal(U"lbrace");
+    TL_IS_3042 = Str__literal(U"mid");
+    TL_IS_3043 = Str__literal(U"rbrace");
+    TL_IS_3044 = Str__literal(U"cdot");
+    TL_IS_3045 = Str__literal(U"cdots");
+    TL_IS_3046 = Str__literal(U"dots");
+    TL_IS_3047 = Str__literal(U"times");
+    TL_IS_3048 = Str__literal(U"quad");
+    TL_IS_3049 = Str__literal(U"qquad");
+    TL_IS_3050 = Str__literal(U"TeX");
+    TL_IS_3051 = Str__literal(U"neq");
+    TL_IS_3052 = Str__literal(U"noteq");
+    TL_IS_3053 = Str__literal(U"ell");
+    TL_IS_3054 = Str__literal(U"log");
+    TL_IS_3055 = Str__literal(U"exp");
+    TL_IS_3056 = Str__literal(U"sin");
+    TL_IS_3057 = Str__literal(U"cos");
+    TL_IS_3058 = Str__literal(U"tan");
+    TL_IS_3059 = Str__literal(U"top");
+    TL_IS_3060 = Str__literal(U"Alpha");
+    TL_IS_3061 = Str__literal(U"Beta");
+    TL_IS_3062 = Str__literal(U"Gamma");
+    TL_IS_3063 = Str__literal(U"Delta");
+    TL_IS_3064 = Str__literal(U"Epsilon");
+    TL_IS_3065 = Str__literal(U"Zeta");
+    TL_IS_3066 = Str__literal(U"Eta");
+    TL_IS_3067 = Str__literal(U"Theta");
+    TL_IS_3068 = Str__literal(U"Iota");
+    TL_IS_3069 = Str__literal(U"Kappa");
+    TL_IS_3070 = Str__literal(U"Lambda");
+    TL_IS_3071 = Str__literal(U"Mu");
+    TL_IS_3072 = Str__literal(U"Nu");
+    TL_IS_3073 = Str__literal(U"Xi");
+    TL_IS_3074 = Str__literal(U"Omicron");
+    TL_IS_3075 = Str__literal(U"Pi");
+    TL_IS_3076 = Str__literal(U"Rho");
+    TL_IS_3077 = Str__literal(U"Varsigma");
+    TL_IS_3078 = Str__literal(U"Sigma");
+    TL_IS_3079 = Str__literal(U"Tau");
+    TL_IS_3080 = Str__literal(U"Upsilon");
+    TL_IS_3081 = Str__literal(U"Phi");
+    TL_IS_3082 = Str__literal(U"Chi");
+    TL_IS_3083 = Str__literal(U"Psi");
+    TL_IS_3084 = Str__literal(U"Omega");
+    TL_IS_3085 = Str__literal(U"alpha");
+    TL_IS_3086 = Str__literal(U"beta");
+    TL_IS_3087 = Str__literal(U"gamma");
+    TL_IS_3088 = Str__literal(U"delta");
+    TL_IS_3089 = Str__literal(U"epsilon");
+    TL_IS_3090 = Str__literal(U"zeta");
+    TL_IS_3091 = Str__literal(U"eta");
+    TL_IS_3092 = Str__literal(U"theta");
+    TL_IS_3093 = Str__literal(U"iota");
+    TL_IS_3094 = Str__literal(U"kappa");
+    TL_IS_3095 = Str__literal(U"lambda");
+    TL_IS_3096 = Str__literal(U"mu");
+    TL_IS_3097 = Str__literal(U"nu");
+    TL_IS_3098 = Str__literal(U"xi");
+    TL_IS_3099 = Str__literal(U"omicron");
+    TL_IS_3100 = Str__literal(U"pi");
+    TL_IS_3101 = Str__literal(U"rho");
+    TL_IS_3102 = Str__literal(U"varsigma");
+    TL_IS_3103 = Str__literal(U"sigma");
+    TL_IS_3104 = Str__literal(U"tau");
+    TL_IS_3105 = Str__literal(U"upsilon");
+    TL_IS_3106 = Str__literal(U"phi");
+    TL_IS_3107 = Str__literal(U"chi");
+    TL_IS_3108 = Str__literal(U"psi");
+    TL_IS_3109 = Str__literal(U"omega");
+    TL_IS_3110 = Str__literal(U"exists");
+    TL_IS_3111 = Str__literal(U"in");
+    TL_IS_3112 = Str__literal(U"forall");
+    TL_IS_3113 = Str__literal(U"cap");
+    TL_IS_3114 = Str__literal(U"emptyset");
+    TL_IS_3115 = Str__literal(U"subseteq");
+    TL_IS_3116 = Str__literal(U"land");
+    TL_IS_3117 = Str__literal(U"lor");
+    TL_IS_3118 = Str__literal(U"lnot");
+    TL_IS_3119 = Str__literal(U"sum");
+    TL_IS_3120 = Str__literal(U"prod");
+    TL_IS_3121 = Str__literal(U"n");
+    TL_IS_3122 = Str__literal(U"t");
+    TL_IS_3123 = Str__literal(U"exists");
+    TL_IS_3124 = Str__literal(U"forall");
+    TL_IS_3125 = Str__literal(U"platform-settings");
+    TL_IS_3126 = Str__literal(U"identity-settings");
+    TL_IS_3127 = Str__literal(U"modify-filenames");
+    TL_IS_3128 = Str__literal(U"original: ORIGINAL ?suffix: SUFFIX ?prefix: PREFIX");
+    TL_IS_3129 = Str__literal(U"component");
+    TL_IS_3130 = Str__literal(U"symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE");
+    TL_IS_3131 = Str__literal(U"dependent-files");
+    TL_IS_3132 = Str__literal(U"?tool: TOOL ?module: MODULES ?tool-and-modules: BOTH");
+    TL_IS_3133 = Str__literal(U"components");
+    TL_IS_3134 = Str__literal(U"type: TYPE ?set: SET");
+    TL_IS_3135 = Str__literal(U"intest");
+    TL_IS_3136 = Str__literal(U"platform-settings.mk");
+    TL_IS_3137 = Str__literal(U"Materials");
+    TL_IS_3138 = Str__literal(U"platforms");
+    TL_IS_3139 = Str__literal(U"tool");
+    TL_IS_3140 = Str__literal(U"web");
+    TL_IS_3141 = Str__literal(U"module");
+    TL_IS_3142 = Str__literal(U"SYMBOL");
+    TL_IS_3143 = Str__literal(U"all");
+    TL_IS_3144 = Str__literal(U"tool");
+    TL_IS_3145 = Str__literal(U"web");
+    TL_IS_3146 = Str__literal(U"module");
+    TL_IS_3147 = Str__literal(U"all");
+    TL_IS_3148 = Str__literal(U"basics");
+    TL_IS_3149 = Str__literal(U"default.giscript");
+    TL_IS_3150 = Str__literal(U"tags");
+    TL_IS_3151 = Str__literal(U"bibliographic");
+    TL_IS_3152 = Str__literal(U"datum: DATUM of: ASSET");
     TL_IS_3153 = Str__literal(U"Build Date");
     TL_IS_3154 = Str__literal(U"Version Number");
-    TL_IS_3155 = Str__literal(U"inform6");
-    TL_IS_3156 = Str__literal(U"header.h");
-    TL_IS_3157 = Str__literal(U"(manifest).txt");
-    TL_IS_3158 = Str__literal(U"README.txt");
-    TL_IS_3159 = Str__literal(U"README.md");
-    TL_IS_3160 = Str__literal(U"docs");
-    TL_IS_3161 = Str__literal(U"web");
-    TL_IS_3162 = Str__literal(U"module");
-    TL_IS_3163 = Str__literal(U".inweb");
-    TL_IS_3164 = Str__literal(U".inweb");
-    TL_IS_3165 = Str__literal(U"docs");
-    TL_IS_3166 = Str__literal(U"Multiple cross-references might be meant here");
-    TL_IS_3167 = Str__literal(U"(main)");
+    TL_IS_3155 = Str__literal(U"Build Date");
+    TL_IS_3156 = Str__literal(U"Version Number");
+    TL_IS_3157 = Str__literal(U"inform6");
+    TL_IS_3158 = Str__literal(U"header.h");
+    TL_IS_3159 = Str__literal(U"(manifest).txt");
+    TL_IS_3160 = Str__literal(U"README.txt");
+    TL_IS_3161 = Str__literal(U"README.md");
+    TL_IS_3162 = Str__literal(U"docs");
+    TL_IS_3163 = Str__literal(U"web");
+    TL_IS_3164 = Str__literal(U"module");
+    TL_IS_3165 = Str__literal(U".inweb");
+    TL_IS_3166 = Str__literal(U".inweb");
+    TL_IS_3167 = Str__literal(U"docs");
+    TL_IS_3168 = Str__literal(U"Multiple cross-references might be meant here");
+    TL_IS_3169 = Str__literal(U"(main)");
 }
