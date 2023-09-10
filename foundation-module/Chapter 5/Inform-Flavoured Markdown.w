@@ -627,6 +627,13 @@ void InformFlavouredMarkdown::pbiapi_r(markdown_item *md) {
 @ =
 void InformFlavouredMarkdown::PD_intervene_after_Phase_I(markdown_feature *feature,
 	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_item *last_section = NULL;
+	InformFlavouredMarkdown::PD_r(md, &last_section);
+}
+
+void InformFlavouredMarkdown::PD_r(markdown_item *md, markdown_item **last_section) {
+	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) == 2))
+		*last_section = md;
 	if (md->type == BLOCK_QUOTE_MIT) {
 		if ((md->down) && (md->down->type == PARAGRAPH_MIT)) {
 			match_results mr = Regexp::create_mr();
@@ -644,11 +651,16 @@ void InformFlavouredMarkdown::PD_intervene_after_Phase_I(markdown_feature *featu
 				}
 				@<Insert a phrase header here@>;
 				DISCARD_TEXT(phrase)
+				if ((Str::ne(mr.exp[0], I"phrase")) && (*last_section)) {
+					markdown_item *hm_item = Markdown::new_item(HEADING_MARKER_MIT);
+					hm_item->stashed = Str::duplicate(mr.exp[0]);
+					Markdown::add_to(hm_item, *last_section);
+				}
 			}
 		}
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown::PD_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown::PD_r(ch, last_section);
 	}
 }
 
