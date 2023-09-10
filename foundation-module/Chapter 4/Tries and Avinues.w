@@ -41,8 +41,8 @@ in a list.
 =
 typedef struct match_trie {
 	int match_character; /* or one of the special cases above */
-	wchar_t group_characters[MAX_TRIE_GROUP_SIZE+1];
-	wchar_t *match_outcome;
+	inchar32_t group_characters[MAX_TRIE_GROUP_SIZE+1];
+	inchar32_t *match_outcome;
 	struct match_trie *on_success;
 	struct match_trie *next;
 } match_trie;
@@ -74,7 +74,7 @@ a linked list of such nodes).
 @d MAX_TRIE_REWIND 10 /* that should be far, far more rewinding than necessary */
 
 =
-wchar_t *Tries::search(match_trie *T, text_stream *p, wchar_t *add_outcome) {
+inchar32_t *Tries::search(match_trie *T, text_stream *p, inchar32_t *add_outcome) {
 	if (T == NULL) internal_error("no trie to search");
 
 	int start, endpoint, delta;
@@ -89,19 +89,19 @@ wchar_t *Tries::search(match_trie *T, text_stream *p, wchar_t *add_outcome) {
 	match_trie *rewind_prev_positions[MAX_TRIE_REWIND];
 
 	for (int i = start; i != endpoint+delta; i += delta) {
-		wchar_t group[MAX_TRIE_GROUP_SIZE+1];
+		inchar32_t group[MAX_TRIE_GROUP_SIZE+1];
 		int g = 0; /* size of group */
-		wchar_t c = (i<0)?0:(Str::get_at(p, i)); /* i.e., zero at the two ends of the text */
+		inchar32_t c = (i<0)?0:(Str::get_at(p, i)); /* i.e., zero at the two ends of the text */
 		if ((c >= 0x20) && (c <= 0x7f)) c = Characters::tolower(c); /* normalise it within ASCII */
 		if (c == 0x20) { c = 0; i = endpoint - delta; } /* force any space to be equivalent to the final 0 */
 		if (add_outcome) {
-			wchar_t pairc = 0;
+			inchar32_t pairc = 0;
 			if (c == '<') pairc = '>';
 			if (c == '>') pairc = '<';
 			if (pairc) {
 				int j;
 				for (j = i+delta; j != endpoint; j += delta) {
-					wchar_t ch = (j<0)?0:(Str::get_at(p, j));
+					inchar32_t ch = (j<0)?0:(Str::get_at(p, j));
 					if (ch == pairc) break;
 					if (g > MAX_TRIE_GROUP_SIZE) { g = 0; break; }
 					group[g++] = ch;
@@ -179,15 +179,15 @@ or |continue| out of an outer loop from an inner one.)
 	match_trie *new_pos = NULL;
 	if (g > 0) {
 		int nt = TRIE_ANY_GROUP;
-		wchar_t *from = group;
+		inchar32_t *from = group;
 		if (group[0] == '!') { from++; nt = TRIE_NOT_GROUP; }
 		if (group[(int) Wide::len(group)-1] == '!') {
 			group[(int) Wide::len(group)-1] = 0; nt = TRIE_NOT_GROUP;
 		}
 		new_pos = Tries::new(nt);
-		wcscpy(new_pos->group_characters, from);
+		Wide::copy(new_pos->group_characters, from);
 	} else if (c == '*') new_pos = Tries::new(TRIE_ANYTHING);
-	else new_pos = Tries::new(c);
+	else new_pos = Tries::new((int)c);
 
 	if (prev->on_success == NULL) prev->on_success = new_pos;
 	else {
@@ -234,7 +234,7 @@ it there.
 @ Single nodes are matched thus:
 
 =
-int Tries::matches(match_trie *pos, int c) {
+int Tries::matches(match_trie *pos, inchar32_t c) {
 	if (pos->match_character == TRIE_ANYTHING) return TRUE;
 	if (pos->match_character == TRIE_ANY_GROUP) {
 		int k;
@@ -250,7 +250,7 @@ int Tries::matches(match_trie *pos, int c) {
 				return FALSE;
 		return TRUE;
 	}
-	if (pos->match_character == c) return TRUE;
+	if (pos->match_character == (int)c) return TRUE;
 	return FALSE;
 }
 
@@ -297,7 +297,7 @@ match_avinue *Tries::new_avinue(int from_start) {
 	return A;
 }
 
-void Tries::add_to_avinue(match_avinue *mt, text_stream *from, wchar_t *to) {
+void Tries::add_to_avinue(match_avinue *mt, text_stream *from, inchar32_t *to) {
 	if ((mt == NULL) || (mt->the_trie == NULL)) internal_error("null trie");
 	Tries::search(mt->the_trie, from, to);
 }
@@ -324,8 +324,8 @@ match_avinue *Tries::duplicate_avinue(match_avinue *A) {
 trie in turn until one matches (if it does).
 
 =
-wchar_t *Tries::search_avinue(match_avinue *T, text_stream *p) {
-	wchar_t *result = NULL;
+inchar32_t *Tries::search_avinue(match_avinue *T, text_stream *p) {
+	inchar32_t *result = NULL;
 	while ((T) && (result == NULL)) {
 		result = Tries::search(T->the_trie, p, NULL);
 		T = T->next;

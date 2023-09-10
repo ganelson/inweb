@@ -54,11 +54,11 @@ void TeXUtilities::scan_console_line(text_stream *line, text_file_position *tfp,
 	tex_results *res = (tex_results *) res_V;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line,
-		L"Output written %c*? %((%d+) page%c*?(%d+) bytes%).")) {
+		U"Output written %c*? %((%d+) page%c*?(%d+) bytes%).")) {
 		res->page_count = Str::atoi(mr.exp[0], 0);
 		res->pdf_size = Str::atoi(mr.exp[1], 0);
 	}
-	if (Regexp::match(&mr, line, L"%c+verfull \\hbox%c+"))
+	if (Regexp::match(&mr, line, U"%c+verfull \\hbox%c+"))
 		res->overfull_hbox_count++;
 	else if (Str::get_first_char(line) == '!') {
 		res->tex_error_count++;
@@ -88,13 +88,13 @@ int TeXUtilities::substitute_post_processing_data(text_stream *to, weave_order *
 	if (wv) {
 		tex_results *res = wv->post_processing_results;
 		if (res) {
-			if (Str::eq_wide_string(detail, L"PDF Size")) {
+			if (Str::eq_wide_string(detail, U"PDF Size")) {
 				WRITE_TO(to, "%dKB", res->pdf_size/1024);
-			} else if (Str::eq_wide_string(detail, L"Extent")) {
+			} else if (Str::eq_wide_string(detail, U"Extent")) {
 				WRITE_TO(to, "%dpp", res->page_count);
-			} else if (Str::eq_wide_string(detail, L"Leafname")) {
+			} else if (Str::eq_wide_string(detail, U"Leafname")) {
 				Str::copy(to, Filenames::get_leafname(res->PDF_filename));
-			} else if (Str::eq_wide_string(detail, L"Errors")) {
+			} else if (Str::eq_wide_string(detail, U"Errors")) {
 				Str::clear(to);
 				if ((res->overfull_hbox_count > 0) || (res->tex_error_count > 0))
 					WRITE_TO(to, ": ");
@@ -161,7 +161,7 @@ void TeXUtilities::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 		int bl = 1;
 		int j = i-1;
 		for (; j >= from; j--) {
-			wchar_t c = Str::get_at(text, j);
+			inchar32_t c = Str::get_at(text, j);
 			if (c == '{') {
 				bl--;
 				if (bl == 0) break;
@@ -174,7 +174,7 @@ void TeXUtilities::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 		WRITE(") / (");
 		j=i+6; bl = 1;
 		for (; j <= to; j++) {
-			wchar_t c = Str::get_at(text, j);
+			inchar32_t c = Str::get_at(text, j);
 			if (c == '}') {
 				bl--;
 				if (bl == 0) break;
@@ -224,7 +224,7 @@ we also look out for |{}^3\sqrt{N}| for cube root.
 		}
 		int j=i+6, bl = 1;
 		for (; j <= to; j++) {
-			wchar_t c = Str::get_at(text, j);
+			inchar32_t c = Str::get_at(text, j);
 			if (c == '}') {
 				bl--;
 				if (bl == 0) break;
@@ -280,72 +280,72 @@ we also look out for |{}^3\sqrt{N}| for cube root.
 	else if (Str::eq(macro, I"cos")) WRITE("cos");
 	else if (Str::eq(macro, I"tan")) WRITE("tan");
 	else if (Str::eq(macro, I"top")) WRITE("T");
-	else if (Str::eq(macro, I"Alpha")) PUT((wchar_t) 0x0391);
-	else if (Str::eq(macro, I"Beta")) PUT((wchar_t) 0x0392);
-	else if (Str::eq(macro, I"Gamma")) PUT((wchar_t) 0x0393);
-	else if (Str::eq(macro, I"Delta")) PUT((wchar_t) 0x0394);
-	else if (Str::eq(macro, I"Epsilon")) PUT((wchar_t) 0x0395);
-	else if (Str::eq(macro, I"Zeta")) PUT((wchar_t) 0x0396);
-	else if (Str::eq(macro, I"Eta")) PUT((wchar_t) 0x0397);
-	else if (Str::eq(macro, I"Theta")) PUT((wchar_t) 0x0398);
-	else if (Str::eq(macro, I"Iota")) PUT((wchar_t) 0x0399);
-	else if (Str::eq(macro, I"Kappa")) PUT((wchar_t) 0x039A);
-	else if (Str::eq(macro, I"Lambda")) PUT((wchar_t) 0x039B);
-	else if (Str::eq(macro, I"Mu")) PUT((wchar_t) 0x039C);
-	else if (Str::eq(macro, I"Nu")) PUT((wchar_t) 0x039D);
-	else if (Str::eq(macro, I"Xi")) PUT((wchar_t) 0x039E);
-	else if (Str::eq(macro, I"Omicron")) PUT((wchar_t) 0x039F);
-	else if (Str::eq(macro, I"Pi")) PUT((wchar_t) 0x03A0);
-	else if (Str::eq(macro, I"Rho")) PUT((wchar_t) 0x03A1);
-	else if (Str::eq(macro, I"Varsigma")) PUT((wchar_t) 0x03A2);
-	else if (Str::eq(macro, I"Sigma")) PUT((wchar_t) 0x03A3);
-	else if (Str::eq(macro, I"Tau")) PUT((wchar_t) 0x03A4);
-	else if (Str::eq(macro, I"Upsilon")) PUT((wchar_t) 0x03A5);
-	else if (Str::eq(macro, I"Phi")) PUT((wchar_t) 0x03A6);
-	else if (Str::eq(macro, I"Chi")) PUT((wchar_t) 0x03A7);
-	else if (Str::eq(macro, I"Psi")) PUT((wchar_t) 0x03A8);
-	else if (Str::eq(macro, I"Omega")) PUT((wchar_t) 0x03A9);
-	else if (Str::eq(macro, I"alpha")) PUT((wchar_t) 0x03B1);
-	else if (Str::eq(macro, I"beta")) PUT((wchar_t) 0x03B2);
-	else if (Str::eq(macro, I"gamma")) PUT((wchar_t) 0x03B3);
-	else if (Str::eq(macro, I"delta")) PUT((wchar_t) 0x03B4);
-	else if (Str::eq(macro, I"epsilon")) PUT((wchar_t) 0x03B5);
-	else if (Str::eq(macro, I"zeta")) PUT((wchar_t) 0x03B6);
-	else if (Str::eq(macro, I"eta")) PUT((wchar_t) 0x03B7);
-	else if (Str::eq(macro, I"theta")) PUT((wchar_t) 0x03B8);
-	else if (Str::eq(macro, I"iota")) PUT((wchar_t) 0x03B9);
-	else if (Str::eq(macro, I"kappa")) PUT((wchar_t) 0x03BA);
-	else if (Str::eq(macro, I"lambda")) PUT((wchar_t) 0x03BB);
-	else if (Str::eq(macro, I"mu")) PUT((wchar_t) 0x03BC);
-	else if (Str::eq(macro, I"nu")) PUT((wchar_t) 0x03BD);
-	else if (Str::eq(macro, I"xi")) PUT((wchar_t) 0x03BE);
-	else if (Str::eq(macro, I"omicron")) PUT((wchar_t) 0x03BF);
-	else if (Str::eq(macro, I"pi")) PUT((wchar_t) 0x03C0);
-	else if (Str::eq(macro, I"rho")) PUT((wchar_t) 0x03C1);
-	else if (Str::eq(macro, I"varsigma")) PUT((wchar_t) 0x03C2);
-	else if (Str::eq(macro, I"sigma")) PUT((wchar_t) 0x03C3);
-	else if (Str::eq(macro, I"tau")) PUT((wchar_t) 0x03C4);
-	else if (Str::eq(macro, I"upsilon")) PUT((wchar_t) 0x03C5);
-	else if (Str::eq(macro, I"phi")) PUT((wchar_t) 0x03C6);
-	else if (Str::eq(macro, I"chi")) PUT((wchar_t) 0x03C7);
-	else if (Str::eq(macro, I"psi")) PUT((wchar_t) 0x03C8);
-	else if (Str::eq(macro, I"omega")) PUT((wchar_t) 0x03C9);
-	else if (Str::eq(macro, I"exists")) PUT((wchar_t) 0x2203);
-	else if (Str::eq(macro, I"in")) PUT((wchar_t) 0x2208);
-	else if (Str::eq(macro, I"forall")) PUT((wchar_t) 0x2200);
-	else if (Str::eq(macro, I"cap")) PUT((wchar_t) 0x2229);
-	else if (Str::eq(macro, I"emptyset")) PUT((wchar_t) 0x2205);
-	else if (Str::eq(macro, I"subseteq")) PUT((wchar_t) 0x2286);
-	else if (Str::eq(macro, I"land")) PUT((wchar_t) 0x2227);
-	else if (Str::eq(macro, I"lor")) PUT((wchar_t) 0x2228);
-	else if (Str::eq(macro, I"lnot")) PUT((wchar_t) 0x00AC);
-	else if (Str::eq(macro, I"sum")) PUT((wchar_t) 0x03A3);
-	else if (Str::eq(macro, I"prod")) PUT((wchar_t) 0x03A0);
+	else if (Str::eq(macro, I"Alpha")) PUT((inchar32_t) 0x0391);
+	else if (Str::eq(macro, I"Beta")) PUT((inchar32_t) 0x0392);
+	else if (Str::eq(macro, I"Gamma")) PUT((inchar32_t) 0x0393);
+	else if (Str::eq(macro, I"Delta")) PUT((inchar32_t) 0x0394);
+	else if (Str::eq(macro, I"Epsilon")) PUT((inchar32_t) 0x0395);
+	else if (Str::eq(macro, I"Zeta")) PUT((inchar32_t) 0x0396);
+	else if (Str::eq(macro, I"Eta")) PUT((inchar32_t) 0x0397);
+	else if (Str::eq(macro, I"Theta")) PUT((inchar32_t) 0x0398);
+	else if (Str::eq(macro, I"Iota")) PUT((inchar32_t) 0x0399);
+	else if (Str::eq(macro, I"Kappa")) PUT((inchar32_t) 0x039A);
+	else if (Str::eq(macro, I"Lambda")) PUT((inchar32_t) 0x039B);
+	else if (Str::eq(macro, I"Mu")) PUT((inchar32_t) 0x039C);
+	else if (Str::eq(macro, I"Nu")) PUT((inchar32_t) 0x039D);
+	else if (Str::eq(macro, I"Xi")) PUT((inchar32_t) 0x039E);
+	else if (Str::eq(macro, I"Omicron")) PUT((inchar32_t) 0x039F);
+	else if (Str::eq(macro, I"Pi")) PUT((inchar32_t) 0x03A0);
+	else if (Str::eq(macro, I"Rho")) PUT((inchar32_t) 0x03A1);
+	else if (Str::eq(macro, I"Varsigma")) PUT((inchar32_t) 0x03A2);
+	else if (Str::eq(macro, I"Sigma")) PUT((inchar32_t) 0x03A3);
+	else if (Str::eq(macro, I"Tau")) PUT((inchar32_t) 0x03A4);
+	else if (Str::eq(macro, I"Upsilon")) PUT((inchar32_t) 0x03A5);
+	else if (Str::eq(macro, I"Phi")) PUT((inchar32_t) 0x03A6);
+	else if (Str::eq(macro, I"Chi")) PUT((inchar32_t) 0x03A7);
+	else if (Str::eq(macro, I"Psi")) PUT((inchar32_t) 0x03A8);
+	else if (Str::eq(macro, I"Omega")) PUT((inchar32_t) 0x03A9);
+	else if (Str::eq(macro, I"alpha")) PUT((inchar32_t) 0x03B1);
+	else if (Str::eq(macro, I"beta")) PUT((inchar32_t) 0x03B2);
+	else if (Str::eq(macro, I"gamma")) PUT((inchar32_t) 0x03B3);
+	else if (Str::eq(macro, I"delta")) PUT((inchar32_t) 0x03B4);
+	else if (Str::eq(macro, I"epsilon")) PUT((inchar32_t) 0x03B5);
+	else if (Str::eq(macro, I"zeta")) PUT((inchar32_t) 0x03B6);
+	else if (Str::eq(macro, I"eta")) PUT((inchar32_t) 0x03B7);
+	else if (Str::eq(macro, I"theta")) PUT((inchar32_t) 0x03B8);
+	else if (Str::eq(macro, I"iota")) PUT((inchar32_t) 0x03B9);
+	else if (Str::eq(macro, I"kappa")) PUT((inchar32_t) 0x03BA);
+	else if (Str::eq(macro, I"lambda")) PUT((inchar32_t) 0x03BB);
+	else if (Str::eq(macro, I"mu")) PUT((inchar32_t) 0x03BC);
+	else if (Str::eq(macro, I"nu")) PUT((inchar32_t) 0x03BD);
+	else if (Str::eq(macro, I"xi")) PUT((inchar32_t) 0x03BE);
+	else if (Str::eq(macro, I"omicron")) PUT((inchar32_t) 0x03BF);
+	else if (Str::eq(macro, I"pi")) PUT((inchar32_t) 0x03C0);
+	else if (Str::eq(macro, I"rho")) PUT((inchar32_t) 0x03C1);
+	else if (Str::eq(macro, I"varsigma")) PUT((inchar32_t) 0x03C2);
+	else if (Str::eq(macro, I"sigma")) PUT((inchar32_t) 0x03C3);
+	else if (Str::eq(macro, I"tau")) PUT((inchar32_t) 0x03C4);
+	else if (Str::eq(macro, I"upsilon")) PUT((inchar32_t) 0x03C5);
+	else if (Str::eq(macro, I"phi")) PUT((inchar32_t) 0x03C6);
+	else if (Str::eq(macro, I"chi")) PUT((inchar32_t) 0x03C7);
+	else if (Str::eq(macro, I"psi")) PUT((inchar32_t) 0x03C8);
+	else if (Str::eq(macro, I"omega")) PUT((inchar32_t) 0x03C9);
+	else if (Str::eq(macro, I"exists")) PUT((inchar32_t) 0x2203);
+	else if (Str::eq(macro, I"in")) PUT((inchar32_t) 0x2208);
+	else if (Str::eq(macro, I"forall")) PUT((inchar32_t) 0x2200);
+	else if (Str::eq(macro, I"cap")) PUT((inchar32_t) 0x2229);
+	else if (Str::eq(macro, I"emptyset")) PUT((inchar32_t) 0x2205);
+	else if (Str::eq(macro, I"subseteq")) PUT((inchar32_t) 0x2286);
+	else if (Str::eq(macro, I"land")) PUT((inchar32_t) 0x2227);
+	else if (Str::eq(macro, I"lor")) PUT((inchar32_t) 0x2228);
+	else if (Str::eq(macro, I"lnot")) PUT((inchar32_t) 0x00AC);
+	else if (Str::eq(macro, I"sum")) PUT((inchar32_t) 0x03A3);
+	else if (Str::eq(macro, I"prod")) PUT((inchar32_t) 0x03A0);
 	else {
 		if (Str::len(macro) > 0) {
 			int suspect = TRUE;
 			LOOP_THROUGH_TEXT(pos, macro) {
-				wchar_t c = Str::get(pos);
+				inchar32_t c = Str::get(pos);
 				if ((c >= 'A') && (c <= 'Z')) continue;
 				if ((c >= 'a') && (c <= 'z')) continue;
 				suspect = FALSE;
@@ -366,8 +366,8 @@ we also look out for |{}^3\sqrt{N}| for cube root.
 		i++;
 		while ((i < Str::len(text)) && (Characters::isalpha(Str::get_at(text, i))))
 			PUT_TO(macro, Str::get_at(text, i++));
-		if (Str::eq(macro, I"exists")) PUT((wchar_t) 0x2204);
-		else if (Str::eq(macro, I"forall")) { PUT((wchar_t) 0x00AC); PUT((wchar_t) 0x2200); }
+		if (Str::eq(macro, I"exists")) PUT((inchar32_t) 0x2204);
+		else if (Str::eq(macro, I"forall")) { PUT((inchar32_t) 0x00AC); PUT((inchar32_t) 0x2200); }
 		else {
 			PRINT("Don't know how to apply '\\not' to '\\%S'\n", macro);
 		}

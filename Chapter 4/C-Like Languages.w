@@ -54,7 +54,7 @@ takes care of it automatically.
 		if (Str::len(L->extract_to) == 0) {
 			match_results mr = Regexp::create_mr();
 
-			if (Regexp::match(&mr, L->text, L"typedef struct (%i+) %c*{%c*")) {
+			if (Regexp::match(&mr, L->text, U"typedef struct (%i+) %c*{%c*")) {
 				current_str = Functions::new_struct(W, mr.exp[0], L);
 				Tags::add_by_name(L->owning_paragraph, I"Structures");
 			} else if ((Str::get_first_char(L->text) == '}') && (current_str)) {
@@ -62,8 +62,8 @@ takes care of it automatically.
 				current_str = NULL;
 			} else if ((current_str) && (current_str->typedef_ends == NULL)) {
 				@<Work through a line in the structure definition@>;
-			} else if ((Regexp::match(&mr, L->text, L"typedef %c+")) &&
-				(Regexp::match(&mr, L->text, L"%c+##%c+") == FALSE)) {
+			} else if ((Regexp::match(&mr, L->text, U"typedef %c+")) &&
+				(Regexp::match(&mr, L->text, U"%c+##%c+") == FALSE)) {
 				if (L->owning_paragraph->placed_very_early == FALSE)
 					L->category = TYPEDEF_LCAT;
 			}
@@ -101,9 +101,9 @@ We need to extract the element name, |val|, and make a note of it.
 @ The following reduces |unsigned long long int *val;| to just |int *val;|.
 
 @<Remove C type modifiers from the front of p@> =
-	wchar_t *modifier_patterns[] = {
-		L"(struct )(%C%c*)", L"(signed )(%C%c*)", L"(unsigned )(%C%c*)",
-		L"(short )(%C%c*)", L"(long )(%C%c*)", L"(static )(%C%c*)", NULL };
+	inchar32_t *modifier_patterns[] = {
+		U"(struct )(%C%c*)", U"(signed )(%C%c*)", U"(unsigned )(%C%c*)",
+		U"(short )(%C%c*)", U"(long )(%C%c*)", U"(static )(%C%c*)", NULL };
 	int seek_modifiers = TRUE;
 	while (seek_modifiers) {
 		seek_modifiers = FALSE;
@@ -133,7 +133,7 @@ down to just the identifier characters at the front, i.e., to |val|.
 
 @<Copy the element name into elname@> =
 	Str::substr(elname, pos, Str::end(p));
-	if (Regexp::match(&mr, elname, L"(%i+)%c*")) Str::copy(elname, mr.exp[0]);
+	if (Regexp::match(&mr, elname, U"(%i+)%c*")) Str::copy(elname, mr.exp[0]);
 
 @h Structure dependency.
 We say that S depends on T if |struct S| has an element whose type is
@@ -155,7 +155,7 @@ will not trip the switch here.
 			((L) && (L != current_str->typedef_ends));
 			L = L->next_line) {
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, L->text, L" struct (%i+) %i%c*"))
+			if (Regexp::match(&mr, L->text, U" struct (%i+) %i%c*"))
 				@<One structure appears to contain a copy of another one@>;
 			Regexp::dispose_of(&mr);
 		}
@@ -201,15 +201,15 @@ void CLike::parse_functions(programming_language *self, web *W) {
 
 @<Look for conditional compilation on this line@> =
 	match_results mr = Regexp::create_mr();
-	if ((Regexp::match(&mr, L->text, L" *#ifn*def %c+")) ||
-		(Regexp::match(&mr, L->text, L" *#IFN*DEF %c+"))) {
+	if ((Regexp::match(&mr, L->text, U" *#ifn*def %c+")) ||
+		(Regexp::match(&mr, L->text, U" *#IFN*DEF %c+"))) {
 		if (cc_sp >= MAX_CONDITIONAL_COMPILATION_STACK)
 			Main::error_in_web(I"conditional compilation too deeply nested", L);
 		else
 			cc_stack[cc_sp++] = L;
 	}
-	if ((Regexp::match(&mr, L->text, L" *#endif *")) ||
-		(Regexp::match(&mr, L->text, L" *#ENDIF *"))) {
+	if ((Regexp::match(&mr, L->text, U" *#endif *")) ||
+		(Regexp::match(&mr, L->text, U" *#ENDIF *"))) {
 		if (cc_sp <= 0)
 			Main::error_in_web(I"found #endif without #ifdef or #ifndef", L);
 		else
@@ -232,7 +232,7 @@ modern ANSI C style, not the long-deprecated late 1970s C style.
 		Str::copy(modified, L->text);
 		@<Parse past any type modifiers@>;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, modified, L"(%i+) (%**)(%i+)%((%c*)")) {
+		if (Regexp::match(&mr, modified, U"(%i+) (%**)(%i+)%((%c*)")) {
 			TEMPORARY_TEXT(ftype) Str::copy(ftype, mr.exp[0]);
 			TEMPORARY_TEXT(asts) Str::copy(asts, mr.exp[1]);
 			TEMPORARY_TEXT(fname) Str::copy(fname, mr.exp[2]);
@@ -253,9 +253,9 @@ can't apply to the return type of a function. We do, however, iterate so that
 forms like |static long long int| will work.
 
 @<Parse past any type modifiers@> =
-	wchar_t *modifier_patterns[] = {
-		L"(signed )(%C%c*)", L"(unsigned )(%C%c*)",
-		L"(short )(%C%c*)", L"(long )(%C%c*)", L"(static )(%C%c*)", NULL };
+	inchar32_t *modifier_patterns[] = {
+		U"(signed )(%C%c*)", U"(unsigned )(%C%c*)",
+		U"(short )(%C%c*)", U"(long )(%C%c*)", U"(static )(%C%c*)", NULL };
 	int seek_modifiers = TRUE;
 	while (seek_modifiers) {
 		seek_modifiers = FALSE;
@@ -274,7 +274,7 @@ forms like |static long long int| will work.
 	language_function *fn = Functions::new_function(fname, L);
 	fn->function_arguments = Str::duplicate(arguments);
 	WRITE_TO(fn->function_type, "%S%S %S", qualifiers, ftype, asts);
-	if (Str::eq_wide_string(fn->function_name, L"isdigit")) fn->call_freely = TRUE;
+	if (Str::eq_wide_string(fn->function_name, U"isdigit")) fn->call_freely = TRUE;
 	fn->no_conditionals = cc_sp;
 	for (int i=0; i<cc_sp; i++) fn->within_conditionals[i] = cc_stack[i];
 
@@ -315,12 +315,12 @@ look for a |#include| of one of the ANSI C standard libraries.
 =
 void CLike::subcategorise_code(programming_language *self, source_line *L) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, L"#include <(%C+)>%c*")) {
+	if (Regexp::match(&mr, L->text, U"#include <(%C+)>%c*")) {
 		text_stream *library_file = mr.exp[0];
-		wchar_t *ansi_libs[] = {
-			L"assert.h", L"ctype.h", L"errno.h", L"float.h", L"limits.h",
-			L"locale.h", L"math.h", L"setjmp.h", L"signal.h", L"stdarg.h",
-			L"stddef.h", L"stdio.h", L"stdlib.h", L"string.h", L"time.h",
+		inchar32_t *ansi_libs[] = {
+			U"assert.h", U"ctype.h", U"errno.h", U"float.h", U"limits.h",
+			U"locale.h", U"math.h", U"setjmp.h", U"signal.h", U"stdarg.h",
+			U"stddef.h", U"stdio.h", U"stdlib.h", U"string.h", U"time.h",
 			NULL
 		};
 		for (int j = 0; ansi_libs[j]; j++)
@@ -450,7 +450,7 @@ exist either way.
 				for (int i=0; i<fn->no_conditionals; i++) {
 					match_results mr = Regexp::create_mr();
 					if (!(Regexp::match(&mr, fn->within_conditionals[i]->text,
-						L"%c*inweb: always predeclare%c*"))) {
+						U"%c*inweb: always predeclare%c*"))) {
 						WRITE("%S\n", fn->within_conditionals[i]->text);
 						to_close++;
 					}

@@ -73,7 +73,7 @@ theme_tag *Tags::add_by_name(paragraph *P, text_stream *text) {
 	TEMPORARY_TEXT(name) Str::copy(name, text);
 	TEMPORARY_TEXT(caption)
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, name, L"(%c+?): (%c+)")) {
+	if (Regexp::match(&mr, name, U"(%c+?): (%c+)")) {
 		Str::copy(name, mr.exp[0]);
 		Str::copy(caption, mr.exp[1]);
 	}

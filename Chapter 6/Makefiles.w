@@ -119,7 +119,7 @@ void Makefiles::platform_settings_expander(preprocessor_macro *mm, preprocessor_
 void Makefiles::seek_INWEBPLATFORM(text_stream *line, text_file_position *tfp, void *X) {
 	text_stream *OUT = (text_stream *) X;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L" *INWEBPLATFORM = (%C+) *")) WRITE("%S", mr.exp[0]);
+	if (Regexp::match(&mr, line, U" *INWEBPLATFORM = (%C+) *")) WRITE("%S", mr.exp[0]);
 	Regexp::dispose_of(&mr);
 }
 
@@ -134,10 +134,10 @@ void Makefiles::modify_filenames_expander(preprocessor_macro *mm, preprocessor_s
 	text_stream *suffix = parameter_values[1];
 	text_stream *prefix = parameter_values[2];
 
-	wchar_t previous = 'X'; int quoted = FALSE, boundary = FALSE;
+	inchar32_t previous = 'X'; int quoted = FALSE, boundary = FALSE;
 	TEMPORARY_TEXT(captured)
 	LOOP_THROUGH_TEXT(pos, original) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == '\'') { quoted = quoted?FALSE:TRUE; }
 		if (Characters::is_whitespace(c)) {
 			if ((previous != '\\') && (quoted == FALSE)) boundary = TRUE;
@@ -337,9 +337,9 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 	TEMPORARY_TEXT(leaf_pattern)
 	WRITE_TO(leaf_pattern, "%S", Pathnames::directory_name(P));
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, leaf_pattern, L"Chapter %d*")) {
+	if (Regexp::match(&mr, leaf_pattern, U"Chapter %d*")) {
 		Str::clear(leaf_pattern); WRITE_TO(leaf_pattern, "Chapter*");
-	} else if (Regexp::match(&mr, leaf_pattern, L"Appendix %C")) {
+	} else if (Regexp::match(&mr, leaf_pattern, U"Appendix %C")) {
 		Str::clear(leaf_pattern); WRITE_TO(leaf_pattern, "Appendix*");
 	}
 	Regexp::dispose_of(&mr);
@@ -351,7 +351,7 @@ void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {
 		WRITE_TO(Dictionaries::create_text(patterns_done, tester), "got this");
 		WRITE(" ");
 		LOOP_THROUGH_TEXT(pos, tester) {
-			wchar_t c = Str::get(pos);
+			inchar32_t c = Str::get(pos);
 			if (c == ' ') PUT('\\');
 			PUT(c);
 		}
@@ -367,7 +367,7 @@ void Makefiles::pathname_slashed(OUTPUT_STREAM, pathname *P) {
 	TEMPORARY_TEXT(PT)
 	WRITE_TO(PT, "%p", P);
 	LOOP_THROUGH_TEXT(pos, PT) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == ' ') WRITE("\\ ");
 		else PUT(c);
 	}

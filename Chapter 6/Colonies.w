@@ -90,7 +90,7 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 	if (Str::get_first_char(line) == '#') return; /* lines opening with |#| are comments */
 
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, L"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\"")) {
+	if (Regexp::match(&mr, line, U"(%c*?): \"*(%C+)\" at \"(%c*)\" in \"(%c*)\"")) {
 		colony_member *CM = CREATE(colony_member);
 		if (Str::eq(mr.exp[0], I"web")) CM->web_rather_than_module = TRUE;
 		else if (Str::eq(mr.exp[0], I"module")) CM->web_rather_than_module = FALSE;
@@ -114,26 +114,26 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		CM->breadcrumb_tail = crs->crumbs;
 		CM->default_weave_pattern = Str::duplicate(crs->pattern);
 		ADD_TO_LINKED_LIST(CM, colony_member, C->members);
-	} else if (Regexp::match(&mr, line, L"home: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"home: *(%c*)")) {
 		C->home = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, line, L"assets: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"assets: *(%c*)")) {
 		C->assets_path = Pathnames::from_text(mr.exp[0]);
-	} else if (Regexp::match(&mr, line, L"patterns: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"patterns: *(%c*)")) {
 		C->patterns_path = Pathnames::from_text(mr.exp[0]);
-	} else if (Regexp::match(&mr, line, L"pattern: none")) {
+	} else if (Regexp::match(&mr, line, U"pattern: none")) {
 		crs->pattern = NULL;
-	} else if (Regexp::match(&mr, line, L"pattern: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"pattern: *(%c*)")) {
 		crs->pattern = Str::duplicate(mr.exp[0]);
-	} else if (Regexp::match(&mr, line, L"navigation: none")) {
+	} else if (Regexp::match(&mr, line, U"navigation: none")) {
 		crs->nav = NULL;
-	} else if (Regexp::match(&mr, line, L"navigation: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"navigation: *(%c*)")) {
 		crs->nav = Filenames::from_text(mr.exp[0]);
-	} else if (Regexp::match(&mr, line, L"breadcrumbs: none")) {
+	} else if (Regexp::match(&mr, line, U"breadcrumbs: none")) {
 		crs->crumbs = NEW_LINKED_LIST(breadcrumb_request);
-	} else if (Regexp::match(&mr, line, L"breadcrumbs: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"breadcrumbs: *(%c*)")) {
 		crs->crumbs = NEW_LINKED_LIST(breadcrumb_request);
 		match_results mr2 = Regexp::create_mr();
-		while (Regexp::match(&mr2, mr.exp[0], L"(\"%c*?\") > (%c*)")) {
+		while (Regexp::match(&mr2, mr.exp[0], U"(\"%c*?\") > (%c*)")) {
 			Colonies::add_crumb(crs->crumbs, mr2.exp[0], tfp);
 			Str::clear(mr.exp[0]); Str::copy(mr.exp[0], mr2.exp[1]);
 		}
@@ -150,7 +150,7 @@ the page, and this requests one.
 =
 void Colonies::add_crumb(linked_list *L, text_stream *spec, text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, spec, L"\"(%c*?)\"") == FALSE) {
+	if (Regexp::match(&mr, spec, U"\"(%c*?)\"") == FALSE) {
 		Errors::in_text_file("each crumb must be in double-quotes", tfp);
 		return;
 	}
@@ -169,7 +169,7 @@ typedef struct breadcrumb_request {
 breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {
 	breadcrumb_request *BR = CREATE(breadcrumb_request);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, arg, L"(%c*?): *(%c*)")) {
+	if (Regexp::match(&mr, arg, U"(%c*?): *(%c*)")) {
 		BR->breadcrumb_text = Str::duplicate(mr.exp[0]);
 		BR->breadcrumb_link = Str::duplicate(mr.exp[1]);	
 	} else {
@@ -312,7 +312,7 @@ int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
 	int r = 0;
 	if (ext) *ext = FALSE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"(%c+?) -> (%c+)")) {
+	if (Regexp::match(&mr, text, U"(%c+?) -> (%c+)")) {
 		r = Colonies::resolve_reference_in_weave_inner(url, NULL,
 			for_HTML_file, mr.exp[1], Wm, L, ext);
 		WRITE_TO(title, "%S", mr.exp[0]);
@@ -376,7 +376,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 
 @<Is it an explicit URL?@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"https*://%c*")) {
+	if (Regexp::match(&mr, text, U"https*://%c*")) {
 		WRITE_TO(url, "%S", text);
 		WRITE_TO(title, "%S", text);
 		Regexp::dispose_of(&mr);
@@ -397,7 +397,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 
 @<If it contains a colon, does this indicate a section in a colony member?@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"(%c*?): (%c*)")) {
+	if (Regexp::match(&mr, text, U"(%c*?): (%c*)")) {
 		search_CM = Colonies::find(mr.exp[0]);
 		if (search_CM) {
 			module *found_M = Colonies::as_module(search_CM, L, Wm);
@@ -467,7 +467,7 @@ the main one.
 =
 void Colonies::link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, link_text, L" *//(%c+)// *"))
+	if (Regexp::match(&mr, link_text, U" *//(%c+)// *"))
 		Colonies::reference_URL(OUT, mr.exp[0], F);
 	else
 		WRITE("%S", link_text);

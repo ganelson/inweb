@@ -127,7 +127,7 @@ web_bibliographic_datum *Bibliographic::set_datum(web_md *Wm, text_stream *key, 
 	web_bibliographic_datum *bd = Bibliographic::look_up_datum(Wm, key);
 	if (bd == NULL) @<Create a new datum, then@>
 	else Str::copy(bd->value, val);
-	if (Str::eq_wide_string(key, L"Title")) @<Also set a capitalized form@>;
+	if (Str::eq_wide_string(key, U"Title")) @<Also set a capitalized form@>;
 	return bd;
 }
 

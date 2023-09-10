@@ -72,16 +72,16 @@ void Painter::syntax_colour_inner(programming_language *pl,
 }
 
 @<Spot identifiers, literal text and character constants@> =
-	int squote = Str::get_first_char(pl->character_literal);
-	int squote_escape = Str::get_first_char(pl->character_literal_escape);
-	int dquote = Str::get_first_char(pl->string_literal);
-	int dquote_escape = Str::get_first_char(pl->string_literal_escape);
+	inchar32_t squote = Str::get_first_char(pl->character_literal);
+	inchar32_t squote_escape = Str::get_first_char(pl->character_literal_escape);
+	inchar32_t dquote = Str::get_first_char(pl->string_literal);
+	inchar32_t dquote_escape = Str::get_first_char(pl->string_literal_escape);
 	for (int i=from; i <= to; i++) {
-		wchar_t skip = NOT_A_COLOUR;
+		inchar32_t skip = NOT_A_COLOUR;
 		int one_off = -1, will_be = -1, glob = 1;
 		switch (colouring_state) {
 			case PLAIN_COLOUR: {
-				wchar_t c = Str::get_at(matter, i);
+				inchar32_t c = Str::get_at(matter, i);
 				if (c == dquote) {
 					colouring_state = STRING_COLOUR;
 					break;
@@ -108,21 +108,21 @@ void Painter::syntax_colour_inner(programming_language *pl,
 				}
 				break;
 			case CHARACTER_COLOUR: {
-				wchar_t c = Str::get_at(matter, i);
+				inchar32_t c = Str::get_at(matter, i);
 				if (c == squote) will_be = PLAIN_COLOUR;
 				if (c == squote_escape) skip = CHARACTER_COLOUR;
 				break;
 			}
 			case STRING_COLOUR: {
-				wchar_t c = Str::get_at(matter, i);
+				inchar32_t c = Str::get_at(matter, i);
 				if (c == dquote) will_be = PLAIN_COLOUR;
 				if (c == dquote_escape) skip = STRING_COLOUR;
 				break;
 			}
 		}
 		for (int j=0; j<glob; j++) {
-			if (one_off >= 0) Str::put_at(colouring, i+j, (wchar_t) one_off);
-			else Str::put_at(colouring, i+j, (wchar_t) colouring_state);
+			if (one_off >= 0) Str::put_at(colouring, i+j, (inchar32_t) one_off);
+			else Str::put_at(colouring, i+j, (inchar32_t) colouring_state);
 		}
 		i += glob - 1;
 		if (will_be >= 0) colouring_state = will_be;
@@ -136,7 +136,7 @@ void Painter::syntax_colour_inner(programming_language *pl,
 	for (int i=from; i <= to; i++) {
 		if ((Str::get_at(colouring, i) == PLAIN_COLOUR) ||
 			(Str::get_at(colouring, i) == IDENTIFIER_COLOUR)) {
-			wchar_t c = Str::get_at(matter, i);
+			inchar32_t c = Str::get_at(matter, i);
 			if (Str::includes_at(matter, i, pl->binary_literal_prefix)) {
 				base = 2;
 				for (int j=0; j<Str::len(pl->binary_literal_prefix); j++)
@@ -172,7 +172,7 @@ void Painter::syntax_colour_inner(programming_language *pl,
 				case 2: if ((c == '0') || (c == '1')) pass = TRUE; break;
 				case 10: if (Characters::isdigit(c)) pass = TRUE; break;
 				case 16: if (Characters::isdigit(c)) pass = TRUE;
-					int d = Characters::tolower(c);
+					inchar32_t d = Characters::tolower(c);
 					if ((d == 'a') || (d == 'b') || (d == 'c') ||
 						(d == 'd') || (d == 'e') || (d == 'f')) pass = TRUE;
 					break;
@@ -195,7 +195,7 @@ can contain a |::| namespace divider.
 =
 int Painter::identifier_at(programming_language *pl,
 	text_stream *matter, text_stream *colouring, int i) {
-	wchar_t c = Str::get_at(matter, i);
+	inchar32_t c = Str::get_at(matter, i);
 	if ((i > 0) && (Str::get_at(colouring, i-1) == IDENTIFIER_COLOUR)) {
 		if ((c == '_') ||
 			((c >= 'A') && (c <= 'Z')) ||
@@ -203,7 +203,7 @@ int Painter::identifier_at(programming_language *pl,
 			((c >= '0') && (c <= '9'))) return TRUE;
 		if ((c == ':') && (pl->supports_namespaces)) return TRUE;
 	} else {
-		wchar_t d = 0;
+		inchar32_t d = 0;
 		if (i > 0) d = Str::get_at(matter, i);
 		if ((d >= '0') && (d <= '9')) return FALSE;
 		if ((c == '_') ||
@@ -284,7 +284,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 			default: {
 				int ident_from = -1, count = 1;
 				for (int i=from; i<=to; i++) {
-					int col = Str::get_at(colouring_at_start, i);
+					int col = (int) Str::get_at(colouring_at_start, i);
 					if ((col == block->run) ||
 						((block->run == UNQUOTED_COLOUR) &&
 							((col != STRING_COLOUR) && (col != CHARACTER_COLOUR)))) {
@@ -343,7 +343,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_PREFIX)) {
 			int pos = from;
 			if (rule->match_prefix != UNSPACED_RULE_PREFIX) {
-				while ((pos > 0) && (Characters::is_whitespace(pos-1))) pos--;
+				while ((pos > 0) && (Characters::is_whitespace(Str::get_at(rule->match_text, pos-1)))) pos--;
 				if ((rule->match_prefix == SPACED_RULE_PREFIX) && (pos == from))
 					return FALSE;
 			}
@@ -356,7 +356,7 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 			(rule->match_prefix == OPTIONALLY_SPACED_RULE_SUFFIX)) {
 			int pos = to + 1;
 			if (rule->match_prefix != UNSPACED_RULE_SUFFIX) {
-				while ((pos < Str::len(rule->match_text)) && (Characters::is_whitespace(pos))) pos++;
+				while ((pos < Str::len(rule->match_text)) && (Characters::is_whitespace(Str::get_at(rule->match_text, pos)))) pos++;
 				if ((rule->match_prefix == SPACED_RULE_SUFFIX) && (pos == from))
 					return FALSE;
 			}
@@ -477,7 +477,7 @@ int Painter::parse_comment(programming_language *pl,
 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
 	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
 	for (int i=0; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		switch (c_mode) {
 			case 0: @<Outside commentary@>; break;
 			case 1: @<Inside a line comment@>; break;

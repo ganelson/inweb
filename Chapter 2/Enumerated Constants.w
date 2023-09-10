@@ -52,7 +52,7 @@ void Enumerations::define(OUTPUT_STREAM, text_stream *symbol,
 
 @<Find the postfix in this symbol name@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, symbol, L"%c*_(%C+?)")) Str::copy(pf, mr.exp[0]);
+	if (Regexp::match(&mr, symbol, U"%c*_(%C+?)")) Str::copy(pf, mr.exp[0]);
 	else {
 		Main::error_in_web(I"enumeration constants must belong to a _FAMILY", L);
 		WRITE_TO(pf, "BOGUS");
@@ -73,8 +73,8 @@ void Enumerations::define(OUTPUT_STREAM, text_stream *symbol,
 		es->postfix = Str::duplicate(pf);
 		es->stub = NULL;
 		if ((Str::len(from) < 8) &&
-			((Regexp::match(NULL, from, L"%d+")) ||
-				(Regexp::match(NULL, from, L"-%d+")))) {
+			((Regexp::match(NULL, from, U"%d+")) ||
+				(Regexp::match(NULL, from, U"-%d+")))) {
 			es->first_value = Str::atoi(from, 0);
 			es->next_free_value = es->first_value + 1;
 		} else {

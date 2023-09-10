@@ -47,8 +47,8 @@ stored at the read index is a tab then it represents a space for parsing
 purposes.
 
 =
-wchar_t TabbedStr::get_character(tabbed_string_iterator *mdw) {
-	wchar_t c = Str::get_at(mdw->line, mdw->read_index);
+inchar32_t TabbedStr::get_character(tabbed_string_iterator *mdw) {
+	inchar32_t c = Str::get_at(mdw->line, mdw->read_index);
 	if (c == '\t') return ' ';
 	return c;
 }
@@ -58,7 +58,7 @@ being expanded into spaces: then the following returns |FALSE|.
 
 =
 int TabbedStr::at_whole_character(tabbed_string_iterator *mdw) {
-	wchar_t c = Str::get_at(mdw->line, mdw->read_index);
+	inchar32_t c = Str::get_at(mdw->line, mdw->read_index);
 	if (c != '\t') return TRUE;
 	if (mdw->line_position % mdw->tab_spacing == 0) return TRUE;
 	return FALSE;
@@ -129,7 +129,7 @@ int TabbedStr::spaces_available(tabbed_string_iterator *mdw) {
 =
 int TabbedStr::blank_from_here(tabbed_string_iterator *mdw) {
 	for (int i=mdw->read_index; i<Str::len(mdw->line); i++) {
-		wchar_t c = Str::get_at(mdw->line, i);
+		inchar32_t c = Str::get_at(mdw->line, i);
 		if ((c != ' ') && (c != '\t')) return FALSE;
 	}
 	return TRUE;

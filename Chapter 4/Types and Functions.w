@@ -149,7 +149,7 @@ part of the function structure. We'll need it when predeclaring the function.
 	fn->call_freely = FALSE;
 	fn->function_header_at = L;
 	fn->usage_described = FALSE;
-	if ((Str::eq_wide_string(fname, L"main")) &&
+	if ((Str::eq_wide_string(fname, U"main")) &&
 		(L->owning_section->sect_language->C_like))
 		fn->usage_described = TRUE;
 	fn->no_conditionals = 0;
@@ -179,11 +179,11 @@ leading to spurious extra text at the weaving stage.
 	text_stream *declared_namespace = NULL;
 	text_stream *ambient_namespace = L->owning_section->sect_namespace;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, fname, L"(%c+::)%c*")) {
+	if (Regexp::match(&mr, fname, U"(%c+::)%c*")) {
 		declared_namespace = mr.exp[0];
 		fn->within_namespace = TRUE;
-	} else if ((Str::eq_wide_string(fname, L"main")) &&
-		(Str::eq_wide_string(ambient_namespace, L"Main::")))
+	} else if ((Str::eq_wide_string(fname, U"main")) &&
+		(Str::eq_wide_string(ambient_namespace, U"Main::")))
 		declared_namespace = I"Main::";
 	if ((Str::ne(declared_namespace, ambient_namespace)) &&
 		(L->owning_paragraph->placed_very_early == FALSE)) {

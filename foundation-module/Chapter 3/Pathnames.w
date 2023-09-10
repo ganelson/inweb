@@ -66,7 +66,7 @@ void Pathnames::set_installation_path(pathname *P) {
 }
 pathname *Pathnames::installation_path(const char *V, text_stream *def) {
 	if (installation_path) return installation_path;
-	wchar_t where[4*MAX_FILENAME_LENGTH];
+	inchar32_t where[4*MAX_FILENAME_LENGTH];
 	where[0] = 0;
 	Platform::where_am_i(where, 4*MAX_FILENAME_LENGTH);
 	if (where[0]) {
@@ -140,12 +140,12 @@ Conversely, by the miracle of depth-first recursion:
 =
 void Pathnames::writer(OUTPUT_STREAM, char *format_string, void *vP) {
 	pathname *P = (pathname *) vP;
-	int divider = FOLDER_SEPARATOR;
+	inchar32_t divider = FOLDER_SEPARATOR;
 	if (format_string[0] == '/') divider = '/';
 	if (P) Pathnames::writer_r(OUT, P, divider); else WRITE(".");
 }
 
-void Pathnames::writer_r(OUTPUT_STREAM, pathname *P, int divider) {
+void Pathnames::writer_r(OUTPUT_STREAM, pathname *P, inchar32_t divider) {
 	if (P->pathname_of_parent) {
 		Pathnames::writer_r(OUT, P->pathname_of_parent, divider);
 		PUT(divider);

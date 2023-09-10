@@ -72,7 +72,7 @@ void CommandLine::end_group(void) {
 	current_switch_group = NO_CLSG;
 }
 command_line_switch *CommandLine::declare_switch(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal) {
+	inchar32_t *name_literal, int val, inchar32_t *help_literal) {
 	return CommandLine::declare_switch_p(id,
 		Str::new_from_wide_string(name_literal), val,
 		Str::new_from_wide_string(help_literal));
@@ -105,7 +105,7 @@ section. So the sorting version of |no-verbose| is |verbose_|.
 
 @<Make the sorting name@> =
 	cls->switch_sort_name = Str::duplicate(name);
-	if (Str::begins_with_wide_string(name, L"no-")) {
+	if (Str::begins_with_wide_string(name, U"no-")) {
 		Str::delete_n_characters(cls->switch_sort_name, 3);
 		WRITE_TO(cls->switch_sort_name, "_");
 	}
@@ -115,7 +115,7 @@ section. So the sorting version of |no-verbose| is |verbose_|.
 
 =
 command_line_switch *CommandLine::declare_boolean_switch(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal, int active) {
+	inchar32_t *name_literal, int val, inchar32_t *help_literal, int active) {
 	command_line_switch *cls =
 		CommandLine::declare_switch(id, name_literal, val, help_literal);
 	text_stream *neg = Str::new();
@@ -134,14 +134,14 @@ command_line_switch *CommandLine::declare_boolean_switch(int id,
 }
 
 void CommandLine::declare_numerical_switch(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal) {
+	inchar32_t *name_literal, int val, inchar32_t *help_literal) {
 	command_line_switch *cls =
 		CommandLine::declare_switch(id, name_literal, val, help_literal);
 	cls->form = NUMERICAL_CLSF;
 }
 
 void CommandLine::declare_textual_switch(int id,
-	wchar_t *name_literal, int val, wchar_t *help_literal) {
+	inchar32_t *name_literal, int val, inchar32_t *help_literal) {
 	command_line_switch *cls =
 		CommandLine::declare_switch(id, name_literal, val, help_literal);
 	cls->form = TEXTUAL_CLSF;
@@ -271,19 +271,19 @@ void CommandLine::read_file(clf_reader_state *crs) {
 void CommandLine::read_file_helper(text_stream *text, text_file_position *tfp, void *state) {
 	clf_reader_state *crs = (clf_reader_state *) state;
 	match_results mr = Regexp::create_mr();
-	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
+	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, U" *#%c*"))) {
 		;
 	} else {
 		text_stream *logline = Str::new();
 		WRITE_TO(logline, "line %d: %S", tfp->line_count, text);
 		CommandLine::record_log(logline);
-		if (Regexp::match(&mr, text, L" *-*(%C+) (%c+?) *")) {
+		if (Regexp::match(&mr, text, U" *-*(%C+) (%c+?) *")) {
 			int N = CommandLine::read_pair(crs, mr.exp[0], mr.exp[1]);
 			if (N == 0)
 				Errors::fatal_with_text("unknown command line switch: -%S", mr.exp[0]);
 			if (N == 1)
 				Errors::fatal_with_text("command line switch does not take value: -%S", mr.exp[0]);
-		} else if (Regexp::match(&mr, text, L" *-*(%C+) *")) {
+		} else if (Regexp::match(&mr, text, U" *-*(%C+) *")) {
 			int N = CommandLine::read_pair(crs, mr.exp[0], NULL);
 			if (N == 0)
 				Errors::fatal_with_text("unknown command line switch: -%S", mr.exp[0]);
@@ -311,12 +311,12 @@ int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 	Str::copy(opt_p, opt);
 	int N = BOGUS_CLSN;
 	match_results mr = Regexp::create_mr();
-	if ((Regexp::match(&mr, opt, L"(%c+)=(%d+)")) ||
-		(Regexp::match(&mr, opt, L"(%c+)=(-%d+)"))) {
+	if ((Regexp::match(&mr, opt, U"(%c+)=(%d+)")) ||
+		(Regexp::match(&mr, opt, U"(%c+)=(-%d+)"))) {
 		N = Str::atoi(mr.exp[1], 0);
 		Str::copy(opt_p, mr.exp[0]);
 		Str::copy(opt_val, mr.exp[1]);
-	} else if (Regexp::match(&mr, opt, L"(%c+)=(%c*)")) {
+	} else if (Regexp::match(&mr, opt, U"(%c+)=(%c*)")) {
 		Str::copy(opt_p, mr.exp[0]);
 		Str::copy(opt_val, mr.exp[1]);
 	}
@@ -421,7 +421,7 @@ a brief description of the tool's name and purpose.
 =
 text_stream *cls_heading = NULL;
 
-void CommandLine::declare_heading(wchar_t *heading_text_literal) {
+void CommandLine::declare_heading(inchar32_t *heading_text_literal) {
 	cls_heading = Str::new_from_wide_string(heading_text_literal);
 }
 

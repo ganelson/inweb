@@ -271,7 +271,7 @@ the JSON standard), and the special cases |true|, |false| and |null|.
 =
 JSON_value *JSON::decode_range(text_stream *T, int from, int to, text_file_position *tfp) {
 	int first_nws = -1, last_nws = -1;
-	wchar_t first_c = 0, last_c = 0;
+	inchar32_t first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character@>;
 	switch (first_c) {
 		case '[':
@@ -326,7 +326,7 @@ JSON_value *JSON::decode_array(JSON_value *array, text_stream *T, int from, int 
 	NextEntry: ;
 	int first_comma = -1, bl = 0;
 	for (int i=from, quoted = FALSE; i<to; i++) {
-		wchar_t c = Str::get_at(T, i);
+		inchar32_t c = Str::get_at(T, i);
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
@@ -363,7 +363,7 @@ JSON_value *JSON::decode_object(JSON_value *obj, text_stream *T, int from, int t
 	NextEntry: ;
 	int first_comma = -1, bl = 0;
 	for (int i=from, quoted = FALSE; i<to; i++) {
-		wchar_t c = Str::get_at(T, i);
+		inchar32_t c = Str::get_at(T, i);
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
@@ -401,7 +401,7 @@ JSON_value *JSON::decode_object_entry(JSON_value *obj, text_stream *T, int from,
 	int ended = FALSE;
 	TEMPORARY_TEXT(key)
 	while (from < to) {
-		wchar_t c = Str::get_at(T, from++);
+		inchar32_t c = Str::get_at(T, from++);
 		if (c == '\"') { ended = TRUE; break; }
 		PUT_TO(key, c);
 		if ((c == '\\') && (from+1 < to)) {
@@ -467,7 +467,7 @@ to allow the escaping of forward slash, but the standard requires it.
 JSON_value *JSON::decode_string(text_stream *T, int from, int to, text_file_position *tfp) {
 	TEMPORARY_TEXT(string)
 	for (int i=from; i<to; i++) {
-		wchar_t c = Str::get_at(T, i);
+		inchar32_t c = Str::get_at(T, i);
 		if (c == '\\') {
 			i++;
 			c = Str::get_at(T, i);
@@ -503,14 +503,14 @@ rule for code points between |0x10000| and |0x10fff|.
 	int hex = 0;
 	for (int j=0; j<4; j++) {
 		int v = 0;
-		wchar_t digit = Str::get_at(T, i+1+j);
+		inchar32_t digit = Str::get_at(T, i+1+j);
 		if ((digit >= '0') && (digit <= '9')) v = (int) (digit-'0');
 		else if ((digit >= 'a') && (digit <= 'f')) v = 10 + ((int) (digit-'a'));
 		else if ((digit >= 'A') && (digit <= 'F')) v = 10 + ((int) (digit-'A'));
 		else return JSON::decode_error(I"garbled '\\u' escape", tfp);
 		hex = hex * 16 + v;
 	}
-	c = (wchar_t) hex;
+	c = (inchar32_t) hex;
 	i += 4;
 
 @h Encoding JSON.
@@ -578,7 +578,7 @@ points above 32.
 =
 void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		switch (c) {
 			case '\\': WRITE("\\\\"); break;
 			case 8: WRITE("\\b"); break;
@@ -1008,7 +1008,7 @@ JSON requirement.
 JSON_requirement *JSON::decode_req_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1;
-	wchar_t first_c = 0, last_c = 0;
+	inchar32_t first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character in requirement@>;
 	if (first_c == '(') {
 		if (last_c != ')')
@@ -1019,7 +1019,7 @@ JSON_requirement *JSON::decode_req_range(text_stream *T, int from, int to,
 		NextEntry: ;
 		int first_pipe = -1, bl = 0;
 		for (int i=from, quoted = FALSE; i<to; i++) {
-			wchar_t c = Str::get_at(T, i);
+			inchar32_t c = Str::get_at(T, i);
 			switch (c) {
 				case '"': quoted = (quoted)?FALSE:TRUE; break;
 				case '\\': if (quoted) i++; break;
@@ -1053,7 +1053,7 @@ for what it's worth, we opt for the value.
 JSON_single_requirement *JSON::decode_sreq_range(text_stream *T, int from, int to,
 	dictionary *known_names) {
 	int first_nws = -1, last_nws = -1;
-	wchar_t first_c = 0, last_c = 0;
+	inchar32_t first_c = 0, last_c = 0;
 	@<Find the first and last non-whitespace character in requirement@>;
 	if (first_nws < 0) return JSON::error_sr(I"whitespace where requirement expected");
 	switch (first_c) {
@@ -1152,7 +1152,7 @@ JSON_single_requirement *JSON::decode_req_array(JSON_single_requirement *array_s
 	NextEntry: ;
 	int first_comma = -1, bl = 0;
 	for (int i=from, quoted = FALSE; i<to; i++) {
-		wchar_t c = Str::get_at(T, i);
+		inchar32_t c = Str::get_at(T, i);
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
@@ -1190,7 +1190,7 @@ JSON_single_requirement *JSON::decode_req_object(JSON_single_requirement *obj,
 	NextEntry: ;
 	int first_comma = -1, bl = 0;
 	for (int i=from, quoted = FALSE; i<to; i++) {
-		wchar_t c = Str::get_at(T, i);
+		inchar32_t c = Str::get_at(T, i);
 		switch (c) {
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
@@ -1220,7 +1220,7 @@ JSON_single_requirement *JSON::decode_req_object_entry(JSON_single_requirement *
 	int ended = FALSE;
 	TEMPORARY_TEXT(key)
 	while (from < to) {
-		wchar_t c = Str::get_at(T, from++);
+		inchar32_t c = Str::get_at(T, from++);
 		if (c == '\"') { ended = TRUE; break; }
 		PUT_TO(key, c);
 		if ((c == '\\') && (from+1 < to)) {
@@ -1372,14 +1372,14 @@ void JSON::read_requirements_file_helper(text_stream *text, text_file_position *
 	void *v_state) {
 	JSON_rrf_state *state = (JSON_rrf_state *) v_state;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *<(%C+)> *::= *(%c*)")) {
+	if (Regexp::match(&mr, text, U" *<(%C+)> *::= *(%c*)")) {
 		JSON::process_req_defn(state);
 		WRITE_TO(state->name, "%S", mr.exp[0]);
 		WRITE_TO(state->defn, "%S", mr.exp[1]);
 		state->at = *tfp;
-	} else if (Regexp::match(&mr, text, L" *!%c*")) {
+	} else if (Regexp::match(&mr, text, U" *!%c*")) {
 		/* do nothing: this line is a comment */
-	} else if (Regexp::match(&mr, text, L" *")) {
+	} else if (Regexp::match(&mr, text, U" *")) {
 		/* do nothing: this line is blank */
 	} else if (Str::len(state->name) > 0) {
 		WRITE_TO(state->defn, "%S\n", text);

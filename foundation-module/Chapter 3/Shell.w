@@ -36,7 +36,7 @@ void Shell::plain_text(OUTPUT_STREAM, text_stream *raw) {
 void Shell::quote_text(OUTPUT_STREAM, text_stream *raw) {
 	PUT(SHELL_QUOTE_CHARACTER);
 	LOOP_THROUGH_TEXT(pos, raw) {
-		wchar_t c = Str::get(pos);
+		inchar32_t c = Str::get(pos);
 		if (c == SHELL_QUOTE_CHARACTER) PUT('\\');
 		PUT(c);
 	}

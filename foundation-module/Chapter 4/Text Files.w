@@ -42,7 +42,7 @@ typedef struct text_file_position {
 	struct unicode_file_buffer ufb;
 	int line_count; /* counting from 1 */
 	int line_position;
-	int skip_terminator;
+	inchar32_t skip_terminator;
 	int actively_scanning; /* whether we are still interested in the rest of the file */
 } text_file_position;
 
@@ -126,12 +126,15 @@ values returned by |ftell| into this field.
 @ We aim to get this right whether the lines are terminated by |0A|, |0D|,
 |0A 0D| or |0D 0A|. The final line is not required to be terminated.
 
+@d CH32EOF 0xFFFFFFFFU /* We need an EOF marker that will fit in an inchar32_t. */
+
 @<Read in lines and send them one by one to the iterator@> =
 	TEMPORARY_TEXT(line)
-	int i = 0, c = ' ';
-	while ((c != EOF) && (tfp.actively_scanning)) {
+	int i = 0;
+	inchar32_t c = ' ';
+	while ((c != CH32EOF) && (tfp.actively_scanning)) {
 		c = TextFiles::utf8_fgetc(tfp.handle_when_open, NULL, &tfp.ufb);
-		if ((c == EOF) || (c == '\x0a') || (c == '\x0d')) {
+		if ((c == CH32EOF) || (c == '\x0a') || (c == '\x0d')) {
 			Str::put_at(line, i, 0);
 			if ((i > 0) || (c != tfp.skip_terminator)) {
 				@<Feed the completed line to the iterator routine@>;
@@ -141,7 +144,7 @@ values returned by |ftell| into this field.
 			@<Update the text file position@>;
 			i = 0;
 		} else {
-			Str::put_at(line, i++, (wchar_t) c);
+			Str::put_at(line, i++, c);
 		}
 	}
 	if ((i > 0) && (tfp.actively_scanning))
@@ -176,10 +179,11 @@ Text files seldom come that large.
 @ =
 void TextFiles::read_line(OUTPUT_STREAM, int escape_oddities, text_file_position *tfp) {
 	Str::clear(OUT);
-	int i = 0, c = ' ';
-	while ((c != EOF) && (tfp->actively_scanning)) {
+	int i = 0;
+	inchar32_t c = ' ';
+	while ((c != CH32EOF) && (tfp->actively_scanning)) {
 		c = TextFiles::utf8_fgetc(tfp->handle_when_open, NULL, &tfp->ufb);
-		if ((c == EOF) || (c == '\x0a') || (c == '\x0d')) {
+		if ((c == CH32EOF) || (c == '\x0a') || (c == '\x0d')) {
 			Str::put_at(OUT, i, 0);
 			if ((i > 0) || (c != tfp->skip_terminator)) {
 				if (c == '\x0a') tfp->skip_terminator = '\x0d';
@@ -189,7 +193,7 @@ void TextFiles::read_line(OUTPUT_STREAM, int escape_oddities, text_file_position
 			i = 0;
 			tfp->line_count++; return;
 		}
-		Str::put_at(OUT, i++, (wchar_t) c);
+		Str::put_at(OUT, i++, c);
 	}
 	if ((i > 0) && (tfp->actively_scanning)) tfp->line_count++;
 }
@@ -209,21 +213,21 @@ trick it can only pull off by escaping non-ISO characters. This is done by
 taking character number |N| and feeding it out, one character at a time, as
 the text |[unicode N]|, writing the number in decimal. Only one UTF-8
 file like this will be being read at a time, and the routine will be
-repeatedly called until |EOF| or a line division.
+repeatedly called until |CH32EOF| or a line division.
 
 Strictly speaking, we transmit not as ISO Latin-1 but as that subset of ISO
 which have corresponding (different) codes in the ZSCII character set. This
 excludes some typewriter symbols and a handful of letterforms, as we shall
 see.
 
-There are two exceptions: |TextFiles::utf8_fgetc| can also return the usual C
-end-of-file pseudo-character |EOF|, and it can also return the Unicode BOM
-(byte-ordering marker) pseudo-character, which is legal at the start of a
+There are two exceptions: |TextFiles::utf8_fgetc| can also return an
+end-of-file pseudo-character |CH32EOF|, and it can also return the Unicode
+BOM (byte-ordering marker) pseudo-character, which is legal at the start of a
 file and which is automatically prepended by some text editors and
 word-processors when they save a UTF-8 file (though in fact it is not
 required by the UTF-8 specification). Anyone calling |TextFiles::utf8_fgetc| must
-check the return value for |EOF| every time, and for |0xFEFF| every time we
-might be at the start of the file being read.
+check the return value for |CH32EOF| every time, and for |0xFEFF| every time
+we might be at the start of the file being read.
 
 @e NONE_UFBHM from 1
 @e ZSCII_UFBHM
@@ -249,18 +253,18 @@ unicode_file_buffer TextFiles::create_filtered_ufb(int mode) {
 	return ufb;
 }
 
-int TextFiles::utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) {
+inchar32_t TextFiles::utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer *ufb) {
 	int c = EOF, conts, mode = (ufb)?ufb->handling_mode:NONE_UFBHM;
 	if ((ufb) && (ufb->ufb_counter >= 0)) {
 		if (ufb->unicode_feed_buffer[ufb->ufb_counter] == 0) ufb->ufb_counter = -1;
-		else return ufb->unicode_feed_buffer[ufb->ufb_counter++];
+		else return (inchar32_t) ufb->unicode_feed_buffer[ufb->ufb_counter++];
 	}
 	if (from) c = fgetc(from); else if (or_from) c = ((unsigned char) *((*or_from)++));
-	if (c == EOF) return c; /* ruling out EOF leaves a genuine byte from the file */
-	if (c<0x80) return c; /* in all other cases, a UTF-8 continuation sequence begins */
+	if (c == EOF) return CH32EOF; /* ruling out EOF leaves a genuine byte from the file */
+	if (c<0x80) return (inchar32_t) c; /* in all other cases, a UTF-8 continuation sequence begins */
 
 	@<Unpack one to five continuation bytes to obtain the Unicode character code@>;
-	if (c == 0xFEFF) return c; /* the Unicode BOM non-character */
+	if (c == 0xFEFF) return (inchar32_t) c; /* the Unicode BOM non-character */
 
     if (mode != NONE_UFBHM) @<Return Unicode fancy equivalents as simpler literals@>;
 
@@ -273,7 +277,7 @@ int TextFiles::utf8_fgetc(FILE *from, const char **or_from, unicode_file_buffer 
 		}
 		return '?';
 	}
-	return c;
+	return (inchar32_t) c;
 }
 
 @ Not every byte sequence is legal in a UTF-8 file: if we find a malformed
@@ -308,12 +312,12 @@ rather than Douglas Adams, they might have filled this gap. As it was,
 "eth" never occurred in any of their works.)
 
 @<Return non-ASCII codes in the intersection of ISO Latin-1 and ZSCII as literals@> =
-	if ((c == 0xa1) || (c == 0xa3) || (c == 0xbf)) return c; /* pound sign, inverted ! and ? */
+	if ((c == 0xa1) || (c == 0xa3) || (c == 0xbf)) return (inchar32_t) c; /* pound sign, inverted ! and ? */
 	if ((c >= 0xc0) && (c <= 0xff)) { /* accented West European letters, but... */
 		if ((c != 0xd0) && (c != 0xf0) && /* not Icelandic eths */
 		    (c != 0xde) && (c != 0xfe) && /* nor Icelandic thorns */
 			(c != 0xf7)) /* nor division signs */
-			return c;
+			return (inchar32_t) c;
 	}
 
 @ We err on the safe side, accepting em-rules and non-breaking spaces, etc.,

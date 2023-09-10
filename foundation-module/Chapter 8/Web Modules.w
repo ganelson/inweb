@@ -149,7 +149,7 @@ int WebModules::named_reference(module **return_M, section_md **return_Sm,
 	match_results mr = Regexp::create_mr();
 	text_stream *seek = text;
 	text_stream *seek_module = NULL;
-	if (Regexp::match(&mr, text, L"(%C+?): *(%c+?) *")) {
+	if (Regexp::match(&mr, text, U"(%C+?): *(%c+?) *")) {
 		seek_module = mr.exp[0]; seek = mr.exp[1];
 	} else {
 		seek_module = from_M->module_name; seek = text;

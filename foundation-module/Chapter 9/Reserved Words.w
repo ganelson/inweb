@@ -25,12 +25,12 @@ int ReservedWords::hash_code_from_word(text_stream *text) {
     		int numeric = TRUE;
     		/* the first character may prove to be the start of a number: is this true? */
 			for (p = Str::forward(p); Str::in_range(p); p = Str::forward(p))
-				if (isdigit(Str::get(p)) == FALSE) numeric = FALSE;
+				if (Characters::isdigit(Str::get(p)) == FALSE) numeric = FALSE;
 			if (numeric) return NUMBER_HASH;
 		}
     }
     for (p=Str::start(text); Str::in_range(p); p = Str::forward(p))
-    	hash_code = (unsigned int) ((int) (hash_code*30011) + (Str::get(p)));
+       hash_code = (hash_code*30011) + Str::get(p);
     return (int) (1+(hash_code % (HASH_TAB_SIZE-1))); /* result of X 30011, plus 1 */
 }
 

@@ -73,9 +73,9 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 			TEMPORARY_TEXT(after)
 			Str::substr(after, Str::at(matter, i), Str::end(matter));
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
+			if (Regexp::match(&mr, after, U"(https*://%C+)(%c*)")) {
 				while (TextWeaver::boundary_character(FALSE, Str::get_last_char(mr.exp[0]))) {
-					wchar_t c = Str::get_last_char(mr.exp[0]);
+					inchar32_t c = Str::get_last_char(mr.exp[0]);
 					Str::delete_last_character(mr.exp[0]);
 					TEMPORARY_TEXT(longer)
 					WRITE_TO(longer, "%c%S", c, mr.exp[1]);
@@ -197,7 +197,7 @@ so that |http://| won't trigger a cross-reference with the standard |//|
 xref notation.
 
 =
-int TextWeaver::boundary_character(int before, wchar_t c) {
+int TextWeaver::boundary_character(int before, inchar32_t c) {
 	if (c == 0) return TRUE;
 	if (Characters::is_whitespace(c)) return TRUE;
 	if ((c == '.') || (c == ',') || (c == '!') || (c == '?') || (c == ';') ||
@@ -263,7 +263,7 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		TEMPORARY_TEXT(after)
 		Str::substr(after, Str::at(matter, i), Str::end(matter));
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, after, L"(https*://%C+)(%c*)")) {
+		if (Regexp::match(&mr, after, U"(https*://%C+)(%c*)")) {
 			tree_node *U = WeaveTree::url(tree, mr.exp[0], mr.exp[0], TRUE);
 			TextWeaver::source_code_piece(tree, ap, matter, colouring, from, i);
 			Trees::make_child(U, ap);

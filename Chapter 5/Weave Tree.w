@@ -678,7 +678,7 @@ tree_node *WeaveTree::source_code(heterogeneous_tree *tree,
 	if (Str::len(colouring) != Str::len(matter)) internal_error("bad source segment");
 
 	for (int i=0; i<Str::len(matter); i++) {
-		wchar_t c = Str::get_at(matter, i);
+		inchar32_t c = Str::get_at(matter, i);
 		if (c == '\t') {
 			Str::put_at(matter, i, ' ');
 			int extra_spaces =

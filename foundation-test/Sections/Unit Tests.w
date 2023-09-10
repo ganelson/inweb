@@ -6,15 +6,15 @@ A selection of tests for, or demonstrations of, foundation features.
 
 =
 void Unit::test_strings(void) {
-	text_stream *S = Str::new_from_wide_string(L"Jack and Jill");
+	text_stream *S = Str::new_from_wide_string(U"Jack and Jill");
 	PRINT("Setup: %S\n", S);
 
-	text_stream *T = Str::new_from_wide_string(L" had a great fall");
+	text_stream *T = Str::new_from_wide_string(U" had a great fall");
 	PRINT("Plus: %S\n", T);
 	Str::concatenate(S, T);
 	PRINT("Concatenation: %S\n", S);
 
-	text_stream *BB = Str::new_from_wide_string(L"   banana bread  is fun   ");
+	text_stream *BB = Str::new_from_wide_string(U"   banana bread  is fun   ");
 	PRINT("Setup statically: <%S>\n", BB);
 	Str::trim_white_space(BB);
 	PRINT("Trimmed: <%S>\n", BB);
@@ -27,8 +27,8 @@ void Unit::test_strings(void) {
 	Str::put(Str::at(BB, 3), L'Q');
 	PRINT("Modified: <%S>\n", BB);
 
-	text_stream *A = Str::new_from_wide_string(L"fish");
-	text_stream *B = Str::new_from_wide_string(L"Fish");
+	text_stream *A = Str::new_from_wide_string(U"fish");
+	text_stream *B = Str::new_from_wide_string(U"Fish");
 
 	PRINT("%S eq %S? %d\n", A, B, Str::eq(A, B));
 	PRINT("%S ci-eq %S? %d\n", A, B, Str::eq_insensitive(A, B));
@@ -70,8 +70,8 @@ void Unit::test_dictionaries(text_stream *arg) {
 void Unit::test_dictionaries_helper1(text_stream *text, text_file_position *tfp, void *vD) {
 	dictionary *D = (dictionary *) vD;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *")) return;
-	if (Regexp::match(&mr, text, L"%'(%c*?)%' %'(%c*)%'")) {
+	if (Regexp::match(&mr, text, U" *")) return;
+	if (Regexp::match(&mr, text, U"%'(%c*?)%' %'(%c*)%'")) {
 		if (Dictionaries::find(D, mr.exp[0]) == NULL) {
 			PRINT("Creating new entry <%S>\n", mr.exp[0]);
 			Dictionaries::create_text(D, mr.exp[0]);
@@ -89,8 +89,8 @@ void Unit::test_dictionaries_helper1(text_stream *text, text_file_position *tfp,
 void Unit::test_dictionaries_helper2(text_stream *text, text_file_position *tfp, void *vD) {
 	dictionary *D = (dictionary *) vD;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *")) return;
-	if (Regexp::match(&mr, text, L"%'(%c*?)%' %'(%c*)%'")) {
+	if (Regexp::match(&mr, text, U" *")) return;
+	if (Regexp::match(&mr, text, U"%'(%c*?)%' %'(%c*)%'")) {
 		if (Dictionaries::find(D, mr.exp[0]) == NULL) {
 			PRINT("Missing %S\n", mr.exp[0]);
 		} else {
@@ -114,9 +114,9 @@ void Unit::test_regexp(text_stream *arg) {
 
 void Unit::test_regexp_helper(text_stream *text, text_file_position *tfp, void *state) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *")) return;
-	if (Regexp::match(&mr, text, L"%'(%c*?)%' %'(%c*)%'")) {
-		wchar_t pattern[1024];
+	if (Regexp::match(&mr, text, U" *")) return;
+	if (Regexp::match(&mr, text, U"%'(%c*?)%' %'(%c*)%'")) {
+		inchar32_t pattern[1024];
 		Str::copy_to_wide_string(pattern, mr.exp[1], 1024);
 		match_results mr2 = Regexp::create_mr();
 		PRINT("Text <%S> pattern <%w>: ", mr.exp[0], pattern);
@@ -146,10 +146,10 @@ void Unit::test_replacement(text_stream *arg) {
 
 void Unit::test_replacement_helper(text_stream *text, text_file_position *tfp, void *state) {
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L" *")) return;
-	if (Regexp::match(&mr, text, L"%'(%c*?)%' %'(%c*?)%' %'(%c*)%'")) {
-		wchar_t pattern[1024];
-		wchar_t replacement[1024];
+	if (Regexp::match(&mr, text, U" *")) return;
+	if (Regexp::match(&mr, text, U"%'(%c*?)%' %'(%c*?)%' %'(%c*)%'")) {
+		inchar32_t pattern[1024];
+		inchar32_t replacement[1024];
 		Str::copy_to_wide_string(pattern, mr.exp[1], 1024);
 		Str::copy_to_wide_string(replacement, mr.exp[2], 1024);
 		PRINT("Text <%S> pattern <%w> replacement <%w>: ", mr.exp[0], pattern, replacement);
@@ -433,7 +433,7 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 	text_stream *JSON = (text_stream *) state;
 	if (Str::eq(text, I"----")) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, JSON, L" *<(%C+)> *= *(%c+)")) {
+		if (Regexp::match(&mr, JSON, U" *<(%C+)> *= *(%c+)")) {
 			text_stream *rname = mr.exp[0];
 			text_stream *rtext = mr.exp[1];
 			WRITE_TO(STDOUT, "JSON requirement <%S> set to:\n%S----\n", rname, rtext);
@@ -443,7 +443,7 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 				if (de) de->value = req;
 				JSON::encode_req(STDOUT, req);
 			}
-		} else if (Regexp::match(&mr, JSON, L" *(%c+?) against *(%c+)")) {
+		} else if (Regexp::match(&mr, JSON, U" *(%c+?) against *(%c+)")) {
 			text_stream *rtext = mr.exp[0];
 			text_stream *material = mr.exp[1];
 			WRITE_TO(STDOUT, "JSON verification test on:\n%S-- to match --\n%S\n----\n",

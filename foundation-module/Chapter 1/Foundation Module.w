@@ -45,7 +45,8 @@ supplied instead for that case.
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include <wchar.h>
+
+typedef uint32_t inchar32_t;
 
 @ =
 text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| until opened */
@@ -118,10 +119,10 @@ which a narrative is printed, or not printed, to the debugging log file.
 The following are always provided, but are all off by default.
 
 @<Register the default debugging log aspects@> =
-	Log::declare_aspect(DEBUGGING_LOG_INCLUSIONS_DA, L"debugging log inclusions", FALSE, FALSE);
-	Log::declare_aspect(SHELL_USAGE_DA, L"shell usage", FALSE, FALSE);
-	Log::declare_aspect(MEMORY_USAGE_DA, L"memory usage", FALSE, FALSE);
-	Log::declare_aspect(TEXT_FILES_DA, L"text files", FALSE, FALSE);
+	Log::declare_aspect(DEBUGGING_LOG_INCLUSIONS_DA, U"debugging log inclusions", FALSE, FALSE);
+	Log::declare_aspect(SHELL_USAGE_DA, U"shell usage", FALSE, FALSE);
+	Log::declare_aspect(MEMORY_USAGE_DA, U"memory usage", FALSE, FALSE);
+	Log::declare_aspect(TEXT_FILES_DA, U"text files", FALSE, FALSE);
 
 @ Debugging log writers are similar to stream writers, but implement the |$|
 escapes only available to the debugging log. For example, |$S| calls the
@@ -150,20 +151,20 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 
 @<Register the default command line switches@> =
 	CommandLine::begin_group(FOUNDATION_CLSG, NULL);
-	CommandLine::declare_switch(LOG_CLSW, L"log", 2,
-		L"write the debugging log to include diagnostics on X");
-	CommandLine::declare_switch(VERSION_CLSW, L"version", 1,
-		L"print out version number");
-	CommandLine::declare_boolean_switch(CRASH_CLSW, L"crash", 1,
-		L"intentionally crash on internal errors, for backtracing", FALSE);
-	CommandLine::declare_switch(HELP_CLSW, L"help", 1,
-		L"print this help information");
-	CommandLine::declare_boolean_switch(FIXTIME_CLSW, L"fixtime", 1,
-		L"pretend the time is 11 a.m. on 28 March 2016 for testing", FALSE);
-	CommandLine::declare_switch(AT_CLSW, L"at", 2,
-		L"specify that this tool is installed at X");
-	CommandLine::declare_switch(LOCALE_CLSW, L"locale", 2,
-		L"set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1");
+	CommandLine::declare_switch(LOG_CLSW, U"log", 2,
+		U"write the debugging log to include diagnostics on X");
+	CommandLine::declare_switch(VERSION_CLSW, U"version", 1,
+		U"print out version number");
+	CommandLine::declare_boolean_switch(CRASH_CLSW, U"crash", 1,
+		U"intentionally crash on internal errors, for backtracing", FALSE);
+	CommandLine::declare_switch(HELP_CLSW, U"help", 1,
+		U"print this help information");
+	CommandLine::declare_boolean_switch(FIXTIME_CLSW, U"fixtime", 1,
+		U"pretend the time is 11 a.m. on 28 March 2016 for testing", FALSE);
+	CommandLine::declare_switch(AT_CLSW, U"at", 2,
+		U"specify that this tool is installed at X");
+	CommandLine::declare_switch(LOCALE_CLSW, U"locale", 2,
+		U"set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1");
 	CommandLine::end_group();
 
 @ Once the following has been called, it is not safe to use any of the

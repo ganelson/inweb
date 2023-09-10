@@ -371,22 +371,22 @@ void MarkdownVariations::multifile_r(markdown_item *md, md_links_dictionary *lin
 			TEMPORARY_TEXT(xref)
 			TEMPORARY_TEXT(anchor)
 			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, md->stashed, L"Chapter (%d+): *(%c*)")) {
+			if (Regexp::match(&mr, md->stashed, U"Chapter (%d+): *(%c*)")) {
 				WRITE_TO(xref, "%S", mr.exp[1]);
 				WRITE_TO(anchor, "chapter%S", mr.exp[0]);
-			} else if (Regexp::match(&mr, md->stashed, L"Chapter (%d+)")) {
+			} else if (Regexp::match(&mr, md->stashed, U"Chapter (%d+)")) {
 				WRITE_TO(xref, "%S", md->stashed);
 				WRITE_TO(anchor, "chapter%S", mr.exp[0]);
-			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+).(%d+): *(%c*)")) {
+			} else if (Regexp::match(&mr, md->stashed, U"Section (%d+).(%d+): *(%c*)")) {
 				WRITE_TO(xref, "%S", mr.exp[2]);
 				WRITE_TO(anchor, "c%Ss%S", mr.exp[0], mr.exp[1]);
-			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+).(%d+)")) {
+			} else if (Regexp::match(&mr, md->stashed, U"Section (%d+).(%d+)")) {
 				WRITE_TO(xref, "%S", md->stashed);
 				WRITE_TO(anchor, "c%Ss%S", mr.exp[0], mr.exp[1]);
-			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+): *(%c*)")) {
+			} else if (Regexp::match(&mr, md->stashed, U"Section (%d+): *(%c*)")) {
 				WRITE_TO(xref, "%S", mr.exp[1]);
 				WRITE_TO(anchor, "s%S", mr.exp[0]);
-			} else if (Regexp::match(&mr, md->stashed, L"Section (%d+)")) {
+			} else if (Regexp::match(&mr, md->stashed, U"Section (%d+)")) {
 				WRITE_TO(xref, "%S", md->stashed);
 				WRITE_TO(anchor, "s%S", mr.exp[0]);
 			} else {

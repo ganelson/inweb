@@ -21,30 +21,30 @@ Choosing which unit test to run on the basis of the command-line arguments.
 =
 int main(int argc, char **argv) {
 	Foundation::start(argc, argv);
-	CommandLine::declare_heading(L"inexample: a tool for testing foundation facilities\n");
+	CommandLine::declare_heading(U"inexample: a tool for testing foundation facilities\n");
 
-	CommandLine::declare_switch(TEST_STRINGS_CLSW, L"test-strings", 2,
-		L"test string manipulation (X is ignored)");
-	CommandLine::declare_switch(TEST_RE_CLSW, L"test-regexp", 2,
-		L"test regular expression matches on a list of cases in file X");
-	CommandLine::declare_switch(TEST_DICT_CLSW, L"test-dictionaries", 2,
-		L"test dictionary building on a list of keys and values in file X");
-	CommandLine::declare_switch(TEST_LITERALS_CLSW, L"test-literals", 2,
-		L"test string literals (X is ignored)");
-	CommandLine::declare_switch(TEST_REPLACEMENT_CLSW, L"test-replacement", 2,
-		L"test regular expression replacements on a list of cases in file X");
-	CommandLine::declare_switch(TEST_LISTS_CLSW, L"test-lists", 2,
-		L"test linked lists (X is ignored)");
-	CommandLine::declare_switch(TEST_STACKS_CLSW, L"test-stacks", 2,
-		L"test LIFO stacks (X is ignored)");
-	CommandLine::declare_switch(TEST_SEMVER_CLSW, L"test-semver", 2,
-		L"test semantic version numbers (X is ignored)");
-	CommandLine::declare_switch(TEST_TREES_CLSW, L"test-trees", 2,
-		L"test heterogeneous trees (X is ignored)");
-	CommandLine::declare_switch(TEST_JSON_CLSW, L"test-json", 2,
-		L"test decoding and encoding of JSON file X");
-	CommandLine::declare_switch(TEST_MARKDOWN_CLSW, L"test-markdown", 2,
-		L"test decoding and rendering of Markdown notation in file X");
+	CommandLine::declare_switch(TEST_STRINGS_CLSW, U"test-strings", 2,
+		U"test string manipulation (X is ignored)");
+	CommandLine::declare_switch(TEST_RE_CLSW, U"test-regexp", 2,
+		U"test regular expression matches on a list of cases in file X");
+	CommandLine::declare_switch(TEST_DICT_CLSW, U"test-dictionaries", 2,
+		U"test dictionary building on a list of keys and values in file X");
+	CommandLine::declare_switch(TEST_LITERALS_CLSW, U"test-literals", 2,
+		U"test string literals (X is ignored)");
+	CommandLine::declare_switch(TEST_REPLACEMENT_CLSW, U"test-replacement", 2,
+		U"test regular expression replacements on a list of cases in file X");
+	CommandLine::declare_switch(TEST_LISTS_CLSW, U"test-lists", 2,
+		U"test linked lists (X is ignored)");
+	CommandLine::declare_switch(TEST_STACKS_CLSW, U"test-stacks", 2,
+		U"test LIFO stacks (X is ignored)");
+	CommandLine::declare_switch(TEST_SEMVER_CLSW, U"test-semver", 2,
+		U"test semantic version numbers (X is ignored)");
+	CommandLine::declare_switch(TEST_TREES_CLSW, U"test-trees", 2,
+		U"test heterogeneous trees (X is ignored)");
+	CommandLine::declare_switch(TEST_JSON_CLSW, U"test-json", 2,
+		U"test decoding and encoding of JSON file X");
+	CommandLine::declare_switch(TEST_MARKDOWN_CLSW, U"test-markdown", 2,
+		U"test decoding and rendering of Markdown notation in file X");
 
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::ignore);
 	Foundation::end();

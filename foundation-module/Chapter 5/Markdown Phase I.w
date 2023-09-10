@@ -180,7 +180,7 @@ inside list items, for example.)
 
 =
 typedef struct md_fencing_data {
-	wchar_t material; /* character used in the fence syntax */
+	inchar32_t material; /* character used in the fence syntax */
 	int width;
 	struct markdown_item *fenced_code;
 	int left_margin; /* measured as a position, not a string index */
@@ -232,7 +232,7 @@ typedef struct positional_marker {
 	int at;                    /* character position (not string index) of the start of the marker */
 	int width;                 /* for example, 2 for |7) | or |7. |: the non-whitespace chars only */
 	int list_item_value;       /* for example, 7 for |7) | or |7. | */
-	wchar_t list_item_flavour; /* for example, |')'| for |7) | and |'.'| for |7. | */
+	inchar32_t list_item_flavour; /* for example, |')'| for |7) | and |'.'| for |7. | */
 
 	int continues_from_earlier_line;
 	int blank_counts;
@@ -344,10 +344,10 @@ tabbed_string_iterator MDBlockParser::block_quote_marker(tabbed_string_iterator 
 
 =
 tabbed_string_iterator MDBlockParser::bullet_list_marker(tabbed_string_iterator line_scanner,
-	wchar_t *flavour) {
+	inchar32_t *flavour) {
 	tabbed_string_iterator old = line_scanner;
 	if (MDBlockParser::thematic_marker(line_scanner.line, TabbedStr::get_index(&line_scanner))) return old;
-	wchar_t c = TabbedStr::get_character(&line_scanner);
+	inchar32_t c = TabbedStr::get_character(&line_scanner);
 	if ((c == '-') || (c == '+') || (c == '*')) {
 		TabbedStr::advance(&line_scanner);
 		*flavour = c;
@@ -363,11 +363,11 @@ when we get to rendering, but we parse them anyway.
 
 =
 tabbed_string_iterator MDBlockParser::ordered_list_marker(tabbed_string_iterator line_scanner,
-	int *v, wchar_t *flavour) {
+	int *v, inchar32_t *flavour) {
 	tabbed_string_iterator old = line_scanner;
 	if (MDBlockParser::thematic_marker(line_scanner.line,
 		TabbedStr::get_index(&line_scanner))) return old;
-	wchar_t c = TabbedStr::get_character(&line_scanner);
+	inchar32_t c = TabbedStr::get_character(&line_scanner);
 	int dc = 0, val = 0;
 	while (Characters::is_ASCII_digit(c)) {
 		val = 10*val + (int) (c - '0');
@@ -392,11 +392,11 @@ here. The function returns either true or false.
 
 =
 int MDBlockParser::thematic_marker(text_stream *line, int index) {
-	wchar_t c = Str::get_at(line, index);
+	inchar32_t c = Str::get_at(line, index);
 	if ((c == '-') || (c == '_') || (c == '*')) {
 		int ornament_count = 1;
 		for (int j=index+1; j<Str::len(line); j++) {
-			wchar_t d = Str::get_at(line, j);
+			inchar32_t d = Str::get_at(line, j);
 			if (d == c) {
 				if (ornament_count > 0) ornament_count++;
 			} else {
@@ -521,11 +521,11 @@ black width, in the second case it is the black width plus 1.
 
 @<Is there a bullet list marker here?@> =
 	if (MarkdownVariations::supports(state->variation, UNORDERED_LISTS_MARKDOWNFEATURE)) {
-		wchar_t flavour = 0;
+		inchar32_t flavour = 0;
 		tabbed_string_iterator adv = MDBlockParser::bullet_list_marker(starts_at, &flavour);
 		int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
 		if (black_width > 0) {
-			wchar_t next = TabbedStr::get_character(&adv);
+			inchar32_t next = TabbedStr::get_character(&adv);
 			if ((next == ' ') || (next == 0)) {
 				TabbedStr::eat_space(&adv);
 				int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
@@ -560,12 +560,12 @@ entry "Permission to use...".
 
 @<Is there an ordered list marker here?@> =
 	if (MarkdownVariations::supports(state->variation, ORDERED_LISTS_MARKDOWNFEATURE)) {
-		wchar_t flavour = 0;
+		inchar32_t flavour = 0;
 		int val = 0;
 		tabbed_string_iterator adv = MDBlockParser::ordered_list_marker(starts_at, &val, &flavour);
 		int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
 		if (black_width > 0) {
-			wchar_t next = TabbedStr::get_character(&adv);
+			inchar32_t next = TabbedStr::get_character(&adv);
 			if ((next == ' ') || (next == 0)) {
 				TabbedStr::eat_space(&adv);
 				int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
@@ -1177,7 +1177,7 @@ because there was no content left, we have to preserve it as literal
 content, opening a new paragraph to hold the |-----|.
 
 @<Line is a setext underline and turns the existing paragraph into a heading@> =
-	wchar_t c = Str::get_at(line, content_index);
+	inchar32_t c = Str::get_at(line, content_index);
 	markdown_item *headb = MDBlockParser::latest_paragraph(state);
 	if (headb) {
 		MDBlockParser::remove_link_references(state, headb);
@@ -1196,7 +1196,7 @@ content, opening a new paragraph to hold the |-----|.
 	if ((parb) && (parb->type == PARAGRAPH_MIT)) {
 		WRITE_TO(parb->stashed, "\n");
 		for (int i = content_index; i<Str::len(line); i++) {
-			wchar_t c = Str::get_at(line, i);
+			inchar32_t c = Str::get_at(line, i);
 			PUT_TO(parb->stashed, c);
 		}
 	} else internal_error("no paragraph is open after all");
@@ -1233,7 +1233,7 @@ we can make sure matching syntax is used on the closing line.
 	text_stream *info_string = Str::new();
 	MDBlockParser::can_interpret_as(state, line, indentation, content_index,
 		CODE_FENCE_OPEN_MDINTERPRETATION, info_string, NULL);
-	wchar_t c = Str::get_at(line, content_index);
+	inchar32_t c = Str::get_at(line, content_index);
 	markdown_item *cb = Markdown::new_item(CODE_BLOCK_MIT);
 	cb->stashed = Str::new();
 	cb->info_string = info_string;
@@ -1276,7 +1276,7 @@ tab for this: we must use the correct fraction of a tab, using spaces as quarter
 		TabbedStr::advance(&line_scanner);
 	}
 	for (int i = TabbedStr::get_index(&line_scanner); i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		PUT_TO(code_block->stashed, c);
 	}
 	PUT_TO(code_block->stashed, '\n');
@@ -1316,7 +1316,7 @@ block or not. (In this example, they will, but we can't know that.)
 
 	if (indentation)
 		for (int i=content_index; i<Str::len(line); i++) {
-			wchar_t c = Str::get_at(line, i);
+			inchar32_t c = Str::get_at(line, i);
 			PUT_TO(state->blank_matter_after_receiver, c);
 		}
 	PUT_TO(state->blank_matter_after_receiver, '\n');
@@ -1340,7 +1340,7 @@ he might have gone on to give us.)
 	text_stream *H = Str::new();
 	headb->stashed = H;
 	for (int i=content_index+hash_count; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		if ((Str::len(H) == 0) && ((c == ' ') || (c == '\t')))
 			continue;
 		PUT_TO(H, c);
@@ -1391,7 +1391,7 @@ a block, so we need to test for that.
 	int from = content_index;
 	if (state->temporary_marker_limit == 1) from = 0;
 	for (int i = from; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
 	}
 	PUT_TO(latest->stashed, '\n');
@@ -1462,7 +1462,7 @@ block:
 		TabbedStr::advance(&line_scanner);
 	}
 	for (int i = TabbedStr::get_index(&line_scanner); i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		PUT_TO(latest->stashed, c);
 	}
 	PUT_TO(latest->stashed, '\n');
@@ -1567,17 +1567,17 @@ setext underline.
 	if ((MarkdownVariations::supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
 		&& (indentation)) return FALSE;
 	if (MarkdownVariations::supports(state->variation, SETEXT_HEADINGS_MARKDOWNFEATURE)) {
-		wchar_t c = Str::get_at(line, content_index);
+		inchar32_t c = Str::get_at(line, content_index);
 		if ((c == '-') || (c == '=')) {
 			int ornament_count = 1, extraneous = 0;
 			int j=content_index+1;
 			for (; j<Str::len(line); j++) {
-				wchar_t d = Str::get_at(line, j);
+				inchar32_t d = Str::get_at(line, j);
 				if (d == c) ornament_count++;
 				else break;
 			}
 			for (; j<Str::len(line); j++) {
-				wchar_t d = Str::get_at(line, j);
+				inchar32_t d = Str::get_at(line, j);
 				if ((d != ' ') && (d != '\t')) extraneous++;
 			}
 			if ((ornament_count > 0) && (extraneous == 0)) return TRUE;
@@ -1609,14 +1609,14 @@ reach line 5.
 		if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material == 0))
 			return FALSE;
 		text_stream *info_string = text_details;
-		wchar_t c = Str::get_at(line, content_index);
+		inchar32_t c = Str::get_at(line, content_index);
 		if ((which == CODE_FENCE_CLOSE_MDINTERPRETATION) && (state->fencing.material != c))
 			return FALSE;
 		if ((c == '`') || (c == '~')) {
 			int post_count = 0;
 			int j = content_index;
 			for (; j<Str::len(line); j++) {
-				wchar_t d = Str::get_at(line, j);
+				inchar32_t d = Str::get_at(line, j);
 				if (d == c) post_count++;
 				else break;
 			}
@@ -1639,7 +1639,7 @@ of the line as |CODE_FENCE_OPEN_MDINTERPRETATION|.
 @<Looks good so far, but what about the info string?@> =
 	int ambiguous = FALSE, count = 0, escaped = FALSE;
 	for (; j<Str::len(line); j++) {
-		wchar_t d = Str::get_at(line, j);
+		inchar32_t d = Str::get_at(line, j);
 		if ((escaped == FALSE) && (d == '\\') &&
 			(Characters::is_ASCII_punctuation(Str::get_at(line, j+1))))
 			escaped = TRUE;
@@ -1682,7 +1682,7 @@ The one piece of good news is that they all start with a |<| character.
 		&& (indentation)) return FALSE;
 	if (MarkdownVariations::supports(state->variation, HTML_BLOCKS_MARKDOWNFEATURE) == FALSE)
 		return FALSE;
-	wchar_t c = Str::get_at(line, content_index);
+	inchar32_t c = Str::get_at(line, content_index);
 	if (c != '<') return FALSE;
 
 	int condition_type = 0; /* not a valid condition */
@@ -1690,7 +1690,7 @@ The one piece of good news is that they all start with a |<| character.
 	int i = content_index+1; /* i.e., the index after the |<| */
 	TEMPORARY_TEXT(tag)
 	for (; i<Str::len(line); i++) {
-		wchar_t c = Str::get_at(line, i);
+		inchar32_t c = Str::get_at(line, i);
 		if ((c == ' ') || (c == '\t') || (c == '>')) break;
 		PUT_TO(tag, c);
 	}
@@ -1833,7 +1833,7 @@ but can also be followed by HTML attributes and values: for example,
 	TEMPORARY_TEXT(tag_name)
 	int i = 0;
 	for (; i<Str::len(tag); i++) {
-		wchar_t c = Str::get_at(tag, i);
+		inchar32_t c = Str::get_at(tag, i);
 		if ((Characters::is_ASCII_letter(c)) ||
 			((i > 0) && ((Characters::is_ASCII_digit(c)) || (c == '-'))))
 			PUT_TO(tag_name, c);
@@ -1847,7 +1847,7 @@ but can also be followed by HTML attributes and values: for example,
 	DISCARD_TEXT(tag_name)
 	if (closing == FALSE) {
 		while (TRUE) {
-			wchar_t c = Str::get_at(tag, i);
+			inchar32_t c = Str::get_at(tag, i);
 			if ((c != ' ') && (c != '\t')) break;
 			i = MDBlockParser::advance_past_spacing(tag, i);
 			c = Str::get_at(tag, i);
@@ -1861,7 +1861,7 @@ but can also be followed by HTML attributes and values: for example,
 				if (Str::get_at(tag, i) == '=') {
 					i++;
 					i = MDBlockParser::advance_past_spacing(tag, i);
-					wchar_t c = Str::get_at(tag, i);
+					inchar32_t c = Str::get_at(tag, i);
 					if (c == '\'') {
 						i++; c = Str::get_at(tag, i);
 						while ((c) && (c != '\'')) {
@@ -1921,7 +1921,7 @@ we do not skip an entire visually blank line.
 =
 int MDBlockParser::advance_past_spacing(text_stream *tag, int i) {
 	int newlines = 0;
-	wchar_t c = Str::get_at(tag, i);
+	inchar32_t c = Str::get_at(tag, i);
 	while ((c == ' ') || (c == '\t') || (c == '\n')) {
 		if (c == '\n') {
 			newlines++; if (newlines == 2) break;
@@ -1988,7 +1988,7 @@ int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at
 
 @<Find the label text@> =
 	for (; i<Str::len(X); i++) {
-		wchar_t c = Str::get_at(X, i);
+		inchar32_t c = Str::get_at(X, i);
 		if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
 			i++; c = Str::get_at(X, i);
 		} else if (c == ']') { i++; break; }
@@ -1999,7 +1999,7 @@ int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at
 	}
 
 @<Find the destination and title texts@> =
-	wchar_t c = Str::get_at(X, i);
+	inchar32_t c = Str::get_at(X, i);
 	if (c == '<') {
 		i++; c = Str::get_at(X, i);
 		while ((c != 0) && (c != '\n')) {
@@ -2029,12 +2029,12 @@ int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at
 	if ((valid) && (Str::get_at(X, i) == '\n')) stop_here = i;
 	i = MDBlockParser::advance_past_spacing(X, i);
 	ws_count = i - ws_count;
-	wchar_t quot = 0;
+	inchar32_t quot = 0;
 	if (Str::get_at(X, i) == '"') quot = '"';
 	if (Str::get_at(X, i) == '\'') quot = '\'';
 	if ((ws_count > 0) && (quot)) {
 		for (i++; i<Str::len(X); i++) {
-			wchar_t c = Str::get_at(X, i);
+			inchar32_t c = Str::get_at(X, i);
 			if ((c == '\\') && (Characters::is_ASCII_punctuation(Str::get_at(X, i+1)))) {
 				i++; c = Str::get_at(X, i);
 			} else if (c == quot) break;
@@ -2070,7 +2070,7 @@ or center alignment respectively."
 	TEMPORARY_TEXT(line2)
 	int remainder_at = -1;
 	for (int i=0, counter=1; i<Str::len(X); i++) {
-		wchar_t c = Str::get_at(X, i);
+		inchar32_t c = Str::get_at(X, i);
 		if (c == '\n') counter++;
 		else if (counter == 1) PUT_TO(line1, c);
 		else if (counter == 2) PUT_TO(line2, c);
@@ -2088,7 +2088,7 @@ or center alignment respectively."
 		if (remainder_at > 0) {
 			Str::clear(line1);
 			for (int i=remainder_at; i<Str::len(X); i++) {
-				wchar_t c = Str::get_at(X, i);
+				inchar32_t c = Str::get_at(X, i);
 				if (c == '\n') {
 					MDBlockParser::count_cells(line1, FALSE, at);
 					Str::clear(line1);
@@ -2123,7 +2123,7 @@ int MDBlockParser::count_cells(text_stream *line, int is_delimiter_row,
 	int cell_count = 0, escaped = FALSE, cell_number = 0;
 	TEMPORARY_TEXT(cell)
 	for (int k = i; k <= j; k++) {
-		wchar_t c = Str::get_at(line, k);
+		inchar32_t c = Str::get_at(line, k);
 		if ((escaped == FALSE) && (c == '\\')) {
 			escaped = TRUE;
 		} else {
@@ -2249,7 +2249,7 @@ void MDBlockParser::task_list_items(md_doc_state *state, markdown_item *at) {
 			int i=0;
 			while ((Str::get_at(X, i) == ' ') || (Str::get_at(X, i) == '\t')) i++;
 			if ((Str::get_at(X, i) == '[') && (Str::get_at(X, i+2) == ']')) {
-				wchar_t middle = Str::get_at(X, i+1);
+				inchar32_t middle = Str::get_at(X, i+1);
 				int ticked = NOT_APPLICABLE;
 				if ((middle == 'x') || (middle == 'X')) ticked = TRUE;
 				if ((middle == ' ') || (middle == '\t')) ticked = FALSE;

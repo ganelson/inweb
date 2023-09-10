@@ -140,7 +140,7 @@ space characters, a single space character is removed from the front and back."
 	text_stream *codespan = Str::new();
 	int all_spaces = TRUE;
 	for (int k=start; k<=end; k++) {
-		wchar_t c = Str::get_at(text, k);
+		inchar32_t c = Str::get_at(text, k);
 		if (c == '\n') c = ' ';
 		if (c != ' ') all_spaces = FALSE;
 		PUT_TO(codespan, c);
@@ -207,7 +207,7 @@ notation, also used by indoc.
 	md->details = count;
 	if (name_inversion) {
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, md->stashed, L"(%c*) (%C+)")) {
+		if (Regexp::match(&mr, md->stashed, U"(%c*) (%C+)")) {
 			Str::clear(md->stashed);
 			WRITE_TO(md->stashed, "%S, %S", mr.exp[1], mr.exp[0]);
 		}
@@ -222,7 +222,7 @@ notation, also used by indoc.
 @<Does an autolink begin here?@> =
 	if (Str::get_at(text, i) == '<') {
 		for (int j=i+1; j<Str::len(text); j++) {
-			wchar_t c = Str::get_at(text, j);
+			inchar32_t c = Str::get_at(text, j);
 			if (c == '>') {
 				int link_from = i+1, link_to = j-1, count = j-i+1;
 				if (tracing_Markdown_parser) {
@@ -292,7 +292,7 @@ period, or hyphen."
 	int scheme_length = colon_at - link_from;
 	if ((scheme_length < 2) || (scheme_length > 32)) scheme_valid = FALSE;
 	for (int i=link_from; i<colon_at; i++) {
-		wchar_t c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if (!((Characters::is_ASCII_letter(c)) ||
 			((i > link_from) &&
 				((Characters::is_ASCII_digit(c)) || (c == '+') || (c == '-') || (c == '.')))))
@@ -301,7 +301,7 @@ period, or hyphen."
 
 @<Vet the link@> =
 	for (int i=colon_at+1; i<=link_to; i++) {
-		wchar_t c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if ((c == '<') || (c == '>') || (c == ' ') ||
 			(Characters::is_control_character(c)))
 			link_valid = FALSE;
@@ -343,7 +343,7 @@ but you absolutely can.
 	int username_length = atsign_at - link_from;
 	if (username_length < 1) username_valid = FALSE;
 	for (int i=link_from; i<atsign_at; i++) {
-		wchar_t c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if (!((Characters::is_ASCII_letter(c)) ||
 				(Characters::is_ASCII_digit(c)) ||
 				(c == '.') ||
@@ -372,7 +372,7 @@ but you absolutely can.
 @<Vet the domain name@> =
 	int segment_length = 0;
 	for (int i=atsign_at+1; i<=link_to; i++) {
-		wchar_t c = Str::get_at(text, i);
+		inchar32_t c = Str::get_at(text, i);
 		if (segment_length == 0) {
 			if (!((Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c))))
 				domain_valid = FALSE;
@@ -495,7 +495,7 @@ it as written.
 			domain_name_invalid = TRUE;
 	} else {
 		for (int j=domain_from, dots_passed=0; j<=to; j++) {
-			wchar_t c = Str::get_at(text, j);
+			inchar32_t c = Str::get_at(text, j);
 			if (c == '.') dots_passed++;
 			if ((c == '_') && (dots_passed >= dot_count - 2)) domain_name_invalid = TRUE;
 		}
@@ -557,7 +557,7 @@ what the GitHub-flavored Markdown specification means by "alphanumeric" here:
 are arbitrary Unicode letters and numerals allowed? I'm going to say not.
 
 =
-int MDInlineParser::extended_autolink_domain_char(wchar_t c) {
+int MDInlineParser::extended_autolink_domain_char(inchar32_t c) {
 	if ((Characters::isalnum(c)) || (c == '_') || (c == '-')) return TRUE;
 	return FALSE;
 }
@@ -566,7 +566,7 @@ int MDInlineParser::extended_autolink_domain_char(wchar_t c) {
 But we take care of |+| and |.| above.
 
 =
-int MDInlineParser::extended_autolink_email_char(wchar_t c) {
+int MDInlineParser::extended_autolink_email_char(inchar32_t c) {
 	if ((Characters::isalnum(c)) || (c == '_') || (c == '-')) return TRUE;
 	return FALSE;
 }
@@ -574,7 +574,7 @@ int MDInlineParser::extended_autolink_email_char(wchar_t c) {
 @ "The resource can contain all alphanumeric characters, as well as @ and .."
 
 =
-int MDInlineParser::extended_autolink_xmpp_resource_char(wchar_t c) {
+int MDInlineParser::extended_autolink_xmpp_resource_char(inchar32_t c) {
 	if ((Characters::isalnum(c)) || (c == '@') || (c == '.')) return TRUE;
 	return FALSE;
 }
@@ -583,7 +583,7 @@ int MDInlineParser::extended_autolink_xmpp_resource_char(wchar_t c) {
 considered part of the autolink."
 
 =
-int MDInlineParser::extended_autolink_trailing_punctuation_char(wchar_t c) {
+int MDInlineParser::extended_autolink_trailing_punctuation_char(inchar32_t c) {
 	if ((c == '?') || (c == '!') || (c == ',') || (c == '.') ||
 		(c == ':') || (c == '*') || (c == '_') || (c == '~')) return TRUE;
 	return FALSE;
@@ -679,7 +679,7 @@ int MDInlineParser::extended_autolink_trailing_punctuation_char(wchar_t c) {
 	}
 
 @<Advance past tag name@> =
-	wchar_t c = Str::get_at(text, at);
+	inchar32_t c = Str::get_at(text, at);
 	if (Characters::is_ASCII_letter(c) == FALSE) goto NotATag;
 	TEMPORARY_TEXT(tag)
 	while ((c == '-') || (Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c))) {
@@ -696,7 +696,7 @@ int MDInlineParser::extended_autolink_trailing_punctuation_char(wchar_t c) {
 		int start_at = at;
 		@<Advance past optional tag-whitespace@>;
 		if (at == start_at) break;
-		wchar_t c = Str::get_at(text, at);
+		inchar32_t c = Str::get_at(text, at);
 		if ((c == '_') || (c == ':') || (Characters::is_ASCII_letter(c))) {
 			while ((c == '_') || (c == ':') || (c == '.') || (c == '-') ||
 				(Characters::is_ASCII_letter(c)) || (Characters::is_ASCII_digit(c)))
@@ -718,7 +718,7 @@ int MDInlineParser::extended_autolink_trailing_punctuation_char(wchar_t c) {
 @<Try for an unquoted attribute value@> =
 	int k = at;
 	while (TRUE) {
-		wchar_t c = Str::get_at(text, k);
+		inchar32_t c = Str::get_at(text, k);
 		if ((c == ' ') || (c == '\t') || (c == '\n') || (c == '"') || (c == '\'') ||
 			(c == '=') || (c == '<') || (c == '>') || (c == '`') || (c == 0))
 			break;
@@ -746,14 +746,14 @@ int MDInlineParser::extended_autolink_trailing_punctuation_char(wchar_t c) {
 	}
 
 @<Advance past compulsory tag-whitespace@> =
-	wchar_t c = Str::get_at(text, at);
+	inchar32_t c = Str::get_at(text, at);
 	if ((c != ' ') && (c != '\t') && (c != '\n')) goto NotATag;
 	@<Advance past optional tag-whitespace@>;
 
 @<Advance past optional tag-whitespace@> =
 	int line_ending_count = 0;
 	while (TRUE) {
-		wchar_t c = Str::get_at(text, at++);
+		inchar32_t c = Str::get_at(text, at++);
 		if (c == '\n') {
 			line_ending_count++;
 			if (line_ending_count == 2) break;
@@ -963,13 +963,13 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 	int images_only, int links_only) {
 	md_link_parse result;
 	@<Initialise the parse result to a no@>;
-	wchar_t prev_c = 0;
+	inchar32_t prev_c = 0;
 	md_charpos prev_pos = Markdown::nowhere();
 	int escaped = FALSE;
 	while ((Markdown::somewhere(from)) && (Markdown::plainish(from.md) == FALSE))
 		from = Markdown::advance_up_to(from, to);
 	for (md_charpos pos = from; Markdown::somewhere(pos); pos = Markdown::advance_up_to(pos, to)) {
-		wchar_t c = Markdown::get(pos);
+		inchar32_t c = Markdown::get(pos);
 		if ((c == '\\') && (escaped == FALSE)) escaped = TRUE;
 		else {
 			if ((c == '[') && (escaped == FALSE)) {
@@ -1069,10 +1069,10 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 	}
 
 @<Work out the link text@> =
-	wchar_t c = Markdown::get(pos);
+	inchar32_t c = Markdown::get(pos);
 	md_charpos prev_pos = pos;
 	result.link_text_from = Markdown::advance_up_to(pos, to);
-	wchar_t prev_c = 0;
+	inchar32_t prev_c = 0;
 	int bl = 0, count = 0, escaped = FALSE;
 	while (c != 0) {
 		if ((c == '\\') && (escaped == FALSE)) {
@@ -1103,10 +1103,10 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 	md_charpos prev_pos = pos;
 	pos = Markdown::advance_up_to_plainish_only(pos, to);
 	result.link_destination_from = pos;
-	wchar_t prev_c = 0;
+	inchar32_t prev_c = 0;
 	int bl = 1, escaping = FALSE;
 	TEMPORARY_TEXT(label)
-	wchar_t c = Markdown::get(pos);
+	inchar32_t c = Markdown::get(pos);
 	while (c != 0) {
 		if ((c == '\\') && (escaping == FALSE)) {
 			escaping = TRUE;
@@ -1158,7 +1158,7 @@ or image reference label, not other ASCII punctuation.
 		pos = Markdown::advance_up_to_quasi_plainish_only(pos, to);
 		result.link_destination_from = pos;
 		int empty = TRUE;
-		wchar_t prev_c = 0;
+		inchar32_t prev_c = 0;
 		while ((Markdown::get(pos) != '>') || (prev_c == '\\')) {
 			if (Markdown::get(pos) == 0) ABANDON_LINK("no end to destination in angles");
 			if (Markdown::get(pos) == '<') ABANDON_LINK("'<' in destination in angles");
@@ -1174,12 +1174,12 @@ or image reference label, not other ASCII punctuation.
 	} else {
 		result.link_destination_from = pos;
 		int bl = 1;
-		wchar_t prev_c = 0;
+		inchar32_t prev_c = 0;
 		md_charpos prev_pos = pos;
 		int empty = TRUE;
 		while ((Markdown::get(pos) != ' ') && (Markdown::get(pos) != '\n') &&
 			(Markdown::get(pos) != '\t')) {
-			wchar_t c = Markdown::get(pos);
+			inchar32_t c = Markdown::get(pos);
 			if ((c == '(') && (prev_c != '\\')) bl++;
 			if ((c == ')') && (prev_c != '\\')) { bl--; if (bl == 0) break; }
 			if (c == 0) ABANDON_LINK("no end to destination");
@@ -1198,12 +1198,12 @@ or image reference label, not other ASCII punctuation.
 	if (Markdown::get(pos) == '"') {
 		pos = Markdown::advance_up_to_plainish_only(pos, to);
 		result.link_title_from = pos;
-		wchar_t prev_c = 0;
+		inchar32_t prev_c = 0;
 		md_charpos prev_pos = pos;
 		int empty = TRUE;
-		wchar_t c = Markdown::get(pos);
+		inchar32_t c = Markdown::get(pos);
 		while (c != 0) {
-			wchar_t c = Markdown::get(pos);
+			inchar32_t c = Markdown::get(pos);
 			if ((c == '"') && (prev_c != '\\')) break;
 			prev_pos = pos;
 			prev_c = c;
@@ -1217,12 +1217,12 @@ or image reference label, not other ASCII punctuation.
 	else if (Markdown::get(pos) == '\'') {
 		pos = Markdown::advance_up_to_plainish_only(pos, to);
 		result.link_title_from = pos;
-		wchar_t prev_c = 0;
+		inchar32_t prev_c = 0;
 		md_charpos prev_pos = pos;
 		int empty = TRUE;
-		wchar_t c = Markdown::get(pos);
+		inchar32_t c = Markdown::get(pos);
 		while (c != 0) {
-			wchar_t c = Markdown::get(pos);
+			inchar32_t c = Markdown::get(pos);
 			if ((c == '\'') && (prev_c != '\\')) break;
 			prev_pos = pos;
 			prev_c = c;
@@ -1236,12 +1236,12 @@ or image reference label, not other ASCII punctuation.
 	else if (Markdown::get(pos) == '(') {
 		pos = Markdown::advance_up_to(pos, to);
 		result.link_title_from = pos;
-		wchar_t prev_c = 0;
+		inchar32_t prev_c = 0;
 		md_charpos prev_pos = pos;
 		int empty = TRUE;
-		wchar_t c = Markdown::get(pos);
+		inchar32_t c = Markdown::get(pos);
 		while (c != 0) {
-			wchar_t c = Markdown::get(pos);
+			inchar32_t c = Markdown::get(pos);
 			if ((c == '(') && (prev_c != '\\')) ABANDON_LINK("unescaped '(' in title");
 			if ((c == ')') && (prev_c != '\\')) break;
 			prev_pos = pos;
@@ -1256,7 +1256,7 @@ or image reference label, not other ASCII punctuation.
 
 @<Advance pos by optional small amount of white space@> =
 	int line_endings = 0;
-	wchar_t c = Markdown::get(pos);
+	inchar32_t c = Markdown::get(pos);
 	while ((c == ' ') || (c == '\t') || (c == '\n')) {
 		if (c == '\n') { line_endings++; if (line_endings >= 2) break; }
 		pos = Markdown::advance_up_to_quasi_plainish_only(pos, to);
@@ -1338,10 +1338,10 @@ definition, the beginning and the end of the line count as Unicode whitespace."
 int MDInlineParser::left_flanking(md_charpos pos, int count) {
 	if (count == 0) return FALSE;
 	if (count < 0) count = -count;
-	wchar_t followed_by = Markdown::get_unescaped(pos, count);
+	inchar32_t followed_by = Markdown::get_unescaped(pos, count);
 	if ((followed_by == 0) || (Characters::is_Unicode_whitespace(followed_by))) return FALSE;
 	if (Characters::is_Unicode_punctuation(followed_by) == FALSE) return TRUE;
-	wchar_t preceded_by = Markdown::get_unescaped(pos, -1);
+	inchar32_t preceded_by = Markdown::get_unescaped(pos, -1);
 	if ((preceded_by == 0) || (Characters::is_Unicode_whitespace(preceded_by)) ||
 		(Characters::is_Unicode_punctuation(preceded_by))) return TRUE;
 	return FALSE;
@@ -1350,10 +1350,10 @@ int MDInlineParser::left_flanking(md_charpos pos, int count) {
 int MDInlineParser::right_flanking(md_charpos pos, int count) {
 	if (count == 0) return FALSE;
 	if (count < 0) count = -count;
-	wchar_t preceded_by = Markdown::get_unescaped(pos, -1);
+	inchar32_t preceded_by = Markdown::get_unescaped(pos, -1);
 	if ((preceded_by == 0) || (Characters::is_Unicode_whitespace(preceded_by))) return FALSE;
 	if (Characters::is_Unicode_punctuation(preceded_by) == FALSE) return TRUE;
-	wchar_t followed_by = Markdown::get_unescaped(pos, count);
+	inchar32_t followed_by = Markdown::get_unescaped(pos, count);
 	if ((followed_by == 0) || (Characters::is_Unicode_whitespace(followed_by)) ||
 		(Characters::is_Unicode_punctuation(followed_by))) return TRUE;
 	return FALSE;
@@ -1366,7 +1366,7 @@ int MDInlineParser::can_open_emphasis(md_charpos pos, int count) {
 	if (MDInlineParser::left_flanking(pos, count) == FALSE) return FALSE;
 	if (count > 0) return TRUE;
 	if (MDInlineParser::right_flanking(pos, count) == FALSE) return TRUE;
-	wchar_t preceded_by = Markdown::get_unescaped(pos, -1);
+	inchar32_t preceded_by = Markdown::get_unescaped(pos, -1);
 	if (Characters::is_Unicode_punctuation(preceded_by)) return TRUE;
 	return FALSE;
 }
@@ -1375,7 +1375,7 @@ int MDInlineParser::can_close_emphasis(md_charpos pos, int count) {
 	if (MDInlineParser::right_flanking(pos, count) == FALSE) return FALSE;
 	if (count > 0) return TRUE;
 	if (MDInlineParser::left_flanking(pos, count) == FALSE) return TRUE;
-	wchar_t followed_by = Markdown::get_unescaped(pos, -count); /* count < 0 here */
+	inchar32_t followed_by = Markdown::get_unescaped(pos, -count); /* count < 0 here */
 	if (Characters::is_Unicode_punctuation(followed_by)) return TRUE;
 	return FALSE;
 }
@@ -1684,7 +1684,7 @@ int MDInlineParser::penalty(markdown_item *md) {
 		if (md->type == PLAIN_MIT) {
 			for (int i=md->from; i<=md->to; i++) {
 				md_charpos pos = Markdown::pos(md, i);
-				wchar_t c = Markdown::get_unescaped(pos, 0);
+				inchar32_t c = Markdown::get_unescaped(pos, 0);
 				if ((c == '*') || (c == '_')) penalty += 100000;
 			}
 		}

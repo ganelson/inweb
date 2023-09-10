@@ -7,7 +7,7 @@ We will define white space as spaces and tabs only, since the various kinds
 of line terminator will always be stripped out before this is applied.
 
 =
-int Regexp::white_space(int c) {
+int Regexp::white_space(inchar32_t c) {
 	if ((c == ' ') || (c == '\t')) return TRUE;
 	return FALSE;
 }
@@ -17,7 +17,7 @@ C and has other meanings in other languages, but it's legal in C-for-Inform
 identifiers.
 
 =
-int Regexp::identifier_char(int c) {
+int Regexp::identifier_char(inchar32_t c) {
 	if ((c == '_') || (c == ':') ||
 		((c >= 'A') && (c <= 'Z')) ||
 		((c >= 'a') && (c <= 'z')) ||
@@ -32,8 +32,8 @@ easily be done as a regular expression using |Regexp::match|, but the routine
 here is much quicker.
 
 =
-int Regexp::find_expansion(text_stream *text, wchar_t on1, wchar_t on2,
-	wchar_t off1, wchar_t off2, int *len) {
+int Regexp::find_expansion(text_stream *text, inchar32_t on1, inchar32_t on2,
+	inchar32_t off1, inchar32_t off2, int *len) {
 	for (int i = 0; i < Str::len(text); i++)
 		if ((Str::get_at(text, i) == on1) && (Str::get_at(text, i+1) == on2)) {
 			for (int j=i+2; j < Str::len(text); j++)
@@ -76,7 +76,7 @@ This is a very minimal regular expression parser, simply for convenience of pars
 short texts against particularly simple patterns. Here is an example of use:
 = (text as code)
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"fish (%d+) ([a-zA-Z_][a-zA-Z0-9_]*) *") {
+	if (Regexp::match(&mr, text, U"fish (%d+) ([a-zA-Z_][a-zA-Z0-9_]*) *") {
 	    PRINT("Fish number: %S\n", mr.exp[0]);
 	    PRINT("Fish name: %S\n", mr.exp[1]);
 	}
@@ -124,7 +124,7 @@ are not. They are simply a little faster to access if short.
 
 =
 typedef struct match_result {
-	wchar_t match_text_storage[MATCH_TEXT_INITIAL_ALLOCATION];
+	inchar32_t match_text_storage[MATCH_TEXT_INITIAL_ALLOCATION];
 	struct text_stream match_text_struct;
 } match_result;
 typedef struct match_results {
@@ -165,14 +165,14 @@ void Regexp::dispose_of(match_results *mr) {
 @ So, then: the matcher itself.
 
 =
-int Regexp::match(match_results *mr, text_stream *text, wchar_t *pattern) {
+int Regexp::match(match_results *mr, text_stream *text, inchar32_t *pattern) {
 	if (mr) Regexp::prepare(mr);
 	int rv = (Regexp::match_r(mr, text, pattern, NULL, FALSE) >= 0)?TRUE:FALSE;
 	if ((mr) && (rv == FALSE)) Regexp::dispose_of(mr);
 	return rv;
 }
 
-int Regexp::match_from(match_results *mr, text_stream *text, wchar_t *pattern,
+int Regexp::match_from(match_results *mr, text_stream *text, inchar32_t *pattern,
 	int x, int allow_partial) {
 	int match_to = x;
 	if (x < Str::len(text)) {
@@ -204,7 +204,7 @@ void Regexp::prepare(match_results *mr) {
 }
 
 @ =
-int Regexp::match_r(match_results *mr, text_stream *text, wchar_t *pattern,
+int Regexp::match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 	match_position *scan_from, int allow_partial) {
 	match_position at;
 	if (scan_from) at = *scan_from;
@@ -335,7 +335,7 @@ is literal.
 @d QUOTE_CHARCLASS 10
 
 =
-int Regexp::get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) {
+int Regexp::get_cclass(inchar32_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) {
 	if (pattern[ppos] == '^') { ppos++; *reverse = TRUE; } else { *reverse = FALSE; }
 	switch (pattern[ppos]) {
 		case '%':
@@ -365,11 +365,11 @@ int Regexp::get_cclass(wchar_t *pattern, int ppos, int *len, int *from, int *to,
 }
 
 @ =
-int Regexp::test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *drawn_from, int reverse) {
+int Regexp::test_cclass(inchar32_t c, int chcl, int range_from, int range_to, inchar32_t *drawn_from, int reverse) {
 	int match = FALSE;
 	switch (chcl) {
 		case ANY_CHARCLASS: if (c) match = TRUE; break;
-		case DIGIT_CHARCLASS: if (isdigit(c)) match = TRUE; break;
+		case DIGIT_CHARCLASS: if (Characters::isdigit(c)) match = TRUE; break;
 		case WHITESPACE_CHARCLASS: if (Characters::is_whitespace(c)) match = TRUE; break;
 		case TAB_CHARCLASS: if (c == '\t') match = TRUE; break;
 		case NONWHITESPACE_CHARCLASS: if (!(Characters::is_whitespace(c))) match = TRUE; break;
@@ -386,7 +386,7 @@ int Regexp::test_cclass(int c, int chcl, int range_from, int range_to, wchar_t *
 				range_from++; reverse = reverse?FALSE:TRUE;
 			}
 			for (int j = range_from; j <= range_to; j++) {
-				int c1 = drawn_from[j], c2 = c1;
+				inchar32_t c1 = drawn_from[j], c2 = c1;
 				if ((j+1 < range_to) && (drawn_from[j+1] == '-')) { c2 = drawn_from[j+2]; j += 2; }
 				if ((c >= c1) && (c <= c2)) {
 					match = TRUE; break;
@@ -404,7 +404,7 @@ can match at substrings of the |text| (i.e., we are not forced to match
 from the start right to the end), and multiple replacements can be made.
 For example,
 = (text as code)
-	Regexp::replace(text, L"[aeiou]", L"!", REP_REPEATING);
+	Regexp::replace(text, U"[aeiou]", U"!", REP_REPEATING);
 =
 will turn the |text| "goose eggs" into "g!!s! !ggs".
 
@@ -412,7 +412,7 @@ will turn the |text| "goose eggs" into "g!!s! !ggs".
 @d REP_ATSTART 2
 
 =
-int Regexp::replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, int options) {
+int Regexp::replace(text_stream *text, inchar32_t *pattern, inchar32_t *replacement, int options) {
 	TEMPORARY_TEXT(altered)
 	match_results mr = Regexp::create_mr();
 	int changes = 0;
@@ -423,11 +423,11 @@ int Regexp::replace(text_stream *text, wchar_t *pattern, wchar_t *replacement, i
 		if (try >= 0) {
 			if (replacement)
 				for (int j=0; replacement[j]; j++) {
-					int c = replacement[j];
+					inchar32_t c = replacement[j];
 					if (c == '%') {
 						j++;
-						int ind = replacement[j] - '0';
-						if ((ind >= 0) && (ind < MAX_BRACKETED_SUBEXPRESSIONS))
+						inchar32_t ind = replacement[j] - '0';
+						if (ind < MAX_BRACKETED_SUBEXPRESSIONS)
 							WRITE_TO(altered, "%S", mr.exp[ind]);
 						else
 							PUT_TO(altered, replacement[j]);

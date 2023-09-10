@@ -5,7 +5,7 @@ Convenient routines for manipulating strings of text.
 @h Strings are streams.
 Although Foundation provides limited facilities for handling standard or
 wide C-style strings -- that is, null-terminated arrays of |char| or
-|wchar_t| -- these are not encouraged.
+|inchar32_t| -- these are not encouraged.
 
 Instead, a standard string for a program using Foundation is nothing more than
 a text stream (see Chapter 2). These are unbounded in size, with memory
@@ -70,9 +70,10 @@ with the capacity of the initial block large enough to hold the whole
 thing plus a little extra, for efficiency's sake.
 
 =
-text_stream *Str::new_from_wide_string(const wchar_t *C_string) {
+text_stream *Str::new_from_wide_string(const inchar32_t *C_string) {
 	text_stream *S = CREATE(text_stream);
-	if (Streams::open_from_wide_string(S, C_string)) return S;
+	int C_len = (C_string)?Wide::len(C_string):0;
+	if (Streams::open_from_wide_string(S, C_string, C_len)) return S;
 	return NULL;
 }
 
@@ -97,8 +98,9 @@ text_stream *Str::new_from_locale_string(const char *C_string) {
 @ And sometimes we want to use an existing stream object:
 
 =
-text_stream *Str::from_wide_string(text_stream *S, wchar_t *c_string) {
-	if (Streams::open_from_wide_string(S, c_string) == FALSE) return NULL;
+text_stream *Str::from_wide_string(text_stream *S, inchar32_t *c_string) {
+	int c_len = (c_string)?Wide::len(c_string):0;
+	if (Streams::open_from_wide_string(S, c_string, c_len) == FALSE) return NULL;
 	return S;
 }
 
@@ -118,7 +120,7 @@ void Str::copy_to_UTF8_string(char *C_string, text_stream *S, int buffer_size) {
 	Streams::write_as_UTF8_string(C_string, S, buffer_size);
 }
 
-void Str::copy_to_wide_string(wchar_t *C_string, text_stream *S, int buffer_size) {
+void Str::copy_to_wide_string(inchar32_t *C_string, text_stream *S, int buffer_size) {
 	Streams::write_as_wide_string(C_string, S, buffer_size);
 }
 
@@ -219,40 +221,40 @@ int Str::index(string_position P) {
 How to get at individual characters, then, now that we can refer to positions:
 
 =
-wchar_t Str::get(string_position P) {
+inchar32_t Str::get(string_position P) {
 	if ((P.S == NULL) || (P.index < 0)) return 0;
 	return Streams::get_char_at_index(P.S, P.index);
 }
 
-wchar_t Str::get_at(text_stream *S, int index) {
+inchar32_t Str::get_at(text_stream *S, int index) {
 	if ((S == NULL) || (index < 0)) return 0;
 	return Streams::get_char_at_index(S, index);
 }
 
-wchar_t Str::get_first_char(text_stream *S) {
+inchar32_t Str::get_first_char(text_stream *S) {
 	return Str::get(Str::at(S, 0));
 }
 
-wchar_t Str::get_last_char(text_stream *S) {
+inchar32_t Str::get_last_char(text_stream *S) {
 	int L = Str::len(S);
 	if (L == 0) return 0;
 	return Str::get(Str::at(S, L-1));
 }
 
 @ =
-void Str::put(string_position P, wchar_t C) {
+void Str::put(string_position P, inchar32_t C) {
 	if (P.index < 0) internal_error("wrote before start of string");
 	if (P.S == NULL) internal_error("wrote to null stream");
 	int ext = Str::len(P.S);
 	if (P.index > ext) internal_error("wrote beyond end of string");
 	if (P.index == ext) {
-		if (C) PUT_TO(P.S, (int) C);
+		if (C) PUT_TO(P.S, C);
 		return;
 	}
 	Streams::put_char_at_index(P.S, P.index, C);
 }
 
-void Str::put_at(text_stream *S, int index, wchar_t C) {
+void Str::put_at(text_stream *S, int index, inchar32_t C) {
 	Str::put(Str::at(S, index), C);
 }
 
@@ -341,7 +343,7 @@ void Str::copy_UTF8_string(text_stream *S, char *C_string) {
 	Streams::write_UTF8_string(S, C_string);
 }
 
-void Str::copy_wide_string(text_stream *S, wchar_t *C_string) {
+void Str::copy_wide_string(text_stream *S, inchar32_t *C_string) {
 	Str::clear(S);
 	Streams::write_wide_string(S, C_string);
 }
@@ -444,7 +446,7 @@ int Str::ends_with(text_stream *S1, text_stream *S2) {
 	return Str::suffix_eq(S1, S2, Str::len(S2));
 }
 
-int Str::begins_with_wide_string(text_stream *S, wchar_t *prefix) {
+int Str::begins_with_wide_string(text_stream *S, inchar32_t *prefix) {
 	if ((prefix == NULL) || (*prefix == 0)) return TRUE;
 	if (S == NULL) return FALSE;
 	for (int i = 0; prefix[i]; i++)
@@ -453,19 +455,19 @@ int Str::begins_with_wide_string(text_stream *S, wchar_t *prefix) {
 	return TRUE;
 }
 
-int Str::ends_with_wide_string(text_stream *S, wchar_t *suffix) {
+int Str::ends_with_wide_string(text_stream *S, inchar32_t *suffix) {
 	if ((suffix == NULL) || (*suffix == 0)) return TRUE;
 	if (S == NULL) return FALSE;
-	for (int i = 0, at = Str::len(S) - (int) wcslen(suffix); suffix[i]; i++)
+	for (int i = 0, at = Str::len(S) - Wide::len(suffix); suffix[i]; i++)
 		if (Str::get_at(S, at+i) != suffix[i])
 			return FALSE;
 	return TRUE;
 }
 
 @ =
-int Str::eq_wide_string(text_stream *S1, wchar_t *S2) {
+int Str::eq_wide_string(text_stream *S1, inchar32_t *S2) {
 	if (S2 == NULL) return (Str::len(S1) == 0)?TRUE:FALSE;
-	if (Str::len(S1) == (int) wcslen(S2)) {
+	if (Str::len(S1) == Wide::len(S2)) {
 		int i=0;
 		LOOP_THROUGH_TEXT(P, S1)
 			if (Str::get(P) != S2[i++])
@@ -479,13 +481,13 @@ int Str::eq_narrow_string(text_stream *S1, char *S2) {
 	if (Str::len(S1) == (int) strlen(S2)) {
 		int i=0;
 		LOOP_THROUGH_TEXT(P, S1)
-			if (Str::get(P) != (wchar_t) S2[i++])
+			if (Str::get(P) != (inchar32_t) S2[i++])
 				return FALSE;
 		return TRUE;
 	}
 	return FALSE;
 }
-int Str::ne_wide_string(text_stream *S1, wchar_t *S2) {
+int Str::ne_wide_string(text_stream *S1, inchar32_t *S2) {
 	return (Str::eq_wide_string(S1, S2)?FALSE:TRUE);
 }
 
@@ -519,7 +521,7 @@ void Str::trim_white_space(text_stream *S) {
 		Str::truncate(S, len);
 		if (i > 0) {
 			string_position P = Str::start(S);
-			wchar_t c = 0;
+			inchar32_t c = 0;
 			do {
 				c = Str::get(F);
 				Str::put(P, c);
@@ -589,7 +591,7 @@ void Str::substr(OUTPUT_STREAM, string_position from, string_position to) {
 		PUT(Str::get_at(from.S, i));
 }
 
-int Str::includes_character(text_stream *S, wchar_t c) {
+int Str::includes_character(text_stream *S, inchar32_t c) {
 	if (S)
 		LOOP_THROUGH_TEXT(pos, S)
 			if (Str::get(pos) == c)
@@ -597,7 +599,7 @@ int Str::includes_character(text_stream *S, wchar_t c) {
 	return FALSE;
 }
 
-int Str::includes_wide_string_at(text_stream *S, wchar_t *prefix, int j) {
+int Str::includes_wide_string_at(text_stream *S, inchar32_t *prefix, int j) {
 	if ((prefix == NULL) || (*prefix == 0)) return TRUE;
 	if (S == NULL) return FALSE;
 	for (int i = 0; prefix[i]; i++)
@@ -606,7 +608,7 @@ int Str::includes_wide_string_at(text_stream *S, wchar_t *prefix, int j) {
 	return TRUE;
 }
 
-int Str::includes_wide_string_at_insensitive(text_stream *S, wchar_t *prefix, int j) {
+int Str::includes_wide_string_at_insensitive(text_stream *S, inchar32_t *prefix, int j) {
 	if ((prefix == NULL) || (*prefix == 0)) return TRUE;
 	if (S == NULL) return FALSE;
 	for (int i = 0; prefix[i]; i++)
@@ -669,7 +671,7 @@ is run just once per I-literal in the source code, when the program starts up.
 =
 dictionary *string_literals_dictionary = NULL;
 
-text_stream *Str::literal(wchar_t *wide_C_string) {
+text_stream *Str::literal(inchar32_t *wide_C_string) {
 	text_stream *answer = NULL;
 	CREATE_MUTEX(mutex);
 	LOCK_MUTEX(mutex);

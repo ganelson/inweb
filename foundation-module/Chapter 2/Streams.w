@@ -132,7 +132,7 @@ old one. |TEMP| is a different stream each time it is created, so it does
 not violate the rule that every stream is opened and closed once only.
 
 @d TEMPORARY_TEXT(T)
-	wchar_t T##_dest[2048];
+	inchar32_t T##_dest[2048];
 	text_stream T##_stream_structure = Streams::new_buffer(2048, T##_dest);
 	text_stream *T = &T##_stream_structure;
 
@@ -236,7 +236,7 @@ typedef struct text_stream {
 	int stream_flags; /* bitmap of the |*_STRF| values above */
 	FILE *write_to_file; /* for an open stream, exactly one of these is |NULL| */
 	struct HTML_file_state *as_HTML; /* relevant only to the |HTML::| section */
-	wchar_t *write_to_memory;
+	inchar32_t *write_to_memory;
 	struct filename *file_written; /* ditto */
 	int chars_written; /* number of characters sent, counting |\n| as 1 */
 	int chars_capacity; /* maximum number the stream can accept without claiming more resources */
@@ -441,7 +441,7 @@ int Streams::open_to_memory(text_stream *stream, int capacity) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
 	capacity += SPACE_AT_END_OF_STREAM;
 	Streams::initialise(stream, FOR_OM_STRF);
-	stream->write_to_memory = Memory::calloc(capacity, sizeof(wchar_t), STREAM_MREASON);
+	stream->write_to_memory = Memory::calloc(capacity, sizeof(inchar32_t), STREAM_MREASON);
 	if (stream->write_to_memory == NULL) return FALSE;
 	(stream->write_to_memory)[0] = 0;
 	stream->stream_flags |= MALLOCED_STRF;
@@ -453,7 +453,7 @@ int Streams::open_to_memory(text_stream *stream, int capacity) {
 already available. If called validly, this cannot fail.
 
 =
-text_stream Streams::new_buffer(int capacity, wchar_t *at) {
+text_stream Streams::new_buffer(int capacity, inchar32_t *at) {
 	if (at == NULL) internal_error("tried to make stream wrapper for NULL string");
 	if (capacity < SPACE_AT_END_OF_STREAM)
 		internal_error("memory stream too small");
@@ -471,15 +471,14 @@ by a C string. First, a wide string (a sequence of 32-bit Unicode code
 points, null terminated):
 
 =
-int Streams::open_from_wide_string(text_stream *stream, const wchar_t *c_string) {
+int Streams::open_from_wide_string(text_stream *stream, const inchar32_t *c_string, int capacity) {
 	if (stream == NULL) internal_error("tried to open NULL stream");
-	int capacity = (c_string)?((int) wcslen(c_string)):0;
 	@<Ensure a capacity large enough to hold the initial string in one frame@>;
 	if (c_string) Streams::write_wide_string(stream, c_string);
 	return TRUE;
 }
 
-void Streams::write_wide_string(text_stream *stream, const wchar_t *c_string) {
+void Streams::write_wide_string(text_stream *stream, const inchar32_t *c_string) {
 	for (int i=0; c_string[i]; i++) Streams::putc(c_string[i], stream);
 }
 
@@ -496,7 +495,7 @@ int Streams::open_from_ISO_string(text_stream *stream, const char *c_string) {
 }
 
 void Streams::write_ISO_string(text_stream *stream, const char *c_string) {
-	for (int i=0; c_string[i]; i++) Streams::putc(c_string[i], stream);
+	for (int i=0; c_string[i]; i++) Streams::putci(c_string[i], stream);
 }
 
 @ Finally, a UTF-8 encoded C string:
@@ -512,7 +511,7 @@ int Streams::open_from_UTF8_string(text_stream *stream, const char *c_string) {
 
 void Streams::write_UTF8_string(text_stream *stream, const char *c_string) {
 	unicode_file_buffer ufb = TextFiles::create_ufb();
-	int c;
+	inchar32_t c;
 	while ((c = TextFiles::utf8_fgetc(NULL, &c_string, &ufb)) != 0)
 		Streams::putc(c, stream);
 }
@@ -529,7 +528,7 @@ void Streams::write_UTF8_string(text_stream *stream, const char *c_string) {
 Now for the converse problem.
 
 =
-void Streams::write_as_wide_string(wchar_t *C_string, text_stream *stream, int buffer_size) {
+void Streams::write_as_wide_string(inchar32_t *C_string, text_stream *stream, int buffer_size) {
 	if (buffer_size == 0) return;
 	if (stream == NULL) { C_string[0] = 0; return; }
 	if (stream->write_to_file) internal_error("stream_get_text on file stream");
@@ -556,7 +555,7 @@ void Streams::write_as_ISO_string(char *C_string, text_stream *stream, int buffe
 	while (stream) {
 		for (int j=0; j<stream->chars_written; j++) {
 			if (i >= buffer_size-1) break;
-			wchar_t c = stream->write_to_memory[j];
+			inchar32_t c = stream->write_to_memory[j];
 			if (c < 256) C_string[i++] = (char) c; else C_string[i++] = '?';
 		}
 		stream = stream->stream_continues;
@@ -684,9 +683,9 @@ how continuations are made, below.
 
 @<Take suitable action to close the memory stream@> =
 	if ((stream->stream_flags) & MALLOCED_STRF) {
-		wchar_t *mem = stream->write_to_memory;
+		inchar32_t *mem = stream->write_to_memory;
 		stream->write_to_memory = NULL;
-		Memory::I7_free(mem, STREAM_MREASON, stream->chars_capacity*((int) sizeof(wchar_t)));
+		Memory::I7_free(mem, STREAM_MREASON, stream->chars_capacity*((int) sizeof(inchar32_t)));
 		stream = NULL;
 	}
 
@@ -694,9 +693,7 @@ how continuations are made, below.
 Our equivalent of |fputc| reads:
 
 =
-void Streams::putc(int c_int, text_stream *stream) {
-	unsigned int c;
-	if (c_int >= 0) c = (unsigned int) c_int; else c = (unsigned int) (c_int + 256);
+void Streams::putc(inchar32_t c, text_stream *stream) {
 	if (stream == NULL) return;
 	text_stream *first_stream = stream;
 	if (c != '\n') @<Insert indentation if this is pending@>;
@@ -732,16 +729,22 @@ void Streams::putc(int c_int, text_stream *stream) {
 	} else if (stream->write_to_memory) {
 		if ((c >= 0x0300) && (c <= 0x036F) && (stream->chars_written > 0)) {
 			unsigned int newc = (unsigned int) Characters::combine_accent(
-				(int) c, (stream->write_to_memory)[stream->chars_written - 1]);
+				c, (stream->write_to_memory)[stream->chars_written - 1]);
 			if (newc) {
 				c = newc;
 				stream->chars_written--;
 			}
 		}
-		(stream->write_to_memory)[stream->chars_written] = (wchar_t) c;
+		(stream->write_to_memory)[stream->chars_written] = c;
 	}
 	if (c == '\n') first_stream->stream_flags |= INDENT_PENDING_STRF;
 	stream->chars_written++;
+}
+
+void Streams::putci(int c_int, text_stream *stream) {
+	inchar32_t c;
+	if (c_int >= 0) c = (inchar32_t) c_int; else c = (inchar32_t) (c_int + 256);
+	Streams::putc(c, stream);
 }
 
 @ Where we pack large character values, up to 65535, as follows.
@@ -794,7 +797,7 @@ hold any escape sequence when opened.
 	if (stream->chars_written + SPACE_AT_END_OF_STREAM >= stream->chars_capacity) {
 		if (stream->write_to_file) return; /* write nothing further */
 		if (stream->write_to_memory) {
-			int offset = (32 + 2*(stream->chars_capacity))*((int) sizeof(wchar_t));
+			int offset = (32 + 2*(stream->chars_capacity))*((int) sizeof(inchar32_t));
 			int needed = offset + ((int) sizeof(text_stream)) + 32;
 			void *further_allocation = Memory::malloc(needed, STREAM_MREASON);
 			if (further_allocation == NULL) Errors::fatal("Out of memory");
@@ -815,7 +818,7 @@ void Streams::literal(text_stream *stream, char *p) {
 	if (stream == NULL) return;
 	int i, x = ((stream->stream_flags) & USES_XML_ESCAPES_STRF);
 	if (x) stream->stream_flags -= USES_XML_ESCAPES_STRF;
-	for (i=0; p[i]; i++) Streams::putc((int) p[i], stream);
+	for (i=0; p[i]; i++) Streams::putci(p[i], stream);
 	if (x) stream->stream_flags += USES_XML_ESCAPES_STRF;
 }
 
@@ -888,7 +891,7 @@ int Streams::latest(text_stream *stream) {
 zero byte found, so that putting a zero truncates it.
 
 =
-wchar_t Streams::get_char_at_index(text_stream *stream, int position) {
+inchar32_t Streams::get_char_at_index(text_stream *stream, int position) {
 	if (stream == NULL) internal_error("examining null stream");
 	if (stream->write_to_file) internal_error("examining file stream");
 	while (position >= stream->chars_written) {
@@ -900,7 +903,7 @@ wchar_t Streams::get_char_at_index(text_stream *stream, int position) {
 	return (stream->write_to_memory)[position];
 }
 
-void Streams::put_char_at_index(text_stream *stream, int position, wchar_t C) {
+void Streams::put_char_at_index(text_stream *stream, int position, inchar32_t C) {
 	if (stream == NULL) internal_error("modifying null stream");
 	if (stream->write_to_file) internal_error("modifying file stream");
 	if (stream->stream_flags & READ_ONLY_STRF) internal_error("modifying read-only stream");
@@ -956,7 +959,7 @@ void Streams::copy(text_stream *to, text_stream *from) {
 	if (from->write_to_file) internal_error("stream_copy from file stream");
 	if (from->write_to_memory) {
 		for (int i=0; i<from->chars_written; i++) {
-			int c = (int) ((from->write_to_memory)[i]);
+			inchar32_t c = (from->write_to_memory)[i];
 			Streams::putc(c, to);
 		}
 		if (from->stream_continues) Streams::copy(to, from->stream_continues);
