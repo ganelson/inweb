@@ -196,23 +196,9 @@ notation, also used by indoc.
 	}
 
 @<Insert an index item@> =
-	int name_inversion = FALSE;
-
-	if (Str::get_first_char(lemma) == '@') {
-		Str::delete_first_character(lemma);
-		name_inversion = TRUE;
-	}
 	markdown_item *md = Markdown::new_item(INDEX_MARKER_MIT);
 	md->stashed = Str::duplicate(lemma);
 	md->details = count;
-	if (name_inversion) {
-		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, md->stashed, U"(%c*) (%C+)")) {
-			Str::clear(md->stashed);
-			WRITE_TO(md->stashed, "%S, %S", mr.exp[1], mr.exp[0]);
-		}
-		Regexp::dispose_of(&mr);
-	}
 	Markdown::add_to(md, owner);
 	if (count == 1) {
 		markdown_item *md = Markdown::new_slice(PLAIN_MIT, Str::duplicate(lemma), 0, Str::len(lemma)-1);
