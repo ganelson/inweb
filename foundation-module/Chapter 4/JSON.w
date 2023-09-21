@@ -331,7 +331,8 @@ JSON_value *JSON::decode_array(JSON_value *array, text_stream *T, int from, int 
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
 			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
-				first_comma = i; break;
+					first_comma = i;
+				break;
 			case '[': case '{': if (quoted == FALSE) bl++; break;
 			case ']': case '}': if (quoted == FALSE) bl--; break;
 		}
@@ -368,7 +369,8 @@ JSON_value *JSON::decode_object(JSON_value *obj, text_stream *T, int from, int t
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
 			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
-				first_comma = i; break;
+					first_comma = i;
+				break;
 			case '[': case '{': if (quoted == FALSE) bl++; break;
 			case ']': case '}': if (quoted == FALSE) bl--; break;
 		}
@@ -1157,7 +1159,8 @@ JSON_single_requirement *JSON::decode_req_array(JSON_single_requirement *array_s
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
 			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
-				first_comma = i; break;
+					first_comma = i;
+				break;
 			case '[': case '{': case '(': if (quoted == FALSE) bl++; break;
 			case ']': case '}': case ')': if (quoted == FALSE) bl--; break;
 		}
@@ -1195,7 +1198,8 @@ JSON_single_requirement *JSON::decode_req_object(JSON_single_requirement *obj,
 			case '"': quoted = (quoted)?FALSE:TRUE; break;
 			case '\\': if (quoted) i++; break;
 			case ',': if ((quoted == FALSE) && ((first_comma < 0) && (bl == 0)))
-				first_comma = i; break;
+					first_comma = i;
+				break;
 			case '[': case '{': case '(': if (quoted == FALSE) bl++; break;
 			case ']': case '}': case ')': if (quoted == FALSE) bl--; break;
 		}

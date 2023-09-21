@@ -73,6 +73,10 @@ INWEB = inweb/Tangled/inweb
 
 # Where:
 
+# The core Inform tools are recommended to be compiled with Clang. To use GCC or
+# your platform's default compiler, set or delete this variable accordingly.
+CC = clang
+
 # Source options (_POSIX_C_SOURCE is necessary for readlink()); color error
 # messages; pull in optimization and debug flags from whatever is defined in the
 # CFLAGS and LDFLAGS environment variables by the Linux packaging config.
@@ -80,16 +84,24 @@ INWEB = inweb/Tangled/inweb
 CCOPTS = -D_POSIX_C_SOURCE=200112L -D_DEFAULT_SOURCE -DPLATFORM_LINUX \
 	-fdiagnostics-color=auto $(CFLAGS)
 
-MANYWARNINGS = -Wall -Wextra -Wimplicit-fallthrough=2 -Wno-pointer-to-int-cast \
-    -Wno-unknown-pragmas -Wno-unused-but-set-parameter \
-    -Wno-unused-but-set-variable -Wno-unused-function -Wno-unused-parameter \
-    -Wno-unused-variable -fmax-errors=1000
+MANYWARNINGS = -Wall -Wextra -Wno-unknown-warning-option \
+    -Wno-declaration-after-statement -Wno-deprecated-non-prototype \
+    -Wno-unused-but-set-variable -Wno-unused-parameter
 
 # To explain those:
 
-#     -Wimplicit-fallthrough=2: comments are fallthrough comments as long as they contain the words "fall through"
-#     -Wno-pointer-to-int-cast: we use the gcc extension allowing (void *) pointers to increment
-#     -Wno-unknown-pragmas: there is plenty of #pragma clang and we don't want a warning every time it is encountered
-#     -Wno-unused-*: we don't much care if a function argument, etc. isn't used
+#     -Wno-unknown-warning-option: we want to turn off new warnings on later versions of clang but still compile on earlier versions
+#     -Wno-declaration-after-statement: clang is very zealous about compatibility with C89 even though we are compiling in C99
+#     -Wno-deprecated-non-prototype: avoids a warning in the plugin code where we pass arguments to a function pointer
+#     -Wno-unused-but-set-variable: this is harmless, and done deliberately to avoid warnings on other compilers
+#     -Wno-unused-parameter: we don't much care if a function argument isn't used
 
-FEWERWARNINGS = -Wno-implicit-int
+FEWERWARNINGS = -Wno-constant-conversion -Wno-dangling-else -Wno-format \
+    -Wno-implicit-int -Wno-pointer-sign
+
+# For GCC, here is an alternate set:
+# MANYWARNINGS = -Wall -Wextra -Wimplicit-fallthrough=2 \
+#     -Wno-pointer-to-int-cast -Wno-unknown-pragmas \
+#     -Wno-unused-but-set-parameter -Wno-unused-but-set-variable \
+#     -Wno-unused-function -Wno-unused-parameter -Wno-unused-variable
+# FEWERWARNINGS = -Wno-implicit-int
