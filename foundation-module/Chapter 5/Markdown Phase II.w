@@ -1033,6 +1033,9 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 					@<Deal with escape characters in the label@>;
 					md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
 					if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
+					#ifdef SUPERVISOR_MODULE
+					DocumentationCompiler::notify_image_use(ref->destination);
+					#endif
 					result.link_reference = ref;
 					pos = result.link_text_to;
 					pos = Markdown::advance_up_to(pos, to);
@@ -1122,6 +1125,9 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 	md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
 	if (ref == NULL) ABANDON_LINK("unknown reference");
 	result.link_reference = ref;
+	#ifdef SUPERVISOR_MODULE
+	DocumentationCompiler::notify_image_use(ref->destination);
+	#endif
 
 @ Note that only square brackets and backslashes can be escaped in a link
 or image reference label, not other ASCII punctuation.
