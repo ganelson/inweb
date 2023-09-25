@@ -326,13 +326,13 @@ anything different which was originally in |dest|).
 In POSIX world, we can fairly well depend on |rsync| being around:
 
 =
-void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
+int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 	char rsync_command[10*MAX_FILENAME_LENGTH];
 	sprintf(rsync_command, "rsync -a --delete ");
 	Platform::quote_text(rsync_command + strlen(rsync_command), transcoded_source, TRUE);
 	sprintf(rsync_command + strlen(rsync_command), " ");
 	Platform::quote_text(rsync_command + strlen(rsync_command), transcoded_dest, FALSE);
-	Platform::system(rsync_command);
+	return Platform::system(rsync_command);
 }
 
 void Platform::quote_text(char *quoted, char *raw, int terminate) {

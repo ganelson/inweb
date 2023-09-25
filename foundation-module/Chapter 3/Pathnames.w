@@ -275,7 +275,7 @@ the |dest| tree an exact copy of the |source| tree (and therefore deletes
 anything different which was originally in |dest|).
 
 =
-void Pathnames::rsync(pathname *source, pathname *dest) {
+int Pathnames::rsync(pathname *source, pathname *dest) {
 	char transcoded_source[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(pn)
 	WRITE_TO(pn, "%p", source);
@@ -286,7 +286,7 @@ void Pathnames::rsync(pathname *source, pathname *dest) {
 	WRITE_TO(pn2, "%p", dest);
 	Str::copy_to_locale_string(transcoded_dest, pn2, 4*MAX_FILENAME_LENGTH);
 	DISCARD_TEXT(pn2)
-	Platform::rsync(transcoded_source, transcoded_dest);
+	return Platform::rsync(transcoded_source, transcoded_dest);
 }
 
 @h Moving.

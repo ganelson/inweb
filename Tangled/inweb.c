@@ -256,7 +256,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 396 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 397 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef struct Win32_Thread_Attrs
 {
@@ -268,7 +268,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 502 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 503 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -2947,7 +2947,7 @@ off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 329 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
+int  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
@@ -3049,54 +3049,54 @@ void  Platform__path_add(const char* base, const char* add, char* path) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 255 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-void  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
+int  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 334 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 335 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 341 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 342 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 359 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 360 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 368 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 369 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 414 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 415 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 429 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 430 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 433 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 434 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 437 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 438 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 447 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 448 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 468 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 469 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 472 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 473 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 478 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 479 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -3514,7 +3514,7 @@ void  Pathnames__relative_URL(OUTPUT_STREAM, pathname *from, pathname *to) ;
 #line 260 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int  Pathnames__create_in_file_system(pathname *P) ;
 #line 278 "inweb/foundation-module/Chapter 3/Pathnames.w"
-void  Pathnames__rsync(pathname *source, pathname *dest) ;
+int  Pathnames__rsync(pathname *source, pathname *dest) ;
 #line 295 "inweb/foundation-module/Chapter 3/Pathnames.w"
 int  Pathnames__move_directory(pathname *from, pathname *to) ;
 #line 22 "inweb/foundation-module/Chapter 3/Filenames.w"
@@ -9179,13 +9179,13 @@ off_t Platform__size(char *transcoded_filename) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 329 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
+int Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	char rsync_command[10*MAX_FILENAME_LENGTH];
 	sprintf(rsync_command, "rsync -a --delete ");
 	Platform__quote_text(rsync_command + strlen(rsync_command), transcoded_source, TRUE);
 	sprintf(rsync_command + strlen(rsync_command), " ");
 	Platform__quote_text(rsync_command + strlen(rsync_command), transcoded_dest, FALSE);
-	Platform__system(rsync_command);
+	return Platform__system(rsync_command);
 }
 
 void Platform__quote_text(char *quoted, char *raw, int terminate) {
@@ -9403,7 +9403,7 @@ void Platform__path_add(const char* base, const char* add, char* path) {
 	strcat(path, add);
 }
 
-void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
+int Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	char srcPath[MAX_PATH], destPath[MAX_PATH];
 	WIN32_FIND_DATA findData = { 0 };
 
@@ -9476,24 +9476,25 @@ void Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 		while (FindNextFileA(findHandle, &findData) != 0);
 		FindClose(findHandle);
 	}
+	return 0;
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 334 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 335 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 341 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 342 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 352 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 353 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #define WIN32CONS_RESET_MODE 1
 #define WIN32CONS_RESET_OUTCP 2
 
@@ -9537,7 +9538,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 407 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 408 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -9574,7 +9575,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 447 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 448 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__get_core_count(void) {
 	int count = 0;
 	SYSTEM_INFO sysInfo;
@@ -9590,7 +9591,7 @@ int Platform__get_core_count(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 468 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 469 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -12381,11 +12382,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B53";
+			char *svn = "7.2.1-beta+1B54";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "21 September 2023";
+			char *d = "25 September 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -12745,7 +12746,7 @@ int Pathnames__create_in_file_system(pathname *P) {
 }
 
 #line 278 "inweb/foundation-module/Chapter 3/Pathnames.w"
-void Pathnames__rsync(pathname *source, pathname *dest) {
+int Pathnames__rsync(pathname *source, pathname *dest) {
 	char transcoded_source[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(pn)
 	WRITE_TO(pn, "%p", source);
@@ -12756,7 +12757,7 @@ void Pathnames__rsync(pathname *source, pathname *dest) {
 	WRITE_TO(pn2, "%p", dest);
 	Str__copy_to_locale_string(transcoded_dest, pn2, 4*MAX_FILENAME_LENGTH);
 	DISCARD_TEXT(pn2)
-	Platform__rsync(transcoded_source, transcoded_dest);
+	return Platform__rsync(transcoded_source, transcoded_dest);
 }
 
 #line 295 "inweb/foundation-module/Chapter 3/Pathnames.w"
@@ -48161,7 +48162,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B53\t/built 21 September 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B54\t/built 25 September 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

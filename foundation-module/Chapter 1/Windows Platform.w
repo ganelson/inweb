@@ -252,7 +252,7 @@ void Platform::path_add(const char* base, const char* add, char* path) {
 	strcat(path, add);
 }
 
-void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
+int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 	char srcPath[MAX_PATH], destPath[MAX_PATH];
 	WIN32_FIND_DATA findData = { 0 };
 
@@ -325,6 +325,7 @@ void Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 		while (FindNextFileA(findHandle, &findData) != 0);
 		FindClose(findHandle);
 	}
+	return 0;
 }
 
 @h Sleep. The Windows |Sleep| call measures time in milliseconds, whereas
