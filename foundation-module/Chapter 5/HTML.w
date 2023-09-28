@@ -491,10 +491,12 @@ void HTML::begin_link_with_class_onclick(OUTPUT_STREAM, text_stream *cl, text_st
 }
 
 void HTML::begin_link_with_class_title_onclick(OUTPUT_STREAM, text_stream *cl, text_stream *to, text_stream *ti, text_stream *on) {
-	WRITE("<a href=\"%S\" class=\"%S\"", to, cl);
-	if (Str::len(ti) > 0) WRITE(" title=\"%S\"", ti);
-	if (Str::len(on) > 0) WRITE(" onclick=\"%S\"", on);
-	WRITE(">");
+	TEMPORARY_TEXT(extras)
+	WRITE_TO(extras, "class=\"%S\"", cl);
+	if (Str::len(ti) > 0) WRITE_TO(extras, " title=\"%S\"", ti);
+	if (Str::len(on) > 0) WRITE_TO(extras, " onclick=\"%S\"", on);
+	HTML_OPEN_WITH("a", "href=\"%S\" %S", to, extras);
+	DISCARD_TEXT(extras)
 }
 
 void HTML::end_link(OUTPUT_STREAM) {

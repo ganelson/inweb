@@ -598,9 +598,13 @@ void InformFlavouredMarkdown::pbiapi_r(markdown_item *md) {
 				if (c == '\t') {
 					PUT_TO(detabbed, ' '); margin++;
 					while (margin % 4 != 0) { PUT_TO(detabbed, ' '); margin++; }
-				} else {
+				} else if ((c == ' ') || (c == '\n')) {
 					PUT_TO(detabbed, c); margin++;
 					if (c == '\n') margin = 0;
+				} else {
+					PUT_TO(detabbed, c);
+					for (i++; i<Str::len(ch->stashed); i++)
+						PUT_TO(detabbed, Str::get_at(ch->stashed, i));
 				}
 			}
 			Str::clear(ch->stashed);
@@ -918,7 +922,7 @@ use "transcript" instead.
 	}
 
 @<Render as Inform 7 source text@> =
-	HTML_OPEN("blockquote");
+	HTML_OPEN_WITH("blockquote", "class=\"extract-inform7\"");
 	if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {
 		markdown_item *first = RETRIEVE_POINTER_markdown_item(md->user_state);
 		TEMPORARY_TEXT(accumulated)
@@ -954,6 +958,7 @@ use "transcript" instead.
 			}
 		}
 	}
+
 	HTML::begin_span(OUT, I"indexdullblue");
 	int tabulating = FALSE, tabular = FALSE, line_count = 0;
 	TEMPORARY_TEXT(line)
@@ -969,8 +974,8 @@ use "transcript" instead.
 		}
 		if ((k == Str::len(md->stashed) - 1) && (Str::len(line) > 0)) @<Render line@>;
 	}
-	HTML_CLOSE("span");
 	if (tabulating) @<End I7 table in extension documentation@>;
+	HTML_CLOSE("span");
 	HTML_CLOSE("blockquote");
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)
@@ -984,41 +989,44 @@ use "transcript" instead.
 	if (tabular) {
 		if (tabulating) {
 			@<Begin new row of I7 table in extension documentation@>;
+			int cell_from = 0, cell_to = 0, i = 0;
+			@<Begin table cell for I7 table in extension documentation@>;
+			for (; i<Str::len(line); i++) {
+				if (Str::get_at(line, i) == '\t') {
+					@<End table cell for I7 table in extension documentation@>;
+					while (Str::get_at(line, i) == '\t') i++;
+					@<Begin table cell for I7 table in extension documentation@>;
+					i--;
+				} else {
+					cell_to++;
+				}
+			}
+			@<End last table cell for I7 table in extension documentation@>;
 		} else {
+			@<Render line outside of a table@>;
 			@<Begin I7 table in extension documentation@>;
 			tabulating = TRUE;
 		}
-		int cell_from = 0, cell_to = 0, i = 0;
-		@<Begin table cell for I7 table in extension documentation@>;
-		for (; i<Str::len(line); i++) {
-			if (Str::get_at(line, i) == '\t') {
-				@<End table cell for I7 table in extension documentation@>;
-				while (Str::get_at(line, i) == '\t') i++;
-				@<Begin table cell for I7 table in extension documentation@>;
-				i--;
-			} else {
-				cell_to++;
-			}
-		}
-		@<End table cell for I7 table in extension documentation@>;
-		@<End row of I7 table in extension documentation@>;
 	} else {
-		if (line_count > 1) HTML_TAG("br");
-		if (tabulating) {
-			@<End I7 table in extension documentation@>;
-			tabulating = FALSE;
-		}
-		int indentation = 0;
-		int z=0, spaces = 0;
-		for (; z<Str::len(line); z++)
-			if (Str::get_at(line, z) == ' ') { spaces++; if (spaces == 4) { indentation++; spaces = 0; } }
-			else if (Str::get_at(line, z) == '\t') { indentation++; spaces = 0; }
-			else break;
-		for (int n=0; n<indentation; n++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-		InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
-			z, Str::len(line), mode);
+		@<Render line outside of a table@>;
 	}
 	WRITE("\n");
+
+@<Render line outside of a table@> =
+	if (line_count > 1) HTML_TAG("br");
+	if (tabulating) {
+		@<End I7 table in extension documentation@>;
+		tabulating = FALSE;
+	}
+	int indentation = 0;
+	int z=0, spaces = 0;
+	for (; z<Str::len(line); z++)
+		if (Str::get_at(line, z) == ' ') { spaces++; if (spaces == 4) { indentation++; spaces = 0; } }
+		else if (Str::get_at(line, z) == '\t') { indentation++; spaces = 0; }
+		else break;
+	for (int n=0; n<indentation; n++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
+	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
+		z, Str::len(line), mode);
 
 @ Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
 and this is fiddly but elementary in the usual way of HTML tables:
@@ -1027,7 +1035,6 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::end_span(OUT);
 	HTML_TAG("br");
 	HTML::begin_plain_html_table(OUT);
-	HTML::first_html_column(OUT, 0);
 
 @<End table cell for I7 table in extension documentation@> =
 	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
@@ -1035,15 +1042,18 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::end_span(OUT);
 	HTML::next_html_column(OUT, 0);
 
+@<End last table cell for I7 table in extension documentation@> =
+	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
+		cell_from, cell_to, mode);
+	HTML::end_span(OUT);
+	HTML::end_html_row(OUT);
+
 @<Begin table cell for I7 table in extension documentation@> =
 	cell_from = i; cell_to = cell_from;
 	HTML::begin_span(OUT, I"indexdullblue");
 
 @<Begin new row of I7 table in extension documentation@> =
 	HTML::first_html_column(OUT, 0);
-
-@<End row of I7 table in extension documentation@> =
-	HTML::end_html_row(OUT);
 
 @<End I7 table in extension documentation@> =
 	HTML::end_html_table(OUT);
