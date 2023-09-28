@@ -256,75 +256,94 @@ int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 	char srcPath[MAX_PATH], destPath[MAX_PATH];
 	WIN32_FIND_DATA findData = { 0 };
 
-	SHCreateDirectoryExA(0, transcoded_dest, NULL);
+	int result = SHCreateDirectoryExA(0, transcoded_dest, NULL);
+	if ((result != ERROR_SUCCESS) && (result != ERROR_FILE_EXISTS) && (result != ERROR_ALREADY_EXISTS))
+		return result;
 
 	Platform::path_add(transcoded_dest, "*", destPath);
 	HANDLE findHandle = FindFirstFileA(destPath, &findData);
-	if (findHandle != INVALID_HANDLE_VALUE) {
-		do {
-			if ((strcmp(findData.cFileName, ".") == 0) || (strcmp(findData.cFileName, "..") == 0))
-				continue;
+	if (findHandle == INVALID_HANDLE_VALUE)
+		return (int)GetLastError();
+	do {
+		if ((strcmp(findData.cFileName, ".") == 0) || (strcmp(findData.cFileName, "..") == 0))
+			continue;
 
-			Platform::path_add(transcoded_source, findData.cFileName, srcPath);
+		Platform::path_add(transcoded_source, findData.cFileName, srcPath);
 
-			int remove = 1;
-			{
-				DWORD srcAttrs = GetFileAttributesA(srcPath);
-				if (srcAttrs != INVALID_FILE_ATTRIBUTES) {
-					if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == (srcAttrs & FILE_ATTRIBUTE_DIRECTORY))
-						remove = 0;
-				}
-			}
-			if (remove) {
-				Platform::path_add(transcoded_dest, findData.cFileName, destPath);
-				if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-					SHFILEOPSTRUCTA oper = { 0 };
-					oper.wFunc = FO_DELETE;
-					oper.pFrom = destPath;
-					oper.fFlags = FOF_NO_UI;
-					SHFileOperationA(&oper);
-				}
-				else DeleteFileA(destPath);
+		int remove = 1;
+		{
+			DWORD srcAttrs = GetFileAttributesA(srcPath);
+			if (srcAttrs != INVALID_FILE_ATTRIBUTES) {
+				if ((findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == (srcAttrs & FILE_ATTRIBUTE_DIRECTORY))
+					remove = 0;
 			}
 		}
-		while (FindNextFileA(findHandle, &findData) != 0);
-		FindClose(findHandle);
+		if (remove) {
+			Platform::path_add(transcoded_dest, findData.cFileName, destPath);
+			if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+				SHFILEOPSTRUCTA oper = { 0 };
+				oper.wFunc = FO_DELETE;
+				oper.pFrom = destPath;
+				oper.fFlags = FOF_NO_UI;
+				result = SHFileOperationA(&oper);
+				if (result != 0) {
+					FindClose(findHandle);
+					return result;
+				}
+			}
+			else
+			{
+				if (DeleteFileA(destPath) == 0) {
+					FindClose(findHandle);
+					return (int)GetLastError();
+				}
+			}
+		}
 	}
+	while (FindNextFileA(findHandle, &findData) != 0);
+	FindClose(findHandle);
 
 	Platform::path_add(transcoded_source, "*", srcPath);
 	findHandle = FindFirstFileA(srcPath, &findData);
-	if (findHandle != INVALID_HANDLE_VALUE) {
-		do {
-			if ((strcmp(findData.cFileName, ".") == 0) || (strcmp(findData.cFileName, "..") == 0))
-				continue;
+	if (findHandle == INVALID_HANDLE_VALUE)
+		return (int)GetLastError();
+	do {
+		if ((strcmp(findData.cFileName, ".") == 0) || (strcmp(findData.cFileName, "..") == 0))
+			continue;
 
-			Platform::path_add(transcoded_source, findData.cFileName, srcPath);
-			Platform::path_add(transcoded_dest, findData.cFileName, destPath);
+		Platform::path_add(transcoded_source, findData.cFileName, srcPath);
+		Platform::path_add(transcoded_dest, findData.cFileName, destPath);
 
-			if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-				CreateDirectoryA(destPath, 0);
-				Platform::rsync(srcPath, destPath);
-			} else {
-				int needCopy = 1;
-				{
-					WIN32_FIND_DATA destFindData = { 0 };
-					HANDLE destFindHandle = FindFirstFileA(destPath, &destFindData);
-					if (destFindHandle != INVALID_HANDLE_VALUE) {
-						if ((findData.nFileSizeLow == destFindData.nFileSizeLow) && (findData.nFileSizeHigh == destFindData.nFileSizeHigh)) {
-							if (CompareFileTime(&(findData.ftLastWriteTime), &(destFindData.ftLastWriteTime)) == 0)
-								needCopy = 0;
-						}
-						FindClose(destFindHandle);
+		if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+			if (CreateDirectoryA(destPath, 0) == 0) {
+				FindClose(findHandle);
+				return (int)GetLastError();
+			}
+			Platform::rsync(srcPath, destPath);
+		} else {
+			int needCopy = 1;
+			{
+				WIN32_FIND_DATA destFindData = { 0 };
+				HANDLE destFindHandle = FindFirstFileA(destPath, &destFindData);
+				if (destFindHandle != INVALID_HANDLE_VALUE) {
+					if ((findData.nFileSizeLow == destFindData.nFileSizeLow) && (findData.nFileSizeHigh == destFindData.nFileSizeHigh)) {
+						if (CompareFileTime(&(findData.ftLastWriteTime), &(destFindData.ftLastWriteTime)) == 0)
+							needCopy = 0;
 					}
+					FindClose(destFindHandle);
 				}
+			}
 
-				if (needCopy)
-					CopyFileA(srcPath, destPath, 0);
+			if (needCopy) {
+				if (CopyFileA(srcPath, destPath, 0) == 0) {
+					FindClose(findHandle);
+					return (int)GetLastError();
+				}
 			}
 		}
-		while (FindNextFileA(findHandle, &findData) != 0);
-		FindClose(findHandle);
 	}
+	while (FindNextFileA(findHandle, &findData) != 0);
+	FindClose(findHandle);
 	return 0;
 }
 
