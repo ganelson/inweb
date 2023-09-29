@@ -250,12 +250,17 @@ context-free except for its use of the links dictionary:
 
 =
 void Markdown::render(OUTPUT_STREAM, markdown_item *tree) {
-	MDRenderer::render_extended(OUT, tree, MarkdownVariations::CommonMark());
+	MDRenderer::render_extended(OUT, tree, MarkdownVariations::CommonMark(), 0);
 }
 
 void Markdown::render_extended(OUTPUT_STREAM, markdown_item *tree,
 	markdown_variation *variation) {
-	MDRenderer::render_extended(OUT, tree, variation);
+	MDRenderer::render_extended(OUT, tree, variation, 0);
+}
+
+void Markdown::render_bodied_extended(OUTPUT_STREAM, markdown_item *tree,
+	markdown_variation *variation) {
+	MDRenderer::render_extended(OUT, tree, variation, EXAMPLE_BODIES_MDRMODE);
 }
 
 @h Storing marked-up copy.
@@ -502,6 +507,7 @@ typedef struct markdown_item {
 	int whitespace_follows;
 	struct text_stream *info_string;
 	int details;
+	int invisible;
 	int open;
 
 	/* tree position of this item */
@@ -558,6 +564,7 @@ markdown_item *Markdown::deep_copy(markdown_item *md) {
 	copied->copied_from = md;
 	for (markdown_item *c = md->down; c; c = c->next)
 		Markdown::add_to(Markdown::deep_copy(c), copied);
+	copied->details = md->details;
 	return copied;
 }
 

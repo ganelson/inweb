@@ -20,11 +20,12 @@ through the tree: it's a bitmap composed of the following.
 @d ENTITIES_MDRMODE 0x0020     /* Convert |&entity;| to whatever it ought to represent */
 @d FILTERED_MDRMODE 0x0040     /* Make first |<| character safe as |&lt;| */
 @d TOLOWER_MDRMODE  0x0080     /* Force letters to lower case */
+@d EXAMPLE_BODIES_MDRMODE  0x0100  /* Render interiors of examples */
 
 =
 void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
-	markdown_variation *variation) {
-	int default_mode = TAGS_MDRMODE | ESCAPES_MDRMODE;
+	markdown_variation *variation, int extra_modes) {
+	int default_mode = TAGS_MDRMODE | ESCAPES_MDRMODE | extra_modes;
 	if (MarkdownVariations::supports(variation, ENTITIES_MARKDOWNFEATURE))
 		default_mode = default_mode | ENTITIES_MDRMODE;	
 	MDRenderer::recurse(OUT, md, default_mode, variation);

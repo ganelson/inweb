@@ -460,9 +460,11 @@ CSS is now much more reliable.
 int InformFlavouredMarkdown::EE_render(markdown_feature *feature,
 	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
-		HTML_TAG("hr"); /* rule a line before the example heading */
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
 		InformFlavouredMarkdown::render_example_heading(OUT, E, md);
+		if (mode & EXAMPLE_BODIES_MDRMODE)
+			for (markdown_item *ch=md->down; ch; ch = ch->next)
+				MDRenderer::recurse(OUT, ch, mode, InformFlavouredMarkdown::variation());
 		return TRUE;
 	}
 	return FALSE;
@@ -470,6 +472,8 @@ int InformFlavouredMarkdown::EE_render(markdown_feature *feature,
 
 void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example *E,
 	markdown_item *md) {
+	HTML_OPEN_WITH("div", "class=\"examplebox\"");
+
 	TEMPORARY_TEXT(link)
 	TEMPORARY_TEXT(linkl)
 	TEMPORARY_TEXT(linkr)
@@ -500,8 +504,6 @@ void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example 
 		}
 	}
 
-	HTML_OPEN_WITH("div", "class=\"examplebox\"");
-
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("div", "class=\"exampleleft\"");
 	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
@@ -516,36 +518,40 @@ void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example 
 	/* Middle cell: the asterisks and title, with rubric underneath */
 	HTML_OPEN_WITH("div", "class=\"examplemiddle\"");
 	if (Str::len(link) > 0) HTML_OPEN_WITH("a", "%S", link);
+	HTML::begin_span(OUT, I"examplestars");
 	for (int asterisk = 0; asterisk < E->star_count; asterisk++)
 		PUT(0x2605); /* the Unicode for "black star" emoji */
 	/* or 0x2B50 is the Unicode for "star" emoji */
 	/* or again, could use the asterisk.png image in the app */
+	HTML::end_span(OUT);
 	WRITE("&nbsp; ");
 	HTML_OPEN("b");
-	HTML::begin_span(OUT, I"indexdarkgrey");
+	HTML::begin_span(OUT, I"exampleword");
 	WRITE("&nbsp;Example&nbsp;");
 	HTML::end_span(OUT);
-	HTML::begin_span(OUT, I"indexblack");
+	HTML::begin_span(OUT, I"examplename");
 	InformFlavouredMarkdown::render_text(OUT, E->name);
 	HTML::end_span(OUT);
 	HTML_CLOSE("b");
 	HTML_TAG("br");
-	HTML::begin_span(OUT, I"indexblack");
+	HTML::begin_span(OUT, I"exampledescription");
 	InformFlavouredMarkdown::render_text(OUT, E->description);
 	HTML::end_span(OUT);
 	if (Str::len(link) > 0) HTML_CLOSE("a");
 	HTML_CLOSE("div");
 
-	/* Right hand cell: the cross-reference */
-	HTML_OPEN_WITH("div", "class=\"exampleright\"");
-	HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
-	if (Str::len(linkr) > 0) HTML_OPEN_WITH("a", "%S", linkr);
-	HTML::begin_span(OUT, I"extensionexampleseealso");
-	WRITE("%S", label);
-	HTML::end_span(OUT);
-	if (Str::len(linkr) > 0) HTML_CLOSE("a");
-	HTML_CLOSE("span"); /* end the textual link */
-	HTML_CLOSE("div");
+	if (Str::len(linkr) > 0) {
+		/* Right hand cell: the cross-reference */
+		HTML_OPEN_WITH("div", "class=\"exampleright\"");
+		HTML_OPEN_WITH("span", "id=eg%S", E->insignia); /* provide the anchor point */
+		HTML_OPEN_WITH("a", "%S", linkr);
+		HTML::begin_span(OUT, I"extensionexampleseealso");
+		WRITE("%S", label);
+		HTML::end_span(OUT);
+		if (Str::len(linkr) > 0) HTML_CLOSE("a");
+		HTML_CLOSE("span"); /* end the textual link */
+		HTML_CLOSE("div");
+	}
 
 	HTML_CLOSE("div");
 	DISCARD_TEXT(link)
@@ -868,8 +874,17 @@ But this affects only the CSS class applied to it.
 		if (Markdown::get_backtick_count(md) == 1) {
 			HTML_OPEN_WITH("code", "class=\"inlinesourcetext\"");
 		} else if (Markdown::get_backtick_count(md) == 2) {
-			HTML_OPEN_WITH("code", "class=\"inlinetranscript\"");
-			mode = mode | TOLOWER_MDRMODE;
+			int lc = FALSE;
+			for (int i=md->from; i<=md->to; i++) {
+				inchar32_t c = Markdown::get_at(md, i);
+				if (Characters::islower(c)) lc = TRUE;
+			}
+			if (lc) {
+				HTML_OPEN_WITH("code", "class=\"inlinetranscript\"");
+			} else {
+				HTML_OPEN_WITH("code", "class=\"inlinetranscriptcommand\"");
+				mode = mode | TOLOWER_MDRMODE;
+			}
 		} else {
 			HTML_OPEN_WITH("code", "class=\"inlinecode\"");
 		}
