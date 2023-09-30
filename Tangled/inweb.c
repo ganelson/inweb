@@ -113,21 +113,21 @@ void Platform__where_am_i(inchar32_t *p, size_t length) {
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 404 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 414 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 439 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 449 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <sys/sysinfo.h>
 
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 463 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 #include <sys/sysctl.h>
 
 #endif /* PLATFORM_MACOS */
@@ -256,7 +256,7 @@ int Platform__system(const char *cmd) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 416 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 424 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 typedef HANDLE foundation_thread;
 typedef struct Win32_Thread_Attrs
 {
@@ -268,7 +268,7 @@ struct Win32_Thread_Start { void *(*fn)(void *); void* arg; };
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 522 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 530 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
 #endif /* PLATFORM_WINDOWS */
@@ -2933,79 +2933,83 @@ int  Platform__rename_directory(char *old_transcoded_pathname, char *new_transco
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 288 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int  Platform__delete_file(char *transcoded_pathname) ;
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 298 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 305 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 315 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 309 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 319 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 315 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 325 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 329 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 339 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 338 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 348 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__quote_text(char *quoted, char *raw, int terminate) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 354 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 364 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 370 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 380 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 383 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 393 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 396 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 406 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 408 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 418 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__create_thread(foundation_thread *pt, 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 413 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 423 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 417 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 427 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__init_thread(foundation_thread_attributes *pa, size_t size) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 422 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 432 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes *pa) ;
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 443 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_LINUX */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 457 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 467 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 469 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 479 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_ANDROID */
 #endif /* PLATFORM_POSIX */
@@ -3043,62 +3047,66 @@ int  Platform__rename_directory(char *old_transcoded_pathname, char *new_transco
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 238 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int  Platform__delete_file(char *old_transcoded_pathname) ;
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 246 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 245 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 253 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__path_add(const char* base, const char* add, char* path) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 255 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 263 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__rsync(char *transcoded_source, char *transcoded_dest) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 354 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 362 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__sleep(int seconds) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 361 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 369 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__notification(text_stream *text, int happy) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 379 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 387 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__Win32_ResetConsole(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 388 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 396 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__configure_terminal(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 434 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 442 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__create_thread(foundation_thread *pt, const foundation_thread_attributes *pa, 	void *(*fn)(void *), void *arg) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 449 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 457 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__join_thread(foundation_thread pt, void** rv) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 453 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 461 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__init_thread(foundation_thread_attributes* pa, size_t size) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 457 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 465 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 size_t  Platform__get_thread_stack_size(foundation_thread_attributes* pa) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 467 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 475 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int  Platform__get_core_count(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 488 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 496 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__never_time(void) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 492 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 500 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t  Platform__timestamp(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 498 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 506 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 off_t  Platform__size(char *transcoded_filename) ;
 #endif /* PLATFORM_WINDOWS */
 #line 64 "inweb/foundation-module/Chapter 2/Debugging Log.w"
@@ -4759,9 +4767,11 @@ FILE * BinaryFiles__try_to_open_for_writing(filename *F) ;
 void  BinaryFiles__close(FILE *handle) ;
 #line 213 "inweb/foundation-module/Chapter 6/Binary Files.w"
 int  BinaryFiles__copy(filename *from, filename *to, int suppress_error) ;
-#line 259 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 243 "inweb/foundation-module/Chapter 6/Binary Files.w"
+int  BinaryFiles__delete(filename *victim) ;
+#line 271 "inweb/foundation-module/Chapter 6/Binary Files.w"
 void  BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) ;
-#line 383 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 395 "inweb/foundation-module/Chapter 6/Binary Files.w"
 uint32_t  BinaryFiles__rotate(uint32_t value, uint32_t shift) ;
 #line 24 "inweb/foundation-module/Chapter 6/Image Dimensions.w"
 int  ImageFiles__get_JPEG_dimensions(FILE *JPEG_file, unsigned int *width, unsigned int *height) ;
@@ -9153,6 +9163,16 @@ int Platform__rename_directory(char *old_transcoded_pathname, char *new_transcod
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
 #line 288 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+int Platform__delete_file(char *transcoded_pathname) {
+	char rm_command[2*MAX_FILENAME_LENGTH];
+	sprintf(rm_command, "rm -f ");
+	Platform__quote_text(rm_command + strlen(rm_command), transcoded_pathname, FALSE);
+	return Platform__system(rm_command);
+}
+
+#endif /* PLATFORM_POSIX */
+#ifdef PLATFORM_POSIX
+#line 298 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
 	char cp_command[10*MAX_FILENAME_LENGTH];
 	sprintf(cp_command, "cp -f ");
@@ -9164,7 +9184,7 @@ void Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pat
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 305 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 315 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -9183,7 +9203,7 @@ off_t Platform__size(char *transcoded_filename) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 329 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 339 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 	char rsync_command[10*MAX_FILENAME_LENGTH];
 	sprintf(rsync_command, "rsync -a --delete ");
@@ -9208,7 +9228,7 @@ void Platform__quote_text(char *quoted, char *raw, int terminate) {
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 354 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 364 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__sleep(int seconds) {
 	sleep((unsigned int) seconds);
 }
@@ -9216,7 +9236,7 @@ void Platform__sleep(int seconds) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 370 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 380 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 	char *sound_name = "Bell.aiff";
 	if (happy == FALSE) sound_name = "Submarine.aiff";
@@ -9231,20 +9251,20 @@ void Platform__notification(text_stream *text, int happy) {
 #endif /* PLATFORM_POSIX */
 #ifndef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 383 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 393 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 396 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 406 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void Platform__configure_terminal(void) {
 }
 
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_POSIX
-#line 408 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 418 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__create_thread(foundation_thread *pt,
 	const foundation_thread_attributes *pa, void *(*fn)(void *), void *arg) {
 	return pthread_create(pt, pa, fn, arg);
@@ -9268,7 +9288,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes *pa) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_LINUX
 #ifdef PLATFORM_POSIX
-#line 443 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 453 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	int N = get_nprocs();
 	if (N < 1) return 1;
@@ -9279,7 +9299,7 @@ int Platform__get_core_count(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_MACOS
 #ifdef PLATFORM_POSIX
-#line 457 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 467 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	int N;
 	size_t N_size = sizeof(int);
@@ -9292,7 +9312,7 @@ int Platform__get_core_count(void) {
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_ANDROID
 #ifdef PLATFORM_POSIX
-#line 469 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
+#line 479 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 int Platform__get_core_count(void) {
 	return 1;
 }
@@ -9391,13 +9411,21 @@ int Platform__rename_directory(char *old_transcoded_pathname, char *new_transcod
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 238 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+int Platform__delete_file(char *old_transcoded_pathname) {
+	sprintf(stderr, "*** delete_file not implemented ***\n");
+	return 0;
+}
+
+#endif /* PLATFORM_WINDOWS */
+#ifdef PLATFORM_WINDOWS
+#line 246 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__copy_file(char *from_transcoded_pathname, char *to_transcoded_pathname) {
 	CopyFile(from_transcoded_pathname, to_transcoded_pathname, FALSE);
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 245 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 253 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__path_add(const char* base, const char* add, char* path) {
 	char last;
 
@@ -9505,20 +9533,20 @@ int Platform__rsync(char *transcoded_source, char *transcoded_dest) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 354 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 362 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__sleep(int seconds) {
 	Sleep((DWORD)(1000*seconds));
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 361 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 369 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void Platform__notification(text_stream *text, int happy) {
 }
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 372 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 380 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 #define WIN32CONS_RESET_MODE 1
 #define WIN32CONS_RESET_OUTCP 2
 
@@ -9562,7 +9590,7 @@ void Platform__configure_terminal(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 427 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 435 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 DWORD WINAPI Platform__Win32_Thread_Func(LPVOID param) {
 	struct Win32_Thread_Start* start = (struct Win32_Thread_Start*)param;
 	(start->fn)(start->arg);
@@ -9599,7 +9627,7 @@ size_t Platform__get_thread_stack_size(foundation_thread_attributes* pa) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 467 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 475 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 int Platform__get_core_count(void) {
 	int count = 0;
 	SYSTEM_INFO sysInfo;
@@ -9615,7 +9643,7 @@ int Platform__get_core_count(void) {
 
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 488 "inweb/foundation-module/Chapter 1/Windows Platform.w"
+#line 496 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 time_t Platform__never_time(void) {
 	return (time_t) 0;
 }
@@ -12406,11 +12434,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B55";
+			char *svn = "7.2.1-beta+1B56";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "28 September 2023";
+			char *d = "29 September 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -30608,7 +30636,17 @@ int BinaryFiles__copy(filename *from, filename *to, int suppress_error) {
 	return size;
 }
 
-#line 259 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 243 "inweb/foundation-module/Chapter 6/Binary Files.w"
+int BinaryFiles__delete(filename *victim) {
+	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
+	TEMPORARY_TEXT(pn)
+	WRITE_TO(pn, "%f", victim);
+	Str__copy_to_locale_string(transcoded_pathname, pn, 4*MAX_FILENAME_LENGTH);
+	DISCARD_TEXT(pn)
+	return Platform__delete_file(transcoded_pathname);
+}
+
+#line 271 "inweb/foundation-module/Chapter 6/Binary Files.w"
 void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	uint32_t s[64] = {
 		7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,
@@ -30649,7 +30687,7 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 		if ((mask) && (mask(L))) b = 0;
 		
 {
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
 	buffer[bc++] = (b % 0x100);
 	if (bc == 64) {
 		bc = 0;
@@ -30689,7 +30727,7 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	}
 
 }
-#line 297 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 309 "inweb/foundation-module/Chapter 6/Binary Files.w"
 ;
 		L++;
 	}
@@ -30698,7 +30736,7 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	b = 0x80;
 	
 {
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
 	buffer[bc++] = (b % 0x100);
 	if (bc == 64) {
 		bc = 0;
@@ -30738,14 +30776,14 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	}
 
 }
-#line 303 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 315 "inweb/foundation-module/Chapter 6/Binary Files.w"
 ;
 	L++;
 	while (L % 64 != 56) {
 		b = 0;
 		
 {
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
 	buffer[bc++] = (b % 0x100);
 	if (bc == 64) {
 		bc = 0;
@@ -30785,7 +30823,7 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	}
 
 }
-#line 307 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 319 "inweb/foundation-module/Chapter 6/Binary Files.w"
 ;
 		L++;
 	}
@@ -30793,277 +30831,7 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	b = (original_length & 0x00000000000000FF) >> 0;
 	
 {
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
-	buffer[bc++] = (b % 0x100);
-	if (bc == 64) {
-		bc = 0;
-		uint32_t M[16];
-		for (uint32_t i=0; i<16; i++)
-			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
-					buffer[i*4+1]*0x100 + buffer[i*4+0];
-		uint32_t A = a0;
-		uint32_t B = b0;
-		uint32_t C = c0;
-		uint32_t D = d0;
-		for (uint32_t i=0; i<64; i++) {
-       		uint32_t F, g;
-			if (i < 16) {
-				F = (B & C) | ((~ B) & D);
-				g = i;
-			} else if (i < 32) {
-				F = (D & B) | ((~ D) & C);
-				g = (5*i + 1) % 16;
-			} else if (i < 48) {
-				F = B ^ C ^ D;
-				g = (3*i + 5) % 16;
-			} else {
-				F = C ^ (B | (~ D));
-				g = (7*i) % 16;
-			}
-			F += A + K[i] + M[g];
-			A = D;
-			D = C;
-			C = B;
-			B = B + BinaryFiles__rotate(F, s[i]);
-		}
-   		a0 += A;
-    	b0 += B;
-    	c0 += C;
-    	d0 += D;
-	}
-
-}
-#line 312 "inweb/foundation-module/Chapter 6/Binary Files.w"
-;
-	b = (original_length & 0x000000000000FF00) >> 8;
-	
-{
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
-	buffer[bc++] = (b % 0x100);
-	if (bc == 64) {
-		bc = 0;
-		uint32_t M[16];
-		for (uint32_t i=0; i<16; i++)
-			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
-					buffer[i*4+1]*0x100 + buffer[i*4+0];
-		uint32_t A = a0;
-		uint32_t B = b0;
-		uint32_t C = c0;
-		uint32_t D = d0;
-		for (uint32_t i=0; i<64; i++) {
-       		uint32_t F, g;
-			if (i < 16) {
-				F = (B & C) | ((~ B) & D);
-				g = i;
-			} else if (i < 32) {
-				F = (D & B) | ((~ D) & C);
-				g = (5*i + 1) % 16;
-			} else if (i < 48) {
-				F = B ^ C ^ D;
-				g = (3*i + 5) % 16;
-			} else {
-				F = C ^ (B | (~ D));
-				g = (7*i) % 16;
-			}
-			F += A + K[i] + M[g];
-			A = D;
-			D = C;
-			C = B;
-			B = B + BinaryFiles__rotate(F, s[i]);
-		}
-   		a0 += A;
-    	b0 += B;
-    	c0 += C;
-    	d0 += D;
-	}
-
-}
-#line 314 "inweb/foundation-module/Chapter 6/Binary Files.w"
-;
-	b = (original_length & 0x0000000000FF0000) >> 16;
-	
-{
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
-	buffer[bc++] = (b % 0x100);
-	if (bc == 64) {
-		bc = 0;
-		uint32_t M[16];
-		for (uint32_t i=0; i<16; i++)
-			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
-					buffer[i*4+1]*0x100 + buffer[i*4+0];
-		uint32_t A = a0;
-		uint32_t B = b0;
-		uint32_t C = c0;
-		uint32_t D = d0;
-		for (uint32_t i=0; i<64; i++) {
-       		uint32_t F, g;
-			if (i < 16) {
-				F = (B & C) | ((~ B) & D);
-				g = i;
-			} else if (i < 32) {
-				F = (D & B) | ((~ D) & C);
-				g = (5*i + 1) % 16;
-			} else if (i < 48) {
-				F = B ^ C ^ D;
-				g = (3*i + 5) % 16;
-			} else {
-				F = C ^ (B | (~ D));
-				g = (7*i) % 16;
-			}
-			F += A + K[i] + M[g];
-			A = D;
-			D = C;
-			C = B;
-			B = B + BinaryFiles__rotate(F, s[i]);
-		}
-   		a0 += A;
-    	b0 += B;
-    	c0 += C;
-    	d0 += D;
-	}
-
-}
-#line 316 "inweb/foundation-module/Chapter 6/Binary Files.w"
-;
-	b = (original_length & 0x00000000FF000000) >> 24;
-	
-{
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
-	buffer[bc++] = (b % 0x100);
-	if (bc == 64) {
-		bc = 0;
-		uint32_t M[16];
-		for (uint32_t i=0; i<16; i++)
-			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
-					buffer[i*4+1]*0x100 + buffer[i*4+0];
-		uint32_t A = a0;
-		uint32_t B = b0;
-		uint32_t C = c0;
-		uint32_t D = d0;
-		for (uint32_t i=0; i<64; i++) {
-       		uint32_t F, g;
-			if (i < 16) {
-				F = (B & C) | ((~ B) & D);
-				g = i;
-			} else if (i < 32) {
-				F = (D & B) | ((~ D) & C);
-				g = (5*i + 1) % 16;
-			} else if (i < 48) {
-				F = B ^ C ^ D;
-				g = (3*i + 5) % 16;
-			} else {
-				F = C ^ (B | (~ D));
-				g = (7*i) % 16;
-			}
-			F += A + K[i] + M[g];
-			A = D;
-			D = C;
-			C = B;
-			B = B + BinaryFiles__rotate(F, s[i]);
-		}
-   		a0 += A;
-    	b0 += B;
-    	c0 += C;
-    	d0 += D;
-	}
-
-}
-#line 318 "inweb/foundation-module/Chapter 6/Binary Files.w"
-;
-	b = (original_length & 0x000000FF00000000) >> 32;
-	
-{
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
-	buffer[bc++] = (b % 0x100);
-	if (bc == 64) {
-		bc = 0;
-		uint32_t M[16];
-		for (uint32_t i=0; i<16; i++)
-			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
-					buffer[i*4+1]*0x100 + buffer[i*4+0];
-		uint32_t A = a0;
-		uint32_t B = b0;
-		uint32_t C = c0;
-		uint32_t D = d0;
-		for (uint32_t i=0; i<64; i++) {
-       		uint32_t F, g;
-			if (i < 16) {
-				F = (B & C) | ((~ B) & D);
-				g = i;
-			} else if (i < 32) {
-				F = (D & B) | ((~ D) & C);
-				g = (5*i + 1) % 16;
-			} else if (i < 48) {
-				F = B ^ C ^ D;
-				g = (3*i + 5) % 16;
-			} else {
-				F = C ^ (B | (~ D));
-				g = (7*i) % 16;
-			}
-			F += A + K[i] + M[g];
-			A = D;
-			D = C;
-			C = B;
-			B = B + BinaryFiles__rotate(F, s[i]);
-		}
-   		a0 += A;
-    	b0 += B;
-    	c0 += C;
-    	d0 += D;
-	}
-
-}
-#line 320 "inweb/foundation-module/Chapter 6/Binary Files.w"
-;
-	b = (original_length & 0x0000FF0000000000) >> 40;
-	
-{
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
-	buffer[bc++] = (b % 0x100);
-	if (bc == 64) {
-		bc = 0;
-		uint32_t M[16];
-		for (uint32_t i=0; i<16; i++)
-			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
-					buffer[i*4+1]*0x100 + buffer[i*4+0];
-		uint32_t A = a0;
-		uint32_t B = b0;
-		uint32_t C = c0;
-		uint32_t D = d0;
-		for (uint32_t i=0; i<64; i++) {
-       		uint32_t F, g;
-			if (i < 16) {
-				F = (B & C) | ((~ B) & D);
-				g = i;
-			} else if (i < 32) {
-				F = (D & B) | ((~ D) & C);
-				g = (5*i + 1) % 16;
-			} else if (i < 48) {
-				F = B ^ C ^ D;
-				g = (3*i + 5) % 16;
-			} else {
-				F = C ^ (B | (~ D));
-				g = (7*i) % 16;
-			}
-			F += A + K[i] + M[g];
-			A = D;
-			D = C;
-			C = B;
-			B = B + BinaryFiles__rotate(F, s[i]);
-		}
-   		a0 += A;
-    	b0 += B;
-    	c0 += C;
-    	d0 += D;
-	}
-
-}
-#line 322 "inweb/foundation-module/Chapter 6/Binary Files.w"
-;
-	b = (original_length & 0x00FF000000000000) >> 48;
-	
-{
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
 	buffer[bc++] = (b % 0x100);
 	if (bc == 64) {
 		bc = 0;
@@ -31105,10 +30873,10 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 }
 #line 324 "inweb/foundation-module/Chapter 6/Binary Files.w"
 ;
-	b = (original_length & 0xFF00000000000000) >> 56;
+	b = (original_length & 0x000000000000FF00) >> 8;
 	
 {
-#line 341 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
 	buffer[bc++] = (b % 0x100);
 	if (bc == 64) {
 		bc = 0;
@@ -31150,6 +30918,276 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 }
 #line 326 "inweb/foundation-module/Chapter 6/Binary Files.w"
 ;
+	b = (original_length & 0x0000000000FF0000) >> 16;
+	
+{
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 328 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x00000000FF000000) >> 24;
+	
+{
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 330 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x000000FF00000000) >> 32;
+	
+{
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 332 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x0000FF0000000000) >> 40;
+	
+{
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 334 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0x00FF000000000000) >> 48;
+	
+{
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 336 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
+	b = (original_length & 0xFF00000000000000) >> 56;
+	
+{
+#line 353 "inweb/foundation-module/Chapter 6/Binary Files.w"
+	buffer[bc++] = (b % 0x100);
+	if (bc == 64) {
+		bc = 0;
+		uint32_t M[16];
+		for (uint32_t i=0; i<16; i++)
+			M[i] = buffer[i*4+3]*0x1000000 + buffer[i*4+2]*0x10000 +
+					buffer[i*4+1]*0x100 + buffer[i*4+0];
+		uint32_t A = a0;
+		uint32_t B = b0;
+		uint32_t C = c0;
+		uint32_t D = d0;
+		for (uint32_t i=0; i<64; i++) {
+       		uint32_t F, g;
+			if (i < 16) {
+				F = (B & C) | ((~ B) & D);
+				g = i;
+			} else if (i < 32) {
+				F = (D & B) | ((~ D) & C);
+				g = (5*i + 1) % 16;
+			} else if (i < 48) {
+				F = B ^ C ^ D;
+				g = (3*i + 5) % 16;
+			} else {
+				F = C ^ (B | (~ D));
+				g = (7*i) % 16;
+			}
+			F += A + K[i] + M[g];
+			A = D;
+			D = C;
+			C = B;
+			B = B + BinaryFiles__rotate(F, s[i]);
+		}
+   		a0 += A;
+    	b0 += B;
+    	c0 += C;
+    	d0 += D;
+	}
+
+}
+#line 338 "inweb/foundation-module/Chapter 6/Binary Files.w"
+;
 
 	WRITE("%02x%02x%02x%02x",
 		a0 % 0x100, (a0 >> 8) % 0x100, (a0 >> 16) % 0x100, (a0 >> 24) % 0x100);
@@ -31163,7 +31201,7 @@ void BinaryFiles__md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	BinaryFiles__close(bin);
 }
 
-#line 383 "inweb/foundation-module/Chapter 6/Binary Files.w"
+#line 395 "inweb/foundation-module/Chapter 6/Binary Files.w"
 uint32_t BinaryFiles__rotate(uint32_t value, uint32_t shift) {
     if ((shift &= sizeof(value)*8 - 1) == 0) return value;
     return (value << shift) | (value >> (sizeof(value)*8 - shift));
@@ -48268,7 +48306,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B55\t/built 28 September 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B56\t/built 29 September 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"

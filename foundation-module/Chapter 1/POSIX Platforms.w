@@ -282,6 +282,16 @@ int Platform::rename_directory(char *old_transcoded_pathname, char *new_transcod
 	return TRUE;
 }
 
+@h Deleting.
+
+=
+int Platform::delete_file(char *transcoded_pathname) {
+	char rm_command[2*MAX_FILENAME_LENGTH];
+	sprintf(rm_command, "rm -f ");
+	Platform::quote_text(rm_command + strlen(rm_command), transcoded_pathname, FALSE);
+	return Platform::system(rm_command);
+}
+
 @h Copying.
 
 =

@@ -237,6 +237,18 @@ int BinaryFiles::copy(filename *from, filename *to, int suppress_error) {
 	return size;
 }
 
+@h Deleting.
+
+=
+int BinaryFiles::delete(filename *victim) {
+	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
+	TEMPORARY_TEXT(pn)
+	WRITE_TO(pn, "%f", victim);
+	Str::copy_to_locale_string(transcoded_pathname, pn, 4*MAX_FILENAME_LENGTH);
+	DISCARD_TEXT(pn)
+	return Platform::delete_file(transcoded_pathname);
+}
+
 @h MD5 hash computation.
 Though now seen as insecure from a cryptographic point of view, Message Digest 5,
 a form of checksum created by Ronald Rivest in 1992, remains very useful as a
