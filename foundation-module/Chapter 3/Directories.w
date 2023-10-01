@@ -132,3 +132,40 @@ int Directories::rename(pathname *P, text_stream *new_name) {
 	DISCARD_TEXT(new_path)
 	return rv;
 }
+
+@ Be careful with this: it amounts to recursive |rm|. It takes out all files
+with the given file extension, e.g., |I".txt"|, from the directory and,
+potentially, any subdirectories. If a null |extension| is supplied, it takes
+out all files that do have some extension. (This is less likely to be something
+really awkward, like a symlink.)
+
+=
+int Directories::delete_contents(pathname *P, text_stream *extension) {
+	return Directories::delete_contents_inner(P, extension, FALSE);
+}
+
+int Directories::delete_contents_recursively(pathname *P, text_stream *extension) {
+	return Directories::delete_contents_inner(P, extension, TRUE);
+}
+
+int Directories::delete_contents_inner(pathname *P, text_stream *extension, int recurse) {
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			if (recurse) {
+				Str::delete_last_character(entry);
+				Directories::delete_contents_inner(Pathnames::down(P, entry), extension, recurse);
+			}
+		} else {
+			filename *F = Filenames::in(P, entry);
+			TEMPORARY_TEXT(ext)
+			Filenames::write_extension(ext, F);
+			if (((Str::len(extension) == 0) && (Str::len(ext) > 0)) ||
+				(Str::eq(extension, ext)))
+				BinaryFiles::delete(F);
+			DISCARD_TEXT(ext)
+		}
+	}
+	return 0;
+}

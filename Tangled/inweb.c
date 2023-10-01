@@ -3621,6 +3621,12 @@ linked_list * Directories__listing(pathname *P) ;
 int  Directories__compare_names(const void *ent1, const void *ent2) ;
 #line 114 "inweb/foundation-module/Chapter 3/Directories.w"
 int  Directories__rename(pathname *P, text_stream *new_name) ;
+#line 143 "inweb/foundation-module/Chapter 3/Directories.w"
+int  Directories__delete_contents(pathname *P, text_stream *extension) ;
+#line 147 "inweb/foundation-module/Chapter 3/Directories.w"
+int  Directories__delete_contents_recursively(pathname *P, text_stream *extension) ;
+#line 151 "inweb/foundation-module/Chapter 3/Directories.w"
+int  Directories__delete_contents_inner(pathname *P, text_stream *extension, int recurse) ;
 #line 13 "inweb/foundation-module/Chapter 3/Time.w"
 void  Time__begin(void) ;
 #line 26 "inweb/foundation-module/Chapter 3/Time.w"
@@ -12434,11 +12440,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "7.2.1-beta+1B56";
+			char *svn = "7.2.1-beta+1B57";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Escape to Danger";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "29 September 2023";
+			char *d = "30 September 2023";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -13823,6 +13829,37 @@ int Directories__rename(pathname *P, text_stream *new_name) {
 	DISCARD_TEXT(old_path)
 	DISCARD_TEXT(new_path)
 	return rv;
+}
+
+#line 143 "inweb/foundation-module/Chapter 3/Directories.w"
+int Directories__delete_contents(pathname *P, text_stream *extension) {
+	return Directories__delete_contents_inner(P, extension, FALSE);
+}
+
+int Directories__delete_contents_recursively(pathname *P, text_stream *extension) {
+	return Directories__delete_contents_inner(P, extension, TRUE);
+}
+
+int Directories__delete_contents_inner(pathname *P, text_stream *extension, int recurse) {
+	linked_list *L = Directories__listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform__is_folder_separator(Str__get_last_char(entry))) {
+			if (recurse) {
+				Str__delete_last_character(entry);
+				Directories__delete_contents_inner(Pathnames__down(P, entry), extension, recurse);
+			}
+		} else {
+			filename *F = Filenames__in(P, entry);
+			TEMPORARY_TEXT(ext)
+			Filenames__write_extension(ext, F);
+			if (((Str__len(extension) == 0) && (Str__len(ext) > 0)) ||
+				(Str__eq(extension, ext)))
+				BinaryFiles__delete(F);
+			DISCARD_TEXT(ext)
+		}
+	}
+	return 0;
 }
 
 #line 9 "inweb/foundation-module/Chapter 3/Time.w"
@@ -48306,7 +48343,7 @@ void Ctags__write(web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B56\t/built 29 September 2023/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t7.2.1-beta+1B57\t/built 30 September 2023/\n");
 
 }
 #line 47 "inweb/Chapter 6/Ctags Support.w"
