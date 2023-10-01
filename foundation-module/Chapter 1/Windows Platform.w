@@ -236,8 +236,7 @@ int Platform::rename_directory(char *old_transcoded_pathname, char *new_transcod
 
 =
 int Platform::delete_file(char *old_transcoded_pathname) {
-	sprintf(stderr, "*** delete_file not implemented ***\n");
-	return 0;
+	return remove(old_transcoded_pathname);
 }
 
 @h Copying.
