@@ -119,30 +119,14 @@ int Platform::system(const char *cmd) {
 	   or a Unix-like shell. */
 	int unix = Platform::Win32_is_unix_cmd(cmd);
 	if (unix) {
-		/* Some Cygwin commands cannot handle backslashes in paths. */
-		int forward_slash = 0;
-		if (strncmp(cmd,"pdftex ",7) == 0)
-			forward_slash = 1;
-
 		/* For a Unix shell command, escape any double quotes and backslashes. */
 		char *pcl;
 		const char *pc;
 		strcpy(cmd_line, "sh -c \"");
 		for (pc = cmd, pcl = cmd_line+strlen(cmd_line); *pc != 0; ++pc, ++pcl) {
-			if (*pc == '\"') {
+			if ((*pc == '\"') || (*pc == '\\'))
 				*(pcl++) = '\\';
-				*pcl = *pc;
-			}
-			else if (*pc == '\\') {
-				if (forward_slash)
-					*pcl = '/';
-				else {
-					*(pcl++) = '\\';
-					*pcl = *pc;
-				}
-			}
-			else
-				*pcl = *pc;
+			*pcl = *pc;
 		}
 		*(pcl++) = '\"';
 		*(pcl++) = 0;
