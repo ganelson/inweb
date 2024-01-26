@@ -227,7 +227,7 @@ void InformFlavouredMarkdown::number_headings_r(markdown_item *md,
 markdown_item *InformFlavouredMarkdown::find_section(markdown_item *md, text_stream *name) {
 	if (Str::len(name) == 0) return NULL;
 	markdown_item *result = NULL;
-	InformFlavouredMarkdown::find_s(md, name, &result);
+	if (md) InformFlavouredMarkdown::find_s(md, name, &result);
 	return result;
 }
 

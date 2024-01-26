@@ -18,7 +18,7 @@ programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 	programming_language *pl;
 	@<If this is the name of a language already known, return that@>;
 	@<Read the language definition file with this name@>;
-	if (Str::ne(pl->language_name, lname))
+	if (Str::ne_insensitive(pl->language_name, lname))
 		Errors::fatal_with_text(
 			"definition of programming language '%S' is for something else", lname);
 	return pl;
@@ -26,7 +26,7 @@ programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 
 @<If this is the name of a language already known, return that@> =
 	LOOP_OVER(pl, programming_language)
-		if (Str::eq(lname, pl->language_name))
+		if (Str::eq_insensitive(lname, pl->language_name))
 			return pl;
 
 @<Read the language definition file with this name@> =
