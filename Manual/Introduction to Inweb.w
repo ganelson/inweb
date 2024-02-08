@@ -39,7 +39,7 @@ directory to be the one in which Inweb is stored - that is, not the |inweb|
 directory itself, but its parent. Then type one of the following:
 = (text as ConsoleText)
 
-	$ bash inweb/scripts/first.sh Linux
+	$ bash inweb/scripts/first.sh linux
 
 	$ bash inweb/scripts/first.sh macos
 
