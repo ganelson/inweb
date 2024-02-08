@@ -38,38 +38,47 @@ it. Here's what to do. From a command-line prompt, set the current working
 directory to be the one in which Inweb is stored - that is, not the |inweb|
 directory itself, but its parent. Then type one of the following:
 = (text as ConsoleText)
-	$ make -f inweb/inweb.mk macos
 
-	$ make -f inweb/inweb.mk macos32
+	$ bash inweb/scripts/first.sh Linux
 
-	$ make -f inweb/inweb.mk linux
+	$ bash inweb/scripts/first.sh macos
 
-	$ make -f inweb/inweb.mk windows
+	$ bash inweb/scripts/first.sh macos32
 
-	$ make -f inweb/inweb.mk unix
+	$ bash inweb/scripts/first.sh macosarm
 
-	$ make -f inweb/inweb.mk android
+	$ bash inweb/scripts/first.sh macosuniv
+
+	$ bash inweb/scripts/first.sh unix
+
+	$ bash inweb/scripts/first.sh windows
 =
-Unix is for any generic version of Unix, non-Linux, non-MacOS: Solaris, for
-example. Android support is currently disabled (though only because its
-build settings are currently missing from the inweb distribution). The
-older macos32 platform won't build with the MacOS SDK from 10.14 onwards,
-and in any case 32-bit executables won't run from 10.15 onwards: so use
-the default macos unless you need to build for an old version of MacOS.
+Some notes on which platform to choose:
 
-You should see some typical make chatter, ending in a reply such as:
+(a) For Intel Macs running MacOS 10.13 ("High Sierra") or earlier, use |macos32|.
+This will produce a 32-bit x86 executables; we are no longer really supporting this.
+(b) For Intel Macs running MacOS 10.14 ("Mojave"), use |macos|. This
+will produce 64-bit x86 executables.
+(c) For Apple Silicon Macs, use |macosarm|. This will produce 64-bit ARM executables.
+(d) To produce universal binaries (64-bit x86 and ARM combined) on Apple Silicon Macs,
+use |macosuniv|, but expect your compilation times to double, of course.
+(e) For a generic version of Unix where the Linux settings do not work, try using |unix|. (For
+ Solaris, for example.)
+(f) For windows, the mingw-w64 environment provided by the MSYS2 project is required.
+Download and install MSYS2 (https://www.msys2.org). Start the MSYS2
+MINGW64 environment, then in the resulting shell window run
+the following to install everything needed:
 = (text as ConsoleText)
-	=== Platform set to 64-bit MacOS. Now: make -f inweb/inweb.mk initial ===
+	pacman -Suy
+	pacman -S git
+	pacman -S make
+	pacman -S zip
+	pacman -S mingw-w64-x86_64-clang
 =
-(All that happened, in fact, was that a platform-specific file of make
-settings -- what compilers to use, what options, and so on -- was copied
-over to become the file |inweb/platform-settings.mk|. This is a file which
-is necessary for Inweb to be fully used, but which is intentionally not
-included in the Git repository for Inweb, in order to oblige users to choose
-a platform before doing anything else.) Anyway, next do as instructed:
-= (text as ConsoleText)
-	$ make -f inweb/inweb.mk initial
-=
+(g) Android support has existed in the past, but the Android
+Inform community has not yet had an opportunity to contribute
+build settings.
+
 With that done, make should go on to compile the Inweb executable, leaving
 you with a working copy of the software. You need never run that
 platform-specific command, or make as |initial|, again: you can simply:
