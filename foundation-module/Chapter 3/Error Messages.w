@@ -112,8 +112,7 @@ void Errors::die(void) { /* as void as it gets */
 	if (DL) STREAM_FLUSH(DL);
 	if (debugger_mode) {
 		WRITE_TO(STDERR, "(crashing intentionally to allow backtrace)\n");
-		int to_deliberately_crash = 0;
-		printf("%d", 1/to_deliberately_crash);
+		__builtin_trap(); /* both a gcc and clang extension to C, so fairly standard */
 	}
 	/* on a fatal exit, memory isn't freed, because that causes threading problems */
 	exit(2);
