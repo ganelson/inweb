@@ -328,8 +328,10 @@ void HTML::incorporate_CSS(OUTPUT_STREAM, filename *M) {
 
 void HTML::incorporate_CSS_from_file(OUTPUT_STREAM, filename *M) {
 	HTML::open_CSS(OUT);
-	if (TextFiles::read(M, FALSE, NULL, FALSE, HTML::incorporate_helper, NULL, OUT) == FALSE)
+	if (TextFiles::read(M, FALSE, NULL, FALSE, HTML::incorporate_helper, NULL, OUT) == FALSE) {
+		WRITE_TO(STDERR, "CSS filename: %f\n", M);
 		internal_error("Unable to open model CSS material for reading");
+	}
 	HTML::close_CSS(OUT);
 }
 

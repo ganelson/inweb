@@ -1,6 +1,6 @@
 # Inweb 7.2.1
 
-[Version](notes/versioning.md): 7.2.1-beta+1B59 'Escape to Danger' (26 January 2024)
+[Version](notes/versioning.md): 7.2.1-beta+1B60 'Escape to Danger' (14 March 2024)
 
 ## About Inweb
 
