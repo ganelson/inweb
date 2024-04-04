@@ -940,19 +940,24 @@ use "transcript" instead.
 	HTML_OPEN_WITH("blockquote", "class=\"extract-inform7\"");
 	if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {
 		markdown_item *first = RETRIEVE_POINTER_markdown_item(md->user_state);
-		TEMPORARY_TEXT(accumulated)
-		for (markdown_item *ch = md; ch; ch = ch->next) {
-			if (ch->type == CODE_BLOCK_MIT) {
-				if (GENERAL_POINTER_IS_NULL(ch->user_state) == FALSE) {
-					markdown_item *latest = RETRIEVE_POINTER_markdown_item(ch->user_state);
-					if (first == latest) WRITE_TO(accumulated, "%S", ch->stashed);
+		if (first == md) {
+			TEMPORARY_TEXT(accumulated)
+			for (markdown_item *ch = first; ch; ch = ch->next) {
+				if (ch->type == CODE_BLOCK_MIT) {
+					if (GENERAL_POINTER_IS_NULL(ch->user_state) == FALSE) {
+						markdown_item *latest = RETRIEVE_POINTER_markdown_item(ch->user_state);
+						if (first == latest) {
+							if (ch != first) WRITE_TO(accumulated, "\n");
+							WRITE_TO(accumulated, "%S", ch->stashed);
+						}
+					}
 				}
 			}
+			#ifdef HTML_MODULE
+			PasteButtons::paste_text_new_style(OUT, accumulated);
+			#endif
+			DISCARD_TEXT(accumulated)
 		}
-		#ifdef HTML_MODULE
-		PasteButtons::paste_text_new_style(OUT, accumulated);
-		#endif
-		DISCARD_TEXT(accumulated)
 	}
 	TEMPORARY_TEXT(colouring)
 	programming_language *default_language = Languages::find_by_name(I"Inform", NULL, FALSE);
