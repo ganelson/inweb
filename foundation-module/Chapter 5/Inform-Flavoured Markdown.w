@@ -1113,7 +1113,9 @@ and this is fiddly but elementary in the usual way of HTML tables:
 			Str::clear(line);
 			Str::clear(line_colouring);
 		} else {
-			PUT_TO(line, Str::get_at(md->stashed, k));
+			inchar32_t c = Str::get_at(md->stashed, k);
+			if (c == '\t') WRITE_TO(line, "    ");
+			else PUT_TO(line, c);
 		}
 		if ((k == Str::len(md->stashed) - 1) && (Str::len(line) > 0))
 			@<Render line as code@>;
