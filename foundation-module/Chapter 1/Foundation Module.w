@@ -97,6 +97,7 @@ void Foundation::start(int argc, char **argv) {
 	Time::begin();
 	Pathnames::start();
 	MarkdownVariations::start();
+	SPDXLicences::create();
 	@<Register the default debugging log aspects@>;
 	@<Register the default debugging log writers@>;
 	@<Register the default command line switches@>;

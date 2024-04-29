@@ -49,6 +49,7 @@ here we are.
 @e md_doc_state_CLASS
 @e md_links_dictionary_CLASS
 @e md_emphasis_delimiter_CLASS
+@e open_source_licence_CLASS
 @e preprocessor_macro_CLASS
 @e preprocessor_macro_parameter_CLASS
 @e preprocessor_variable_CLASS
@@ -101,6 +102,7 @@ DECLARE_CLASS(method_set)
 DECLARE_CLASS(method)
 DECLARE_CLASS(module_search)
 DECLARE_CLASS(module)
+DECLARE_CLASS(open_source_licence)
 DECLARE_CLASS(pathname)
 DECLARE_CLASS(preprocessor_macro)
 DECLARE_CLASS(preprocessor_macro_parameter)
