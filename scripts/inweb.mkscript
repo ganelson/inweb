@@ -31,6 +31,7 @@
 
 ME = inweb
 FTEST = $(ME)/foundation-test
+LBUILD = $(ME)/licence-build
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
 # The colony file for this collection of webs contains information about their
@@ -44,7 +45,10 @@ COLONY = $(ME)/colony.txt
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+
+$(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+	$(call make-licence-build)
 
 $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-me)
@@ -56,6 +60,7 @@ $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME
 force: $(ME)/platform-settings.mk
 	$(call make-me)
 	$(call make-ftest)
+	$(call make-licence-build)
 
 {define: make-settings platform: PLATFORM}
 	$(INWEB) -prototype $(ME)/Materials/platforms/{PLATFORM}.mkscript -makefile $(ME)/Materials/platforms/{PLATFORM}.mk
@@ -65,6 +70,7 @@ force: $(ME)/platform-settings.mk
 .PHONY: makers
 makers:
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
+	$(INWEB) $(LBUILD) -makefile $(LBUILD)/licence-build.mk
 	{repeat with: PLATFORM in: {PLATFORMS}}
 	{make-settings platform: {PLATFORM}}
 	{end-repeat}
@@ -73,10 +79,15 @@ makers:
 initial: $(ME)/platform-settings.mk
 	$(call make-me-once-tangled)
 	$(call make-ftest)
+	$(call make-licence-build)
 
 .PHONY: safe
 safe:
 	$(call make-me-using-safety-copy)
+
+.PHONY: licences
+licences:
+	$(LBUILD)/Tangled/licence-build -from $(ME)/Materials/licenses.json >$(ME)/foundation-module/Chapter\ 7/SPDX\ Licences.w	
 
 # One of inweb's tasks is to tangle webs: but since inweb is itself a web,
 # that means it can only be compiled using itself. To avoid a logical
@@ -111,6 +122,13 @@ endef
 define make-ftest
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
 	make -f $(FTEST)/foundation-test.mk force
+endef
+
+# And licence-build...
+
+define make-licence-build
+	$(INWEB) $(LBUILD) -makefile $(LBUILD)/licence-build.mk
+	make -f $(LBUILD)/licence-build.mk force
 endef
 
 # Testing the program - which requires intest to be installed too.

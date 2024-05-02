@@ -72,6 +72,8 @@ Chapter 7: Semantic Versioning
 "For reading, storing and comparing standard semantic version numbers."
 	Version Numbers
 	Version Number Ranges
+	Licence Data
+	SPDX Licences
 
 Chapter 8: Literate Programming
 	Web Structure

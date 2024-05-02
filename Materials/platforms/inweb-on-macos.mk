@@ -20,6 +20,7 @@ FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-form
 
 ME = inweb
 FTEST = $(ME)/foundation-test
+LBUILD = $(ME)/licence-build
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
 COLONY = $(ME)/colony.txt
@@ -36,14 +37,19 @@ $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module
 $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-ftest)
 
+$(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+	$(call make-licence-build)
+
 .PHONY: force
 force: $(ME)/platform-settings.mk
 	$(call make-me)
 	$(call make-ftest)
+	$(call make-licence-build)
 
 .PHONY: makers
 makers:
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
+	$(INWEB) $(LBUILD) -makefile $(LBUILD)/licence-build.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/macos.mkscript -makefile $(ME)/Materials/platforms/macos.mk
 	$(INWEB) -platform macos -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos.mk
 	$(INWEB) -prototype $(ME)/Materials/platforms/macos32.mkscript -makefile $(ME)/Materials/platforms/macos32.mk
@@ -63,6 +69,7 @@ makers:
 initial: $(ME)/platform-settings.mk
 	$(call make-me-once-tangled)
 	$(call make-ftest)
+	$(call make-licence-build)
 
 .PHONY: safe
 safe:
@@ -86,6 +93,11 @@ endef
 define make-ftest
 	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
 	make -f $(FTEST)/foundation-test.mk force
+endef
+
+define make-licence-build
+	$(INWEB) $(LBUILD) -makefile $(LBUILD)/licence-build.mk
+	make -f $(LBUILD)/licence-build.mk force
 endef
 
 .PHONY: test

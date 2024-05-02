@@ -1,0 +1,3 @@
+! Inform 1*
+`"[Prolegomena](here.html)"`
+! End
