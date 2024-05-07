@@ -24,7 +24,6 @@ on a POSIX operating system.
 #include <windows.h>
 #include <shellapi.h>
 #include <shlobj.h>
-#include <shlwapi.h>
 #undef IN
 #undef OUT
 
