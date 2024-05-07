@@ -24,6 +24,7 @@ on a POSIX operating system.
 #include <windows.h>
 #include <shellapi.h>
 #include <shlobj.h>
+#include <shlwapi.h>
 #undef IN
 #undef OUT
 
@@ -247,9 +248,12 @@ int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 	char srcPath[MAX_PATH], destPath[MAX_PATH];
 	WIN32_FIND_DATA findData = { 0 };
 
-	int result = SHCreateDirectoryExA(0, transcoded_dest, NULL);
-	if ((result != ERROR_SUCCESS) && (result != ERROR_FILE_EXISTS) && (result != ERROR_ALREADY_EXISTS))
-		return result;
+	if (GetFileAttributesA(transcoded_dest) == INVALID_FILE_ATTRIBUTES)
+	{
+		int result = SHCreateDirectoryExA(0, transcoded_dest, NULL);
+		if (result != ERROR_SUCCESS)
+			return result;
+	}
 
 	Platform::path_add(transcoded_dest, "*", destPath);
 	HANDLE findHandle = FindFirstFileA(destPath, &findData);
@@ -276,7 +280,7 @@ int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 				oper.wFunc = FO_DELETE;
 				oper.pFrom = destPath;
 				oper.fFlags = FOF_NO_UI;
-				result = SHFileOperationA(&oper);
+				int result = SHFileOperationA(&oper);
 				if (result != 0) {
 					FindClose(findHandle);
 					return result;
