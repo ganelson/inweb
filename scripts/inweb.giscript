@@ -23,6 +23,7 @@ foundation-test/foundation-test.mk
 foundation-test/Tests/Test Cases/_Results_Actual/
 foundation-test/Tests/Markdown Cases/_Results_Actual/
 foundation-module/Woven/
+licence-build/licence-build.mk
 Examples/*.o
 Examples/*.pdf
 Examples/*.html
