@@ -1151,6 +1151,7 @@ void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 				case RESERVED_COLOUR:   span_class = I"syntaxreserved"; break;
 				case ELEMENT_COLOUR:    span_class = I"syntaxelement"; break;
 				case IDENTIFIER_COLOUR: span_class = I"syntaxidentifier"; break;
+				case HEADING_COLOUR:    span_class = I"syntaxheading"; break;
 				case CHARACTER_COLOUR:  span_class = I"syntaxcharacter"; break;
 				case CONSTANT_COLOUR:   span_class = I"syntaxconstant"; break;
 				case STRING_COLOUR:     span_class = I"syntaxstring"; break;

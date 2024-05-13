@@ -218,6 +218,17 @@ int Regexp::match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 			reverse = FALSE; /* require a non-match rather than a match */
 		@<Extract the character class to match from the pattern@>;
 
+		if (chcl == BEGIN_CONTENT_CHARCLASS) {
+			if (at.tpos == 0) continue;
+			if (Str::get_at(text, at.tpos-1) == '\n') continue;
+			return -1;
+		}
+		if (chcl == END_CONTENT_CHARCLASS) {
+			if (Str::get_at(text, at.tpos) == 0) continue;
+			if (Str::get_at(text, at.tpos) == '\n') continue;
+			return -1;
+		}
+
 		int rep_from = 1, rep_to = 1; /* minimum and maximum number of repetitions */
 		int greedy = TRUE; /* go for a maximal-length match if possible */
 		@<Extract repetition markers from the pattern@>;
@@ -333,6 +344,9 @@ is literal.
 @d LITERAL_CHARCLASS 8
 @d TAB_CHARCLASS 9
 @d QUOTE_CHARCLASS 10
+@d NEWLINE_CHARCLASS 11
+@d BEGIN_CONTENT_CHARCLASS 12
+@d END_CONTENT_CHARCLASS 13
 
 =
 int Regexp::get_cclass(inchar32_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) {
@@ -350,6 +364,9 @@ int Regexp::get_cclass(inchar32_t *pattern, int ppos, int *len, int *from, int *
 				case 'P': return PREFORMC_CHARCLASS;
 				case 'q': return QUOTE_CHARCLASS;
 				case 't': return TAB_CHARCLASS;
+				case 'r': return NEWLINE_CHARCLASS;
+				case 'a': return BEGIN_CONTENT_CHARCLASS;
+				case 'z': return END_CONTENT_CHARCLASS;
 			}
 			*from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 		case '[':
@@ -371,6 +388,7 @@ int Regexp::test_cclass(inchar32_t c, int chcl, int range_from, int range_to, in
 		case ANY_CHARCLASS: if (c) match = TRUE; break;
 		case DIGIT_CHARCLASS: if (Characters::isdigit(c)) match = TRUE; break;
 		case WHITESPACE_CHARCLASS: if (Characters::is_whitespace(c)) match = TRUE; break;
+		case NEWLINE_CHARCLASS: if (c == '\n') match = TRUE; break;
 		case TAB_CHARCLASS: if (c == '\t') match = TRUE; break;
 		case NONWHITESPACE_CHARCLASS: if (!(Characters::is_whitespace(c))) match = TRUE; break;
 		case QUOTE_CHARCLASS: if (c != '\"') match = TRUE; break;

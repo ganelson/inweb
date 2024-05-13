@@ -591,6 +591,7 @@ but which are not expressible in the syntax of this file.
 @d STRING_COLOUR		's'
 @d PLAIN_COLOUR			'p'
 @d EXTRACT_COLOUR		'x'
+@d HEADING_COLOUR		'h'
 @d COMMENT_COLOUR		'!'
 @d NEWLINE_COLOUR		'\n'
 
@@ -613,6 +614,7 @@ inchar32_t Languages::colour(text_stream *T, text_file_position *tfp) {
 	else if (Str::eq(T, I"!constant")) return CONSTANT_COLOUR;
 	else if (Str::eq(T, I"!plain")) return PLAIN_COLOUR;
 	else if (Str::eq(T, I"!extract")) return EXTRACT_COLOUR;
+	else if (Str::eq(T, I"!heading")) return HEADING_COLOUR;
 	else if (Str::eq(T, I"!comment")) return COMMENT_COLOUR;
 	else {
 		Errors::in_text_file("no such !colour", tfp);
@@ -738,10 +740,16 @@ void Languages::regexp(inchar32_t *write_to, text_stream *T, text_file_position 
 					inchar32_t w = Str::get_at(T, i+1);
 					if (w == '\\') {
 						x = Languages::add_to_regexp(write_to, x, w);
+					} else if (w == 'a') {
+						x = Languages::add_escape_to_regexp(write_to, x, 'a');
+					} else if (w == 'z') {
+						x = Languages::add_escape_to_regexp(write_to, x, 'z');
 					} else if (w == 'd') {
 						x = Languages::add_escape_to_regexp(write_to, x, 'd');
 					} else if (w == 't') {
 						x = Languages::add_escape_to_regexp(write_to, x, 't');
+					} else if (w == 'r') {
+						x = Languages::add_escape_to_regexp(write_to, x, 'r');
 					} else if (w == 's') {
 						x = Languages::add_to_regexp(write_to, x, ' ');
 					} else if (w == 'S') {
