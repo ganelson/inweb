@@ -19,12 +19,10 @@ void HTML::header(OUTPUT_STREAM, text_stream *title, filename *css1, filename *c
 	#endif
 	HTML::end_head(OUT);
 	HTML::begin_body(OUT, NULL);
-	HTML::comment(OUT, I"CONTENT BEGINS");
 }
 
 void HTML::footer(OUTPUT_STREAM) {
 	WRITE("\n");
-	HTML::comment(OUT, I"CONTENT ENDS");
 	HTML::end_body(OUT);
 }
 
