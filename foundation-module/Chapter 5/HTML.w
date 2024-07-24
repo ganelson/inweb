@@ -679,7 +679,7 @@ void HTML::box_corner(OUTPUT_STREAM, text_stream *classname, text_stream *corner
 
 =
 void HTML::comment(OUTPUT_STREAM, text_stream *text) {
-	WRITE("<!--%S-->\n", text);
+	WRITE("<!-- %S -->\n", text);
 }
 
 void HTML::heading(OUTPUT_STREAM, char *tag, text_stream *text) {

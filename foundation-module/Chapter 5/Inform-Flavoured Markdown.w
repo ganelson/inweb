@@ -699,6 +699,7 @@ void InformFlavouredMarkdown::PD_r(markdown_item *md, markdown_item **last_secti
 @
 
 =
+int unique_defn_anchor_count = 0;
 int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	if ((md->type == BLOCK_QUOTE_MIT) && (md->down) && (md->down->type == PHRASE_HEADER_MIT)) {
@@ -709,9 +710,17 @@ int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *O
 		return TRUE;
 	}
 	if (md->type == PHRASE_HEADER_MIT) {
+		unique_defn_anchor_count++;
+		TEMPORARY_TEXT(eg_comment)
+		WRITE_TO(eg_comment, "START PHRASE \"defn%d\"", unique_defn_anchor_count);
+		HTML::comment(OUT, eg_comment);
+		DISCARD_TEXT(eg_comment)
 		HTML_OPEN_WITH("p", "class=\"defnprototype\"");
+		HTML_OPEN_WITH("a", "id=\"defn%d\"", unique_defn_anchor_count);
+		HTML_CLOSE("a");
 		MDRenderer::stream(OUT, md->stashed, mode);
 		HTML_CLOSE("p");
+		HTML::comment(OUT, I"END PHRASE");
 		return TRUE;
 	}
 	return FALSE;
@@ -856,6 +865,7 @@ int InformFlavouredMarkdown::PG_render(markdown_feature *feature, text_stream *O
 		INFORM_SYNTAX_COLOURING_MARKDOWNFEATURE);
 
 @ =
+int unique_i7_code_anchor_count = 0;
 int InformFlavouredMarkdown::SC_render(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	switch (md->type) {
@@ -937,7 +947,14 @@ use "transcript" instead.
 	}
 
 @<Render as Inform 7 source text@> =
+	unique_i7_code_anchor_count++;
+	TEMPORARY_TEXT(code_comment)
+	WRITE_TO(code_comment, "START CODE \"code%d\"", unique_i7_code_anchor_count);
+	HTML::comment(OUT, code_comment);
+	DISCARD_TEXT(code_comment)
 	HTML_OPEN_WITH("blockquote", "class=\"extract-inform7\"");
+	HTML_OPEN_WITH("a", "id=\"code%d\"", unique_i7_code_anchor_count);
+	HTML_CLOSE("a");
 	if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {
 		markdown_item *first = RETRIEVE_POINTER_markdown_item(md->user_state);
 		if (first == md) {
@@ -997,6 +1014,7 @@ use "transcript" instead.
 	if (tabulating) @<End I7 table in extension documentation@>;
 	HTML_CLOSE("span");
 	HTML_CLOSE("blockquote");
+	HTML::comment(OUT, I"END CODE");
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)
 
