@@ -67,7 +67,7 @@ INWEB = inweb/Tangled/inweb
 {end-define}
 
 {define: link to: TO from: FROM ?options: OPTS}
-	clang  -lm -lpthread -static -g -o {TO} {FROM} {OPTS}
+	clang  -static -g -o {TO} {FROM} {OPTS} -lm -lpthread
 {end-define}
 
 # Where:
