@@ -309,9 +309,11 @@ int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 		Platform::path_add(transcoded_dest, findData.cFileName, destPath);
 
 		if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-			if (CreateDirectoryA(destPath, 0) == 0) {
-				FindClose(findHandle);
-				return (int)GetLastError();
+			if (GetFileAttributesA(destPath) == INVALID_FILE_ATTRIBUTES) {
+				if (CreateDirectoryA(destPath, 0) == 0) {
+					FindClose(findHandle);
+					return (int)GetLastError();
+				}
 			}
 			Platform::rsync(srcPath, destPath);
 		} else {
