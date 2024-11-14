@@ -12,7 +12,7 @@ INWEB = inweb/Tangled/inweb
 
 CCOPTS = -DPLATFORM_WINDOWS=1 $(CFLAGS)
 
-MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-used-but-marked-unused -Wno-unsafe-buffer-usage -Wno-misleading-indentation -Wno-implicit-fallthrough -Wno-implicit-int-float-conversion -Wno-incompatible-function-pointer-types-strict -Wno-cast-function-type-strict -Wno-c99-compat -Wno-switch-default -ferror-limit=1000
+MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-used-but-marked-unused -Wno-unsafe-buffer-usage -Wno-misleading-indentation -Wno-implicit-fallthrough -Wno-implicit-int-float-conversion -Wno-incompatible-function-pointer-types-strict -Wno-cast-function-type-strict -Wno-c99-compat -Wno-switch-default -Wno-pre-c11-compat -ferror-limit=1000
 
 FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return
 
@@ -27,16 +27,16 @@ COLONY = $(ME)/colony.txt
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+
+$(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+	$(call make-licence-build)
 
 $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-me)
 
 $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-ftest)
-
-$(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
-	$(call make-licence-build)
 
 .PHONY: force
 force: $(ME)/platform-settings.mk
@@ -72,6 +72,10 @@ initial: $(ME)/platform-settings.mk
 .PHONY: safe
 safe:
 	$(call make-me-using-safety-copy)
+
+.PHONY: licences
+licences:
+	$(LBUILD)/Tangled/licence-build -from $(ME)/Materials/licenses.json >$(ME)/foundation-module/Chapter\ 7/SPDX\ Licences.w	
 
 define make-me-once-tangled
 	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
