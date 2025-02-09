@@ -64,7 +64,7 @@ yet exist -- it will only exist when the line has been fully parsed.)
 	if (Str::get_first_char(L->text) == '@') {
 		match_results mr = Regexp::create_mr();
 		while (Regexp::match(&mr, L->text, U"(%c*?)( *%^\"%c+?\")(%c*)")) {
-			if (S->md->using_syntax < V2_SYNTAX)
+			if (S->md->using_syntax == V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "tags written ^\"thus\"", V2_SYNTAX);
 			Str::clear(L->text);
 			WRITE_TO(tag_list, "%S", mr.exp[1]);
@@ -104,7 +104,7 @@ syntax, this had to be explicitly declared with a |@Purpose:| command; in
 version 2 it's much tidier.
 
 @<In version 2 syntax, construe the comment under the heading as the purpose@> =
-	if (S->md->using_syntax >= V2_SYNTAX) {
+	if (S->md->using_syntax == V2_SYNTAX) {
 		source_line *L = S->first_line;
 		if ((L) && (L->category == CHAPTER_HEADING_LCAT)) L = L->next_line;
 		if (Str::len(S->sect_purpose) == 0) {
@@ -122,13 +122,13 @@ immediately adjacent on the same line.
 	if ((PL) && (PL->category == CODE_BODY_LCAT) &&
 		(Str::get_first_char(L->text) == '@') && (Str::get_at(L->text, 1) == '<') &&
 		(Regexp::match(&mr, L->text, U"%c<(%c+)@> *= *")) &&
-		(S->md->using_syntax >= V2_SYNTAX)) {
+		(S->md->using_syntax == V2_SYNTAX)) {
 		@<Insert an implied paragraph break@>;
 	}
 	if ((PL) && (Regexp::match(&mr, L->text, U"@ *= *"))) {
 		Str::clear(L->text);
 		Str::copy(L->text, I"=");
-		if (S->md->using_syntax < V2_SYNTAX)
+		if (S->md->using_syntax == V1_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "implied paragraph breaks", V2_SYNTAX);
 		@<Insert an implied paragraph break@>;
 	}
@@ -161,7 +161,7 @@ code, definition, what?
 		@<Parse the line as a possible paragraph macro definition@>;
 	}
 	if (Str::get_first_char(L->text) == '=') {
-		if (S->md->using_syntax < V2_SYNTAX)
+		if (S->md->using_syntax == V1_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "column-1 '=' as code divider", V2_SYNTAX);
 		if (extract_mode) @<Exit extract mode@>
 		else @<Parse the line as an equals structural marker@>;
@@ -197,7 +197,7 @@ namespace for its functions.
 			L->is_commentary = TRUE;
 		}
 	} else if (Regexp::match(&mr, L->text, U"%[(%C+)%] (%C+/%C+): (%c+).")) {
-		if (S->md->using_syntax >= V2_SYNTAX)
+		if (S->md->using_syntax == V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L,
 			"section range in header line", V1_SYNTAX);
 		S->sect_namespace = Str::duplicate(mr.exp[0]);
@@ -207,7 +207,7 @@ namespace for its functions.
 		L->category = SECTION_HEADING_LCAT;
 		L->owning_paragraph = NULL;
 	} else if (Regexp::match(&mr, L->text, U"(%C+/%C+): (%c+).")) {
-		if (S->md->using_syntax >= V2_SYNTAX)
+		if (S->md->using_syntax == V2_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L,
 			"section range in header line", V1_SYNTAX);
 		S->md->sect_range = Str::duplicate(mr.exp[0]);
@@ -246,18 +246,18 @@ In version 2, this notation is never used.
 			L->text_operand = Str::duplicate(mr.exp[1]);
 		}
 		if (Str::eq_wide_string(command_text, U"Page Break")) {
-			if (S->md->using_syntax > V1_SYNTAX)
+			if (S->md->using_syntax != V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "[[Page Break]]", V1_SYNTAX);
 			L->command_code = PAGEBREAK_CMD;
 		} else if (Str::eq_wide_string(command_text, U"Grammar Index"))
 			L->command_code = GRAMMAR_INDEX_CMD;
 		else if (Str::eq_wide_string(command_text, U"Tag")) {
-			if (S->md->using_syntax > V1_SYNTAX)
+			if (S->md->using_syntax != V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "[[Tag...]]", V1_SYNTAX);
 			Tags::add_by_name(L->owning_paragraph, L->text_operand);
 			L->command_code = TAG_CMD;
 		} else if (Str::eq_wide_string(command_text, U"Figure")) {
-			if (S->md->using_syntax > V1_SYNTAX)
+			if (S->md->using_syntax != V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "[[Figure...]]", V1_SYNTAX);
 			Tags::add_by_name(L->owning_paragraph, I"Figures");
 			L->command_code = FIGURE_CMD;
@@ -546,32 +546,32 @@ long forms |@define|, |@enum| and |@heading|, and plain old |@| remain.
 				@<Deal with the code and extract markers@>
 	else if (Str::eq_wide_string(command_text, U"d")) @<Deal with the define marker@>
 	else if (Str::eq_wide_string(command_text, U"define")) {
-		if (S->md->using_syntax < V2_SYNTAX)
+		if (S->md->using_syntax == V1_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "'@define' for definitions (use '@d' instead)", V2_SYNTAX);
 		@<Deal with the define marker@>;
 	} else if (Str::eq_wide_string(command_text, U"default")) {
-		if (S->md->using_syntax < V2_SYNTAX)
+		if (S->md->using_syntax == V1_SYNTAX)
 			Parser::wrong_version(S->md->using_syntax, L, "'@default' for definitions", V2_SYNTAX);
 		L->default_defn = TRUE;
 		@<Deal with the define marker@>;
 	} else if (Str::eq_wide_string(command_text, U"enum")) @<Deal with the enumeration marker@>
-	else if ((Str::eq_wide_string(command_text, U"e")) && (S->md->using_syntax >= V2_SYNTAX))
+	else if ((Str::eq_wide_string(command_text, U"e")) && (S->md->using_syntax == V2_SYNTAX))
 		@<Deal with the enumeration marker@>
 	else {
 		int weight = -1, new_page = FALSE;
 		if (Str::eq_wide_string(command_text, U"")) weight = ORDINARY_WEIGHT;
 		if ((Str::eq_wide_string(command_text, U"h")) || (Str::eq_wide_string(command_text, U"heading"))) {
-			if (S->md->using_syntax < V2_SYNTAX)
+			if (S->md->using_syntax == V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "'@h' or '@heading' for headings (use '@p' instead)", V2_SYNTAX);
 			weight = SUBHEADING_WEIGHT;
 		}
 		if (Str::eq_wide_string(command_text, U"p")) {
-			if (S->md->using_syntax > V1_SYNTAX)
+			if (S->md->using_syntax != V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "'@p' for headings (use '@h' instead)", V1_SYNTAX);
 			weight = SUBHEADING_WEIGHT;
 		}
 		if (Str::eq_wide_string(command_text, U"pp")) {
-			if (S->md->using_syntax > V1_SYNTAX)
+			if (S->md->using_syntax != V1_SYNTAX)
 				Parser::wrong_version(S->md->using_syntax, L, "'@pp' for super-headings", V1_SYNTAX);
 			weight = SUBHEADING_WEIGHT; new_page = TRUE;
 		}
@@ -584,7 +584,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 
 @<Deal with Purpose@> =
 	if (before_bar == FALSE) Main::error_in_web(I"Purpose used after bar", L);
-	if (S->md->using_syntax >= V2_SYNTAX)
+	if (S->md->using_syntax == V2_SYNTAX)
 		Parser::wrong_version(S->md->using_syntax, L, "'@Purpose'", V1_SYNTAX);
 	L->category = PURPOSE_LCAT;
 	L->is_commentary = TRUE;
@@ -592,7 +592,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 	S->sect_purpose = Parser::extract_purpose(remainder, L->next_line, L->owning_section, &L);
 
 @<Deal with Interface@> =
-	if (S->md->using_syntax >= V2_SYNTAX)
+	if (S->md->using_syntax == V2_SYNTAX)
 		Parser::wrong_version(S->md->using_syntax, L, "'@Interface'", V1_SYNTAX);
 	if (before_bar == FALSE) Main::error_in_web(I"Interface used after bar", L);
 	L->category = INTERFACE_LCAT;
@@ -607,7 +607,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 	}
 
 @<Deal with Definitions@> =
-	if (S->md->using_syntax >= V2_SYNTAX)
+	if (S->md->using_syntax == V2_SYNTAX)
 		Parser::wrong_version(S->md->using_syntax, L, "'@Definitions' headings", V1_SYNTAX);
 	if (before_bar == FALSE) Main::error_in_web(I"Definitions used after bar", L);
 	L->category = DEFINITIONS_LCAT;
@@ -620,7 +620,7 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 constitutes the optional division bar in a section.
 
 @<Deal with the bar@> =
-	if (S->md->using_syntax >= V2_SYNTAX)
+	if (S->md->using_syntax == V2_SYNTAX)
 		Parser::wrong_version(S->md->using_syntax, L, "the bar '----...'", V1_SYNTAX);
 	if (before_bar == FALSE) Main::error_in_web(I"second bar in the same section", L);
 	L->category = BAR_LCAT;
@@ -638,7 +638,7 @@ These had identical behaviour except for whether or not to tangle what
 follows:
 
 @<Deal with the code and extract markers@> =
-	if (S->md->using_syntax > V1_SYNTAX)
+	if (S->md->using_syntax != V1_SYNTAX)
 		Parser::wrong_version(S->md->using_syntax, L, "'@c' and '@x'", V1_SYNTAX);
 	L->category = BEGIN_CODE_LCAT;
 	if ((Str::eq_wide_string(command_text, U"e")) && (current_paragraph))
@@ -779,7 +779,7 @@ typedef struct paragraph {
 
 @<Create a new paragraph, starting here, as new current paragraph@> =
 	paragraph *P = CREATE(paragraph);
-	if (S->md->using_syntax > V1_SYNTAX) {
+	if (S->md->using_syntax != V1_SYNTAX) {
 		P->above_bar = FALSE;
 		P->placed_early = FALSE;
 		P->placed_very_early = FALSE;

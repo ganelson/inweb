@@ -68,6 +68,7 @@ here we are.
 @e tree_type_CLASS
 @e web_bibliographic_datum_CLASS
 @e web_md_CLASS
+@e web_syntax_CLASS
 
 =
 DECLARE_CLASS(chapter_md)
@@ -121,6 +122,7 @@ DECLARE_CLASS(tree_node)
 DECLARE_CLASS(tree_type)
 DECLARE_CLASS(web_bibliographic_datum)
 DECLARE_CLASS(web_md)
+DECLARE_CLASS(web_syntax)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dict_entry, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(HTML_tag, 1000)

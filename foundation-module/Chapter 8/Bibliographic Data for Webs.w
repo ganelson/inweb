@@ -45,8 +45,8 @@ Each web has the following slate of data:
 void Bibliographic::initialise_data(web_md *Wm) {
 	web_bibliographic_datum *bd;
 
-	bd = Bibliographic::set_datum(Wm, I"Title", NULL); bd->declaration_mandatory = TRUE;
-	bd = Bibliographic::set_datum(Wm, I"Author", NULL); bd->declaration_mandatory = TRUE;
+	bd = Bibliographic::set_datum(Wm, I"Title", I"Untitled");
+	bd = Bibliographic::set_datum(Wm, I"Author", I"Anonymous");
 	bd = Bibliographic::set_datum(Wm, I"Language", I"None");
 	bd = Bibliographic::set_datum(Wm, I"Purpose", I"");
 

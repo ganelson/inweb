@@ -77,6 +77,7 @@ Chapter 7: Semantic Versioning
 
 Chapter 8: Literate Programming
 	Web Structure
+	Web Syntax
 	Bibliographic Data for Webs
 	Web Modules
 	Build Files

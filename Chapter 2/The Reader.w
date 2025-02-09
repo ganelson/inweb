@@ -85,7 +85,7 @@ typedef struct section {
 	struct linked_list *macros; /* of |para_macro|: those defined in this section */
 
 	int scratch_flag; /* temporary workspace */
-	int paused_until_at; /* ignore the top half of the file, until the first |@| sign */
+	int paused_until_midway; /* ignore the top portion of the file */
 	int printed_number; /* temporary again: sometimes used in weaving */
 	CLASS_DEFINITION
 } section;
@@ -215,14 +215,22 @@ void Reader::read_web(web *W) {
 
 @ Each file, then:
 
+@d SECTION_NOT_PAUSED 0
+@d SECTION_PAUSED_UNTIL_AT 1
+@d SECTION_PAUSED_UNTIL_AFTER_HEADING 2
+
 =
 void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_line,
 	section *S, int disregard_top) {
 	S->owning_chapter = C;
-	if (disregard_top)
-		S->paused_until_at = TRUE;
-	else
-		S->paused_until_at = FALSE;
+	if (disregard_top) {
+		if (S->md->using_syntax == MD_SYNTAX)
+			S->paused_until_midway = SECTION_PAUSED_UNTIL_AFTER_HEADING;
+		else
+			S->paused_until_midway = SECTION_PAUSED_UNTIL_AT;
+	} else {
+		S->paused_until_midway = SECTION_NOT_PAUSED;
+	}
 
 	if ((titling_line) && (Str::len(titling_line) > 0) &&
 		(S->owning_chapter->titling_line_inserted == FALSE))
@@ -232,7 +240,7 @@ void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 		@<Insert an implied section heading, for a single-file web@>;
 
 	int cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
-		Reader::scan_source_line, NULL, (void *) S);
+			Reader::scan_source_line, NULL, (void *) S);
 	if (verbose_mode) PRINT("Read section: '%S' (%d lines)\n", S->md->sect_title, cl);
 }
 
@@ -271,9 +279,15 @@ void Reader::scan_source_line(text_stream *line, text_file_position *tfp, void *
 	int l = Str::len(line) - 1;
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
-	if (S->paused_until_at) {
-		if (Str::get_at(line, 0) == '@') S->paused_until_at = FALSE;
-		else return;
+	switch (S->paused_until_midway) {
+		case SECTION_PAUSED_UNTIL_AT:
+			if (Reader::line_can_begin_paragraph(S, line)) S->paused_until_midway = SECTION_NOT_PAUSED;
+			else return;
+			break;
+		case SECTION_PAUSED_UNTIL_AFTER_HEADING:
+			if (tfp->line_count == 2) S->paused_until_midway = SECTION_NOT_PAUSED;
+			else return;
+			break;		
 	}
 	@<Accept this as a line belonging to this section and chapter@>;
 }
@@ -439,4 +453,10 @@ void Reader::print_web_statistics(web *W) {
 		W->web_extent, (W->web_extent == 1)?"":"s");
 }
 
+@ Does this line begin a paragraph?
 
+=
+int Reader::line_can_begin_paragraph(section *S, text_stream *line) {
+	if (Str::get_at(line, 0) == '@') return TRUE;
+	return FALSE;
+}

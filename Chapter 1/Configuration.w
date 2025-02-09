@@ -411,6 +411,8 @@ void Configuration::bareword(int id, text_stream *opt, void *state) {
 	if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
 		if (Str::suffix_eq(opt, I".inweb", 6))
 			args->chosen_file = Filenames::from_text(opt);
+		else if (Str::suffix_eq(opt, I".md", 3))
+			args->chosen_file = Filenames::from_text(opt);
 		else
 			args->chosen_web = Pathnames::from_text(opt);
 	} else Configuration::set_range(args, opt);

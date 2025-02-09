@@ -10,12 +10,6 @@ of which consists of a number of sections. A web can represent a stand-alone
 program, or a library to be used in multiple programs, in which case it is
 called a "module".
 
-Inweb syntax has gradually shifted over the years, but there are two main
-versions: the second was cleaned up and simplified from the first in 2019.
-
-@e V1_SYNTAX from 1
-@e V2_SYNTAX
-
 @h Web MD.
 No relation to the website of the same name: MD here stands for metadata.
 Our task in this section will be to read a web from the filing system and
@@ -90,7 +84,7 @@ case a filename |alt_F| is supplied.
 
 =
 web_md *WebMetadata::get_without_modules(pathname *P, filename *alt_F) {
-	return WebMetadata::get(P, alt_F, V2_SYNTAX, NULL, FALSE, FALSE, NULL);
+	return WebMetadata::get(P, alt_F, WebSyntax::default(), NULL, FALSE, FALSE, NULL);
 }
 
 web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
@@ -332,7 +326,8 @@ void WebMetadata::read_contents_line(text_stream *line, text_file_position *tfp,
 	int syntax = RS->Wm->default_syntax;
 
 	filename *filename_of_single_file_web = NULL;
-	if ((RS->halt_at_at) && (Str::get_at(line, 0) == '@'))
+	if ((RS->halt_at_at) &&
+		(WebSyntax::line_can_mark_end_of_metadata(RS->Wm->default_syntax, line, tfp)))
 		@<Halt at this point in the single file, and make the rest of it a one-chapter section@>;
 
 	@<Read regular contents material@>;
@@ -343,10 +338,24 @@ no good simply to store this up for later: we have to change the web structure
 immediately.
 
 @<Act immediately if the web syntax version is changed@> =
-	if (Str::eq(line, I"Web Syntax Version: 1"))
-		RS->Wm->default_syntax = V1_SYNTAX;
-	else if (Str::eq(line, I"Web Syntax Version: 2"))
-		RS->Wm->default_syntax = V2_SYNTAX;
+	TEMPORARY_TEXT(title)
+	TEMPORARY_TEXT(author)
+	int S = WebSyntax::parse_internal_declaration(line, tfp, title, author);
+	if (S >= 0) {
+		RS->Wm->default_syntax = S;
+		if (Str::len(title) > 0) {
+			text_stream *key = I"Title";
+			text_stream *value = title;
+			@<Set bibliographic key-value pair@>;
+		}
+		if (Str::len(author) > 0) {
+			text_stream *key = I"Title";
+			text_stream *value = author;
+			@<Set bibliographic key-value pair@>;
+		}
+	}
+	DISCARD_TEXT(title)
+	DISCARD_TEXT(author)
 
 @ Suppose we're reading a single-file web, and we hit the first |@| marker.
 The contents part has now ended, so we should halt scanning. But we also need
@@ -381,7 +390,7 @@ contents page, and are soon going to read in the sections.
 	RS->in_biblio = FALSE;
 
 @ The bibliographic data gives lines in any order specifying values of
-variables with fixed names; a blank line ends the block.
+variables with fixed names; the first line failing to match ends the block.
 
 @<Read the bibliographic data block at the top@> =
 	if (RS->main_web_not_module) {
@@ -395,10 +404,7 @@ variables with fixed names; a blank line ends the block.
 			DISCARD_TEXT(key)
 			DISCARD_TEXT(value)
 		} else {
-			TEMPORARY_TEXT(err)
-			WRITE_TO(err, "expected 'Setting: Value' but found '%S'", line);
-			Errors::in_text_file_S(err, tfp);
-			DISCARD_TEXT(err)
+			RS->in_biblio = FALSE;
 		}
 		Regexp::dispose_of(&mr);
 	}
@@ -585,6 +591,7 @@ of registering a new section within a chapter -- more interesting because
 we also read in and process its file.
 
 @<Read about, and read in, a new section@> =
+WRITE_TO(STDERR, "Hello! %S\n", line);
 	section_md *Sm = CREATE(section_md);
 	@<Initialise the section structure@>;
 	@<Add the section to the web and the current chapter@>;
