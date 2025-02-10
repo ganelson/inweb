@@ -35,61 +35,21 @@ markup syntax, and trying to detect incorrect uses of one within the other.
 	int code_lcat_for_body = NO_LCAT,
 		code_plainness_for_body = FALSE,
 		hyperlink_body = FALSE;
+	web_line_cf last_classification = WebSyntax::start_cf();
 	programming_language *code_pl_for_body = NULL;
 	text_stream *code_destination = NULL;
 	int before_bar = TRUE;
 	int next_par_number = 1;
 	paragraph *current_paragraph = NULL;
-	TEMPORARY_TEXT(tag_list)
 	for (source_line *L = S->first_line, *PL = NULL; L; PL = L, L = L->next_line) {
-		@<Apply tag list, if any@>;
-		@<Remove tag list, if any@>;
+		web_line_cf classification =
+			WebSyntax::classify_line(S->md->using_syntax, L->text, last_classification);
+		last_classification = classification;
 		@<Detect implied paragraph breaks@>;
 		@<Determine category for this source line@>;
 	}
-	DISCARD_TEXT(tag_list)
 	@<In version 2 syntax, construe the comment under the heading as the purpose@>;
-	@<If the section as a whole is tagged, apply that tag to each paragraph in it@>;
 	@<Work out footnote numbering for this section@>;
-
-@ In version 2 syntax, the notation for tags was clarified. The tag list
-for a paragraph is the run of |^"This"| and |^"That"| markers at the end of
-the line introducing that paragraph. They can only occur, therefore, on a
-line beginning with an |@|. We extract them into a string called |tag_list|.
-(The reason we can't act on them straight away, which would make for simpler
-code, is that they need to be applied to a paragraph structure which doesn't
-yet exist -- it will only exist when the line has been fully parsed.)
-
-@<Remove tag list, if any@> =
-	if (Str::get_first_char(L->text) == '@') {
-		match_results mr = Regexp::create_mr();
-		while (Regexp::match(&mr, L->text, U"(%c*?)( *%^\"%c+?\")(%c*)")) {
-			if (S->md->using_syntax == V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "tags written ^\"thus\"", V2_SYNTAX);
-			Str::clear(L->text);
-			WRITE_TO(tag_list, "%S", mr.exp[1]);
-			Str::copy(L->text, mr.exp[0]); WRITE_TO(L->text, " %S", mr.exp[2]);
-		}
-		Regexp::dispose_of(&mr);
-	}
-
-@ And now it's later, and we can safely apply the tags. |current_paragraph|
-now points to the para which was created by this line, not the one before.
-
-@<Apply tag list, if any@> =
-	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, tag_list, U" *%^\"(%c+?)\" *(%c*)")) {
-		Tags::add_by_name(current_paragraph, mr.exp[0]);
-		Str::copy(tag_list, mr.exp[1]);
-	}
-	Regexp::dispose_of(&mr);
-	Str::clear(tag_list);
-
-@<If the section as a whole is tagged, apply that tag to each paragraph in it@> =
-	paragraph *P;
-	if (S->tag_with)
-		LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
-			Tags::add_to_paragraph(P, S->tag_with, NULL);
 
 @ In the woven form of each section, footnotes are counting upwards from 1.
 
@@ -104,7 +64,7 @@ syntax, this had to be explicitly declared with a |@Purpose:| command; in
 version 2 it's much tidier.
 
 @<In version 2 syntax, construe the comment under the heading as the purpose@> =
-	if (S->md->using_syntax == V2_SYNTAX) {
+	if (Parser::modern(S->md->using_syntax)) {
 		source_line *L = S->first_line;
 		if ((L) && (L->category == CHAPTER_HEADING_LCAT)) L = L->next_line;
 		if (Str::len(S->sect_purpose) == 0) {
@@ -118,21 +78,16 @@ what otherwise would be code, or when a paragraph and its code divider are
 immediately adjacent on the same line.
 
 @<Detect implied paragraph breaks@> =
-	match_results mr = Regexp::create_mr();
 	if ((PL) && (PL->category == CODE_BODY_LCAT) &&
-		(Str::get_first_char(L->text) == '@') && (Str::get_at(L->text, 1) == '<') &&
-		(Regexp::match(&mr, L->text, U"%c<(%c+)@> *= *")) &&
-		(S->md->using_syntax == V2_SYNTAX)) {
+		(WebSyntax::is_macro_definition_heading(classification)) &&
+		(Parser::modern(S->md->using_syntax))) {
 		@<Insert an implied paragraph break@>;
 	}
-	if ((PL) && (Regexp::match(&mr, L->text, U"@ *= *"))) {
+	if ((PL) && (WebSyntax::is_immediate_extract(classification))) {
 		Str::clear(L->text);
 		Str::copy(L->text, I"=");
-		if (S->md->using_syntax == V1_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "implied paragraph breaks", V2_SYNTAX);
 		@<Insert an implied paragraph break@>;
 	}
-	Regexp::dispose_of(&mr);
 
 @ We handle implied paragraph dividers by inserting a paragraph marker and
 reparsing from there.
@@ -142,7 +97,6 @@ reparsing from there.
 	PL->next_line = NL;
 	NL->next_line = L;
 	L = PL;
-	Regexp::dispose_of(&mr);
 	continue;
 
 @h Categorisation.
@@ -160,14 +114,12 @@ code, definition, what?
 		@<Parse the line as a possible Inweb command@>;
 		@<Parse the line as a possible paragraph macro definition@>;
 	}
-	if (Str::get_first_char(L->text) == '=') {
-		if (S->md->using_syntax == V1_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "column-1 '=' as code divider", V2_SYNTAX);
+	if (WebSyntax::is_extract(classification)) {
 		if (extract_mode) @<Exit extract mode@>
 		else @<Parse the line as an equals structural marker@>;
 	}
-	if ((Str::get_first_char(L->text) == '@') &&
-		(Str::get_at(L->text, 1) != '<') &&
+	if ((WebSyntax::is_structural(classification)) &&
+		(WebSyntax::is_macro_definition_heading(classification) == FALSE) &&
 		(L->category != MACRO_DEFINITION_LCAT))
 		@<Parse the line as a structural marker@>;
 	if (comment_mode) @<This is a line destined for commentary@>;
@@ -197,9 +149,9 @@ namespace for its functions.
 			L->is_commentary = TRUE;
 		}
 	} else if (Regexp::match(&mr, L->text, U"%[(%C+)%] (%C+/%C+): (%c+).")) {
-		if (S->md->using_syntax == V2_SYNTAX)
+		if (Parser::modern(S->md->using_syntax))
 			Parser::wrong_version(S->md->using_syntax, L,
-			"section range in header line", V1_SYNTAX);
+			"section range in header line");
 		S->sect_namespace = Str::duplicate(mr.exp[0]);
 		S->md->sect_range = Str::duplicate(mr.exp[1]);
 		S->md->sect_title = Str::duplicate(mr.exp[2]);
@@ -207,9 +159,9 @@ namespace for its functions.
 		L->category = SECTION_HEADING_LCAT;
 		L->owning_paragraph = NULL;
 	} else if (Regexp::match(&mr, L->text, U"(%C+/%C+): (%c+).")) {
-		if (S->md->using_syntax == V2_SYNTAX)
+		if (Parser::modern(S->md->using_syntax))
 			Parser::wrong_version(S->md->using_syntax, L,
-			"section range in header line", V1_SYNTAX);
+			"section range in header line");
 		S->md->sect_range = Str::duplicate(mr.exp[0]);
 		S->md->sect_title = Str::duplicate(mr.exp[1]);
 		L->text_operand = Str::duplicate(mr.exp[1]);
@@ -246,19 +198,19 @@ In version 2, this notation is never used.
 			L->text_operand = Str::duplicate(mr.exp[1]);
 		}
 		if (Str::eq_wide_string(command_text, U"Page Break")) {
-			if (S->md->using_syntax != V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "[[Page Break]]", V1_SYNTAX);
+			if (Parser::ancient(S->md->using_syntax) == FALSE)
+				Parser::wrong_version(S->md->using_syntax, L, "[[Page Break]]");
 			L->command_code = PAGEBREAK_CMD;
 		} else if (Str::eq_wide_string(command_text, U"Grammar Index"))
 			L->command_code = GRAMMAR_INDEX_CMD;
 		else if (Str::eq_wide_string(command_text, U"Tag")) {
-			if (S->md->using_syntax != V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "[[Tag...]]", V1_SYNTAX);
+			if (Parser::ancient(S->md->using_syntax) == FALSE)
+				Parser::wrong_version(S->md->using_syntax, L, "[[Tag...]]");
 			Tags::add_by_name(L->owning_paragraph, L->text_operand);
 			L->command_code = TAG_CMD;
 		} else if (Str::eq_wide_string(command_text, U"Figure")) {
-			if (S->md->using_syntax != V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "[[Figure...]]", V1_SYNTAX);
+			if (Parser::ancient(S->md->using_syntax) == FALSE)
+				Parser::wrong_version(S->md->using_syntax, L, "[[Figure...]]");
 			Tags::add_by_name(L->owning_paragraph, I"Figures");
 			L->command_code = FIGURE_CMD;
 		} else {
@@ -274,11 +226,8 @@ In version 2, this notation is never used.
 handling. We'll call these "paragraph macros".
 
 @<Parse the line as a possible paragraph macro definition@> =
-	match_results mr = Regexp::create_mr();
-	if ((Str::get_first_char(L->text) == '@') && (Str::get_at(L->text, 1) == '<') &&
-		(Regexp::match(&mr, L->text, U"%c<(%c+)@> *= *"))) {
-		TEMPORARY_TEXT(para_macro_name)
-		Str::copy(para_macro_name, mr.exp[0]);
+	text_stream *para_macro_name = WebSyntax::macro_defined_at(classification);
+	if (Str::len(para_macro_name) > 0) {
 		L->category = MACRO_DEFINITION_LCAT;
 		if (current_paragraph == NULL)
 			Main::error_in_web(I"<...> definition begins outside of a paragraph", L);
@@ -289,28 +238,16 @@ handling. We'll call these "paragraph macros".
 		code_pl_for_body = NULL;
 		code_plainness_for_body = FALSE;
 		hyperlink_body = FALSE;
-		DISCARD_TEXT(para_macro_name)
 		continue;
 	}
-	Regexp::dispose_of(&mr);
 
 @ A structural marker is introduced by an |@| in column 1, and is a structural
 division in the current section.
 
 @<Parse the line as a structural marker@> =
-	TEMPORARY_TEXT(command_text)
-	Str::copy(command_text, L->text);
-	Str::delete_first_character(command_text); /* i.e., strip the at-sign from the front */
-	TEMPORARY_TEXT(remainder)
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, command_text, U"(%C*) *(%c*?)")) {
-		Str::copy(command_text, mr.exp[0]);
-		Str::copy(remainder, mr.exp[1]);
-	}
+	text_stream *command_text = classification.operand1;
+	text_stream *remainder = classification.operand2;
 	@<Deal with a structural marker@>;
-	DISCARD_TEXT(remainder)
-	DISCARD_TEXT(command_text)
-	Regexp::dispose_of(&mr);
 	continue;
 
 @ An equals sign in column 1 can just mean the end of an extract, so:
@@ -329,58 +266,58 @@ division in the current section.
 	code_destination = NULL;
 	code_pl_for_body = NULL;
 	comment_mode = FALSE;
-	match_results mr = Regexp::create_mr();
-	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr, L->text, U"= *(%c+) *")) {
-		if ((current_paragraph) && (Str::eq(mr.exp[0], I"(very early code)"))) {
+	text_stream *extract_cmd = WebSyntax::extract_command_at(classification);
+	if (Str::len(extract_cmd) > 0) {
+		match_results mr2 = Regexp::create_mr();
+		if ((current_paragraph) && (Str::eq(extract_cmd, I"(very early code)"))) {
 			current_paragraph->placed_very_early = TRUE;
-		} else if ((current_paragraph) && (Str::eq(mr.exp[0], I"(early code)"))) {
+		} else if ((current_paragraph) && (Str::eq(extract_cmd, I"(early code)"))) {
 			current_paragraph->placed_early = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
 			code_pl_for_body = NULL;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text to *(%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text to *(%c+)%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = Str::duplicate(mr2.exp[1]);
 			code_pl_for_body = Analyser::find_by_name(I"Extracts", W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text as code%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text as code%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
 			code_pl_for_body = S->sect_language;
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text as (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text as (%c+)%)"))) {
 			@<Make plainer@>;
 			code_lcat_for_body = TEXT_EXTRACT_LCAT;
 			code_destination = NULL;
 			code_pl_for_body = Analyser::find_by_name(mr2.exp[1], W, TRUE);
 			extract_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text from (%c+) as code%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text from (%c+) as code%)"))) {
 			@<Make plainer@>;
 			code_pl_for_body = S->sect_language;
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text from (%c+) as (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text from (%c+) as (%c+)%)"))) {
 			@<Make plainer@>;
 			code_pl_for_body = Analyser::find_by_name(mr2.exp[2], W, TRUE);
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%((%c*?) *text from (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%((%c*?) *text from (%c+)%)"))) {
 			@<Make plainer@>;
 			code_pl_for_body = NULL;
 			@<Spool from file@>;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(figure (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(figure (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Figures");
 			L->command_code = FIGURE_CMD;
 			L->category = COMMAND_LCAT;
@@ -388,7 +325,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(html (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(html (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"HTML");
 			L->command_code = HTML_CMD;
 			L->category = COMMAND_LCAT;
@@ -396,7 +333,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(audio (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(audio (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Audio");
 			L->command_code = AUDIO_CMD;
 			L->category = COMMAND_LCAT;
@@ -404,7 +341,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(video (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(video (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Video");
 			L->command_code = VIDEO_CMD;
 			L->category = COMMAND_LCAT;
@@ -412,7 +349,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(download (%c+) \"(%c*)\"%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(download (%c+) \"(%c*)\"%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Download");
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
@@ -421,7 +358,7 @@ division in the current section.
 			L->text_operand2 = Str::duplicate(mr2.exp[1]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(download (%c+)%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(download (%c+)%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Download");
 			L->command_code = DOWNLOAD_CMD;
 			L->category = COMMAND_LCAT;
@@ -430,7 +367,7 @@ division in the current section.
 			L->text_operand2 = Str::new();
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(carousel%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(carousel%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_UNCAPTIONED_CMD;
 			L->category = COMMAND_LCAT;
@@ -438,7 +375,7 @@ division in the current section.
 			L->text_operand = Str::new();
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\" below%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(carousel \"(%c+)\" below%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_BELOW_CMD;
 			L->category = COMMAND_LCAT;
@@ -446,7 +383,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\" above%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(carousel \"(%c+)\" above%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_ABOVE_CMD;
 			L->category = COMMAND_LCAT;
@@ -454,7 +391,7 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(carousel \"(%c+)\"%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(carousel \"(%c+)\"%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_CMD;
 			L->category = COMMAND_LCAT;
@@ -462,15 +399,15 @@ division in the current section.
 			L->text_operand = Str::duplicate(mr2.exp[0]);
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			(Regexp::match(&mr2, mr.exp[0], U"%(carousel end%)"))) {
+			(Regexp::match(&mr2, extract_cmd, U"%(carousel end%)"))) {
 			Tags::add_by_name(L->owning_paragraph, I"Carousels");
 			L->command_code = CAROUSEL_END_CMD;
 			L->category = COMMAND_LCAT;
 			code_lcat_for_body = COMMENT_BODY_LCAT;
 			comment_mode = TRUE;
 		} else if ((current_paragraph) &&
-			((Regexp::match(&mr2, mr.exp[0], U"%(embedded (%C+) video (%c+)%)")) ||
-				(Regexp::match(&mr2, mr.exp[0], U"%(embedded (%C+) audio (%c+)%)")))) {
+			((Regexp::match(&mr2, extract_cmd, U"%(embedded (%C+) video (%c+)%)")) ||
+				(Regexp::match(&mr2, extract_cmd, U"%(embedded (%C+) audio (%c+)%)")))) {
 			Tags::add_by_name(L->owning_paragraph, I"Videos");
 			L->command_code = EMBED_CMD;
 			L->category = COMMAND_LCAT;
@@ -479,15 +416,12 @@ division in the current section.
 			L->text_operand2 = Str::duplicate(mr2.exp[1]);
 			comment_mode = TRUE;
 		} else {
-			Main::error_in_web(I"unknown bracketed annotation", L);
+			Main::error_in_web(I"unknown material after extract marker", L);
 		}
-	} else if (Regexp::match(&mr, L->text, U"= *%C%c*")) {
-		Main::error_in_web(I"unknown material after '='", L);
+		Regexp::dispose_of(&mr2);
 	}
 	code_plainness_for_body = L->plainer;
 	hyperlink_body = L->enable_hyperlinks;
-	Regexp::dispose_of(&mr);
-	Regexp::dispose_of(&mr2);
 	continue;
 
 @<Make plainer@> =
@@ -539,40 +473,40 @@ long forms |@define|, |@enum| and |@heading|, and plain old |@| remain.
 	if (Str::eq_wide_string(command_text, U"Purpose:")) @<Deal with Purpose@>
 	else if (Str::eq_wide_string(command_text, U"Interface:")) @<Deal with Interface@>
 	else if (Str::eq_wide_string(command_text, U"Definitions:")) @<Deal with Definitions@>
-	else if (Regexp::match(&mr, command_text, U"----+")) @<Deal with the bar@>
+	else if (Str::begins_with(command_text, I"----")) @<Deal with the bar@>
 	else if ((Str::eq_wide_string(command_text, U"c")) ||
 			(Str::eq_wide_string(command_text, U"x")) ||
-			((S->md->using_syntax == V1_SYNTAX) && (Str::eq_wide_string(command_text, U"e"))))
+			((Parser::ancient(S->md->using_syntax)) && (Str::eq_wide_string(command_text, U"e"))))
 				@<Deal with the code and extract markers@>
 	else if (Str::eq_wide_string(command_text, U"d")) @<Deal with the define marker@>
 	else if (Str::eq_wide_string(command_text, U"define")) {
-		if (S->md->using_syntax == V1_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "'@define' for definitions (use '@d' instead)", V2_SYNTAX);
+		if (Parser::ancient(S->md->using_syntax))
+			Parser::wrong_version(S->md->using_syntax, L, "'@define' for definitions (use '@d' instead)");
 		@<Deal with the define marker@>;
 	} else if (Str::eq_wide_string(command_text, U"default")) {
-		if (S->md->using_syntax == V1_SYNTAX)
-			Parser::wrong_version(S->md->using_syntax, L, "'@default' for definitions", V2_SYNTAX);
+		if (Parser::ancient(S->md->using_syntax))
+			Parser::wrong_version(S->md->using_syntax, L, "'@default' for definitions");
 		L->default_defn = TRUE;
 		@<Deal with the define marker@>;
 	} else if (Str::eq_wide_string(command_text, U"enum")) @<Deal with the enumeration marker@>
-	else if ((Str::eq_wide_string(command_text, U"e")) && (S->md->using_syntax == V2_SYNTAX))
+	else if ((Str::eq_wide_string(command_text, U"e")) && (Parser::modern(S->md->using_syntax)))
 		@<Deal with the enumeration marker@>
 	else {
 		int weight = -1, new_page = FALSE;
 		if (Str::eq_wide_string(command_text, U"")) weight = ORDINARY_WEIGHT;
 		if ((Str::eq_wide_string(command_text, U"h")) || (Str::eq_wide_string(command_text, U"heading"))) {
-			if (S->md->using_syntax == V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "'@h' or '@heading' for headings (use '@p' instead)", V2_SYNTAX);
+			if (Parser::ancient(S->md->using_syntax))
+				Parser::wrong_version(S->md->using_syntax, L, "'@h' or '@heading' for headings (use '@p' instead)");
 			weight = SUBHEADING_WEIGHT;
 		}
 		if (Str::eq_wide_string(command_text, U"p")) {
-			if (S->md->using_syntax != V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "'@p' for headings (use '@h' instead)", V1_SYNTAX);
+			if (Parser::ancient(S->md->using_syntax) == FALSE)
+				Parser::wrong_version(S->md->using_syntax, L, "'@p' for headings (use '@h' instead)");
 			weight = SUBHEADING_WEIGHT;
 		}
 		if (Str::eq_wide_string(command_text, U"pp")) {
-			if (S->md->using_syntax != V1_SYNTAX)
-				Parser::wrong_version(S->md->using_syntax, L, "'@pp' for super-headings", V1_SYNTAX);
+			if (Parser::ancient(S->md->using_syntax) == FALSE)
+				Parser::wrong_version(S->md->using_syntax, L, "'@pp' for super-headings");
 			weight = SUBHEADING_WEIGHT; new_page = TRUE;
 		}
 		if (weight >= 0) @<Begin a new paragraph of this weight@>
@@ -584,31 +518,34 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 
 @<Deal with Purpose@> =
 	if (before_bar == FALSE) Main::error_in_web(I"Purpose used after bar", L);
-	if (S->md->using_syntax == V2_SYNTAX)
-		Parser::wrong_version(S->md->using_syntax, L, "'@Purpose'", V1_SYNTAX);
+	if (Parser::modern(S->md->using_syntax))
+		Parser::wrong_version(S->md->using_syntax, L, "'@Purpose'");
 	L->category = PURPOSE_LCAT;
 	L->is_commentary = TRUE;
 	L->text_operand = Str::duplicate(remainder);
 	S->sect_purpose = Parser::extract_purpose(remainder, L->next_line, L->owning_section, &L);
 
 @<Deal with Interface@> =
-	if (S->md->using_syntax == V2_SYNTAX)
-		Parser::wrong_version(S->md->using_syntax, L, "'@Interface'", V1_SYNTAX);
+	if (Parser::modern(S->md->using_syntax))
+		Parser::wrong_version(S->md->using_syntax, L, "'@Interface'");
 	if (before_bar == FALSE) Main::error_in_web(I"Interface used after bar", L);
 	L->category = INTERFACE_LCAT;
 	L->owning_paragraph = NULL;
 	L->is_commentary = TRUE;
 	source_line *XL = L->next_line;
+	web_line_cf XC = classification;
 	while ((XL) && (XL->next_line) && (XL->owning_section == L->owning_section)) {
-		if (Str::get_first_char(XL->text) == '@') break;
+		web_line_cf classification = WebSyntax::classify_line(S->md->using_syntax, XL->text, XC);
+		XC = classification;
+		if (WebSyntax::is_structural(classification)) break;
 		XL->category = INTERFACE_BODY_LCAT;
 		L = XL;
 		XL = XL->next_line;
 	}
 
 @<Deal with Definitions@> =
-	if (S->md->using_syntax == V2_SYNTAX)
-		Parser::wrong_version(S->md->using_syntax, L, "'@Definitions' headings", V1_SYNTAX);
+	if (Parser::modern(S->md->using_syntax))
+		Parser::wrong_version(S->md->using_syntax, L, "'@Definitions' headings");
 	if (before_bar == FALSE) Main::error_in_web(I"Definitions used after bar", L);
 	L->category = DEFINITIONS_LCAT;
 	L->owning_paragraph = NULL;
@@ -620,8 +557,8 @@ in the file made of hyphens, called "the bar". All of that has gone in V2.
 constitutes the optional division bar in a section.
 
 @<Deal with the bar@> =
-	if (S->md->using_syntax == V2_SYNTAX)
-		Parser::wrong_version(S->md->using_syntax, L, "the bar '----...'", V1_SYNTAX);
+	if (Parser::modern(S->md->using_syntax))
+		Parser::wrong_version(S->md->using_syntax, L, "the bar '----...'");
 	if (before_bar == FALSE) Main::error_in_web(I"second bar in the same section", L);
 	L->category = BAR_LCAT;
 	L->owning_paragraph = NULL;
@@ -631,15 +568,15 @@ constitutes the optional division bar in a section.
 	before_bar = FALSE;
 	next_par_number = 1;
 
-@ In version 1, the division point where a paragraoh begins to go into
+@ In version 1, the division point where a paragraph begins to go into
 verbatim code was not marked with an equals sign, but with one of the three
 commands |@c| ("code"), |@e| ("early code") and |@x| ("code-like extract").
 These had identical behaviour except for whether or not to tangle what
 follows:
 
 @<Deal with the code and extract markers@> =
-	if (S->md->using_syntax != V1_SYNTAX)
-		Parser::wrong_version(S->md->using_syntax, L, "'@c' and '@x'", V1_SYNTAX);
+	if (Parser::ancient(S->md->using_syntax) == FALSE)
+		Parser::wrong_version(S->md->using_syntax, L, "'@c' and '@x'");
 	L->category = BEGIN_CODE_LCAT;
 	if ((Str::eq_wide_string(command_text, U"e")) && (current_paragraph))
 		current_paragraph->placed_early = TRUE;
@@ -779,7 +716,7 @@ typedef struct paragraph {
 
 @<Create a new paragraph, starting here, as new current paragraph@> =
 	paragraph *P = CREATE(paragraph);
-	if (S->md->using_syntax != V1_SYNTAX) {
+	if (Parser::ancient(S->md->using_syntax) == FALSE) {
 		P->above_bar = FALSE;
 		P->placed_early = FALSE;
 		P->placed_very_early = FALSE;
@@ -792,7 +729,7 @@ typedef struct paragraph {
 	if (Str::eq(Bibliographic::get_datum(W->md, I"Paragraph Numbers Visibility"), I"Off"))
 		P->invisible = TRUE;
 	P->heading_text = Str::duplicate(L->text_operand);
-	if ((S->md->using_syntax == V1_SYNTAX) && (before_bar))
+	if ((Parser::ancient(S->md->using_syntax)) && (before_bar))
 		P->ornament = Str::duplicate(I"P");
 	else
 		P->ornament = Str::duplicate(I"S");
@@ -811,6 +748,12 @@ typedef struct paragraph {
 	P->under_section = S;
 	S->sect_paragraphs++;
 	ADD_TO_LINKED_LIST(P, paragraph, S->paragraphs);
+
+	text_stream *tag;
+	LOOP_OVER_LINKED_LIST(tag, text_stream, classification.tag_list) {
+		Tags::add_by_name(P, tag);
+	}
+	if (S->tag_with) Tags::add_to_paragraph(P, S->tag_with, NULL);
 
 	current_paragraph = P;
 
@@ -986,40 +929,40 @@ This is the syntax used.
 
 =
 text_stream *Parser::dimensions(text_stream *item, int *w, int *h, source_line *L) {
-	int sv = L->owning_section->md->using_syntax;
+	web_syntax *sv = L->owning_section->md->using_syntax;
 	*w = -1; *h = -1;
 	text_stream *use = item;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, item, U"(%c+) at (%d+) by (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at X by Y", V2_SYNTAX);
+		if (Parser::modern(sv) == FALSE)
+			Parser::wrong_version(sv, L, "at X by Y");
 		*w = Str::atoi(mr.exp[1], 0);
 		*h = Str::atoi(mr.exp[2], 0);
 		use = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, item, U"(%c+) at height (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at height Y", V2_SYNTAX);
+		if (Parser::modern(sv) == FALSE)
+			Parser::wrong_version(sv, L, "at height Y");
 		*h = Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, item, U"(%c+) at width (%d+)")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at width Y", V2_SYNTAX);
+		if (Parser::modern(sv) == FALSE)
+			Parser::wrong_version(sv, L, "at width Y");
 		*w = Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, item, U"(%c+) at (%d+)cm by (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at Xcm by Ycm", V2_SYNTAX);
+		if (Parser::modern(sv) == FALSE)
+			Parser::wrong_version(sv, L, "at Xcm by Ycm");
 		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
 		*h = POINTS_PER_CM*Str::atoi(mr.exp[2], 0);
 		use = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, item, U"(%c+) at height (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at height Ycm", V2_SYNTAX);
+		if (Parser::modern(sv) == FALSE)
+			Parser::wrong_version(sv, L, "at height Ycm");
 		*h = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
 	} else if (Regexp::match(&mr, item, U"(%c+) at width (%d+)cm")) {
-		if (sv < V2_SYNTAX)
-			Parser::wrong_version(sv, L, "at width Ycm", V2_SYNTAX);
+		if (Parser::modern(sv) == FALSE)
+			Parser::wrong_version(sv, L, "at width Ycm");
 		*w = POINTS_PER_CM*Str::atoi(mr.exp[1], 0);
 		use = Str::duplicate(mr.exp[0]);
 	}
@@ -1033,10 +976,22 @@ of the feature despite the version mismatch. They nevertheless count as errors
 when it comes to Inweb's exit code, so they will halt a make.
 
 =
-void Parser::wrong_version(int using, source_line *L, char *feature, int need) {
+void Parser::wrong_version(web_syntax *using, source_line *L, char *feature) {
 	TEMPORARY_TEXT(warning)
-	WRITE_TO(warning, "%s is a feature of version %d syntax (you're using v%d)",
-		feature, need, using);
+	TEMPORARY_TEXT(syntax)
+	WebSyntax::write(syntax, using);
+	WRITE_TO(warning, "%s is not a feature of %S web syntax", feature, syntax);
 	Main::error_in_web(warning, L);
 	DISCARD_TEXT(warning)
+	DISCARD_TEXT(syntax)
+}
+
+int Parser::modern(web_syntax *syntax) {
+	if (syntax == new_Inweb_syntax) return TRUE;
+	return FALSE;
+}
+
+int Parser::ancient(web_syntax *syntax) {
+	if (syntax == old_Inweb_syntax) return TRUE;
+	return FALSE;
 }

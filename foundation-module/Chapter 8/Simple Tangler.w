@@ -88,7 +88,7 @@ void SimpleTangler::tangle_L1(simple_tangle_docket *docket, text_stream *text,
 void SimpleTangler::tangle_L2(OUTPUT_STREAM, text_stream *text, filename *F,
 	text_stream *leafname, simple_tangle_docket *docket, int whole_web) {
 	if (whole_web) {
-		web_md *Wm = WebMetadata::get(docket->web_path, NULL, WebSyntax::default(), NULL, FALSE, TRUE, NULL);
+		web_md *Wm = WebMetadata::get(docket->web_path, NULL, NULL, NULL, FALSE, TRUE, NULL);
 		chapter_md *Cm;
 		LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
 			section_md *Sm;

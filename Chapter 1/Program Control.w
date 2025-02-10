@@ -3,12 +3,6 @@
 The top level, which decides what is to be done and then carries
 this plan out.
 
-@ Inweb syntax has gradually shifted over the years, but there are two main
-versions: the second was cleaned up and simplified from the first in 2019.
-
-=
-int default_inweb_syntax = V2_SYNTAX;
-
 @ Inweb has a single fundamental mode of operation: on any given run, it
 is either tangling, weaving or analysing. These processes use the same input
 and parsing code, but then do very different things to produce their output,

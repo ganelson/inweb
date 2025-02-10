@@ -96,7 +96,7 @@ typedef struct section {
 =
 web_md *Reader::load_web_md(pathname *P, filename *alt_F, module_search *I,
 	int including_modules) {
-	return WebMetadata::get(P, alt_F, default_inweb_syntax, I, verbose_mode,
+	return WebMetadata::get(P, alt_F, NULL, I, verbose_mode,
 		including_modules, path_to_inweb);
 }
 
@@ -217,17 +217,13 @@ void Reader::read_web(web *W) {
 
 @d SECTION_NOT_PAUSED 0
 @d SECTION_PAUSED_UNTIL_AT 1
-@d SECTION_PAUSED_UNTIL_AFTER_HEADING 2
 
 =
 void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_line,
 	section *S, int disregard_top) {
 	S->owning_chapter = C;
 	if (disregard_top) {
-		if (S->md->using_syntax == MD_SYNTAX)
-			S->paused_until_midway = SECTION_PAUSED_UNTIL_AFTER_HEADING;
-		else
-			S->paused_until_midway = SECTION_PAUSED_UNTIL_AT;
+		S->paused_until_midway = SECTION_PAUSED_UNTIL_AT;
 	} else {
 		S->paused_until_midway = SECTION_NOT_PAUSED;
 	}
@@ -279,15 +275,10 @@ void Reader::scan_source_line(text_stream *line, text_file_position *tfp, void *
 	int l = Str::len(line) - 1;
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
-	switch (S->paused_until_midway) {
-		case SECTION_PAUSED_UNTIL_AT:
-			if (Reader::line_can_begin_paragraph(S, line)) S->paused_until_midway = SECTION_NOT_PAUSED;
-			else return;
-			break;
-		case SECTION_PAUSED_UNTIL_AFTER_HEADING:
-			if (tfp->line_count == 2) S->paused_until_midway = SECTION_NOT_PAUSED;
-			else return;
-			break;		
+	if (S->paused_until_midway == SECTION_PAUSED_UNTIL_AT) {
+		if (WebSyntax::line_can_mark_end_of_metadata(S->md->using_syntax, line, tfp))
+			S->paused_until_midway = SECTION_NOT_PAUSED;
+		else return;
 	}
 	@<Accept this as a line belonging to this section and chapter@>;
 }

@@ -23,7 +23,8 @@ typedef struct web_md {
 	struct filename *single_file; /* relative to the current working directory */
 	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
-	int default_syntax; /* which version syntax the sections will have */
+	int syntax_externally_set; /* whether syntax has been declared in advance */
+	struct web_syntax *default_syntax; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct text_stream *main_language_name; /* in which most of the sections are written */
 
@@ -62,7 +63,7 @@ typedef struct chapter_md {
 typedef struct section_md {
 	struct text_stream *sect_title; /* e.g., "Program Control" */
 	struct text_stream *sect_range; /* e.g., "2/ct" */
-	int using_syntax; /* which syntax the web is written in */
+	struct web_syntax *using_syntax; /* which syntax the web is written in */
 	int is_a_singleton; /* is this the only section in its entire web? */
 
 	struct filename *source_file_for_section;
@@ -84,10 +85,10 @@ case a filename |alt_F| is supplied.
 
 =
 web_md *WebMetadata::get_without_modules(pathname *P, filename *alt_F) {
-	return WebMetadata::get(P, alt_F, WebSyntax::default(), NULL, FALSE, FALSE, NULL);
+	return WebMetadata::get(P, alt_F, NULL, NULL, FALSE, FALSE, NULL);
 }
 
-web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
+web_md *WebMetadata::get(pathname *P, filename *alt_F, web_syntax *syntax_version,
 	module_search *I, int verbosely, int including_modules, pathname *path_to_inweb) {
 	if ((including_modules) && (I == NULL)) I = WebModules::make_search_path(NULL);
 	web_md *Wm = CREATE(web_md);
@@ -115,6 +116,12 @@ web_md *WebMetadata::get(pathname *P, filename *alt_F, int syntax_version,
 		Wm->contents_filename = NULL;
 	}
 	Wm->version_number = VersionNumbers::null();
+	if (syntax_version == NULL) {
+		syntax_version = WebSyntax::default();
+		Wm->syntax_externally_set = FALSE;
+	} else {
+		Wm->syntax_externally_set = TRUE;
+	}
 	Wm->default_syntax = syntax_version;
 	Wm->chaptered = FALSE;
 	Wm->sections_md = NEW_LINKED_LIST(sections_md);
@@ -322,8 +329,10 @@ void WebMetadata::read_contents_line(text_stream *line, text_file_position *tfp,
 		begins_with_white_space = TRUE;
 	Str::trim_white_space(line);
 	
-	@<Act immediately if the web syntax version is changed@>;
-	int syntax = RS->Wm->default_syntax;
+	if ((RS->Wm->syntax_externally_set == FALSE) ||
+		(WebSyntax::supports(RS->Wm->default_syntax, SYNTAX_REDECLARATION_WSF)))
+		@<Act immediately if the web syntax version is changed@>;
+	web_syntax *syntax = RS->Wm->default_syntax;
 
 	filename *filename_of_single_file_web = NULL;
 	if ((RS->halt_at_at) &&
@@ -340,8 +349,8 @@ immediately.
 @<Act immediately if the web syntax version is changed@> =
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(author)
-	int S = WebSyntax::parse_internal_declaration(line, tfp, title, author);
-	if (S >= 0) {
+	web_syntax *S = WebSyntax::parse_internal_declaration(RS->Wm->default_syntax, line, tfp, title, author);
+	if (S) {
 		RS->Wm->default_syntax = S;
 		if (Str::len(title) > 0) {
 			text_stream *key = I"Title";
@@ -511,7 +520,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 				DISCARD_TEXT(err)
 			} else {
 				if (RS->including_modules) {
-					int save_syntax = RS->Wm->default_syntax;
+					web_syntax *save_syntax = RS->Wm->default_syntax;
 					WebMetadata::read_contents_page(RS->Wm, imported, RS->import_from,
 						RS->scan_verbosely, RS->including_modules,
 						imported->module_location, RS->path_to_inweb);
@@ -591,7 +600,6 @@ of registering a new section within a chapter -- more interesting because
 we also read in and process its file.
 
 @<Read about, and read in, a new section@> =
-WRITE_TO(STDERR, "Hello! %S\n", line);
 	section_md *Sm = CREATE(section_md);
 	@<Initialise the section structure@>;
 	@<Add the section to the web and the current chapter@>;
