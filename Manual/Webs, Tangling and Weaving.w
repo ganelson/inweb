@@ -395,7 +395,7 @@ A tag can optionally supply a caption. For example:
 	The original version of the program used an in-place insertion sort, but
 	...
 =
-Here the tag is just |Algorithms|, but when a |-weave-to Algorithms| is
+Here the tag is just |Algorithms|, but when a |-weave-tag Algorithms| is
 performed, the caption text "Sorting rulebooks" will be used in a subheading
 in the resulting booklet.
 
@@ -409,7 +409,7 @@ For example:
 tags every paragraph in the section "The Sieve of Eratosthenes" with the
 tag |Greek|. In this instance, a caption is not allowed.
 
-Note that if we |-weave-to| a tag which does not exist - or rather, which no
+Note that if we |-weave-tag| a tag which does not exist - or rather, which no
 paragraph in the range has - then rather than producing an empty document,
 Inweb will halt with an "empty weave request" error.
 

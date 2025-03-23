@@ -264,8 +264,8 @@ about breaking pages at chapters and sections fail to work. So:
 		continue;
 	}
 
-	TEMPORARY_TEXT(matter) Str::copy(matter, L->text);
-	if (L->is_commentary) @<Weave verbatim matter in commentary style@>
+	TEMPORARY_TEXT(matter) Str::copy(matter, L->weave_text);
+	if (WebSyntax::is_commentary(L->classification)) @<Weave verbatim matter in commentary style@>
 	else @<Weave verbatim matter in code style@>;
 	DISCARD_TEXT(matter)
 
@@ -295,7 +295,7 @@ at us; but we don't weave them into the output, that's for sure.
 
 @<Weave a figure@> =
 	int w, h;
-	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h);
 	Trees::make_child(WeaveTree::figure(tree, figname, w, h), state->ap);
 
 @<Weave a raw HTML extract@> =
@@ -304,12 +304,12 @@ at us; but we don't weave them into the output, that's for sure.
 
 @<Weave an audio clip@> =
 	int w, h;
-	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h);
 	Trees::make_child(WeaveTree::audio(tree, figname, w), state->ap);
 
 @<Weave a video clip@> =
 	int w, h;
-	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h, L);
+	text_stream *figname = Parser::dimensions(L->text_operand, &w, &h);
 	Trees::make_child(WeaveTree::video(tree, figname, w, h), state->ap);
 
 @<Weave a download@> =
@@ -318,7 +318,7 @@ at us; but we don't weave them into the output, that's for sure.
 
 @<Weave an embed@> =
 	int w, h;
-	text_stream *ID = Parser::dimensions(L->text_operand2, &w, &h, L);
+	text_stream *ID = Parser::dimensions(L->text_operand2, &w, &h);
 	Trees::make_child(WeaveTree::embed(tree, L->text_operand, ID, w, h), state->ap);
 
 @<Weave a carousel@> =
@@ -474,7 +474,7 @@ and macro usage is rendered differently.
 			will_be = DEFINITION_MATERIAL;
 		else if ((state->kind_of_material == DEFINITION_MATERIAL) &&
 			((L->category == CODE_BODY_LCAT) || (L->category == COMMENT_BODY_LCAT)) &&
-			(Str::len(L->text) == 0))
+			(Str::len(L->weave_text) == 0))
 			will_be = DEFINITION_MATERIAL;
 		programming_language *pl = L->colour_as;
 		if (pl == NULL) pl = S->sect_language;
@@ -804,14 +804,14 @@ int Weaver::weave_table_of_contents(heterogeneous_tree *tree,
 	int noteworthy = 0;
 	paragraph *P;
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
-		if ((P->weight > 0) && ((S->barred == FALSE) || (P->above_bar == FALSE)))
+		if (P->weight > 0)
 			noteworthy++;
 	if (noteworthy == 0) return FALSE;
 
 	tree_node *TOC = WeaveTree::table_of_contents(tree, S->md->sect_range);
 	Trees::make_child(TOC, ap);
 	LOOP_OVER_LINKED_LIST(P, paragraph, S->paragraphs)
-		if ((P->weight > 0) && ((S->barred == FALSE) || (P->above_bar == FALSE))) {
+		if (P->weight > 0) {
 			TEMPORARY_TEXT(loc)
 			WRITE_TO(loc, "%S%S", P->ornament, P->paragraph_number);
 			Trees::make_child(

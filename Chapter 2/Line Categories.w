@@ -19,9 +19,11 @@ correspond to one of these:
 =
 typedef struct source_line {
 	struct text_stream *text; /* the text as read in */
+	struct text_stream *weave_text; /* the text as manipulated for weaving */
 	struct text_stream *text_operand; /* meaning depends on category */
 	struct text_stream *text_operand2; /* meaning depends on category */
 
+	struct web_line_cf classification; /* syntax of the line */
 	int category; /* what sort of line this is: an |*_LCAT| value */
 	int command_code; /* used only for |COMMAND_LCAT| lines: a |*_CMD| value */
 	int default_defn; /* used only for |BEGIN_DEFINITION_LCAT| lines */
@@ -29,7 +31,6 @@ typedef struct source_line {
 	int enable_hyperlinks; /* used only for |CODE_BODY_LCAT| lines: link URLs in weave */
 	struct programming_language *colour_as; /* used only for |TEXT_EXTRACT_LCAT| lines */
 	struct text_stream *extract_to; /* used only for |TEXT_EXTRACT_LCAT| lines */
-	int is_commentary; /* flag */
 	struct language_function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
@@ -48,9 +49,11 @@ source_line *Lines::new_source_line_in(text_stream *line, text_file_position *tf
 	section *S) {
 	source_line *sl = CREATE(source_line);
 	sl->text = Str::duplicate(line);
+	sl->weave_text = sl->text;
 	sl->text_operand = Str::new();
 	sl->text_operand2 = Str::new();
 
+	sl->classification = WebSyntax::unclassified();
 	sl->category = NO_LCAT; /* that is, unknown category as yet */
 	sl->command_code = NO_CMD;
 	sl->default_defn = FALSE;
@@ -58,7 +61,6 @@ source_line *Lines::new_source_line_in(text_stream *line, text_file_position *tf
 	sl->enable_hyperlinks = FALSE;
 	sl->colour_as = NULL;
 	sl->extract_to = NULL;
-	sl->is_commentary = FALSE;
 	sl->function_defined = NULL;
 	sl->preform_nonterminal_defined = NULL;
 	sl->suppress_tangling = FALSE;

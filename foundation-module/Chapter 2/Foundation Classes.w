@@ -35,6 +35,10 @@ here we are.
 @e JSON_value_CLASS
 @e linked_list_CLASS
 @e linked_list_item_CLASS
+@e literate_source_chunk_CLASS
+@e literate_source_paragraph_CLASS
+@e literate_source_token_CLASS
+@e literate_source_unit_CLASS
 @e markdown_item_CLASS
 @e markdown_feature_CLASS
 @e markdown_variation_CLASS
@@ -95,6 +99,7 @@ DECLARE_CLASS(JSON_single_requirement)
 DECLARE_CLASS(JSON_type)
 DECLARE_CLASS(JSON_value)
 DECLARE_CLASS(linked_list)
+DECLARE_CLASS(literate_source_unit)
 DECLARE_CLASS(markdown_feature)
 DECLARE_CLASS(markdown_variation)
 DECLARE_CLASS(md_doc_state)
@@ -127,6 +132,9 @@ DECLARE_CLASS(web_syntax)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dict_entry, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(HTML_tag, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(linked_list_item, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(literate_source_chunk, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(literate_source_paragraph, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(literate_source_token, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(markdown_item, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_avinue, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(match_trie, 1000)

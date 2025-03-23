@@ -10,33 +10,22 @@ result of reading in and parsing the web:
 =
 void Analyser::scan_line_categories(web *W, text_stream *range) {
 	PRINT("Scan of source lines for '%S'\n", range);
-	int count = 1;
 	chapter *C = Reader::get_chapter_for_range(W, range);
 	if (C) {
 		section *S;
 		LOOP_OVER_LINKED_LIST(S, section, C->sections)
-			for (source_line *L = S->first_line; L; L = L->next_line)
-				@<Trace the content and category of this source line@>;
+			WebSyntax::write_lsu(STDOUT, S->literate_source);
 	} else {
 		section *S = Reader::get_section_for_range(W, range);
 		if (S) {
-			for (source_line *L = S->first_line; L; L = L->next_line)
-				@<Trace the content and category of this source line@>
+			WebSyntax::write_lsu(STDOUT, S->literate_source);
 		} else {
 			LOOP_OVER_LINKED_LIST(C, chapter, W->chapters)
 				LOOP_OVER_LINKED_LIST(S, section, C->sections)
-					for (source_line *L = S->first_line; L; L = L->next_line)
-						@<Trace the content and category of this source line@>;
+					WebSyntax::write_lsu(STDOUT, S->literate_source);
 		}
 	}
 }
-
-@<Trace the content and category of this source line@> =
-	TEMPORARY_TEXT(C)
-	WRITE_TO(C, "%s", Lines::category_name(L->category));
-	while (Str::len(C) < 20) PUT_TO(C, '.');
-	PRINT("%07d  %S  %S\n", count++, C, L->text);
-	DISCARD_TEXT(C)
 
 @h The section catalogue.
 This provides quite a useful overview of the sections. As we'll see frequently

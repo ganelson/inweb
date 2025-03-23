@@ -69,12 +69,12 @@ typedef struct section {
 
 	struct text_stream *sect_namespace; /* e.g., "Text::Languages::" */
 	struct text_stream *sect_purpose; /* e.g., "To manage the zoo, and feed all penguins" */
-	int barred; /* if version 1 syntax, contains a dividing bar? */
 	struct programming_language *sect_language; /* in which this section is written */
 	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
 	struct weave_order *sect_weave; /* |NULL| unless this section produces a weave of its own */
 
 	int sect_extent; /* total number of lines in this section */
+	struct literate_source_unit *literate_source;
 	struct source_line *first_line; /* for efficiency's sake not held as a |linked_list|, */
 	struct source_line *last_line; /* but that's what it is, all the same */
 
@@ -168,7 +168,6 @@ web *Reader::load_web(pathname *P, filename *alt_F, module_search *I,
 	S->macros = NEW_LINKED_LIST(para_macro);
 
 	S->scratch_flag = FALSE;
-	S->barred = FALSE;
 	S->printed_number = -1;
 	S->sect_weave = NULL;
 	S->sect_namespace = Str::new();
@@ -228,12 +227,14 @@ void Reader::read_file(web *W, chapter *C, filename *F, text_stream *titling_lin
 		S->paused_until_midway = SECTION_NOT_PAUSED;
 	}
 
-	if ((titling_line) && (Str::len(titling_line) > 0) &&
-		(S->owning_chapter->titling_line_inserted == FALSE))
-		@<Insert an implied chapter heading@>;
+	if (WebSyntax::supports(S->md->using_syntax, EXPLICIT_SECTION_HEADINGS_WSF)) {
+		if ((titling_line) && (Str::len(titling_line) > 0) &&
+			(S->owning_chapter->titling_line_inserted == FALSE))
+			@<Insert an implied chapter heading@>;
 	
-	if (disregard_top)
-		@<Insert an implied section heading, for a single-file web@>;
+		if (disregard_top)
+			@<Insert an implied section heading, for a single-file web@>;
+	}
 
 	int cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
 			Reader::scan_source_line, NULL, (void *) S);
@@ -276,7 +277,7 @@ void Reader::scan_source_line(text_stream *line, text_file_position *tfp, void *
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
 	if (S->paused_until_midway == SECTION_PAUSED_UNTIL_AT) {
-		if (WebSyntax::line_can_mark_end_of_metadata(S->md->using_syntax, line, tfp))
+		if (tfp->line_count > S->md->skipped_lines)
 			S->paused_until_midway = SECTION_NOT_PAUSED;
 		else return;
 	}

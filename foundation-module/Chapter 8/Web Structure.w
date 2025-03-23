@@ -65,6 +65,7 @@ typedef struct section_md {
 	struct text_stream *sect_range; /* e.g., "2/ct" */
 	struct web_syntax *using_syntax; /* which syntax the web is written in */
 	int is_a_singleton; /* is this the only section in its entire web? */
+	int skipped_lines; /* ignore this many lines at the top of the file */
 
 	struct filename *source_file_for_section;
 
@@ -256,10 +257,11 @@ typedef struct reader_state {
 	struct module *reading_from;
 	struct module_search *import_from; /* Where imported webs are */
 	struct pathname *path_to_inweb;
+	struct web_syntax *declared_syntax;
 	int scan_verbosely;
 	int including_modules;
 	int main_web_not_module; /* Reading the original web, or an included one? */
-	int halt_at_at; /* Used for reading contents pages of single-file webs */
+	int single_file_web; /* Used for reading contents pages of single-file webs */
 	int halted; /* Set when such a halt has occurred */
 	int section_count;
 	struct section_md *last_section;
@@ -297,6 +299,7 @@ void WebMetadata::read_contents_page(web_md *Wm, module *of_module,
 	RS.import_from = import_path;
 	RS.halted = FALSE;
 	RS.path_to_inweb = X;
+	RS.declared_syntax = NULL;
 
 	if (path == NULL) {
 		path = Wm->path_to_web;
@@ -307,10 +310,10 @@ void WebMetadata::read_contents_page(web_md *Wm, module *of_module,
 
 	if (Wm->single_file) {
 		RS.contents_filename = Wm->single_file;
-		RS.halt_at_at = TRUE;
+		RS.single_file_web = TRUE;
 	} else {
 		RS.contents_filename = WebMetadata::contents_filename(path);
-		RS.halt_at_at = FALSE;
+		RS.single_file_web = FALSE;
 	}
 	RS.section_count = 0;
 	RS.last_section = NULL;
@@ -332,39 +335,57 @@ void WebMetadata::read_contents_line(text_stream *line, text_file_position *tfp,
 	if ((RS->Wm->syntax_externally_set == FALSE) ||
 		(WebSyntax::supports(RS->Wm->default_syntax, SYNTAX_REDECLARATION_WSF)))
 		@<Act immediately if the web syntax version is changed@>;
-	web_syntax *syntax = RS->Wm->default_syntax;
 
-	filename *filename_of_single_file_web = NULL;
-	if ((RS->halt_at_at) &&
-		(WebSyntax::line_can_mark_end_of_metadata(RS->Wm->default_syntax, line, tfp)))
-		@<Halt at this point in the single file, and make the rest of it a one-chapter section@>;
+	if (RS->single_file_web) {
+		if ((Str::is_whitespace(line)) && (RS->declared_syntax))
+			RS->Wm->default_syntax = RS->declared_syntax;
 
-	@<Read regular contents material@>;
+		if ((Str::is_whitespace(line)) ||
+			(WebSyntax::opens_paragraph(WebSyntax::classify_line(RS->Wm->default_syntax, line, WebSyntax::unclassified()))))
+			@<Halt at this point in the single file, and make the rest of it a one-chapter section@>;
+	} else {
+		if (RS->declared_syntax) RS->Wm->default_syntax = RS->declared_syntax;
+		@<Read regular contents material@>;
+	}
 }
 
 @ Since the web syntax version affects how the rest of the file is read, it's
-no good simply to store this up for later: we have to change the web structure
+no good simply to decide this later: we have to change the web structure
 immediately.
+
+How do we know what syntax a web uses? If we're asked to read a web with
+a given syntax then of course that's what we do. Otherwise, the following
+will try to detect either a key-value pair setting the syntax in the top
+few lines, or a shebang in line 1.
 
 @<Act immediately if the web syntax version is changed@> =
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(author)
-	web_syntax *S = WebSyntax::parse_internal_declaration(RS->Wm->default_syntax, line, tfp, title, author);
-	if (S) {
-		RS->Wm->default_syntax = S;
-		if (Str::len(title) > 0) {
-			text_stream *key = I"Title";
-			text_stream *value = title;
-			@<Set bibliographic key-value pair@>;
-		}
-		if (Str::len(author) > 0) {
-			text_stream *key = I"Title";
-			text_stream *value = author;
-			@<Set bibliographic key-value pair@>;
+	web_syntax *S = NULL;
+	match_results mr = Regexp::create_mr();
+	if ((WebSyntax::supports(RS->Wm->default_syntax, KEY_VALUE_PAIRS_WSF)) &&
+		(Regexp::match(&mr, line, U"Web Syntax Version: (%c+) *"))) {
+		S = WebSyntax::syntax_by_name(mr.exp[0]);
+		if (S) {
+			RS->declared_syntax = S;
+			if (Str::len(title) > 0) {
+				text_stream *key = I"Title";
+				text_stream *value = title;
+				@<Set bibliographic key-value pair@>;
+			}
+			if (Str::len(author) > 0) {
+				text_stream *key = I"Author";
+				text_stream *value = author;
+				@<Set bibliographic key-value pair@>;
+			}
 		}
 	}
 	DISCARD_TEXT(title)
 	DISCARD_TEXT(author)
+	if ((S == NULL) && (RS->single_file_web) && (tfp->line_count == 1)) {
+		S = WebSyntax::detect_shebang(RS->Wm->default_syntax, line, tfp, title, author);
+		if (S) RS->Wm->default_syntax = S;
+	}
 
 @ Suppose we're reading a single-file web, and we hit the first |@| marker.
 The contents part has now ended, so we should halt scanning. But we also need
@@ -378,7 +399,6 @@ single section ("All") consisting of the remainder of the single file.
 	line = I"Sections";
 	@<Create the new chapter with these details@>;
 	line = I"All";
-	filename_of_single_file_web = tfp->text_file_filename;
 	@<Read about, and read in, a new section@>;
 	return;
 
@@ -508,7 +528,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		ADD_TO_LINKED_LIST(HF, filename, RS->Wm->header_filenames);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, U"Import: (%c+)")) {
-		if (RS->halt_at_at)
+		if (RS->single_file_web)
 			Errors::in_text_file_S(I"single-file webs cannot Import modules", tfp);
 		else if (RS->import_from) {
 			module *imported =
@@ -609,8 +629,9 @@ we also read in and process its file.
 		@<Work out the filename of this section file@>;
 
 @<Initialise the section structure@> =
-	Sm->source_file_for_section = filename_of_single_file_web;
-	Sm->using_syntax = syntax;
+	Sm->source_file_for_section = (RS->single_file_web)?(tfp->text_file_filename):NULL;
+	Sm->skipped_lines = (RS->single_file_web)?(tfp->line_count - 1):0;
+	Sm->using_syntax = RS->Wm->default_syntax;
 	Sm->is_a_singleton = FALSE;
 	Sm->titling_line_to_insert = Str::duplicate(RS->titling_line_to_insert);
 	Sm->sect_range = Str::new();
