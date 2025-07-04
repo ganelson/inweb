@@ -25,6 +25,11 @@ for locating programming language definitions:
   -test-language X       test language X on...
   -test-language-on X    ...the code in the file X
 
+for locating literate programming syntax definitions:
+  -read-syntax X         read LP syntax definition from file X
+  -read-syntaxes X       read all LP syntax definitions in path X
+  -show-syntaxes         list LP syntax supported by Inweb
+
 for analysing a web:
   -advance-build         increment daily build code for the web
   -advance-build-file X  increment daily build code in file X

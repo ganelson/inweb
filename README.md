@@ -1,6 +1,6 @@
-# Inweb 7.2.1
+# Inweb 8.0
 
-[Version](notes/versioning.md): 7.2.1-beta+1B67 'Escape to Danger' (24 July 2024)
+[Version](notes/versioning.md): 8.0-beta+1B68 'Crater of Needles' (4 July 2025)
 
 ## About Inweb
 

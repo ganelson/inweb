@@ -1,26 +1,19 @@
-Scan of source lines for '0'
-0000001  SECTION_HEADING.....  Main.
-0000002  COMMENT_BODY........  
-0000003  PURPOSE.............  Implied Purpose: Tangling and weaving some text file.
-0000004  COMMENT_BODY........  
-0000005  PARAGRAPH_START.....  @
-0000006  BEGIN_CODE..........  =
-0000007  CODE_BODY...........  @<Titling@>
-0000008  CODE_BODY...........  No one would have believed in the last years of the
-0000009  CODE_BODY...........  nineteenth century that this world was being watched keenly
-0000010  CODE_BODY...........  and closely by intelligences greater than man's and yet as
-0000011  CODE_BODY...........  mortal as his own; that as men busied themselves about their
-0000012  CODE_BODY...........  various concerns they were scrutinised and studied, perhaps
-0000013  CODE_BODY...........  almost as narrowly as a man with a microscope might scrutinise
-0000014  CODE_BODY...........  the transient creatures that swarm and multiply in a drop of water.
-0000015  CODE_BODY...........  
-0000016  PARAGRAPH_START.....  @
-0000017  MACRO_DEFINITION....  @<Titling@> =
-0000018  CODE_BODY...........  Book One
-0000019  CODE_BODY...........  The Coming of the Martians
-0000020  CODE_BODY...........  
-0000021  PARAGRAPH_START.....  @
-0000022  BEGIN_CODE..........  =
-0000023  CODE_BODY...........  With infinite complacency men went to and fro over this globe about
-0000024  CODE_BODY...........  their little affairs, serene in their assurance of their empire over matter.
-0000025  CODE_BODY...........  
+Purpose 'Tangling and weaving some text file.'
+S1
+    C1: holon (used sequentially)
+          holon 'Titling' (defined in S1.1)
+        0000008 No⏑one⏑would⏑have⏑believed⏑in⏑the⏑last⏑years⏑of⏑the
+        0000009 nineteenth⏑century⏑that⏑this⏑world⏑was⏑being⏑watched⏑keenly
+        0000010 and⏑closely⏑by⏑intelligences⏑greater⏑than⏑man's⏑and⏑yet⏑as
+        0000011 mortal⏑as⏑his⏑own;⏑that⏑as⏑men⏑busied⏑themselves⏑about⏑their
+        0000012 various⏑concerns⏑they⏑were⏑scrutinised⏑and⏑studied,⏑perhaps
+        0000013 almost⏑as⏑narrowly⏑as⏑a⏑man⏑with⏑a⏑microscope⏑might⏑scrutinise
+        0000014 the⏑transient⏑creatures⏑that⏑swarm⏑and⏑multiply⏑in⏑a⏑drop⏑of⏑water.
+S1.1
+    C1: holon 'Titling' (used in S1)
+        0000017 Book⏑One
+        0000018 The⏑Coming⏑of⏑the⏑Martians
+S2
+    C1: holon (used sequentially)
+        0000021 With⏑infinite⏑complacency⏑men⏑went⏑to⏑and⏑fro⏑over⏑this⏑globe⏑about
+        0000022 their⏑little⏑affairs,⏑serene⏑in⏑their⏑assurance⏑of⏑their⏑empire⏑over⏑matter.

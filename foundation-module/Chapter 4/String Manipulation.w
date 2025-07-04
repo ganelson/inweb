@@ -659,7 +659,7 @@ int Str::includes_at(text_stream *line, int i, text_stream *pattern) {
 }
 
 @h Shim for literal storage.
-This is where all of those I-literals created by Inweb are stored at run-time.
+This is where all of those I-literals created in tangling are stored at run-time.
 Note that every instance of, say, |I"fish"| would return the same string,
 that is, the same |text_stream *| value. To prevent nasty accidents, this
 is marked so that the stream value, "fish", cannot be modified at run-time.

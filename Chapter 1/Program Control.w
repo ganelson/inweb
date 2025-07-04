@@ -25,30 +25,18 @@ preliminaries block |P|, the special chapter |S| for the "Sections" chapter
 of an unchaptered web, or the special value |0| to mean the entire web (which
 is the default).
 
-When weaving in "swarm mode", however, the user chooses a multiplicity of
-operations rather than just one. Now it's no longer a matter of weaving a
-particular section or chapter: we can weave all of the sections or chapters,
-one after another.
-
-@e SWARM_OFF_SWM from 0
-@e SWARM_INDEX_SWM    /* make index(es) as if swarming, but don't actually swarm */
-@e SWARM_CHAPTERS_SWM /* swarm the chapters */
-@e SWARM_SECTIONS_SWM /* swarm the individual sections */
-
 @ In order to run, Inweb needs to know where it is installed -- this
 enables it to find its configuration file, the macros file, and so on.
 Unless told otherwise on the command line, we'll assume Inweb is present
 in the current working directory. The "materials" will then be in a further
 subfolder called |Materials|.
 
-=
+= (early code)
 pathname *path_to_inweb = NULL; /* where we are installed */
-pathname *path_to_inweb_materials = NULL; /* the materials pathname */
-pathname *path_to_inweb_patterns = NULL; /* where built-in patterns are stored */
 
 @ We count the errors in order to be able to exit with a suitable exit code.
 
-=
+= (early code)
 int no_inweb_errors = 0;
 int verbose_mode = FALSE;
 
@@ -65,9 +53,7 @@ int main(int argc, char **argv) {
 		PRINT("Installation path is %p\n", path_to_inweb);
 		Locales::write_locales(STDOUT);
 	}
-	path_to_inweb_patterns = Pathnames::down(path_to_inweb, I"Patterns");
-	path_to_inweb_materials = Pathnames::down(path_to_inweb, I"Materials");
-	Languages::set_default_directory(Pathnames::down(path_to_inweb, I"Languages"));
+	Pathnames::set_path_to_LP_resources(path_to_inweb);
 
 	Main::follow_instructions(&args);
 
@@ -76,7 +62,7 @@ int main(int argc, char **argv) {
 
 @<Initialise inweb@> =
 	Foundation::start(argc, argv);
-	Formats::create_weave_formats();
+	WeavingFormats::create_weave_formats();
 
 @<Shut inweb down@> =
 	Foundation::end();
@@ -88,17 +74,16 @@ program: some input, some thinking, a choice of three forms of output.
 
 =
 void Main::follow_instructions(inweb_instructions *ins) {
-	web *W = NULL;
+	ls_web *W = NULL;
 	if ((ins->chosen_web) || (ins->chosen_file)) {
-		W = Reader::load_web(ins->chosen_web, ins->chosen_file,
-			WebModules::make_search_path(ins->import_setting), TRUE);
-		W->redirect_weaves_to = ins->weave_into_setting;
-		Reader::read_web(W);
-		Parser::parse_web(W, ins->inweb_mode);
+		W = Main::load_web(ins->chosen_web, ins->chosen_file,
+			WebModules::make_search_path(ins->import_setting), ins->weave_into_setting,
+			ins->inweb_mode);
 	}
 	if (no_inweb_errors == 0) {
 		if (ins->inweb_mode == TRANSLATE_MODE) @<Translate a makefile@>
 		else if (ins->show_languages_switch) @<List available programming languages@>
+		else if (ins->show_syntaxes_switch) @<List available LP syntaxes@>
 		else if ((ins->test_language_setting) || (ins->test_language_on_setting)) @<Test a language@>
 		else if (ins->inweb_mode != NO_MODE) @<Analyse, tangle or weave an existing web@>;
 	}
@@ -129,6 +114,9 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	Languages::read_definitions(NULL);
 	Languages::show(STDOUT);
 
+@<List available LP syntaxes@> =
+	WebSyntax::write_known_syntaxes(STDOUT);
+
 @ And this:
 
 @<Test a language@> =
@@ -148,7 +136,7 @@ void Main::follow_instructions(inweb_instructions *ins) {
 @ But otherwise we do something with the given web:
 
 @<Analyse, tangle or weave an existing web@> =
-	if (ins->inweb_mode != ANALYSE_MODE) Reader::print_web_statistics(W);
+	if (ins->inweb_mode != ANALYSE_MODE) WebStructure::print_statistics(W);
 	if (ins->inweb_mode == ANALYSE_MODE) @<Analyse the web@>;
 	if (ins->inweb_mode == TANGLE_MODE) @<Tangle the web@>;
 	if (ins->inweb_mode == WEAVE_MODE) @<Weave the web@>;
@@ -159,20 +147,22 @@ void Main::follow_instructions(inweb_instructions *ins) {
 	if (ins->swarm_mode != SWARM_OFF_SWM)
 		Errors::fatal("only specific parts of the web can be analysed");
 	if (ins->catalogue_switch)
-		Analyser::catalogue_the_sections(W, ins->chosen_range, BASIC_SECTIONCAT);
+		CodeAnalysis::catalogue_the_sections(W, ins->chosen_range, BASIC_SECTIONCAT);
 	if (ins->functions_switch)
-		Analyser::catalogue_the_sections(W, ins->chosen_range, FUNCTIONS_SECTIONCAT);
+		CodeAnalysis::catalogue_the_sections(W, ins->chosen_range, FUNCTIONS_SECTIONCAT);
 	if (ins->structures_switch)
-		Analyser::catalogue_the_sections(W, ins->chosen_range, STRUCTURES_SECTIONCAT);
+		CodeAnalysis::catalogue_the_sections(W, ins->chosen_range, STRUCTURES_SECTIONCAT);
 	if (ins->makefile_setting)
-		Analyser::write_makefile(W, ins->makefile_setting,
-			WebModules::make_search_path(ins->import_setting), ins->platform_setting);
+		CodeAnalysis::write_makefile(W, ins->makefile_setting,
+			WebModules::make_search_path(ins->import_setting), ins->platform_setting,
+			Pathnames::path_to_inweb_materials());
 	if (ins->gitignore_setting)
-		Analyser::write_gitignore(W, ins->gitignore_setting);
+		CodeAnalysis::write_gitignore(W, ins->gitignore_setting,
+			Pathnames::path_to_inweb_materials());
 	if (ins->advance_switch)
-		BuildFiles::advance_for_web(W->md);
+		BuildFiles::advance_for_web(W);
 	if (ins->scan_switch)
-		Analyser::scan_line_categories(W, ins->chosen_range);
+		WebStructure::write_web(STDOUT, W, ins->chosen_range);
 
 @ We can tangle to any one of what might be several targets, numbered upwards
 from 0. Target 0 always exists, and is the main program forming the web. For
@@ -193,19 +183,26 @@ line , but otherwise we impose a sensible choice based on the target.
 	tangle_target *tn = NULL;
 	if (Str::eq_wide_string(ins->chosen_range, U"0")) {
 		@<Work out main tangle destination@>;
-	} else if (Reader::get_section_for_range(W, ins->chosen_range)) {
+	} else if (WebRanges::to_section(W, ins->chosen_range)) {
 		@<Work out an independent tangle destination, from one section of the web@>;
 	}
 	if (Str::len(tangle_leaf) == 0) { Errors::fatal("no tangle destination known"); }
 
 	filename *tangle_to = ins->tangle_setting;
 	if (tangle_to == NULL) {
-		pathname *P = Reader::tangled_folder(W);
-		if (W->md->single_file) P = Filenames::up(W->md->single_file);
+		pathname *P = WebStructure::tangled_folder(W);
+		if (W->single_file) P = Filenames::up(W->single_file);
 		tangle_to = Filenames::in(P, tangle_leaf);
 	}
-	if (tn == NULL) tn = Tangler::primary_target(W);
-	Tangler::tangle(W, tn, tangle_to);
+	if (tn == NULL) tn = TangleTargets::primary_target(W);
+	programming_language *pl = tn->tangle_language;
+	PRINT("  tangling <%/f> (written in %S)\n", tangle_to, pl->language_name);
+	text_stream TO_struct;
+	text_stream *OUT = &TO_struct;
+	if (STREAM_OPEN_TO_FILE(OUT, tangle_to, ISO_ENC) == FALSE)
+		Errors::fatal_with_file("unable to write tangled file", tangle_to);
+	Tangler::tangle_web(OUT, W, Filenames::up(tangle_to), TangleTargets::primary_target(W));
+	STREAM_CLOSE(OUT);
 	if (ins->ctags_switch) Ctags::write(W, ins->ctags_setting);
 	DISCARD_TEXT(tangle_leaf)
 
@@ -214,65 +211,65 @@ which for many small webs will be the entire thing.
 
 @<Work out main tangle destination@> =
 	tn = NULL;
-	if (Bibliographic::data_exists(W->md, I"Short Title"))
-		Str::copy(tangle_leaf, Bibliographic::get_datum(W->md, I"Short Title"));
+	if (Bibliographic::data_exists(W, I"Short Title"))
+		Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Short Title"));
 	else
-		Str::copy(tangle_leaf, Bibliographic::get_datum(W->md, I"Title"));
-	Str::concatenate(tangle_leaf, W->main_language->file_extension);
+		Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Title"));
+	Str::concatenate(tangle_leaf, W->web_language->file_extension);
 
 @ If someone tangles, say, |2/eg| then the default filename is "Example Section".
 
 @<Work out an independent tangle destination, from one section of the web@> =
-	section *S = Reader::get_section_for_range(W, ins->chosen_range);
+	ls_section *S = WebRanges::to_section(W, ins->chosen_range);
 	tn = S->sect_target;
 	if (tn == NULL) Errors::fatal("section cannot be independently tangled");
-	Str::copy(tangle_leaf, Filenames::get_leafname(S->md->source_file_for_section));
+	Str::copy(tangle_leaf, Filenames::get_leafname(S->source_file_for_section));
 
 @ Weaving is not actually easier, it's just more thoroughly delegated:
 
 @<Weave the web@> =
-	Numbering::number_web(W);
-
-	theme_tag *tag = Tags::find_by_name(ins->tag_setting, FALSE);
-	if ((Str::len(ins->tag_setting) > 0) && (tag == NULL))
-		Errors::fatal_with_text("no such theme as '%S'", ins->tag_setting);
-
 	weave_pattern *pattern = Patterns::find(W, ins->weave_pattern);
-	if ((ins->chosen_range_actually_chosen == FALSE) && (ins->chosen_file == NULL))
+	if ((ins->chosen_range_actually_chosen == FALSE) && (W->single_file == NULL))
 		Configuration::set_range(ins, pattern->default_range);
 
-	int r = Formats::begin_weaving(W, pattern);
+	int r = WeavingFormats::begin_weaving(W, pattern);
 	if (r != SWARM_OFF_SWM) ins->swarm_mode = r;
 	@<Assign section numbers for printing purposes@>;
 	if (ins->swarm_mode == SWARM_OFF_SWM) {
-		Swarm::weave_subset(W, ins->chosen_range, FALSE, tag, pattern,
+		Swarm::weave_subset(W, ins->chosen_range, FALSE, ins->tag_setting, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
-			ins->breadcrumb_setting, ins->navigation_setting);
+			ins->breadcrumb_setting, ins->navigation_setting, verbose_mode);
 	} else {
-		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, tag, pattern,
+		Swarm::weave(W, ins->chosen_range, ins->swarm_mode, ins->tag_setting, pattern,
 			ins->weave_to_setting, ins->weave_into_setting,
-			ins->breadcrumb_setting, ins->navigation_setting);
+			ins->breadcrumb_setting, ins->navigation_setting, verbose_mode);
 	}
-	Formats::end_weaving(W, pattern);
+	WeavingFormats::end_weaving(W, pattern);
 
 @<Assign section numbers for printing purposes@> =
-	section *S; int k = 1;
-	LOOP_OVER(S, section)
-		if (Reader::range_within(S->md->sect_range, ins->chosen_range))
-			S->printed_number = k++;
+	ls_section *S; int k = 1;
+	LOOP_OVER(S, ls_section)
+		if (WebRanges::is_within(WebRanges::of(S), ins->chosen_range))
+			WeavingDetails::set_section_number(S, k++);
 
-@h Error messages.
-The Foundation module provides convenient functions to issue error messages,
-but we'll use the following wrapper when issuing an error at a line of web
-source:
+@h Web reading.
 
 =
-void Main::error_in_web(text_stream *message, source_line *sl) {
-	if (sl) {
-		Errors::in_text_file_S(message, &(sl->source));
-		WRITE_TO(STDERR, "%07d  %S\n", sl->source.line_count, sl->text);
-	} else {
-		Errors::in_text_file_S(message, NULL);
-	}
-	no_inweb_errors++;
+ls_web *Main::load_web(pathname *P, filename *alt_F, module_search *I,
+	pathname *redirection, int inweb_mode) {
+	ls_web *W = WebStructure::get(P, alt_F, NULL, I, verbose_mode, TRUE, NULL);
+	WebStructure::read_web_source(W, verbose_mode, (inweb_mode == WEAVE_MODE)?TRUE:FALSE);
+	WebErrors::issue_all_recorded(W);
+	@<Write the Inweb Version bibliographic datum@>;
+	CodeAnalysis::initialise_analysis_details(W);
+	WeavingDetails::initialise(W, redirection);
+	CodeAnalysis::analyse_web(W, (inweb_mode == TANGLE_MODE)?TRUE:FALSE, (inweb_mode == WEAVE_MODE)?TRUE:FALSE);
+	return W;
 }
+
+@<Write the Inweb Version bibliographic datum@> =
+	TEMPORARY_TEXT(IB)
+	WRITE_TO(IB, "[[Version Number]]");
+	web_bibliographic_datum *bd = Bibliographic::set_datum(W, I"Inweb Version", IB);
+	bd->declaration_permitted = FALSE;
+	DISCARD_TEXT(IB)

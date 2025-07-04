@@ -43,14 +43,8 @@ int Painter::syntax_colour(programming_language *pl,
 		TEMPORARY_TEXT(part_before_comment)
 		TEMPORARY_TEXT(part_within_comment)
 		int found = FALSE;
-		#ifdef THIS_IS_INWEB
 		found = LanguageMethods::parse_comment(pl,
 			matter, part_before_comment, part_within_comment);
-		#endif
-		#ifndef THIS_IS_INWEB
-		found = Painter::parse_comment(pl,
-			matter, part_before_comment, part_within_comment);
-		#endif
 		if (found) {
 			int N = Str::len(matter);
 			for (int i=Str::len(part_before_comment); i<N; i++)

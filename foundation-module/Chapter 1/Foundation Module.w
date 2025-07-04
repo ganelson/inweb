@@ -4,17 +4,16 @@ Starting up and shutting down.
 
 @h Introduction.
 The Foundation module supplies some of the conveniences of more modern
-programming languages to ANSI C. It offers the usual stuff of standard
-libraries everywhere: memory management, collection classes, filename
-and file system accesss, regular-expression matching and so on. At one
-time the higher-level material formed a second module called "Foundation
-and Empire", but now it's all consolidated into a single everything-you-need
-module. Almost all functionality is optional and can be ignored if not
-wanted. With a few provisos, the code is thread-safe, sturdy and well
-tested, since it forms the support code for the Inform programming
-language's compiler and outlying tools, including Inweb itself. If you
-need to write a command-line utility in ANSI C with no dependencies on
-other tools or libraries to speak of, you could do worse.
+programming languages to ANSI C. It offers the usual stuff of standard libraries
+everywhere: memory management, collection classes, filename and file system
+accesss, regular-expression matching and so on. At one time the higher-level
+material formed a second module called "Foundation and Empire", but now it's all
+consolidated into a single everything-you-need module. Almost all functionality
+is optional and can be ignored if not wanted. With a few provisos, the code is
+thread-safe, sturdy and well tested, since it forms the support code for the
+Inform programming language's compiler and all its outlying tools. If you need
+to write a command-line utility in ANSI C with no dependencies on other tools or
+libraries to speak of, you could do worse.
 
 To use |foundation|, the Contents section of a web should include:
 = (text)
@@ -27,14 +26,10 @@ before it exits, call |Foundation::end()|. Any other module used should be
 started after Foundation starts, and ended before Foundation ends.
 
 In addition, the client's source code needs to define a few symbols to indicate
-what it needs in the way of memory allocation. For an example, see the code
-for Inweb itself.
+what it needs in the way of memory allocation.
 
 @h Basic definitions.
-These are all from the ANSI C standard library (or the pthread POSIX standard),
-which means that Inweb will tangle them up to the top of the C source code.
-Because pthread is not normally available on Windows, a special header is
-supplied instead for that case.
+These inclusion files are all from the ANSI C standard library.
 
 = (very early code)
 #include <ctype.h>
@@ -83,7 +78,7 @@ typedef uintptr_t pointer_sized_int;
 As noted above, the client needs to call these when starting up and when
 shutting down.
 
-The Inweb notation |[[textliterals]]| inserts declarations of I-literals,
+The tangling command |[[textliterals]]| inserts declarations of I-literals,
 that is, literal |text_stream *| values written as |I"strings"|. It should
 never be used anywhere but here.
 

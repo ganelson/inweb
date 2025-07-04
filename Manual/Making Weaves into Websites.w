@@ -79,30 +79,20 @@ or sections, or simply to the entire web in question -- see //goldbach// --
 but not to functions or types in those webs: that would require Inweb to read
 every web in the colony into memory, which would slow it down too much.
 
-@ As a more sustained example, here is the current version of the colony file
-for the Inweb repository:
-= (text from Figures/colony.txt)
-As this demonstrates, either webs, or modules, or both, can be declared.
+@ Colony files can declare webs, or modules, or both.
 Each one gives (a) a short name, (b) a location relative to the current
 working directory, and (c) a similar location for its woven collection of
 files. The file can also specify navigation and breadcrumbs material, and
 the pattern; each of these applies to each subsequent declaration until the
 setting in question changes again. (Setting to |none| removes them.)
 
-Also notable here is that the colony contains a single-page web called
-|index.inweb|. (You can see that it's a single-page web, rather than something
-more substantial, because the location ends |.inweb| rather than being a
-directory name.) The point of this web is that it weaves to the |index.html|
-home page; it's referred to in links as being the "overview", because that's
-its name as a web.
+Colonies may also contain single-page webs whose purpose is only to weave to
+an |index.html| home page or other covering notes or prefaces.
 
-Presentationally, it may look better if paragraph numbers are omitted from
-these all-in-one webs used just to make top-level description pages. This
-can be done by adding
+Presentationally, these may look better if paragraph numbers are omitted from
+them, which can be done by adding this to their metadata:
 = (text)
 Paragraph Numbers Visibility: Off
-=
-to the metadata for the all-in-one web.
 
 @ The command |assets X| tells Inweb to place "assets" such as images, CSS and
 JavaScript files which are needed by plugins (see //Advanced Weaving with Patterns//)

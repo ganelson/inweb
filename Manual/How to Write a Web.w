@@ -480,11 +480,11 @@ See //this biographical note -> http://mathshistory.st-andrews.ac.uk/Biographies
 the language definition supports these (see //Supporting Programming Languages//):
 this is certainly the case for C-like languages. For example,
 = (text)
-	Individual lines of a web are stored in //source_line// structures,
-	and mostly created by //Reader::read_file//.
+	Individual sections of a web are stored in //ls_section// structures,
+	and mostly created by //WebStructure::new_ls_section//.
 =
-produces: Individual lines of a web are stored in //source_line// structures,
-and mostly created by //Reader::read_file//. And that should link to the
+produces: Individual lines of a web are stored in //ls_section// structures,
+and mostly created by //WebStructure::new_ls_section//. And that should link to the
 structure definition and function of these names inside the Inweb program.
 
 Lastly, cross-references can even be made to webs quite separate from the

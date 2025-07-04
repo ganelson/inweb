@@ -21,6 +21,7 @@ through the tree: it's a bitmap composed of the following.
 @d FILTERED_MDRMODE 0x0040     /* Make first |<| character safe as |&lt;| */
 @d TOLOWER_MDRMODE  0x0080     /* Force letters to lower case */
 @d EXAMPLE_BODIES_MDRMODE  0x0100  /* Render interiors of examples */
+@d EXISTING_PAR_MDRMODE 0x200  /* Render onto an existing paragraph */
 
 =
 void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
@@ -48,7 +49,8 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 									    if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
 								        break;
 
-		case PARAGRAPH_MIT:             if (mode & TAGS_MDRMODE) HTML_OPEN("p");
+		case PARAGRAPH_MIT:             if ((mode & TAGS_MDRMODE) && ((mode & EXISTING_PAR_MDRMODE) == 0)) HTML_OPEN("p");
+										mode = mode & (~EXISTING_PAR_MDRMODE);
 								        @<Recurse@>;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 								        break;
@@ -375,8 +377,11 @@ been taken out at the parsing stage.)
 @ And finally, the obvious definition:
 
 @<Recurse@> =
-	for (markdown_item *c = md->down; c; c = c->next)
-		MDRenderer::recurse(OUT, c, mode, variation);
+	int m = mode;
+	for (markdown_item *c = md->down; c; c = c->next) {
+		MDRenderer::recurse(OUT, c, m, variation);
+		m = m & (~EXISTING_PAR_MDRMODE);
+	}
 
 @ Down at the lower level now: how to render the slice of text in a single
 inline item. In |ESCAPES_MDRMODE|, backslash followed by ASCII (but not

@@ -731,11 +731,6 @@ int MDInlineParser::extended_autolink_trailing_punctuation_char(inchar32_t c) {
 		at = start_value_at; goto DoneValueSpecification;
 	}
 
-@<Advance past compulsory tag-whitespace@> =
-	inchar32_t c = Str::get_at(text, at);
-	if ((c != ' ') && (c != '\t') && (c != '\n')) goto NotATag;
-	@<Advance past optional tag-whitespace@>;
-
 @<Advance past optional tag-whitespace@> =
 	int line_ending_count = 0;
 	while (TRUE) {

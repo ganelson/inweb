@@ -1,0 +1,39 @@
+#line 41 "inweb/Tests/Test Cases/newinweb.inweb"
+#include <stdio.h>
+
+#define ALPHA 1
+#define BETA_GAMMA 201
+#define DELTA 200\
+    	+ 300\
+    	+ more_delta
+#define EPSILON ALPHA
+#define MU printf("mu");
+#define X_FAM 1
+#define Y_FAM 2
+#define Z_FAM 3
+#define X_ALT 100
+#define Y_ALT 101
+#define RANGE 100
+#ifndef LAMBDA
+#define LAMBDA 10
+#endif /* LAMBDA */
+#define NO_DEFINED_FAM_VALUES 3
+#define NO_DEFINED_ALT_VALUES 2
+#line 43 "inweb/Tests/Test Cases/newinweb.inweb"
+int  main(int argc, char *argv[]) ;
+
+#line 42 "inweb/Tests/Test Cases/newinweb.inweb"
+
+int main(int argc, char *argv[]) {
+	for (int i=1; i<RANGE; i++)
+		
+{
+#line 49 "inweb/Tests/Test Cases/newinweb.inweb"
+	if ((isprime(i)) && (isprime(i+2)))
+		printf("%d and %d\n", i, i+2);
+
+}
+#line 45 "inweb/Tests/Test Cases/newinweb.inweb"
+;
+}
+

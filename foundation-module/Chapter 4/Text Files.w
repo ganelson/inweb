@@ -54,6 +54,11 @@ int TextFiles::get_line_count(text_file_position *tfp) {
 	return tfp->line_count;
 }
 
+filename *TextFiles::get_filename(text_file_position *tfp) {
+	if (tfp == NULL) return 0;
+	return tfp->text_file_filename;
+}
+
 @ And this is for a real nowhere man:
 
 =

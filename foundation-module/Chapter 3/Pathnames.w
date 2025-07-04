@@ -75,8 +75,14 @@ pathname *Pathnames::installation_path(const char *V, text_stream *def) {
 		pathname *P = Filenames::up(F);
 		if ((P) && (Str::eq(P->intermediate, I"Tangled")))
 			P = P->pathname_of_parent;
+		installation_path = P;
 		return P;
 	}
+	installation_path = Pathnames::installation_path_of(V, def);
+	return installation_path;
+}
+
+pathname *Pathnames::installation_path_of(const char *V, text_stream *def) {
 	if (V) {
 		char *val = Platform::getenv(V);
 		if ((val) && (val[0])) {
@@ -86,6 +92,49 @@ pathname *Pathnames::installation_path(const char *V, text_stream *def) {
 	}
 	if (def) return Pathnames::from_text(def);
 	return NULL;
+}
+
+pathname *path_to_LP_resources = NULL;
+int path_to_LP_resources_set = FALSE;
+
+void Pathnames::set_path_to_LP_resources(pathname *P) {
+	path_to_LP_resources = P;
+	path_to_LP_resources_set = TRUE;
+}
+
+pathname *Pathnames::path_to_LP_resources(void) {
+	char *val = Platform::getenv("LITERATE_PROGRAMMING_RESOURCES_PATH");
+	if ((val) && (val[0])) {
+		text_stream *v = Str::new_from_locale_string(val);
+		return Pathnames::from_text(v);
+	}
+	if (path_to_LP_resources_set) return path_to_LP_resources;
+	if (installation_path) return installation_path;
+	internal_error("unable to locate literate programming resources");
+}
+
+pathname *Pathnames::path_to_inweb(void) {
+	#ifdef THIS_IS_INWEB
+	return path_to_inweb;
+	#endif
+	#ifndef THIS_IS_INWEB
+	pathname *P = Pathnames::installation_path_of("INWEB_PATH", NULL);
+	if (P) return P;
+	P = Pathnames::down(installation_path, I"..");
+	P = Pathnames::down(P, I"..");
+	P = Pathnames::down(P, I"inweb");
+	return P;
+	#endif
+}
+
+pathname *Pathnames::path_to_inweb_patterns(void) {
+	pathname *path_to_inweb = Pathnames::path_to_inweb();
+	return Pathnames::down(path_to_inweb, I"Patterns");
+}
+
+pathname *Pathnames::path_to_inweb_materials(void) {
+	pathname *path_to_inweb = Pathnames::path_to_inweb();
+	return Pathnames::down(path_to_inweb, I"Materials");
 }
 
 @h Creation.

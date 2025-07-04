@@ -1,0 +1,113 @@
+Title: The New Inweb Syntax Exhausted
+Author: Graham Nelson
+Purpose: Some of everything you can write in this syntax.
+Language: C
+
+@ A regular paragraph begins here,
+and continues here.
+
+@ ^"Cosmopolitan" ^"Banal"
+This paragraph has two tags.
+
+>> Also a quotation, which is curiously structured like this,
+>> continuing thus.
+
+@h Subheading here. This is now text placed
+under that subheading.
+
+@ Some definitions:
+
+@d ALPHA 1
+@d BETA_GAMMA 201 /* one more than 200 */
+@d DELTA 200
+	+ 300
+	+ more_delta
+@define EPSILON ALPHA
+@default LAMBDA 10
+
+@d MU printf("mu");
+
+@e X_FAM from 1
+@e Y_FAM
+@e Z_FAM
+@enum X_ALT from 100
+@e Y_ALT
+
+@ Some code:
+
+@d RANGE 100
+
+=
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+	for (int i=1; i<RANGE; i++)
+		@<Test for twin prime at i@>;
+}
+
+@<Test for twin prime at i@> =
+	if ((isprime(i)) && (isprime(i+2)))
+		printf("%d and %d\n", i, i+2);
+
+@ Let's have some extracts now.
+
+= (text)
+This is not code, but an
+extract spanning two lines.
+=
+
+= (hyperlinked text)
+This is //hyperlinked//, but still an
+extract spanning two lines.
+=
+
+= (undisplayed text)
+This is undisplayed, but still an
+extract spanning two lines.
+=
+
+= (hyperlinked undisplayed text)
+This is //hyperlinked// and undisplayed, but still an
+extract spanning two lines.
+=
+
+= (text to something)
+This is not code, but an
+extract spanning two lines.
+=
+
+= (text as code)
+int example_not_in_program(void) {
+	return 0;
+}
+=
+
+= (text as Perl)
+# Here's some Perl.
+my $var = "22";
+=
+
+= (text from associated/elsewhere.txt)
+
+= (text from associated/elsewhere.txt as code)
+
+= (text from associated/elsewhere.txt as Perl)
+
+@ And now some insertions.
+
+= (html somefile.html)
+= (figure somefile.jpg)
+= (audio somefile.mp3)
+= (video somefile.m4v)
+= (download whatever/else.mp3)
+= (download whatever/else.mp3 "Some text")
+
+= (carousel "Phase I")
+This is some text about Phase I.
+= (carousel "Phase II" above)
+This one has the caption above.
+= (carousel "Phase III" below)
+This one has the caption below.
+= (carousel)
+No caption at all this time.
+= (carousel end)

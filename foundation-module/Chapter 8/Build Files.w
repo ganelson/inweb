@@ -7,7 +7,7 @@ When we read a web, we look for a file in it called |build.txt|. If no such
 file exists, we look for the same thing in the current working directory.
 
 =
-filename *BuildFiles::build_file_for_web(web_md *WS) {
+filename *BuildFiles::build_file_for_web(ls_web *WS) {
 	filename *F = Filenames::in(WS->path_to_web, I"build.txt");
 	if (TextFiles::exists(F)) return F;
 	F = Filenames::in(NULL, I"build.txt");
@@ -70,11 +70,11 @@ void BuildFiles::write(build_file_data bfd, filename *F) {
 }
 
 @h Bibliographic implications.
-Whenever a web is read in by Inweb, its build file is looked at in order to
+Whenever a web is read in, its build file (if it has one) is looked at in order to
 set some bibliographic data.
 
 =
-void BuildFiles::set_bibliographic_data_for(web_md *WS) {
+void BuildFiles::set_bibliographic_data_for(ls_web *WS) {
 	filename *F = BuildFiles::build_file_for_web(WS);
 	if (F) {
 		build_file_data bfd = BuildFiles::read(F);
@@ -96,7 +96,7 @@ If no error occurs, then the expansion |[[Semantic Version Number]]| is
 guaranteed to produce a semver-legal version number.
 
 =
-void BuildFiles::deduce_semver(web_md *WS) {
+void BuildFiles::deduce_semver(ls_web *WS) {
 	TEMPORARY_TEXT(combined)
 	text_stream *s = Bibliographic::get_datum(WS, I"Semantic Version Number");
 	if (Str::len(s) > 0) WRITE_TO(combined, "%S", s);
@@ -126,7 +126,7 @@ We update the build date to today and, if supplied, also increment the build
 number if we find that the date has changed.
 
 =
-void BuildFiles::advance_for_web(web_md *WS) {
+void BuildFiles::advance_for_web(ls_web *WS) {
 	filename *F = BuildFiles::build_file_for_web(WS);
 	if (F) BuildFiles::advance(F);
 	else Errors::fatal("web has no build file");

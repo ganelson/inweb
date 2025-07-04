@@ -47,6 +47,7 @@ Chapter 4: Text Handling
 	Text Files
 	Preprocessor
 	Tries and Avinues
+	Finite State Machines
 	Pattern Matching
 	JSON
 
@@ -76,14 +77,58 @@ Chapter 7: Semantic Versioning
 	SPDX Licences
 
 Chapter 8: Literate Programming
+"Configuring LP syntax, parsing raw LP material, and tangling it."
 	Web Structure
-	Web Syntax
 	Bibliographic Data for Webs
+	Web Contents Pages
+	Single-File Webs
 	Web Modules
+	Web Ranges
+	Literate Source
+	Line Classification
+	Web Errors
+	Web Syntax
+	Holons
+	Holon Syntax
+	Tangle Targets
+	The Tangler
 	Build Files
-	Simple Tangler
 
-Chapter 9: Syntax Colouring
+Chapter 9: Programming
+"Reading some basic syntax of different programming languages."
 	Programming Languages
+	Code Analysis
+	Conditional Compilation
+	Enumerated Constants
+	Types and Functions
+	Ctags Support
 	Reserved Words
 	The Painter
+	Language Methods
+	ACME Support
+	C-Like Languages
+	InC Support
+
+Chapter 10: Weaving
+"Weaving to a variety of different human-readable formats."
+	Weaving Details
+	The Swarm
+	Patterns
+	Assets, Plugins and Colour Schemes
+	The Collater
+	The Weaver
+	The Weaver of Text
+	Weave Tree
+	Format Methods
+	Plain Text Format
+	TeX Format
+	HTML Formats
+	Debugging Format
+	TeX Utilities
+
+Chapter 11: Project Management
+"Additional features for managing projects which may have multiple webs."
+	Makefiles
+	Git Support
+	Readme Writeme
+	Colonies

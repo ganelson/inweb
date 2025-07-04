@@ -15,11 +15,10 @@ to an object of any of these types, and to tell the object to do something, or
 ask it a question.
 
 Alternatively, we may have a situation where there are multiple objects of the
-same type which each represent a different way of doing something: for
-example, in the Inweb source code, each different supported programming
-language is represented by an object. These objects need to encapsulate all
-the ways that one language differs from another, and they can do that by
-providing "methods".
+same type which each represent a different way of doing something: for example,
+each different supported programming language for our LP system is represented
+by an object. These objects need to encapsulate all the ways that one language
+differs from another, and they can do that by providing "methods".
 
 @ A "method set" is simply a linked list of methods:
 

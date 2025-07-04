@@ -1,13 +1,10 @@
-Scan of source lines for '0'
-0000001  SECTION_HEADING.....  Main.
-0000002  COMMENT_BODY........  
-0000003  PURPOSE.............  Implied Purpose: A minimal example of a C program written for inweb.
-0000004  COMMENT_BODY........  
-0000005  PARAGRAPH_START.....  @ Blah. Lorum.
-0000006  COMMENT_BODY........  Ipsum. But |identifier| as well.
-0000007  COMMENT_BODY........  
-0000008  COMMENT_BODY........  	|Green.|
-0000009  COMMENT_BODY........  	|Blue.|
-0000010  COMMENT_BODY........  
-0000011  COMMENT_BODY........  is my essential palette.
-0000012  COMMENT_BODY........  
+Purpose 'A minimal example of a C program written for inweb.'
+S1
+    C1: commentary
+        _______ Blah.⏑Lorum.
+        _______ Ipsum.⏑But⏑|identifier|⏑as⏑well.
+        _______ 
+        _______ ⇢   |Green.|
+        _______ ⇢   |Blue.|
+        _______ 
+        _______ is⏑my⏑essential⏑palette.

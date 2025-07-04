@@ -329,10 +329,8 @@ argument is the name of a type: expanding these macros provides suitable C
 functions to handle each possible type. These macros provide the interface
 through which all other sections allocate and leaf through memory.
 
-Note that Inweb allows multi-line macro definitions without backslashes
-to continue them, unlike ordinary C. Otherwise these are "standard"
-macros, though this was my first brush with the |##| concatenation
-operator: basically |CREATE(thing)| expands into |(allocate_thing())|
+The |##| concatenation operator in the C preprocessor enables these names
+to be smushed together: thus |CREATE(thing)| expands into |(allocate_thing())|
 because of the |##|. (See Kernighan and Ritchie, section 4.11.2.)
 
 @d CREATE(type_name) (allocate_##type_name())

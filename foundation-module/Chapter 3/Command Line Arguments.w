@@ -15,9 +15,6 @@ there are two switches, |-log| taking an argument (it has valency 2
 in the terminology below), |-fixtime| not (valency 1). There are
 then two barewords, |jam| and |marmalade|.
 
-For an example of all this in action, see Inweb, or see the basic
-command-line switches created by Foundation itself in "Foundation".
-
 @h Switches.
 Each different switch available is stored in one of these structures.
 Switches come in five sorts:
@@ -159,8 +156,6 @@ they would like to in the state structure.
 The return value is |TRUE| if the command line appeared to contain at least
 one non-trivial request, but |FALSE| if it only asked for e.g. |-help|. In
 general, the client should then exit with exit code 0 if this happens.
-
-This is all easier to demonstrate than explain. See Inweb for an example.
 
 @ Here goes the reader. It works through the command line arguments, then
 through the file if one has by that point been provided.

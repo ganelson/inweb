@@ -1,39 +1,29 @@
-Scan of source lines for '0'
-0000001  SECTION_HEADING.....  Main.
-0000002  COMMENT_BODY........  
-0000003  PURPOSE.............  Implied Purpose: A minimal example of a C program written for inweb.
-0000004  COMMENT_BODY........  
-0000005  PARAGRAPH_START.....  @
-0000006  BEGIN_CODE..........  =
-0000007  C_LIBRARY_INCLUDE...  #include <stdio.h>
-0000008  CODE_BODY...........  
-0000009  CODE_BODY...........  int main(int argc, char *argv[]) {
-0000010  CODE_BODY...........  	printf("Hello world!\n");
-0000011  CODE_BODY...........  }
-0000012  CODE_BODY...........  
-0000013  PARAGRAPH_START.....  @ 
-0000014  COMMENT_BODY........  
-0000015  BEGIN_DEFINITION....  @d PEACH 1
-0000016  BEGIN_DEFINITION....  @e A_COM from 1
-0000017  BEGIN_DEFINITION....  @e B_COM
-0000018  BEGIN_DEFINITION....  @e C_COM
-0000019  COMMENT_BODY........  
-0000020  BEGIN_CODE..........  =
-0000021  CODE_BODY...........  #include "nonexistent.h"
-0000022  CODE_BODY...........  
-0000023  CODE_BODY...........  typedef struct bong {
-0000024  CODE_BODY...........  	int f;
-0000025  CODE_BODY...........  } bong;
-0000026  CODE_BODY...........  
-0000027  CODE_BODY...........  void banana(int n) {
-0000028  CODE_BODY...........  }
-0000029  CODE_BODY...........  
-0000030  PARAGRAPH_START.....  @ 
-0000031  COMMENT_BODY........  
-0000032  BEGIN_CODE..........  =
-0000033  CODE_BODY...........  #include "existent.h"
-0000034  CODE_BODY...........  
-0000035  CODE_BODY...........  typedef struct bong {
-0000036  CODE_BODY...........  	unsigned int f;
-0000037  CODE_BODY...........  } bong;
-0000038  CODE_BODY...........  
+Purpose 'A minimal example of a C program written for inweb.'
+S1
+    C1: holon (used sequentially)
+        0000007 #include⏑<stdio.h>
+        0000008 
+        0000009 int⏑main(int⏑argc,⏑char⏑*argv[])⏑{
+        0000010 ⇢   printf("Hello⏑world!\n");
+        0000011 }
+S2 <ifdef-PLATFORM_WINDOWS> <Structures>
+    C1: define 'PEACH' = 1
+    C2: enumerate 'A_COM' = 1
+    C3: enumerate 'B_COM'
+    C4: enumerate 'C_COM'
+    C5: holon (used sequentially)
+        0000021 #include⏑"nonexistent.h"
+        0000022 
+        0000023 typedef⏑struct⏑bong⏑{
+        0000024 ⇢   int⏑f;
+        0000025 }⏑bong;
+        0000026 
+        0000027 void⏑banana(int⏑n)⏑{
+        0000028 }
+S3 <ifdef-POSIX> <ifndef-PLATFORM_WINDOWS> <Structures>
+    C1: holon (used sequentially)
+        0000033 #include⏑"existent.h"
+        0000034 
+        0000035 typedef⏑struct⏑bong⏑{
+        0000036 ⇢   unsigned⏑int⏑f;
+        0000037 }⏑bong;

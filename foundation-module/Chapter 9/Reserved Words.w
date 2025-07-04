@@ -56,7 +56,7 @@ typedef struct hash_table_entry {
 	text_stream *hash_key;
 	int language_reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of |hash_table_entry_usage| */
-	struct source_line *definition_line; /* or null, if it's not a constant, function or type name */
+	struct ls_line *definition_line; /* or null, if it's not a constant, function or type name */
 	struct language_function *as_function; /* for function names only */
 	CLASS_DEFINITION
 } hash_table_entry;

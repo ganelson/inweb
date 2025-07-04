@@ -1,26 +1,31 @@
 [Languages::] Programming Languages.
 
-Defining the programming languages supported by Inweb, loading in their
+Defining the programming languages supported by our LP system, loading in their
 definitions from files.
 
 @h Languages.
 Programming languages are identified by name: for example, |C++| or |Perl|.
+None are built in to the Inform compiler, and instead we have to be able
+to read in the definition of a language in order to be able to work with it.
 
-@ =
-pathname *default_programming_language_path = NULL;
+There's not much involved, and language files don't amount to much, but they
+cause us some trouble because we need to make sure they can always be accessed.
+The following function can be called with a preferred repository |P|, but if
+that's no good, it will then try other places.
 
-void Languages::set_default_directory(pathname *P) {
-	default_programming_language_path = P;
-}
+A nuisance too is that we have to decide what to recognise when it comes to
+names for Inform: Inform, Inform 6, Inform6, I6, Inform 7, Inform7 and I7.
+We're just going to pragmatically convert the unspaced versions into the spaced
+ones and leave it at that.
 
+=
 programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 	int error_if_not_found) {
+	if (Str::eq_insensitive(lname, I"Inform6")) lname = I"Inform 6";
+	if (Str::eq_insensitive(lname, I"Inform7")) lname = I"Inform 7";
 	programming_language *pl;
 	@<If this is the name of a language already known, return that@>;
 	@<Read the language definition file with this name@>;
-	if (Str::ne_insensitive(pl->language_name, lname))
-		Errors::fatal_with_text(
-			"definition of programming language '%S' is for something else", lname);
 	return pl;
 }
 
@@ -31,8 +36,25 @@ programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 
 @<Read the language definition file with this name@> =
 	filename *F = NULL;
+	@<Find a file which genuinely exists, has the right name and a sensible location@>;
+	pl = Languages::read_definition(F, NULL);
+	if (Str::ne_insensitive(pl->language_name, lname))
+		Errors::fatal_with_text(
+			"definition of programming language '%S' is for something else", lname);
+
+@ Different apps using this system will put their literate programming resources,
+which include PLs, in different places, so we will try looking in whatever place
+our app has registered. Annoyingly, we have to check for subdirectories |PLs|
+and |Languages|, because of an ambiguity when looking at Inform resources
+between "language" in the sense of "natural language bundle" and "language"
+in the programming sense.
+
+@<Find a file which genuinely exists, has the right name and a sensible location@> =
 	if (P) @<Try P@>;
-	P = default_programming_language_path;
+	pathname *R = Pathnames::path_to_LP_resources();
+	P = Pathnames::down(R, I"PLs");
+	if (P) @<Try P@>;
+	P = Pathnames::down(R, I"Languages");
 	if (P) @<Try P@>;
 	if (F == NULL) {
 		if (error_if_not_found)
@@ -40,7 +62,6 @@ programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 				"unsupported programming language '%S'", lname);
 		return NULL;
 	}
-	pl = Languages::read_definition(F);
 
 @<Try P@> =
 	if (F == NULL) {
@@ -51,7 +72,29 @@ programming_language *Languages::find_by_name(text_stream *lname, pathname *P,
 		if (TextFiles::exists(F) == FALSE) F = NULL;
 	}
 
-@
+@ Or, we can read every language in a directory, all at once.
+
+=
+void Languages::read_definitions(pathname *P) {
+	if (P == NULL) {
+		pathname *R = Pathnames::path_to_LP_resources();
+		P = Pathnames::down(R, I"PLs");
+		if (Directories::exists(P) == FALSE) P = Pathnames::down(R, I"Languages");
+	}
+	scan_directory *D = Directories::open(P);
+	TEMPORARY_TEXT(leafname)
+	while (Directories::next(D, leafname)) {
+		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames::in(P, leafname);
+			Languages::read_definition(F, NULL);
+		}
+	}
+	DISCARD_TEXT(leafname)
+	Directories::close(D);
+}
+
+@ Okay, so this simply writes out what we have in memory, sorted alphabetically
+for tidiness:
 
 =
 void Languages::show(OUTPUT_STREAM) {
@@ -75,24 +118,6 @@ int Languages::compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx1 = (*((const programming_language **) ent1))->language_name;
 	text_stream *tx2 = (*((const programming_language **) ent2))->language_name;
 	return Str::cmp_insensitive(tx1, tx2);
-}
-
-@ We can read every language in a directory:
-
-=
-void Languages::read_definitions(pathname *P) {
-	if (P == NULL) P = default_programming_language_path;
-	if (P == NULL) internal_error("no path for definitions");
-	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories::next(D, leafname)) {
-		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
-			filename *F = Filenames::in(P, leafname);
-			Languages::read_definition(F);
-		}
-	}
-	DISCARD_TEXT(leafname)
-	Directories::close(D);
 }
 
 @ So, then, languages are defined by files which are read in, and parsed
@@ -120,8 +145,8 @@ typedef struct programming_language {
 	text_stream *negative_literal_prefix;
 	text_stream *shebang;
 	text_stream *line_marker;
-	text_stream *before_macro_expansion;
-	text_stream *after_macro_expansion;
+	text_stream *before_holon_expansion;
+	text_stream *after_holon_expansion;
 	text_stream *start_definition;
 	text_stream *prolong_definition;
 	text_stream *end_definition;
@@ -154,14 +179,26 @@ typedef struct language_reader_state {
 	struct colouring_language_block *current_block;
 } language_reader_state;
 
-programming_language *Languages::read_definition(filename *F) {
+programming_language *Languages::read_definition(filename *F, char **cache) {
 	programming_language *pl = CREATE(programming_language);
 	@<Initialise the language to a plain-text state@>;
 	language_reader_state lrs;
 	lrs.defining = pl;
 	lrs.current_block = NULL;
-	TextFiles::read(F, FALSE, "can't open programming language definition file",
-		TRUE, Languages::read_definition_line, NULL, (void *) &lrs);
+	if (cache) {
+		text_file_position tfp = TextFiles::nowhere();
+		tfp.line_count = 1;
+		for (int i=0; cache[i]; i++) {
+			TEMPORARY_TEXT(line)
+			WRITE_TO(line, "%s", cache[i]);
+			Languages::read_definition_line(line, &tfp, (void *) &lrs);
+			DISCARD_TEXT(line)
+			tfp.line_count++;
+		}
+	} else {
+		TextFiles::read(F, FALSE, "can't open programming language definition file",
+			TRUE, Languages::read_definition_line, NULL, (void *) &lrs);
+	}
 	@<Add method calls to the language@>;
 	return pl;
 }
@@ -184,8 +221,8 @@ programming_language *Languages::read_definition(filename *F) {
 	pl->negative_literal_prefix = NULL;
 	pl->shebang = NULL;
 	pl->line_marker = NULL;
-	pl->before_macro_expansion = NULL;
-	pl->after_macro_expansion = NULL;
+	pl->before_holon_expansion = NULL;
+	pl->after_holon_expansion = NULL;
 	pl->start_definition = NULL;
 	pl->prolong_definition = NULL;
 	pl->end_definition = NULL;
@@ -212,11 +249,9 @@ extra features are provided. The call to |ACMESupport::add_fallbacks|
 adds generic method calls to give effect to the settings in the definition.
 
 @<Add method calls to the language@> =
-	#ifdef THIS_IS_INWEB
 	if (pl->C_like) CLike::make_c_like(pl);
 	if (Str::eq(pl->language_name, I"InC")) InCSupport::add_features(pl);
 	ACMESupport::add_fallbacks(pl);
-	#endif
 
 @ So, then, the above reads the file and feeds it line by line to this:
 
@@ -283,9 +318,9 @@ declare a reserved keyword, or set a key to a value.
 		else if (Str::eq(key, I"Line Marker"))
 			pl->line_marker = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Before Named Paragraph Expansion"))
-			pl->before_macro_expansion = Languages::text(value, tfp, TRUE);
+			pl->before_holon_expansion = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"After Named Paragraph Expansion"))
-			pl->after_macro_expansion = Languages::text(value, tfp, TRUE);
+			pl->after_holon_expansion = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Start Definition"))
 			pl->start_definition = Languages::text(value, tfp, TRUE);
 		else if (Str::eq(key, I"Prolong Definition"))

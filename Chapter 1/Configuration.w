@@ -20,10 +20,11 @@ typedef struct inweb_instructions {
 	struct text_stream *weave_pattern; /* |-weave-as X|: for example, |-weave-to HTML| */
 
 	int show_languages_switch; /* |-show-languages|: print list of available PLs */
+	int show_syntaxes_switch; /* |-show-syntaxes|: print list of available LP syntaxes */
 	int catalogue_switch; /* |-catalogue|: print catalogue of sections */
 	int functions_switch; /* |-functions|: print catalogue of functions within sections */
 	int structures_switch; /* |-structures|: print catalogue of structures within sections */
-	int advance_switch; /* |-advance-build|: advance build file for web */
+	int advance_switch; /* |-advance-build|: advance build file for ls_web */
 	int scan_switch; /* |-scan|: simply show the syntactic scan of the source */
 	int ctags_switch; /* |-ctags|: generate a set of Universal Ctags on each tangle */
 	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
@@ -79,6 +80,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.inweb_mode = NO_MODE;
 	args.swarm_mode = SWARM_OFF_SWM;
 	args.show_languages_switch = FALSE;
+	args.show_syntaxes_switch = FALSE;
 	args.catalogue_switch = FALSE;
 	args.functions_switch = FALSE;
 	args.structures_switch = FALSE;
@@ -125,6 +127,12 @@ provides automatically.
 @e SHOW_LANGUAGES_CLSW
 @e TEST_LANGUAGE_CLSW
 @e TEST_LANGUAGE_ON_CLSW
+
+@e SYNTAXES_CLSG
+
+@e SYNTAX_CLSW
+@e SYNTAXES_CLSW
+@e SHOW_SYNTAXES_CLSW
 
 @e ANALYSIS_CLSG
 
@@ -190,6 +198,16 @@ provides automatically.
 		U"test language X on...");
 	CommandLine::declare_switch(TEST_LANGUAGE_ON_CLSW, U"test-language-on", 2,
 		U"...the code in the file X");
+	CommandLine::end_group();
+
+	CommandLine::begin_group(SYNTAXES_CLSG,
+		I"for locating literate programming syntax definitions");
+	CommandLine::declare_switch(SYNTAX_CLSW, U"read-syntax", 2,
+		U"read LP syntax definition from file X");
+	CommandLine::declare_switch(SYNTAXES_CLSW, U"read-syntaxes", 2,
+		U"read all LP syntax definitions in path X");
+	CommandLine::declare_switch(SHOW_SYNTAXES_CLSW, U"show-syntaxes", 1,
+		U"list LP syntax supported by Inweb");
 	CommandLine::end_group();
 
 	CommandLine::begin_group(ANALYSIS_CLSG,
@@ -275,17 +293,26 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case VERBOSE_CLSW: args->verbose_switch = TRUE; break;
 		case IMPORT_FROM_CLSW: args->import_setting = Pathnames::from_text(arg); break;
 
+		/* Syntax management */
+		case SYNTAX_CLSW:
+			WebSyntax::read_definition(Filenames::from_text(arg)); break;
+		case SYNTAXES_CLSW:
+			WebSyntax::read_definitions(Pathnames::from_text(arg)); break;
+		case SHOW_SYNTAXES_CLSW:
+			args->show_syntaxes_switch = TRUE;
+			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
+
 		/* Analysis */
 		case LANGUAGE_CLSW:
-			Languages::read_definition(Filenames::from_text(arg)); break;
+			Languages::read_definition(Filenames::from_text(arg), NULL); break;
 		case LANGUAGES_CLSW:
 			Languages::read_definitions(Pathnames::from_text(arg)); break;
 		case SHOW_LANGUAGES_CLSW:
-			args->show_languages_switch = TRUE;
+			args->show_syntaxes_switch = TRUE;
 			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
 		case TEST_LANGUAGE_CLSW:
 			args->test_language_setting =
-				Languages::read_definition(Filenames::from_text(arg));
+				Languages::read_definition(Filenames::from_text(arg), NULL);
 			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
 		case TEST_LANGUAGE_ON_CLSW:
 			args->test_language_on_setting = Filenames::from_text(arg);
@@ -409,12 +436,18 @@ the |X| in |-weave-as X|).
 void Configuration::bareword(int id, text_stream *opt, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
 	if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
-		if (Str::suffix_eq(opt, I".inweb", 6))
-			args->chosen_file = Filenames::from_text(opt);
-		else if (Str::suffix_eq(opt, I".md", 3))
-			args->chosen_file = Filenames::from_text(opt);
-		else
-			args->chosen_web = Pathnames::from_text(opt);
+		filename *putative = Filenames::from_text(opt);
+		pathname *putative_path = Pathnames::from_text(opt);
+		if (TextFiles::exists(putative))
+			args->chosen_file = putative;
+		else if (Directories::exists(putative_path))
+			args->chosen_web = putative_path;
+		else {
+			TEMPORARY_TEXT(ERM)
+			WRITE_TO(ERM, "does not seem to be either a file or a directory: %S", opt);
+			WebErrors::issue_at(ERM, NULL);
+			DISCARD_TEXT(ERM)
+		}
 	} else Configuration::set_range(args, opt);
 }
 
@@ -435,17 +468,10 @@ void Configuration::set_range(inweb_instructions *args, text_stream *opt) {
 		if (++args->targets > 1) Errors::fatal("at most one target may be given");
 		if (Str::eq_wide_string(opt, U"all")) {
 			Str::copy(args->chosen_range, I"0");
-		} else if (((Characters::isalnum(Str::get_first_char(opt))) && (Str::len(opt) == 1))
-			|| (Regexp::match(&mr, opt, U"%i+/%i+"))) {
-			Str::copy(args->chosen_range, opt);
-			string_position P = Str::start(args->chosen_range);
-			Str::put(P, Characters::toupper(Str::get(P)));
 		} else {
-			TEMPORARY_TEXT(ERM)
-			WRITE_TO(ERM, "target not recognised (see -help for more): %S", opt);
-			Main::error_in_web(ERM, NULL);
-			DISCARD_TEXT(ERM)
-			exit(1);
+			Str::copy(args->chosen_range, opt);
+			LOOP_THROUGH_TEXT(pos, args->chosen_range)
+				Str::put(pos, Characters::tolower(Str::get(pos)));
 		}
 	}
 	args->chosen_range_actually_chosen = TRUE;
