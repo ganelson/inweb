@@ -215,23 +215,21 @@ We place files of those leafnames in the same directory as the tangle target.
 	int no_extract_files = 0;
 	ls_chapter *C; ls_section *S;
 	LOOP_OVER_TARGET_CHUNKS(C, S, target)
-		if (LiterateSource::is_code_chunk(L_chunk))
+		if (Str::len(L_chunk->extract_to) > 0)
 			for (ls_line *lst = L_chunk->first_line; lst; lst = lst->next_line) {
-				if (Str::len(L_chunk->extract_to) > 0) {
-					int j = no_extract_files;
-					for (int i=0; i<no_extract_files; i++) 
-						if (Str::eq(L_chunk->extract_to, extract_names[i])) j = i;
-					if (j == no_extract_files) {
-						if (j == MAX_EXTRACT_FILES)
-							Errors::fatal("too many extract files in tangle");
-						extract_names[j] = Str::duplicate(L_chunk->extract_to);
-						filename *F = Filenames::in(extracts_path, L_chunk->extract_to);
-						if (STREAM_OPEN_TO_FILE(&(extract_files[j]), F, UTF8_ENC) == FALSE)
-							Errors::fatal_with_file("unable to write extract file", F);
-						no_extract_files++;
-					}
-					WRITE_TO(&(extract_files[j]), "%S\n", lst->text);
+				int j = no_extract_files;
+				for (int i=0; i<no_extract_files; i++) 
+					if (Str::eq(L_chunk->extract_to, extract_names[i])) j = i;
+				if (j == no_extract_files) {
+					if (j == MAX_EXTRACT_FILES)
+						Errors::fatal("too many extract files in tangle");
+					extract_names[j] = Str::duplicate(L_chunk->extract_to);
+					filename *F = Filenames::in(extracts_path, L_chunk->extract_to);
+					if (STREAM_OPEN_TO_FILE(&(extract_files[j]), F, UTF8_ENC) == FALSE)
+						Errors::fatal_with_file("unable to write extract file", F);
+					no_extract_files++;
 				}
+				WRITE_TO(&(extract_files[j]), "%S\n", lst->text);
 			}
 	for (int i=0; i<no_extract_files; i++) STREAM_CLOSE(&(extract_files[i]));
 

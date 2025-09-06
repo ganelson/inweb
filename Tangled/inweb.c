@@ -2654,7 +2654,7 @@ typedef struct ls_section_weaving_details {
 	int printed_number; /* temporary again: sometimes used in weaving */
 	CLASS_DEFINITION
 } ls_section_weaving_details;
-#line 221 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 220 "inweb/foundation-module/Chapter 10/The Swarm.w"
 typedef struct weave_order {
 	struct ls_web *weave_web; /* which web we weave */
 	struct text_stream *weave_range; /* which parts of the web in this weave */
@@ -5504,17 +5504,17 @@ int  Tangler__segment_of_par(ls_paragraph *par) ;
 void  Tangler__report_errors(tangle_docket *docket, ls_unit *lsu) ;
 #line 133 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W, 	pathname *extracts_path) ;
-#line 243 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 241 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu, 	tangle_docket *docket, int segment) ;
-#line 260 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 258 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket) ;
-#line 298 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 296 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_line_marker(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) ;
-#line 311 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 309 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) ;
-#line 396 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 394 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code, 	tangle_docket *docket, ls_line *lst) ;
-#line 449 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 447 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void  Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text, 	tangle_docket *docket) ;
 #line 10 "inweb/foundation-module/Chapter 8/Build Files.w"
 filename * BuildFiles__build_file_for_web(ls_web *WS) ;
@@ -5852,17 +5852,17 @@ void  WeavingDetails__set_section_number(ls_section *S, int val) ;
 filename * WeavingDetails__get_section_weave_to(ls_section *S) ;
 #line 113 "inweb/foundation-module/Chapter 10/Weaving Details.w"
 void  WeavingDetails__set_section_weave_to(ls_section *S, filename *val) ;
-#line 170 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 169 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *tag, 	weave_pattern *pattern, filename *to, pathname *into, 	linked_list *breadcrumbs, filename *navigation, int verbosely) ;
-#line 203 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 202 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order * Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwards, 	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into, 	linked_list *breadcrumbs, filename *navigation, int verbosely) ;
-#line 354 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 353 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__ensure_plugin(weave_order *wv, text_stream *name) ;
-#line 363 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 362 "inweb/foundation-module/Chapter 10/The Swarm.w"
 colour_scheme * Swarm__ensure_colour_scheme(weave_order *wv, text_stream *name, 	text_stream *pre) ;
-#line 383 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 382 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename *from) ;
-#line 395 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__weave_index_templates(ls_web *W, text_stream *range, weave_pattern *pattern, 	pathname *into, filename *nav, linked_list *crumbs) ;
 #line 42 "inweb/foundation-module/Chapter 10/Patterns.w"
 weave_pattern * Patterns__find(ls_web *W, text_stream *name) ;
@@ -40785,23 +40785,21 @@ void Tangler__tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W,
 	int no_extract_files = 0;
 	ls_chapter *C; ls_section *S;
 	LOOP_OVER_TARGET_CHUNKS(C, S, target)
-		if (LiterateSource__is_code_chunk(L_chunk))
+		if (Str__len(L_chunk->extract_to) > 0)
 			for (ls_line *lst = L_chunk->first_line; lst; lst = lst->next_line) {
-				if (Str__len(L_chunk->extract_to) > 0) {
-					int j = no_extract_files;
-					for (int i=0; i<no_extract_files; i++)
-						if (Str__eq(L_chunk->extract_to, extract_names[i])) j = i;
-					if (j == no_extract_files) {
-						if (j == MAX_EXTRACT_FILES)
-							Errors__fatal("too many extract files in tangle");
-						extract_names[j] = Str__duplicate(L_chunk->extract_to);
-						filename *F = Filenames__in(extracts_path, L_chunk->extract_to);
-						if (STREAM_OPEN_TO_FILE(&(extract_files[j]), F, UTF8_ENC) == FALSE)
-							Errors__fatal_with_file("unable to write extract file", F);
-						no_extract_files++;
-					}
-					WRITE_TO(&(extract_files[j]), "%S\n", lst->text);
+				int j = no_extract_files;
+				for (int i=0; i<no_extract_files; i++)
+					if (Str__eq(L_chunk->extract_to, extract_names[i])) j = i;
+				if (j == no_extract_files) {
+					if (j == MAX_EXTRACT_FILES)
+						Errors__fatal("too many extract files in tangle");
+					extract_names[j] = Str__duplicate(L_chunk->extract_to);
+					filename *F = Filenames__in(extracts_path, L_chunk->extract_to);
+					if (STREAM_OPEN_TO_FILE(&(extract_files[j]), F, UTF8_ENC) == FALSE)
+						Errors__fatal_with_file("unable to write extract file", F);
+					no_extract_files++;
 				}
+				WRITE_TO(&(extract_files[j]), "%S\n", lst->text);
 			}
 	for (int i=0; i<no_extract_files; i++) STREAM_CLOSE(&(extract_files[i]));
 
@@ -40812,7 +40810,7 @@ void Tangler__tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W,
 	LanguageMethods__additional_tangling(language, W, target);
 }
 
-#line 243 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 241 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void Tangler__tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu,
 	tangle_docket *docket, int segment) {
 	if (lsu == NULL) internal_error("no holon");
@@ -40825,7 +40823,7 @@ void Tangler__tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu,
 			}
 }
 
-#line 260 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 258 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void Tangler__tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket) {
 	if (holon == NULL) internal_error("no holon");
 	tangle_target *target = docket->target;
@@ -40852,10 +40850,10 @@ void Tangler__tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket
 		}
 		
 {
-#line 326 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 324 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if (splice->expansion) 
 {
-#line 333 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 331 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if (docket->target)
 		LanguageMethods__before_holon_expansion(OUT,
 			docket->target->tangle_language, splice->expansion->corresponding_chunk->owner);
@@ -40866,11 +40864,11 @@ void Tangler__tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket
 	Tangler__tangle_line_marker(OUT, splice->line, docket);
 
 }
-#line 326 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 324 "inweb/foundation-module/Chapter 8/The Tangler.w"
 
 	else if (Str__len(splice->command) > 0) 
 {
-#line 358 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 356 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	int handled = LanguageMethods__special_tangle_command(OUT, docket->target->tangle_language, splice->command);
 	ls_syntax *S = holon->corresponding_chunk->owner->owning_unit->syntax;
 	if (handled == FALSE) {
@@ -40889,11 +40887,11 @@ void Tangler__tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket
 	}
 
 }
-#line 327 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 325 "inweb/foundation-module/Chapter 8/The Tangler.w"
 
 	else 
 {
-#line 376 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 374 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if ((splice->from == 0) && (splice->to == Str__len(splice->line->text) - 1)) {
 		Tangler__tangle_illiterate_code_fragment(OUT, splice->line->text, docket);
 	} else {
@@ -40910,18 +40908,18 @@ void Tangler__tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket
 	}
 
 }
-#line 328 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 326 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 
 }
-#line 284 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 282 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 	}
 	if (last_line != NULL) WRITE("\n");
 	WRITE("\n");
 }
 
-#line 298 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 296 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void Tangler__tangle_line_marker(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	docket->at = lst->origin;
 	if (docket->source_marker_callback) {
@@ -40931,7 +40929,7 @@ void Tangler__tangle_line_marker(OUTPUT_STREAM, ls_line *lst, tangle_docket *doc
 	}
 }
 
-#line 311 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 309 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void Tangler__tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	if (lst->owning_chunk == NULL) internal_error("loose line");
 	ls_holon *holon = lst->owning_chunk->holon;
@@ -40942,10 +40940,10 @@ void Tangler__tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 		if (lst == splice->line)
 			
 {
-#line 326 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 324 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if (splice->expansion) 
 {
-#line 333 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 331 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if (docket->target)
 		LanguageMethods__before_holon_expansion(OUT,
 			docket->target->tangle_language, splice->expansion->corresponding_chunk->owner);
@@ -40956,11 +40954,11 @@ void Tangler__tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	Tangler__tangle_line_marker(OUT, splice->line, docket);
 
 }
-#line 326 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 324 "inweb/foundation-module/Chapter 8/The Tangler.w"
 
 	else if (Str__len(splice->command) > 0) 
 {
-#line 358 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 356 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	int handled = LanguageMethods__special_tangle_command(OUT, docket->target->tangle_language, splice->command);
 	ls_syntax *S = holon->corresponding_chunk->owner->owning_unit->syntax;
 	if (handled == FALSE) {
@@ -40979,11 +40977,11 @@ void Tangler__tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	}
 
 }
-#line 327 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 325 "inweb/foundation-module/Chapter 8/The Tangler.w"
 
 	else 
 {
-#line 376 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 374 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if ((splice->from == 0) && (splice->to == Str__len(splice->line->text) - 1)) {
 		Tangler__tangle_illiterate_code_fragment(OUT, splice->line->text, docket);
 	} else {
@@ -41000,16 +40998,16 @@ void Tangler__tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	}
 
 }
-#line 328 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 326 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 
 }
-#line 319 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 317 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 	WRITE("\n");
 }
 
-#line 396 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 394 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void Tangler__tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	tangle_docket *docket, ls_line *lst) {
 	ls_unit *lsu = LiterateSource__unit_of_line(lst);
@@ -41054,7 +41052,7 @@ void Tangler__tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	Tangler__tangle_illiterate_code_fragment(OUT, output, docket);
 }
 
-#line 449 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 447 "inweb/foundation-module/Chapter 8/The Tangler.w"
 void Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 	tangle_docket *docket) {
 	if ((docket->command_callback) || (docket->bplus_callback)) {
@@ -41067,40 +41065,40 @@ void Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 			Str__clear(argument);
 			
 {
-#line 473 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 471 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	cr = Str__get_at(text, sfp++);
 
 }
-#line 459 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 457 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 			NewCharacter: if (cr == 0) break;
 			
 {
-#line 476 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 474 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	if (cr == '{') {
 		
 {
-#line 473 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 471 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	cr = Str__get_at(text, sfp++);
 
 }
-#line 477 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 475 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 		if ((cr == '-') && (docket->command_callback)) {
 			
 {
-#line 505 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 503 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	Str__clear(command);
 	Str__clear(argument);
 	int com_mode = TRUE;
 	while (TRUE) {
 		
 {
-#line 473 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 471 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	cr = Str__get_at(text, sfp++);
 
 }
-#line 509 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 507 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 		if ((cr == '}') || (cr == 0)) break;
 		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
@@ -41109,7 +41107,7 @@ void Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 	}
 
 }
-#line 479 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 477 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 			if (Str__get_first_char(command) == '!') continue;
 			(*(docket->command_callback))(OUT, command, argument, docket);
@@ -41122,25 +41120,25 @@ void Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 	if ((cr == '(') && (docket->bplus_callback)) {
 		
 {
-#line 473 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 471 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	cr = Str__get_at(text, sfp++);
 
 }
-#line 489 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 487 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 		if (cr == '+') {
 			
 {
-#line 520 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 518 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	TEMPORARY_TEXT(material)
 	while (TRUE) {
 		
 {
-#line 473 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 471 "inweb/foundation-module/Chapter 8/The Tangler.w"
 	cr = Str__get_at(text, sfp++);
 
 }
-#line 522 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 520 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 		if (cr == 0) break;
 		if ((cr == ')') && (Str__get_last_char(material) == '+')) {
@@ -41152,7 +41150,7 @@ void Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 
 
 }
-#line 491 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 489 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 			continue;
 		} else { /* otherwise the open bracket was a literal */
@@ -41163,7 +41161,7 @@ void Tangler__tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 	PUT_TO(OUT, cr);
 
 }
-#line 461 "inweb/foundation-module/Chapter 8/The Tangler.w"
+#line 459 "inweb/foundation-module/Chapter 8/The Tangler.w"
 ;
 		} while (cr != 0);
 		DISCARD_TEXT(command)
@@ -45468,7 +45466,7 @@ void WeavingDetails__set_section_weave_to(ls_section *S, filename *val) {
 	((ls_section_weaving_details *) (S->weaving_ref))->sect_weave_to = val;
 }
 
-#line 167 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 166 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 pathname *last_reported_weave_path = NULL;
 
@@ -45500,7 +45498,7 @@ void Swarm__weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *ta
 	Swarm__weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
 }
 
-#line 203 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 202 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwards,
 	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
 	linked_list *breadcrumbs, filename *navigation, int verbosely) {
@@ -45509,7 +45507,7 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 		CodeAnalysis__analyse_code(W);
 		
 {
-#line 243 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 242 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	wv = CREATE(weave_order);
 	wv->weave_web = W;
 	wv->weave_range = Str__duplicate(range);
@@ -45541,7 +45539,7 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	TEMPORARY_TEXT(leafname)
 	
 {
-#line 299 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 298 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	match_results mr = Regexp__create_mr();
 	if (W->single_file) {
 		wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W, TL_IS_4171));
@@ -45549,13 +45547,13 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 338 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 337 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 304 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 303 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (Str__eq_wide_string(range, U"0")) {
 		wv->booklet_title = Str__new_from_wide_string(U"Complete Program");
@@ -45563,13 +45561,13 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 338 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 337 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 309 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 308 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (Regexp__match(&mr, range, U"%d+")) {
 		Str__clear(wv->booklet_title);
@@ -45599,7 +45597,7 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	Regexp__dispose_of(&mr);
 
 }
-#line 272 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 271 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	pathname *H = WeavingDetails__get_redirect_weaves_to(W);
 	if (H == NULL) H = into;
@@ -45624,14 +45622,14 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	DISCARD_TEXT(leafname)
 
 }
-#line 209 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 208 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 		Weaver__weave(wv);
 		Patterns__post_process(wv->pattern, wv);
 		WeavingFormats__post_process_weave(wv, open_afterwards);
 		
 {
-#line 345 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 344 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	PRINT("    [%S -> ", wv->booklet_title);
 	pathname *P = Filenames__up(wv->weave_to);
 	if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
@@ -45641,15 +45639,15 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	PRINT("]\n");
 
 }
-#line 213 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 212 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	}
 	return wv;
 }
 
-#line 241 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 240 "inweb/foundation-module/Chapter 10/The Swarm.w"
 
-#line 354 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 353 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void Swarm__ensure_plugin(weave_order *wv, text_stream *name) {
 	weave_plugin *existing;
 	LOOP_OVER_LINKED_LIST(existing, weave_plugin, wv->plugins)
@@ -45688,7 +45686,7 @@ void Swarm__include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename 
 		Assets__include_colour_scheme(OUT, W, cs, wv->pattern, from,  wv->verbosely);
 }
 
-#line 395 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void Swarm__weave_index_templates(ls_web *W, text_stream *range, weave_pattern *pattern,
 	pathname *into, filename *nav, linked_list *crumbs) {
 	if (!(Bibliographic__data_exists(W, TL_IS_4176)))
