@@ -31,24 +31,17 @@ document weave order 0
             footnote [1]
               footnote_cue [1]
               commentary < "Greater than 2" is our later proviso: Goldbach needed no such exception\n>
-            footnote [1]
               commentary <because he considered 1 a prime number, as was normal then, and was sometimes\n>
-            footnote [1]
               commentary <said as late as the early twentieth century.\n>
             footnote [2]
               footnote_cue [2]
               commentary < Goldbach, almost exactly a contemporary of Voltaire, was a good citizen\n>
-            footnote [2]
               commentary <of the great age of Enlightenment letter-writing. He and Euler exchanged\n>
-            footnote [2]
               commentary <scholarly letters for over thirty years, not something Euler would have\n>
-            footnote [2]
               commentary <kept up with a duffer. Goldbach was also not, as is sometimes said, a lawyer.\n>
-            footnote [2]
               commentary <See: >
               url content <http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html> url <http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html>
               commentary <.\n>
-            footnote [2]
               commentary <An edited transcription of the letter is at: >
               url content <http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf> url <http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf>
               commentary <\n>

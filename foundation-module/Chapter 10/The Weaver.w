@@ -160,7 +160,7 @@ typedef struct weaver_state {
 
 @<Weave this paragraph@> =
 	@<Deal with the marker for the start of a new paragraph, section or chapter@>;
-
+	ls_footnote *current_footnote = NULL;
 	for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 		if (chunk->chunk_type == EXTRACT_LSCT) {
 			state->line_break_pending = FALSE;
@@ -419,7 +419,8 @@ in the source is set indented in code style.
 	Regexp::dispose_of(&mr);
 
 @<Weave footnotes@> =
-	if (lst->footnote_text) {
+	if ((lst->footnote_text) && (lst->footnote_text != current_footnote)) {
+		current_footnote = lst->footnote_text;
 		Weaver::change_material(tree, state, FOOTNOTES_MATERIAL, FALSE, NULL, NULL);
 		ls_footnote *F = lst->footnote_text;
 		tree_node *FN = WeaveTree::footnote(tree, F->cue_text);

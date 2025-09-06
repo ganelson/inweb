@@ -5938,21 +5938,21 @@ heterogeneous_tree * Weaver__weave_tree(weave_order *wv) ;
 void  Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *body) ;
 #line 308 "inweb/foundation-module/Chapter 10/The Weaver.w"
 text_stream * Weaver__parse_dimensions(text_stream *item, int *w, int *h) ;
-#line 579 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 580 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree, 	weave_order *wv, tree_node *ap, ls_paragraph *par) ;
-#line 697 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 698 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, ls_paragraph *par, language_function *fn, int as_list) ;
-#line 762 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 763 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__weave_subheading(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, text_stream *text) ;
-#line 768 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 769 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__change_material(heterogeneous_tree *tree, 	weaver_state *state, int new_material, int plainly, programming_language *pl, 	text_stream *note) ;
-#line 781 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 782 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__change_material_for_para(heterogeneous_tree *tree, weaver_state *state) ;
-#line 789 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 790 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__figure(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, text_stream *figname, int w, int h) ;
-#line 795 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 796 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void  Weaver__commentary_text(heterogeneous_tree *tree, weave_order *wv, 	tree_node *ap, text_stream *matter) ;
-#line 805 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 806 "inweb/foundation-module/Chapter 10/The Weaver.w"
 int  Weaver__weave_table_of_contents(heterogeneous_tree *tree, 	tree_node *ap, ls_section *S) ;
 #line 15 "inweb/foundation-module/Chapter 10/The Weaver of Text.w"
 void  TextWeaver__commentary_text(heterogeneous_tree *tree, tree_node *ap, text_stream *matter) ;
@@ -47527,7 +47527,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 }
 #line 162 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
-
+	ls_footnote *current_footnote = NULL;
 	for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 		if (chunk->chunk_type == EXTRACT_LSCT) {
 			state->line_break_pending = FALSE;
@@ -47561,11 +47561,11 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	state->line_break_pending = FALSE;
 	
 {
-#line 437 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 438 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	int suppress = FALSE;
 	
 {
-#line 501 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 502 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if (state->line_break_pending) {
 		Trees__make_child(WeaveTree__vskip(tree, FALSE), state->ap);
 		state->line_break_pending = FALSE;
@@ -47576,7 +47576,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	}
 
 }
-#line 438 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 439 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 
 	if (suppress == FALSE) {
@@ -47586,7 +47586,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 		TEMPORARY_TEXT(concluding_comment)
 		
 {
-#line 514 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 515 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	TEMPORARY_TEXT(part_before_comment)
 	TEMPORARY_TEXT(part_within_comment)
 	programming_language *pl = chunk->extract_language;
@@ -47600,11 +47600,11 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	DISCARD_TEXT(part_within_comment)
 
 }
-#line 445 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 446 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 		
 {
-#line 529 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 530 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if ((chunk->chunk_type == DEFINITION_LSCT) && (lst == chunk->first_line)) {
 		match_results mr = Regexp__create_mr();
 		if ((Regexp__match(&mr, matter, U"@d (%c*)")) ||
@@ -47623,7 +47623,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	}
 
 }
-#line 446 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 447 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 
 		tree_node *CL = WeaveTree__code_line(tree);
@@ -47634,7 +47634,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 
 		
 {
-#line 547 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 548 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	TEMPORARY_TEXT(OUT)
 	int taken = LanguageMethods__weave_code_line(OUT, S->sect_language, wv,
 		W, C, S, L, matter, concluding_comment);
@@ -47646,13 +47646,13 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	if (taken) suppress = TRUE;
 
 }
-#line 454 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 455 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 
 		if (suppress == FALSE) {
 			
 {
-#line 558 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 559 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, matter, U"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
 		ls_paragraph *defn_par = Holons__find_holon(mr.exp[1], S->literate_source);
@@ -47670,7 +47670,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	Regexp__dispose_of(&mr);
 
 }
-#line 457 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 458 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 			TEMPORARY_TEXT(colouring)
 			LanguageMethods__syntax_colour(S->sect_language, wv, lst, matter, colouring,
@@ -47790,7 +47790,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 		(lst->classification.major == DEFINITION_CONTINUED_MAJLC)) {
 		
 {
-#line 474 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 475 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if (state->kind_of_material != CODE_MATERIAL) {
 		int will_be = CODE_MATERIAL;
 		if (lst->classification.major == HOLON_DECLARATION_MAJLC)
@@ -47819,11 +47819,11 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 ;
 		
 {
-#line 437 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 438 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	int suppress = FALSE;
 	
 {
-#line 501 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 502 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if (state->line_break_pending) {
 		Trees__make_child(WeaveTree__vskip(tree, FALSE), state->ap);
 		state->line_break_pending = FALSE;
@@ -47834,7 +47834,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	}
 
 }
-#line 438 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 439 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 
 	if (suppress == FALSE) {
@@ -47844,7 +47844,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 		TEMPORARY_TEXT(concluding_comment)
 		
 {
-#line 514 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 515 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	TEMPORARY_TEXT(part_before_comment)
 	TEMPORARY_TEXT(part_within_comment)
 	programming_language *pl = chunk->extract_language;
@@ -47858,11 +47858,11 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	DISCARD_TEXT(part_within_comment)
 
 }
-#line 445 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 446 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 		
 {
-#line 529 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 530 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if ((chunk->chunk_type == DEFINITION_LSCT) && (lst == chunk->first_line)) {
 		match_results mr = Regexp__create_mr();
 		if ((Regexp__match(&mr, matter, U"@d (%c*)")) ||
@@ -47881,7 +47881,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	}
 
 }
-#line 446 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 447 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 
 		tree_node *CL = WeaveTree__code_line(tree);
@@ -47892,7 +47892,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 
 		
 {
-#line 547 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 548 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	TEMPORARY_TEXT(OUT)
 	int taken = LanguageMethods__weave_code_line(OUT, S->sect_language, wv,
 		W, C, S, L, matter, concluding_comment);
@@ -47904,13 +47904,13 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	if (taken) suppress = TRUE;
 
 }
-#line 454 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 455 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 
 		if (suppress == FALSE) {
 			
 {
-#line 558 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 559 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	match_results mr = Regexp__create_mr();
 	while (Regexp__match(&mr, matter, U"(%c*?)%@%<(%c*?)%@%>(%c*)")) {
 		ls_paragraph *defn_par = Holons__find_holon(mr.exp[1], S->literate_source);
@@ -47928,7 +47928,7 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	Regexp__dispose_of(&mr);
 
 }
-#line 457 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 458 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 			TEMPORARY_TEXT(colouring)
 			LanguageMethods__syntax_colour(S->sect_language, wv, lst, matter, colouring,
@@ -48032,7 +48032,8 @@ void Weaver__weave_inner(weave_order *wv, heterogeneous_tree *tree, tree_node *b
 	
 {
 #line 422 "inweb/foundation-module/Chapter 10/The Weaver.w"
-	if (lst->footnote_text) {
+	if ((lst->footnote_text) && (lst->footnote_text != current_footnote)) {
+		current_footnote = lst->footnote_text;
 		Weaver__change_material(tree, state, FOOTNOTES_MATERIAL, FALSE, NULL, NULL);
 		ls_footnote *F = lst->footnote_text;
 		tree_node *FN = WeaveTree__footnote(tree, F->cue_text);
@@ -48138,14 +48139,14 @@ text_stream *Weaver__parse_dimensions(text_stream *item, int *w, int *h) {
 	return use;
 }
 
-#line 579 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 580 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	weave_order *wv, tree_node *ap, ls_paragraph *par) {
 	tree_node *body = ap;
 	if (LiterateSource__is_tagged_with(par, TL_IS_4245))
 		
 {
-#line 597 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 598 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
 	TextWeaver__commentary_text(tree, ap, TL_IS_4246);
@@ -48160,13 +48161,13 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver__commentary_text(tree, ap, TL_IS_4250);
 
 }
-#line 583 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 584 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 	IfdefTags__show_endnote_on_ifdefs(tree, ap, par);
 	if (LiterateSource__par_contains_named_holon(par))
 		
 {
-#line 611 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 612 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
 	TextWeaver__commentary_text(tree, ap, TL_IS_4251);
@@ -48209,25 +48210,25 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver__commentary_text(tree, ap, TL_IS_4260);
 
 }
-#line 586 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 587 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 	language_function *fn;
 	ls_paragraph_analysis *P = (ls_paragraph_analysis *) par->analysis_ref;
 	LOOP_OVER_LINKED_LIST(fn, language_function, P->functions)
 		
 {
-#line 653 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 654 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if (fn->usage_described == FALSE)
 		Weaver__show_function_usage(tree, wv, ap, par, fn, FALSE);
 
 }
-#line 590 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 591 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 	language_type *st;
 	LOOP_OVER_LINKED_LIST(st, language_type, P->structures)
 		
 {
-#line 657 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 658 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	tree_node *E = WeaveTree__endnote(tree);
 	Trees__make_child(E, body); ap = E;
 	TextWeaver__commentary_text(tree, ap, TL_IS_4261);
@@ -48268,11 +48269,11 @@ void Weaver__show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver__commentary_text(tree, ap, TL_IS_4266);
 
 }
-#line 593 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 594 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 }
 
-#line 697 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 698 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, ls_paragraph *par, language_function *fn, int as_list) {
 	tree_node *body = ap;
@@ -48295,7 +48296,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 			(LiterateSource__section_of_par(par) == LiterateSource__section_of_par(hteu->usage_recorded_at)))
 			
 {
-#line 736 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 737 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if (as_list == FALSE) {
 		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_4272);
 	}
@@ -48320,13 +48321,13 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	last_cited_in = LiterateSource__section_of_par(hteu->usage_recorded_at);
 
 }
-#line 717 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 718 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (LiterateSource__section_of_par(par) != LiterateSource__section_of_par(hteu->usage_recorded_at))
 			
 {
-#line 736 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 737 "inweb/foundation-module/Chapter 10/The Weaver.w"
 	if (as_list == FALSE) {
 		if (used_flag == FALSE) TextWeaver__commentary_text(tree, ap, TL_IS_4272);
 	}
@@ -48351,7 +48352,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	last_cited_in = LiterateSource__section_of_par(hteu->usage_recorded_at);
 
 }
-#line 720 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 721 "inweb/foundation-module/Chapter 10/The Weaver.w"
 ;
 	if (used_flag == FALSE) {
 		if (as_list == FALSE) {
@@ -48367,7 +48368,7 @@ void Weaver__show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	}
 }
 
-#line 762 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 763 "inweb/foundation-module/Chapter 10/The Weaver.w"
 void Weaver__weave_subheading(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, text_stream *text) {
 	tree_node *D = WeaveTree__subheading(tree, text);
@@ -48406,7 +48407,7 @@ void Weaver__commentary_text(heterogeneous_tree *tree, weave_order *wv,
 	TextWeaver__commentary_text(tree, ap, matter);
 }
 
-#line 805 "inweb/foundation-module/Chapter 10/The Weaver.w"
+#line 806 "inweb/foundation-module/Chapter 10/The Weaver.w"
 int Weaver__weave_table_of_contents(heterogeneous_tree *tree,
 	tree_node *ap, ls_section *S) {
 	int noteworthy = 0;

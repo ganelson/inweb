@@ -9,11 +9,11 @@ and in that sense have no connection at run-time, but which need to be
 cross-referenced in their woven form, so that readers can easily turn from one
 to another.
 
-[1] Those curious to see what a colony of 110,000,000 spiders might be like
-to walk through should see Albert Greene et al., "An Immense Concentration of
+[1] Those curious to see what a colony of 110,000,000 spiders might be like to
+walk through should see Albert Greene et al., "An Immense Concentration of
 Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
-(Arachnida: Araneae: Tetragnathidae, Araneidae)", American Entomologist
-(Fall 2010), at: https://www.entsoc.org/PDF/2010/Orb-weaving-spiders.pdf
+(Arachnida: Araneae: Tetragnathidae, Araneidae)",
+//American Entomologist (Fall 2010) -> https://doi.org/10.1093/ae/56.3.146//.
 
 @ So, then, a colony is really just a membership list:
 
