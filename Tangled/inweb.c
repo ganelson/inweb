@@ -2654,7 +2654,7 @@ typedef struct ls_section_weaving_details {
 	int printed_number; /* temporary again: sometimes used in weaving */
 	CLASS_DEFINITION
 } ls_section_weaving_details;
-#line 220 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 226 "inweb/foundation-module/Chapter 10/The Swarm.w"
 typedef struct weave_order {
 	struct ls_web *weave_web; /* which web we weave */
 	struct text_stream *weave_range; /* which parts of the web in this weave */
@@ -5852,17 +5852,17 @@ void  WeavingDetails__set_section_number(ls_section *S, int val) ;
 filename * WeavingDetails__get_section_weave_to(ls_section *S) ;
 #line 113 "inweb/foundation-module/Chapter 10/Weaving Details.w"
 void  WeavingDetails__set_section_weave_to(ls_section *S, filename *val) ;
-#line 169 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 170 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *tag, 	weave_pattern *pattern, filename *to, pathname *into, 	linked_list *breadcrumbs, filename *navigation, int verbosely) ;
-#line 202 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 208 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order * Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwards, 	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into, 	linked_list *breadcrumbs, filename *navigation, int verbosely) ;
-#line 353 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 371 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__ensure_plugin(weave_order *wv, text_stream *name) ;
-#line 362 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 380 "inweb/foundation-module/Chapter 10/The Swarm.w"
 colour_scheme * Swarm__ensure_colour_scheme(weave_order *wv, text_stream *name, 	text_stream *pre) ;
-#line 382 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 400 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename *from) ;
-#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 412 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__weave_index_templates(ls_web *W, text_stream *range, weave_pattern *pattern, 	pathname *into, filename *nav, linked_list *crumbs) ;
 #line 42 "inweb/foundation-module/Chapter 10/Patterns.w"
 weave_pattern * Patterns__find(ls_web *W, text_stream *name) ;
@@ -14529,11 +14529,11 @@ int CommandLine__read_pair_p(text_stream *opt, text_stream *opt_val, int N,
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "8.0-beta+1B68";
+			char *svn = "8.0-beta+1B69";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Crater of Needles";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "4 July 2025";
+			char *d = "6 September 2025";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -42846,7 +42846,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t8.0-beta+1B68\t/built 4 July 2025/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t8.0-beta+1B69\t/built 6 September 2025/\n");
 
 }
 #line 47 "inweb/foundation-module/Chapter 9/Ctags Support.w"
@@ -45469,15 +45469,17 @@ void WeavingDetails__set_section_weave_to(ls_section *S, filename *val) {
 #line 166 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 pathname *last_reported_weave_path = NULL;
+int file_weaving_reports_made = 0;
 
 void Swarm__weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *tag,
 	weave_pattern *pattern, filename *to, pathname *into,
 	linked_list *breadcrumbs, filename *navigation, int verbosely) {
 	swarm_leader = NULL;
 	last_reported_weave_path = NULL;
+	file_weaving_reports_made = 0;
 	ls_chapter *C;
 	ls_section *S;
-	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters) {
 		if (C->imported == FALSE) {
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
 				if ((W->chaptered == TRUE) && (WebRanges__is_within(C->ch_range, range))) {
@@ -45494,11 +45496,15 @@ void Swarm__weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *ta
 								WebRanges__of(S), FALSE, tag, pattern, to, into,
 								breadcrumbs, navigation, verbosely));
 		}
-
+		if (file_weaving_reports_made > 0) {
+			PRINT("\n");
+			file_weaving_reports_made = 0;
+		}
+	}
 	Swarm__weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
 }
 
-#line 202 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 208 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwards,
 	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
 	linked_list *breadcrumbs, filename *navigation, int verbosely) {
@@ -45507,7 +45513,7 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 		CodeAnalysis__analyse_code(W);
 		
 {
-#line 242 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 248 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	wv = CREATE(weave_order);
 	wv->weave_web = W;
 	wv->weave_range = Str__duplicate(range);
@@ -45539,7 +45545,7 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	TEMPORARY_TEXT(leafname)
 	
 {
-#line 298 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 304 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	match_results mr = Regexp__create_mr();
 	if (W->single_file) {
 		wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W, TL_IS_4171));
@@ -45547,13 +45553,13 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 337 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 343 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 303 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 309 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (Str__eq_wide_string(range, U"0")) {
 		wv->booklet_title = Str__new_from_wide_string(U"Complete Program");
@@ -45561,13 +45567,13 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 337 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 343 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 308 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 314 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (Regexp__match(&mr, range, U"%d+")) {
 		Str__clear(wv->booklet_title);
@@ -45597,7 +45603,7 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	Regexp__dispose_of(&mr);
 
 }
-#line 271 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 277 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	pathname *H = WeavingDetails__get_redirect_weaves_to(W);
 	if (H == NULL) H = into;
@@ -45622,32 +45628,44 @@ weave_order *Swarm__weave_subset(ls_web *W, text_stream *range, int open_afterwa
 	DISCARD_TEXT(leafname)
 
 }
-#line 208 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 214 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 		Weaver__weave(wv);
 		Patterns__post_process(wv->pattern, wv);
 		WeavingFormats__post_process_weave(wv, open_afterwards);
 		
 {
-#line 344 "inweb/foundation-module/Chapter 10/The Swarm.w"
-	PRINT("    [%S -> ", wv->booklet_title);
-	pathname *P = Filenames__up(wv->weave_to);
-	if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
-	else PRINT("... %S", Filenames__get_leafname(wv->weave_to));
-	last_reported_weave_path = P;
-	WeavingFormats__report_on_post_processing(wv);
-	PRINT("]\n");
+#line 350 "inweb/foundation-module/Chapter 10/The Swarm.w"
+	if (verbosely) {
+		PRINT("    [%S -> ", wv->booklet_title);
+		pathname *P = Filenames__up(wv->weave_to);
+		if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
+		else PRINT("... %S", Filenames__get_leafname(wv->weave_to));
+		last_reported_weave_path = P;
+		WeavingFormats__report_on_post_processing(wv);
+		PRINT("]\n");
+	} else {
+		if (file_weaving_reports_made == 0) PRINT("    ");
+		PRINT("[");
+		pathname *P = Filenames__up(wv->weave_to);
+		if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
+		else Filenames__write_unextended_leafname(STDOUT, wv->weave_to);
+		last_reported_weave_path = P;
+		WeavingFormats__report_on_post_processing(wv);
+		PRINT("] ");
+		file_weaving_reports_made++;
+	}
 
 }
-#line 212 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 218 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	}
 	return wv;
 }
 
-#line 240 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 246 "inweb/foundation-module/Chapter 10/The Swarm.w"
 
-#line 353 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 371 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void Swarm__ensure_plugin(weave_order *wv, text_stream *name) {
 	weave_plugin *existing;
 	LOOP_OVER_LINKED_LIST(existing, weave_plugin, wv->plugins)
@@ -45686,7 +45704,7 @@ void Swarm__include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename 
 		Assets__include_colour_scheme(OUT, W, cs, wv->pattern, from,  wv->verbosely);
 }
 
-#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 412 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void Swarm__weave_index_templates(ls_web *W, text_stream *range, weave_pattern *pattern,
 	pathname *into, filename *nav, linked_list *crumbs) {
 	if (!(Bibliographic__data_exists(W, TL_IS_4176)))

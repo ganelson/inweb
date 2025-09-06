@@ -165,15 +165,17 @@ another. |swarm_mode|, then, is one of these:
 =
 weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 pathname *last_reported_weave_path = NULL;
+int file_weaving_reports_made = 0;
 
 void Swarm::weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *tag,
 	weave_pattern *pattern, filename *to, pathname *into,
 	linked_list *breadcrumbs, filename *navigation, int verbosely) {
 	swarm_leader = NULL;
 	last_reported_weave_path = NULL;
+	file_weaving_reports_made = 0;
 	ls_chapter *C;
 	ls_section *S;
-	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters) {
 		if (C->imported == FALSE) {
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
 				if ((W->chaptered == TRUE) && (WebRanges::is_within(C->ch_range, range))) {
@@ -190,7 +192,11 @@ void Swarm::weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *ta
 								WebRanges::of(S), FALSE, tag, pattern, to, into,
 								breadcrumbs, navigation, verbosely));
 		}
-
+		if (file_weaving_reports_made > 0) {
+			PRINT("\n");
+			file_weaving_reports_made = 0;
+		}
+	}
 	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
 }
 
@@ -341,13 +347,25 @@ and details of any cover-sheet to use.
 @ Each weave results in a compressed one-line printed report:
 
 @<Report on the outcome of the weave to the console@> =
-	PRINT("    [%S -> ", wv->booklet_title);
-	pathname *P = Filenames::up(wv->weave_to);
-	if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
-	else PRINT("... %S", Filenames::get_leafname(wv->weave_to));
-	last_reported_weave_path = P;
-	WeavingFormats::report_on_post_processing(wv);
-	PRINT("]\n");
+	if (verbosely) {
+		PRINT("    [%S -> ", wv->booklet_title);
+		pathname *P = Filenames::up(wv->weave_to);
+		if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
+		else PRINT("... %S", Filenames::get_leafname(wv->weave_to));
+		last_reported_weave_path = P;
+		WeavingFormats::report_on_post_processing(wv);
+		PRINT("]\n");
+	} else {
+		if (file_weaving_reports_made == 0) PRINT("    ");
+		PRINT("[");
+		pathname *P = Filenames::up(wv->weave_to);
+		if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
+		else Filenames::write_unextended_leafname(STDOUT, wv->weave_to);
+		last_reported_weave_path = P;
+		WeavingFormats::report_on_post_processing(wv);
+		PRINT("] ");
+		file_weaving_reports_made++;
+	}
 
 @ =
 void Swarm::ensure_plugin(weave_order *wv, text_stream *name) {
