@@ -1211,7 +1211,6 @@ and images with an unescaped <span class="extract"><span class="extract-syntax">
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ABANDON_LINK</span><span class="plain-syntax">(</span><span class="identifier-syntax">reason</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    { </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax">) { </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Link abandoned: %s\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">reason</span><span class="plain-syntax">); }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">abandon_at</span><span class="plain-syntax">; </span><span class="reserved-syntax">goto</span><span class="plain-syntax"> </span><span class="identifier-syntax">AbandonHope</span><span class="plain-syntax">; }</span>
-@&lt;See if a link begins here@&gt; =
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">See if a link begins here</span><span class="named-paragraph-number">11.2</span></span><span class="comment-syntax"> =</span>
 </p>
@@ -1630,7 +1629,6 @@ there will be just one open/close option at a time.
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_MD_EMPHASIS_PAIRS</span><span class="plain-syntax"> (</span><span class="constant-syntax">MAX_MD_EMPHASIS_DELIMITERS</span><span class="plain-syntax">*</span><span class="constant-syntax">MAX_MD_EMPHASIS_DELIMITERS</span><span class="plain-syntax">)</span>
-@&lt;Seek emphasis@&gt; =
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Seek emphasis</span><span class="named-paragraph-number">12.1</span></span><span class="comment-syntax"> =</span>
 </p>
@@ -1885,9 +1883,6 @@ be outermost. So this would give us:
 <span class="plain-syntax">            </span><span class="constant-syntax">STRONG_MIT</span><span class="plain-syntax">  &lt;--- </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">em_bottom</span>
 <span class="plain-syntax">                ...</span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">actual</span><span class="plain-syntax"> </span><span class="identifier-syntax">content</span><span class="plain-syntax"> </span><span class="identifier-syntax">being</span><span class="plain-syntax"> </span><span class="identifier-syntax">emphasised</span>
 </pre>
-<p class="commentary">@&lt;Make the chain of emphasis items from top to bottom@&gt; =
-</p>
-
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the chain of emphasis items from top to bottom</span><span class="named-paragraph-number">12.1.3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 

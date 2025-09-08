@@ -879,6 +879,7 @@ void LiterateSource::remove_chunk_from_par(ls_chunk *chunk, ls_paragraph *par) {
 		par->last_chunk->next_chunk = NULL;
 	} else {
 		chunk->prev_chunk->next_chunk = chunk->next_chunk;
+		chunk->next_chunk->prev_chunk = chunk->prev_chunk;
 	}
 }
 
@@ -1264,11 +1265,21 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 		WRITE("\n");
 		INDENT;
 		cc = 0;
+		ls_chunk *my_previous = NULL;
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			cc++;
 			WRITE("C%d: ", cc);
 			if (chunk->holon) @<Write holon@>
 			else @<Write non-holon chunk@>;
+			if ((chunk == par->first_chunk) && (chunk->prev_chunk))
+				WRITE("*** first chunk but has prev_chunk set\n");
+			if ((chunk == par->last_chunk) && (chunk->next_chunk))
+				WRITE("*** last chunk but has next_chunk set\n");
+			if ((chunk != par->first_chunk) && (chunk->prev_chunk == NULL))
+				WRITE("*** prev_chunk is null\n");
+			else if ((chunk != par->first_chunk) && (chunk->prev_chunk != my_previous))
+				WRITE("*** prev_chunk is wrong\n");
+			my_previous = chunk;
 		}
 		OUTDENT;
 	}

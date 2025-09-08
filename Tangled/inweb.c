@@ -2291,13 +2291,13 @@ typedef struct ls_chunk {
 
 	CLASS_DEFINITION
 } ls_chunk;
-#line 1049 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1050 "inweb/foundation-module/Chapter 8/Literate Source.w"
 typedef struct literate_source_tagging {
 	struct text_stream *the_tag;
 	struct text_stream *caption;
 	CLASS_DEFINITION
 } literate_source_tagging;
-#line 1126 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1127 "inweb/foundation-module/Chapter 8/Literate Source.w"
 typedef struct ls_footnote {
 	int footnote_cue_number;
 	int footnote_text_number;
@@ -5314,59 +5314,59 @@ void  LiterateSource__spool_line(text_stream *line, text_file_position *tfp, voi
 void  LiterateSource__parse_markdown(ls_unit *lsu) ;
 #line 868 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void  LiterateSource__remove_chunk_from_par(ls_chunk *chunk, ls_paragraph *par) ;
-#line 885 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 886 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void  LiterateSource__remove_par_from_unit(ls_paragraph *par, ls_unit *lsu) ;
-#line 915 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 916 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_unit * LiterateSource__code_fragment_to_unit(ls_syntax *syntax, 	programming_language *language, text_stream *code, text_file_position tfp) ;
-#line 942 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 943 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream * LiterateSource__unit_namespace(ls_unit *lsu) ;
-#line 947 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 948 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream * LiterateSource__unit_purpose(ls_unit *lsu) ;
-#line 952 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 953 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__unit_has_purpose(ls_unit *lsu) ;
-#line 957 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 958 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__unit_has_errors(ls_unit *lsu) ;
-#line 965 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 966 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream * LiterateSource__par_title(ls_paragraph *par) ;
-#line 969 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 970 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream * LiterateSource__par_ornament(ls_paragraph *par) ;
-#line 973 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 974 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__par_has_visible_number(ls_paragraph *par) ;
-#line 979 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 980 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__par_contains_early_code(ls_paragraph *par) ;
-#line 984 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 985 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__par_contains_very_early_code(ls_paragraph *par) ;
-#line 989 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 990 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__par_contains_named_holon(ls_paragraph *par) ;
-#line 998 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 999 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__is_code_chunk(ls_chunk *chunk) ;
-#line 1003 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1004 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__is_text_extract_chunk(ls_chunk *chunk) ;
-#line 1011 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1012 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream * LiterateSource__line_weaving_matter(ls_line *line) ;
-#line 1024 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1025 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_section * LiterateSource__section_of_par(ls_paragraph *par) ;
-#line 1029 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1030 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_paragraph * LiterateSource__par_of_line(ls_line *line) ;
-#line 1034 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1035 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_unit * LiterateSource__unit_of_line(ls_line *line) ;
-#line 1039 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1040 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_section * LiterateSource__section_of_line(ls_line *line) ;
-#line 1055 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1056 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void  LiterateSource__tag_paragraph_with_caption(ls_paragraph *par, text_stream *tag, text_stream *caption) ;
-#line 1076 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1077 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void  LiterateSource__tag_paragraph(ls_paragraph *par, text_stream *text) ;
-#line 1096 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1097 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream * LiterateSource__retrieve_caption_for_tag(ls_paragraph *par, text_stream *tag) ;
-#line 1112 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1113 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__is_tagged_with(ls_paragraph *par, text_stream *tag) ;
-#line 1179 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1180 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int  LiterateSource__detect_footnote(ls_syntax *S, 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) ;
-#line 1220 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1221 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_footnote * LiterateSource__find_footnote_in_para(ls_paragraph *par, text_stream *cue) ;
-#line 1234 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1235 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void  LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) ;
-#line 1401 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1412 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void  LiterateSource__write_code(OUTPUT_STREAM, ls_line *line, text_stream *text, int from, int to) ;
 #line 101 "inweb/foundation-module/Chapter 8/Line Classification.w"
 int  LineClassification__extract_lines_can_follow(int major, int minor) ;
@@ -37968,7 +37968,7 @@ void LiterateSource__complete_unit(ls_unit *lsu) {
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		
 {
-#line 1134 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1135 "inweb/foundation-module/Chapter 8/Literate Source.w"
 	int next_footnote_in_para = 1;
 	ls_footnote *current_text = NULL;
 	TEMPORARY_TEXT(before)
@@ -37986,7 +37986,7 @@ void LiterateSource__complete_unit(ls_unit *lsu) {
 					if (this_is_a_cue == FALSE)
 						
 {
-#line 1158 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1159 "inweb/foundation-module/Chapter 8/Literate Source.w"
 	ls_footnote *F = CREATE(ls_footnote);
 	F->footnote_cue_number = Str__atoi(cue, 0);
 	if (F->footnote_cue_number != next_footnote_in_para) {
@@ -38006,7 +38006,7 @@ void LiterateSource__complete_unit(ls_unit *lsu) {
 	current_text = F;
 
 }
-#line 1149 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1150 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ;
 				}
 				line->footnote_text = current_text;
@@ -38070,6 +38070,7 @@ void LiterateSource__remove_chunk_from_par(ls_chunk *chunk, ls_paragraph *par) {
 		par->last_chunk->next_chunk = NULL;
 	} else {
 		chunk->prev_chunk->next_chunk = chunk->next_chunk;
+		chunk->next_chunk->prev_chunk = chunk->prev_chunk;
 	}
 }
 
@@ -38090,7 +38091,7 @@ void LiterateSource__remove_par_from_unit(ls_paragraph *par, ls_unit *lsu) {
 	}
 }
 
-#line 915 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 916 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_unit *LiterateSource__code_fragment_to_unit(ls_syntax *syntax,
 	programming_language *language, text_stream *code, text_file_position tfp) {
 	ls_unit *lsu = LiterateSource__begin_unit(NULL, syntax, language, NULL, NULL);
@@ -38114,7 +38115,7 @@ ls_unit *LiterateSource__code_fragment_to_unit(ls_syntax *syntax,
 	return lsu;
 }
 
-#line 942 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 943 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream *LiterateSource__unit_namespace(ls_unit *lsu) {
 	if ((lsu) && (lsu->heading.minor == SECTION_HEADING_MINLC)) return lsu->heading.operand2;
 	return NULL;
@@ -38135,7 +38136,7 @@ int LiterateSource__unit_has_errors(ls_unit *lsu) {
 	return FALSE;
 }
 
-#line 965 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 966 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream *LiterateSource__par_title(ls_paragraph *par) {
 	return par->titling.operand1;
 }
@@ -38166,7 +38167,7 @@ int LiterateSource__par_contains_named_holon(ls_paragraph *par) {
 	return FALSE;
 }
 
-#line 998 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 999 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int LiterateSource__is_code_chunk(ls_chunk *chunk) {
 	if ((chunk) && (chunk->chunk_type == EXTRACT_LSCT) && (chunk->holon)) return TRUE;
 	return FALSE;
@@ -38177,7 +38178,7 @@ int LiterateSource__is_text_extract_chunk(ls_chunk *chunk) {
 	return FALSE;
 }
 
-#line 1011 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1012 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream *LiterateSource__line_weaving_matter(ls_line *line) {
 	if (line == NULL) return NULL;
 	if ((line->classification.operand1) &&
@@ -38188,7 +38189,7 @@ text_stream *LiterateSource__line_weaving_matter(ls_line *line) {
 	return line->text;
 }
 
-#line 1024 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1025 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ls_section *LiterateSource__section_of_par(ls_paragraph *par) {
 	if (par == NULL) return NULL;
 	if (par->owning_unit == NULL) return NULL;
@@ -38208,7 +38209,7 @@ ls_section *LiterateSource__section_of_line(ls_line *line) {
 	return LiterateSource__section_of_par(LiterateSource__par_of_line(line));
 }
 
-#line 1054 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1055 "inweb/foundation-module/Chapter 8/Literate Source.w"
 
 void LiterateSource__tag_paragraph_with_caption(ls_paragraph *par, text_stream *tag, text_stream *caption) {
 	if (Str__len(tag) == 0) internal_error("empty tag name");
@@ -38226,7 +38227,7 @@ void LiterateSource__tag_paragraph_with_caption(ls_paragraph *par, text_stream *
 	}
 }
 
-#line 1076 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1077 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void LiterateSource__tag_paragraph(ls_paragraph *par, text_stream *text) {
 	if (Str__len(text) == 0) internal_error("empty tag name");
 	if (par) {
@@ -38244,7 +38245,7 @@ void LiterateSource__tag_paragraph(ls_paragraph *par, text_stream *text) {
 	}
 }
 
-#line 1096 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1097 "inweb/foundation-module/Chapter 8/Literate Source.w"
 text_stream *LiterateSource__retrieve_caption_for_tag(ls_paragraph *par, text_stream *tag) {
 	if (Str__len(tag) == 0) return NULL;
 	if ((par) && (par->taggings)) {
@@ -38256,7 +38257,7 @@ text_stream *LiterateSource__retrieve_caption_for_tag(ls_paragraph *par, text_st
 	return NULL;
 }
 
-#line 1112 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1113 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int LiterateSource__is_tagged_with(ls_paragraph *par, text_stream *tag) {
 	if (Str__len(tag) == 0) return TRUE; /* see above! */
 	if ((par) && (par->taggings)) {
@@ -38268,9 +38269,9 @@ int LiterateSource__is_tagged_with(ls_paragraph *par, text_stream *tag) {
 	return FALSE;
 }
 
-#line 1132 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1133 "inweb/foundation-module/Chapter 8/Literate Source.w"
 
-#line 1179 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1180 "inweb/foundation-module/Chapter 8/Literate Source.w"
 int LiterateSource__detect_footnote(ls_syntax *S,
 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) {
 	if (WebSyntax__supports(S, FOOTNOTES_WSF)) {
@@ -38322,7 +38323,7 @@ ls_footnote *LiterateSource__find_footnote_in_para(ls_paragraph *par, text_strea
 	return NULL;
 }
 
-#line 1234 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1235 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	if (lsu == NULL) {
 		WRITE("(no literate source)\n");
@@ -38356,12 +38357,13 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 		WRITE("\n");
 		INDENT;
 		cc = 0;
+		ls_chunk *my_previous = NULL;
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			cc++;
 			WRITE("C%d: ", cc);
 			if (chunk->holon) 
 {
-#line 1278 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1289 "inweb/foundation-module/Chapter 8/Literate Source.w"
 	WRITE("holon");
 	ls_holon *holon = chunk->holon;
 	if (Str__len(holon->holon_name) > 0) WRITE(" '%S'", holon->holon_name);
@@ -38401,11 +38403,11 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	OUTDENT
 
 }
-#line 1270 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1272 "inweb/foundation-module/Chapter 8/Literate Source.w"
 
 			else 
 {
-#line 1317 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1328 "inweb/foundation-module/Chapter 8/Literate Source.w"
 	switch (chunk->chunk_type) {
 		case COMMENTARY_LSCT: WRITE("commentary\n"); break;
 		case QUOTATION_LSCT: WRITE("quotation\n"); break;
@@ -38490,14 +38492,23 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	OUTDENT;
 
 }
-#line 1271 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1273 "inweb/foundation-module/Chapter 8/Literate Source.w"
 ;
+			if ((chunk == par->first_chunk) && (chunk->prev_chunk))
+				WRITE("*** first chunk but has prev_chunk set\n");
+			if ((chunk == par->last_chunk) && (chunk->next_chunk))
+				WRITE("*** last chunk but has next_chunk set\n");
+			if ((chunk != par->first_chunk) && (chunk->prev_chunk == NULL))
+				WRITE("*** prev_chunk is null\n");
+			else if ((chunk != par->first_chunk) && (chunk->prev_chunk != my_previous))
+				WRITE("*** prev_chunk is wrong\n");
+			my_previous = chunk;
 		}
 		OUTDENT;
 	}
 }
 
-#line 1401 "inweb/foundation-module/Chapter 8/Literate Source.w"
+#line 1412 "inweb/foundation-module/Chapter 8/Literate Source.w"
 void LiterateSource__write_code(OUTPUT_STREAM, ls_line *line, text_stream *text, int from, int to) {
 	if (line) WRITE("%07d ", line->origin.line_count);
 	for (int i=from; i<=to; i++) {
