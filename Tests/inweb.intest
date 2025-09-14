@@ -12,7 +12,7 @@
 	mkdir: $PATH/_Scan_Ideal
 	set: $SA = $PATH/_Scan_Actual/$CASE.txt
 	set: $SI = $PATH/_Scan_Ideal/$CASE.txt
-	step: $INWEB $WEB -scan >$SA 2>&1
+	step: $INWEB $WEB -locale console=utf-8 -scan >$SA 2>&1
 	or: 'failed inweb trying to scan' $SA
 	show: $SA
 	match text: $SA $SI
