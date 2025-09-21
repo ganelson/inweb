@@ -1,0 +1,114 @@
+Colony {
+	home: CrystalCastle2019/docs
+	assets: CrystalCastle2019/docs/docs-assets
+	
+	navigation: CrystalCastle2019/Publish/nav.html
+	pattern: GitHubPages
+	
+	breadcrumbs: none
+	web: "overview" at "CrystalCastle2019/Publish/index.md" in "CrystalCastle2019/docs"
+	
+	breadcrumbs: "Home: //overview//"
+	web: "engine" at "CrystalCastle2019/Publish/engine.inwebc" in "CrystalCastle2019/docs/engine"
+	web: "esprites" in "CrystalCastle2019/docs/esprites"
+	web: "esounds" at "CrystalCastle2019/Engine/sounds.minim" in "CrystalCastle2019/docs/engine/sounds.html"
+	web: "rooms" at "CrystalCastle2019/Castles/main/rooms.mash" in "CrystalCastle2019/docs/castle/rooms.html"
+	web: "sprites" in "CrystalCastle2019/docs/sprites"
+	web: "sounds" at "CrystalCastle2019/Castles/main/sounds.minim" in "CrystalCastle2019/docs/castle/sounds.html"
+	web: "music" at "CrystalCastle2019/Castles/main/music.txt" in "CrystalCastle2019/docs/castle/music.html"
+	web: "mash" at "CrystalCastle2019/Documents/Encoding/MASH-bytecode.md" in "CrystalCastle2019/docs/encoding/MASH-bytecode.html"
+	web: "mason" at "CrystalCastle2019/Documents/Encoding/MASON-bytecode.md" in "CrystalCastle2019/docs/encoding/MASON-bytecode.html"
+	web: "designing" in "CrystalCastle2019/docs/manuals"
+	web: "minim" at "CrystalCastle2019/Documents/Manual/MINIM.md" in "CrystalCastle2019/docs/manuals/MINIM.html"
+	web: "meander" at "CrystalCastle2019/Documents/Manual/MEANDER.md" in "CrystalCastle2019/docs/manuals/MEANDER.html"
+
+	Notation "RawMarkdown" {
+		recognise .md
+		set Paragraph Numbers Visibility: Off
+		use Markdown commentary
+		
+		classify {
+			# MATERIAL ==> titleandpurpose if on first line
+			MATERIAL ==> commentary
+		}
+	}
+
+	Web "designing" {
+		Title: Designing Castles
+		Author: Graham Nelson
+		Web Syntax Version: RawMarkdown
+		Purpose: A guide to creating new castles for the CC engine to play.
+		Version Number: 2025.1
+		
+		Sections
+			../Documents/Manual/castles.md
+			../Documents/Manual/design.md
+			../Documents/Manual/instructions.md
+			../Documents/Manual/mobjects.md
+			../Documents/Manual/rooms.md
+			../Documents/Manual/sprites.md
+			../Documents/Manual/state.md
+	}
+	
+	Web "sprites" {
+		Title: Crystal Castle Sprites
+		Author: Toby Nelson
+		Web Syntax Version: Sprites
+		Language: Spritely
+		Purpose: The sprites used for the main Castle scenery and denizens.
+		Version Number: 2025.1
+		
+		Sections
+			../Castles/main/denizens.sprites
+			../Castles/main/objects.sprites
+			../Castles/main/platforms.sprites
+			../Castles/main/scenery.sprites
+	}
+
+	Web "esprites" {
+		Title: Engine Sprites
+		Author: Toby Nelson
+		Web Syntax Version: Sprites
+		Language: Spritely
+		Purpose: The sprites built in to the engine, and not special to the Castle.
+		Version Number: 2025.1
+		
+		Sections
+			../Library/player.sprites
+			../Library/snake.sprites
+			../Library/crystal.sprites
+			../Library/walls.sprites
+			../Library/stairs.sprites
+			../Library/levers.sprites
+			../Library/solids.sprites
+			../Library/ladder.sprites
+			../Library/conveyor.sprites
+			../Library/crumble.sprites
+			../Library/brazier.sprites
+			../Library/water.sprites
+			../Library/spike.sprites
+			../Library/empty.sprites
+	}
+
+	Language "Spritely" {
+		colouring {
+			characters {
+				"_" => !comment
+				"o" => !identifier
+				"?" => !function
+				"#" => !reserved
+			}
+		}
+	}
+	
+	Notation "Sprites" {
+		recognise .sprites
+		use Markdown commentary	
+		use trimmed extracts
+		classify Sprite MATERIAL    ==> heading
+		classify ; # "MATERIAL"     ==> purpose
+		classify ; # MATERIAL     ==> title
+		classify ; MATERIAL       ==> commentary
+		classify MATERIAL         ==> code
+	}
+}

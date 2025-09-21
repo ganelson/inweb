@@ -46,7 +46,7 @@ As mentioned earlier, there are two basic things we can do with a web:
 tangle, to make a program ready to compile and run; and weave, to make
 a comfortably legible version for human eyes instead. Let's now tangle:
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb inweb/Examples/hellow.inweb -tangle
+	$ inweb/Tangled/inweb tangle inweb/Examples/hellow.inweb
 	web "hellow": 1 section(s) : 1 paragraph(s) : 9 line(s)
 	tangling <inweb/Examples/hellow.c> (written in C)
 =
@@ -262,7 +262,7 @@ With this done,
 tangles and then compiles the program as necessary. The tangling part of that
 is nothing fancy - as before, it's just
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb inweb/Examples/goldbach -tangle
+	$ inweb/Tangled/inweb tangle inweb/Examples/goldbach
 =
 Assuming all goes well:
 = (text as ConsoleText)
@@ -283,8 +283,9 @@ declares that Appendix A is a sort of sidekick program, written in the
 language "Inform 7". As a result, it won't be included in a regular |-tangle|,
 and to obtain it we have to:
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb inform7 -tangle A
+	$ inweb/Tangled/inweb tangle inform7 -range A
 =
+
 @ In some C programs, it's useful to require that a header file be added to
 a tangle. This can be done by adding:
 = (text)
@@ -735,9 +736,9 @@ should make code completion and definition lookup features work.
 
 You can however write the file elsewhere:
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb W -tangle -ctags-to secret_lair/my_nifty.ctags
+	$ inweb/Tangled/inweb tangle W -ctags-to secret_lair/my_nifty.ctags
 =
 or not at all:
 = (text as ConsoleText)
-	$ inweb/Tangled/inweb W -tangle -no-ctags
+	$ inweb/Tangled/inweb tangle W -no-ctags
 =

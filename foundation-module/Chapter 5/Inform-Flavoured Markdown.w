@@ -977,7 +977,7 @@ use "transcript" instead.
 		}
 	}
 	TEMPORARY_TEXT(colouring)
-	programming_language *default_language = Languages::find_by_name(I"Inform", NULL, FALSE);
+	programming_language *default_language = Languages::find_without_context(I"Inform7");
 
 	programming_language *pl = default_language;
 	if (pl) {
@@ -1116,7 +1116,7 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	if (Str::len(language) > 0) {
 		if (mode & TAGS_MDRMODE)
 			HTML_OPEN_WITH("code", "class=\"language-%S\"", language);
-		pl = Languages::find_by_name(language, NULL, FALSE);
+		pl = Languages::find(NULL, language);
 		if (pl == NULL) LOG("Unable to find language <%S>\n", language);
 	} else {
 		if (mode & TAGS_MDRMODE) HTML_OPEN("code");

@@ -30,8 +30,10 @@ typedef struct ls_unit {
 	
 	/* temporary workspace used only in parsing */
 	int incomplete;
+	int eligible_to_have_implicit_purpose;
+	int window_for_implicit_purpose_open;
 	struct pathname *extracts_path;
-	struct pathname *dialects_path;
+	struct ls_web *context; /* used only for finding language names */
 	struct ls_line *temp_first_line;
 	struct ls_line *temp_last_line;
 	struct ls_line *spool_point;
@@ -52,7 +54,7 @@ means the current working directory.
 
 =
 ls_unit *LiterateSource::begin_unit(ls_section *S, ls_syntax *syntax,
-	programming_language *language, pathname *extracts_path, pathname *dialects_path) {
+	programming_language *language, pathname *extracts_path, ls_web *context) {
 	ls_unit *lsu = CREATE(ls_unit);
 	lsu->syntax = syntax;
 	lsu->language = language;
@@ -68,8 +70,10 @@ ls_unit *LiterateSource::begin_unit(ls_section *S, ls_syntax *syntax,
 	lsu->errors = NEW_LINKED_LIST(ls_error);
 
 	lsu->incomplete = TRUE;
+	lsu->eligible_to_have_implicit_purpose = FALSE;
+	lsu->window_for_implicit_purpose_open = TRUE;
 	lsu->extracts_path = extracts_path;
-	lsu->dialects_path = dialects_path;
+	lsu->context = context;
 	lsu->temp_first_line = NULL;
 	lsu->temp_last_line = NULL;
 	lsu->spool_point = NULL;
@@ -132,6 +136,14 @@ provided by the previous line segment's classification.
 		if (lsu->temp_last_line == NULL) last_cf = LineClassification::unclassified();
 		else last_cf = lsu->temp_last_line->classification;
 		res = LineClassification::classify(lsu->syntax, text, &last_cf);
+
+		if ((res.cf.major == COMMENTARY_MAJLC) && (lsu->window_for_implicit_purpose_open)) {
+			if (Str::is_whitespace(text) == FALSE)
+				lsu->eligible_to_have_implicit_purpose = TRUE;
+		} else {
+			if ((res.cf.major != PARAGRAPH_START_MAJLC) || (res.cf.minor == HEADING_COMMAND_MINLC))
+				lsu->window_for_implicit_purpose_open = FALSE;
+		}
 	}
 
 @ In some syntaxes for literate programming, paragraph breaks (for example) are
@@ -725,7 +737,7 @@ read this as a purpose written in plain text, and remove the para.
 @<Construe an opening paragraph consisting only of commentary as a purpose text@> =
 	ls_paragraph *par = lsu->first_par;
 	if ((par) && (par->first_chunk) && (par->first_chunk == par->last_chunk) &&
-		(par->first_chunk->chunk_type == COMMENTARY_LSCT)) {
+		(par->first_chunk->chunk_type == COMMENTARY_LSCT) && (lsu->eligible_to_have_implicit_purpose)) {
 		lsu->purpose = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
 		lsu->purpose.operand1 = Str::new();
 		for (ls_line *line = par->first_chunk->first_line; line; line = line->next_line) {
@@ -755,7 +767,7 @@ read this as a purpose written in plain text, and remove the para.
 			}
 			if (Str::len(language_name) > 0)
 				chunk->extract_language =
-					Languages::find_by_name(language_name, lsu->dialects_path, TRUE);
+					Languages::find_or_fail(lsu->context, language_name);				
 		}
 	}
 

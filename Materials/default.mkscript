@@ -1,4 +1,4 @@
-# This is "default.mkscript", a script which "inweb -makefile" uses in order to
+# This is "default.mkscript", a script which "inweb make-makefile" uses in order to
 # generate makefiles for tools which do not provide a special script of their own.
 # In the Inform project, for example, it produces makefiles for the numerous
 # unit test tools.
@@ -25,7 +25,7 @@ force:
 	$(call make-me)
 
 define make-me
-	$(INWEB) $(ME) -import-from modules -tangle
+	$(INWEB) tangle $(ME) -import-from modules
 	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
 	{link from:    $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
 endef
@@ -41,7 +41,7 @@ test:
 .PHONY: pages
 pages:
 	mkdir -p $(ME)/docs/$(MYNAME)
-	$(INWEB) $(ME) -weave-docs -weave-into $(ME)/docs/$(MYNAME)
+	$(INWEB) weave $(ME) -as GitHubPages -to $(ME)/docs/$(MYNAME)
 
 # Cleaning up:
 

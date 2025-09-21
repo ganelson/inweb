@@ -159,14 +159,14 @@ void ACMESupport::comment(programming_language *pl,
 
 =
 void ACMESupport::parse_types(programming_language *self, ls_web *W) {
-	if (W->web_language->type_notation[0]) {
+	if (WebStructure::web_language(W)->type_notation[0]) {
 		ls_chapter *C;
 		ls_section *S;
 		LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {
-			if (S->sect_language == W->web_language) {
+			if (WebStructure::section_language(S) == WebStructure::web_language(W)) {
 				text_stream *line = lst->classification.operand1;
 				match_results mr = Regexp::create_mr();
-				if (Regexp::match(&mr, line, W->web_language->type_notation)) {
+				if (Regexp::match(&mr, line, WebStructure::web_language(W)->type_notation)) {
 					Functions::new_function(mr.exp[0], lst, S);
 				}
 				Regexp::dispose_of(&mr);
@@ -179,14 +179,14 @@ void ACMESupport::parse_types(programming_language *self, ls_web *W) {
 
 =
 void ACMESupport::parse_functions(programming_language *self, ls_web *W) {
-	if (W->web_language->function_notation[0]) {
+	if (WebStructure::web_language(W)->function_notation[0]) {
 		ls_chapter *C;
 		ls_section *S;
 		LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {
-			if (S->sect_language == W->web_language) {
+			if (WebStructure::section_language(S) == WebStructure::web_language(W)) {
 				text_stream *line = lst->classification.operand1;
 				match_results mr = Regexp::create_mr();
-				if (Regexp::match(&mr, line, W->web_language->function_notation))
+				if (Regexp::match(&mr, line, WebStructure::web_language(W)->function_notation))
 					Functions::new_function(mr.exp[0], lst, S);
 				Regexp::dispose_of(&mr);
 			}
@@ -271,7 +271,7 @@ void ACMESupport::reset_syntax_colouring(programming_language *pl) {
 int ACMESupport::syntax_colour(programming_language *pl,
 	weave_order *wv, ls_line *lst, text_stream *matter, text_stream *colouring) {
 	ls_section *S = LiterateSource::section_of_line(lst);
-	hash_table *ht = &(S->sect_target->symbols);
-	if (pl != S->sect_language) ht = &(pl->built_in_keywords);
+	hash_table *ht = &(TangleTargets::of_section(S)->symbols);
+	if (pl != WebStructure::section_language(S)) ht = &(pl->built_in_keywords);
 	return Painter::syntax_colour(pl, ht, matter, colouring, FALSE);
 }

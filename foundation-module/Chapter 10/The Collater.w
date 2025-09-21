@@ -17,22 +17,22 @@ For convenience, we provide three ways to call:
 
 =
 void Collater::for_web_and_pattern(text_stream *OUT, ls_web *W,
-	weave_pattern *pattern, filename *F, filename *into) {
-	Collater::collate(OUT, W, I"", F, pattern, NULL, NULL, NULL, into);
+	weave_pattern *pattern, filename *F, filename *into, colony *context) {
+	Collater::collate(OUT, W, I"", F, pattern, NULL, NULL, NULL, into, context);
 }
 
 void Collater::for_order(text_stream *OUT, weave_order *wv,
-	filename *F, filename *into) {
+	filename *F, filename *into, colony *context) {
 	Collater::collate(OUT, wv->weave_web, wv->weave_range, F, wv->pattern,
-		wv->navigation, wv->breadcrumbs, wv, into);
+		wv->navigation, wv->breadcrumbs, wv, into, context);
 }
 
 void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 	filename *template_filename, weave_pattern *pattern, filename *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into) {
+	linked_list *crumbs, weave_order *wv, filename *into, colony *context) {
 	collater_state actual_ies =
 		Collater::initial_state(W, range, template_filename, pattern, 
-			nav_file, crumbs, wv, into);
+			nav_file, crumbs, wv, into, context);
 	collater_state *ies = &actual_ies;
 	Collater::process(OUT, ies);
 }
@@ -46,6 +46,7 @@ void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 
 =
 typedef struct collater_state {
+	struct colony *context;
 	struct ls_web *for_web;
 	struct text_stream *tlines[MAX_TEMPLATE_LINES];
 	int no_tlines;
@@ -72,7 +73,7 @@ if so, they can always be subdivided.
 =
 collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	filename *template_filename, weave_pattern *pattern, filename *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into) {
+	linked_list *crumbs, weave_order *wv, filename *into, colony *context) {
 	collater_state cls;
 	cls.no_tlines = 0;
 	cls.restrict_to_range = Str::duplicate(range);
@@ -86,6 +87,8 @@ collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	cls.wv = wv;
 	cls.into_file = into;
 	cls.modules = NEW_LINKED_LIST(ls_module);
+	cls.context = context;
+	if ((context == NULL) && (wv)) cls.context = wv->weave_colony;
 	if (W) {
 		int c = LinkedLists::len(W->main_module->dependencies);
 		if (c > 0) @<Form the list of imported modules@>;
@@ -222,7 +225,7 @@ chapter as its value during the sole iteration.
 		} else if (Str::eq(condition, I"Module Page")) {
 			ls_module *M = CONTENT_IN_ITEM(
 				Collater::heading_topmost_on_stack(cls, MODULE_LEVEL), ls_module);
-			if ((M) && (Colonies::find(M->module_name)))
+			if ((M) && (Colonies::find(cls->context, M->module_name)))
 				level = IF_TRUE_LEVEL;
 		} else if (Str::eq(condition, I"Module Purpose")) {
 			ls_module *M = CONTENT_IN_ITEM(
@@ -547,7 +550,7 @@ this will recursively call The Collater, in fact.
 	if (cls->nav_file) {
 		if (TextFiles::exists(cls->nav_file))
 			Collater::collate(substituted, cls->for_web, cls->restrict_to_range,
-				cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file);
+				cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file, cls->context);
 		else
 			Errors::fatal_with_file("unable to find navigation file", cls->nav_file);
 	} else {
@@ -557,7 +560,7 @@ this will recursively call The Collater, in fact.
 @ A trail of breadcrumbs, used for overhead navigation in web pages.
 
 @<Substitute Breadcrumbs@> =
-	Colonies::drop_initial_breadcrumbs(substituted, cls->into_file,
+	Colonies::drop_initial_breadcrumbs(substituted, cls->context, cls->into_file,
 		cls->crumbs);
 
 @<Substitute Plugins@> =
@@ -588,8 +591,8 @@ this will recursively call The Collater, in fact.
 		if (Str::len(owner) > 0) WRITE_TO(substituted, "%S/", owner);
 		WRITE_TO(substituted, "%S", M->module_name);
 	} else if (Str::eq_wide_string(detail, U"Page")) {
-		if (Colonies::find(M->module_name))
-			Colonies::reference_URL(substituted, M->module_name, cls->into_file);
+		if (Colonies::find(cls->context, M->module_name))
+			Colonies::reference_URL(substituted, cls->context, M->module_name, cls->into_file);
 	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%p", M->module_location);
@@ -680,7 +683,7 @@ navigation purposes.
 
 @<Substitute a Link@> =
 	WRITE_TO(substituted, "<a href=\"");
-	Colonies::reference_URL(substituted, link_text, cls->into_file);
+	Colonies::reference_URL(substituted, cls->context, link_text, cls->into_file);
 	WRITE_TO(substituted, "\">");
 
 @<Substitute a Menu@> =
@@ -701,13 +704,13 @@ navigation purposes.
 
 @<Substitute a member Item@> =
 	TEMPORARY_TEXT(url)
-	Colonies::reference_URL(url, link_text, cls->into_file);
+	Colonies::reference_URL(url, cls->context, link_text, cls->into_file);
 	@<Substitute an item at this URL@>;
 	DISCARD_TEXT(url)
 
 @<Substitute a general Item@> =
 	TEMPORARY_TEXT(url)
-	Colonies::link_URL(url, link_text, cls->into_file);
+	Colonies::link_URL(url, cls->context, link_text, cls->into_file);
 	@<Substitute an item at this URL@>;
 	DISCARD_TEXT(url)
 

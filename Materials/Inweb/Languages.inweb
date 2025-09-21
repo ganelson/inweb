@@ -1,0 +1,765 @@
+// This is a miscellany of language definitions, presented jointly rather than
+// in a single file to reduce the number of file accesses made by inweb.
+
+Language "ACME" {
+	Details: "The ACME assembly language for 6502 and related CPUs"
+	Extension: ".a"
+	Line Comment: ";"
+	String Literal: "\""
+	String Literal Escape: "\\"
+	Character Literal: "'"
+	Character Literal Escape: "\\"
+	Binary Literal Prefix: "%"
+	Hexadecimal Literal Prefix: "$"
+	Negative Literal Prefix: "-"
+	
+	Function Declaration Notation: /([A-Za-z_][A-Za-z0-9_]*).*/
+	
+	colouring {
+		runs of unquoted {
+			runs of !identifier {
+				=> !reserved
+				keyword of !function => !function
+	//			prefix "." => !identifier on both
+				prefix "!" => !element on both
+			}
+			characters {
+				+ => !identifier
+				- => !identifier
+			}
+		}
+	}
+}
+
+Language "Blurb" {
+	Details: "The Blorb packaging specification language"
+	Extension: ".blurb"
+	
+	String Literal: "\""
+	String Literal Escape: "\\"
+	
+	colouring {
+		=> !plain
+	}
+}
+
+Language "BoxArt" {
+	Details: "For styling ASCII-art diagrams with boxes and lines"
+	Extension: ".txt"
+	
+	colouring {
+		characters {
+			"-" => !plain
+			"|" => !plain
+			"+" => !plain
+			"/" => !plain
+			"\\" => !plain
+		}
+		runs of !identifier {
+			=> !element
+			suffix "-module" => !reserved on both
+			matching /[A-Z][A-Z0-9_]+/ => !function
+		}
+	}
+}
+
+Language "C" {
+	Details: "The C programming language"
+	Extension: ".c"
+	Multiline Comment Open: "/*"
+	Multiline Comment Close: "*/"
+	Line Comment: "//"
+	String Literal: "\""
+	String Literal Escape: "\\"
+	Character Literal: "'"
+	Character Literal Escape: "\\"
+	C-Like: true
+	
+	// C does in fact support octal literals, marking them as starting with an
+	// unnecessary initial zero. This is practically obsolete now, and in any case
+	// makes no difference to syntax-colouring. Binary literals were in theory
+	// rejected by the C standards body as useless, but are so useful that gcc
+	// and clang support them anyway.
+	
+	Hexadecimal Literal Prefix: "0x"
+	Binary Literal Prefix: "0b"
+	Negative Literal Prefix: "-"
+	
+	Before Named Paragraph Expansion: "\n{\n"
+	After Named Paragraph Expansion: "}\n"
+	Start Ifdef: "#ifdef %S\n"
+	End Ifdef: "#endif /* %S */\n"
+	Start Ifndef: "#ifndef %S\n"
+	End Ifndef: "#endif /* %S */\n"
+	Line Marker: "#line %d \"%f\"\n"
+	
+	Start Definition: "#define %S\s"
+	Prolong Definition: "\\\n\s\s\s\s"
+	End Definition: "\n"
+	
+	keyword auto
+	keyword break
+	keyword case
+	keyword char
+	keyword const
+	keyword continue
+	keyword default
+	keyword do
+	keyword double
+	keyword else
+	keyword enum
+	keyword extern
+	keyword float
+	keyword for
+	keyword goto
+	keyword if
+	keyword int
+	keyword long
+	keyword register
+	keyword return
+	keyword short
+	keyword signed
+	keyword sizeof
+	keyword static
+	keyword struct
+	keyword switch
+	keyword typedef
+	keyword union
+	keyword unsigned
+	keyword void
+	keyword volatile
+	keyword while
+	
+	colouring {
+		runs of unquoted {
+			runs of !identifier {
+				keyword of !reserved => !reserved
+				keyword of !function => !function
+				keyword of !constant => !constant
+				keyword of !element => {
+					optionally spaced prefix . => !element
+					optionally spaced prefix -> => !element
+				}
+			}
+		}
+	}
+}
+
+Language "C++" {
+	Details: "The C++ programming language"
+	Extension: ".cpp"
+	Multiline Comment Open: "/*"
+	Multiline Comment Close: "*/"
+	Line Comment: "//"
+	String Literal: "\""
+	String Literal Escape: "\\"
+	Character Literal: "'"
+	Character Literal Escape: "\\"
+	C-Like: true
+	
+	// C++ does in fact support octal literals, marking them as starting with an
+	// unnecessary initial zero. This is practically obsolete now, and in any case
+	// makes no difference to syntax-colouring.
+	
+	Hexadecimal Literal Prefix: "0x"
+	Binary Literal Prefix: "0b"
+	Negative Literal Prefix: "-"
+	
+	Before Named Paragraph Expansion: "\n{\n"
+	After Named Paragraph Expansion: "}\n"
+	Start Ifdef: "#ifdef %S\n"
+	End Ifdef: "#endif /* %S */\n"
+	Start Ifndef: "#ifndef %S\n"
+	End Ifndef: "#endif /* %S */\n"
+	Line Marker: "#line %d \"%f\"\n"
+	
+	Start Definition: "#define %S\s"
+	Prolong Definition: "\\\n\s\s\s\s"
+	End Definition: "\n"
+	
+	keyword auto
+	keyword break
+	keyword case
+	keyword char
+	keyword const
+	keyword continue
+	keyword default
+	keyword do
+	keyword double
+	keyword else
+	keyword enum
+	keyword extern
+	keyword float
+	keyword for
+	keyword goto
+	keyword if
+	keyword int
+	keyword long
+	keyword register
+	keyword return
+	keyword short
+	keyword signed
+	keyword sizeof
+	keyword static
+	keyword struct
+	keyword switch
+	keyword typedef
+	keyword union
+	keyword unsigned
+	keyword void
+	keyword volatile
+	keyword while
+	
+	colouring {
+		runs of unquoted {
+			runs of !identifier {
+				keyword of !reserved => !reserved
+				keyword of !function => !function
+				keyword of !constant => !constant
+				keyword of !element => {
+					optionally spaced prefix . => !element
+					optionally spaced prefix -> => !element
+				}
+			}
+		}
+	}
+}
+
+Language "ConsoleText" {
+	Details: "For styling command line text in documentation"
+	Extension: ".txt"
+	
+	colouring {
+		=> !plain
+		brackets in /\s*(\$) (.*)/ {
+			number 1 => !element
+			number 2 => {
+				=> !plain
+				matches of / -[A-Za-z0-9-]+/ {
+					=> !identifier
+				}
+				matches of /\S+/ {
+					number 1 => !function
+				}
+			}
+		}
+	}
+}
+
+Language "Delia" {
+	Details: "For defining test recipes in Intest"
+	Extension: ".intest"
+	
+	colouring {
+		=> !plain
+		brackets in /(.*?):.*/ {
+			=> !reserved
+		}
+		brackets in /(-\S+).*/ {
+			=> !identifier
+		}
+		matches of /\$[A-Z]+[A-Z0-9]*/ {
+			=> !function
+		}
+		matches of /\s*else\s*/ {
+			=> !reserved
+		}
+		matches of /\s*endif\s*/ {
+			=> !reserved
+		}
+	}
+}
+
+Language "Extracts" {
+	Details: "For code extracts to be written to a configuration file"
+	Extension: ".txt"
+}
+
+Language "ILDF" {
+	Details: "The Inweb Language Definition File format"
+	Extension: ".ildf"
+	Whole Line Comment: "#"
+	
+	String Literal: "\""
+	String Literal Escape: "\\"
+	
+	// Regular expressions are handled here as if character literals
+	Character Literal: "/"
+	Character Literal Escape: "\\"
+	
+	keyword "both"
+	keyword "brackets"
+	keyword "characters"
+	keyword "coloured"
+	keyword "colouring"
+	keyword "debug"
+	keyword "false"
+	keyword "in"
+	keyword "instances"
+	keyword "keyword"
+	keyword "matches"
+	keyword "matching"
+	keyword "not"
+	keyword "of"
+	keyword "on"
+	keyword "optionally"
+	keyword "prefix"
+	keyword "runs"
+	keyword "spaced"
+	keyword "suffix"
+	keyword "true"
+	keyword "unquoted" of !element
+	
+	colouring {
+		runs of !identifier {
+			prefix "!" => !element on both
+			keyword of !element => !element
+			keyword of !reserved => !reserved
+		}
+		runs of unquoted {
+			instances of "=>" {
+				=> !reserved
+			}
+			instances of "{" {
+				=> !reserved
+			}
+			instances of "}" {
+				=> !reserved
+			}
+		}
+		characters {
+			// Anything left of these colours will be unquoted strings, so...
+			coloured !constant => !string
+			coloured !identifier => !string
+			// Regular expressions, now coloured !character, are more like functions
+			coloured !character => !function
+		}
+		// Detect Property: Value lines, not being fooled by a colon inside quotes
+		brackets in /\s*([A-Z][^"]*):.*/ {
+			// Uncolour only the bracketed part, i.e., the Property part
+			=> !plain
+		}
+	}
+}
+
+Language "InC" {
+	Details: "The Inform-tools extension to the C programming language"
+	Extension: ".c"
+	Supports Namespaces: true
+	Multiline Comment Open: "/*"
+	Multiline Comment Close: "*/"
+	Line Comment: "//"
+	String Literal: "\""
+	String Literal Escape: "\\"
+	Character Literal: "'"
+	Character Literal Escape: "\\"
+	C-Like: true
+	
+	// C does in fact support octal literals, marking them as starting with an
+	// unnecessary initial zero. This is practically obsolete now, and in any case
+	// makes no difference to syntax-colouring. Binary literals were in theory
+	// rejected by the C standards body as useless, but are so useful that gcc
+	// and clang support them anyway.
+	
+	Hexadecimal Literal Prefix: "0x"
+	Binary Literal Prefix: "0b"
+	Negative Literal Prefix: "-"
+	
+	// The "shebang" routine for a language is called to add anything it wants to
+	// at the very top of the tangled code. (For a scripting language such as
+	// Perl or Python, that might be a shebang: "hence the name.)"
+	// But we will use it to defime the constant PLATFORM_POSIX everywhere except
+	// Windows. This needs to happen right at the top, because the "very early
+	// code" in a tangle may contain material conditional on whether it is defined.
+	
+	Shebang: "#ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n"
+	Before Named Paragraph Expansion: "\n{\n"
+	After Named Paragraph Expansion: "}\n"
+	Start Ifdef: "#ifdef %S\n"
+	End Ifdef: "#endif /* %S */\n"
+	Start Ifndef: "#ifndef %S\n"
+	End Ifndef: "#endif /* %S */\n"
+	Line Marker: "#line %d \"%f\"\n"
+	Start Definition: "#define %S\s"
+	Prolong Definition: "\\\n\s\s\s\s"
+	End Definition: "\n"
+	
+	// FILE gets in even though it's not technically reserved but only a type
+	// name, defined in the standard C library.
+	
+	keyword FILE
+	
+	keyword auto
+	keyword break
+	keyword case
+	keyword char
+	keyword const
+	keyword continue
+	keyword default
+	keyword do
+	keyword double
+	keyword else
+	keyword enum
+	keyword extern
+	keyword float
+	keyword for
+	keyword goto
+	keyword if
+	keyword int
+	keyword long
+	keyword register
+	keyword return
+	keyword short
+	keyword signed
+	keyword sizeof
+	keyword static
+	keyword struct
+	keyword switch
+	keyword typedef
+	keyword union
+	keyword unsigned
+	keyword void
+	keyword volatile
+	keyword while
+	
+	colouring {
+		runs of unquoted {
+			runs of !identifier {
+				keyword of !reserved => !reserved
+				keyword of !function => !function
+				keyword of !constant => !constant
+				keyword of !element => {
+					optionally spaced prefix . => !element
+					optionally spaced prefix -> => !element
+				}
+			}
+			matches of /<\S+>/ {
+				=> !function
+			}
+		}
+	}
+}
+
+Language "Indoc" {
+	Details: "The markup syntax for the Indoc documentation tool"
+	Extension: ".indoc"
+	
+	colouring {
+		=> !plain
+	}
+}
+
+Language "Inform 6" {
+	Details: "The C-like interactive fiction language Inform 6"
+	Extension: ".i6"
+	Line Comment: "!"
+	String Literal: "\""
+	Character Literal: "'"
+	Binary Literal Prefix: "$$"
+	Hexadecimal Literal Prefix: "$"
+	Negative Literal Prefix: "-"
+	
+	Start Definition: "Constant %S =\s"
+	End Definition: ";\n"
+	
+	Start Ifdef: "#ifdef %S;\n"
+	End Ifdef: "#endif; ! %S\n"
+	Start Ifndef: "#ifndef %S;\n"
+	End Ifndef: "#endif; ! %S\n"
+	
+	// Reserved words:
+	
+	keyword "Constant"
+	keyword "Array"
+	
+	keyword "box"
+	keyword "break"
+	keyword "child"
+	keyword "children"
+	keyword "continue"
+	keyword "default"
+	keyword "do"
+	keyword "elder"
+	keyword "eldest"
+	keyword "else"
+	keyword "false"
+	keyword "font"
+	keyword "for"
+	keyword "give"
+	keyword "has"
+	keyword "hasnt"
+	keyword "if"
+	keyword "in"
+	keyword "indirect"
+	keyword "inversion"
+	keyword "jump"
+	keyword "metaclass"
+	keyword "move"
+	keyword "new_line"
+	keyword "nothing"
+	keyword "notin"
+	keyword "objectloop"
+	keyword "ofclass"
+	keyword "or"
+	keyword "parent"
+	keyword "print"
+	keyword "print_ret"
+	keyword "provides"
+	keyword "quit"
+	keyword "random"
+	keyword "read"
+	keyword "remove"
+	keyword "restore"
+	keyword "return"
+	keyword "rfalse"
+	keyword "rtrue"
+	keyword "save"
+	keyword "sibling"
+	keyword "spaces"
+	keyword "string"
+	keyword "style"
+	keyword "switch"
+	keyword "to"
+	keyword "true"
+	keyword "until"
+	keyword "while"
+	keyword "younger"
+	keyword "youngest"
+	
+	colouring {
+		runs of unquoted {
+			runs of !identifier {
+				keyword of !reserved => !reserved
+				keyword of !function => !function
+				keyword of !constant => !constant
+				keyword of !element => {
+					optionally spaced prefix . => !element
+					optionally spaced prefix -> => !element
+				}
+			}
+		}
+	}
+}
+
+Language "Inform 7" {
+	Details: "The natural-language based language Inform 7"
+	Extension: ".i7x"
+	Multiline Comment Open: "["
+	Multiline Comment Close: "]"
+	String Literal: "\""
+	
+	// This is here so that tangling the Standard Rules extension doesn't insert
+	// a spurious comment betraying Inweb's involvement in the process -
+	
+	Suppress Disclaimer: true
+}
+
+Language "Inter Pipeline" {
+	Details: "For pipelines of Inform code-generation stages"
+	Extension: ".interpipeline"
+	Line Comment: "!"
+	
+	colouring {
+		instances of "->" {
+			=> !reserved
+		}
+		instances of "<-" {
+			=> !reserved
+		}
+		runs of !identifier {
+			=> !plain
+			prefix "*" => !identifier on both
+		}
+	}
+}
+
+Language "Inter" {
+	Details: "The textual form of intermediate Inform code"
+	Extension: ".intert"
+	
+	String Literal: "\""
+	String Literal Escape: "\\"
+	
+	keyword "append"
+	keyword "cast"
+	keyword "code"
+	keyword "constant"
+	keyword "defaultvalue"
+	keyword "enum"
+	keyword "evaluation"
+	keyword "external"
+	keyword "instance"
+	keyword "int32"
+	keyword "inv"
+	keyword "kind"
+	keyword "lab"
+	keyword "link"
+	keyword "list"
+	keyword "local"
+	keyword "metadata"
+	keyword "misc"
+	keyword "of"
+	keyword "package"
+	keyword "packagetype"
+	keyword "permission"
+	keyword "pragma"
+	keyword "primitive"
+	keyword "private"
+	keyword "property"
+	keyword "propertyvalue"
+	keyword "public"
+	keyword "ref"
+	keyword "reference"
+	keyword "response"
+	keyword "splat"
+	keyword "symbol"
+	keyword "text"
+	keyword "undef"
+	keyword "val"
+	keyword "variable"
+	keyword "version"
+	keyword "void"
+	
+	colouring {
+		runs of !identifier {
+			=> !plain
+			keyword of !reserved => !reserved
+			matching /._.*/ => !identifier
+			prefix "`" => !element on both
+			prefix "!" => !function on both
+		}
+		instances of "-->" {
+			=> !reserved
+		}
+	}
+}
+
+Language "Inweb" {
+	Details: "The markup language for the Inweb literate programming system"
+	Extension: ".w"
+	
+	colouring {
+		=> !plain
+		// Detect Property: Value lines, not being fooled by a colon inside quotes
+		brackets in /\s*([A-Za-z][^"]*):(.*)/ {
+			number 1 => !element
+			number 2 => !string
+		}
+		brackets in /\s*(@\S*)(.*)/ {
+			number 1 => !function
+			number 2 => !plain
+		}
+		brackets in /\s*(@\s*=)(.*)/ {
+			number 1 => !function
+			number 2 => !plain
+		}
+		matching /=.*/ => {
+			=> !function
+		}
+		brackets in /\s*(@<.*?@>\s*=)(.*)/ {
+			number 1 => !function
+			number 2 => !plain
+		}
+		matches of /@<.*?@>/ {
+			=> !function
+		}
+		brackets in /\s*(\[[A-Za-z0-9:]+\])(.*)/ {
+			number 1 => !identifier
+		}
+		matches of /\[\[.*?\]\]/ {
+			=> !function
+		}
+	}
+}
+
+Language "None" {
+	Details: "For programs in languages not yet supported by Inweb"
+	Extension: ".txt"
+}
+
+Language "PainterOutput" {
+	colouring {
+		number 1 of 2 => !plain
+		number 2 of 2 => {
+			characters {
+				"!" => !comment
+				"c" => !character
+				"d" => !definition
+				"e" => !element
+				"f" => !function
+				"i" => !identifier
+				"n" => !constant
+				"p" => !plain
+				"r" => !reserved
+				"s" => !string
+				"x" => !extract
+			}
+		}
+	}
+}
+
+Language "Perl" {
+	Details: "The scripting language Perl 5"
+	Extension: ".pl"
+	Line Comment: "#"
+	String Literal: "\""
+	String Literal Escape: "\\"
+	Character Literal: "'"
+	Character Literal Escape: "\\"
+	
+	Shebang: "#!/usr/bin/perl\n\n"
+	Before Named Paragraph Expansion: "\n{\n"
+	After Named Paragraph Expansion: "}\n"
+	Start Definition: "%S ="
+	End Definition: "\n;\n"
+	
+	// In its usual zany way, Perl recognises the same #line syntax as C, thus in
+	// principle overloading its comment notation #:
+	
+	Line Marker: "#line %d \"%f\"\n"
+}
+
+Language "Plain Text" {
+	Details: "For text files which are not programs"
+	Extension: ".txt"
+	
+	colouring {
+		=> !plain
+	}
+}
+
+Language "Preform" {
+	Details: "The internal Inform syntax analysis grammar language"
+	Extension: ".preform"
+	
+	colouring {
+		matches of /\S+/ {
+			=> !constant
+			"::=" => !reserved
+			"|" => !reserved
+			"==>" => !reserved
+			"(" => !reserved
+			")" => !reserved
+			"..." => !reserved
+			"......" => !reserved
+			matching /<\S+>/ => !function
+		}
+		brackets in /.*?==>(.*)/ {
+			=> !plain
+		}
+	}
+}
+
+Language "REPL" {
+	Details: "REPL output in the form expression, colon, value"
+	Extension: ".repl"
+	
+	colouring {
+		=> !plain
+		// Detect expression-value lines, not being fooled by a colon inside quotes
+		brackets in /\s*'(.*?)':(.*)/ {
+			number 1 => !element
+			number 2 => !string
+		}
+	}
+}

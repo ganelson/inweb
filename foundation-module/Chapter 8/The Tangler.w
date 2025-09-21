@@ -76,7 +76,9 @@ But we need to know in advance what programming language the program is.
 =
 void Tangler::tangle_web_directory_with_docket(OUTPUT_STREAM, tangle_docket *docket,
 	pathname *P, programming_language *language) {
-	ls_web *W = WebStructure::get_without_targets(P, NULL, language);
+	wcl_declaration *D = WCL::read_web_or_halt(P, NULL);
+	ls_web *W = WebStructure::from_declaration(D);
+	WebStructure::set_language(W, language);
 	WebStructure::read_web_source(W, FALSE, FALSE);
 	docket->target = TangleTargets::primary_target(W);
 	Tangler::tangle_web_inner(OUT, docket, W, NULL);

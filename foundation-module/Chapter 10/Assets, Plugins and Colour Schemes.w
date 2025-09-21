@@ -72,7 +72,8 @@ void Assets::include_relevant_plugins(text_stream *OUT, weave_pattern *pattern,
 	ls_web *W, weave_order *wv, filename *from) {
 	current_inclusion_round++;
 	STREAM_INDENT(STDOUT);
-	Patterns::include_plugins(OUT, W, pattern, from, (wv)?(wv->verbosely):FALSE);
+	Patterns::include_plugins(OUT, W, pattern, from,
+		(wv)?(wv->verbosely):FALSE, (wv)?(wv->weave_colony):NULL);
 	if (wv) Swarm::include_plugins(OUT, W, wv, from);
 	STREAM_OUTDENT(STDOUT);
 }
@@ -92,7 +93,7 @@ this, we store the leafnames in a dictionary.
 
 =
 void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
-	weave_pattern *pattern, filename *from, int verbosely) {	
+	weave_pattern *pattern, filename *from, int verbosely, colony *context) {	
 	if (wp->last_included_in_round == current_inclusion_round) return;
 	wp->last_included_in_round = current_inclusion_round;
 	if (verbosely) PRINT("Include plugin '%S'\n", wp->plugin_name);
@@ -109,7 +110,7 @@ void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
 					if (Dictionaries::find(leaves_gathered, leafname) == NULL) {
 						WRITE_TO(Dictionaries::create_text(leaves_gathered, leafname), "y");
 						filename *F = Filenames::in(P, leafname);
-						Assets::include_asset(OUT, NULL, W, F, NULL, pattern, from, verbosely);
+						Assets::include_asset(OUT, NULL, W, F, NULL, pattern, from, verbosely, context);
 						finds++;
 					}
 				}
@@ -133,7 +134,7 @@ file, no matter how many times this is called.
 
 =
 void Assets::include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
-	weave_pattern *pattern, filename *from, int verbosely) {	
+	weave_pattern *pattern, filename *from, int verbosely, colony *context) {	
 	if (cs->last_included_in_round == current_inclusion_round) return;
 	cs->last_included_in_round = current_inclusion_round;
 	if (verbosely) PRINT("Include colour scheme '%S'\n", cs->scheme_name);
@@ -148,7 +149,7 @@ void Assets::include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
 		WebErrors::issue_at(err, NULL);
 		DISCARD_TEXT(err)
 	} else {
-		Assets::include_asset(OUT, NULL, W, F, cs->prefix, pattern, from, verbosely);
+		Assets::include_asset(OUT, NULL, W, F, cs->prefix, pattern, from, verbosely, context);
 	}
 	DISCARD_TEXT(css)
 }
@@ -272,7 +273,7 @@ at filename |F|, and we now know how to find the applicable rule.
 
 =
 pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filename *F,
-	text_stream *trans, weave_pattern *pattern, filename *from, int verbosely) {
+	text_stream *trans, weave_pattern *pattern, filename *from, int verbosely, colony *context) {
 	if (R == NULL) R = Assets::applicable_rule(pattern, F);
 	TEMPORARY_TEXT(url)
 	pathname *AP = Colonies::assets_path();
@@ -328,7 +329,7 @@ pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 
 @<Collate asset@> =
 	if (verbosely) PRINT("Collate asset %f\n", F);
-	Collater::for_web_and_pattern(OUT, W, pattern, F, from);
+	Collater::for_web_and_pattern(OUT, W, pattern, F, from, context);
 
 @<Embed the suffix, if any@> =
 	for (int i=0; i<Str::len(R->post); i++) {

@@ -25,10 +25,10 @@ void WebSyntax::create(void) {
 
 ls_syntax *WebSyntax::default(void) {
 	if (default_ls_syntax == NULL) {
-		pathname *P = Pathnames::path_to_LP_resources();
-		P = Pathnames::down(P, I"Syntaxes");
-		filename *F = Filenames::in(P, I"Inweb.inwebsyntax");
-		default_ls_syntax = WebSyntax::read_definition(F);
+		wcl_declaration *D = WCL::resolve_resource(NULL, NOTATION_WCLTYPE, I"Inweb");
+		if (D) default_ls_syntax = RETRIEVE_POINTER_ls_syntax(D->object_declared);
+		if (default_ls_syntax == NULL)
+			Errors::fatal("Unable to locate notation 'Inweb' for literate programs");
 	}
 	return default_ls_syntax;
 }
@@ -37,6 +37,8 @@ ls_syntax *WebSyntax::default(void) {
 
 =
 typedef struct ls_syntax {
+	struct wcl_declaration *declaration;
+
 	/* for deciding what syntax we should use when reading a given web */
 	struct text_stream *name;
 	struct text_stream *legacy_name;
@@ -69,6 +71,7 @@ typedef struct ls_syntax {
 =
 ls_syntax *WebSyntax::new(text_stream *name) {
 	ls_syntax *S = CREATE(ls_syntax);
+	S->declaration = NULL;
 	S->name = Str::duplicate(name);
 	S->legacy_name = NULL;
 	S->recognised_filename_extensions = NEW_LINKED_LIST(text_stream);
@@ -108,38 +111,39 @@ Legacy names are used only so that "2" can be recognised as an alternative
 to "Inweb", for the default syntax. (As noted above, this was once version 2.)
 
 =
-ls_syntax *WebSyntax::syntax_by_name(text_stream *name) {
-	ls_syntax *T;
-	LOOP_OVER(T, ls_syntax)
-		if ((Str::eq_insensitive(name, T->name)) ||
-			(Str::eq_insensitive(name, T->legacy_name)))
+ls_syntax *WebSyntax::syntax_by_name(ls_web *W, text_stream *name) {
+	wcl_declaration *X = WCL::resolve_resource(W?(W->declaration):NULL, NOTATION_WCLTYPE, name);
+	if (X) return RETRIEVE_POINTER_ls_syntax(X->object_declared);
+	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
+	wcl_declaration *D;
+	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
+		ls_syntax *T = RETRIEVE_POINTER_ls_syntax(D->object_declared);
+		if (Str::eq_insensitive(name, T->legacy_name))
 			return T;
+	}
 	return NULL;
 }
 
-void WebSyntax::write_known_syntaxes(OUTPUT_STREAM) {
-	ls_syntax *T;
-	LOOP_OVER(T, ls_syntax) {
-		WRITE("%S", T->name);
-		if (Str::len(T->legacy_name) > 0) {
-			WRITE(" (aka '%S')", T->legacy_name);
-		}
-		WRITE("\n");
-	}
+void WebSyntax::write_known_syntaxes(OUTPUT_STREAM, ls_web *W) {
+	WRITE("I can see the following literate programming notations:\n\n");
+	WCL::write_sorted_list_of_resources(OUT, W, NOTATION_WCLTYPE);
 }
 
 @ Here we take a guess from a filename:
 
 =
-ls_syntax *WebSyntax::guess_from_filename(filename *F) {
+ls_syntax *WebSyntax::guess_from_filename(ls_web *W, filename *F) {
 	TEMPORARY_TEXT(extension)
 	Filenames::write_extension(extension, F);
-	ls_syntax *syntax, *result = NULL;
-	LOOP_OVER(syntax, ls_syntax) {
+	ls_syntax *result = NULL;
+	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
+	wcl_declaration *D;
+	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
+		ls_syntax *T = RETRIEVE_POINTER_ls_syntax(D->object_declared);
 		text_stream *ext;
-		LOOP_OVER_LINKED_LIST(ext, text_stream, syntax->recognised_filename_extensions)
+		LOOP_OVER_LINKED_LIST(ext, text_stream, T->recognised_filename_extensions)
 			if (Str::eq_insensitive(ext, extension)) {
-				result = syntax;
+				result = T;
 				goto DoubleBreak;
 			}
 	}	
@@ -152,13 +156,16 @@ ls_syntax *WebSyntax::guess_from_filename(filename *F) {
 top of a web section which gives away its syntax.
 
 =
-ls_syntax *WebSyntax::guess_from_shebang(text_stream *line, text_file_position *tfp,
-	text_stream *title, text_stream *author) {
-	ls_syntax *S = NULL;
-	LOOP_OVER(S, ls_syntax)
-		if ((S->shebang_detector) &&
-			((*(S->shebang_detector))(S, line, tfp, title, author)))
-			return S;
+ls_syntax *WebSyntax::guess_from_shebang(ls_web *W, text_stream *line,
+	text_file_position *tfp, text_stream *title, text_stream *author) {
+	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
+	wcl_declaration *D;
+	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
+		ls_syntax *T = RETRIEVE_POINTER_ls_syntax(D->object_declared);
+		if ((T->shebang_detector) &&
+			((*(T->shebang_detector))(T, line, tfp, title, author)))
+			return T;
+	}
 	return NULL;
 }
 
@@ -320,17 +327,43 @@ void WebSyntax::read_definitions(pathname *P) {
 =
 int bare_syntaxes = 0;
 ls_syntax *WebSyntax::read_definition(filename *F) {
+	wcl_declaration *D = WCL::read_just_one(F, NOTATION_WCLTYPE);
+	if (D == NULL) return NULL;
+	return RETRIEVE_POINTER_ls_syntax(D->object_declared);
+}
+
+ls_syntax *WebSyntax::parse_declaration(wcl_declaration *D) {
 	ls_syntax *S = WebSyntax::new(I"pending_naming_only");
-	if (F)
-		TextFiles::read(F, FALSE, "can't open LP syntax file",
-			TRUE, WebSyntax::read_definition_line, NULL, (void *) S);
+	S->declaration = D;
+	text_file_position tfp = D->body_position;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		WebSyntax::read_definition_line(line, &tfp, (void *) S);
+		DISCARD_TEXT(line);
+		tfp.line_count++;
+	}
+	D->object_declared = STORE_POINTER_ls_syntax(S);
 	if (Str::eq(S->name, I"pending_naming_only")) {
-		bare_syntaxes++;
-		Str::clear(S->name);
-		WRITE_TO(S->name, "CustomSyntax");
-		if (bare_syntaxes > 1) WRITE_TO(S->name, "%d", bare_syntaxes);
+		S->name = Str::duplicate(D->name);
+		if (Str::len(S->name) == 0) {
+			bare_syntaxes++;
+			Str::clear(S->name);
+			WRITE_TO(S->name, "CustomSyntax");
+			if (bare_syntaxes > 1) WRITE_TO(S->name, "%d", bare_syntaxes);
+		}
+	} else if (WCL::check_name(D, S->name) == FALSE) {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "language has two different names, '%S' and '%S'",
+			D->name, S->name);
+		WCL::error(D, &(D->declaration_position), msg);
+		DISCARD_TEXT(msg)
 	}
 	return S;
+}
+
+void WebSyntax::resolve_declaration(wcl_declaration *D) {
 }
 
 @ ...and here we receive a single line from such a file.
@@ -340,7 +373,7 @@ void WebSyntax::read_definition_line(text_stream *line, text_file_position *tfp,
 	ls_syntax *syntax = (ls_syntax *) v_state;
 	Str::trim_white_space(line);
 	text_stream *error = WebSyntax::apply_syntax_setting(syntax, line);
-	if (Str::len(error) > 0) Errors::in_text_file_S(error, tfp);
+	if (Str::len(error) > 0) WCL::error(syntax->declaration, tfp, error);
 }
 
 @ In order to be able to apply commands to syntaxes outside of a file-reading

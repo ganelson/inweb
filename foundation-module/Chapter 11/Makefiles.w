@@ -7,7 +7,7 @@ We will use //foundation: Preprocessor// with four special macros and one
 special loop construct.
 
 =
-void Makefiles::write(ls_web *W, filename *prototype, filename *F, module_search *I,
+void Makefiles::write(ls_web *W, filename *prototype, filename *F,
 	text_stream *platform) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor::new_macro(L,
@@ -51,7 +51,6 @@ typedef struct makefile_specifics {
 	struct dictionary *tools_dictionary;   /* components with |type: tool| */
 	struct dictionary *webs_dictionary;    /* components with |type: web| */
 	struct dictionary *modules_dictionary; /* components with |type: module| */
-	struct module_search *search_path;
 	struct text_stream *which_platform;
 	CLASS_DEFINITION
 } makefile_specifics;
@@ -61,7 +60,6 @@ typedef struct makefile_specifics {
 	specifics->tools_dictionary = Dictionaries::new(16, FALSE);
 	specifics->webs_dictionary = Dictionaries::new(16, FALSE);
 	specifics->modules_dictionary = Dictionaries::new(16, FALSE);
-	specifics->search_path = I;
 	specifics->which_platform = platform;
 
 @h The identity-settings expander.
@@ -214,11 +212,8 @@ void Makefiles::component_expander(preprocessor_macro *mm, preprocessor_state *P
 }
 
 @<Add to dictionary@> =
-	#ifndef THIS_IS_INWEB
-	int verbose_mode = FALSE;
-	#endif
-	ls_web *Wm = WebStructure::get(Pathnames::from_text(path), NULL, NULL,
-		specifics->search_path, verbose_mode, TRUE, NULL);
+	wcl_declaration *dec = WCL::read_web_or_halt(Pathnames::from_text(path), NULL);
+	ls_web *Wm = WebStructure::from_declaration(dec);
 	Wm->main_module->module_name = Str::duplicate(symbol);
 	Wm->main_module->module_tag = Str::duplicate(set);
 	Wm->main_module->origin_marker = marker;

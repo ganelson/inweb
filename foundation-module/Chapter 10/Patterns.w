@@ -56,7 +56,6 @@ weave_pattern *Patterns::find(ls_web *W, text_stream *name) {
 	wp->based_on = NULL;
 	wp->asset_rules = Assets::new_asset_rules_list();
 	wp->patterned_for = W;
-	wp->number_sections = FALSE;
 	wp->footnotes_plugin = NULL;
 	wp->mathematics_plugin = NULL;
 	wp->default_range = Str::duplicate(I"0");
@@ -121,7 +120,6 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 				}
 				wp->based_on = Patterns::find(wp->patterned_for, mr2.exp[1]);
 				wp->pattern_format = wp->based_on->pattern_format;
-				wp->number_sections = wp->based_on->number_sections;
 				wp->default_range = Str::duplicate(wp->based_on->default_range);
 				wp->mathematics_plugin = Str::duplicate(wp->based_on->mathematics_plugin);
 				wp->footnotes_plugin = Str::duplicate(wp->based_on->footnotes_plugin);
@@ -140,8 +138,6 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 			}
 		} else if (Str::eq_insensitive(key, I"format")) {
 			wp->pattern_format = WeavingFormats::find_by_name(value);
-		} else if (Str::eq_insensitive(key, I"number sections")) {
-			wp->number_sections = Patterns::yes_or_no(value, tfp);
 		} else if (Str::eq_insensitive(key, I"default range")) {
 			wp->default_range = Str::duplicate(value);
 		} else if (Str::eq_insensitive(key, I"initial extension")) {
@@ -275,13 +271,13 @@ filename *Patterns::find_file_in_subdirectory(weave_pattern *pattern,
 
 @ =
 void Patterns::include_plugins(OUTPUT_STREAM, ls_web *W, weave_pattern *pattern,
-	filename *from, int verbosely) {
+	filename *from, int verbosely, colony *context) {
 	for (weave_pattern *p = pattern; p; p = p->based_on) {
 		weave_plugin *wp;
 		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
-			Assets::include_plugin(OUT, W, wp, pattern, from, verbosely);
+			Assets::include_plugin(OUT, W, wp, pattern, from, verbosely, context);
 		colour_scheme *cs;
 		LOOP_OVER_LINKED_LIST(cs, colour_scheme, p->colour_schemes)
-			Assets::include_colour_scheme(OUT, W, cs, pattern, from, verbosely);
+			Assets::include_colour_scheme(OUT, W, cs, pattern, from, verbosely, context);
 	}
 }

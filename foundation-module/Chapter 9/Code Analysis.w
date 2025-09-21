@@ -109,9 +109,9 @@ a function call, or a C structure field reference, for example.
 void CodeAnalysis::analyse_web(ls_web *W, int tangling, int weaving) {
 	CodeAnalysis::analyse_definitions(W, tangling);
 	LanguageMethods::subcategorise_lines(W);
-	LanguageMethods::parse_types(W, W->web_language);
-	LanguageMethods::parse_functions(W, W->web_language);
-	LanguageMethods::further_parsing(W, W->web_language, weaving);
+	LanguageMethods::parse_types(W, WebStructure::web_language(W));
+	LanguageMethods::parse_functions(W, WebStructure::web_language(W));
+	LanguageMethods::further_parsing(W, WebStructure::web_language(W), weaving);
 }
 
 @ Our methods are all essentially based on spotting identifiers in the code, but
@@ -148,7 +148,7 @@ void CodeAnalysis::analyse_code(ls_web *W) {
 			CodeAnalysis::analyse_as_code(W, lst, lst->text, ANY_USAGE, 0);
 	}
 
-	LanguageMethods::late_preweave_analysis(W->web_language, W);
+	LanguageMethods::late_preweave_analysis(WebStructure::web_language(W), W);
 }
 
 @ First, we call any language-specific code, whose task is to identify what we
@@ -156,7 +156,7 @@ should be looking for: for example, the C-like languages code tells us (see
 below) to look for names of particular functions it knows about.
 
 @<Ask language-specific code to identify search targets, and parse the Interfaces@> =
-	LanguageMethods::early_preweave_analysis(W->web_language, W);
+	LanguageMethods::early_preweave_analysis(WebStructure::web_language(W), W);
 
 @ Lines in a Preform grammar generally take the form of some BNF grammar, where
 we want only to identify any nonterminals mentioned, then a |==>| divider,
@@ -223,33 +223,33 @@ void CodeAnalysis::analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, i
 =
 hash_table_entry *CodeAnalysis::find_hash_entry_for_section(ls_section *S, text_stream *text,
 	int create) {
-	return ReservedWords::find_hash_entry(&(S->sect_target->symbols), text, create);
+	return ReservedWords::find_hash_entry(&(TangleTargets::of_section(S)->symbols), text, create);
 }
 
 void CodeAnalysis::mark_reserved_word_for_section(ls_section *S, text_stream *p, int e) {
-	ReservedWords::mark_reserved_word(&(S->sect_target->symbols), p, e);
+	ReservedWords::mark_reserved_word(&(TangleTargets::of_section(S)->symbols), p, e);
 }
 
 hash_table_entry *CodeAnalysis::mark_reserved_word_at_line(ls_line *lst, text_stream *p, int e) {
 	if (lst == NULL) internal_error("no line for rw");
 	hash_table_entry *hte = 
-		ReservedWords::mark_reserved_word(&(LiterateSource::section_of_line(lst)->sect_target->symbols), p, e);
+		ReservedWords::mark_reserved_word(&(TangleTargets::of_section(LiterateSource::section_of_line(lst))->symbols), p, e);
 	hte->definition_line = lst;
 	return hte;
 }
 
 int CodeAnalysis::is_reserved_word_for_section(ls_section *S, text_stream *p, int e) {
-	return ReservedWords::is_reserved_word(&(S->sect_target->symbols), p, e);
+	return ReservedWords::is_reserved_word(&(TangleTargets::of_section(S)->symbols), p, e);
 }
 
 ls_line *CodeAnalysis::get_defn_line(ls_section *S, text_stream *p, int e) {
-	hash_table_entry *hte = ReservedWords::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
+	hash_table_entry *hte = ReservedWords::find_hash_entry(&(TangleTargets::of_section(S)->symbols), p, FALSE);
 	if ((hte) && (hte->language_reserved_word & (1 << (e % 32)))) return hte->definition_line;
 	return NULL;
 }
 
 language_function *CodeAnalysis::get_function(ls_section *S, text_stream *p, int e) {
-	hash_table_entry *hte = ReservedWords::find_hash_entry(&(S->sect_target->symbols), p, FALSE);
+	hash_table_entry *hte = ReservedWords::find_hash_entry(&(TangleTargets::of_section(S)->symbols), p, FALSE);
 	if ((hte) && (hte->language_reserved_word & (1 << (e % 32)))) return hte->as_function;
 	return NULL;
 }
@@ -309,7 +309,7 @@ void CodeAnalysis::analyse_definitions(ls_web *W, int tangling) {
 	if (Str::len(chunk->symbol_value) > 0) {
 		TEMPORARY_TEXT(before)
 		TEMPORARY_TEXT(after)
-		if (LanguageMethods::parse_comment(S->sect_language, chunk->symbol_value,
+		if (LanguageMethods::parse_comment(WebStructure::section_language(S), chunk->symbol_value,
 			before, after)) {
 			Str::copy(chunk->symbol_value, before);
 			Str::trim_white_space(chunk->symbol_value);
@@ -319,7 +319,7 @@ void CodeAnalysis::analyse_definitions(ls_web *W, int tangling) {
 	} else {
 		TEMPORARY_TEXT(before)
 		TEMPORARY_TEXT(after)
-		if (LanguageMethods::parse_comment(S->sect_language, chunk->symbol_defined,
+		if (LanguageMethods::parse_comment(WebStructure::section_language(S), chunk->symbol_defined,
 			before, after)) {
 			Str::copy(chunk->symbol_defined, before);
 			Str::trim_white_space(chunk->symbol_defined);
@@ -340,7 +340,7 @@ The work here is all delegated. In each case we look for a script in the web's
 folder: failing that, we fall back on a default script.
 
 =
-void CodeAnalysis::write_makefile(ls_web *W, filename *F, module_search *I, text_stream *platform,
+void CodeAnalysis::write_makefile(ls_web *W, filename *F, text_stream *platform,
 	pathname *path_to_inweb_materials) {
 	pathname *P = W->path_to_web;
 	text_stream *short_name = Pathnames::directory_name(P);
@@ -353,7 +353,7 @@ void CodeAnalysis::write_makefile(ls_web *W, filename *F, module_search *I, text
 	DISCARD_TEXT(leafname)
 	if (!(TextFiles::exists(prototype)))
 		prototype = Filenames::in(path_to_inweb_materials, I"default.mkscript");
-	Makefiles::write(W, prototype, F, I, platform);
+	Makefiles::write(W, prototype, F, platform);
 }
 
 void CodeAnalysis::write_gitignore(ls_web *W, filename *F,
@@ -369,7 +369,7 @@ void CodeAnalysis::write_gitignore(ls_web *W, filename *F,
 	DISCARD_TEXT(leafname)
 	if (!(TextFiles::exists(prototype)))
 		prototype = Filenames::in(path_to_inweb_materials, I"default.giscript");
-	Git::write_gitignore(W, prototype, F);
+	Git::write_gitignore(prototype, F);
 }
 
 @h The section catalogue.

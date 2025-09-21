@@ -14,7 +14,7 @@
 # rebuild "linux.mk" by setting the current working directory to the directory
 # _above_ "inweb", and using the command:
 
-# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/linux.mkscript -makefile inweb/Materials/platforms/linux.mk
+# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/linux.mkscript -to inweb/Materials/platforms/linux.mk
 
 # Or simply:
 

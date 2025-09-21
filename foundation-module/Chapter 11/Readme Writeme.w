@@ -13,7 +13,6 @@ void Readme::write(filename *prototype, filename *F) {
 		I"bibliographic", I"datum: DATUM of: ASSET",
 		Readme::bibliographic_expander, NULL);
 	Preprocessor::do_not_suppress_whitespace(mm);
-	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 	Preprocessor::preprocess(prototype, F, NULL, L, NULL_GENERAL_POINTER, '/', ISO_ENC);
 }
 
@@ -75,7 +74,8 @@ writeme_asset *Readme::find_asset(text_stream *program) {
 		@<Read in the extension file@>;
 	} else {
 		if (WebStructure::directory_looks_like_a_web(Pathnames::from_text(program))) {
-			A->if_web = WebStructure::get_without_modules(Pathnames::from_text(program), NULL);
+			wcl_declaration *D = WCL::read_web(Pathnames::from_text(program), NULL);
+			if (D) A->if_web = WebStructure::from_declaration(D);
 		} else {
 			filename *I6_vn = Filenames::in(
 				Pathnames::down(Pathnames::from_text(program), I"inform6"), I"header.h");

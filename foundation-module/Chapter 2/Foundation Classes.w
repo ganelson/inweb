@@ -114,6 +114,9 @@ here we are.
 @e ls_web_weaving_details_CLASS
 @e writeme_asset_CLASS
 @e fsm_transition_CLASS
+@e wcl_declaration_CLASS
+@e wcl_error_CLASS
+@e command_line_subcommand_CLASS
 
 @e weave_document_node_CLASS
 @e weave_head_node_CLASS
@@ -250,6 +253,9 @@ DECLARE_CLASS(weave_order)
 DECLARE_CLASS(ls_web_weaving_details)
 DECLARE_CLASS(writeme_asset)
 DECLARE_CLASS(fsm_transition)
+DECLARE_CLASS(wcl_declaration)
+DECLARE_CLASS(wcl_error)
+DECLARE_CLASS(command_line_subcommand)
 
 DECLARE_CLASS(weave_document_node)
 DECLARE_CLASS(weave_head_node)

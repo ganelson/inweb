@@ -93,6 +93,7 @@ Chapter 8: Literate Programming
 	Tangle Targets
 	The Tangler
 	Build Files
+	Web Control Language
 
 Chapter 9: Programming
 "Reading some basic syntax of different programming languages."

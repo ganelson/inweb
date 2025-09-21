@@ -19,6 +19,7 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 
 =
 typedef struct colony {
+	struct wcl_declaration *declaration;
 	struct linked_list *members; /* of |colony_member| */
 	struct text_stream *home; /* path of home repository */
 	struct pathname *assets_path; /* where assets shared between weaves live */
@@ -37,6 +38,8 @@ directory holding a multi-section web.
 
 =
 typedef struct colony_member {
+	struct colony *owner;
+
 	int web_rather_than_module; /* |TRUE| for a web, |FALSE| for a module */
 	struct text_stream *name; /* the |N| in |N at P in W| */
 	struct text_stream *path; /* the |P| in |N at P in W| */
@@ -55,25 +58,47 @@ object from it.
 
 =
 typedef struct colony_reader_state {
+	struct wcl_declaration *D;
 	struct colony *province;
 	struct filename *nav;
 	struct linked_list *crumbs; /* of |breadcrumb_request| */
 	struct text_stream *pattern;
 } colony_reader_state;
 
-void Colonies::load(filename *F) {
+colony *Colonies::load(filename *F) {
+	wcl_declaration *D = WCL::read_just_one(F, COLONY_WCLTYPE);
+	if (D == NULL) return NULL;
+	return RETRIEVE_POINTER_colony(D->object_declared);
+}
+
+colony *Colonies::parse_declaration(wcl_declaration *D) {
 	colony *C = CREATE(colony);
+	C->declaration = D;
 	C->members = NEW_LINKED_LIST(colony_member);
 	C->home = I"docs";
 	C->assets_path = NULL;
 	C->patterns_path = NULL;
 	colony_reader_state crs;
+	crs.D = D;
 	crs.province = C;
 	crs.nav = NULL;
 	crs.crumbs = NEW_LINKED_LIST(breadcrumb_request);
 	crs.pattern = NULL;
-	TextFiles::read(F, FALSE, "can't open colony file",
-		TRUE, Colonies::read_line, NULL, (void *) &crs);
+
+	text_file_position tfp = D->body_position;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		Colonies::read_line(line, &tfp, (void *) &crs);
+		DISCARD_TEXT(line);
+		tfp.line_count++;
+	}
+	D->object_declared = STORE_POINTER_colony(C);
+	return C;
+}
+
+void Colonies::resolve_declaration(wcl_declaration *D) {
 }
 
 @ Lines from the colony file are fed, one by one, into:
@@ -187,11 +212,11 @@ breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {
 	return BR;
 }
 
-void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, filename *F, linked_list *crumbs) {
+void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, colony *context, filename *F, linked_list *crumbs) {
 	breadcrumb_request *BR;
 	LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
 		TEMPORARY_TEXT(url)
-		Colonies::link_URL(url, BR->breadcrumb_link, F);
+		Colonies::link_URL(url, context, BR->breadcrumb_link, F);
 		Colonies::write_breadcrumb(OUT, BR->breadcrumb_text, url);
 		DISCARD_TEXT(url)
 	}
@@ -218,14 +243,12 @@ Given a name |T|, we try to find a colony member of that name, returning the
 first we find.
 
 =
-colony_member *Colonies::find(text_stream *T) {
-	colony *C;
-	LOOP_OVER(C, colony) {
-		colony_member *CM;
+colony_member *Colonies::find(colony *C, text_stream *T) {
+	colony_member *CM;
+	if (C)
 		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
 			if (Str::eq_insensitive(T, CM->name))
 				return CM;
-	}
 	return NULL;
 }
 
@@ -265,7 +288,8 @@ ls_module *Colonies::as_module(colony_member *CM, ls_line *lst, ls_web *Wm) {
 	if (Directories::exists(putative_path)) P = putative_path;
 	else if (TextFiles::exists(putative)) F = putative;
 	else P = putative_path;
-	CM->loaded = WebStructure::get_without_modules(P, F);
+	wcl_declaration *D = WCL::read_web(P, F);
+	if (D) CM->loaded = WebStructure::from_declaration(D);
 
 @<Failing that, throw an error@> =
 	TEMPORARY_TEXT(err)
@@ -315,24 +339,24 @@ The web metadata |Wm| is for the web currently being woven, and the line |L|
 is where the reference is made from.
 
 =
-int Colonies::resolve_reference_in_weave(text_stream *url, text_stream *title,
+int Colonies::resolve_reference_in_weave(colony *C, text_stream *url, text_stream *title,
 	filename *for_HTML_file, text_stream *text, ls_web *Wm, ls_line *lst, int *ext) {
 	int r = 0;
 	if (ext) *ext = FALSE;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, U"(%c+?) -> (%c+)")) {
-		r = Colonies::resolve_reference_in_weave_inner(url, NULL,
+		r = Colonies::resolve_reference_in_weave_inner(C, url, NULL,
 			for_HTML_file, mr.exp[1], Wm, lst, ext);
 		WRITE_TO(title, "%S", mr.exp[0]);
 	} else {
-		r = Colonies::resolve_reference_in_weave_inner(url, title,
+		r = Colonies::resolve_reference_in_weave_inner(C, url, title,
 			for_HTML_file, text, Wm, lst, ext);
 	}
 	Regexp::dispose_of(&mr);
 	return r;
 }
 
-int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *title,
+int Colonies::resolve_reference_in_weave_inner(colony *C, text_stream *url, text_stream *title,
 	filename *for_HTML_file, text_stream *text, ls_web *Wm, ls_line *lst,
 	int *ext) {
 	ls_module *from_M = (Wm)?(Wm->main_module):NULL;
@@ -395,7 +419,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	Regexp::dispose_of(&mr);
 
 @<Is it the name of a member of our colony?@> =	
-	search_CM = Colonies::find(text);
+	search_CM = Colonies::find(C, text);
 	if (search_CM) {
 		ls_module *found_M = Colonies::as_module(search_CM, lst, Wm);
 		if (found_M == NULL) internal_error("could not locate M");
@@ -411,13 +435,12 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 @<If it contains a colon, does this indicate a section in a colony member?@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, U"(%c*?): (%c*)")) {
-		search_CM = Colonies::find(mr.exp[0]);
+		search_CM = Colonies::find(C, mr.exp[0]);
 		if (search_CM) {
 			ls_module *found_M = Colonies::as_module(search_CM, lst, Wm);
 			if (found_M) {
 				search_M = found_M;
-				if (LinkedLists::len(found_M->dependencies) == 0)
-					text = Str::duplicate(mr.exp[1]);
+				text = Str::duplicate(mr.exp[1]);
 				external = TRUE;
 			}
 		}
@@ -429,7 +452,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	LOOP_OVER_LINKED_LIST(fn, language_function, CodeAnalysis::language_functions_list(Wm))
 		if (Str::eq_insensitive(fn->function_name, text)) {
 			Colonies::paragraph_URL(url, Functions::declaration_lsparagraph(fn),
-				for_HTML_file);
+				for_HTML_file, C);
 			WRITE_TO(title, "%S", fn->function_name);
 			return TRUE;
 		}
@@ -439,7 +462,7 @@ int Colonies::resolve_reference_in_weave_inner(text_stream *url, text_stream *ti
 	LOOP_OVER(str, language_type) {
 		if (Str::eq_insensitive(str->structure_name, text)) {
 			Colonies::paragraph_URL(url, LiterateSource::par_of_line(str->structure_header_at),
-				for_HTML_file);
+				for_HTML_file, C);
 			WRITE_TO(title, "%S", str->structure_name);
 			return TRUE;
 		}
@@ -476,19 +499,19 @@ make is that modules of the current web will be woven alongside the main one.
 @h URL management.
 
 =
-void Colonies::link_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
+void Colonies::link_URL(OUTPUT_STREAM, colony *context, text_stream *link_text, filename *F) {
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, link_text, U" *//(%c+)// *"))
-		Colonies::reference_URL(OUT, mr.exp[0], F);
+		Colonies::reference_URL(OUT, context, mr.exp[0], F);
 	else
 		WRITE("%S", link_text);
 	Regexp::dispose_of(&mr);
 }
 
-void Colonies::reference_URL(OUTPUT_STREAM, text_stream *link_text, filename *F) {
+void Colonies::reference_URL(OUTPUT_STREAM, colony *context, text_stream *link_text, filename *F) {
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(url)
-	if (Colonies::resolve_reference_in_weave(url, title, F, link_text, NULL, NULL, NULL))
+	if (Colonies::resolve_reference_in_weave(context, url, title, F, link_text, NULL, NULL, NULL))
 		WRITE("%S", url);
 	else
 		PRINT("Warning: unable to resolve reference '%S' in navigation\n", link_text);
@@ -511,13 +534,13 @@ void Colonies::section_URL(OUTPUT_STREAM, ls_section *S) {
 	}
 }
 
-void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from) {
+void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from, colony *context) {
 	if (from == NULL) internal_error("no from file");
 	if (par == NULL) internal_error("no para");
 	ls_section *to_S = LiterateSource::section_of_par(par);
 	ls_module *to_M = to_S->owning_chapter->owning_module;
 	if (Str::ne(to_M->module_name, I"(main)")) {
-		colony_member *to_C = Colonies::find(to_M->module_name);
+		colony_member *to_C = Colonies::find(context, to_M->module_name);
 		if (to_C) {
 			pathname *from_path = Filenames::up(from);
 			pathname *to_path = to_C->weave_path;

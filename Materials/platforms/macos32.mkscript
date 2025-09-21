@@ -17,7 +17,7 @@
 # rebuild "macos32.mk" by setting the current working directory to the directory
 # _above_ "inweb", and using the command:
 
-# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/macos32.mkscript -makefile inweb/Materials/platforms/macos32.mk
+# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/macos32.mkscript -to inweb/Materials/platforms/macos32.mk
 
 # Or simply:
 

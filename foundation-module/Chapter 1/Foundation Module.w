@@ -155,7 +155,7 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 	CommandLine::declare_boolean_switch(CRASH_CLSW, U"crash", 1,
 		U"intentionally crash on internal errors, for backtracing", FALSE);
 	CommandLine::declare_switch(HELP_CLSW, U"help", 1,
-		U"print this help information");
+		U"print general help information");
 	CommandLine::declare_boolean_switch(FIXTIME_CLSW, U"fixtime", 1,
 		U"pretend the time is 11 a.m. on 28 March 2016 for testing", FALSE);
 	CommandLine::declare_switch(AT_CLSW, U"at", 2,

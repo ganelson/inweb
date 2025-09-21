@@ -382,7 +382,7 @@ a structure: for example |typedef unsigned int uint;| would be a simple typedef.
 		text_stream *line = lst->text;
 		if (L->part_of_typedef) {
 			IfdefTags::open_ifdefs(OUT, LiterateSource::par_of_line(lst));
-			LanguageMethods::tangle_line(OUT, W->web_language, line);
+			LanguageMethods::tangle_line(OUT, WebStructure::web_language(W), line);
 			WRITE("\n");
 			IfdefTags::close_ifdefs(OUT, LiterateSource::par_of_line(lst));
 		}
@@ -464,9 +464,9 @@ exist either way.
 					}
 				}
 				IfdefTags::open_ifdefs(OUT, LiterateSource::par_of_line(lst));
-				LanguageMethods::insert_line_marker(OUT, W->web_language, lst);
+				LanguageMethods::insert_line_marker(OUT, WebStructure::web_language(W), lst);
 				WRITE("%S ", fn->function_type);
-				LanguageMethods::tangle_line(OUT, W->web_language, fn->function_name);
+				LanguageMethods::tangle_line(OUT, WebStructure::web_language(W), fn->function_name);
 				WRITE("(%S;\n", fn->function_arguments);
 				IfdefTags::close_ifdefs(OUT, LiterateSource::par_of_line(lst));
 				for (int i=0; i<to_close; i++) {

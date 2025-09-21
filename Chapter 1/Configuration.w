@@ -7,48 +7,28 @@ and to handle any errors it needs to issue.
 The following structure exists just to hold what the user specified on the
 command line: there will only ever be one of these.
 
+As with any complex tool, Inweb has a welter of command-line switches and options,
+and for clarity here we break them down into individual CLIs for each subcommand.
+Thus, switches for one subcommand are inaccessible in the others. In this section
+of code, we manage only a handful of shared settings, together with some functions
+providing a common set of conventions for parsing the most common settings.
+
 =
 typedef struct inweb_instructions {
-	int inweb_mode; /* our main mode of operation: one of the |*_MODE| constants */
-	struct pathname *chosen_web; /* project folder relative to cwd */
-	struct filename *chosen_file; /* or, single file relative to cwd */
-	struct text_stream *chosen_range; /* which subset of this web we apply to (often, all of it) */
-	int chosen_range_actually_chosen; /* rather than being a default choice */
-
-	int swarm_mode; /* relevant to weaving only: one of the |*_SWARM| constants */
-	struct text_stream *tag_setting; /* |-weave-tag X|: weave, but only the material tagged X */
-	struct text_stream *weave_pattern; /* |-weave-as X|: for example, |-weave-to HTML| */
-
-	int show_languages_switch; /* |-show-languages|: print list of available PLs */
-	int show_syntaxes_switch; /* |-show-syntaxes|: print list of available LP syntaxes */
-	int catalogue_switch; /* |-catalogue|: print catalogue of sections */
-	int functions_switch; /* |-functions|: print catalogue of functions within sections */
-	int structures_switch; /* |-structures|: print catalogue of structures within sections */
-	int advance_switch; /* |-advance-build|: advance build file for ls_web */
-	int scan_switch; /* |-scan|: simply show the syntactic scan of the source */
-	int ctags_switch; /* |-ctags|: generate a set of Universal Ctags on each tangle */
-	struct filename *weave_to_setting; /* |-weave-to X|: the pathname X, if supplied */
-	struct pathname *weave_into_setting; /* |-weave-into X|: the pathname X, if supplied */
-	int sequential; /* give the sections sequential sigils */
-	struct filename *tangle_setting; /* |-tangle-to X|: the pathname X, if supplied */
-	struct filename *ctags_setting; /* |-ctags-to X|: the pathname X, if supplied */
-	struct filename *makefile_setting; /* |-makefile X|: the filename X, if supplied */
-	struct filename *gitignore_setting; /* |-gitignore X|: the filename X, if supplied */
-	struct filename *advance_setting; /* |-advance-build-file X|: advance build file X */
-	struct filename *writeme_setting; /* |-write-me X|: advance build file X */
-	struct filename *prototype_setting; /* |-prototype X|: the pathname X, if supplied */
-	struct filename *navigation_setting; /* |-navigation X|: the filename X, if supplied */
-	struct filename *colony_setting; /* |-colony X|: the filename X, if supplied */
-	struct text_stream *member_setting; /* |-member X|: sets web to member X of colony */
-	struct linked_list *breadcrumb_setting; /* of |breadcrumb_request| */
-	struct text_stream *platform_setting; /* |-platform X|: sets prevailing platform to X */
+	int subcommand; /* our main mode of operation: one of the |*_CLSUB| constants */
 	int verbose_switch; /* |-verbose|: print names of files read to stdout */
-	int targets; /* used only for parsing */
-
-	struct programming_language *test_language_setting; /* |-test-language X| */
-	struct filename *test_language_on_setting; /* |-test-language-on X| */
-
 	struct pathname *import_setting; /* |-import X|: where to find imported webs */
+
+	struct inweb_weave_settings weave_settings;
+	struct inweb_tangle_settings tangle_settings;
+	struct inweb_inspect_settings inspect_settings;
+	struct inweb_make_settings make_settings;
+	struct inweb_test_language_settings test_language_settings;
+
+	struct text_stream *temp_colony_setting; /* |-colony X|: file or path, if supplied */
+	struct text_stream *temp_member_setting; /* |-member X|: sets web to member X of colony */
+	struct pathname *temp_path_setting; /* project folder relative to cwd */
+	struct filename *temp_file_setting; /* or, single file relative to cwd */
 } inweb_instructions;
 
 @h Reading the command line.
@@ -61,57 +41,26 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	inweb_instructions args;
 	@<Initialise the args@>;
 	@<Declare the command-line switches specific to Inweb@>;
-	CommandLine::read(argc, argv, &args, &Configuration::switch, &Configuration::bareword);
-	Configuration::member_and_colony(&args);
-	if (Str::len(args.weave_pattern) == 0) WRITE_TO(args.weave_pattern, "HTML");
-	if ((args.chosen_web == NULL) && (args.chosen_file == NULL)) {
-		if ((args.makefile_setting) || (args.gitignore_setting))
-			args.inweb_mode = TRANSLATE_MODE;
-		if (args.inweb_mode != TRANSLATE_MODE)
-			args.inweb_mode = NO_MODE;
-	}
-	if (Str::len(args.chosen_range) == 0) {
-		Str::copy(args.chosen_range, I"0");
-	}
+	args.subcommand = CommandLine::read(argc, argv, &args,
+		&Configuration::switch, &Configuration::bareword);
 	return args;
 }
 
 @<Initialise the args@> =
-	args.inweb_mode = NO_MODE;
-	args.swarm_mode = SWARM_OFF_SWM;
-	args.show_languages_switch = FALSE;
-	args.show_syntaxes_switch = FALSE;
-	args.catalogue_switch = FALSE;
-	args.functions_switch = FALSE;
-	args.structures_switch = FALSE;
-	args.advance_switch = FALSE;
-	args.scan_switch = FALSE;
+	args.subcommand = NO_CLSUB;
 	args.verbose_switch = FALSE;
-	args.ctags_switch = TRUE;
-	args.chosen_web = NULL;
-	args.chosen_file = NULL;
-	args.chosen_range = Str::new();
-	args.chosen_range_actually_chosen = FALSE;
-	args.tangle_setting = NULL;
-	args.ctags_setting = NULL;
-	args.weave_to_setting = NULL;
-	args.weave_into_setting = NULL;
-	args.makefile_setting = NULL;
-	args.gitignore_setting = NULL;
-	args.advance_setting = NULL;
-	args.writeme_setting = NULL;
-	args.prototype_setting = NULL;
-	args.navigation_setting = NULL;
-	args.colony_setting = NULL;
-	args.member_setting = NULL;
-	args.breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
-	args.platform_setting = NULL;
-	args.tag_setting = Str::new();
-	args.weave_pattern = Str::new();
 	args.import_setting = NULL;
-	args.targets = 0;
-	args.test_language_setting = NULL;
-	args.test_language_on_setting = NULL;
+
+	InwebWeave::initialise(&(args.weave_settings));
+	InwebTangle::initialise(&(args.tangle_settings));
+	InwebInspect::initialise(&(args.inspect_settings));
+	InwebMake::initialise(&(args.make_settings));
+	InwebTestLanguage::initialise(&(args.test_language_settings));
+
+	args.temp_colony_setting = NULL;
+	args.temp_member_setting = NULL;
+	args.temp_path_setting = NULL;
+	args.temp_file_setting = NULL;
 
 @ The CommandLine section of Foundation needs to be told what command-line
 switches we want, other than the standard set (such as |-help|) which it
@@ -119,370 +68,393 @@ provides automatically.
 
 @e VERBOSE_CLSW
 @e IMPORT_FROM_CLSW
-
-@e LANGUAGES_CLSG
-
-@e LANGUAGE_CLSW
-@e LANGUAGES_CLSW
-@e SHOW_LANGUAGES_CLSW
-@e TEST_LANGUAGE_CLSW
-@e TEST_LANGUAGE_ON_CLSW
-
-@e SYNTAXES_CLSG
-
-@e SYNTAX_CLSW
-@e SYNTAXES_CLSW
-@e SHOW_SYNTAXES_CLSW
-
-@e ANALYSIS_CLSG
-
-@e CATALOGUE_CLSW
-@e FUNCTIONS_CLSW
-@e STRUCTURES_CLSW
-@e ADVANCE_CLSW
-@e GITIGNORE_CLSW
-@e MAKEFILE_CLSW
-@e WRITEME_CLSW
-@e PLATFORM_CLSW
-@e ADVANCE_FILE_CLSW
-@e PROTOTYPE_CLSW
-@e SCAN_CLSW
-
-@e WEAVING_CLSG
-
-@e WEAVE_CLSW
-@e WEAVE_INTO_CLSW
-@e WEAVE_TO_CLSW
-@e OPEN_CLSW
-@e WEAVE_AS_CLSW
-@e WEAVE_TAG_CLSW
-@e BREADCRUMB_CLSW
-@e NAVIGATION_CLSW
-
-@e TANGLING_CLSG
-
-@e TANGLE_CLSW
-@e TANGLE_TO_CLSW
-@e CTAGS_TO_CLSW
-@e CTAGS_CLSW
-
-@e COLONIAL_CLSG
-
+@e USING_CLSW
 @e COLONY_CLSW
 @e MEMBER_CLSW
 
 @<Declare the command-line switches specific to Inweb@> =
 	CommandLine::declare_heading(U"inweb: a tool for literate programming\n\n"
-		U"Usage: inweb WEB OPTIONS RANGE\n\n"
-		U"WEB must be a directory holding a literate program (a 'web')\n\n"
-		U"The legal RANGEs are:\n"
-		U"   all: complete web (the default if no TARGETS set)\n"
-		U"   P: all preliminaries\n"
-		U"   1: Chapter 1 (and so on)\n"
-		U"   A: Appendix A (and so on, up to Appendix O)\n"
-		U"   3/eg: section with abbreviated name \"3/eg\" (and so on)\n"
-		U"You can also, or instead, specify:\n"
-		U"   index: to weave an HTML page indexing the project\n"
-		U"   chapters: to weave all chapters as individual documents\n"
-		U"   sections: ditto with sections\n");
+		U"Inweb is a system for literate programming. It deals with 'webs',\n"
+		U"programs written in conventional programming languages like C (which\n"
+		U"Inweb calls 'languages') marked up in human-readable ways to reveal\n"
+		U"their structure and explain their motivation. Inweb can handle multiple\n"
+		U"markup syntaxes (which it calls 'notations'). It can also group together\n"
+		U"multiple webs into connected masses, which it calls 'colonies'.\n\n"
+		U"Inweb is an all-in-one tool for LP which is divided up into subcommands,\n"
+		U"each able to perform a different task. 'inweb tangle' and 'inweb weave'\n"
+		U"are the two used constantly: tangling processes a web into a form\n"
+		U"which can be compiled, and weaving makes it into something human-readable.\n\n"
+		U"Usage: inweb COMMAND [DETAILS]\n\n"
+		U"where the DETAILS are different for each COMMAND.");
 
-	CommandLine::begin_group(LANGUAGES_CLSG,
-		I"for locating programming language definitions");
-	CommandLine::declare_switch(LANGUAGE_CLSW, U"read-language", 2,
-		U"read language definition from file X");
-	CommandLine::declare_switch(LANGUAGES_CLSW, U"read-languages", 2,
-		U"read all language definitions in path X");
-	CommandLine::declare_switch(SHOW_LANGUAGES_CLSW, U"show-languages", 1,
-		U"list programming languages supported by Inweb");
-	CommandLine::declare_switch(TEST_LANGUAGE_CLSW, U"test-language", 2,
-		U"test language X on...");
-	CommandLine::declare_switch(TEST_LANGUAGE_ON_CLSW, U"test-language-on", 2,
-		U"...the code in the file X");
-	CommandLine::end_group();
-
-	CommandLine::begin_group(SYNTAXES_CLSG,
-		I"for locating literate programming syntax definitions");
-	CommandLine::declare_switch(SYNTAX_CLSW, U"read-syntax", 2,
-		U"read LP syntax definition from file X");
-	CommandLine::declare_switch(SYNTAXES_CLSW, U"read-syntaxes", 2,
-		U"read all LP syntax definitions in path X");
-	CommandLine::declare_switch(SHOW_SYNTAXES_CLSW, U"show-syntaxes", 1,
-		U"list LP syntax supported by Inweb");
-	CommandLine::end_group();
-
-	CommandLine::begin_group(ANALYSIS_CLSG,
-		I"for analysing a web");
-	CommandLine::declare_switch(CATALOGUE_CLSW, U"catalogue", 1,
-		U"list the sections in the web");
-	CommandLine::declare_switch(CATALOGUE_CLSW, U"catalog", 1,
-		U"same as '-catalogue'");
-	CommandLine::declare_switch(MAKEFILE_CLSW, U"makefile", 2,
-		U"write a makefile for this web and store it in X");
-	CommandLine::declare_switch(GITIGNORE_CLSW, U"gitignore", 2,
-		U"write a .gitignore file for this web and store it in X");
-	CommandLine::declare_switch(ADVANCE_FILE_CLSW, U"advance-build-file", 2,
-		U"increment daily build code in file X");
-	CommandLine::declare_switch(WRITEME_CLSW, U"write-me", 2,
-		U"write a read-me file following instructions in file X");
-	CommandLine::declare_switch(PLATFORM_CLSW, U"platform", 2,
-		U"use platform X (e.g. 'windows') when making e.g. makefiles");
-	CommandLine::declare_switch(PROTOTYPE_CLSW, U"prototype", 2,
-		U"translate makefile from prototype X");
-	CommandLine::declare_switch(FUNCTIONS_CLSW, U"functions", 1,
-		U"catalogue the functions in the web");
-	CommandLine::declare_switch(STRUCTURES_CLSW, U"structures", 1,
-		U"catalogue the structures in the web");
-	CommandLine::declare_switch(ADVANCE_CLSW, U"advance-build", 1,
-		U"increment daily build code for the web");
-	CommandLine::declare_switch(SCAN_CLSW, U"scan", 1,
-		U"scan the web");
-	CommandLine::end_group();
-
-	CommandLine::begin_group(WEAVING_CLSG,
-		I"for weaving a web");
-	CommandLine::declare_switch(WEAVE_CLSW, U"weave", 1,
-		U"weave the web into human-readable form");
-	CommandLine::declare_switch(WEAVE_INTO_CLSW, U"weave-into", 2,
-		U"weave, but into directory X");
-	CommandLine::declare_switch(WEAVE_TO_CLSW, U"weave-to", 2,
-		U"weave, but to filename X (for single files only)");
-	CommandLine::declare_switch(OPEN_CLSW, U"open", 1,
-		U"weave then open woven file");
-	CommandLine::declare_switch(WEAVE_AS_CLSW, U"weave-as", 2,
-		U"set weave pattern to X (default is 'HTML')");
-	CommandLine::declare_switch(WEAVE_TAG_CLSW, U"weave-tag", 2,
-		U"weave, but only using material tagged as X");
-	CommandLine::declare_switch(BREADCRUMB_CLSW, U"breadcrumb", 2,
-		U"use the text X as a breadcrumb in overhead navigation");
-	CommandLine::declare_switch(NAVIGATION_CLSW, U"navigation", 2,
-		U"use the file X as a column of navigation links");
-	CommandLine::end_group();
-
-	CommandLine::begin_group(TANGLING_CLSG,
-		I"for tangling a web");
-	CommandLine::declare_switch(TANGLE_CLSW, U"tangle", 1,
-		U"tangle the web into machine-compilable form");
-	CommandLine::declare_switch(TANGLE_TO_CLSW, U"tangle-to", 2,
-		U"tangle, but to filename X");
-	CommandLine::declare_switch(CTAGS_TO_CLSW, U"ctags-to", 2,
-		U"tangle, but write Universal Ctags file to X not to 'tags'");
-	CommandLine::declare_boolean_switch(CTAGS_CLSW, U"ctags", 1,
-		U"write a Universal Ctags file when tangling", TRUE);
-	CommandLine::end_group();
-
-	CommandLine::begin_group(COLONIAL_CLSG,
-		I"for dealing with colonies of webs together");
-	CommandLine::declare_switch(COLONY_CLSW, U"colony", 2,
-		U"use the file X as a list of webs in this colony");
-	CommandLine::declare_switch(MEMBER_CLSW, U"member", 2,
-		U"use member X from the colony as our web");
-	CommandLine::end_group();
-
+	CommandLine::resume_group(FOUNDATION_CLSG);
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
 		U"explain what inweb is doing", FALSE);
 	CommandLine::declare_switch(IMPORT_FROM_CLSW, U"import-from", 2,
 		U"specify that imported modules are at pathname X");
+	CommandLine::declare_switch(USING_CLSW, U"using", 2,
+		U"making Inweb resources in the file or path X available to all webs");
+	CommandLine::declare_switch(COLONY_CLSW, U"colony", 2,
+		U"if the newer 'colony:" U":member' notation is problematic, use this and '-member'");
+	CommandLine::declare_switch(MEMBER_CLSW, U"member", 2,
+		U"if the newer 'colony:" U":member' notation is problematic, use this and '-colony'");
+	CommandLine::end_group();
+
+	InwebWeave::cli();
+	InwebTangle::cli();
+	InwebInspect::cli();
+	InwebMake::cli();
+	InwebAdvanceBuild::cli();
+	InwebTestLanguage::cli();
 
 @ Foundation calls this on any |-switch| argument read:
 
 =
 void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
+	if (InwebWeave::switch(args, id, val, arg)) return;
+	if (InwebTangle::switch(args, id, val, arg)) return;
+	if (InwebMake::switch(args, id, val, arg)) return;
+	if (InwebInspect::switch(args, id, val, arg)) return;
+	if (InwebTestLanguage::switch(args, id, val, arg)) return;
 	switch (id) {
 		/* Miscellaneous */
 		case VERBOSE_CLSW: args->verbose_switch = TRUE; break;
 		case IMPORT_FROM_CLSW: args->import_setting = Pathnames::from_text(arg); break;
+		case USING_CLSW: {
+			filename *F = Filenames::from_text(arg);
+			if (TextFiles::exists(F)) {
+				WCL::make_resources_at_file_global(F);
+			} else {
+				pathname *P = Pathnames::from_text(arg);
+				if (Directories::exists(P)) WCL::make_resources_at_path_global(P);
+			}
+			break;
+		}
 
-		/* Syntax management */
-		case SYNTAX_CLSW:
-			WebSyntax::read_definition(Filenames::from_text(arg)); break;
-		case SYNTAXES_CLSW:
-			WebSyntax::read_definitions(Pathnames::from_text(arg)); break;
-		case SHOW_SYNTAXES_CLSW:
-			args->show_syntaxes_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-
-		/* Analysis */
-		case LANGUAGE_CLSW:
-			Languages::read_definition(Filenames::from_text(arg), NULL); break;
-		case LANGUAGES_CLSW:
-			Languages::read_definitions(Pathnames::from_text(arg)); break;
-		case SHOW_LANGUAGES_CLSW:
-			args->show_syntaxes_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case TEST_LANGUAGE_CLSW:
-			args->test_language_setting =
-				Languages::read_definition(Filenames::from_text(arg), NULL);
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case TEST_LANGUAGE_ON_CLSW:
-			args->test_language_on_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case CATALOGUE_CLSW:
-			args->catalogue_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case FUNCTIONS_CLSW:
-			args->functions_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case STRUCTURES_CLSW:
-			args->structures_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case ADVANCE_CLSW:
-			args->advance_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-		case MAKEFILE_CLSW:
-			args->makefile_setting = Filenames::from_text(arg);
-			if (args->inweb_mode != TRANSLATE_MODE)
-				Configuration::set_fundamental_mode(args, ANALYSE_MODE);
-			break;
-		case GITIGNORE_CLSW:
-			args->gitignore_setting = Filenames::from_text(arg);
-			if (args->inweb_mode != TRANSLATE_MODE)
-				Configuration::set_fundamental_mode(args, ANALYSE_MODE);
-			break;
-		case PLATFORM_CLSW:
-			args->platform_setting = Str::duplicate(arg);
-			break;
-		case ADVANCE_FILE_CLSW:
-			args->advance_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, TRANSLATE_MODE);
-			break;
-		case WRITEME_CLSW:
-			args->writeme_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, TRANSLATE_MODE);
-			break;
-		case PROTOTYPE_CLSW:
-			args->prototype_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, TRANSLATE_MODE); break;
-		case SCAN_CLSW:
-			args->scan_switch = TRUE;
-			Configuration::set_fundamental_mode(args, ANALYSE_MODE); break;
-
-		/* Weave-related */
-		case WEAVE_CLSW:
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case WEAVE_INTO_CLSW:
-			args->weave_into_setting = Pathnames::from_text(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case WEAVE_TO_CLSW:
-			args->weave_to_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case WEAVE_AS_CLSW:
-			args->weave_pattern = Str::duplicate(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case WEAVE_TAG_CLSW:
-			args->tag_setting = Str::duplicate(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case BREADCRUMB_CLSW:
-			ADD_TO_LINKED_LIST(Colonies::request_breadcrumb(arg),
-				breadcrumb_request, args->breadcrumb_setting);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-		case NAVIGATION_CLSW:
-			args->navigation_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, WEAVE_MODE); break;
-
-		/* Colonial */
-		case COLONY_CLSW:
-			args->colony_setting = Filenames::from_text(arg); break;
-		case MEMBER_CLSW:
-			args->member_setting = Str::duplicate(arg); break;
-
-		/* Tangle-related */
-		case TANGLE_CLSW:
-			Configuration::set_fundamental_mode(args, TANGLE_MODE); break;
-		case TANGLE_TO_CLSW:
-			args->tangle_setting = Filenames::from_text(arg);
-			Configuration::set_fundamental_mode(args, TANGLE_MODE); break;
-		case CTAGS_TO_CLSW:
-			args->ctags_setting = Filenames::from_text(arg);
-			break;
-		case CTAGS_CLSW:
-			args->ctags_switch = val;
-			break;
+		/* The alternate way to specify a web as a colony member: */
+		case COLONY_CLSW: args->temp_colony_setting = Str::duplicate(arg); break;
+		case MEMBER_CLSW: args->temp_member_setting = Str::duplicate(arg); break;
 
 		default: internal_error("unimplemented switch");
 	}
 }
 
-@ The colony file is, in one sense, a collection of presets for the web
-location and its navigational aids.
-
-=
-void Configuration::member_and_colony(inweb_instructions *args) {
-	if (args->colony_setting) Colonies::load(args->colony_setting);
-	if (Str::len(args->member_setting) > 0) {
-		if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
-			colony_member *CM = Colonies::find(args->member_setting);
-			if (CM == NULL) Errors::fatal("the colony has no member of that name");
-			Configuration::bareword(0, CM->path, args);
-			if (Str::len(args->weave_pattern) == 0)
-				args->weave_pattern = CM->default_weave_pattern;
-			if (LinkedLists::len(args->breadcrumb_setting) == 0)
-				args->breadcrumb_setting = CM->breadcrumb_tail;
-			if (args->navigation_setting == NULL)
-				args->navigation_setting = CM->navigation;
-			if (args->weave_into_setting == NULL)
-				args->weave_into_setting = CM->weave_path;
-		} else {
-			Errors::fatal("cannot specify a web and also use -member");
-		}
-	}
-}
-
-@ Foundation calls this routine on any command-line argument which is
-neither a switch (like |-weave|), nor an argument for a switch (like
-the |X| in |-weave-as X|).
+@ Foundation calls this routine on any command-line argument which is neither a
+switch, nor an argument for a switch. For the Inweb subcommands, this means it
+is specifies a web, or else a file, or else a path. Details are written into
+the temporary settings first, because they can only be understood in the light
+of other settings which might not have been made yet.
 
 =
 void Configuration::bareword(int id, text_stream *opt, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
-	if ((args->chosen_web == NULL) && (args->chosen_file == NULL)) {
-		filename *putative = Filenames::from_text(opt);
-		pathname *putative_path = Pathnames::from_text(opt);
-		if (TextFiles::exists(putative))
-			args->chosen_file = putative;
-		else if (Directories::exists(putative_path))
-			args->chosen_web = putative_path;
-		else {
-			TEMPORARY_TEXT(ERM)
-			WRITE_TO(ERM, "does not seem to be either a file or a directory: %S", opt);
-			WebErrors::issue_at(ERM, NULL);
-			DISCARD_TEXT(ERM)
-		}
-	} else Configuration::set_range(args, opt);
-}
-
-@ Here we read a range. The special ranges |index|, |chapters| and |sections|
-are converted into swarm settings instead. |all| is simply an alias for |0|.
-Otherwise, a range is a chapter number/letter, or a section range.
-
-=
-void Configuration::set_range(inweb_instructions *args, text_stream *opt) {
 	match_results mr = Regexp::create_mr();
-	if (Str::eq_wide_string(opt, U"index")) {
-		args->swarm_mode = SWARM_INDEX_SWM;
-	} else if (Str::eq_wide_string(opt, U"chapters")) {
-		args->swarm_mode = SWARM_CHAPTERS_SWM;
-	} else if (Str::eq_wide_string(opt, U"sections")) {
-		args->swarm_mode = SWARM_SECTIONS_SWM;
+	int used = FALSE;
+	if (Regexp::match(&mr, opt, U"(%c*?)::(%c*)")) {
+		if (Str::len(mr.exp[0]) > 0) {
+			if (Str::len(args->temp_colony_setting) == 0) {
+				args->temp_colony_setting = Str::duplicate(mr.exp[0]); used = TRUE;
+			} else
+				Errors::fatal("the colony before a '::' can be set only once");
+		}
+		if (Str::len(mr.exp[1]) > 0) {
+			if (Str::len(args->temp_member_setting) == 0) {
+				args->temp_member_setting = Str::duplicate(mr.exp[1]); used = TRUE;
+			} else
+				Errors::fatal("the member after a '::' can be set only once");
+		}
 	} else {
-		if (++args->targets > 1) Errors::fatal("at most one target may be given");
-		if (Str::eq_wide_string(opt, U"all")) {
-			Str::copy(args->chosen_range, I"0");
-		} else {
-			Str::copy(args->chosen_range, opt);
-			LOOP_THROUGH_TEXT(pos, args->chosen_range)
-				Str::put(pos, Characters::tolower(Str::get(pos)));
+		if ((args->temp_path_setting == NULL) && (args->temp_file_setting == NULL)) {
+			filename *putative = Filenames::from_text(opt);
+			pathname *putative_path = Pathnames::from_text(opt);
+			if (TextFiles::exists(putative)) {
+				args->temp_file_setting = putative; used = TRUE;
+			} else if (Directories::exists(putative_path)) {
+				args->temp_path_setting = putative_path; used = TRUE;
+			}
 		}
 	}
-	args->chosen_range_actually_chosen = TRUE;
+	if (used == FALSE) {
+		Errors::fatal_with_text("does not seem to be either a web, a file or a directory: '%S'", opt);
+	}
+	int tally = 0;
+	if ((Str::len(args->temp_colony_setting) > 0) || (Str::len(args->temp_member_setting) > 0)) tally++;
+	if (args->temp_file_setting) tally++;
+	if (args->temp_path_setting) tally++;
+	if (tally > 1)
+		Errors::fatal("only one argument can follow the command, except where -switches are used");
 	Regexp::dispose_of(&mr);
 }
 
-@ We can only be in a single mode at a time:
+@h Main operand.
+Most of our subcommands take a single main operand, which is deduced from the
+temporary settings made above. Our aim will be to produce one of these objects:
 
 =
-void Configuration::set_fundamental_mode(inweb_instructions *args, int new_material) {
-	if ((args->inweb_mode != NO_MODE) && (args->inweb_mode != new_material))
-		Errors::fatal("can only do one at a time - weaving, tangling or analysing");
-	args->inweb_mode = new_material;
+typedef struct inweb_operand {
+	struct wcl_declaration *D;
+	struct ls_web *W;
+	struct colony *C;
+	struct colony_member *CM;
+	struct filename *F;
+	struct pathname *P;
+} inweb_operand;
+
+@ Our exact wishes depend on the subcommand used. On the other hand, we want to
+apply consistent conventions for different commands as far as possible. So we
+compromise and allow subcommands to choose what they will allow in the main
+operand, but otherwise use the same rules for all of them:
+
+@d NO_OPERAND_ALLOWED 0
+@d WEB_OPERAND_ALLOWED 1        /* i.e., a web, a path, or a file */
+@d WEB_OPERAND_DISALLOWED 2     /* i.e., a path or a file only */
+@d WEB_OPERAND_COMPULSORY 3     /* i.e., a web only */
+
+@ A further tweak is that we sometimes want the web to be read in a particular
+way (if a web is what is provided). If |enumerating| is set then values will be
+assigned to enumerated constants found in the web -- this is unnecessary most
+of the time, and will be meaningless or impossible if only a subset of the web
+is being considered. If |weaving| is set, then certain sorts of code rewriting
+are not performed (for example, the I-string constants like |I"this"| used in
+the InC language are not rewritten as their regular C implementations).
+
+@ The conventions below are very carefully arranged, which is always a warning
+sign in any algorithm. The aim is to infer as much as possible from as little
+input as possible, that is, to allow the user to be vague... but not too vague.
+
+=
+inweb_operand Configuration::operand(inweb_instructions *ins, int requirement,
+	int enumerating, int weaving) {
+	if (requirement == NO_OPERAND_ALLOWED) @<Fail if any operand was supplied@>;
+
+	inweb_operand op = { NULL, NULL, NULL, NULL, NULL, NULL };
+
+	filename *colony_file = NULL;
+	int inferred_web_as_colony_member = FALSE;
+	if (requirement != WEB_OPERAND_DISALLOWED) {
+		@<Find the colony@>;
+		if (Str::len(ins->temp_member_setting) > 0) @<Find the member@>;
+	}
+	if (ins->temp_file_setting) @<Read this file as WCL resources@>;
+	if (requirement != WEB_OPERAND_DISALLOWED) @<Try to read our file or path as a web@>;
+	@<Tidy up our findings@>;
+
+	if (requirement == WEB_OPERAND_COMPULSORY) @<Fail if no web was supplied@>;
+	return op;
+}
+
+@<Fail if any operand was supplied@> =
+	if ((Str::len(ins->temp_colony_setting) > 0) ||
+		(Str::len(ins->temp_member_setting) > 0) ||
+		(ins->temp_path_setting) ||
+		(ins->temp_file_setting))
+		Errors::fatal("this command does not accept a web or file as argument");
+	
+@<Fail if no web was supplied@> =	
+	if (op.W == NULL)
+		Errors::fatal("no web was specified");
+
+@<Find the colony@> =
+	if (Str::len(ins->temp_colony_setting) > 0) @<Locate the colony file from its setting@>
+	else @<Try to find a nearby colony file@>;
+
+	if (colony_file) {
+		op.C = Colonies::load(colony_file);
+		if (op.C == NULL) Errors::fatal_with_file("not a valid colony file", colony_file);
+	}
+
+@ So this looks at the text |C| from |-colony C| or else from |C::M|, if either
+of those syntaxes was used. If we are here, |C| is non-empty. It should either
+be a valid filename, or a valid directory name for a directory containing either
+a |colony.inweb| or |colony.txt| file.
+
+@<Locate the colony file from its setting@> =
+	colony_file = Filenames::from_text(ins->temp_colony_setting);
+	if (TextFiles::exists(colony_file) == FALSE) {
+		pathname *P = Pathnames::from_text(ins->temp_colony_setting);
+		if (Directories::exists(P)) {
+			colony_file = Filenames::in(P, I"colony.inweb");
+			if (TextFiles::exists(colony_file) == FALSE)
+				colony_file = Filenames::in(P, I"colony.txt");
+		}
+	}
+	if (TextFiles::exists(colony_file) == FALSE)
+		Errors::fatal_with_text("cannot find a colony file for '%S'",
+			ins->temp_colony_setting);
+
+@ This alternative strategy is used if no such colony text is provided. That
+doesn't mean there is no colony file in play: just that the user hasn't specified
+it. If we can in fact find a colony file close to the relevant file or above
+the relevant path, we'll use that.
+
+@<Try to find a nearby colony file@> =
+	pathname *search = NULL;
+	if (ins->temp_file_setting) search = Filenames::up(ins->temp_file_setting);
+	else if (ins->temp_path_setting) search = ins->temp_path_setting;
+	@<Look for a colony file in the search directory@>;
+	while ((colony_file == NULL) && (search)) {
+		search = Pathnames::up(search);
+		@<Look for a colony file in the search directory@>;
+	}
+
+@<Look for a colony file in the search directory@> =
+	filename *CF = Filenames::in(search, I"colony.inweb");
+	if ((TextFiles::exists(CF) == FALSE) && (old_inweb_compatibility_mode))
+		CF = Filenames::in(search, I"colony.txt");
+	if (TextFiles::exists(CF)) colony_file = CF;
+
+@ This looks at the text |M| from |-member M| or else from |C::M|, if either
+of those syntaxes was used. Note that it's absolutely necessary for a colony
+file to exist and be valid, on order for this to make sense, and moreover |M|
+has to be one of its member names; lastly, there must actually be a web in
+the place that the colony file says it will be.
+
+@<Find the member@> =
+	if (op.C == NULL)
+		Errors::fatal_with_text("can't find a colony file in which to seek '%S'",
+			ins->temp_member_setting);
+	op.CM = Colonies::find(op.C, ins->temp_member_setting);
+	if (op.CM == NULL)
+		Errors::fatal_with_text("the colony has no member called '%S'",
+			ins->temp_member_setting);
+	if ((ins->temp_path_setting == NULL) && (ins->temp_file_setting == NULL)) {
+		pathname *P = Filenames::up(colony_file);
+		P = NULL; /* for now */
+		filename *putative = Filenames::from_text_relative(P, op.CM->path);
+		pathname *putative_path = Pathnames::from_text_relative(P, op.CM->path);
+		if (TextFiles::exists(putative))
+			ins->temp_file_setting = putative;
+		else if (Directories::exists(putative_path))
+			ins->temp_path_setting = putative_path;
+		else {
+			TEMPORARY_TEXT(ERM)
+			WRITE_TO(ERM,
+				"colony member '%S' should be at '%S', but nothing's there (%f)",
+				ins->temp_member_setting, op.CM->path, putative);
+			WebErrors::issue_at(ERM, NULL);
+			DISCARD_TEXT(ERM)
+		}
+		inferred_web_as_colony_member = TRUE;
+	} else {
+		Errors::fatal("cannot specify a web and also a colony member");
+	}
+
+@ So here we have a single file, and try to read it as WCL. WCL is a format
+which can hold multiple different sorts of resource: a WCL file can explicitly
+say what kind it holds, but if it doesn't, we have to guess that from context.
+Here's where we do the guessing.
+
+@<Read this file as WCL resources@> =
+	int presume = MISCELLANY_WCLTYPE; /* i.e., make no assumptions */
+	if ((requirement == WEB_OPERAND_COMPULSORY) ||
+		(inferred_web_as_colony_member)) presume = WEB_WCLTYPE;
+	else {
+		if (Str::eq_insensitive(Filenames::get_leafname(ins->temp_file_setting), I"colony.inweb"))
+			presume = COLONY_WCLTYPE;
+		if (old_inweb_compatibility_mode) {
+			TEMPORARY_TEXT(ext)
+			Filenames::write_extension(ext, ins->temp_file_setting);
+			if (Str::eq_insensitive(Filenames::get_leafname(ins->temp_file_setting), I"colony.txt"))
+				presume = COLONY_WCLTYPE;
+			if (Str::eq_insensitive(ext, I".inwebc"))
+				presume = WEB_WCLTYPE;
+			if (Str::eq_insensitive(ext, I".inwebsyntax"))
+				presume = NOTATION_WCLTYPE;
+			if (Str::eq_insensitive(ext, I".ildf"))
+				presume = LANGUAGE_WCLTYPE;
+			DISCARD_TEXT(ext)
+		}
+	}
+	op.D = WCL::read_for_type_only(ins->temp_file_setting, presume);
+
+@ A single file will only be a web if it's not already been parsed as something
+else (say, a language definition); a path will only be a web if it contains a
+contents section.
+
+@<Try to read our file or path as a web@> =
+	if ((op.D == NULL) || (op.D->declaration_type == WEB_WCLTYPE)) {
+		if (((ins->temp_path_setting) &&
+			(TextFiles::exists(Filenames::in(ins->temp_path_setting, I"Contents.w")))) ||
+			(ins->temp_file_setting)) {
+			op.D = WCL::read_web_or_halt(ins->temp_path_setting, ins->temp_file_setting);
+			op.W = WebStructure::read_fully(op.D, enumerating, weaving, verbose_mode);
+		}
+	}
+
+@ The most notable thing here is that we make an attempt (no more than that) to
+reconcile things in the case where the user has not specified a colony or member,
+only a web, but where there is a colony file nearby which we have auto-detected.
+Is the web a member of that colony or not? If it seems to be, we'll fill in |op.CM|.
+But it's probably not wise to rely too much on this.
+
+@<Tidy up our findings@> =	
+	if (op.W == NULL) {
+		op.F = ins->temp_file_setting;
+		op.P = ins->temp_path_setting;
+	}
+	if ((op.C) && (op.W) && (op.CM == NULL)) {
+		TEMPORARY_TEXT(candidate)
+		if (op.W->single_file)
+			Filenames::write_unextended_leafname(candidate, op.W->single_file);
+		else if (op.W->path_to_web)
+			WRITE_TO(candidate, "%S", Pathnames::directory_name(op.W->path_to_web));
+		colony_member *CM;
+		LOOP_OVER_LINKED_LIST(CM, colony_member, op.C->members) {
+			if (Str::eq_insensitive(CM->name, candidate)) {
+				op.CM = CM; break;
+			}
+		}
+	}
+
+@h Range operand.
+Some subcommands take a further operand called a "range", usually after a |-only|
+setting. These are in addition to a main operand, not instead of it, and indeed
+make sense only in the context of the main operand specifying a web.
+
+Subsets of a web are represented by short pieces of text called "ranges". This
+can be a section range like |2/pine|, a chapter number like |12|, an appendix
+letter |A| or the preliminaries block |P|, the special chapter |S| for the
+"Sections" chapter of an unchaptered web, or the special value |0| to mean the
+entire web (which is the default).
+
+=
+typedef struct inweb_range_specifier {
+	struct text_stream *range; /* which subset of this web we apply to (often, all of it) */
+	int chosen_range_actually_chosen; /* rather than being a default choice */
+	int swarm_mode; /* relevant to weaving only: one of the |*_SWARM| constants */
+} inweb_range_specifier;
+
+inweb_range_specifier Configuration::new_range_specifier(void) {
+	inweb_range_specifier irs;
+	irs.range = Str::duplicate(I"0");
+	irs.chosen_range_actually_chosen = FALSE;
+	irs.swarm_mode = SWARM_OFF_SWM;
+	return irs;
+}
+
+void Configuration::set_range(inweb_range_specifier *irs, text_stream *opt, int swarming) {
+	if (irs->chosen_range_actually_chosen) Errors::fatal("-only may be specified just once");
+	if (Str::eq_wide_string(opt, U"index")) {
+		if (swarming == FALSE)
+			Errors::fatal("the -only value 'index' is allowed only for 'inweb weave'");
+		irs->swarm_mode = SWARM_INDEX_SWM;
+	} else if (Str::eq_wide_string(opt, U"chapters")) {
+		if (swarming == FALSE)
+			Errors::fatal("the -only value 'chapters' is allowed only for 'inweb weave'");
+		irs->swarm_mode = SWARM_CHAPTERS_SWM;
+	} else if (Str::eq_wide_string(opt, U"sections")) {
+		if (swarming == FALSE)
+			Errors::fatal("the -only value 'sections' is allowed only for 'inweb weave'");
+		irs->swarm_mode = SWARM_SECTIONS_SWM;
+	} else {
+		if (Str::eq_wide_string(opt, U"all")) {
+			Str::copy(irs->range, I"0");
+		} else {
+			Str::copy(irs->range, opt);
+			LOOP_THROUGH_TEXT(pos, irs->range)
+				Str::put(pos, Characters::tolower(Str::get(pos)));
+		}
+	}
+	irs->chosen_range_actually_chosen = TRUE;
 }

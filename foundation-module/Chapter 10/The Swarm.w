@@ -19,10 +19,10 @@ one at a time", a procedure called a "swarm".
 
 @ We provide two entry points to make weaves happen: the caller should choose
 either //Swarm::weave_subset// for a single subset of the web, going into a
-single output file, or //Swarm::weave// for a collection of subsets. (And
-//Swarm::weave// then calls //Swarm::weave_subset// multiple times to do this.)
+single output file, or //Swarm::weave_swarm// for a collection of subsets. (And
+//Swarm::weave_swarm// then calls //Swarm::weave_subset// multiple times to do this.)
 
-//Swarm::weave// also causes an "index" to be made, though "index" here is
+//Swarm::weave_swarm// also causes an "index" to be made, though "index" here is
 Inweb jargon for something which is more likely a contents page listing the
 sections and linking to them.[1]
 
@@ -145,6 +145,28 @@ presented online are made this way. The Collater is also recursive, in that
 some collation commands call for further acts of collation to happen inside
 the original. See //Collater::collate// for the machinery.
 
+
+@h Front end.
+This function performs a general weave of a web, or part of a web, swarming
+as necessary.
+
+=
+void Swarm::weave(colony *context, ls_web *W, filename *to, pathname *into,
+	weave_pattern *pattern, int swarm_mode, text_stream *range, text_stream *tag,
+	linked_list *breadcrumbs, filename *navigation, int verbose_mode) {
+	if (into) WeavingDetails::set_redirect_weaves_to(W, into);
+	int r = WeavingFormats::begin_weaving(W, pattern);
+	if (r != SWARM_OFF_SWM) swarm_mode = r;
+	if (swarm_mode == SWARM_OFF_SWM) {
+		Swarm::weave_subset(context, W, range, tag, pattern, to, into,
+			breadcrumbs, navigation, verbose_mode);
+	} else {
+		Swarm::weave_swarm(context, W, range, swarm_mode, tag, pattern, to, into,
+			breadcrumbs, navigation, verbose_mode);
+	}
+	WeavingFormats::end_weaving(W, pattern);
+	if (into) WeavingDetails::set_redirect_weaves_to(W, NULL);
+}
 @h Swarming.
 A "weave" occurs when we take a portion of a literate web -- one section, one
 chapter, or the whole thing -- and write it out in a human-readable form (or
@@ -167,7 +189,7 @@ weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 pathname *last_reported_weave_path = NULL;
 int file_weaving_reports_made = 0;
 
-void Swarm::weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *tag,
+void Swarm::weave_swarm(colony *context, ls_web *W, text_stream *range, int swarm_mode, text_stream *tag,
 	weave_pattern *pattern, filename *to, pathname *into,
 	linked_list *breadcrumbs, filename *navigation, int verbosely) {
 	swarm_leader = NULL;
@@ -179,7 +201,7 @@ void Swarm::weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *ta
 		if (C->imported == FALSE) {
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
 				if ((W->chaptered == TRUE) && (WebRanges::is_within(C->ch_range, range))) {
-					weave_order *wo = Swarm::weave_subset(W, C->ch_range, FALSE,
+					weave_order *wo = Swarm::weave_subset_inner(context, W, C->ch_range, FALSE,
 						tag, pattern, to, into, breadcrumbs, navigation, verbosely);
 					WeavingDetails::set_ch_weave(C, wo);
 					if (Str::len(range) > 0) swarm_leader = wo;
@@ -188,7 +210,7 @@ void Swarm::weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *ta
 				LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 					if (WebRanges::is_within(WebRanges::of(S), range))
 						WeavingDetails::set_sect_weave(S,
-							Swarm::weave_subset(W,
+							Swarm::weave_subset_inner(context, W,
 								WebRanges::of(S), FALSE, tag, pattern, to, into,
 								breadcrumbs, navigation, verbosely));
 		}
@@ -197,7 +219,19 @@ void Swarm::weave(ls_web *W, text_stream *range, int swarm_mode, text_stream *ta
 			file_weaving_reports_made = 0;
 		}
 	}
-	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs);
+	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs, context);
+}
+
+weave_order *Swarm::weave_subset(colony *context, ls_web *W, text_stream *range,
+	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
+	linked_list *breadcrumbs, filename *navigation, int verbosely) {
+	weave_order *wv = Swarm::weave_subset_inner(context, W, range, FALSE,
+		tag, pattern, to, into, breadcrumbs, navigation, verbosely);
+	if (file_weaving_reports_made > 0) {
+		PRINT("\n");
+		file_weaving_reports_made = 0;
+	}
+	return wv;
 }
 
 @ The following is where an individual weave task begins, whether it comes
@@ -205,7 +239,7 @@ from the swarm, or has been specified at the command line (in which case
 the call comes from Program Control).
 
 =
-weave_order *Swarm::weave_subset(ls_web *W, text_stream *range, int open_afterwards,
+weave_order *Swarm::weave_subset_inner(colony *context, ls_web *W, text_stream *range, int open_afterwards,
 	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
 	linked_list *breadcrumbs, filename *navigation, int verbosely) {
 	weave_order *wv = NULL;
@@ -224,6 +258,7 @@ weave_order *Swarm::weave_subset(ls_web *W, text_stream *range, int open_afterwa
 
 =
 typedef struct weave_order {
+	struct colony *weave_colony; /* wider context for the weave, relevant to cross-links */
 	struct ls_web *weave_web; /* which web we weave */
 	struct text_stream *weave_range; /* which parts of the web in this weave */
 	struct text_stream *theme_match; /* pick out only paragraphs with this theme */
@@ -246,6 +281,7 @@ typedef struct weave_order {
 
 @<Compile a set of instructions for the weaver@> =
 	wv = CREATE(weave_order);
+	wv->weave_colony = context;
 	wv->weave_web = W;
 	wv->weave_range = Str::duplicate(range);
 	wv->pattern = pattern;
@@ -400,17 +436,17 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 void Swarm::include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename *from) {
 	weave_plugin *wp;
 	LOOP_OVER_LINKED_LIST(wp, weave_plugin, wv->plugins)
-		Assets::include_plugin(OUT, W, wp, wv->pattern, from, wv->verbosely);
+		Assets::include_plugin(OUT, W, wp, wv->pattern, from, wv->verbosely, wv->weave_colony);
 	colour_scheme *cs;
 	LOOP_OVER_LINKED_LIST(cs, colour_scheme, wv->colour_schemes)
-		Assets::include_colour_scheme(OUT, W, cs, wv->pattern, from,  wv->verbosely);
+		Assets::include_colour_scheme(OUT, W, cs, wv->pattern, from,  wv->verbosely, wv->weave_colony);
 }
 
 @ After every swarm, we rebuild the index:
 
 =
 void Swarm::weave_index_templates(ls_web *W, text_stream *range, weave_pattern *pattern,
-	pathname *into, filename *nav, linked_list *crumbs) {
+	pathname *into, filename *nav, linked_list *crumbs, colony *context) {
 	if (!(Bibliographic::data_exists(W, I"Version Number")))
 		Bibliographic::set_datum(W, I"Version Number", I" ");
 	filename *INF = Patterns::find_template(pattern, I"template-index.html");
@@ -424,7 +460,7 @@ void Swarm::weave_index_templates(ls_web *W, text_stream *range, weave_pattern *
 		if (WeavingDetails::get_as_ebook(W))
 			Epub::note_page(WeavingDetails::get_as_ebook(W), Contents, I"Index", I"index");
 		PRINT("    [index file: %f]\n", Contents);
-		Collater::collate(OUT, W, range, INF, pattern, nav, crumbs, NULL, Contents);
+		Collater::collate(OUT, W, range, INF, pattern, nav, crumbs, NULL, Contents, context);
 		STREAM_CLOSE(OUT);
 	}
 }

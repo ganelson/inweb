@@ -5,7 +5,7 @@ Constructing a suitable gitignore file for a simple inweb project.
 @ This is an extremely simple use of //foundation: Preprocessor//.
 
 =
-void Git::write_gitignore(ls_web *W, filename *prototype, filename *F) {
+void Git::write_gitignore(filename *prototype, filename *F) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor::new_macro(L, I"basics", NULL, Git::basics_expander, NULL);
 	text_stream *header = Str::new();

@@ -14,17 +14,34 @@ can recurse.
 
 =
 void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
-	module_search *import_path, int verbosely, int including_modules, pathname *path) {
-	int cl = 0;
+	module_search *import_path, int including_modules, pathname *path) {
+	wcl_declaration *D = W->declaration;
+	if (of_module != W->main_module) {
+		filename *F = WebModules::contents_filename(of_module);
+		D = WCL::read_for_type_only(F, WEB_WCLTYPE);
+		if (WCL::count_errors(D) > 0) return;
+		if (D->declaration_type != WEB_WCLTYPE) {
+			text_file_position tfp = TextFiles::at(F, 1);
+			WCL::error(D, &tfp, I"this seems not to be a contents page despite its name");
+		}
+		if (WCL::count_errors(D) > 0) { WCL::report_errors(D); return; }
+	}
 	web_contents_state RS;
 	@<Initialise the reader state@>;
 	if (W->web_syntax == NULL) W->web_syntax = WebSyntax::default();
 	else RS.syntax_externally_set = TRUE;
-	filename *F = WebModules::contents_filename(of_module);
-	if (of_module == W->main_module) F = WebStructure::contents_filename(W);
-	cl = TextFiles::read(F, FALSE, "can't open contents file",
-		TRUE, WebContents::read_contents_line, NULL, &RS);
-	if (verbosely) PRINT("Read contents section (%d lines)\n", cl);
+
+	text_file_position tfp = D->body_position;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		WebContents::read_contents_line(line, &tfp, (void *) &RS);
+		DISCARD_TEXT(line);
+		tfp.line_count++;
+		RS.relative_line_count++;
+	}
+	if (WCL::count_errors(D) > 0) { WCL::report_errors(D); return; }
 }
 
 @ This rather heavy slate of variables is kept track of while we read the
@@ -33,6 +50,7 @@ contents page in, line by line:
 =
 typedef struct web_contents_state {
 	struct ls_web *W;
+	int relative_line_count;
 	int in_biblio;
 	int in_purpose; /* Reading the bit just after the new chapter? */
 	struct ls_chapter *chapter_being_scanned;
@@ -42,7 +60,6 @@ typedef struct web_contents_state {
 	struct ls_module *reading_from;
 	struct module_search *import_from; /* Where imported webs are */
 	int syntax_externally_set;
-	int scan_verbosely;
 	int including_modules;
 	int main_web_not_module; /* Reading the original web, or an included one? */
 	int section_count;
@@ -55,13 +72,13 @@ typedef struct web_contents_state {
 
 @<Initialise the reader state@> =
 	RS.W = W;
+	RS.relative_line_count = 1;
 	RS.reading_from = of_module;
 	RS.in_biblio = TRUE;
 	RS.in_purpose = FALSE;
 	RS.chapter_being_scanned = NULL;
 	RS.chapter_dir_name = Str::new();
 	RS.titling_line_to_insert = Str::new();
-	RS.scan_verbosely = verbosely;
 	RS.including_modules = including_modules;
 	RS.path_to = path;
 	RS.import_from = import_path;
@@ -85,7 +102,7 @@ typedef struct web_contents_state {
 void WebContents::read_contents_line(text_stream *line, text_file_position *tfp, void *X) {
 	web_contents_state *RS = (web_contents_state *) X;
 	
-	if (tfp->line_count == 1) {
+	if (RS->relative_line_count == 1) {
 		match_results mr = Regexp::create_mr();
 		if ((Regexp::match(&mr, line, U"Version (%C+) of the (%c+) by (%c+).* *")) ||
 			(Regexp::match(&mr, line, U"Version (%C+) of (%c+) by (%c+).* *"))) {
@@ -143,7 +160,7 @@ want to react to an open declaration of that syntax immediately.
 	match_results mr = Regexp::create_mr();
 	if ((RS->allow_kvps) &&
 		(Regexp::match(&mr, line, U"Web Syntax Version: (%c+) *"))) {
-		ls_syntax *S = WebSyntax::syntax_by_name(mr.exp[0]);
+		ls_syntax *S = WebSyntax::syntax_by_name(RS->W, mr.exp[0]);
 		if (S) RS->W->web_syntax = S;
 	}
 	Regexp::dispose_of(&mr);
@@ -243,8 +260,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 				if (RS->including_modules) {
 					ls_syntax *save_syntax = RS->W->web_syntax;
 					WebContents::read_contents_page(RS->W, imported, RS->import_from,
-						RS->scan_verbosely, RS->including_modules,
-						imported->module_location);
+						RS->including_modules, imported->module_location);
 					RS->W->web_syntax = save_syntax;
 				}
 			}
@@ -325,7 +341,8 @@ with the same language as the main web unless stated otherwise.
 @<Mark this section as an independent tangle target@> =
 	text_stream *p = language_name;
 	if (Str::len(p) == 0) p = Bibliographic::get_datum(RS->W, I"Language");
-	S->sect_independent_language = Str::duplicate(p);
+	S->is_independent_target = TRUE;
+	S->sect_language_name = Str::duplicate(p);
 
 @ The filename for a section is as given in the contents listing: unless,
 when |.w| is appended, a file of that name exists in the relevant chapter

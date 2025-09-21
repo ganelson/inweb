@@ -1,3 +1,4 @@
+web "hellow" (Inweb, C): 1 section : 3 paragraphs : 34 lines
 Purpose 'A minimal example of a C program written for inweb.'
 S1
     C1: holon (used sequentially)

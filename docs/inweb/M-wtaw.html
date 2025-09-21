@@ -99,7 +99,7 @@ a comfortably legible version for human eyes instead. Let's now tangle:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/hellow.inweb</span><span class="ConsoleText-identifier-syntax"> -tangle</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> tangle inweb/Examples/hellow.inweb</span>
 <span class="ConsoleText-plain-syntax">    web "hellow": 1 section(s) : 1 paragraph(s) : 9 line(s)</span>
 <span class="ConsoleText-plain-syntax">    tangling &lt;inweb/Examples/hellow.c&gt; (written in C)</span>
 </pre>
@@ -350,7 +350,7 @@ is nothing fancy - as before, it's just
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -tangle</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> tangle inweb/Examples/goldbach</span>
 </pre>
 <p class="commentary">Assuming all goes well:
 </p>
@@ -378,7 +378,7 @@ and to obtain it we have to:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inform7</span><span class="ConsoleText-identifier-syntax"> -tangle</span><span class="ConsoleText-plain-syntax"> A</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> tangle inform7</span><span class="ConsoleText-identifier-syntax"> -range</span><span class="ConsoleText-plain-syntax"> A</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>In some C programs, it's useful to require that a header file be added to
 a tangle. This can be done by adding:
@@ -901,16 +901,16 @@ should make code completion and definition lookup features work.
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -ctags-to</span><span class="ConsoleText-plain-syntax"> secret_lair/my_nifty.ctags</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> tangle W</span><span class="ConsoleText-identifier-syntax"> -ctags-to</span><span class="ConsoleText-plain-syntax"> secret_lair/my_nifty.ctags</span>
 </pre>
 <p class="commentary">or not at all:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> W</span><span class="ConsoleText-identifier-syntax"> -tangle -no-ctags</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> tangle W</span><span class="ConsoleText-identifier-syntax"> -no-ctags</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-iti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresscurrent">wtaw</li><li class="progresssection"><a href="M-htwaw.html">htwaw</a></li><li class="progresssection"><a href="M-mwiw.html">mwiw</a></li><li class="progresssection"><a href="M-awwp.html">awwp</a></li><li class="progresssection"><a href="M-spl.html">spl</a></li><li class="progresssection"><a href="M-tid.html">tid</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-bsc.html">1</a></li><li class="progressnext"><a href="M-htwaw.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-iti.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresscurrent">wtaw</li><li class="progresssection"><a href="M-htwaw.html">htwaw</a></li><li class="progresssection"><a href="M-mwiw.html">mwiw</a></li><li class="progresssection"><a href="M-awwp.html">awwp</a></li><li class="progresssection"><a href="M-spl.html">spl</a></li><li class="progresssection"><a href="M-tid.html">tid</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-pc.html">1</a></li><li class="progressnext"><a href="M-htwaw.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

@@ -15,6 +15,7 @@ to store this redundant copy than to have to keep traversing the module tree.
 
 =
 typedef struct ls_web {
+	struct wcl_declaration *declaration;
 	struct ls_module *main_module; /* the root of a small dependency graph */
 	struct linked_list *chapters; /* of |ls_chapter| */
 
@@ -38,22 +39,23 @@ typedef struct ls_web {
 	CLASS_DEFINITION
 } ls_web;
 
-ls_web *WebStructure::new_ls_web(pathname *P, filename *c_F, filename *alt_F,
-	ls_syntax *syntax_version) {
+ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	ls_web *W = CREATE(ls_web);
+	W->declaration = D;
+	if (D) D->object_declared = STORE_POINTER_ls_web(W);
 	W->bibliographic_data = NEW_LINKED_LIST(web_bibliographic_datum);
 	Bibliographic::initialise_data(W);
-	if (P) {
-		W->path_to_web = P;
+	if (D->associated_path) {
+		W->path_to_web = D->associated_path;
 		W->single_file = NULL;
-		W->contents_filename = c_F;
+		W->contents_filename = D->associated_file;
 	} else {
-		W->path_to_web = Filenames::up(alt_F);
-		W->single_file = alt_F;
+		W->path_to_web = Filenames::up(D->associated_file);
+		W->single_file = D->associated_file;
 		W->contents_filename = NULL;
 	}
 	W->version_number = VersionNumbers::null();
-	W->web_syntax = syntax_version;
+	W->web_syntax = NULL;
 	W->chaptered = FALSE;
 	W->chapters = NEW_LINKED_LIST(ls_chapter);
 	W->tangle_target_names = NEW_LINKED_LIST(text_stream);
@@ -66,6 +68,32 @@ ls_web *WebStructure::new_ls_web(pathname *P, filename *c_F, filename *alt_F,
 	W->analysis_ref = NULL;
 	return W;
 }
+
+ls_web *WebStructure::from_declaration(wcl_declaration *D) {
+	if (D == NULL) return NULL;
+	return RETRIEVE_POINTER_ls_web(D->object_declared);
+}
+
+@h Web reading.
+
+=
+ls_web *WebStructure::read_fully(wcl_declaration *D, int enumerating, int weaving, int verbosely) {
+	ls_web *W = WebStructure::from_declaration(D);
+	WebStructure::read_web_source(W, verbosely, weaving);
+	WebErrors::issue_all_recorded(W);
+	@<Write the Inweb Version bibliographic datum@>;
+	CodeAnalysis::initialise_analysis_details(W);
+	WeavingDetails::initialise(W);
+	CodeAnalysis::analyse_web(W, enumerating, weaving);
+	return W;
+}
+
+@<Write the Inweb Version bibliographic datum@> =
+	TEMPORARY_TEXT(IB)
+	WRITE_TO(IB, "[[Version Number]]");
+	web_bibliographic_datum *bd = Bibliographic::set_datum(W, I"Inweb Version", IB);
+	bd->declaration_permitted = FALSE;
+	DISCARD_TEXT(IB)
 
 @ Statistics:
 
@@ -117,7 +145,7 @@ void WebStructure::print_statistics(ls_web *W) {
 	}
 	PRINT("web \"%S\"", Bibliographic::get_datum(W, I"Title"));
 	if (W->web_syntax) PRINT(" (%S", W->web_syntax->name); else PRINT(" (no syntax");
-	if (W->web_language) PRINT(", %S)", W->web_language->language_name); else PRINT(", no language)");
+	if (WebStructure::web_language(W)) PRINT(", %S)", WebStructure::web_language(W)->language_name); else PRINT(", no language)");
 	PRINT(": ");
 	if (W->chaptered) PRINT("%d chapter%s : ",
 		c, (c == 1)?"":"s");
@@ -219,7 +247,7 @@ typedef struct ls_section {
 
 	struct programming_language *sect_language; /* in which this section is written */
 	struct text_stream *sect_language_name;
-	struct text_stream *sect_independent_language;
+	int is_independent_target;
 	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
 	int paragraph_numbers_visible;
 
@@ -240,6 +268,9 @@ ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling) {
 	S->titling_line_to_insert = NULL;
 	S->sect_range = Str::new();
 	S->literate_source = NULL;
+	S->sect_language_name = NULL;
+	S->sect_language = NULL;
+	S->is_independent_target = FALSE;
 	S->sect_target = NULL;
 	S->paragraph_numbers_visible = TRUE;
 
@@ -312,42 +343,19 @@ in one (and thus, implicitly, a single chapter and a single section), in which
 case a filename |alt_F| is supplied.
 
 =
-ls_web *WebStructure::get_without_modules(pathname *P, filename *alt_F) {
-	return WebStructure::get(P, alt_F, NULL, NULL, FALSE, FALSE, NULL);
-}
-
-ls_web *WebStructure::get_without_targets(pathname *P, filename *alt_F, programming_language *pl) {
-	return WebStructure::get(P, alt_F, NULL, NULL, FALSE, TRUE, pl);
-}
-
-ls_web *WebStructure::get(pathname *P, filename *alt_F, ls_syntax *syntax_version,
-	module_search *I, int verbosely, int including_modules, programming_language *pl) {
-	if ((including_modules) && (I == NULL)) I = WebModules::make_search_path(NULL);
-	filename *contents_file = NULL;
-	if (alt_F) {
-		TEMPORARY_TEXT(extension)
-		Filenames::write_extension(extension, alt_F);
-		if ((Str::eq_insensitive(extension, I".inwebc")) ||
-			(Str::eq_insensitive(Filenames::get_leafname(alt_F), I"Contents.w"))) {
-			P = Filenames::up(alt_F);
-			contents_file = alt_F;
-			alt_F = NULL;
-		}
-	} else if (P) {
-		contents_file = Filenames::in(P, I"Contents.w");
-	} else internal_error("no location for web");
-	ls_web *W = WebStructure::new_ls_web(P, contents_file, alt_F, syntax_version);
+ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
+	ls_web *W = WebStructure::new_ls_web(D);
+	
 	if (W->single_file)
-		SingleFileWebs::reconnoiter(W, verbosely);
+		SingleFileWebs::reconnoiter(W);
 	else
-		WebContents::read_contents_page(W, W->main_module, I, verbosely, including_modules, NULL);
+		WebContents::read_contents_page(W, W->main_module,
+			WebModules::get_default_search_path(), TRUE, NULL);
 	if (W->web_syntax == NULL) internal_error("no LS syntax for web");
 
 	Bibliographic::check_required_data(W);
 	BuildFiles::set_bibliographic_data_for(W);
 	BuildFiles::deduce_semver(W);
-
-	TangleTargets::set_languages_and_targets(W, pl);
 	return W;
 }
 
@@ -373,9 +381,8 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	ls_module *M = S->owning_chapter->owning_module;
 	if ((M) && (M->module_location))
 		P = M->module_location; /* references are relative to module */
-	pathname *DP = Pathnames::down(W->path_to_web, I"Dialects"); /* dialects not */
 
-	S->literate_source = LiterateSource::begin_unit(S, W->web_syntax, S->sect_language, P, DP);
+	S->literate_source = LiterateSource::begin_unit(S, W->web_syntax, WebStructure::section_language(S), P, W);
 	if (Str::eq(Bibliographic::get_datum(W, I"Paragraph Numbers Visibility"), I"Off"))
 		S->paragraph_numbers_visible = FALSE;
 
@@ -414,6 +421,44 @@ void WebStructure::scan_source_line(text_stream *line, text_file_position *tfp, 
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
 	LiterateSource::feed_line(S->literate_source, tfp, line);
+}
+
+@h Language.
+I'm probably showing my age here: the default language for a web is C.
+
+=
+void WebStructure::resolve_declaration(wcl_declaration *D) {
+	ls_web *W = RETRIEVE_POINTER_ls_web(D->object_declared);
+	text_stream *language_name = Bibliographic::get_datum(W, I"Language");
+	if (Str::len(language_name) == 0) language_name = I"C";
+	W->web_language = Languages::find_or_fail(W, language_name);
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters) {
+		if (Str::len(C->ch_language_name) > 0)
+			C->ch_language = Languages::find_or_fail(W, C->ch_language_name);
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+			if (Str::len(S->sect_language_name) > 0)
+				S->sect_language = Languages::find_or_fail(W, S->sect_language_name);
+	}
+}
+
+programming_language *WebStructure::section_language(ls_section *S) {
+	if (S->sect_language == NULL) return WebStructure::chapter_language(S->owning_chapter);
+	return S->sect_language;
+}
+
+programming_language *WebStructure::chapter_language(ls_chapter *C) {
+	if (C->ch_language == NULL) return WebStructure::web_language(C->owning_web);
+	return C->ch_language;
+}
+
+programming_language *WebStructure::web_language(ls_web *W) {
+	return W->web_language;
+}
+
+void WebStructure::set_language(ls_web *W, programming_language *pl) {
+	Bibliographic::set_datum(W, I"Language", pl->language_name);
+	W->web_language = pl;
 }
 
 @h Debugging.

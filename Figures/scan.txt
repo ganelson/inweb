@@ -1,3 +1,4 @@
+web "The Twin Primes Conjecture" (Inweb, C): 1 section : 3 paragraphs : 51 lines
 Purpose 'This example of using inweb is a whole web in a single short file, to look for twin primes, a classic problem in number theory.'
 S1 'The conjecture'
     C1: commentary

@@ -13,7 +13,7 @@
 # rebuild "macos.mk" by setting the current working directory to the directory
 # _above_ "inweb", and using the command:
 
-# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/macos.mkscript -makefile inweb/Materials/platforms/macos.mk
+# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/macos.mkscript -to inweb/Materials/platforms/macos.mk
 
 # Or simply:
 

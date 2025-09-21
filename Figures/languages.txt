@@ -1,1 +1,24 @@
-old-Inweb (aka '1')
+The following Inweb resources are available for any web or colony to use:
+Language: ACME
+Language: Blurb
+Language: BoxArt
+Language: C
+Language: C++
+Language: ConsoleText
+Language: Delia
+Language: Extracts
+Language: ILDF
+Language: InC
+Language: Indoc
+Language: Inform 6
+Language: Inform 7
+Language: Inter
+Language: Inter Pipeline
+Language: Inweb
+Language: None
+Language: PainterOutput
+Language: Perl
+Language: Plain Text
+Language: Preform
+Language: REPL
+Notation: Inweb

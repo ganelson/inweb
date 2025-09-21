@@ -46,7 +46,7 @@ the language in question is really quite specific to a single web, you can
 make a |Dialects| subdirectory of the web and put it in there. (A dialect is,
 after all, a local language.)
 
-For testing purposes, running with |-test-language F -test-language-on G|
+For testing purposes, running with |-test-language F -on G|
 reads in a file |G| of code, and syntax-colours it according to the rules
 for the language defined in the file |F|, then prints a plain-text diagram
 of the results. (This can then be tested with Intest test cases, as indeed

@@ -92,6 +92,16 @@ typedef struct module_search {
 } module_search;
 
 @ =
+module_search *default_module_search_path = NULL;
+void WebModules::set_default_search_path(module_search *I) {
+	default_module_search_path = I;
+}
+module_search *WebModules::get_default_search_path(void) {
+	if (default_module_search_path == NULL)
+		default_module_search_path = WebModules::make_search_path(NULL);
+	return default_module_search_path;
+}
+
 module_search *WebModules::make_search_path(pathname *ext_path) {
 	module_search *ms = CREATE(module_search);
 	ms->path_to_search = ext_path;
@@ -159,6 +169,7 @@ int WebModules::named_reference(ls_module **return_M, ls_section **return_Sm,
 	int *named_as_module, text_stream *title, ls_module *from_M, text_stream *text,
 	int list, int sections_only) {
 	*return_M = NULL; *return_Sm = NULL; *named_as_module = FALSE;
+
 	ls_module *M;
 	int finds = 0;
 	if (from_M == NULL) return 0;
@@ -170,13 +181,12 @@ int WebModules::named_reference(ls_module **return_M, ls_section **return_Sm,
 	} else {
 		seek_module = from_M->module_name; seek = text;
 	}
-	LOOP_OVER_LINKED_LIST(M, ls_module, from_M->dependencies) {
-		if (Str::eq_insensitive(M->module_name, seek_module)) {
+	LOOP_OVER_LINKED_LIST(M, ls_module, from_M->dependencies)
+		if (Str::eq_insensitive(M->module_name, seek_module))
 			@<Look for references to chapters or sections in M@>;
-		}
-	}
 	Regexp::dispose_of(&mr);
 	seek = text;
+
 	for (int stage = 1; ((finds == 0) && (stage <= 2)); stage++) {
 		if (stage == 1) {
 			M = from_M;

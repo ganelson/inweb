@@ -412,7 +412,7 @@ void InCSupport::additional_predeclarations(programming_language *self, text_str
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
 		if (L->preform_nonterminal_defined) {
 			preform_nonterminal *pnt = L->preform_nonterminal_defined;
-			LanguageMethods::insert_line_marker(OUT, W->web_language, lst);
+			LanguageMethods::insert_line_marker(OUT, WebStructure::web_language(W), lst);
 			WRITE("nonterminal *%S = NULL;\n", pnt->as_C_identifier);
 		}
 	}
@@ -444,7 +444,7 @@ void InCSupport::gnabehs(programming_language *self, text_stream *OUT, ls_web *W
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
 		if (L->preform_nonterminal_defined) {
 			preform_nonterminal *pnt = L->preform_nonterminal_defined;
-			LanguageMethods::insert_line_marker(OUT, W->web_language, lst);
+			LanguageMethods::insert_line_marker(OUT, WebStructure::web_language(W), lst);
 			if (pnt->as_function) {
 				WRITE("\tINTERNAL_NONTERMINAL(U\"%S\", %S, %d, %d);\n",
 					pnt->nt_name, pnt->as_C_identifier,
@@ -570,7 +570,8 @@ first line, 1 for the second, and so on) by default, with an undefined pointer.
 		A_lst = A_lst->next_line, c++) {
 		text_stream *formula = A_lst->classification.operand2;
 		if (Str::len(formula) > 0) {
-			LanguageMethods::insert_line_marker(OUT, LiterateSource::section_of_line(A_lst)->sect_language, A_lst);
+			LanguageMethods::insert_line_marker(OUT,
+				WebStructure::section_language(LiterateSource::section_of_line(A_lst)), A_lst);
 			WRITE("\t\tcase %d: ", c);
 			@<Tangle the formula on the right-hand side of the arrow@>;
 			WRITE(";\n");

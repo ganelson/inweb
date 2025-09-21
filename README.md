@@ -1,6 +1,6 @@
-# Inweb 8.0
+# Inweb 9.0
 
-[Version](notes/versioning.md): 8.0-beta+1B70 'Crater of Needles' (8 September 2025)
+[Version](notes/versioning.md): 9.0-beta+1B81 'Invasion' (21 September 2025)
 
 ## About Inweb
 

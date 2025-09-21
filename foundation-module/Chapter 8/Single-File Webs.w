@@ -11,12 +11,22 @@ The following function doesn't read in the source code stored in the web, it
 simply takes a preliminary look.
 
 =
-void SingleFileWebs::reconnoiter(ls_web *W, int verbosely) {
+void SingleFileWebs::reconnoiter(ls_web *W) {
 	sfw_reader_state RS;
 	@<Initialise the reader state@>;
 	if (W->web_syntax) WebSyntax::declare_syntax_for_web(W, W->web_syntax);
-	TextFiles::read(W->single_file, FALSE, "can't open contents file",
-		TRUE, SingleFileWebs::read_sf_line, NULL, &RS);
+	
+	wcl_declaration *D = W->declaration;
+	text_file_position tfp = D->body_position;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		SingleFileWebs::read_sf_line(line, &tfp, (void *) &RS);
+		DISCARD_TEXT(line);
+		tfp.line_count++;
+	}
+	if (WCL::count_errors(D) > 0) { WCL::report_errors(D); return; }
 
 	ls_chapter *C = WebStructure::new_ls_chapter(W, I"S", I"Sections");
 	WebModules::add_chapter(W->main_module, C);
@@ -28,30 +38,19 @@ void SingleFileWebs::reconnoiter(ls_web *W, int verbosely) {
 	if (RS.detected_syntax == NULL) @<Try to deduce the syntax from the filename extension@>;
 
 	@<Apply any detected syntax and programming language to the web@>;
-
-	if (verbosely)
-		PRINT("(Single-file web at %f: syntax %S, language %S: skipping line(s) %d-%d)\n",
-		W->single_file,
-		W->web_syntax?(W->web_syntax->name):(I"none"),
-		W->web_language?(W->web_language->language_name):(I"none"),
-		S->skip_from, S->skip_to);
 }
 
 @ Very much a last resort: this is used only if we didn't know the syntax in
 advance, and the file didn't declare one explicitly, and didn't have a shebang.
 
 @<Try to deduce the syntax from the filename extension@> =
-	RS.detected_syntax = WebSyntax::guess_from_filename(W->single_file);
+	RS.detected_syntax = WebSyntax::guess_from_filename(W, W->single_file);
 	if (RS.detected_syntax == NULL) RS.detected_syntax = WebSyntax::default();
 
 @<Apply any detected syntax and programming language to the web@> =
 	WebSyntax::declare_syntax_for_web(W, RS.detected_syntax);
 
-	if (RS.detected_language) {
-		W->web_language = RS.detected_language;
-		C->ch_language = RS.detected_language;
-		S->sect_language = RS.detected_language;
-	}
+	if (RS.detected_language) WebStructure::set_language(W, RS.detected_language);
 
 @ We are hoping to deduce the web syntax, the programming language, and
 whether there is a stretch of lines in the file which are not part of the
@@ -82,11 +81,6 @@ typedef struct sfw_reader_state {
 
 	/* Where we are in the file: */
 	int reading_opening_stanza;
-	int reading_syntax_instructions;
-
-	/* Relevant only when reading syntax instructions: */
-	struct text_stream *syntax_prefix;
-	struct text_stream *syntax_suffix;
 } sfw_reader_state;
 
 @<Initialise the reader state@> =
@@ -98,9 +92,6 @@ typedef struct sfw_reader_state {
 	RS.skip_to = 0;
 
 	RS.reading_opening_stanza = TRUE;
-	RS.reading_syntax_instructions = FALSE;
-	RS.syntax_prefix = NULL;
-	RS.syntax_suffix = NULL;
 
 @
 
@@ -113,11 +104,6 @@ void SingleFileWebs::read_sf_line(text_stream *line, text_file_position *tfp, vo
 		@<Look for a shebang on line 1@>;
 
 	if (RS->reading_opening_stanza) @<Look for key-value pairs at the top of the file@>;
-	
-	if (RS->reading_syntax_instructions == FALSE)
-		@<Enter syntax instructions block@>
-	else if (RS->reading_syntax_instructions == TRUE)
-		@<Parse a line within the syntax instructions block@>;
 }
 
 @ Maybe the opening line of the web indicates what the web syntax is, and if
@@ -127,12 +113,11 @@ part of the web, and is not skipped.
 @<Look for a shebang on line 1@> =
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(author)
-	ls_syntax *S = WebSyntax::guess_from_shebang(line, tfp, title, author);
+	ls_syntax *S = WebSyntax::guess_from_shebang(RS->W, line, tfp, title, author);
 	if (S) {
 		RS->detected_syntax = S;
 		if (Str::len(title) > 0) Bibliographic::set_datum(RS->W, I"Title", title);
 		if (Str::len(author) > 0) Bibliographic::set_datum(RS->W, I"Author", author);
-		RS->reading_syntax_instructions = NOT_APPLICABLE;
 		RS->reading_opening_stanza = FALSE;
 	}
 	DISCARD_TEXT(title)
@@ -149,47 +134,15 @@ the first line which doesn't match, and is then trimmed away by being skipped.
 			(WebSyntax::supports(RS->detected_syntax, KEY_VALUE_PAIRS_WSF))) &&
 		(Bibliographic::parse_kvp(RS->W, line, TRUE, tfp, key))) {
 		if (Str::eq(key, I"Web Syntax Version")) {
-			ls_syntax *S = WebSyntax::syntax_by_name(Bibliographic::get_datum(RS->W, key));
+			ls_syntax *S = WebSyntax::syntax_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
 			if (S) RS->detected_syntax = S;
 		}
 		if (Str::eq(key, I"Language")) {
-			programming_language *L = TangleTargets::find_language(Bibliographic::get_datum(RS->W, key), RS->W,
-				FALSE);
+			programming_language *L = Languages::find(RS->W, Bibliographic::get_datum(RS->W, key));
 			if (L) RS->detected_language = L;
 		}
 		RS->skip_from = 1; RS->skip_to = tfp->line_count;
-		RS->reading_syntax_instructions = NOT_APPLICABLE;
 	} else {
 		RS->reading_opening_stanza = FALSE;
 	}
 	DISCARD_TEXT(key)
-
-@ That just leaves the ad-hoc syntax definition.
-
-@<Enter syntax instructions block@> =
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, U"(%c*? *)inweb syntax:(%c*?) *")) {
-		RS->syntax_prefix = Str::duplicate(mr.exp[0]);
-		RS->syntax_suffix = Str::duplicate(mr.exp[1]);
-		Str::trim_white_space_at_end(RS->syntax_suffix);
-		RS->reading_syntax_instructions = TRUE;
-		RS->detected_syntax = WebSyntax::read_definition(NULL);
-		RS->skip_from = tfp->line_count;
-	}
-	Regexp::dispose_of(&mr);
-
-@<Parse a line within the syntax instructions block@> =
-	Str::trim_white_space_at_end(line);
-	if ((Str::begins_with(line, RS->syntax_prefix)) &&
-		(Str::ends_with(line, RS->syntax_suffix))) {
-		TEMPORARY_TEXT(middle)
-		Str::substr(middle,
-			Str::at(line, Str::len(RS->syntax_prefix)), 
-			Str::at(line, Str::len(line) - Str::len(RS->syntax_suffix)));
-		text_stream *error = WebSyntax::apply_syntax_setting(RS->detected_syntax, middle);
-		DISCARD_TEXT(middle)
-		if (Str::len(error) > 0) Errors::in_text_file_S(error, tfp);
-		RS->skip_to = tfp->line_count;
-	} else {
-		RS->reading_syntax_instructions = NOT_APPLICABLE;
-	}

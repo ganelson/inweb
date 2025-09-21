@@ -13,7 +13,7 @@
 # rebuild "macosarm.mk" by setting the current working directory to the directory
 # _above_ "inweb", and using the command:
 
-# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/macosarm.mkscript -makefile inweb/Materials/platforms/macosarm.mk
+# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/macosarm.mkscript -to inweb/Materials/platforms/macosarm.mk
 
 # Or simply:
 

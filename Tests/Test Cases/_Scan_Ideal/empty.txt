@@ -1,3 +1,4 @@
+web "test" (Inweb, C): 1 section : 1 paragraph : 9 lines
 Purpose 'A minimal example of a C program written for inweb.'
 S1
     C1: commentary

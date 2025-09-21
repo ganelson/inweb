@@ -781,6 +781,7 @@ general_pointer STORE_POINTER_##type_name(type_name *data) {
 type_name *RETRIEVE_POINTER_##type_name(general_pointer gp) {
 	if (gp.run_time_type_code != id_code) {
 		LOG("Wanted ID code %d, found %d\n", id_code, gp.run_time_type_code);
+		WRITE_TO(STDERR, "Wanted ID code %d, found %d\n", id_code, gp.run_time_type_code);
 		internal_error("attempt to retrieve wrong pointer type as " #type_name);
 	}
 	return (type_name *) gp.pointer_to_data;
@@ -788,6 +789,7 @@ type_name *RETRIEVE_POINTER_##type_name(general_pointer gp) {
 general_pointer PASS_POINTER_##type_name(general_pointer gp) {
 	if (gp.run_time_type_code != id_code) {
 		LOG("Wanted ID code %d, found %d\n", id_code, gp.run_time_type_code);
+		WRITE_TO(STDERR, "Wanted ID code %d, found %d\n", id_code, gp.run_time_type_code);
 		internal_error("attempt to pass wrong pointer type as " #type_name);
 	}
 	return gp;

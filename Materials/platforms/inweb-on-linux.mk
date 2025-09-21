@@ -33,16 +33,16 @@ COLONY = $(ME)/colony.txt
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+
+$(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+	$(call make-licence-build)
 
 $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-me)
 
 $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-ftest)
-
-$(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
-	$(call make-licence-build)
 
 .PHONY: force
 force: $(ME)/platform-settings.mk
@@ -52,22 +52,22 @@ force: $(ME)/platform-settings.mk
 
 .PHONY: makers
 makers:
-	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
-	$(INWEB) $(LBUILD) -makefile $(LBUILD)/licence-build.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/macos.mkscript -makefile $(ME)/Materials/platforms/macos.mk
-	$(INWEB) -platform macos -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/macos32.mkscript -makefile $(ME)/Materials/platforms/macos32.mk
-	$(INWEB) -platform macos32 -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macos32.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/macosarm.mkscript -makefile $(ME)/Materials/platforms/macosarm.mk
-	$(INWEB) -platform macosarm -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macosarm.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/macosuniv.mkscript -makefile $(ME)/Materials/platforms/macosuniv.mk
-	$(INWEB) -platform macosuniv -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-macosuniv.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/windows.mkscript -makefile $(ME)/Materials/platforms/windows.mk
-	$(INWEB) -platform windows -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-windows.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/linux.mkscript -makefile $(ME)/Materials/platforms/linux.mk
-	$(INWEB) -platform linux -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-linux.mk
-	$(INWEB) -prototype $(ME)/Materials/platforms/unix.mkscript -makefile $(ME)/Materials/platforms/unix.mk
-	$(INWEB) -platform unix -prototype $(ME)/scripts/inweb.mkscript -makefile $(ME)/Materials/platforms/inweb-on-unix.mk
+	$(INWEB) make-makefile $(FTEST) -to $(FTEST)/foundation-test.mk
+	$(INWEB) make-makefile $(LBUILD) -to $(LBUILD)/licence-build.mk
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macos.mk -script $(ME)/Materials/platforms/macos.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macos.mk -platform macos -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macos32.mk -script $(ME)/Materials/platforms/macos32.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macos32.mk -platform macos32 -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macosarm.mk -script $(ME)/Materials/platforms/macosarm.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macosarm.mk -platform macosarm -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macosuniv.mk -script $(ME)/Materials/platforms/macosuniv.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macosuniv.mk -platform macosuniv -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/windows.mk -script $(ME)/Materials/platforms/windows.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-windows.mk -platform windows -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/linux.mk -script $(ME)/Materials/platforms/linux.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-linux.mk -platform linux -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/unix.mk -script $(ME)/Materials/platforms/unix.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-unix.mk -platform unix -script $(ME)/scripts/inweb.mkscript
 
 .PHONY: initial
 initial: $(ME)/platform-settings.mk
@@ -79,13 +79,17 @@ initial: $(ME)/platform-settings.mk
 safe:
 	$(call make-me-using-safety-copy)
 
+.PHONY: licences
+licences:
+	$(LBUILD)/Tangled/licence-build -from $(ME)/Materials/licenses.json >$(ME)/foundation-module/Chapter\ 7/SPDX\ Licences.w	
+
 define make-me-once-tangled
 	$(CC) -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
 	$(CC) $(CCOPTS) -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o  -lm -pthread $(LDFLAGS)
 endef
 
 define make-me
-	$(ME)/Tangled/$(ME) $(ME) -tangle
+	$(ME)/Tangled/$(ME) tangle $(ME)
 	$(call make-me-once-tangled)
 endef
 
@@ -95,12 +99,12 @@ define make-me-using-safety-copy
 endef
 
 define make-ftest
-	$(INWEB) $(FTEST) -makefile $(FTEST)/foundation-test.mk
+	$(INWEB) make-makefile $(FTEST) -to $(FTEST)/foundation-test.mk
 	make -f $(FTEST)/foundation-test.mk force
 endef
 
 define make-licence-build
-	$(INWEB) $(LBUILD) -makefile $(LBUILD)/licence-build.mk
+	$(INWEB) make-makefile $(LBUILD) -to $(LBUILD)/licence-build.mk
 	make -f $(LBUILD)/licence-build.mk force
 endef
 
@@ -110,19 +114,19 @@ test:
 
 .PHONY: commit
 commit:
-	$(INWEB) -advance-build-file $(ME)/build.txt
-	$(INWEB) -prototype inweb/scripts/inweb.rmscript -write-me inweb/README.md
+	$(INWEB) advance-build $(ME)
+	$(INWEB) make-readme $(ME)
 	cd $(ME); git commit -a
 
 .PHONY: pages
 pages:
-	$(INWEB) -help > $(ME)/Figures/help.txt
-	$(INWEB) -show-languages > $(ME)/Figures/languages.txt
-	$(INWEB) -colony $(COLONY) -member twinprimes -scan > $(ME)/Figures/scan.txt
-	$(INWEB) -colony $(COLONY) -member twinprimes -weave-as TestingInweb -weave-to $(ME)/Figures/tree.txt
+	$(INWEB) help > $(ME)/Figures/help.txt
+	$(INWEB) inspect -resources > $(ME)/Figures/languages.txt
+	$(INWEB) inspect -colony $(COLONY) -member twinprimes -scan > $(ME)/Figures/scan.txt
+	$(INWEB) weave -colony $(COLONY) -member twinprimes -as TestingInweb -to $(ME)/Figures/tree.txt
 	cp -f $(COLONY) $(ME)/Figures/colony.txt
 	cp -f $(ME)/docs-src/nav.html $(ME)/Figures/nav.txt
-	$(INWEB) -advance-build-file $(ME)/build.txt
+	$(INWEB) advance-build $(ME)
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html
 	mkdir -p $(ME)/docs/docs-assets
@@ -130,7 +134,7 @@ pages:
 	rm -f $(ME)/docs/docs-assets/*.png
 	rm -f $(ME)/docs/docs-assets/*.gif
 	cp -f $(ME)/docs-src/Octagram.png $(ME)/docs/docs-assets/Octagram.png
-	$(INWEB) -prototype inweb/scripts/inweb.rmscript -write-me inweb/README.md
+	$(INWEB) make-readme $(ME)
 	mkdir -p $(ME)/docs/inweb
 	rm -f $(ME)/docs/inweb/*.html
 	mkdir -p $(ME)/docs/goldbach
@@ -143,17 +147,17 @@ pages:
 	rm -f $(ME)/docs/foundation-module/*.html
 	mkdir -p $(ME)/docs/foundation-test
 	rm -f $(ME)/docs/foundation-test/*.html
-	$(INWEB) -colony $(COLONY) -member overview -weave
-	$(INWEB) -colony $(COLONY) -member goldbach -weave
-	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as Plain -weave-to inweb/docs/goldbach/goldbach.txt
-	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as TestingInweb -weave-to inweb/docs/goldbach/goldbach-test.txt
-	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as PDFTeX -weave-to inweb/docs/goldbach/goldbach.pdf
-	$(INWEB) -colony $(COLONY) inweb/Examples/goldbach all -weave-as TeX -weave-to inweb/docs/goldbach/goldbach.tex
-	$(INWEB) -colony $(COLONY) -member twinprimes -weave
-	$(INWEB) -colony $(COLONY) -member eastertide -weave
-	$(INWEB) -colony $(COLONY) -member inweb -weave
-	$(INWEB) -colony $(COLONY) -member foundation -weave
-	$(INWEB) -colony $(COLONY) -member foundation-test -weave
+	$(INWEB) weave -colony $(COLONY) -member overview
+	$(INWEB) weave -colony $(COLONY) -member goldbach
+	$(INWEB) weave -colony $(COLONY) -member goldbach -as Plain        -to inweb/docs/goldbach/goldbach.txt
+	$(INWEB) weave -colony $(COLONY) -member goldbach -as TestingInweb -to inweb/docs/goldbach/goldbach-test.txt
+	$(INWEB) weave -colony $(COLONY) -member goldbach -as PDFTeX       -to inweb/docs/goldbach/goldbach.pdf
+	$(INWEB) weave -colony $(COLONY) -member goldbach -as TeX          -to inweb/docs/goldbach/goldbach.tex
+	$(INWEB) weave -colony $(COLONY) -member twinprimes
+	$(INWEB) weave -colony $(COLONY) -member eastertide
+	$(INWEB) weave -colony $(COLONY) -member inweb
+	$(INWEB) weave -colony $(COLONY) -member foundation
+	$(INWEB) weave -colony $(COLONY) -member foundation-test
 
 .PHONY: clean
 clean:

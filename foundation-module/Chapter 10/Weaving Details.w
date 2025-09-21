@@ -20,14 +20,13 @@ typedef struct ls_chapter_weaving_details {
 typedef struct ls_section_weaving_details {
 	struct weave_order *sect_weave; /* |NULL| unless this section produces a weave of its own */
 	struct filename *sect_weave_to; /* |NULL| unless some special choice has been made */
-	int printed_number; /* temporary again: sometimes used in weaving */
 	CLASS_DEFINITION
 } ls_section_weaving_details;
 
 @
 
 =
-void WeavingDetails::initialise(ls_web *W, pathname *redirection) {
+void WeavingDetails::initialise(ls_web *W) {
 	@<Give the web weaving details@>;
 	ls_chapter *C;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters) {
@@ -42,7 +41,7 @@ void WeavingDetails::initialise(ls_web *W, pathname *redirection) {
 	ls_web_weaving_details *weave_details = CREATE(ls_web_weaving_details);
 	W->weaving_ref = (void *) weave_details;
 	weave_details->as_ebook = NULL;
-	weave_details->redirect_weaves_to = redirection;
+	weave_details->redirect_weaves_to = NULL;
 
 @<Give the chapter weaving details@> =
 	ls_chapter_weaving_details *weave_details = CREATE(ls_chapter_weaving_details);
@@ -52,7 +51,6 @@ void WeavingDetails::initialise(ls_web *W, pathname *redirection) {
 @<Give the section weaving details@> =
 	ls_section_weaving_details *weave_details = CREATE(ls_section_weaving_details);
 	S->weaving_ref = (void *) weave_details;
-	weave_details->printed_number = -1;
 	weave_details->sect_weave = NULL;
 	weave_details->sect_weave_to = NULL;
 
@@ -95,14 +93,6 @@ weave_order *WeavingDetails::get_sect_weave(ls_section *S) {
 
 void WeavingDetails::set_sect_weave(ls_section *S, weave_order *val) {
 	((ls_section_weaving_details *) (S->weaving_ref))->sect_weave = val;
-}
-
-int WeavingDetails::get_section_number(ls_section *S) {
-	return ((ls_section_weaving_details *) (S->weaving_ref))->printed_number;
-}
-
-void WeavingDetails::set_section_number(ls_section *S, int val) {
-	((ls_section_weaving_details *) (S->weaving_ref))->printed_number = val;
 }
 
 filename *WeavingDetails::get_section_weave_to(ls_section *S) {

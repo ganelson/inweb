@@ -15,7 +15,7 @@
 # rebuild "windows.mk" by setting the current working directory to the directory
 # _above_ "inweb", and using the command:
 
-# inweb/Tangled/inweb inweb -prototype inweb/Materials/platforms/windows.mkscript -makefile inweb/Materials/platforms/windows.mk
+# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/windows.mkscript -to inweb/Materials/platforms/windows.mk
 
 # Or simply:
 

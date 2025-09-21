@@ -15,6 +15,78 @@ there are two switches, |-log| taking an argument (it has valency 2
 in the terminology below), |-fixtime| not (valency 1). There are
 then two barewords, |jam| and |marmalade|.
 
+@h Subcommands.
+In case of a prodigious number of switches (ever tried typing |clang -help|?),
+we'll hash the switch names into a dictionary as well as keeping a list.
+
+@e NO_CLSUB from 0
+@e NO_COMMAND_CLSUB
+
+=
+typedef struct command_line_subcommand {
+	int subcommand_id;
+	struct text_stream *command_name; /* e.g., |compile| */
+	struct text_stream *heading; /* explanatory text */
+	struct dictionary *cls_dictionary;
+	struct linked_list *cls_list; /* of |command_line_switch| */
+	CLASS_DEFINITION
+} command_line_subcommand;
+
+command_line_subcommand *current_subcommand = NULL, *empty_subcommand = NULL;
+
+command_line_subcommand *CommandLine::new_subcommand(int id, inchar32_t *name) {
+	command_line_subcommand *sub = CREATE(command_line_subcommand);
+	sub->subcommand_id = id;
+	sub->command_name = Str::new_from_wide_string(name);
+	sub->heading = NULL;
+	sub->cls_dictionary = Dictionaries::new(32, FALSE);
+	sub->cls_list = NEW_LINKED_LIST(command_line_switch);
+	return sub;
+}
+
+command_line_subcommand *CommandLine::get_empty_subcommand(void) {
+	if (empty_subcommand == NULL)
+		empty_subcommand = CommandLine::new_subcommand(NO_COMMAND_CLSUB, NULL);
+	return empty_subcommand;
+}
+
+void CommandLine::begin_subcommand(int id, inchar32_t *name) {
+	if ((current_subcommand) &&
+		(current_subcommand != CommandLine::get_empty_subcommand()))
+		internal_error("must finish declaring one subcommand before starting another");
+	current_subcommand = CommandLine::new_subcommand(id, name);
+}
+
+command_line_subcommand *CommandLine::current_subcommand(void) {
+	if (current_subcommand == NULL)
+		current_subcommand = CommandLine::get_empty_subcommand();
+	return current_subcommand;
+}
+
+void CommandLine::declare_heading(inchar32_t *heading_text_literal) {
+	command_line_subcommand *cls = CommandLine::current_subcommand();
+	cls->heading = Str::new_from_wide_string(heading_text_literal);
+}
+
+void CommandLine::add_to_current_subcommand(command_line_switch *cls) {
+	command_line_subcommand *sub = CommandLine::current_subcommand();
+	Dictionaries::create(sub->cls_dictionary, cls->switch_name);
+	Dictionaries::write_value(sub->cls_dictionary, cls->switch_name, cls);
+	ADD_TO_LINKED_LIST(cls, command_line_subcommand, sub->cls_list);
+}
+
+command_line_switch *CommandLine::find_cls(command_line_subcommand *context,
+	text_stream *opt) {
+	if (context == NULL) context = CommandLine::get_empty_subcommand();
+	if (Dictionaries::find(context->cls_dictionary, opt) == NULL) return NULL;
+	return Dictionaries::read_value(context->cls_dictionary, opt);
+}
+
+void CommandLine::end_subcommand(void) {
+	CommandLine::end_group();
+	current_subcommand = CommandLine::get_empty_subcommand();
+}
+
 @h Switches.
 Each different switch available is stored in one of these structures.
 Switches come in five sorts:
@@ -45,12 +117,6 @@ typedef struct command_line_switch {
 	CLASS_DEFINITION
 } command_line_switch;
 
-@ In case of a prodigious number of switches (ever tried typing |clang -help|?),
-we'll hash the switch names into the following:
-
-=
-dictionary *cls_dictionary = NULL;
-
 @ The client must declare all the switches her program will make use of, not
 counting the standard set already declared by Foundation (such as |-help|).
 A new |*_CLSW| value should be enumerated to be the ID referring to this
@@ -65,7 +131,14 @@ void CommandLine::begin_group(int id, text_stream *name) {
 	current_switch_group = id;
 	switch_group_names[id] = name;
 }
+void CommandLine::resume_group(int id) {
+	if (current_switch_group == -1)
+		for (int i=0; i<=NO_DEFINED_CLSG_VALUES; i++) switch_group_names[i] = NULL;
+	current_switch_group = id;
+}
 void CommandLine::end_group(void) {
+	if (current_switch_group == -1)
+		for (int i=0; i<=NO_DEFINED_CLSG_VALUES; i++) switch_group_names[i] = NULL;
 	current_switch_group = NO_CLSG;
 }
 command_line_switch *CommandLine::declare_switch(int id,
@@ -80,7 +153,6 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 		current_switch_group = NO_CLSG;
 		for (int i=0; i<=NO_DEFINED_CLSG_VALUES; i++) switch_group_names[i] = NULL;
 	}
-	if (cls_dictionary == NULL) cls_dictionary = Dictionaries::new(16, FALSE);
 	command_line_switch *cls = CREATE(command_line_switch);
 	cls->switch_name = name;
 	@<Make the sorting name@>;
@@ -91,8 +163,7 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 	cls->active_by_default = FALSE;
 	cls->negates = NULL;
 	cls->switch_group = current_switch_group;
-	Dictionaries::create(cls_dictionary, cls->switch_name);
-	Dictionaries::write_value(cls_dictionary, cls->switch_name, cls);
+	CommandLine::add_to_current_subcommand(cls);
 	return cls;
 }
 
@@ -160,25 +231,34 @@ general, the client should then exit with exit code 0 if this happens.
 @ Here goes the reader. It works through the command line arguments, then
 through the file if one has by that point been provided.
 
+Note that |NO_CLSUB| is 0, and so evaluates to |FALSE|, but that this is
+different from |NO_COMMAND_CLSUB|, which means that something substantive
+was requested but that no subcommand was issued as part of it.
+
 @d BOGUS_CLSN -12345678 /* bogus because guaranteed not to be a genuine switch ID */
 
 =
 typedef struct clf_reader_state {
 	void *state;
+	struct command_line_subcommand *subcommand_selected;
 	void (*f)(int, int, text_stream *, void *);
 	void (*g)(int, text_stream *, void *);
 	int subs;
 	int nrt;
+	int counter;
 } clf_reader_state;
 
 int CommandLine::read(int argc, char **argv, void *state,
 	void (*f)(int, int, text_stream *, void *), void (*g)(int, text_stream *, void *)) {
 	clf_reader_state crs;
-	crs.state = state; crs.f = f; crs.g = g;
-	crs.subs = FALSE; crs.nrt = 0;
+	crs.state = state; crs.subcommand_selected = CommandLine::get_empty_subcommand();
+	crs.f = f; crs.g = g;
+	crs.subs = FALSE; crs.nrt = 0; crs.counter = 0;
 	CommandLine::read_array(&crs, argc, argv);
 	CommandLine::read_file(&crs);
-	return crs.subs;
+	if (crs.subcommand_selected) return crs.subcommand_selected->subcommand_id;
+	if (crs.subs == FALSE) return NO_CLSUB;
+	return NO_COMMAND_CLSUB;
 }
 
 void CommandLine::set_locale(int argc, char **argv) {
@@ -205,10 +285,27 @@ void CommandLine::read_array(clf_reader_state *crs, int argc, char **argv) {
 				Errors::fatal_with_text("unknown command line switch: -%S", opt);
 			i += N - 1;
 		} else {
-			CommandLine::read_one(crs, opt);
+			command_line_subcommand *found = NULL;
+			if (crs->counter == 0) {
+				command_line_subcommand *sub;
+				LOOP_OVER(sub, command_line_subcommand)
+					if ((Str::len(sub->command_name) > 0) && (Str::eq(opt, sub->command_name)))
+						found = sub;
+			}
+			if (found) crs->subcommand_selected = found;
+			else if (Str::eq(opt, I"help")) {
+				command_line_subcommand *sub;
+				LOOP_OVER(sub, command_line_subcommand)
+					if (Str::eq(arg, sub->command_name))
+						found = sub;
+				if (found == NULL) WRITE_TO(STDOUT, "No such command as '%S'. General help:\n\n", arg);
+				else i++;
+				CommandLine::write_help(STDOUT, found);
+			} else CommandLine::read_one(crs, opt);
 		}
 		DISCARD_TEXT(opt)
 		DISCARD_TEXT(arg)
+		crs->counter++;
 	}
 }
 
@@ -278,6 +375,7 @@ void CommandLine::read_file_helper(text_stream *text, text_file_position *tfp, v
 				Errors::fatal_with_text("unknown command line switch: -%S", mr.exp[0]);
 			if (N == 1)
 				Errors::fatal_with_text("command line switch does not take value: -%S", mr.exp[0]);
+			crs->counter += 2;
 		} else if (Regexp::match(&mr, text, U" *-*(%C+) *")) {
 			int N = CommandLine::read_pair(crs, mr.exp[0], NULL);
 			if (N == 0)
@@ -287,6 +385,7 @@ void CommandLine::read_file_helper(text_stream *text, text_file_position *tfp, v
 		} else {
 			Errors::in_text_file("illegible line in expert settings file", tfp);
 			WRITE_TO(STDERR, "'%S'\n", text);
+			crs->counter += 1;
 		}
 	}
 	Regexp::dispose_of(&mr);
@@ -315,7 +414,7 @@ int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 		Str::copy(opt_p, mr.exp[0]);
 		Str::copy(opt_val, mr.exp[1]);
 	}
-	int rv = CommandLine::read_pair_p(opt_p, opt_val, N, arg, crs->state, crs->f, &(crs->subs));
+	int rv = CommandLine::read_pair_p(crs->subcommand_selected, opt_p, opt_val, N, arg, crs->state, crs->f, &(crs->subs));
 	DISCARD_TEXT(opt_p)
 	DISCARD_TEXT(opt_val)
 	return rv;
@@ -324,12 +423,14 @@ int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 @ So at this point we have definitely found what looks like a switch:
 
 =
-int CommandLine::read_pair_p(text_stream *opt, text_stream *opt_val, int N,
+int CommandLine::read_pair_p(command_line_subcommand *sub, text_stream *opt, text_stream *opt_val, int N,
 	text_stream *arg, void *state,
 	void (*f)(int, int, text_stream *, void *), int *substantive) {
-	if (Dictionaries::find(cls_dictionary, opt) == NULL) return 0;
-	command_line_switch *cls = Dictionaries::read_value(cls_dictionary, opt);
-	if (cls == NULL) return 0;
+	command_line_switch *cls = CommandLine::find_cls(sub, opt);
+	if (cls == NULL) {
+		if (sub) cls = CommandLine::find_cls(NULL, opt);
+		if ((cls == NULL) || (cls->switch_group != FOUNDATION_CLSG)) return 0;
+	}
 	if ((N == BOGUS_CLSN) && (cls->form == NUMERICAL_CLSF)) {
 		Errors::fatal_with_text("no value N given for -%S=N", opt);
 		return cls->valency;
@@ -372,7 +473,7 @@ all other switches are delegated to the client's callback function |f|.
 			PRINT("\n");
 			innocuous = TRUE; break;
 		}
-		case HELP_CLSW: CommandLine::write_help(STDOUT); innocuous = TRUE; break;
+		case HELP_CLSW: CommandLine::write_help(STDOUT, NULL); innocuous = TRUE; break;
 		case FIXTIME_CLSW: 
 			if (cls->form == BOOLEAN_ON_CLSF) Time::fix();
 			break;
@@ -414,36 +515,73 @@ If a header text has been declared, that appears above the list. It's usually
 a brief description of the tool's name and purpose.
 
 =
-text_stream *cls_heading = NULL;
-
-void CommandLine::declare_heading(inchar32_t *heading_text_literal) {
-	cls_heading = Str::new_from_wide_string(heading_text_literal);
+void CommandLine::write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
+	if (help_on == NULL) help_on = CommandLine::get_empty_subcommand();
+	if (help_on != CommandLine::get_empty_subcommand())
+		WRITE("%s %S\n\n", PROGRAM_NAME, help_on->command_name);
+	if (Str::len(help_on->heading) > 0)
+		WRITE("%S\n\n", help_on->heading);
+	if (help_on == CommandLine::get_empty_subcommand())
+		@<List the subcommands@>
+	@<Help on available switches@>;
 }
 
-void CommandLine::write_help(OUTPUT_STREAM) {
+@<List the subcommands@> =
+	int NS = 0;
+	command_line_subcommand *sub;
+	LOOP_OVER(sub, command_line_subcommand)
+		if (sub != CommandLine::get_empty_subcommand()) {
+			NS++;
+			if (NS == 1) {
+				WRITE("The following subcommands are available:\n\n");
+				INDENT;
+			}
+			WRITE("%s %S\n", PROGRAM_NAME, sub->command_name);
+		}
+	if (NS > 0) {
+		OUTDENT;
+		WRITE("\n");
+		WRITE("Use '%s help COMMAND' for more on each command.\n\n");
+		WRITE("The following options are always available:\n\n");
+	}
+
+@<Help on available switches@> =
 	command_line_switch *cls;
 	int max = 0, N = 0;
-	LOOP_OVER(cls, command_line_switch) {
+	LOOP_OVER_LINKED_LIST(cls, command_line_switch, help_on->cls_list) {
 		int L = Str::len(cls->switch_name);
 		if (L > max) max = L;
 		N++;
 	}
-	command_line_switch **sorted_table =
-		Memory::calloc(N, (int) sizeof(command_line_switch *), ARRAY_SORTING_MREASON);
-	int i=0; LOOP_OVER(cls, command_line_switch) sorted_table[i++] = cls;
-	qsort(sorted_table, (size_t) N, sizeof(command_line_switch *), CommandLine::compare_names);
-
-	if (Str::len(cls_heading) > 0) WRITE("%S\n", cls_heading);
-	int filter = NO_CLSG, new_para_needed = FALSE;
-	@<Show options in alphabetical order@>;
-	for (filter = NO_CLSG; filter<NO_DEFINED_CLSG_VALUES; filter++)
-		if ((filter != NO_CLSG) && (filter != FOUNDATION_CLSG))
-			@<Show options in alphabetical order@>;
-	filter = FOUNDATION_CLSG;
-	@<Show options in alphabetical order@>;	
-
-	Memory::I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
-}
+	if (help_on != CommandLine::get_empty_subcommand())
+		LOOP_OVER_LINKED_LIST(cls, command_line_switch, CommandLine::get_empty_subcommand()->cls_list)
+			if (cls->switch_group == FOUNDATION_CLSG) {
+				int L = Str::len(cls->switch_name);
+				if (L > max) max = L;
+				N++;
+			}
+	if (N > 0) {
+		command_line_switch **sorted_table =
+			Memory::calloc(N, (int) sizeof(command_line_switch *), ARRAY_SORTING_MREASON);
+		int i=0;
+		LOOP_OVER_LINKED_LIST(cls, command_line_switch, help_on->cls_list)
+			sorted_table[i++] = cls;
+		if (help_on != CommandLine::get_empty_subcommand())
+			LOOP_OVER_LINKED_LIST(cls, command_line_switch, CommandLine::get_empty_subcommand()->cls_list)
+				if (cls->switch_group == FOUNDATION_CLSG)
+					sorted_table[i++] = cls;
+		qsort(sorted_table, (size_t) N, sizeof(command_line_switch *), CommandLine::compare_names);
+	
+		int filter = NO_CLSG, new_para_needed = FALSE;
+		@<Show options in alphabetical order@>;
+		for (filter = NO_CLSG; filter<NO_DEFINED_CLSG_VALUES; filter++)
+			if ((filter != NO_CLSG) && (filter != FOUNDATION_CLSG))
+				@<Show options in alphabetical order@>;
+		filter = FOUNDATION_CLSG;
+		@<Show options in alphabetical order@>;	
+	
+		Memory::I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
+	}
 
 @<Show options in alphabetical order@> =
 	if (new_para_needed) {

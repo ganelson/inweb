@@ -164,7 +164,7 @@ typedef struct weaver_state {
 	for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 		if (chunk->chunk_type == EXTRACT_LSCT) {
 			state->line_break_pending = FALSE;
-			LanguageMethods::reset_syntax_colouring(S->sect_language);
+			LanguageMethods::reset_syntax_colouring(WebStructure::section_language(S));
 		}
 		if ((chunk->chunk_type == COMMENTARY_LSCT) && (chunk->as_markdown))
 			@<Deal with a Markdown commentary chunk@>
@@ -189,7 +189,7 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 	for (ls_line *lst = chunk->first_line; lst; lst = lst->next_line) {
 		wv->current_weave_line = lst;
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-		if (LanguageMethods::skip_in_weaving(S->sect_language, wv, lst) == FALSE) {
+		if (LanguageMethods::skip_in_weaving(WebStructure::section_language(S), wv, lst) == FALSE) {
 			if ((lst == chunk->first_line) && (chunk->holon) && (Str::len(chunk->holon->holon_name) > 0))
 				@<Weave holon name@>;
 			@<Weave insertions@>;
@@ -200,7 +200,7 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 @h How paragraphs begin.
 
 @<Deal with the marker for the start of a new paragraph, section or chapter@> =
-	LanguageMethods::reset_syntax_colouring(S->sect_language);
+	LanguageMethods::reset_syntax_colouring(WebStructure::section_language(S));
 	if (Str::len(wv->theme_match) > 0) @<Apply special rules for thematic extracts@>;
 	state->para_node = WeaveTree::paragraph_heading(tree, par,
 		state->next_heading_without_vertical_skip);
@@ -228,7 +228,7 @@ about breaking pages at chapters and sections fail to work. So:
 @<Weave holon name@> =
 	TEMPORARY_TEXT(matter)
 	WRITE_TO(matter, "%S%S@> =", I"@<", chunk->holon->holon_name);
-	Weaver::change_material(tree, state, MACRO_MATERIAL, chunk->plainer, S->sect_language, NULL);
+	Weaver::change_material(tree, state, MACRO_MATERIAL, chunk->plainer, WebStructure::section_language(S), NULL);
 	state->line_break_pending = FALSE;
 	@<Weave verbatim matter in code style@>;
 	DISCARD_TEXT(matter)
@@ -457,7 +457,7 @@ usage is rendered differently.
 		if (suppress == FALSE) {
 			@<Find macro usages and adjust syntax colouring accordingly@>;
 			TEMPORARY_TEXT(colouring)
-			LanguageMethods::syntax_colour(S->sect_language, wv, lst, matter, colouring,
+			LanguageMethods::syntax_colour(WebStructure::section_language(S), wv, lst, matter, colouring,
 				Pathnames::path_to_inweb());
 			TextWeaver::source_code(tree, CL, matter, colouring, chunk->hyperlinked);
 			DISCARD_TEXT(colouring)
@@ -479,11 +479,10 @@ usage is rendered differently.
 		else if (chunk->chunk_type == DEFINITION_LSCT)
 			will_be = DEFINITION_MATERIAL;
 		programming_language *pl = chunk->extract_language;
-		if (pl == NULL) pl = S->sect_language;
+		if (pl == NULL) pl = WebStructure::section_language(S);
 		if (will_be != CODE_MATERIAL) pl = NULL;
 		if (LiterateSource::is_tagged_with(LiterateSource::par_of_line(lst), I"Preform")) {
-			programming_language *prepl =
-				TangleTargets::find_language(I"Preform", wv->weave_web, FALSE);
+			programming_language *prepl = Languages::find(wv->weave_web, I"Preform");
 			if (prepl) pl = prepl;
 		}
 		text_stream *note = NULL;
@@ -515,7 +514,7 @@ example, or flush left.
 	TEMPORARY_TEXT(part_before_comment)
 	TEMPORARY_TEXT(part_within_comment)
 	programming_language *pl = chunk->extract_language;
-	if (pl == NULL) pl = S->sect_language;
+	if (pl == NULL) pl = WebStructure::section_language(S);
 	if ((pl) && (LanguageMethods::parse_comment(pl,
 		matter, part_before_comment, part_within_comment))) {
 		Str::copy(matter, part_before_comment);
@@ -546,7 +545,7 @@ example, or flush left.
 
 @<Offer the line to the language to weave@> =
 	TEMPORARY_TEXT(OUT)
-	int taken = LanguageMethods::weave_code_line(OUT, S->sect_language, wv,
+	int taken = LanguageMethods::weave_code_line(OUT, WebStructure::section_language(S), wv,
 		W, C, S, L, matter, concluding_comment);
 	if (taken) {
 		tree_node *V = WeaveTree::verbatim(tree, OUT);
@@ -561,7 +560,7 @@ example, or flush left.
 		ls_paragraph *defn_par = Holons::find_holon(mr.exp[1], S->literate_source);
 		if (defn_par) {
 			TEMPORARY_TEXT(front_colouring)
-			LanguageMethods::syntax_colour(S->sect_language, wv, lst, mr.exp[0], front_colouring, Pathnames::path_to_inweb());
+			LanguageMethods::syntax_colour(WebStructure::section_language(S), wv, lst, mr.exp[0], front_colouring, Pathnames::path_to_inweb());
 			TextWeaver::source_code(tree, CL, mr.exp[0], front_colouring, chunk->hyperlinked);
 			DISCARD_TEXT(front_colouring)
 			Str::copy(matter, mr.exp[2]);
@@ -600,7 +599,7 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver::commentary_text(tree, ap, I"This is ");
 	TEMPORARY_TEXT(url)
 	int ext = FALSE;
-	if (Colonies::resolve_reference_in_weave(url, NULL, wv->weave_to,
+	if (Colonies::resolve_reference_in_weave(wv->weave_colony, url, NULL, wv->weave_to,
 		I"words: About Preform", wv->weave_web, NULL, &ext))
 		Trees::make_child(WeaveTree::url(tree, url, I"Preform grammar", ext), ap);
 	else

@@ -183,7 +183,8 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	TEMPORARY_TEXT(url)
 	TEMPORARY_TEXT(title)
 	int ext = FALSE;
-	if (Colonies::resolve_reference_in_weave(url, title, wv->weave_to, reference,
+	if (Colonies::resolve_reference_in_weave(wv->weave_colony,
+		url, title, wv->weave_to, reference,
 		wv->weave_web, wv->current_weave_line, &ext)) {
 		TextWeaver::commentary_r(tree, ap, before, within, in_code);
 		Trees::make_child(WeaveTree::url(tree, url, title, ext), ap);
@@ -297,7 +298,8 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 	TEMPORARY_TEXT(url)
 	TEMPORARY_TEXT(title)
 	int ext = FALSE;
-	if (Colonies::resolve_reference_in_weave(url, title, wv->weave_to, reference,
+	if (Colonies::resolve_reference_in_weave(wv->weave_colony,
+		url, title, wv->weave_to, reference,
 		wv->weave_web, wv->current_weave_line, &ext)) {
 		tree_node *U = WeaveTree::url(tree, url, title, ext);
 		TextWeaver::source_code_piece(tree, ap, matter, colouring, from, i);
@@ -325,7 +327,7 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		} else {
 			TextWeaver::source_code_piece(tree, ap, matter, colouring, from, i);
 			TEMPORARY_TEXT(url)
-			Colonies::paragraph_URL(url, par, wv->weave_to);
+			Colonies::paragraph_URL(url, par, wv->weave_to, wv->weave_colony);
 			tree_node *U = WeaveTree::function_usage(tree, url, fn);
 			Trees::make_child(U, ap);
 			i += Str::len(fname) - 1;

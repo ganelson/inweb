@@ -77,7 +77,7 @@ void LanguageMethods::subcategorise_lines(ls_web *W) {
 				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
 					for (ls_line *lst = chunk->first_line; lst; lst = lst->next_line)
 						if (LiterateSource::is_code_chunk(chunk))
-							LanguageMethods::subcategorise_line(S->sect_language, lst);
+							LanguageMethods::subcategorise_line(WebStructure::section_language(S), lst);
 }
 
 @ Comments have different syntax in different languages. The method here is
@@ -301,7 +301,7 @@ anything that the language in question might need later.
 =
 VOID_METHOD_TYPE(BEGIN_WEAVE_WEA_MTID, programming_language *pl, ls_section *S, weave_order *wv)
 void LanguageMethods::begin_weave(ls_section *S, weave_order *wv) {
-	VOID_METHOD_CALL(S->sect_language, BEGIN_WEAVE_WEA_MTID, S, wv);
+	VOID_METHOD_CALL(WebStructure::section_language(S), BEGIN_WEAVE_WEA_MTID, S, wv);
 }
 
 @ This method allows languages to tell the weaver to ignore certain lines.
@@ -345,8 +345,7 @@ int LanguageMethods::syntax_colour(programming_language *pl,
 	if (colour_as == NULL) colour_as = pl;
 	ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
 	if (LiterateSource::is_tagged_with(LiterateSource::par_of_line(lst), I"Preform")) {
-		programming_language *prepl =
-			TangleTargets::find_language(I"Preform", wv->weave_web, FALSE);
+		programming_language *prepl = Languages::find(wv->weave_web, I"Preform");
 		if ((L->preform_nonterminal_defined) || (L->preform_grammar))
 			if (prepl) colour_as = prepl;
 	}

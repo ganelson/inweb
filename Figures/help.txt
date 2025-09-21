@@ -1,73 +1,45 @@
 inweb: a tool for literate programming
 
-Usage: inweb WEB OPTIONS RANGE
+Inweb is a system for literate programming. It deals with 'webs',
+programs written in conventional programming languages like C (which
+Inweb calls 'languages') marked up in human-readable ways to reveal
+their structure and explain their motivation. Inweb can handle multiple
+markup syntaxes (which it calls 'notations'). It can also group together
+multiple webs into connected masses, which it calls 'colonies'.
 
-WEB must be a directory holding a literate program (a 'web')
+Inweb is an all-in-one tool for LP which is divided up into subcommands,
+each able to perform a different task. 'inweb tangle' and 'inweb weave'
+are the two used constantly: tangling processes a web into a form
+which can be compiled, and weaving makes it into something human-readable.
 
-The legal RANGEs are:
-   all: complete web (the default if no TARGETS set)
-   P: all preliminaries
-   1: Chapter 1 (and so on)
-   A: Appendix A (and so on, up to Appendix O)
-   3/eg: section with abbreviated name "3/eg" (and so on)
-You can also, or instead, specify:
-   index: to weave an HTML page indexing the project
-   chapters: to weave all chapters as individual documents
-   sections: ditto with sections
+Usage: inweb COMMAND [DETAILS]
 
--import-from X           specify that imported modules are at pathname X
--verbose                 explain what inweb is doing (default is -no-verbose)
+where the DETAILS are different for each COMMAND.
 
-for locating programming language definitions:
-  -read-language X       read language definition from file X
-  -read-languages X      read all language definitions in path X
-  -show-languages        list programming languages supported by Inweb
-  -test-language X       test language X on...
-  -test-language-on X    ...the code in the file X
+The following subcommands are available:
 
-for locating literate programming syntax definitions:
-  -read-syntax X         read LP syntax definition from file X
-  -read-syntaxes X       read all LP syntax definitions in path X
-  -show-syntaxes         list LP syntax supported by Inweb
+    inweb weave
+    inweb tangle
+    inweb inspect
+    inweb make-readme
+    inweb make-gitignore
+    inweb make-makefile
+    inweb advance-build
+    inweb test-language
 
-for analysing a web:
-  -advance-build         increment daily build code for the web
-  -advance-build-file X  increment daily build code in file X
-  -catalog               same as '-catalogue'
-  -catalogue             list the sections in the web
-  -functions             catalogue the functions in the web
-  -gitignore X           write a .gitignore file for this web and store it in X
-  -makefile X            write a makefile for this web and store it in X
-  -platform X            use platform X (e.g. 'windows') when making e.g. makefiles
-  -prototype X           translate makefile from prototype X
-  -scan                  scan the web
-  -structures            catalogue the structures in the web
-  -write-me X            write a read-me file following instructions in file X
+Use 'inweb help COMMAND' for more on each command.
 
-for weaving a web:
-  -breadcrumb X          use the text X as a breadcrumb in overhead navigation
-  -navigation X          use the file X as a column of navigation links
-  -open                  weave then open woven file
-  -weave                 weave the web into human-readable form
-  -weave-as X            set weave pattern to X (default is 'HTML')
-  -weave-into X          weave, but into directory X
-  -weave-tag X           weave, but only using material tagged as X
-  -weave-to X            weave, but to filename X (for single files only)
+The following options are always available:
 
-for tangling a web:
-  -ctags-to X            tangle, but write Universal Ctags file to X not to 'tags'
-  -no-ctags              don't write a Universal Ctags file when tangling (default is -ctags)
-  -tangle                tangle the web into machine-compilable form
-  -tangle-to X           tangle, but to filename X
-
-for dealing with colonies of webs together:
-  -colony X              use the file X as a list of webs in this colony
-  -member X              use member X from the colony as our web
-
--at X                    specify that this tool is installed at X
--crash                   intentionally crash on internal errors, for backtracing (default is -no-crash)
--fixtime                 pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
--help                    print this help information
--locale X                set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
--log X                   write the debugging log to include diagnostics on X
--version                 print out version number
+-at X             specify that this tool is installed at X
+-colony X         if the newer 'colony::member' notation is problematic, use this and '-member'
+-crash            intentionally crash on internal errors, for backtracing (default is -no-crash)
+-fixtime          pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help             print general help information
+-import-from X    specify that imported modules are at pathname X
+-locale X         set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
+-log X            write the debugging log to include diagnostics on X
+-member X         if the newer 'colony::member' notation is problematic, use this and '-colony'
+-using X          making Inweb resources in the file or path X available to all webs
+-verbose          explain what inweb is doing (default is -no-verbose)
+-version          print out version number

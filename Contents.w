@@ -4,8 +4,8 @@ Purpose: A modern system for literate programming.
 Language: InC
 Web Syntax Version: 2
 Licence: This is a free, open-source program published under the Artistic License 2.0.
-Version Name: Crater of Needles
-Version Number: 8.0
+Version Name: Invasion
+Version Number: 9.0
 
 Import: foundation
 
@@ -23,7 +23,11 @@ Preliminaries
 	How This Program Works
 
 Chapter 1: Top Level
-"Dealing with the user, and deciding what is to be done."
-	Basics
 	Program Control
 	Configuration
+	inweb weave Subcommand
+	inweb tangle Subcommand
+	inweb inspect Subcommand
+	inweb make- Subcommands
+	inweb advance-build Subcommand
+	inweb test-language Subcommand

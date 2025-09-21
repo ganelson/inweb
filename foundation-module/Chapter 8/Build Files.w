@@ -3,14 +3,17 @@
 Manages the build metadata for an inweb project.
 
 @h About build files.
-When we read a web, we look for a file in it called |build.txt|. If no such
-file exists, we look for the same thing in the current working directory.
+When we read a web, we look for a file in it (or alongside it) called |build.txt|.
+If no such file exists, we return |NULL|.
 
 =
 filename *BuildFiles::build_file_for_web(ls_web *WS) {
-	filename *F = Filenames::in(WS->path_to_web, I"build.txt");
-	if (TextFiles::exists(F)) return F;
-	F = Filenames::in(NULL, I"build.txt");
+	pathname *P = WS->path_to_web;
+	if (WS->path_to_web) P = WS->path_to_web;
+	else if (WS->single_file) P = Filenames::up(WS->single_file);
+	else if (WS->declaration->associated_path) P = WS->declaration->associated_path;
+	else if (WS->declaration->associated_file) P = Filenames::up(WS->declaration->associated_file);
+	filename *F = Filenames::in(P, I"build.txt");
 	if (TextFiles::exists(F)) return F;
 	return NULL;
 }
@@ -134,10 +137,17 @@ void BuildFiles::advance_for_web(ls_web *WS) {
 
 void BuildFiles::advance(filename *F) {
 	build_file_data bfd = BuildFiles::read(F);
-	if (BuildFiles::dated_today(bfd.build_date) == FALSE) {
+	TEMPORARY_TEXT(old_code)
+	WRITE_TO(old_code, "%S (set on %S)", bfd.build_code, bfd.build_date);
+	if (BuildFiles::dated_today(bfd.build_date)) {
+		PRINT("Build code remains %S since it is still %S\n",
+			bfd.build_code, bfd.build_date);
+	} else {
 		BuildFiles::increment(bfd.build_code);
 		BuildFiles::write(bfd, F);
+		PRINT("Build code advanced from %S to %S\n", old_code, bfd.build_code);
 	}
+	DISCARD_TEXT(old_code)
 }
 
 @ The standard date format we use is "26 February 2018". If the contents of
@@ -190,7 +200,6 @@ void BuildFiles::increment(text_stream *T) {
 			else {
 				Str::clear(T);
 				WRITE_TO(T, "%d%c%d%d", N, L, M1, M2);
-				PRINT("Build code advanced to %S\n", T);
 			}
 		}
 	}

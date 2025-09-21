@@ -23,75 +23,63 @@ works out where Inweb is installed, then calls //Configuration//, which
 //reads the command line options -> Configuration::read//.
 
 The user's choices are stored in an //inweb_instructions// object, and Inweb
-is put into one of four modes: |TANGLE_MODE|, |WEAVE_MODE|, |ANALYSE_MODE|, or
-|TRANSLATE_MODE|.[1] Inweb never changes mode: once set, it remains
-for the rest of the run. Inweb also acts on only one main web in any run,
-unless in |TRANSLATE_MODE|, in which case none.
-
-Once it has worked through the command line, //Configuration// reads in the
-colony file, if one was given (see //Making Weaves into Websites//), and uses
-this to preset some settings: see //Configuration::member_and_colony//.
+works out which subcommand it will be executing. It runs only one subcommand
+in each execution, and halts after doing essentially nothing if no subcommand
+was given (for example, if help information was requested but nothing else).
 
 All errors in configuration are sent to //Errors::fatal//, from whose bourne
 no traveller returns.
 
-[1] Tangling and weaving are fundamental to all LP tools. Analysis means, say,
-reading a web and listing functions in it. Translation is for side-activities
-like making makefiles. Strictly speaking there is also |NO_MODE| for runs where
-the user simply asked for |-help| at the command line.
+@ //Program Control// then resumes, calling the relevant subcommand to take
+action. Most of the subcommands then call back to //Configuration// in order to
+make sense of their main "operands", that is, the settings which say what web to
+act upon: this ensures that they share conventions as far as possible.
 
-@ //Program Control// then resumes, calling //Main::follow_instructions// to
-act on the //inweb_instructions// object. If the user did specify a web to
-work on, PC then goes through three stages to understand it.
-
-First, PC calls //Main::load_web// to read the web fully into memory -- not
-only metadata such as its title, author, and section breakdown, but also the
-completely parsed text of the source. (It's possible to read webs only partially
-as metadata alone for speed, but we don't do that.) All this work is delegated to
-the foundation library, so if you're interested in how it's done, and in how
-webs are stored in memory, see there. The result, put briefly, is a single
+In most cases, though, a web must be read into memory. This is done in full --
+that is, reading not only metadata such as its title, author, and section
+breakdown, but also the completely parsed text of the source. All this work is
+delegated to the foundation library, so if you're interested in how it's done,
+and in how webs are stored in memory, see there. The result is a single
 //ls_web// object, containing a list of //ls_chapter// objects for each chapter,
 each of which in turn is a list of //ls_section// objects for each section.
-There is always at least one //ls_chapter//, each of which
-has at least one //ls_section//.[1] The "range text" for each chapter and
-section is set along the way, which affects leafnames used in woven websites.[2]
+There is always at least one //ls_chapter//, each of which has at least one
+//ls_section//.[1] The "range text" for each chapter and section is set along
+the way, which affects leafnames used in woven websites.[2]
 
 Where a web imports a module, as for instance the //eastertide// example does,
-//WebStructure::get// creates a //ls_module// object for each import. In any event,
-it also creates a module called |"(main)"| to represent the main, non-imported,
-part of the overall program. Each module object also refers to the //ls_chapter//
-and //ls_section// objects.[3]
+//WebStructure::from_declaration// creates a //ls_module// object for each
+import. In any event, it also creates a module called |"(main)"| to represent
+the main, non-imported, part of the overall program. Each module object also
+refers to the //ls_chapter// and //ls_section// objects.[3]
+
+So, then, the subcommand does its thing -- which invariably means simply
+calling a convenient function somewhere in //foundation// and then returns
+to //Program Control//. And that is essentially it. Inweb winds up by returning
+exit code 1 if there were errors, or 0 if not, like a good Unix citizen.
+
 
 [1] For single-file webs like //twinprimes//, with no contents pages, Inweb
 makes what it calls an "implied" chapter and section heading.
 
-[2] Range texts are used at the command line, and in |-catalogue| output, for
+[2] Range texts are used at the command line, and in |inweb inspect| output, for
 example; and also to determine leafnames of pages in a website being woven.
 A range is really just an abbreviation. For example, |M| is the range for the
-Manual chapter, |2/tp| for the section "The Parser" in Chapter 2.
+Manual chapter, |2/tp| for the section "The Parser" in Chapter 2, and |3| means
+all of chapter 3.
 
 [3] The difference is that the //ls_web// lists every chapter and section,
 imported or not, whereas the //ls_module// lists only those falling under its
 own aegis.
 
-@h Taking action.
-Let's get back to //Program Control//, which has now set everything up and is
-about to take action. What it does depends on which of the four modes Inweb
-is in: |WEAVE_MODE|, |TANGLE_MODE|,  |ANALYSE_MODE| or |TRANSLATE_MODE|.
-The latter amounts to very little, and is simply a catchall name for generating
-convenient addenda to webs of source code: makefiles, gitignore files and such.
-
-And that is essentially it. Inweb winds up by returning exit code 1 if there
-were errors, or 0 if not, like a good Unix citizen.
-
 @h Adding to Inweb.
 Here's some miscellaneous advice for those who would like to add to Inweb:
 
-1. To add a new command-line switch, declare at //Configuration::read// and
-add a field to //inweb_instructions// which holds the setting; don't act on it
-then and there, only in //Program Control// later. But we don't want these
+1. To add a new command-line switch, declare this in the relevant subcommand
+section, and follow the general plan used there. But we don't want these
 settings to proliferate: ask first if adding a feature to, say, //Colonies//
-or //weave_pattern// files would meet the same need.
+or //weave_pattern// files would meet the same need. And on the other hand,
+if the switch really makes the subcommand do something quite different,
+consider making a new subcommand instead.
 
 2. To add new programming languages, try if possible to do everything you
 need with a new definition file alone: see //Supporting Programming Languages//.

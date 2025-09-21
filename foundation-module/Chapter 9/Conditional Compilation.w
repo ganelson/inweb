@@ -36,12 +36,12 @@ void IfdefTags::open_ifdefs(OUTPUT_STREAM, ls_paragraph *par) {
 				case 1:
 					Str::clear(identifier);
 					IfdefTags::conditional_identifier(identifier, pt->the_tag);
-					LanguageMethods::open_ifdef(OUT, S->sect_language, identifier, TRUE);
+					LanguageMethods::open_ifdef(OUT, WebStructure::section_language(S), identifier, TRUE);
 					break;
 				case -1:
 					Str::clear(identifier);
 					IfdefTags::conditional_identifier(identifier, pt->the_tag);
-					LanguageMethods::open_ifdef(OUT, S->sect_language, identifier, FALSE);
+					LanguageMethods::open_ifdef(OUT, WebStructure::section_language(S), identifier, FALSE);
 					break;
 			}
 		}
@@ -64,12 +64,12 @@ void IfdefTags::close_ifdefs(OUTPUT_STREAM, ls_paragraph *par) {
 				case 1:
 					Str::clear(identifier);
 					IfdefTags::conditional_identifier(identifier, pt->the_tag);
-					LanguageMethods::close_ifdef(OUT, S->sect_language, identifier, TRUE);
+					LanguageMethods::close_ifdef(OUT, WebStructure::section_language(S), identifier, TRUE);
 					break;
 				case -1:
 					Str::clear(identifier);
 					IfdefTags::conditional_identifier(identifier, pt->the_tag);
-					LanguageMethods::close_ifdef(OUT, S->sect_language, identifier, FALSE);
+					LanguageMethods::close_ifdef(OUT, WebStructure::section_language(S), identifier, FALSE);
 					break;
 			}
 		}

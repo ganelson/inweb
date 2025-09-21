@@ -121,7 +121,6 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 		ls_section *S;
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->chap->sections) {
 			WRITE("\\smallskip\\noindent ");
-			if (trs->wv->pattern->number_sections) WRITE("%d. ", WeavingDetails::get_section_number(S));
 			WRITE("{\\it %S}\\qquad\n", S->sect_title);
 			WRITE("%S", LiterateSource::unit_purpose(S->literate_source));
 		}

@@ -94,7 +94,7 @@ structure_element *Functions::new_element(language_type *str, text_stream *elnam
 	elt->element_name = Str::duplicate(elname);
 	elt->allow_sharing = FALSE;
 	elt->element_created_at = S;
-	if (LanguageMethods::share_element(S->sect_language, elname))
+	if (LanguageMethods::share_element(WebStructure::section_language(S), elname))
 		elt->allow_sharing = TRUE;
 	ADD_TO_LINKED_LIST(elt, structure_element, str->elements);
 	return elt;
@@ -139,7 +139,7 @@ language_function *Functions::new_function(text_stream *fname, ls_line *lst,
 	hte->as_function = fn;
 	@<Initialise the function structure@>;
 	@<Add the function to its paragraph and line@>;
-	if (S->sect_language->supports_namespaces)
+	if (WebStructure::section_language(S)->supports_namespaces)
 		@<Check that the function has its namespace correctly declared@>;
 	return fn;
 }
@@ -158,7 +158,7 @@ part of the function structure. We'll need it when predeclaring the function.
 	fn->function_header_at = lst;
 	fn->usage_described = FALSE;
 	if ((Str::eq_wide_string(fname, U"main")) &&
-		(S->sect_language->C_like))
+		(WebStructure::section_language(S)->C_like))
 		fn->usage_described = TRUE;
 	fn->no_conditionals = 0;
 

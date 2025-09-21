@@ -150,7 +150,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
 		HTML_OPEN_WITH("div", "class=\"breadcrumbs\"");
 		HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-		Colonies::drop_initial_breadcrumbs(OUT,
+		Colonies::drop_initial_breadcrumbs(OUT, hrs->wv->weave_colony,
 			hrs->wv->weave_to, hrs->wv->breadcrumbs);
 		text_stream *bct = Bibliographic::get_datum(hrs->wv->weave_web, I"Title");
 		if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title")) > 0)
@@ -325,7 +325,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	HTML::image_to_dimensions(OUT, RF, C->w, C->h);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely);
+		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
 	HTML_CLOSE("p");
 	WRITE("\n");
 
@@ -356,7 +356,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Pathnames::down(hrs->wv->weave_web->path_to_web, I"Audio"),
 		C->audio_name);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely);
+		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	WRITE("<audio controls>\n");
 	WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", C->audio_name);
@@ -371,7 +371,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Pathnames::down(hrs->wv->weave_web->path_to_web, I"Video"),
 		C->video_name);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely);
+		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	if ((C->w > 0) && (C->h > 0))
 		WRITE("<video width=\"%d\" height=\"%d\" controls>", C->w, C->h);
@@ -399,7 +399,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Swarm::ensure_plugin(hrs->wv, I"Downloads");
 		pathname *TOP =
 			Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-				hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely);
+				hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
 		if (TOP == NULL) TOP = Filenames::up(F);
 		TEMPORARY_TEXT(url)
 		TEMPORARY_TEXT(size)
@@ -415,7 +415,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Bibliographic::set_datum(hrs->wv->weave_web, I"File URL", url);
 		Bibliographic::set_datum(hrs->wv->weave_web, I"File Details", size);
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
-			TF, hrs->into_file);
+			TF, hrs->into_file, hrs->wv->weave_colony);
 		WRITE("\n");
 		DISCARD_TEXT(url)
 		DISCARD_TEXT(size)
@@ -582,7 +582,7 @@ that service uses to identify the video/audio in question.
 		Bibliographic::set_datum(hrs->wv->weave_web, I"Content Height", CH);
 		HTML_OPEN_WITH("p", "class=\"center-p\"");
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
-			F, hrs->into_file);
+			F, hrs->into_file, hrs->wv->weave_colony);
 		HTML_CLOSE("p");
 		WRITE("\n");
 	}
@@ -592,7 +592,7 @@ that service uses to identify the video/audio in question.
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
 	if (C->defn == FALSE) {
 		TEMPORARY_TEXT(url)
-		Colonies::paragraph_URL(url, C->pmac, hrs->wv->weave_to);
+		Colonies::paragraph_URL(url, C->pmac, hrs->wv->weave_to, hrs->wv->weave_colony);
 		HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
 		DISCARD_TEXT(url)
 	}
@@ -737,7 +737,7 @@ that service uses to identify the video/audio in question.
 @<Render toc line@> =
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
 	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_URL(TEMP, C->para, hrs->wv->weave_to);
+	Colonies::paragraph_URL(TEMP, C->para, hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
 	WRITE("%s%S", (Str::get_first_char(LiterateSource::par_ornament(C->para)) == 'S')?"&#167;":"&para;",
@@ -872,7 +872,7 @@ that service uses to identify the video/audio in question.
 @<Render locale@> =
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
 	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_URL(TEMP, C->par1, hrs->wv->weave_to);
+	Colonies::paragraph_URL(TEMP, C->par1, hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
 	WRITE("%s%S",
