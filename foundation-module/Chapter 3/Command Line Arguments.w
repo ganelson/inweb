@@ -256,7 +256,9 @@ int CommandLine::read(int argc, char **argv, void *state,
 	crs.subs = FALSE; crs.nrt = 0; crs.counter = 0;
 	CommandLine::read_array(&crs, argc, argv);
 	CommandLine::read_file(&crs);
-	if (crs.subcommand_selected) return crs.subcommand_selected->subcommand_id;
+	if ((crs.subcommand_selected) &&
+		(crs.subcommand_selected != CommandLine::get_empty_subcommand()))
+		return crs.subcommand_selected->subcommand_id;
 	if (crs.subs == FALSE) return NO_CLSUB;
 	return NO_COMMAND_CLSUB;
 }

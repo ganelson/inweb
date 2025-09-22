@@ -136,6 +136,7 @@ endef
 .PHONY: test
 test:
 	$(INTEST) -from $(ME) all
+	$(INTEST) -from $(FTEST) all
 
 # "make commit" should be used only by the Benevolent Overlord of Inweb.
 # It updates the build code and commits to the repository.
