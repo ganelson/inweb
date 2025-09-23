@@ -15011,11 +15011,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1B82";
+			char *svn = "9.0-beta+1B83";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "22 September 2025";
+			char *d = "23 September 2025";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -45087,7 +45087,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B82\t/built 22 September 2025/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B83\t/built 23 September 2025/\n");
 
 }
 #line 47 "inweb/foundation-module/Chapter 9/Ctags Support.w"
@@ -57181,7 +57181,7 @@ inweb_operand Configuration__operand(inweb_instructions *ins, int requirement,
 			DISCARD_TEXT(ext)
 		}
 	}
-	op.D = WCL__read_for_type_only(ins->temp_file_setting, presume);
+	op.D = WCL__read_for_type_only_forgivingly(ins->temp_file_setting, presume);
 
 }
 #line 239 "inweb/Chapter 1/Configuration.w"

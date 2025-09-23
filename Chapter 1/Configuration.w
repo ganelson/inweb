@@ -366,7 +366,7 @@ Here's where we do the guessing.
 			DISCARD_TEXT(ext)
 		}
 	}
-	op.D = WCL::read_for_type_only(ins->temp_file_setting, presume);
+	op.D = WCL::read_for_type_only_forgivingly(ins->temp_file_setting, presume);
 
 @ A single file will only be a web if it's not already been parsed as something
 else (say, a language definition); a path will only be a web if it contains a
