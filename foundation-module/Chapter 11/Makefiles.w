@@ -34,7 +34,7 @@ void Makefiles::write(ls_web *W, filename *prototype, filename *F,
 	@<Initialise the specific data for makefile-preprocessing@>;
 
 	text_stream *header = Str::new();
-	WRITE_TO(header, "# This makefile was automatically written by inweb -makefile\n");
+	WRITE_TO(header, "# This makefile was automatically written by inweb make-makefile\n");
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 

@@ -3886,29 +3886,29 @@ void  CommandLine__declare_numerical_switch(int id, 	inchar32_t *name_literal, i
 void  CommandLine__declare_textual_switch(int id, 	inchar32_t *name_literal, int val, inchar32_t *help_literal) ;
 #line 251 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read(int argc, char **argv, void *state, 	void (*f)(int, int, text_stream *, void *), void (*g)(int, text_stream *, void *)) ;
-#line 264 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 266 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__set_locale(int argc, char **argv) ;
-#line 273 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 275 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) ;
-#line 317 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 319 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__also_read_file(filename *F) ;
-#line 328 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 330 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__record_log(text_stream *line) ;
-#line 334 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 336 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__play_back_log(void) ;
-#line 351 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 353 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_file(clf_reader_state *crs) ;
-#line 363 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 365 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_file_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 394 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 396 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__read_one(clf_reader_state *crs, text_stream *opt) ;
-#line 402 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 404 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) ;
-#line 426 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 428 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, text_stream *opt_val, int N, 	text_stream *arg, void *state, 	void (*f)(int, int, text_stream *, void *), int *substantive) ;
-#line 518 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 520 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void  CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) ;
-#line 619 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 621 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int  CommandLine__compare_names(const void *ent1, const void *ent2) ;
 #line 51 "inweb/foundation-module/Chapter 3/Pathnames.w"
 void  Pathnames__start(void) ;
@@ -14812,7 +14812,9 @@ int CommandLine__read(int argc, char **argv, void *state,
 	crs.subs = FALSE; crs.nrt = 0; crs.counter = 0;
 	CommandLine__read_array(&crs, argc, argv);
 	CommandLine__read_file(&crs);
-	if (crs.subcommand_selected) return crs.subcommand_selected->subcommand_id;
+	if ((crs.subcommand_selected) &&
+		(crs.subcommand_selected != CommandLine__get_empty_subcommand()))
+		return crs.subcommand_selected->subcommand_id;
 	if (crs.subs == FALSE) return NO_CLSUB;
 	return NO_COMMAND_CLSUB;
 }
@@ -14865,13 +14867,13 @@ void CommandLine__read_array(clf_reader_state *crs, int argc, char **argv) {
 	}
 }
 
-#line 316 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 318 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 filename *command_line_file = NULL;
 void CommandLine__also_read_file(filename *F) {
 	command_line_file = F;
 }
 
-#line 327 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 329 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 linked_list *command_line_logs = NULL;
 void CommandLine__record_log(text_stream *line) {
 	if (command_line_logs == NULL)
@@ -14887,7 +14889,7 @@ void CommandLine__play_back_log(void) {
 	}
 }
 
-#line 351 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 353 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void CommandLine__read_file(clf_reader_state *crs) {
 	text_stream *logline = Str__new();
 	WRITE_TO(logline, "Reading further switches from file: %f", command_line_file);
@@ -14936,7 +14938,7 @@ void CommandLine__read_one(clf_reader_state *crs, text_stream *opt) {
 	crs->subs = TRUE;
 }
 
-#line 402 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 404 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) {
 	TEMPORARY_TEXT(opt_p)
 	TEMPORARY_TEXT(opt_val)
@@ -14958,7 +14960,7 @@ int CommandLine__read_pair(clf_reader_state *crs, text_stream *opt, text_stream 
 	return rv;
 }
 
-#line 426 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 428 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, text_stream *opt_val, int N,
 	text_stream *arg, void *state,
 	void (*f)(int, int, text_stream *, void *), int *substantive) {
@@ -14984,7 +14986,7 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 	int innocuous = FALSE;
 	
 {
-#line 458 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 460 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	switch (cls->switch_id) {
 		case CRASH_CLSW:
 			if (cls->form == BOOLEAN_ON_CLSF) {
@@ -14993,7 +14995,7 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 			break;
 		case LOG_CLSW: 
 {
-#line 498 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 500 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (Log__get_debug_log_filename() == NULL) {
 		TEMPORARY_TEXT(itn)
 		WRITE_TO(itn, "%s", PROGRAM_NAME);
@@ -15005,15 +15007,15 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 	Log__set_aspect_from_command_line(arg, TRUE);
 
 }
-#line 464 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 466 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1B81";
+			char *svn = "9.0-beta+1B82";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "21 September 2025";
+			char *d = "22 September 2025";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -15040,13 +15042,13 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 	}
 
 }
-#line 449 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 451 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 	if ((innocuous == FALSE) && (substantive)) *substantive = TRUE;
 	return cls->valency;
 }
 
-#line 518 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 520 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 void CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 	if (help_on == NULL) help_on = CommandLine__get_empty_subcommand();
 	if (help_on != CommandLine__get_empty_subcommand())
@@ -15056,7 +15058,7 @@ void CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 	if (help_on == CommandLine__get_empty_subcommand())
 		
 {
-#line 530 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 532 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	int NS = 0;
 	command_line_subcommand *sub;
 	LOOP_OVER(sub, command_line_subcommand)
@@ -15076,11 +15078,11 @@ void CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 	}
 
 }
-#line 525 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 527 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 
 	
 {
-#line 549 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 551 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	command_line_switch *cls;
 	int max = 0, N = 0;
 	LOOP_OVER_LINKED_LIST(cls, command_line_switch, help_on->cls_list) {
@@ -15110,7 +15112,7 @@ void CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 		int filter = NO_CLSG, new_para_needed = FALSE;
 		
 {
-#line 587 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 589 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -15143,51 +15145,13 @@ void CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 	}
 
 }
-#line 576 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 578 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 		for (filter = NO_CLSG; filter<NO_DEFINED_CLSG_VALUES; filter++)
 			if ((filter != NO_CLSG) && (filter != FOUNDATION_CLSG))
 				
 {
-#line 587 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
-	if (new_para_needed) {
-		WRITE("\n");
-		new_para_needed = FALSE;
-	}
-	for (int i=0; i<N; i++) {
-		command_line_switch *cls = sorted_table[i];
-		if (cls->switch_group != filter) continue;
-		if ((cls->form == BOOLEAN_OFF_CLSF) || (cls->form == BOOLEAN_ON_CLSF)) {
-			if (cls->active_by_default) continue;
-		}
-		text_stream *label = switch_group_names[filter];
-		if (new_para_needed == FALSE) {
-			if (Str__len(label) > 0) WRITE("%S:\n", label);
-			new_para_needed = TRUE;
-		}
-		TEMPORARY_TEXT(line)
-		if (Str__len(label) > 0) WRITE_TO(line, "  ");
-		WRITE_TO(line, "-%S", cls->switch_name);
-		if (cls->form == NUMERICAL_CLSF) WRITE_TO(line, "=N");
-		if (cls->form == TEXTUAL_CLSF) WRITE_TO(line, "=X");
-		if (cls->valency > 1) WRITE_TO(line, " X");
-		while (Str__len(line) < max+7) WRITE_TO(line, " ");
-		WRITE_TO(line, "%S", cls->help_text);
-		if (cls->form == BOOLEAN_ON_CLSF)
-			WRITE_TO(line, " (default is -no-%S)", cls->switch_name);
-		if (cls->form == BOOLEAN_OFF_CLSF)
-			WRITE_TO(line, " (default is -%S)", cls->negates->switch_name);
-		WRITE("%S\n", line);
-		DISCARD_TEXT(line)
-	}
-
-}
-#line 579 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
-;
-		filter = FOUNDATION_CLSG;
-		
-{
-#line 587 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 589 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 	if (new_para_needed) {
 		WRITE("\n");
 		new_para_needed = FALSE;
@@ -15222,16 +15186,54 @@ void CommandLine__write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 }
 #line 581 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
+		filter = FOUNDATION_CLSG;
+		
+{
+#line 589 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+	if (new_para_needed) {
+		WRITE("\n");
+		new_para_needed = FALSE;
+	}
+	for (int i=0; i<N; i++) {
+		command_line_switch *cls = sorted_table[i];
+		if (cls->switch_group != filter) continue;
+		if ((cls->form == BOOLEAN_OFF_CLSF) || (cls->form == BOOLEAN_ON_CLSF)) {
+			if (cls->active_by_default) continue;
+		}
+		text_stream *label = switch_group_names[filter];
+		if (new_para_needed == FALSE) {
+			if (Str__len(label) > 0) WRITE("%S:\n", label);
+			new_para_needed = TRUE;
+		}
+		TEMPORARY_TEXT(line)
+		if (Str__len(label) > 0) WRITE_TO(line, "  ");
+		WRITE_TO(line, "-%S", cls->switch_name);
+		if (cls->form == NUMERICAL_CLSF) WRITE_TO(line, "=N");
+		if (cls->form == TEXTUAL_CLSF) WRITE_TO(line, "=X");
+		if (cls->valency > 1) WRITE_TO(line, " X");
+		while (Str__len(line) < max+7) WRITE_TO(line, " ");
+		WRITE_TO(line, "%S", cls->help_text);
+		if (cls->form == BOOLEAN_ON_CLSF)
+			WRITE_TO(line, " (default is -no-%S)", cls->switch_name);
+		if (cls->form == BOOLEAN_OFF_CLSF)
+			WRITE_TO(line, " (default is -%S)", cls->negates->switch_name);
+		WRITE("%S\n", line);
+		DISCARD_TEXT(line)
+	}
+
+}
+#line 583 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+;
 
 		Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(command_line_switch *)));
 	}
 
 }
-#line 526 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 528 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 ;
 }
 
-#line 619 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
+#line 621 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 int CommandLine__compare_names(const void *ent1, const void *ent2) {
 	text_stream *tx1 = (*((const command_line_switch **) ent1))->switch_sort_name;
 	text_stream *tx2 = (*((const command_line_switch **) ent2))->switch_sort_name;
@@ -45085,7 +45087,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B81\t/built 21 September 2025/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B82\t/built 22 September 2025/\n");
 
 }
 #line 47 "inweb/foundation-module/Chapter 9/Ctags Support.w"
@@ -55570,7 +55572,7 @@ void Makefiles__write(ls_web *W, filename *prototype, filename *F,
 ;
 
 	text_stream *header = Str__new();
-	WRITE_TO(header, "# This makefile was automatically written by inweb -makefile\n");
+	WRITE_TO(header, "# This makefile was automatically written by inweb make-makefile\n");
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 
@@ -56053,7 +56055,7 @@ void Git__write_gitignore(filename *prototype, filename *F) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor__new_macro(L, TL_IS_4558, NULL, Git__basics_expander, NULL);
 	text_stream *header = Str__new();
-	WRITE_TO(header, "# This gitignore was automatically written by inweb -gitignore\n");
+	WRITE_TO(header, "# This gitignore was automatically written by inweb make-gitignore\n");
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 	Preprocessor__preprocess(prototype, F, header, L, NULL_GENERAL_POINTER, '#', ISO_ENC);
