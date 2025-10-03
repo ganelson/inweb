@@ -116,3 +116,14 @@ Notation "Inweb" {
 		MATERIAL                                    ==> commentary
 	}
 }
+
+Notation "Markdown" {
+	recognise .md
+	set Paragraph Numbers Visibility: Off
+	use Markdown commentary
+	use Markdown shebang
+	classify {
+		# MATERIAL			==> titleandpurpose if on first line
+		MATERIAL			==> commentary
+	}
+}

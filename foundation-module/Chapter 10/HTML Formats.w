@@ -156,10 +156,11 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title")) > 0)
 			bct = Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title");
 		if (hrs->wv->self_contained == FALSE) {
-			Colonies::write_breadcrumb(OUT, bct, I"index.html");
+			Colonies::write_breadcrumb(OUT, bct, hrs->wv->home_leaf);
 			if (hrs->wv->weave_web->chaptered) {
 				TEMPORARY_TEXT(chapter_link)
-				WRITE_TO(chapter_link, "index.html#%s%S",
+				WRITE_TO(chapter_link, "%S#%s%S",
+					hrs->wv->home_leaf,
 					(WeavingDetails::get_as_ebook(hrs->wv->weave_web))?"C":"",
 					C->sect->owning_chapter->ch_range);
 				Colonies::write_breadcrumb(OUT,
@@ -883,18 +884,7 @@ that service uses to identify the video/audio in question.
 
 @<Render maths@> =
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
-	text_stream *plugin_name = hrs->wv->pattern->mathematics_plugin;
-	if ((Str::len(plugin_name) == 0) || (hrs->EPUB_flag)) {
-		TEMPORARY_TEXT(R)
-		TeXUtilities::remove_math_mode(R, C->content);
-		HTMLWeaving::escape_text(OUT, R);
-		DISCARD_TEXT(R)
-	} else {
-		Swarm::ensure_plugin(hrs->wv, plugin_name);
-		if (C->displayed) WRITE("$$"); else WRITE("\\(");
-		HTMLWeaving::escape_text(OUT, C->content);
-		if (C->displayed) WRITE("$$"); else WRITE("\\)");
-	}
+	HTMLWeaving::render_maths(OUT, hrs->wv, C->content, hrs->EPUB_flag, C->displayed);
 
 @<Render Markdown@> =
 	ls_paragraph *first_in_para = NULL;
@@ -918,7 +908,8 @@ that service uses to identify the video/audio in question.
 			HTML_CLOSE("p");
 		}
 	}
-	MDRenderer::render_extended(OUT, C->content, MarkdownVariations::GitHub_flavored_Markdown(), mode);
+	MDRenderer::render_extended(OUT, (void *) hrs->wv, C->content,
+		MarkdownVariations::Inweb_flavoured_Markdown(), mode);
 	INDENT;
 	HTML_CLOSE("div");
 
@@ -931,6 +922,25 @@ that service uses to identify the video/audio in question.
 @<Recurse the renderer through children nodes@> =
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &HTMLWeaving::render_visit, (void *) hrs, L+1);
+
+@
+
+=
+void HTMLWeaving::render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content,
+	int plain, int displayed) {
+	text_stream *plugin_name = (wv)?(wv->pattern->mathematics_plugin):NULL;
+	if ((Str::len(plugin_name) == 0) || (plain)) {
+		TEMPORARY_TEXT(R)
+		TeXUtilities::remove_math_mode(R, content);
+		HTMLWeaving::escape_text(OUT, R);
+		DISCARD_TEXT(R)
+	} else {
+		Swarm::ensure_plugin(wv, plugin_name);
+		if (displayed) WRITE("$$"); else WRITE("\\(");
+		HTMLWeaving::escape_text(OUT, content);
+		if (displayed) WRITE("$$"); else WRITE("\\)");
+	}
+}
 
 @ These are the nodes falling under a commentary material node which we will
 amalgamate into a single HTML paragraph:

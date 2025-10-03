@@ -62,6 +62,10 @@ markdown_item *MDInlineParser::inline(markdown_variation *variation,
 		mask += UNDERSCORE_EMPHASIS_BIT;
 	if (MarkdownVariations::supports(variation, STRIKETHROUGH_MARKDOWNFEATURE))
 		mask += TILDE_STRIKETHROUGH_BIT;
+	if (MarkdownVariations::supports(variation, TEX_MARKDOWNFEATURE))
+		mask += DOLLAR_TEX_BIT;
+	if (MarkdownVariations::supports(variation, INWEB_LINKS_MARKDOWNFEATURE))
+		mask += SLASHSLASH_LINK_BIT;
 	if (mask) MDInlineParser::emphasis(variation, owner, mask);
 	return owner;
 }
@@ -1259,6 +1263,8 @@ but here goes.
 @d ASTERISK_EMPHASIS_BIT 1
 @d UNDERSCORE_EMPHASIS_BIT 2
 @d TILDE_STRIKETHROUGH_BIT 4
+@d DOLLAR_TEX_BIT 8
+@d SLASHSLASH_LINK_BIT 16
 
 =
 void MDInlineParser::emphasis(markdown_variation *variation, markdown_item *owner,
@@ -1305,6 +1311,18 @@ int MDInlineParser::delimiter_run(md_charpos pos, int mask) {
 		count = Markdown::unescaped_run(pos, '~');
 		if ((count >= 1) && (count <= 2) && (Markdown::get_unescaped(pos, -1) != '~'))
 			return 10000000 + count;
+	}
+	if (mask & DOLLAR_TEX_BIT) {
+		count = Markdown::unescaped_run(pos, '$');
+		if ((count == 1) && (Markdown::get_unescaped(pos, -1) != '$'))
+			return 20000000 + count;
+		if ((count == 2) && (Markdown::get_unescaped(pos, -1) != '$'))
+			return 30000000 + count;
+	}
+	if (mask & SLASHSLASH_LINK_BIT) {
+		count = Markdown::unescaped_run(pos, '/');
+		if ((count == 2) && (Markdown::get_unescaped(pos, -1) != '/'))
+			return 40000000 + count;
 	}
 	return 0;
 }
@@ -1443,7 +1461,7 @@ typedef struct md_emphasis_delimiter {
 		if (run != 0) {
 			if (no_delimiters >= MAX_MD_EMPHASIS_DELIMITERS) break;
 			int run_combined = run;
-			if (run > 10000000) run_combined = run - 10000000;
+			if (run > 10000000) run_combined = run % 10000000;
 			int can_open = MDInlineParser::can_open_emphasis(pos, run_combined);
 			int can_close = MDInlineParser::can_close_emphasis(pos, run_combined);
 			if ((no_delimiters == 0) && (can_open == FALSE)) continue;
@@ -1452,7 +1470,12 @@ typedef struct md_emphasis_delimiter {
 			P->pos = pos;
 			P->width = (run_combined>0)?run_combined:(-run_combined);
 			P->type = (run_combined>0)?1:-1;
-			if (run > 10000000) P->type = 0;
+			switch (run/10000000) {
+				case 1: P->type = 0; break;
+				case 2: P->type = 2; break;
+				case 3: P->type = 3; break;
+				case 4: P->type = 4; break;
+			}
 			P->can_open = can_open;
 			P->can_close = can_close;
 			if (tracing_Markdown_parser) {
@@ -1597,6 +1620,15 @@ be outermost. So this would give us:
 @<Make the chain of emphasis items from top to bottom@> =
 	if (OD->type == 0) {
 		em_top = Markdown::new_item(STRIKETHROUGH_MIT);
+		em_bottom = em_top;
+	} else if (OD->type == 2) {
+		em_top = Markdown::new_item(TEX_MIT);
+		em_bottom = em_top;
+	} else if (OD->type == 3) {
+		em_top = Markdown::new_item(DISPLAYED_TEX_MIT);
+		em_bottom = em_top;
+	} else if (OD->type == 4) {
+		em_top = Markdown::new_item(INWEB_LINK_MIT);
 		em_bottom = em_top;
 	} else {
 		em_top = Markdown::new_item(((width%2) == 1)?EMPHASIS_MIT:STRONG_MIT);

@@ -32,6 +32,7 @@ void SingleFileWebs::reconnoiter(ls_web *W) {
 	WebModules::add_chapter(W->main_module, C);
 	ls_section *S = WebStructure::new_ls_section(C, I"All");
 	S->source_file_for_section = W->single_file;
+	S->source_declaration_for_section = D;
 	if (RS.skip_from > 0) S->skip_from = RS.skip_from;
 	if (RS.skip_to > 0) S->skip_to = RS.skip_to;
 
@@ -44,7 +45,8 @@ void SingleFileWebs::reconnoiter(ls_web *W) {
 advance, and the file didn't declare one explicitly, and didn't have a shebang.
 
 @<Try to deduce the syntax from the filename extension@> =
-	RS.detected_syntax = WebSyntax::guess_from_filename(W, W->single_file);
+	if (W->single_file)
+		RS.detected_syntax = WebSyntax::guess_from_filename(W, W->single_file);
 	if (RS.detected_syntax == NULL) RS.detected_syntax = WebSyntax::default();
 
 @<Apply any detected syntax and programming language to the web@> =
@@ -81,6 +83,7 @@ typedef struct sfw_reader_state {
 
 	/* Where we are in the file: */
 	int reading_opening_stanza;
+	int line_count;
 } sfw_reader_state;
 
 @<Initialise the reader state@> =
@@ -90,6 +93,7 @@ typedef struct sfw_reader_state {
 	RS.detected_language = NULL; /* i.e., unknown */
 	RS.skip_from = 0; /* meaning, skip nothing */
 	RS.skip_to = 0;
+	RS.line_count = 0;
 
 	RS.reading_opening_stanza = TRUE;
 
@@ -98,9 +102,10 @@ typedef struct sfw_reader_state {
 =
 void SingleFileWebs::read_sf_line(text_stream *line, text_file_position *tfp, void *X) {
 	sfw_reader_state *RS = (sfw_reader_state *) X;
+	RS->line_count++;
 	if (Str::is_whitespace(line)) RS->reading_opening_stanza = FALSE;
 
-	if ((RS->detected_syntax == NULL) && (tfp->line_count == 1))
+	if ((RS->detected_syntax == NULL) && (RS->line_count == 1))
 		@<Look for a shebang on line 1@>;
 
 	if (RS->reading_opening_stanza) @<Look for key-value pairs at the top of the file@>;

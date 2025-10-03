@@ -12,10 +12,6 @@ The inweb weave subcommand weaves a web.
 @e ONLY_CLSW
 @e WEAVE_TAG_CLSW
 
-@e WEAVING_HTML_CLSG
-@e BREADCRUMB_CLSW
-@e NAVIGATION_CLSW
-
 =
 void InwebWeave::cli(void) {
 	CommandLine::begin_subcommand(WEAVE_CLSUB, U"weave");
@@ -51,13 +47,6 @@ void InwebWeave::cli(void) {
 		U"weave only the section or chapter whose abbreviation is X");
 	CommandLine::declare_switch(WEAVE_TAG_CLSW, U"only-tagged-as", 2,
 		U"weave only those paragraphs in the web tagged as X");
-
-	CommandLine::begin_group(WEAVING_HTML_CLSG,
-		I"relevant only for HTML-based patterns with navigation links");
-	CommandLine::declare_switch(BREADCRUMB_CLSW, U"breadcrumb", 2,
-		U"use the text X as a breadcrumb in overhead navigation");
-	CommandLine::declare_switch(NAVIGATION_CLSW, U"navigation", 2,
-		U"use the file X as a column of navigation links");
 	CommandLine::end_group();
 	CommandLine::end_subcommand();
 }
@@ -71,8 +60,6 @@ typedef struct inweb_weave_settings {
 	struct pathname *weave_into_setting;
 	struct text_stream *tag_setting;
 	struct text_stream *weave_pattern;
-	struct linked_list *breadcrumb_setting;
-	struct filename *navigation_setting;
 } inweb_weave_settings;
 
 void InwebWeave::initialise(inweb_weave_settings *iws) {
@@ -81,8 +68,6 @@ void InwebWeave::initialise(inweb_weave_settings *iws) {
 	iws->weave_into_setting = NULL;
 	iws->tag_setting = Str::new();
 	iws->weave_pattern = I"";
-	iws->breadcrumb_setting = NEW_LINKED_LIST(breadcrumb_request);
-	iws->navigation_setting = NULL;
 }
 
 int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
@@ -98,11 +83,6 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 		case WEAVE_AS_CLSW: iws->weave_pattern = Str::duplicate(arg); return TRUE;
 		case ONLY_CLSW: Configuration::set_range(&(iws->subset), arg, TRUE); return TRUE;
 		case WEAVE_TAG_CLSW: iws->tag_setting = Str::duplicate(arg); return TRUE;
-		case BREADCRUMB_CLSW:
-			ADD_TO_LINKED_LIST(Colonies::request_breadcrumb(arg),
-				breadcrumb_request, iws->breadcrumb_setting);
-			return TRUE;
-		case NAVIGATION_CLSW: iws->navigation_setting = Filenames::from_text(arg); return TRUE;
 	}
 	return FALSE;
 }
@@ -112,30 +92,48 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 =
 void InwebWeave::run(inweb_instructions *ins) {
 	inweb_weave_settings *iws = &(ins->weave_settings);
-	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_COMPULSORY, FALSE, TRUE);
-	ls_web *W = op.W;
+	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_ALLOWED, FALSE, TRUE);
+	if (op.W) InwebWeave::run_on(iws, op.C, op.CM, op.W);
+	else if ((op.D) && (op.D->declaration_type == COLONY_WCLTYPE)) {
+		WCL::parse_declarations_throwing_errors(op.D);
+		colony *C = RETRIEVE_POINTER_colony(op.D->object_declared);
+		Colonies::fully_load(C);
+		int N = 0;
+		colony_member *CM;
+		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
+			if (CM->external == FALSE)
+				N++;
+		int M = 0;
+		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
+			if (CM->external == FALSE) {
+				M++;
+				if (M > 1) PRINT("\n");
+				PRINT("(Weave %d of %d: %S)\n", M, N, CM->name);
+				ls_web *W = WebStructure::read_fully(C, CM->loaded->declaration, FALSE, TRUE, verbose_mode);
+				inweb_weave_settings mutable_copy = *iws;
+				InwebWeave::run_on(&mutable_copy, C, CM, W);
+			}
+	} else Errors::fatal("inweb weave has to apply to a web or a colony");
+}
+
+void InwebWeave::run_on(inweb_weave_settings *iws, colony *C, colony_member *CM, ls_web *W) {
 	WebStructure::print_statistics(W);
-	if (op.CM) @<Fill in some blanks from the colony membership@>;
+	if (CM) @<Fill in some blanks from the colony membership@>;
 	text_stream *name = iws->weave_pattern;
 	if (Str::len(name) == 0) name = I"HTML";
 	weave_pattern *pattern = Patterns::find(W, name);
-	if ((iws->subset.chosen_range_actually_chosen == FALSE) && (W->single_file == NULL))
+	if ((iws->subset.chosen_range_actually_chosen == FALSE) && (W->is_page == FALSE))
 		Configuration::set_range(&(iws->subset), pattern->default_range, TRUE);
-	Swarm::weave(op.C, W, iws->weave_to_setting, iws->weave_into_setting, pattern,
-		iws->subset.swarm_mode, iws->subset.range, iws->tag_setting,
-		iws->breadcrumb_setting, iws->navigation_setting, verbose_mode);
+	Swarm::weave(C, CM, W, iws->weave_to_setting, iws->weave_into_setting, pattern,
+		iws->subset.swarm_mode, iws->subset.range, iws->tag_setting, verbose_mode);
 }
 
-@ This is one of the few subcommands making using of the colony membership |op.CM|,
+@ This is one of the few subcommands making use of the colony membership |op.CM|,
 which even so is used only for putting together the panels of navigation links
 in HTML to other colony members, or for re-routing the output.
 
 @<Fill in some blanks from the colony membership@> =
 	if (Str::len(iws->weave_pattern) == 0)
-		iws->weave_pattern = op.CM->default_weave_pattern;
-	if (LinkedLists::len(iws->breadcrumb_setting) == 0)
-		iws->breadcrumb_setting = op.CM->breadcrumb_tail;
-	if (iws->navigation_setting == NULL)
-		iws->navigation_setting = op.CM->navigation;
+		iws->weave_pattern = CM->default_weave_pattern;
 	if (iws->weave_into_setting == NULL)
-		iws->weave_into_setting = op.CM->weave_path;
+		iws->weave_into_setting = Colonies::weave_path(CM);

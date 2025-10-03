@@ -25,9 +25,10 @@ Preliminaries
 Chapter 1: Top Level
 	Program Control
 	Configuration
-	inweb weave Subcommand
-	inweb tangle Subcommand
+	inweb advance-build Subcommand
 	inweb inspect Subcommand
 	inweb make- Subcommands
-	inweb advance-build Subcommand
+	inweb map Subcommand
+	inweb tangle Subcommand
 	inweb test-language Subcommand
+	inweb weave Subcommand

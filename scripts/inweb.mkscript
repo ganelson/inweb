@@ -37,7 +37,7 @@ SAFETYCOPY = $(ME)/Tangled/inweb_dev
 # The colony file for this collection of webs contains information about their
 # paths, where they are woven to, and so on
 
-COLONY = $(ME)/colony.txt
+COLONY = $(ME)/colony.inweb
 
 -include $(ME)/platform-settings.mk
 
@@ -156,7 +156,6 @@ pages:
 	$(INWEB) inspect -colony $(COLONY) -member twinprimes -scan > $(ME)/Figures/scan.txt
 	$(INWEB) weave -colony $(COLONY) -member twinprimes -as TestingInweb -to $(ME)/Figures/tree.txt
 	cp -f $(COLONY) $(ME)/Figures/colony.txt
-	cp -f $(ME)/docs-src/nav.html $(ME)/Figures/nav.txt
 	$(INWEB) advance-build $(ME)
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html

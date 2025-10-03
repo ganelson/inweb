@@ -69,11 +69,11 @@ need has arisen on a particular file.
 =
 int current_inclusion_round = 0;
 void Assets::include_relevant_plugins(text_stream *OUT, weave_pattern *pattern,
-	ls_web *W, weave_order *wv, filename *from) {
+	ls_web *W, weave_order *wv, filename *from, colony *context) {
 	current_inclusion_round++;
 	STREAM_INDENT(STDOUT);
 	Patterns::include_plugins(OUT, W, pattern, from,
-		(wv)?(wv->verbosely):FALSE, (wv)?(wv->weave_colony):NULL);
+		(wv)?(wv->verbosely):FALSE, (wv)?(wv->weave_colony):context);
 	if (wv) Swarm::include_plugins(OUT, W, wv, from);
 	STREAM_OUTDENT(STDOUT);
 }
@@ -276,7 +276,7 @@ pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	text_stream *trans, weave_pattern *pattern, filename *from, int verbosely, colony *context) {
 	if (R == NULL) R = Assets::applicable_rule(pattern, F);
 	TEMPORARY_TEXT(url)
-	pathname *AP = Colonies::assets_path();
+	pathname *AP = Colonies::assets_path(context);
 	if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
 	WRITE_TO(url, "%S", Filenames::get_leafname(F));
 	if (R->transform_names == FALSE) trans = NULL;

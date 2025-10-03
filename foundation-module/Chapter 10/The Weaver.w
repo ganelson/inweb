@@ -217,7 +217,7 @@ about breaking pages at chapters and sections fail to work. So:
 	text_stream *cap = LiterateSource::retrieve_caption_for_tag(par, wv->theme_match);
 	if (Str::len(cap) > 0) {
 		Weaver::weave_subheading(tree, wv, state->ap, C->ch_title);
-	} else if ((W->single_file == NULL) && (state->last_extract_from != S)) {
+	} else if ((W->is_page == FALSE) && (state->last_extract_from != S)) {
 		TEMPORARY_TEXT(extr)
 		WRITE_TO(extr, "From %S: %S", C->ch_title, S->sect_title);
 		Weaver::weave_subheading(tree, wv, state->ap, extr);

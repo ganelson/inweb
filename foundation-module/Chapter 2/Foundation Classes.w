@@ -117,6 +117,8 @@ here we are.
 @e wcl_declaration_CLASS
 @e wcl_error_CLASS
 @e command_line_subcommand_CLASS
+@e textual_table_CLASS
+@e textual_table_row_CLASS
 
 @e weave_document_node_CLASS
 @e weave_head_node_CLASS
@@ -256,6 +258,8 @@ DECLARE_CLASS(fsm_transition)
 DECLARE_CLASS(wcl_declaration)
 DECLARE_CLASS(wcl_error)
 DECLARE_CLASS(command_line_subcommand)
+DECLARE_CLASS(textual_table)
+DECLARE_CLASS(textual_table_row)
 
 DECLARE_CLASS(weave_document_node)
 DECLARE_CLASS(weave_head_node)

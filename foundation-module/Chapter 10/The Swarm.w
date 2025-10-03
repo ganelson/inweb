@@ -151,18 +151,23 @@ This function performs a general weave of a web, or part of a web, swarming
 as necessary.
 
 =
-void Swarm::weave(colony *context, ls_web *W, filename *to, pathname *into,
+pathname *last_reported_weave_path = NULL;
+int file_weaving_reports_made = 0;
+
+void Swarm::weave(colony *context, colony_member *CM, ls_web *W, filename *to, pathname *into,
 	weave_pattern *pattern, int swarm_mode, text_stream *range, text_stream *tag,
-	linked_list *breadcrumbs, filename *navigation, int verbose_mode) {
+	int verbose_mode) {
+	file_weaving_reports_made = 0;
+	last_reported_weave_path = NULL;
+	if (context) Colonies::fully_load(context);
 	if (into) WeavingDetails::set_redirect_weaves_to(W, into);
 	int r = WeavingFormats::begin_weaving(W, pattern);
 	if (r != SWARM_OFF_SWM) swarm_mode = r;
+	if ((W) && (CM == NULL)) CM = Colonies::find_colony_member(W);
 	if (swarm_mode == SWARM_OFF_SWM) {
-		Swarm::weave_subset(context, W, range, tag, pattern, to, into,
-			breadcrumbs, navigation, verbose_mode);
+		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, into, verbose_mode);
 	} else {
-		Swarm::weave_swarm(context, W, range, swarm_mode, tag, pattern, to, into,
-			breadcrumbs, navigation, verbose_mode);
+		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern, to, into, verbose_mode);
 	}
 	WeavingFormats::end_weaving(W, pattern);
 	if (into) WeavingDetails::set_redirect_weaves_to(W, NULL);
@@ -186,12 +191,10 @@ another. |swarm_mode|, then, is one of these:
 
 =
 weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
-pathname *last_reported_weave_path = NULL;
-int file_weaving_reports_made = 0;
 
-void Swarm::weave_swarm(colony *context, ls_web *W, text_stream *range, int swarm_mode, text_stream *tag,
-	weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation, int verbosely) {
+void Swarm::weave_swarm(colony *context, colony_member *CM, ls_web *W,
+	text_stream *range, int swarm_mode, text_stream *tag,
+	weave_pattern *pattern, filename *to, pathname *into, int verbosely) {
 	swarm_leader = NULL;
 	last_reported_weave_path = NULL;
 	file_weaving_reports_made = 0;
@@ -201,8 +204,8 @@ void Swarm::weave_swarm(colony *context, ls_web *W, text_stream *range, int swar
 		if (C->imported == FALSE) {
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
 				if ((W->chaptered == TRUE) && (WebRanges::is_within(C->ch_range, range))) {
-					weave_order *wo = Swarm::weave_subset_inner(context, W, C->ch_range, FALSE,
-						tag, pattern, to, into, breadcrumbs, navigation, verbosely);
+					weave_order *wo = Swarm::weave_subset_inner(context, CM, W, C->ch_range, FALSE,
+						tag, pattern, to, into, verbosely);
 					WeavingDetails::set_ch_weave(C, wo);
 					if (Str::len(range) > 0) swarm_leader = wo;
 				}
@@ -210,23 +213,22 @@ void Swarm::weave_swarm(colony *context, ls_web *W, text_stream *range, int swar
 				LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 					if (WebRanges::is_within(WebRanges::of(S), range))
 						WeavingDetails::set_sect_weave(S,
-							Swarm::weave_subset_inner(context, W,
-								WebRanges::of(S), FALSE, tag, pattern, to, into,
-								breadcrumbs, navigation, verbosely));
+							Swarm::weave_subset_inner(context, CM, W,
+								WebRanges::of(S), FALSE, tag, pattern, to, into, verbosely));
 		}
 		if (file_weaving_reports_made > 0) {
 			PRINT("\n");
 			file_weaving_reports_made = 0;
 		}
 	}
-	Swarm::weave_index_templates(W, range, pattern, into, navigation, breadcrumbs, context);
+	Swarm::weave_index_templates(context, CM, W, range, pattern, into);
 }
 
-weave_order *Swarm::weave_subset(colony *context, ls_web *W, text_stream *range,
+weave_order *Swarm::weave_subset(colony *context, colony_member *CM, ls_web *W, text_stream *range,
 	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation, int verbosely) {
-	weave_order *wv = Swarm::weave_subset_inner(context, W, range, FALSE,
-		tag, pattern, to, into, breadcrumbs, navigation, verbosely);
+	int verbosely) {
+	weave_order *wv = Swarm::weave_subset_inner(context, CM, W, range, FALSE,
+		tag, pattern, to, into, verbosely);
 	if (file_weaving_reports_made > 0) {
 		PRINT("\n");
 		file_weaving_reports_made = 0;
@@ -239,9 +241,9 @@ from the swarm, or has been specified at the command line (in which case
 the call comes from Program Control).
 
 =
-weave_order *Swarm::weave_subset_inner(colony *context, ls_web *W, text_stream *range, int open_afterwards,
-	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
-	linked_list *breadcrumbs, filename *navigation, int verbosely) {
+weave_order *Swarm::weave_subset_inner(colony *context, colony_member *CM, ls_web *W,
+	text_stream *range, int open_afterwards, text_stream *tag,
+	weave_pattern *pattern, filename *to, pathname *into, int verbosely) {
 	weave_order *wv = NULL;
 	if (WebStructure::has_errors(W) == FALSE) {
 		CodeAnalysis::analyse_code(W);
@@ -265,11 +267,12 @@ typedef struct weave_order {
 	struct text_stream *booklet_title;
 	struct weave_pattern *pattern; /* which pattern is to be followed */
 	struct filename *weave_to; /* where to put it */
+	struct text_stream *home_leaf; /* leafname of home page for web in this weave */
 	struct weave_format *format; /* plain text, say, or HTML */
 	void *post_processing_results; /* optional typesetting diagnostics after running through */
 	int self_contained; /* make a self-contained file if possible */
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
-	struct filename *navigation; /* navigation links, or |NULL| if not supplied */
+	struct wcl_declaration *navigation; /* navigation links, or |NULL| if not supplied */
 	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
 	struct linked_list *colour_schemes; /* of |colour_scheme|: these are for HTML */
 	int verbosely; /* logging to standard output */
@@ -290,8 +293,15 @@ typedef struct weave_order {
 	wv->format = pattern->pattern_format;
 	wv->post_processing_results = NULL;
 	wv->self_contained = FALSE;
-	wv->navigation = navigation;
-	wv->breadcrumbs = breadcrumbs;
+	if (CM) {
+		wv->navigation = CM->navigation;
+		wv->breadcrumbs = CM->breadcrumb_tail;
+		wv->home_leaf = CM->home_leaf;
+	} else {
+		wv->navigation = NULL;
+		wv->breadcrumbs = NEW_LINKED_LIST(breadcrumb_request);
+		wv->home_leaf = I"index.html";
+	}
 	wv->plugins = NEW_LINKED_LIST(weave_plugin);
 	wv->colour_schemes = NEW_LINKED_LIST(colour_scheme);
 	if (WebStructure::has_only_one_section(W)) wv->self_contained = TRUE;
@@ -341,6 +351,11 @@ and details of any cover-sheet to use.
 	if (W->single_file) {
 		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
 		Filenames::write_unextended_leafname(leafname, W->single_file);
+		if (Str::len(wv->theme_match) > 0)
+			@<Change the titling and leafname to match the tagged theme@>;
+	} else if (W->is_page) {
+		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
+		WRITE_TO(leafname, "%S", W->declaration->name);
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
 	} else if (Str::eq_wide_string(range, U"0")) {
@@ -445,22 +460,33 @@ void Swarm::include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename 
 @ After every swarm, we rebuild the index:
 
 =
-void Swarm::weave_index_templates(ls_web *W, text_stream *range, weave_pattern *pattern,
-	pathname *into, filename *nav, linked_list *crumbs, colony *context) {
+void Swarm::weave_index_templates(colony *context, colony_member *CM, ls_web *W,
+	text_stream *range, weave_pattern *pattern, pathname *into) {
 	if (!(Bibliographic::data_exists(W, I"Version Number")))
 		Bibliographic::set_datum(W, I"Version Number", I" ");
 	filename *INF = Patterns::find_template(pattern, I"template-index.html");
 	if (INF) {
 		pathname *H = WeavingDetails::get_redirect_weaves_to(W);
 		if (H == NULL) H = WebStructure::woven_folder(W);
-		filename *Contents = Filenames::in(H, I"index.html");
+		filename *Contents = Filenames::in(H, (CM)?(CM->home_leaf):I"index.html");
 		text_stream TO_struct; text_stream *OUT = &TO_struct;
 		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
 			Errors::fatal_with_file("unable to write contents file", Contents);
 		if (WeavingDetails::get_as_ebook(W))
 			Epub::note_page(WeavingDetails::get_as_ebook(W), Contents, I"Index", I"index");
 		PRINT("    [index file: %f]\n", Contents);
-		Collater::collate(OUT, W, range, INF, pattern, nav, crumbs, NULL, Contents, context);
+
+		wcl_declaration *nav;
+		linked_list *crumbs;
+		if (CM) {
+			nav = CM->navigation;
+			crumbs = CM->breadcrumb_tail;
+		} else {
+			nav = NULL;
+			crumbs = NEW_LINKED_LIST(breadcrumb_request);
+		}
+
+		Collater::collate(OUT, W, range, INF, NULL, pattern, nav, crumbs, NULL, Contents, context);
 		STREAM_CLOSE(OUT);
 	}
 }

@@ -267,6 +267,18 @@ int Filenames::eq(filename *F1, filename *F2) {
 	return rv;
 }
 
+int Filenames::eq_insensitive(filename *F1, filename *F2) {
+	if (F1 == F2) return TRUE;
+	TEMPORARY_TEXT(T1)
+	TEMPORARY_TEXT(T2)
+	WRITE_TO(T1, "%f", F1);
+	WRITE_TO(T2, "%f", F2);
+	int rv = Str::eq_insensitive(T1, T2);
+	DISCARD_TEXT(T1)
+	DISCARD_TEXT(T2)
+	return rv;
+}
+
 @h Timestamps and sizes.
 
 =

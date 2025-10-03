@@ -17,7 +17,8 @@ void InwebInspect::cli(void) {
 	CommandLine::begin_subcommand(INSPECT_CLSUB, U"inspect");
 	CommandLine::declare_heading(
 		U"Usage: inweb inspect [WEB [RANGE] | FILE]\n\n"
-		U"The following OPTIONS are available:");
+		U"This shows the contents of a web, colony, or other Inweb resource without\n"
+		U"changing it or taking any action.");
 
 	CommandLine::declare_switch(RESOURCES_CLSW, U"resources", 1,
 		U"show the Inweb resources (such as languages and notations) available");

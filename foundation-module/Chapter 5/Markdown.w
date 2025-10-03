@@ -250,17 +250,17 @@ context-free except for its use of the links dictionary:
 
 =
 void Markdown::render(OUTPUT_STREAM, markdown_item *tree) {
-	MDRenderer::render_extended(OUT, tree, MarkdownVariations::CommonMark(), 0);
+	MDRenderer::render_extended(OUT, NULL, tree, MarkdownVariations::CommonMark(), 0);
 }
 
 void Markdown::render_extended(OUTPUT_STREAM, markdown_item *tree,
 	markdown_variation *variation) {
-	MDRenderer::render_extended(OUT, tree, variation, 0);
+	MDRenderer::render_extended(OUT, NULL, tree, variation, 0);
 }
 
 void Markdown::render_bodied_extended(OUTPUT_STREAM, markdown_item *tree,
 	markdown_variation *variation) {
-	MDRenderer::render_extended(OUT, tree, variation, EXAMPLE_BODIES_MDRMODE);
+	MDRenderer::render_extended(OUT, NULL, tree, variation, EXAMPLE_BODIES_MDRMODE);
 }
 
 @h Storing marked-up copy.
@@ -336,6 +336,12 @@ paragraph is inline content.
 @e TICKBOX_MIT
 @e STRIKETHROUGH_MIT
 @e XMPP_AUTOLINK_MIT
+
+@ And Inweb extensions:
+
+@e TEX_MIT
+@e DISPLAYED_TEX_MIT
+@e INWEB_LINK_MIT
 
 @ Recapitulating all of that:
 
@@ -434,6 +440,10 @@ void Markdown::create_item_types(void) {
 	Markdown::new_inline_type(STRIKETHROUGH_MIT, I"STRIKETHROUGH");
 	Markdown::new_leaf_block_type(TICKBOX_MIT, I"TICKBOX");
 	Markdown::new_inline_type(XMPP_AUTOLINK_MIT, I"XMPP_AUTOLINK");
+
+	Markdown::new_inline_type(TEX_MIT, I"TEX");
+	Markdown::new_inline_type(DISPLAYED_TEX_MIT, I"DISPLAYED_TEX");
+	Markdown::new_inline_type(INWEB_LINK_MIT, I"INWEB_LINK");
 }
 
 text_stream *Markdown::item_type_name(int t) {

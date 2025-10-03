@@ -355,16 +355,21 @@ and which for some reason lives on in the web source for kits.)
 	pathname *P = RS->path_to;
 	if (P == NULL) P = RS->W->path_to_web;
 	WRITE_TO(leafname_to_use, "%S", S->sect_title);
-	S->source_file_for_section = Filenames::in(P, leafname_to_use);
-	if (TextFiles::exists(S->source_file_for_section) == FALSE) {	
-		WRITE_TO(leafname_to_use, ".i6t", S->sect_title);
+	S->source_file_for_section = Filenames::from_text_relative(P, leafname_to_use);
+	Str::clear(S->sect_title);
+	WRITE_TO(S->sect_title, "%S", Filenames::get_leafname(S->source_file_for_section));
+	P = Filenames::up(S->source_file_for_section);
+	if (TextFiles::exists(S->source_file_for_section) == FALSE) {
+		TEMPORARY_TEXT(leaf)
+		WRITE_TO(leaf, "%S.w", Filenames::get_leafname(S->source_file_for_section));
 		if (Str::len(RS->chapter_dir_name) > 0)
 			P = Pathnames::down(P, RS->chapter_dir_name);
-		S->source_file_for_section = Filenames::in(P, leafname_to_use);
+		S->source_file_for_section = Filenames::in(P, leaf);
 		if (TextFiles::exists(S->source_file_for_section) == FALSE) {
-			Str::clear(leafname_to_use);
-			WRITE_TO(leafname_to_use, "%S.w", S->sect_title);
-			S->source_file_for_section = Filenames::in(P, leafname_to_use);
+			Str::delete_last_character(leaf);
+			Str::delete_last_character(leaf);
+			WRITE_TO(leaf, ".i6t");
+			S->source_file_for_section = Filenames::in(P, leaf);
 		}
 	}
 	DISCARD_TEXT(leafname_to_use)

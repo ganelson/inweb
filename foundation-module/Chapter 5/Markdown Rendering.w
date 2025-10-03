@@ -24,15 +24,15 @@ through the tree: it's a bitmap composed of the following.
 @d EXISTING_PAR_MDRMODE 0x200  /* Render onto an existing paragraph */
 
 =
-void MDRenderer::render_extended(OUTPUT_STREAM, markdown_item *md,
+void MDRenderer::render_extended(OUTPUT_STREAM, void *state, markdown_item *md,
 	markdown_variation *variation, int extra_modes) {
 	int default_mode = TAGS_MDRMODE | ESCAPES_MDRMODE | extra_modes;
 	if (MarkdownVariations::supports(variation, ENTITIES_MARKDOWNFEATURE))
 		default_mode = default_mode | ENTITIES_MDRMODE;	
-	MDRenderer::recurse(OUT, md, default_mode, variation);
+	MDRenderer::recurse(OUT, state, md, default_mode, variation);
 }
 
-void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
+void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode,
 	markdown_variation *variation) {
 	if (md == NULL) return;
 	if (MarkdownVariations::intervene_in_rendering(variation, OUT, md, mode)) return;
@@ -81,6 +81,9 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 								        @<Recurse@>;
 								        if (mode & TAGS_MDRMODE) HTML_CLOSE("del");
 								        break;
+		case TEX_MIT:   	            @<Render maths matter in TeX@>; break;
+		case DISPLAYED_TEX_MIT:   	    @<Render maths matter in TeX@>; break;
+		case INWEB_LINK_MIT:   	    	@<Render Inweb link@>; break;
 		case CODE_MIT:                  if (mode & TAGS_MDRMODE) HTML_OPEN("code");
 								       	mode = mode & (~ESCAPES_MDRMODE);
 								       	mode = mode & (~ENTITIES_MDRMODE);
@@ -149,10 +152,10 @@ void MDRenderer::recurse(OUTPUT_STREAM, markdown_item *md, int mode,
 	for (markdown_item *ch = md->down; ch; ch = ch->next)
 		if (((mode & LOOSE_MDRMODE) == 0) && (ch->type == PARAGRAPH_MIT)) {
 			for (markdown_item *gch = ch->down; gch; gch = gch->next)
-				MDRenderer::recurse(OUT, gch, mode, variation);
+				MDRenderer::recurse(OUT, state, gch, mode, variation);
 		} else {
 			if (nl_issued == FALSE) { nl_issued = TRUE; WRITE("\n"); }
-			MDRenderer::recurse(OUT, ch, mode, variation);
+			MDRenderer::recurse(OUT, state, ch, mode, variation);
 		}
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("li");
 	WRITE("\n");
@@ -270,7 +273,7 @@ been taken out at the parsing stage.)
 					case 2: WRITE("<th align=\"right\">"); break;
 					case 3: WRITE("<th align=\"center\">"); break;
 				}
-				if (md->down) MDRenderer::recurse(OUT, md->down, mode, variation);
+				if (md->down) MDRenderer::recurse(OUT, state, md->down, mode, variation);
 				WRITE("</th>\n");
 			}
 			WRITE("</tr>\n");
@@ -288,7 +291,7 @@ been taken out at the parsing stage.)
 							case 2: WRITE("<td align=\"right\">"); break;
 							case 3: WRITE("<td align=\"center\">"); break;
 						}
-						if (md->down) MDRenderer::recurse(OUT, md->down, mode, variation);
+						if (md->down) MDRenderer::recurse(OUT, state, md->down, mode, variation);
 						WRITE("</td>\n");
 					}
 					WRITE("</tr>\n");
@@ -326,11 +329,11 @@ been taken out at the parsing stage.)
 	TEMPORARY_TEXT(title)
 	if (md->down->next) {
 		if (md->down->next->type == LINK_DEST_MIT) {
-			MDRenderer::recurse(URI, md->down->next, mode, variation);
+			MDRenderer::recurse(URI, state, md->down->next, mode, variation);
 			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
-				MDRenderer::recurse(title, md->down->next->next, mode, variation);
+				MDRenderer::recurse(title, state, md->down->next->next, mode, variation);
 		} else if (md->down->next->type == LINK_TITLE_MIT) {
-			MDRenderer::recurse(title, md->down->next, mode, variation);
+			MDRenderer::recurse(title, state, md->down->next, mode, variation);
 		}
 	}
 	if (Str::len(title) > 0) {
@@ -338,10 +341,30 @@ been taken out at the parsing stage.)
 	} else {
 		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\"", URI);
 	}
-	MDRenderer::recurse(OUT, md->down, mode, variation);
+	MDRenderer::recurse(OUT, state, md->down, mode, variation);
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
 	DISCARD_TEXT(URI)
 	DISCARD_TEXT(title)
+
+@<Render Inweb link@> =
+	TEMPORARY_TEXT(address)
+	MDRenderer::recurse(address, state, md->down, RAW_MDRMODE, variation);
+	TEMPORARY_TEXT(url)
+	TEMPORARY_TEXT(title)
+	int ext = FALSE;
+	if (Colonies::resolve_reference_in_weave_order((weave_order *) state,
+		url, title, address, &ext)) {
+		HTML::begin_link_with_class(OUT, (ext)?I"external":I"internal", url);
+		WRITE("%S", title);
+		HTML::end_link(OUT);
+	} else {
+		HTML_OPEN("b");
+		WRITE("[Unresolved link: %S]", address);
+		HTML_CLOSE("b");
+	}
+	DISCARD_TEXT(url)
+	DISCARD_TEXT(title)
+	DISCARD_TEXT(address)
 
 @<Render image@> =
 	TEMPORARY_TEXT(URI)
@@ -349,14 +372,14 @@ been taken out at the parsing stage.)
 	TEMPORARY_TEXT(alt)
 	if (md->down->next) {
 		if (md->down->next->type == LINK_DEST_MIT) {
-			MDRenderer::recurse(URI, md->down->next, mode, variation);
+			MDRenderer::recurse(URI, state, md->down->next, mode, variation);
 			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
-				MDRenderer::recurse(title, md->down->next->next, mode, variation);
+				MDRenderer::recurse(title, state, md->down->next->next, mode, variation);
 		} else if (md->down->next->type == LINK_TITLE_MIT) {
-			MDRenderer::recurse(title, md->down->next, mode, variation);
+			MDRenderer::recurse(title, state, md->down->next, mode, variation);
 		}
 	}
-	MDRenderer::recurse(alt, md->down, mode & (~TAGS_MDRMODE), variation);
+	MDRenderer::recurse(alt, state, md->down, mode & (~TAGS_MDRMODE), variation);
 	if (Str::len(title) > 0) {
 		if (mode & TAGS_MDRMODE) {
 			HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
@@ -374,12 +397,23 @@ been taken out at the parsing stage.)
 	DISCARD_TEXT(title)
 	DISCARD_TEXT(alt)
 
+@<Render maths matter in TeX@> =
+	TEMPORARY_TEXT(TEX)
+	int m = RAW_MDRMODE;
+	for (markdown_item *c = md->down; c; c = c->next) {
+		MDRenderer::recurse(TEX, state, c, m, variation);
+		m = m & (~EXISTING_PAR_MDRMODE);
+	}
+	HTMLWeaving::render_maths(OUT, (weave_order *) state, TEX, FALSE,
+		(md->type == DISPLAYED_TEX_MIT)?TRUE:FALSE);
+	DISCARD_TEXT(TEX)
+
 @ And finally, the obvious definition:
 
 @<Recurse@> =
 	int m = mode;
 	for (markdown_item *c = md->down; c; c = c->next) {
-		MDRenderer::recurse(OUT, c, m, variation);
+		MDRenderer::recurse(OUT, state, c, m, variation);
 		m = m & (~EXISTING_PAR_MDRMODE);
 	}
 

@@ -23,6 +23,7 @@ typedef struct inweb_instructions {
 	struct inweb_tangle_settings tangle_settings;
 	struct inweb_inspect_settings inspect_settings;
 	struct inweb_make_settings make_settings;
+	struct inweb_map_settings map_settings;
 	struct inweb_test_language_settings test_language_settings;
 
 	struct text_stream *temp_colony_setting; /* |-colony X|: file or path, if supplied */
@@ -55,6 +56,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	InwebTangle::initialise(&(args.tangle_settings));
 	InwebInspect::initialise(&(args.inspect_settings));
 	InwebMake::initialise(&(args.make_settings));
+	InwebMap::initialise(&(args.map_settings));
 	InwebTestLanguage::initialise(&(args.test_language_settings));
 
 	args.temp_colony_setting = NULL;
@@ -104,6 +106,7 @@ provides automatically.
 	InwebTangle::cli();
 	InwebInspect::cli();
 	InwebMake::cli();
+	InwebMap::cli();
 	InwebAdvanceBuild::cli();
 	InwebTestLanguage::cli();
 
@@ -115,6 +118,7 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 	if (InwebWeave::switch(args, id, val, arg)) return;
 	if (InwebTangle::switch(args, id, val, arg)) return;
 	if (InwebMake::switch(args, id, val, arg)) return;
+	if (InwebMap::switch(args, id, val, arg)) return;
 	if (InwebInspect::switch(args, id, val, arg)) return;
 	if (InwebTestLanguage::switch(args, id, val, arg)) return;
 	switch (id) {
@@ -318,26 +322,32 @@ the place that the colony file says it will be.
 	if (op.CM == NULL)
 		Errors::fatal_with_text("the colony has no member called '%S'",
 			ins->temp_member_setting);
-	if ((ins->temp_path_setting == NULL) && (ins->temp_file_setting == NULL)) {
-		pathname *P = Filenames::up(colony_file);
-		P = NULL; /* for now */
-		filename *putative = Filenames::from_text_relative(P, op.CM->path);
-		pathname *putative_path = Pathnames::from_text_relative(P, op.CM->path);
-		if (TextFiles::exists(putative))
-			ins->temp_file_setting = putative;
-		else if (Directories::exists(putative_path))
-			ins->temp_path_setting = putative_path;
-		else {
-			TEMPORARY_TEXT(ERM)
-			WRITE_TO(ERM,
-				"colony member '%S' should be at '%S', but nothing's there (%f)",
-				ins->temp_member_setting, op.CM->path, putative);
-			WebErrors::issue_at(ERM, NULL);
-			DISCARD_TEXT(ERM)
-		}
-		inferred_web_as_colony_member = TRUE;
+	if (op.CM->internal_declaration) {
+		Colonies::fully_load_member(op.CM);
+		op.W = WebStructure::read_fully(op.C, op.CM->internal_declaration,
+			enumerating, weaving, verbose_mode);
 	} else {
-		Errors::fatal("cannot specify a web and also a colony member");
+		if ((ins->temp_path_setting == NULL) && (ins->temp_file_setting == NULL)) {
+			pathname *P = Filenames::up(colony_file);
+			P = NULL; /* for now */
+			filename *putative = Filenames::from_text_relative(P, op.CM->path);
+			pathname *putative_path = Pathnames::from_text_relative(P, op.CM->path);
+			if (TextFiles::exists(putative))
+				ins->temp_file_setting = putative;
+			else if (Directories::exists(putative_path))
+				ins->temp_path_setting = putative_path;
+			else {
+				TEMPORARY_TEXT(ERM)
+				WRITE_TO(ERM,
+					"colony member '%S' should be at '%S', but nothing's there (%f)",
+					ins->temp_member_setting, op.CM->path, putative);
+				WebErrors::issue_at(ERM, NULL);
+				DISCARD_TEXT(ERM)
+			}
+			inferred_web_as_colony_member = TRUE;
+		} else {
+			Errors::fatal("cannot specify a web and also a colony member");
+		}
 	}
 
 @ So here we have a single file, and try to read it as WCL. WCL is a format
@@ -378,7 +388,7 @@ contents section.
 			(TextFiles::exists(Filenames::in(ins->temp_path_setting, I"Contents.w")))) ||
 			(ins->temp_file_setting)) {
 			op.D = WCL::read_web_or_halt(ins->temp_path_setting, ins->temp_file_setting);
-			op.W = WebStructure::read_fully(op.D, enumerating, weaving, verbose_mode);
+			op.W = WebStructure::read_fully(op.C, op.D, enumerating, weaving, verbose_mode);
 		}
 	}
 

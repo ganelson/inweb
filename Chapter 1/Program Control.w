@@ -26,6 +26,7 @@ int main(int argc, char **argv) {
 		switch (args.subcommand) {
 			case ADVANCE_BUILD_CLSUB:  InwebAdvanceBuild::run(&args); break;
 			case INSPECT_CLSUB:        InwebInspect::run(&args); break;
+			case MAP_CLSUB:            InwebMap::run(&args); break;
 			case MAKE_README_CLSUB:    InwebMake::run(&args); break;
 			case MAKE_GITIGNORE_CLSUB: InwebMake::run(&args); break;
 			case MAKE_MAKEFILE_CLSUB:  InwebMake::run(&args); break;

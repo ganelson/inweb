@@ -81,6 +81,14 @@ void WebModules::dependency(ls_module *A, ls_module *B) {
 	ADD_TO_LINKED_LIST(B, ls_module, A->dependencies);
 }
 
+int WebModules::no_dependencies(ls_module *A) {
+	int N = 1;
+	ls_module *M;
+	LOOP_OVER_LINKED_LIST(M, ls_module, A->dependencies)
+		N += WebModules::no_dependencies(M);
+	return N;
+}
+
 @h Searching.
 The following abstracts the idea of a place where modules might be found.
 (At one time there was going to be a more elaborate search hierarchy.)
@@ -212,9 +220,10 @@ int WebModules::named_reference(ls_module **return_M, ls_section **return_Sm,
 			(Str::eq_insensitive(Cm->ch_basic_title, seek)) ||
 			(Str::eq_insensitive(Cm->ch_decorated_title, seek))))
 			@<Found first section in chapter@>;
-		LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections)
+		LOOP_OVER_LINKED_LIST(Sm, ls_section, Cm->sections) {
 			if (Str::eq_insensitive(Sm->sect_title, seek))
 				@<Found section by name@>;
+		}
 	}
 
 @<Found first section in module@> =

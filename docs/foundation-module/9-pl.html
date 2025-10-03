@@ -25,9 +25,7 @@ function togglePopup(material_id) {
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
-		<h1><a href="../index.html">
-<img src="../docs-assets/Octagram.png" width=72 height=72">
-</a></h1>
+		<h1><a href="../index.html"><img src="../docs-assets/Octagram.png" height=72> </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
 </ul><h2>Foundation Module</h2><ul>
 <li><a href="index.html"><span class="selectedlink">foundation</span></a></li>
@@ -37,11 +35,10 @@ function togglePopup(material_id) {
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
 <li><a href="../eastertide/index.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
-<li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=18> github</a></li>
+<li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inform/docs/index.html">inform</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
-
+<li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=0> inform</a></li>
+<li><a href="https://github.com/ganelson/intest"><img src="../docs-assets/github.png" height=0> intest</a></li>
 </ul>
 		</nav>
 		<main role="main">
@@ -79,7 +76,7 @@ wants them. Inweb uses these only in response to direct command-line requests.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="function-syntax">Languages::read_definition</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Languages::read_definition</span></span>:<br/><a href="9-pl.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="8-wcl.html#SP26" class="function-link"><span class="function-syntax">WCL::read_just_one</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">LANGUAGE_WCLTYPE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><a href="8-wcl.html#SP27" class="function-link"><span class="function-syntax">WCL::read_just_one</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">LANGUAGE_WCLTYPE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">D</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="8-wcl.html#SP14" class="function-link"><span class="function-syntax">WCL::make_global</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_programming_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">object_declared</span><span class="plain-syntax">);</span>
@@ -92,7 +89,7 @@ for tidiness:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Languages::show</span><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"I can see the following programming language definitions:\n\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="8-wcl.html#SP21" class="function-link"><span class="function-syntax">WCL::write_sorted_list_of_resources</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="constant-syntax">LANGUAGE_WCLTYPE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="8-wcl.html#SP22" class="function-link"><span class="function-syntax">WCL::write_sorted_list_of_resources</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="constant-syntax">LANGUAGE_WCLTYPE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Finding as resources.</b>Programming languages are WCL resources of type <span class="extract"><span class="extract-syntax">LANGUAGE_WCLTYPE</span></span>, so we
@@ -112,10 +109,9 @@ ones and leave it at that.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">language_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">language_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform 7"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">language_name</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform7"</span><span class="plain-syntax">)) </span><span class="identifier-syntax">language_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform 7"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">W</span><span class="plain-syntax">?(</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">declaration</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><a href="8-wcl.html#SP18" class="function-link"><span class="function-syntax">WCL::resolve_resource</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="constant-syntax">LANGUAGE_WCLTYPE</span><span class="plain-syntax">, </span><span class="identifier-syntax">language_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">X</span><span class="plain-syntax"> = </span><a href="8-wcl.html#SP19" class="function-link"><span class="function-syntax">WCL::resolve_resource</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="constant-syntax">LANGUAGE_WCLTYPE</span><span class="plain-syntax">, </span><span class="identifier-syntax">language_name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">X</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_programming_language</span><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">object_declared</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="comment-syntax"> WRITE_TO(STDERR, "Resolved %S to %S\n", language_name, pl-&gt;language_name);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -186,7 +182,7 @@ structure (one per language):
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure programming_language is accessed in 2/mth, 5/mv, 5/im, 8/ws, 8/wcp, 8/sw, 8/ws2, 8/hs, 8/bf, 8/wcl, 9/taf, 9/tp, 9/lm, 9/as, 10/fm, 10/hf, 10/df, 11/cl and here.</li></ul>
+<ul class="endnotetexts"><li>The structure programming_language is accessed in 2/mth, 5/mv, 5/im, 8/ws, 8/wcp, 8/sw, 8/ws2, 8/hs, 8/bf, 8/wcl, 9/taf, 9/tp, 9/lm, 9/as, 10/ts, 10/fm, 10/hf, 10/df, 11/cl and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>This is a simple one-pass compiler. The <span class="extract"><span class="extract-syntax">language_reader_state</span></span> provides
 the only state preserved as we work through line by line, except of course
 that we are also working on the programming language it is <span class="extract"><span class="extract-syntax">defining</span></span>. The

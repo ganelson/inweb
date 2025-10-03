@@ -573,7 +573,7 @@ int Unit::boxed_quote_renderer(markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode) {
 	if (md->type == BLOCK_QUOTE_MIT) {
 		HTML_OPEN_WITH("div", "border=\"1\"");
-		MDRenderer::recurse(OUT, md, mode, MarkdownVariations::CommonMark());
+		MDRenderer::recurse(OUT, NULL, md, mode, MarkdownVariations::CommonMark());
 		HTML_CLOSE("div");
 		return TRUE;
 	}

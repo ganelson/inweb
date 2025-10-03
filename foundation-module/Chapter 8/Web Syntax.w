@@ -169,6 +169,22 @@ ls_syntax *WebSyntax::guess_from_shebang(ls_web *W, text_stream *line,
 	return NULL;
 }
 
+int WebSyntax::markdown_shebang_detector(ls_syntax *T, text_stream *line,
+	text_file_position *tfp, text_stream *title, text_stream *author) {
+	int rv = FALSE;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, line, U"# (%c+) by (%c+?")) {
+		Str::copy(title, mr.exp[0]);
+		Str::copy(title, mr.exp[1]);
+		rv = TRUE;
+	} else if (Regexp::match(&mr, line, U"# (%c+)")) {
+		Str::copy(title, mr.exp[0]);
+		rv = TRUE;
+	}
+	Regexp::dispose_of(&mr);
+	return rv;
+}
+
 @h Adoption.
 Suppose, then, that the above methods decide that a given web |W| should be read
 with syntax |S|. What happens then?
@@ -198,6 +214,7 @@ syntaxes, as follows.
 @e EXPLICIT_SECTION_HEADINGS_WSF
 @e TRIMMED_EXTRACTS_WSF             /* when tangling, trim initial or final blank lines from a holon */
 
+@e MARKDOWN_SHEBANG_WSF             /* commentary in paragraphs uses Markdown markup */
 @e MARKDOWN_COMMENTARY_WSF          /* commentary in paragraphs uses Markdown markup */
 @e FOOTNOTES_WSF                    /* commentary in paragraphs can have footnotes */
 @e NAMED_HOLONS_WSF                 /* when tangling, trim initial or final blank lines from a holon */
@@ -214,6 +231,7 @@ text_stream *WebSyntax::feature_name(int n) {
 		case EXPLICIT_SECTION_HEADINGS_WSF: return I"explicit section headings";
 		case TRIMMED_EXTRACTS_WSF:          return I"trimmed extracts";
 		case MARKDOWN_COMMENTARY_WSF:       return I"Markdown commentary";
+		case MARKDOWN_SHEBANG_WSF:          return I"Markdown shebang";
 		case FOOTNOTES_WSF:                 return I"footnotes";
 		case NAMED_HOLONS_WSF:              return I"named holons";
 		case TANGLER_COMMANDS_WSF:          return I"tangler commands";
@@ -273,6 +291,8 @@ void WebSyntax::does_support(ls_syntax *S, int feature) {
 	if (WebSyntax::feature_notations(feature) != 0)
 		internal_error("wrong number of notations");
 	S->supports[feature] = TRUE;
+	if (feature == MARKDOWN_SHEBANG_WSF)
+		S->shebang_detector = WebSyntax::markdown_shebang_detector;
 }
 
 void WebSyntax::does_support1(ls_syntax *S, int feature, text_stream *N1) {
@@ -303,6 +323,8 @@ void WebSyntax::does_not_support(ls_syntax *S, int feature) {
 	S->supports[feature] = FALSE;
 	S->feature_notation1[feature] = NULL;
 	S->feature_notation2[feature] = NULL;
+	if (feature == MARKDOWN_SHEBANG_WSF)
+		S->shebang_detector = NULL;
 }
 
 @h Reading syntax definitions.

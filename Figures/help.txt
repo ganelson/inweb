@@ -24,6 +24,7 @@ The following subcommands are available:
     inweb make-readme
     inweb make-gitignore
     inweb make-makefile
+    inweb map
     inweb advance-build
     inweb test-language
 

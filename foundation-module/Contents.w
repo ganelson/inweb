@@ -44,6 +44,7 @@ Chapter 4: Text Handling
 	Wide Strings
 	String Manipulation
 	Tab Stops
+	Textual Tables
 	Text Files
 	Preprocessor
 	Tries and Avinues

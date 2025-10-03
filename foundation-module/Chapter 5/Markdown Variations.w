@@ -17,9 +17,12 @@ void MarkdownVariations::start(void) {
 	for (int i=0; i<MAX_MARKDOWNFEATURES; i++) markdown_feature_registry[i] = NULL;
 	MarkdownVariations::define_CommonMark();
 	MarkdownVariations::define_GFM();
+	MarkdownVariations::define_IWFM();
 }
 
-markdown_variation *CommonMark_variation = NULL, *GitHub_flavored_Markdown_variation = NULL;
+markdown_variation *CommonMark_variation = NULL;
+markdown_variation *GitHub_flavored_Markdown_variation = NULL;
+markdown_variation *Inweb_flavoured_Markdown_variation = NULL;
 
 markdown_variation *MarkdownVariations::CommonMark(void) {
 	return CommonMark_variation;
@@ -27,6 +30,10 @@ markdown_variation *MarkdownVariations::CommonMark(void) {
 
 markdown_variation *MarkdownVariations::GitHub_flavored_Markdown(void) {
 	return GitHub_flavored_Markdown_variation;
+}
+
+markdown_variation *MarkdownVariations::Inweb_flavoured_Markdown(void) {
+	return Inweb_flavoured_Markdown_variation;
 }
 
 @ A variation is essentially a named collection of features, which may affect
@@ -228,6 +235,29 @@ void MarkdownVariations::make_GitHub_features_active(markdown_variation *variati
 	MarkdownVariations::add_feature(variation, TASK_LIST_ITEMS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
+}
+
+@h Inweb extensions to GFM.
+We provide just two of these, and they are intended to be used on top of GFM:
+
+@e TEX_MARKDOWNFEATURE
+@e INWEB_LINKS_MARKDOWNFEATURE
+=
+markdown_feature *TeX_Markdown_feature = NULL;
+markdown_feature *inweb_links_Markdown_feature = NULL;
+
+void MarkdownVariations::define_IWFM(void) {
+	TeX_Markdown_feature =         MarkdownVariations::new_feature(I"TeX",         TEX_MARKDOWNFEATURE);
+	inweb_links_Markdown_feature = MarkdownVariations::new_feature(I"inweb links", INWEB_LINKS_MARKDOWNFEATURE);
+
+	Inweb_flavoured_Markdown_variation = MarkdownVariations::new(I"Inweb-flavoured Markdown");
+	MarkdownVariations::make_GitHub_features_active(Inweb_flavoured_Markdown_variation);
+	MarkdownVariations::make_Inweb_features_active(Inweb_flavoured_Markdown_variation);
+}
+
+void MarkdownVariations::make_Inweb_features_active(markdown_variation *variation) {
+	MarkdownVariations::add_feature(variation, TEX_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, INWEB_LINKS_MARKDOWNFEATURE);
 }
 
 @h Methods for features.

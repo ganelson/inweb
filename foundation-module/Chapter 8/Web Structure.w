@@ -21,6 +21,7 @@ typedef struct ls_web {
 
 	struct pathname *path_to_web; /* relative to the current working directory */
 	struct filename *single_file; /* relative to the current working directory */
+	int is_page; /* is this a simple one-section web with no contents page? */
 	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_syntax *web_syntax; /* which version syntax the sections will have */
@@ -45,7 +46,15 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	if (D) D->object_declared = STORE_POINTER_ls_web(W);
 	W->bibliographic_data = NEW_LINKED_LIST(web_bibliographic_datum);
 	Bibliographic::initialise_data(W);
-	if (D->associated_path) {
+	W->is_page = FALSE;
+	if ((D) && (D->modifier == PAGE_WCLMODIFIER)) W->is_page = TRUE;
+	if ((D) && (D->scope)) {
+		W->path_to_web = D->scope->associated_path;
+		if (W->path_to_web == NULL)
+			W->path_to_web = Filenames::up(D->scope->associated_file);
+		W->single_file = NULL;
+		W->contents_filename = NULL;
+	} else if (D->associated_path) {
 		W->path_to_web = D->associated_path;
 		W->single_file = NULL;
 		W->contents_filename = D->associated_file;
@@ -77,7 +86,8 @@ ls_web *WebStructure::from_declaration(wcl_declaration *D) {
 @h Web reading.
 
 =
-ls_web *WebStructure::read_fully(wcl_declaration *D, int enumerating, int weaving, int verbosely) {
+ls_web *WebStructure::read_fully(colony *C, wcl_declaration *D,
+	int enumerating, int weaving, int verbosely) {
 	ls_web *W = WebStructure::from_declaration(D);
 	WebStructure::read_web_source(W, verbosely, weaving);
 	WebErrors::issue_all_recorded(W);
@@ -85,6 +95,14 @@ ls_web *WebStructure::read_fully(wcl_declaration *D, int enumerating, int weavin
 	CodeAnalysis::initialise_analysis_details(W);
 	WeavingDetails::initialise(W);
 	CodeAnalysis::analyse_web(W, enumerating, weaving);
+	if ((weaving) &&
+		(WebSyntax::supports(W->web_syntax, MARKDOWN_COMMENTARY_WSF))) {
+		ls_chapter *Ch;
+		ls_section *S;
+		LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
+			LOOP_OVER_LINKED_LIST(S, ls_section, Ch->sections)
+				LiterateSource::parse_markdown(S->literate_source);
+	}
 	return W;
 }
 
@@ -104,12 +122,67 @@ int WebStructure::chapter_count(ls_web *W) {
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters) n++;
 	return n;
 }
+int WebStructure::imported_chapter_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		if (C->imported)
+			n++;
+	return n;
+}
 int WebStructure::section_count(ls_web *W) {
 	int n = 0;
 	ls_chapter *C; ls_section *S;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			n++;
+	return n;
+}
+int WebStructure::imported_section_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		if (C->imported)
+			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+				n++;
+	return n;
+}
+int WebStructure::paragraph_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+			if (S->literate_source)
+				for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par)
+					n++;
+	return n;
+}
+int WebStructure::imported_paragraph_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		if (C->imported)
+			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+				if (S->literate_source)
+					for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par)
+						n++;
+	return n;
+}
+int WebStructure::line_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+			n += (S->literate_source)?(S->literate_source->lines_read):0;
+	return n;
+}
+int WebStructure::imported_line_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		if (C->imported)
+			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+				n += (S->literate_source)?(S->literate_source->lines_read):0;
 	return n;
 }
 
@@ -238,7 +311,8 @@ typedef struct ls_section {
 	struct text_stream *titling_line_to_insert;
 	struct ls_unit *literate_source;
 
-	struct filename *source_file_for_section;
+	struct filename *source_file_for_section; /* content either from a file... */
+	struct wcl_declaration *source_declaration_for_section; /* ...or the body of a declaration */
 	int skip_from; /* ignore lines numbered in this inclusive range */
 	int skip_to;
 	int sect_extent; /* total number of lines read from a file (including skipped ones) */
@@ -263,6 +337,7 @@ ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling) {
 	if (C == NULL) internal_error("no chapter for section");
 	ls_section *S = CREATE(ls_section);
 	S->source_file_for_section = NULL;
+	S->source_declaration_for_section = NULL;
 	S->skip_from = 0;
 	S->skip_to = 0;
 	S->titling_line_to_insert = NULL;
@@ -346,7 +421,7 @@ case a filename |alt_F| is supplied.
 ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
 	ls_web *W = WebStructure::new_ls_web(D);
 	
-	if (W->single_file)
+	if (W->is_page)
 		SingleFileWebs::reconnoiter(W);
 	else
 		WebContents::read_contents_page(W, W->main_module,
@@ -370,10 +445,8 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
-			filename *F = S->source_file_for_section;
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			@<Read one section from a file@>;
-		}
 }
 
 @<Read one section from a file@> =
@@ -387,20 +460,34 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 		S->paragraph_numbers_visible = FALSE;
 
 	if (WebSyntax::supports(W->web_syntax, EXPLICIT_SECTION_HEADINGS_WSF)) {
-		if (W->single_file)
+		if (W->is_page)
 			@<Insert an implied purpose, for a single-file web@>;
 	}
 
-	int cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
-			WebStructure::scan_source_line, NULL, (void *) S);
+	int cl = 0;
+	if (S->source_declaration_for_section) {
+		wcl_declaration *D = S->source_declaration_for_section;
+		text_file_position tfp = D->body_position;
+		text_stream *L;
+		LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+			TEMPORARY_TEXT(line)
+			Str::copy(line, L);
+			WebStructure::scan_source_line(line, &tfp, (void *) S);
+			DISCARD_TEXT(line);
+			tfp.line_count++; cl++;
+		}
+	} else {
+		filename *F = S->source_file_for_section;
+		if (F == NULL) internal_error("no source file");
+		cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
+				WebStructure::scan_source_line, NULL, (void *) S);
+	}
+
 	LiterateSource::complete_unit(S->literate_source);
 	if (Str::len(S->literate_source->heading.operand1) > 0) {
 		S->sect_title = Str::duplicate(S->literate_source->heading.operand1);
-		if (W->single_file) Bibliographic::set_datum(W, I"Title", S->sect_title);
+		if (W->is_page) Bibliographic::set_datum(W, I"Title", S->sect_title);
 	}
-	if ((with_internals) &&
-		(WebSyntax::supports(W->web_syntax, MARKDOWN_COMMENTARY_WSF)))
-		LiterateSource::parse_markdown(S->literate_source);
 	if (verbosely) PRINT("Read section: '%S' (%d lines)\n", S->sect_title, cl);
 
 @<Insert an implied purpose, for a single-file web@> =

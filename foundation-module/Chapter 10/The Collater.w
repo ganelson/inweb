@@ -18,20 +18,21 @@ For convenience, we provide three ways to call:
 =
 void Collater::for_web_and_pattern(text_stream *OUT, ls_web *W,
 	weave_pattern *pattern, filename *F, filename *into, colony *context) {
-	Collater::collate(OUT, W, I"", F, pattern, NULL, NULL, NULL, into, context);
+	Collater::collate(OUT, W, I"", F, NULL, pattern, NULL, NULL, NULL, into, context);
 }
 
 void Collater::for_order(text_stream *OUT, weave_order *wv,
 	filename *F, filename *into, colony *context) {
-	Collater::collate(OUT, wv->weave_web, wv->weave_range, F, wv->pattern,
+	Collater::collate(OUT, wv->weave_web, wv->weave_range, F, NULL, wv->pattern,
 		wv->navigation, wv->breadcrumbs, wv, into, context);
 }
 
 void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
-	filename *template_filename, weave_pattern *pattern, filename *nav_file,
+	filename *template_filename, wcl_declaration *template_wcl,
+	weave_pattern *pattern, wcl_declaration *nav_file,
 	linked_list *crumbs, weave_order *wv, filename *into, colony *context) {
 	collater_state actual_ies =
-		Collater::initial_state(W, range, template_filename, pattern, 
+		Collater::initial_state(W, range, template_filename, template_wcl, pattern, 
 			nav_file, crumbs, wv, into, context);
 	collater_state *ies = &actual_ies;
 	Collater::process(OUT, ies);
@@ -57,7 +58,7 @@ typedef struct collater_state {
 	int sp; /* And this is our stack pointer for tracking of loops */
 	struct text_stream *restrict_to_range;
 	struct weave_pattern *nav_pattern;
-	struct filename *nav_file;
+	struct wcl_declaration *nav_file;
 	struct linked_list *crumbs;
 	int inside_navigation_submenu;
 	struct filename *errors_at;
@@ -72,7 +73,8 @@ if so, they can always be subdivided.
 
 =
 collater_state Collater::initial_state(ls_web *W, text_stream *range,
-	filename *template_filename, weave_pattern *pattern, filename *nav_file,
+	filename *template_filename, wcl_declaration *template_wcl,
+	weave_pattern *pattern, wcl_declaration *nav_file,
 	linked_list *crumbs, weave_order *wv, filename *into, colony *context) {
 	collater_state cls;
 	cls.no_tlines = 0;
@@ -93,7 +95,8 @@ collater_state Collater::initial_state(ls_web *W, text_stream *range,
 		int c = LinkedLists::len(W->main_module->dependencies);
 		if (c > 0) @<Form the list of imported modules@>;
 	}
-	@<Read in the source file containing the contents page template@>;
+	if (template_wcl) @<Read in the WCL declaration as lines@>
+	else @<Read in the source file containing the contents page template@>;
 	return cls;
 }
 
@@ -107,6 +110,15 @@ collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	qsort(module_array, (size_t) c, sizeof(ls_module *), Collater::sort_comparison);
 	for (int d=0; d<c; d++) ADD_TO_LINKED_LIST(module_array[d], ls_module, cls.modules);
 	Memory::I7_free(module_array, ARRAY_SORTING_MREASON, c*((int) sizeof(ls_module *)));
+
+@<Read in the WCL declaration as lines@> =
+	text_stream *line;
+	LOOP_OVER_LINKED_LIST(line, text_stream, template_wcl->declaration_lines)
+		if (cls.no_tlines < MAX_TEMPLATE_LINES)
+			cls.tlines[cls.no_tlines++] = Str::duplicate(line);
+	if (cls.no_tlines >= MAX_TEMPLATE_LINES)
+		PRINT("Warning: template in declaration truncated after %d line(s)\n",
+			cls.no_tlines);
 
 @<Read in the source file containing the contents page template@> =
 	TextFiles::read(template_filename, FALSE,
@@ -511,6 +523,7 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 			@<Substitute a Menu@>;
 		} else if (Regexp::match(&mr, varname, U"Item \"(%c+)\"")) {
 			text_stream *item_name = mr.exp[0];
+			int icon_size = 18;
 			text_stream *icon_text = NULL;
 			@<Look for icon text@>;
 			text_stream *link_text = item_name;
@@ -518,9 +531,17 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 		} else if (Regexp::match(&mr, varname, U"Item \"(%c+)\" -> (%c+)")) {
 			text_stream *item_name = mr.exp[0];
 			text_stream *link_text = mr.exp[1];
+			int icon_size = 18;
 			text_stream *icon_text = NULL;
 			@<Look for icon text@>;
 			@<Substitute a general Item@>;
+		} else if (Regexp::match(&mr, varname, U"Home \"(%c+)\" -> (%c+)")) {
+			text_stream *item_name = mr.exp[0];
+			text_stream *link_text = mr.exp[1];
+			int icon_size = 18;
+			text_stream *icon_text = NULL;
+			@<Look for icon text@>;
+			@<Substitute a home Item@>;
 		} else {
 			WRITE_TO(substituted, "%S", varname);
 			if (Regexp::match(&mr, varname, U"%i+%c*"))
@@ -548,11 +569,8 @@ this will recursively call The Collater, in fact.
 
 @<Substitute Navigation@> =
 	if (cls->nav_file) {
-		if (TextFiles::exists(cls->nav_file))
-			Collater::collate(substituted, cls->for_web, cls->restrict_to_range,
-				cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file, cls->context);
-		else
-			Errors::fatal_with_file("unable to find navigation file", cls->nav_file);
+		Collater::collate(substituted, cls->for_web, cls->restrict_to_range,
+			NULL, cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file, cls->context);
 	} else {
 		PRINT("Warning: no sidebar links will be generated, as -navigation is unset");
 	}
@@ -565,7 +583,7 @@ this will recursively call The Collater, in fact.
 
 @<Substitute Plugins@> =
 	Assets::include_relevant_plugins(OUT, cls->nav_pattern, cls->for_web,
-		cls->wv, cls->into_file);
+		cls->wv, cls->into_file, cls->context);
 
 @ We store little about the complete-web-in-one-file PDF:
 
@@ -667,11 +685,10 @@ navigation purposes.
 
 @<Substitute a Docs@> =
 	Pathnames::relative_URL(substituted,
-		Filenames::up(cls->into_file),
-		Pathnames::from_text(Colonies::home()));
+		Filenames::up(cls->into_file), Colonies::home(cls->context));
 
 @<Substitute an Assets@> =
-	pathname *P = Colonies::assets_path();
+	pathname *P = Colonies::assets_path(cls->context);
 	if (P == NULL) P = Filenames::up(cls->into_file);
 	Pathnames::relative_URL(substituted,
 		Filenames::up(cls->into_file), P);
@@ -693,11 +710,13 @@ navigation purposes.
 
 @<Look for icon text@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, item_name, U"<(%i+.%i+)> *(%c*)")) {
+	if (Regexp::match(&mr, item_name, U"<(%i+.%i+)@*(%d*)> *(%c*)")) {
 		icon_text = Str::duplicate(mr.exp[0]);
-		item_name = Str::duplicate(mr.exp[1]);
-	} else if (Regexp::match(&mr, item_name, U"(%c*?) *<(%i+.%i+)>")) {
+		icon_size = Str::atoi(mr.exp[1], 0);
+		item_name = Str::duplicate(mr.exp[2]);
+	} else if (Regexp::match(&mr, item_name, U"(%c*?) *<(%i+.%i+)@*(%d*)>")) {
 		icon_text = Str::duplicate(mr.exp[1]);
+		icon_size = Str::atoi(mr.exp[2], 0);
 		item_name = Str::duplicate(mr.exp[0]);
 	}
 	Regexp::dispose_of(&mr);
@@ -713,6 +732,15 @@ navigation purposes.
 	Colonies::link_URL(url, cls->context, link_text, cls->into_file);
 	@<Substitute an item at this URL@>;
 	DISCARD_TEXT(url)
+
+@<Substitute a home Item@> =
+	WRITE_TO(substituted, "<h1>");
+	WRITE_TO(substituted, "<a href=\"");
+	Colonies::reference_URL(substituted, cls->context, link_text, cls->into_file);
+	WRITE_TO(substituted, "\">");
+	@<Substitute icon and name@>;
+	WRITE_TO(substituted, "</a>");
+	WRITE_TO(substituted, "</h1>");
 
 @<Substitute an item at this URL@> =
 	if (cls->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");
@@ -738,11 +766,9 @@ navigation purposes.
 @<Substitute icon and name@> =
 	if (Str::len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
-		pathname *I = Colonies::assets_path();
-		if (I == NULL) I = Pathnames::from_text(Colonies::home());
-		Pathnames::relative_URL(substituted,
-			Filenames::up(cls->into_file), I);
-		WRITE_TO(substituted, "%S\" height=18> ", icon_text);
+		pathname *I = Colonies::assets_path(cls->context);
+		Pathnames::relative_URL(substituted, Filenames::up(cls->into_file), I);
+		WRITE_TO(substituted, "%S\" height=%d> ", icon_text, icon_size);
 	}
 	WRITE_TO(substituted, "%S", item_name);
 

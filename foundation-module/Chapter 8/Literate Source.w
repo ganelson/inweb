@@ -869,7 +869,7 @@ void LiterateSource::parse_markdown(ls_unit *lsu) {
 				for (ls_line *line = chunk->first_line; line; line = line->next_line)
 					WRITE_TO(concatenated, "%S\n", line->classification.operand1);
 				chunk->as_markdown = Markdown::parse_extended(concatenated,
-					MarkdownVariations::GitHub_flavored_Markdown());
+					MarkdownVariations::Inweb_flavoured_Markdown());
 				DISCARD_TEXT(concatenated)
 			}
 }

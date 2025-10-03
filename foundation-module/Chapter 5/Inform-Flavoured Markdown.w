@@ -464,7 +464,7 @@ int InformFlavouredMarkdown::EE_render(markdown_feature *feature,
 		InformFlavouredMarkdown::render_example_heading(OUT, E, md);
 		if (mode & EXAMPLE_BODIES_MDRMODE)
 			for (markdown_item *ch=md->down; ch; ch = ch->next)
-				MDRenderer::recurse(OUT, ch, mode, InformFlavouredMarkdown::variation());
+				MDRenderer::recurse(OUT, NULL, ch, mode, InformFlavouredMarkdown::variation());
 		return TRUE;
 	}
 	return FALSE;

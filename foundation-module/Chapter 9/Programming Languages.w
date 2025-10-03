@@ -62,7 +62,6 @@ programming_language *Languages::find(ls_web *W, text_stream *language_name) {
 	wcl_declaration *X = WCL::resolve_resource(D, LANGUAGE_WCLTYPE, language_name);
 	if (X == NULL) return NULL;
 	programming_language *pl = RETRIEVE_POINTER_programming_language(X->object_declared);
-	// WRITE_TO(STDERR, "Resolved %S to %S\n", language_name, pl->language_name);
 	return pl;
 }
 

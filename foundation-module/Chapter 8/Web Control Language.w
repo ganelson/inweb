@@ -18,6 +18,10 @@ special type meaning "this is a list of declarations of possibly different types
 @e WEB_WCLTYPE
 @e LANGUAGE_WCLTYPE
 @e NOTATION_WCLTYPE
+@e NAVIGATION_WCLTYPE
+
+@e NO_WCLMODIFIER from 0
+@e PAGE_WCLMODIFIER
 
 =
 void WCL::write_type(OUTPUT_STREAM, int t) {
@@ -27,6 +31,7 @@ void WCL::write_type(OUTPUT_STREAM, int t) {
 		case WEB_WCLTYPE:        WRITE("Web"); break;
 		case LANGUAGE_WCLTYPE:   WRITE("Language"); break;
 		case NOTATION_WCLTYPE:   WRITE("Notation"); break;
+		case NAVIGATION_WCLTYPE: WRITE("Navigation"); break;
 		default:                 WRITE("<unknown-declaration-type>"); break;
 	}
 }
@@ -58,6 +63,7 @@ If a declaration is not nested in any other, its parental link is |NULL|.
 =
 typedef struct wcl_declaration {
 	int declaration_type;
+	int modifier;
 	struct text_stream *name;
 	struct text_file_position declaration_position;
 	struct text_file_position body_position;
@@ -77,6 +83,7 @@ typedef struct wcl_declaration {
 wcl_declaration *WCL::new(int type) {
 	wcl_declaration *D = CREATE(wcl_declaration);
 	D->declaration_type = type;
+	D->modifier = NO_WCLMODIFIER;
 	D->name = Str::new();
 	D->closure_column = 0;
 	D->declaration_position = TextFiles::nowhere();
@@ -312,7 +319,7 @@ void WCL::read_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	else if (Str::len(tail) > 0) @<Trim the line according to the correct indentation@>;
 
 	if (spaces == scanner->margin) {
-		int new_declaration_type = -1;
+		int new_declaration_type = -1, new_declaration_modifier = NO_WCLMODIFIER;
 		TEMPORARY_TEXT(name)
 		@<See if this line opens a new declaration@>;
 		if (new_declaration_type != -1) {
@@ -430,10 +437,23 @@ declaration only at the second "}", which is in the right one.
 		new_declaration_type = NOTATION_WCLTYPE;
 	if (Regexp::match(&mr, trimmed, U"Notation \"(%c+)\" { *")) {
 		new_declaration_type = NOTATION_WCLTYPE; Str::copy(name, mr.exp[0]); }
+	if (Regexp::match(&mr, trimmed, U"Navigation { *"))
+		new_declaration_type = NAVIGATION_WCLTYPE;
+	if (Regexp::match(&mr, trimmed, U"Navigation \"(%c+)\" { *")) {
+		new_declaration_type = NAVIGATION_WCLTYPE; Str::copy(name, mr.exp[0]); }
+	if (Regexp::match(&mr, trimmed, U"Page { *")) {
+		new_declaration_type = WEB_WCLTYPE;
+		new_declaration_modifier = PAGE_WCLMODIFIER;
+	}
+	if (Regexp::match(&mr, trimmed, U"Page \"(%c+)\" { *")) {
+		new_declaration_type = WEB_WCLTYPE; Str::copy(name, mr.exp[0]);
+		new_declaration_modifier = PAGE_WCLMODIFIER;
+	}
 	Regexp::dispose_of(&mr);
 
 @<Create the new declaration object for this block@> =
 	ND = WCL::new(new_declaration_type);
+	ND->modifier = new_declaration_modifier;
 	if (Str::len(name) > 0) ND->name = Str::duplicate(name);
 	ND->closure_column = scanner->margin;
 	ND->declaration_position = *tfp;
@@ -465,20 +485,22 @@ void WCL::parse_declarations_throwing_errors(wcl_declaration *D) {
 }
 
 void WCL::parse_declarations(wcl_declaration *D) {
-	WCL::parse_declarations_r(D);
+	WCL::parse_declarations_r(D, 1);
+	WCL::parse_declarations_r(D, 2);
 	WCL::resolve_r(D);
 }
 
-void WCL::parse_declarations_r(wcl_declaration *D) {
+void WCL::parse_declarations_r(wcl_declaration *D, int pass) {
 	if ((D) && (WCL::is_correct(D))) {
 		wcl_declaration *X;
 		LOOP_OVER_LINKED_LIST(X, wcl_declaration, D->declarations)
-			WCL::parse_declarations_r(X);
+			WCL::parse_declarations_r(X, pass);
 		switch (D->declaration_type) {
-			case COLONY_WCLTYPE:   Colonies::parse_declaration(D); break;
-			case LANGUAGE_WCLTYPE: Languages::parse_declaration(D); break;
-			case NOTATION_WCLTYPE: WebSyntax::parse_declaration(D); break;
-			case WEB_WCLTYPE:      WebStructure::parse_declaration(D); break;
+			case COLONY_WCLTYPE:     if (pass == 1) Colonies::parse_declaration(D); break;
+			case LANGUAGE_WCLTYPE:   if (pass == 1) Languages::parse_declaration(D); break;
+			case NAVIGATION_WCLTYPE: if (pass == 1) Colonies::parse_nav_declaration(D); break;
+			case NOTATION_WCLTYPE:   if (pass == 1) WebSyntax::parse_declaration(D); break;
+			case WEB_WCLTYPE:        if (pass == 2) WebStructure::parse_declaration(D); break;
 		}
 	}
 }
@@ -489,10 +511,11 @@ void WCL::resolve_r(wcl_declaration *D) {
 		LOOP_OVER_LINKED_LIST(X, wcl_declaration, D->declarations)
 			WCL::resolve_r(X);
 		switch (D->declaration_type) {
-			case COLONY_WCLTYPE:   Colonies::resolve_declaration(D); break;
-			case LANGUAGE_WCLTYPE: Languages::resolve_declaration(D); break;
-			case NOTATION_WCLTYPE: WebSyntax::resolve_declaration(D); break;
-			case WEB_WCLTYPE:      WebStructure::resolve_declaration(D); break;
+			case COLONY_WCLTYPE:     Colonies::resolve_declaration(D); break;
+			case LANGUAGE_WCLTYPE:   Languages::resolve_declaration(D); break;
+			case NAVIGATION_WCLTYPE: Colonies::resolve_nav_declaration(D); break;
+			case NOTATION_WCLTYPE:   WebSyntax::resolve_declaration(D); break;
+			case WEB_WCLTYPE:        WebStructure::resolve_declaration(D); break;
 		}
 	}
 }
@@ -555,6 +578,20 @@ void WCL::make_resources_at_file_global(filename *F) {
 	if (D) WCL::make_global(D);
 }
 
+@ In general the |scope| pointer for a declaration points to the outer
+declaration which contained it, but there's an exception: if a web is found
+outside of a colony file (as is usually the case) but is in fact a member of
+that colony (as is often the case) then the colony is the scope of the web.
+
+=
+wcl_declaration *WCL::search_scope(wcl_declaration *D) {
+	if ((D->scope == NULL) && (D->declaration_type == WEB_WCLTYPE)) {
+		colony_member *CM = Colonies::find_colony_member(RETRIEVE_POINTER_ls_web(D->object_declared));
+		if (CM) D->scope = CM->owner->declaration;
+	}
+	return D->scope;
+}
+
 @ Okay, so it's time for the search algorithm. The following function finds a
 resource of the given type and name (case insensitively), starting from |D|
 and exploring outwards through everything which is in scope to |D|; we
@@ -587,7 +624,7 @@ that's possible.
 void WCL::resolve_resource_inner(wcl_declaration *D, int type, text_stream *name,
 	wcl_declaration **result, linked_list *results) {
 	wcl_declaration *S;
-	for (S = D; S; S = S->scope) {
+	for (S = D; S; S = WCL::search_scope(S)) {
 		@<Search subdeclarations of S@>;
 		if ((S) && (S->declaration_type == WEB_WCLTYPE) && (S->associated_path) &&
 			(S->external_resources_loaded == FALSE)) {
@@ -634,7 +671,8 @@ void WCL::write_sorted_list_of_declaration_resources(OUTPUT_STREAM, wcl_declarat
 		wcl_declaration *D = sorted_table[i];
 		if (D != PD) {
 			WCL::write_type(OUT, D->declaration_type);
-			WRITE(": %S\n", D->name);
+			if (Str::len(D->name) == 0) WRITE(" (nameless)\n");
+			else WRITE(": %S\n", D->name);
 		}
 		PD = D;
 	}
@@ -773,7 +811,7 @@ wcl_declaration *WCL::read_web_or_halt(pathname *P, filename *F) {
 wcl_declaration *WCL::read_web(pathname *P, filename *F) {
 	filename *WCL_file = NULL;
 	pathname *web_directory = NULL;
-	if (F) {
+	if ((F) && (TextFiles::exists(F))) {
 		TEMPORARY_TEXT(extension)
 		Filenames::write_extension(extension, F);
 		if ((Str::eq_insensitive(extension, I".inwebc")) ||
@@ -799,6 +837,7 @@ wcl_declaration *WCL::read_web(pathname *P, filename *F) {
 
 @<Read in a single-file web as WCL@> =
 	D = WCL::new(WEB_WCLTYPE);
+	D->modifier = PAGE_WCLMODIFIER;
 	D->associated_file = F;
 	D->body_position = TextFiles::at(WCL_file, 1);
 	wcl_scanner scanner;
