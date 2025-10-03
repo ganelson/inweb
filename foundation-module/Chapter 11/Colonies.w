@@ -692,7 +692,7 @@ int Colonies::resolve_reference_in_weave_inner(colony *C, text_stream *url, text
 		title, search_M, text, FALSE, sections_only);
 
 	if (N == 0) {
-		if ((lst) && (external == FALSE)) {
+		if (external == FALSE) {
 			@<Is it the name of a function in the current web?@>;
 			@<Is it the name of a type in the current web?@>;
 		}

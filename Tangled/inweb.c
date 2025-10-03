@@ -5421,19 +5421,19 @@ filename * WebStructure__contents_filename(ls_web *W) ;
 ls_web * WebStructure__parse_declaration(wcl_declaration *D) ;
 #line 444 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void  WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals) ;
-#line 502 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 503 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void  WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, void *state) ;
-#line 517 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 518 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void  WebStructure__resolve_declaration(wcl_declaration *D) ;
-#line 532 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 533 "inweb/foundation-module/Chapter 8/Web Structure.w"
 programming_language * WebStructure__section_language(ls_section *S) ;
-#line 537 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 538 "inweb/foundation-module/Chapter 8/Web Structure.w"
 programming_language * WebStructure__chapter_language(ls_chapter *C) ;
-#line 542 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 543 "inweb/foundation-module/Chapter 8/Web Structure.w"
 programming_language * WebStructure__web_language(ls_web *W) ;
-#line 546 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 547 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void  WebStructure__set_language(ls_web *W, programming_language *pl) ;
-#line 556 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 557 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void  WebStructure__write_web(OUTPUT_STREAM, ls_web *W, text_stream *range) ;
 #line 29 "inweb/foundation-module/Chapter 8/Bibliographic Data for Webs.w"
 int  Bibliographic__datum_can_be_declared(ls_web *W, text_stream *key) ;
@@ -15171,11 +15171,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1B84";
+			char *svn = "9.0-beta+1B85";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "2 October 2025";
+			char *d = "3 October 2025";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -37583,7 +37583,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 		if (W->is_page)
 			
 {
-#line 494 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 495 "inweb/foundation-module/Chapter 8/Web Structure.w"
 	text_stream *purpose = Bibliographic__get_datum(W, TL_IS_3834);
 	if (Str__len(purpose) > 0) LiterateSource__add_purpose(S->literate_source, NULL, purpose);
 
@@ -37596,6 +37596,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 	if (S->source_declaration_for_section) {
 		wcl_declaration *D = S->source_declaration_for_section;
 		text_file_position tfp = D->body_position;
+		if (S->source_file_for_section) tfp.text_file_filename = S->source_file_for_section;
 		text_stream *L;
 		LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
 			TEMPORARY_TEXT(line)
@@ -37623,7 +37624,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 ;
 }
 
-#line 502 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 503 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, void *state) {
 	ls_section *S = (ls_section *) state;
 	S->sect_extent++;
@@ -37635,7 +37636,7 @@ void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, 
 	LiterateSource__feed_line(S->literate_source, tfp, line);
 }
 
-#line 517 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 518 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void WebStructure__resolve_declaration(wcl_declaration *D) {
 	ls_web *W = RETRIEVE_POINTER_ls_web(D->object_declared);
 	text_stream *language_name = Bibliographic__get_datum(W, TL_IS_3835);
@@ -37670,7 +37671,7 @@ void WebStructure__set_language(ls_web *W, programming_language *pl) {
 	W->web_language = pl;
 }
 
-#line 556 "inweb/foundation-module/Chapter 8/Web Structure.w"
+#line 557 "inweb/foundation-module/Chapter 8/Web Structure.w"
 void WebStructure__write_web(OUTPUT_STREAM, ls_web *W, text_stream *range) {
 	ls_chapter *C = WebRanges__to_chapter(W, range);
 	if (C) {
@@ -45655,7 +45656,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B84\t/built 2 October 2025/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B85\t/built 3 October 2025/\n");
 
 }
 #line 47 "inweb/foundation-module/Chapter 9/Ctags Support.w"
@@ -57626,7 +57627,7 @@ int Colonies__resolve_reference_in_weave_inner(colony *C, text_stream *url, text
 		title, search_M, text, FALSE, sections_only);
 
 	if (N == 0) {
-		if ((lst) && (external == FALSE)) {
+		if (external == FALSE) {
 			
 {
 #line 756 "inweb/foundation-module/Chapter 11/Colonies.w"

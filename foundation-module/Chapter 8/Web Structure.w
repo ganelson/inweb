@@ -468,6 +468,7 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	if (S->source_declaration_for_section) {
 		wcl_declaration *D = S->source_declaration_for_section;
 		text_file_position tfp = D->body_position;
+		if (S->source_file_for_section) tfp.text_file_filename = S->source_file_for_section;
 		text_stream *L;
 		LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
 			TEMPORARY_TEXT(line)
