@@ -425,19 +425,16 @@ void HTML::image(OUTPUT_STREAM, filename *F) {
 	HTML_TAG_WITH("img", "src=\"%/f\"", F);
 }
 
-void HTML::image_to_dimensions(OUTPUT_STREAM, filename *F, int w, int h) {
+void HTML::image_to_dimensions(OUTPUT_STREAM, filename *F, text_stream *A, int w, int h) {
+	if (Str::len(A) == 0) A = Filenames::get_leafname(F);
 	if ((w > 0) && (h > 0)) {
-		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\" width=\"%d\" height=\"%d\"",
-			F, Filenames::get_leafname(F), w, h);
+		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\" width=\"%d\" height=\"%d\"", F, A, w, h);
 	} else if (w > 0) {
-		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\" width=\"%d\"",
-			F, Filenames::get_leafname(F), w);
+		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\" width=\"%d\"", F, A, w);
 	} else if (h > 0) {
-		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\" height=\"%d\"",
-			F, Filenames::get_leafname(F), h);
+		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\" height=\"%d\"", F, A, h);
 	} else {
-		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\"",
-			F, Filenames::get_leafname(F));
+		HTML_TAG_WITH("img", "src=\"%/f\" alt=\"%S\"", F, A);
 	}
 }
 

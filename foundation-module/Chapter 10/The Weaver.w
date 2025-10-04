@@ -263,7 +263,8 @@ at us; but we don't weave them into the output, that's for sure.
 @<Weave a figure@> =
 	int w, h;
 	text_stream *figname = Weaver::parse_dimensions(lst->classification.operand1, &w, &h);
-	Trees::make_child(WeaveTree::figure(tree, figname, w, h), state->ap);
+	Trees::make_child(WeaveTree::figure(tree, figname,
+		lst->classification.operand2, w, h), state->ap);
 
 @<Weave a raw HTML extract@> =
 	Trees::make_child(WeaveTree::raw_extract(tree, lst->classification.operand1),
@@ -280,8 +281,8 @@ at us; but we don't weave them into the output, that's for sure.
 	Trees::make_child(WeaveTree::video(tree, figname, w, h), state->ap);
 
 @<Weave a download@> =
-	Trees::make_child(WeaveTree::download(tree, lst->classification.operand1, lst->classification.operand2),
-		state->ap);
+	Trees::make_child(WeaveTree::download(tree, lst->classification.operand1,
+		lst->classification.operand2), state->ap);
 
 @<Weave an embed@> =
 	int w, h;
@@ -787,8 +788,8 @@ void Weaver::change_material_for_para(heterogeneous_tree *tree, weaver_state *st
 }
 
 void Weaver::figure(heterogeneous_tree *tree, weave_order *wv,
-	tree_node *ap, text_stream *figname, int w, int h) {
-	tree_node *F = WeaveTree::figure(tree, figname, w, h);
+	tree_node *ap, text_stream *figname, text_stream *alt_text, int w, int h) {
+	tree_node *F = WeaveTree::figure(tree, figname, alt_text, w, h);
 	Trees::make_child(F, ap);
 }
 

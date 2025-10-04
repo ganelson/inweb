@@ -54,6 +54,7 @@ Notation "Inweb" {
 		= (very early code)                         ==> veryearlycodeextract
 		= (audio MATERIAL)                          ==> audio
 		= (video MATERIAL)                          ==> video
+		= (figure MATERIAL "SECOND")                ==> figure
 		= (figure MATERIAL)                         ==> figure
 		= (html MATERIAL)                           ==> html
 		= (download MATERIAL "")                    ==> download

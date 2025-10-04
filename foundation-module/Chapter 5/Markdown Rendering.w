@@ -380,15 +380,58 @@ been taken out at the parsing stage.)
 		}
 	}
 	MDRenderer::recurse(alt, state, md->down, mode & (~TAGS_MDRMODE), variation);
+	int w = -1, h = -1;
+	if (state) {
+		int j = 0;
+		for (int i=1; i<Str::len(URI)-1; i++)
+			if (Str::get_at(URI, i) == '@')
+				j = i;
+		if (j > 0) {
+			int x = 0;
+			for (int i=j+1; i<Str::len(URI); i++)
+				if (Str::get_at(URI, i) == 'x')
+					x = i;
+			int bad = FALSE;
+			for (int i=j+1; i<Str::len(URI); i++)
+				if ((i != x) && (Characters::isdigit(Str::get_at(URI, i)) == FALSE))
+					bad = TRUE;
+			if (bad == FALSE) {
+				if (x > 0) {
+					if (x > j+1) w = Str::atoi(URI, j+1);
+					if (x < Str::len(URI) - 1) h = Str::atoi(URI, x+1);
+				} else {
+					w = Str::atoi(URI, j+1);
+				}
+				Str::truncate(URI, j);
+			}
+		}
+		HTMLWeaving::notify_image((weave_order *) state, URI);
+	}
 	if (Str::len(title) > 0) {
 		if (mode & TAGS_MDRMODE) {
-			HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
+			if ((w > 0) && (h > 0)) {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" width=\"%d\" height=\"%d\" /", URI, alt, title, w, h);
+			} else if (w > 0) {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" width=\"%d\" /", URI, alt, title, w);
+			} else if (h > 0) {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" height=\"%d\" /", URI, alt, title, h);
+			} else {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" title=\"%S\" /", URI, alt, title);
+			}
 		} else {
 			WRITE("%S", alt);
 		}
 	} else {
 		if (mode & TAGS_MDRMODE) {
-			HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" /", URI, alt);
+			if ((w > 0) && (h > 0)) {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" width=\"%d\" height=\"%d\" /", URI, alt, w, h);
+			} else if (w > 0) {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" width=\"%d\" /", URI, alt, w);
+			} else if (h > 0) {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" height=\"%d\" /", URI, alt, h);
+			} else {
+				HTML_TAG_WITH("img", "src=\"%S\" alt=\"%S\" /", URI, alt);
+			}
 		} else {
 			WRITE("%S", alt);
 		}

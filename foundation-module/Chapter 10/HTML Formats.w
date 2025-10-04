@@ -324,7 +324,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		C->figname);
 	filename *RF = Filenames::from_text(C->figname);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
-	HTML::image_to_dimensions(OUT, RF, C->w, C->h);
+	HTML::image_to_dimensions(OUT, RF, C->alt_text, C->w, C->h);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
 		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
 	HTML_CLOSE("p");
@@ -923,7 +923,21 @@ that service uses to identify the video/audio in question.
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &HTMLWeaving::render_visit, (void *) hrs, L+1);
 
-@
+@ This is convenient when rendering out Markdown which contains images:
+
+=
+void HTMLWeaving::notify_image(weave_order *wv, text_stream *image) {
+	if (Str::includes_character(image, '/')) return;
+	if (Str::includes_character(image, '\\')) return;
+	filename *F = Filenames::in(
+		Pathnames::down(wv->weave_web->path_to_web, I"Figures"),
+		image);
+	Assets::include_asset(NULL, Assets::new_rule(NULL, I"", I"private copy", NULL),
+		wv->weave_web, F, NULL,
+		wv->pattern, wv->weave_to, wv->verbosely, wv->weave_colony);
+}
+
+@ The necessary escapes for the use of the MathJax plugin.
 
 =
 void HTMLWeaving::render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content,

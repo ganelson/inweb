@@ -81,6 +81,7 @@ typedef struct weave_endnote_node {
 
 typedef struct weave_figure_node {
 	struct text_stream *figname;
+	struct text_stream *alt_text;
 	int w;
 	int h;
 	CLASS_DEFINITION
@@ -530,9 +531,10 @@ tree_node *WeaveTree::endnote(heterogeneous_tree *tree) {
 }
 
 tree_node *WeaveTree::figure(heterogeneous_tree *tree, 
-	text_stream *figname, int w, int h) {
+	text_stream *figname, text_stream *alt_text, int w, int h) {
 	weave_figure_node *C = CREATE(weave_figure_node);
 	C->figname = Str::duplicate(figname);
+	C->alt_text = Str::duplicate(alt_text);
 	C->w = w;
 	C->h = h;
 	return Trees::new_node(tree, weave_figure_node_type,

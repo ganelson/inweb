@@ -383,6 +383,7 @@ match, we consider that line to be code.
 		case FIGURE_WSRULEOUTCOME:
 			res = LineClassification::new_results(INSERTION_MAJLC, FIGURE_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
+			if (Str::len(second) > 0) res.cf.operand2 = Str::duplicate(second);
 			break;
 		case HTML_WSRULEOUTCOME:
 			res = LineClassification::new_results(INSERTION_MAJLC, HTML_MINLC);
