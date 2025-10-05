@@ -469,6 +469,7 @@ typedef struct ls_paragraph {
 	/* contents of the paragraph */
 	struct ls_chunk *first_chunk;
 	struct ls_chunk *last_chunk;
+	int footnote_count;
 	struct linked_list *footnotes; /* of |ls_footnote| */
 
 	/* used only when computing the paragraph numbers */
@@ -502,6 +503,7 @@ immediately afterwards:
 
 	par->first_chunk = NULL;
 	par->last_chunk = NULL;
+	par->footnote_count = 0;
 	par->footnotes = NULL;
 
 	par->parent_paragraph = NULL;
@@ -872,6 +874,72 @@ void LiterateSource::parse_markdown(ls_unit *lsu) {
 					MarkdownVariations::Inweb_flavoured_Markdown());
 				DISCARD_TEXT(concatenated)
 			}
+	int cumulative_C = 1, cumulative_N = 1;
+	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
+		int next_C = 1, next_N = 1;
+		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+			if (chunk->chunk_type == COMMENTARY_LSCT) {
+				markdown_item *md = chunk->as_markdown;
+				LiterateSource::recursively_check_note_numbering(md, 0,
+					par->first_chunk->first_line, &next_C, &next_N, &cumulative_C, &cumulative_N);
+			}
+		if (next_C < next_N) {
+			TEMPORARY_TEXT(msg)
+			WRITE_TO(msg, "footnote cue");
+			if (next_N > next_C+1)
+				WRITE_TO(msg, "s [%d] to [%d] are missing in this paragraph", next_C, next_N-1);
+			else
+				WRITE_TO(msg, " [%d] is missing in this paragraph", next_N-1);
+			WebErrors::record_at(msg, par->first_chunk->first_line);
+			DISCARD_TEXT(msg)
+		}
+		if (next_C > next_N) {
+			TEMPORARY_TEXT(msg)
+			WRITE_TO(msg, "footnote text");
+			if (next_C > next_N+1)
+				WRITE_TO(msg, "s [%d] to [%d] are missing in this paragraph", next_N, next_C-1);
+			else
+				WRITE_TO(msg, " [%d] is missing in this paragraph", next_C-1);
+			WebErrors::record_at(msg, par->first_chunk->first_line);
+			DISCARD_TEXT(msg)
+		}
+		par->footnote_count = next_N;
+	}
+}
+
+void LiterateSource::recursively_check_note_numbering(markdown_item *md, int depth,
+	ls_line *report_at, int *next_C, int *next_N, int *cumulative_C, int *cumulative_N) {
+	for (; md; md = md->next) {
+		if (md->type == FOOTNOTE_BODY_MIT) {
+			int N = md->details;
+			if (N != *next_N) {
+				TEMPORARY_TEXT(msg)
+				WRITE_TO(msg, "footnote [%d] occurs out of sequence", N);
+				WebErrors::record_at(msg, report_at);
+				DISCARD_TEXT(msg)
+			}
+			*next_N = N+1;
+			md->details = *cumulative_N;
+			*cumulative_N = *cumulative_N + 1;
+		}
+		if (md->type == LINK_MIT) {
+			int C = md->details;
+			if (C > 0) {
+				if (C != *next_C) {
+					TEMPORARY_TEXT(msg)
+					WRITE_TO(msg, "footnote cue [%d] occurs out of sequence", C);
+					WebErrors::record_at(msg, report_at);
+					DISCARD_TEXT(msg)
+				}
+				*next_C = C+1;
+				md->details = *cumulative_C;
+				*cumulative_C = *cumulative_C + 1;
+			}
+		}
+		if (md->down)
+			LiterateSource::recursively_check_note_numbering(
+				md->down, depth+1, report_at, next_C, next_N, cumulative_C, cumulative_N);
+	}
 }
 
 @ In all of that construction, we needed some surgery on doubly-linked lists:
@@ -1184,6 +1252,7 @@ typedef struct ls_footnote {
 	WRITE_TO(F->cue_text, "%d", F->footnote_text_number);
 	if (par->footnotes == NULL) par->footnotes = NEW_LINKED_LIST(ls_footnote);
 	ADD_TO_LINKED_LIST(F, ls_footnote, par->footnotes);
+	par->footnote_count++;
 	current_text = F;
 
 @ Where:

@@ -10,6 +10,7 @@ creator functions. Deep breath now:
 =
 typedef struct weave_document_node {
 	struct weave_order *wv;
+	int footnotes_present;
 	CLASS_DEFINITION
 } weave_document_node;
 
@@ -310,7 +311,7 @@ tree_node_type *weave_locale_node_type = NULL;
 tree_node_type *weave_maths_node_type = NULL;
 tree_node_type *weave_markdown_node_type = NULL;
 
-heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
+heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) {
 	if (weave_tree_type == NULL) {
 		weave_tree_type = Trees::new_type(I"weave tree", NULL);
 		weave_document_node_type =
@@ -411,13 +412,14 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv) {
 			Trees::new_node_type(I"verbatim", weave_verbatim_node_CLASS, NULL);
 	}
 	heterogeneous_tree *tree = Trees::new(weave_tree_type);
-	Trees::make_root(tree, WeaveTree::document(tree, wv));
+	Trees::make_root(tree, WeaveTree::document(tree, wv, footnotes_present));
 	return tree;
 }
 
-tree_node *WeaveTree::document(heterogeneous_tree *tree, weave_order *wv) {
+tree_node *WeaveTree::document(heterogeneous_tree *tree, weave_order *wv, int footnotes_present) {
 	weave_document_node *doc = CREATE(weave_document_node);
 	doc->wv = wv;
+	doc->footnotes_present = footnotes_present;
 	return Trees::new_node(tree, weave_document_node_type,
 		STORE_POINTER_weave_document_node(doc));
 }

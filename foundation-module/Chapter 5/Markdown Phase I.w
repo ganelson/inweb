@@ -227,7 +227,7 @@ because of the special rule that a list item cannot begin with two blank lines.
 
 =
 typedef struct positional_marker {
-	int item_type; /* |BLOCK_QUOTE_MIT|, |ORDERED_LIST_ITEM_MIT| or |UNORDERED_LIST_ITEM_MIT| */
+	int item_type; /* |BLOCK_QUOTE_MIT|, |ORDERED_LIST_ITEM_MIT|, |UNORDERED_LIST_ITEM_MIT| or |FOOTNOTE_BODY_MIT| */
 	int indent;                /* minimum required indentation for subsequent lines to continue */
 	int at;                    /* character position (not string index) of the start of the marker */
 	int width;                 /* for example, 2 for |7) | or |7. |: the non-whitespace chars only */
@@ -277,7 +277,9 @@ level |position|: remember that this counts from 1, not from 0.
 =
 positional_marker *MDBlockParser::new_marker_at(md_doc_state *state, int position, int type) {
 	if ((type != BLOCK_QUOTE_MIT) &&
-		(type != UNORDERED_LIST_ITEM_MIT) && (type != ORDERED_LIST_ITEM_MIT))
+		(type != UNORDERED_LIST_ITEM_MIT) &&
+		(type != ORDERED_LIST_ITEM_MIT) &&
+		(type != FOOTNOTE_BODY_MIT))
 		internal_error("bad type for marker stack");
 	if ((position <= 0) || (position >= MAX_MARKDOWN_CONTAINER_DEPTH))
 		internal_error("marker out of range");
@@ -316,6 +318,7 @@ void MDBlockParser::debug_marker(OUTPUT_STREAM, positional_marker *marker, int i
 	if (marker->continues_from_earlier_line) WRITE("continuing:");
 	switch (marker->item_type) {
 		case BLOCK_QUOTE_MIT:         WRITE("> "); break;
+		case FOOTNOTE_BODY_MIT:       WRITE("[%d] ", marker->list_item_value); break;
 		case UNORDERED_LIST_ITEM_MIT: WRITE("(%c) ", marker->list_item_flavour); break;
 		case ORDERED_LIST_ITEM_MIT:   WRITE("%d%c ",
 										marker->list_item_value, marker->list_item_flavour);
@@ -378,6 +381,36 @@ tabbed_string_iterator MDBlockParser::ordered_list_marker(tabbed_string_iterator
 	c = TabbedStr::get_character(&line_scanner);
 	if ((c == '.') || (c == ')')) {
 		*flavour = c;
+		*v = val;
+		TabbedStr::advance(&line_scanner);
+		return line_scanner;
+	}
+	return old;
+}
+
+@ Footnote text markers are |[N]|, with |N| being a string of up to 9 decimal
+digits, the first of which must not be a zero. 
+
+=
+tabbed_string_iterator MDBlockParser::footnote_text_marker(tabbed_string_iterator line_scanner,
+	int *v) {
+	tabbed_string_iterator old = line_scanner;
+	if (MDBlockParser::thematic_marker(line_scanner.line,
+		TabbedStr::get_index(&line_scanner))) return old;
+	inchar32_t c = TabbedStr::get_character(&line_scanner);
+	if (c != '[') return old;
+	TabbedStr::advance(&line_scanner);
+	int dc = 0, val = 0;
+	c = TabbedStr::get_character(&line_scanner);
+	while (Characters::is_ASCII_digit(c)) {
+		if ((c == '0') && (val == 0)) return old;
+		val = 10*val + (int) (c - '0');
+		TabbedStr::advance(&line_scanner); dc++;
+		c = TabbedStr::get_character(&line_scanner);
+	}
+	if ((dc < 1) || (dc > 9)) return old;
+	c = TabbedStr::get_character(&line_scanner);
+	if (c == ']') {
 		*v = val;
 		TabbedStr::advance(&line_scanner);
 		return line_scanner;
@@ -484,6 +517,7 @@ would be part of the quoted code, not a marker.
 		@<Is there a block quote marker here?@>;
 		@<Is there a bullet list marker here?@>;
 		@<Is there an ordered list marker here?@>;
+		@<Is there a footnote text marker here?@>;
 		*line_scanner = rewind_point;
 	}
 
@@ -588,6 +622,34 @@ entry "Permission to use...".
 		}
 	}
 
+@<Is there a footnote text marker here?@> =
+	if (MarkdownVariations::supports(state->variation, FOOTNOTES_MARKDOWNFEATURE)) {
+		int val = 0;
+		tabbed_string_iterator adv = MDBlockParser::footnote_text_marker(starts_at, &val);
+		int black_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+		if (black_width > 0) {
+			inchar32_t next = TabbedStr::get_character(&adv);
+			if ((next == ' ') || (next == 0)) {
+				TabbedStr::eat_space(&adv);
+				int white_width = TabbedStr::get_position(&adv) - TabbedStr::get_position(line_scanner);
+				*line_scanner = adv;
+				if (((TabbedStr::blank_from_here(line_scanner)) || (val != 1)) && (interrupts_paragraph)) {
+					*line_scanner = rewind_point;
+				} else {
+					positional_marker *li_m =
+						MDBlockParser::new_marker_at(state, sp, FOOTNOTE_BODY_MIT);
+					li_m->width = black_width;
+					li_m->at = TabbedStr::get_position(&starts_at);
+					li_m->indent = white_width + TabbedStr::spaces_available(line_scanner);
+					if (sp == 1) li_m->indent += left_margin;
+					li_m->list_item_value = val;
+					sp++;
+					continue;
+				}
+			}
+		}
+	}
+
 @ It's convenient to provide a quick way to test if the innermost marker is
 for a list entry which is new this time around (i.e., not a continuation).
 
@@ -607,6 +669,14 @@ int MDBlockParser::marker_is_list_entry(positional_marker *marker) {
 
 int MDBlockParser::marker_is_new_list_entry(positional_marker *marker) {
 	if ((MDBlockParser::marker_is_list_entry(marker)) &&
+		(marker->continues_from_earlier_line == FALSE))
+		return TRUE;
+	return FALSE;
+}
+
+int MDBlockParser::marker_is_new_footnote_body(positional_marker *marker) {
+	if ((marker) &&
+		(marker->item_type == FOOTNOTE_BODY_MIT) &&
 		(marker->continues_from_earlier_line == FALSE))
 		return TRUE;
 	return FALSE;
@@ -702,6 +772,7 @@ int MDBlockParser::container_will_change(md_doc_state *state) {
 		positional_marker *marker = MDBlockParser::marker_at(state, sp);
 		if (marker->item_type != state->containers[sp]->type) return TRUE;
 		if (MDBlockParser::marker_is_new_list_entry(marker)) return TRUE;
+		if (MDBlockParser::marker_is_new_footnote_body(marker)) return TRUE;
 	}
 	return FALSE;
 }
@@ -805,7 +876,8 @@ subsequent lines the same margin will be followed.
 
 @<This line is indented enough to be part of an indented code block@> =
 	indentation = TRUE; intervening_space_width = 4;
-	if (MDBlockParser::marker_is_new_list_entry(innermost)) {
+	if ((MDBlockParser::marker_is_new_list_entry(innermost)) ||
+		(MDBlockParser::marker_is_new_footnote_body(innermost))) {
 		if (tracing_Markdown_parser) {
 			PRINT("Opening line is code rule applies, and sets pos indent[%d] = %d\n",
 				state->marker_sp, innermost->width + 1);
@@ -1079,7 +1151,8 @@ to become:
 	wipe_down_to_pos = min_sp;
 	for (int sp = 1; sp<min_sp; sp++) {
 		positional_marker *marker = MDBlockParser::marker_at(state, sp);
-		if (MDBlockParser::marker_is_new_list_entry(marker) == TRUE) {
+		if ((MDBlockParser::marker_is_new_list_entry(marker) == TRUE)  ||
+			(MDBlockParser::marker_is_new_footnote_body(marker) == TRUE)) {
 			wipe_down_to_pos = sp; break;
 		}
 	}	

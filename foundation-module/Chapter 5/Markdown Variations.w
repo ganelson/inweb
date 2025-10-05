@@ -242,9 +242,11 @@ We provide just two of these, and they are intended to be used on top of GFM:
 
 @e TEX_MARKDOWNFEATURE
 @e INWEB_LINKS_MARKDOWNFEATURE
+@e FOOTNOTES_MARKDOWNFEATURE
 =
 markdown_feature *TeX_Markdown_feature = NULL;
 markdown_feature *inweb_links_Markdown_feature = NULL;
+markdown_feature *footnotes_Markdown_feature = NULL;
 
 void MarkdownVariations::define_IWFM(void) {
 	TeX_Markdown_feature =         MarkdownVariations::new_feature(I"TeX",         TEX_MARKDOWNFEATURE);
@@ -258,6 +260,7 @@ void MarkdownVariations::define_IWFM(void) {
 void MarkdownVariations::make_Inweb_features_active(markdown_variation *variation) {
 	MarkdownVariations::add_feature(variation, TEX_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, INWEB_LINKS_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
 }
 
 @h Methods for features.

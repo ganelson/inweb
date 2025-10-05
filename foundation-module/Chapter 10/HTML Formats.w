@@ -70,6 +70,11 @@ void HTMLWeaving::render(weave_format *self, text_stream *OUT, heterogeneous_tre
 	HTML_render_state hrs = HTMLWeaving::initial_state(OUT, C->wv, FALSE, C->wv->weave_to);
 	Trees::traverse_from(tree->root, &HTMLWeaving::render_visit, (void *) &hrs, 0);
 	HTML::completed(OUT);
+	if (C->footnotes_present) {
+		text_stream *fn_plugin_name = C->wv->pattern->footnotes_plugin;
+		if (Str::len(fn_plugin_name) > 0)
+			Swarm::ensure_plugin(C->wv, fn_plugin_name);
+	}
 }
 void HTMLWeaving::render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
@@ -781,9 +786,6 @@ that service uses to identify the video/audio in question.
 
 @<Render footnote cue@> =
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
-	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
-	if (Str::len(fn_plugin_name) > 0)
-		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
 	if (hrs->EPUB_flag) {
 		if (N->parent->type != weave_begin_footnote_text_node_type)
 			WRITE("<a id=\"fnref%S\"></a>", C->cue_text);
@@ -796,9 +798,6 @@ that service uses to identify the video/audio in question.
 @<Render footnote@> =
 	weave_begin_footnote_text_node *C =
 		RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
-	text_stream *fn_plugin_name = hrs->wv->pattern->footnotes_plugin;
-	if ((Str::len(fn_plugin_name) > 0) && (hrs->EPUB_flag == FALSE))
-		Swarm::ensure_plugin(hrs->wv, fn_plugin_name);
 	if (hrs->EPUB_flag)
 		WRITE("<li class=\"footnote\" id=\"fn%S\"><p class=\"inwebfootnote\">",
 			C->cue_text);

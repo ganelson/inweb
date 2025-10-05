@@ -342,6 +342,7 @@ paragraph is inline content.
 @e TEX_MIT
 @e DISPLAYED_TEX_MIT
 @e INWEB_LINK_MIT
+@e FOOTNOTE_BODY_MIT
 
 @ Recapitulating all of that:
 
@@ -444,6 +445,7 @@ void Markdown::create_item_types(void) {
 	Markdown::new_inline_type(TEX_MIT, I"TEX");
 	Markdown::new_inline_type(DISPLAYED_TEX_MIT, I"DISPLAYED_TEX");
 	Markdown::new_inline_type(INWEB_LINK_MIT, I"INWEB_LINK");
+	Markdown::new_container_block_type(FOOTNOTE_BODY_MIT, I"FOOTNOTE_BODY");
 }
 
 text_stream *Markdown::item_type_name(int t) {
@@ -733,6 +735,9 @@ void Markdown::set_item_number_and_flavour(markdown_item *md, int L, inchar32_t 
 	if (md->type == UNORDERED_LIST_ITEM_MIT) {
 		if (L != 0) internal_error("inappropriate list item number");
 		md->details = (int)f;
+	}
+	if (md->type == FOOTNOTE_BODY_MIT) {
+		md->details = L;
 	}
 }
 
@@ -1234,6 +1239,9 @@ void Markdown::debug_item(OUTPUT_STREAM, markdown_item *md) {
 	}
 	if (md->type == FILE_MIT) {
 		WRITE(": %f", RETRIEVE_POINTER_filename(md->user_state));
+	}
+	if (md->type == LINK_MIT) {
+		if (md->details > 0) WRITE(": footnote cue %d", md->details);
 	}
 	if (md->type == GATE_MIT) {
 		if (md->details) WRITE("-if-true");

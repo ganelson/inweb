@@ -109,6 +109,8 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 								       	break;
 		case LINK_TITLE_MIT:            @<Recurse@>; break;
 
+		case FOOTNOTE_BODY_MIT:         @<Render a footnote body@>; break;
+
 		default:                        @<Recurse@>; break;
 	}
 	mode = old_mode;
@@ -327,7 +329,9 @@ been taken out at the parsing stage.)
 @<Render link@> =
 	TEMPORARY_TEXT(URI)
 	TEMPORARY_TEXT(title)
-	if (md->down->next) {
+	if (md->details > 0) {
+		WRITE_TO(URI, "#fn:%d", md->details);
+	} else if (md->down->next) {
 		if (md->down->next->type == LINK_DEST_MIT) {
 			MDRenderer::recurse(URI, state, md->down->next, mode, variation);
 			if ((md->down->next->next) && (md->down->next->next->type == LINK_TITLE_MIT))
@@ -336,13 +340,19 @@ been taken out at the parsing stage.)
 			MDRenderer::recurse(title, state, md->down->next, mode, variation);
 		}
 	}
-	if (Str::len(title) > 0) {
+	if (md->details > 0) {
+		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("sup", "id=\"fnred:%d\"", md->details);
+		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\" rel=\"footnote\"", URI);
+	} else if (Str::len(title) > 0) {
 		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\" title=\"%S\"", URI, title);
 	} else {
 		if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"%S\"", URI);
 	}
 	MDRenderer::recurse(OUT, state, md->down, mode, variation);
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
+	if (md->details > 0) {
+		if (mode & TAGS_MDRMODE) HTML_CLOSE("sup");
+	}
 	DISCARD_TEXT(URI)
 	DISCARD_TEXT(title)
 
@@ -450,6 +460,48 @@ been taken out at the parsing stage.)
 	HTMLWeaving::render_maths(OUT, (weave_order *) state, TEX, FALSE,
 		(md->type == DISPLAYED_TEX_MIT)?TRUE:FALSE);
 	DISCARD_TEXT(TEX)
+
+@<Render a footnote body@> =
+	int displayed_number = md->details;
+	if (displayed_number == 1) {
+		HTML_OPEN_WITH("ul", "class=\"inwebfootnotetexts\"");
+	}
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("li", "class=\"footnote\" id=\"fn:%d\"", md->details);
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("p", "class=\"inwebfootnote\"");
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("sup", "id=\"fnref:%d\"", md->details);
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"#fn:%d\" rel=\"footnote\"", md->details);
+	WRITE("%d", displayed_number);
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("sup");
+	WRITE("\n");
+	markdown_item *r_from = md->down;
+	int reopen_for_return_marker = FALSE;
+	if ((r_from) && (r_from->type == PARAGRAPH_MIT)) {
+		MDRenderer::recurse(OUT, state, r_from->down, mode, variation);
+		r_from = r_from->next;
+		if (r_from) {
+			if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
+			reopen_for_return_marker = TRUE;
+		}
+	}
+	int m = mode;
+	for (markdown_item *c = r_from; c; c = c->next) {
+		MDRenderer::recurse(OUT, state, c, m, variation);
+		m = m & (~EXISTING_PAR_MDRMODE);
+	}
+	if (reopen_for_return_marker) {
+		if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
+	}
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("a", "href=\"#fnref:%d\" title=\"return to text\"", md->details);
+	WRITE(" &#x21A9;");
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("a");
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("li");
+	if ((md->next == NULL) || (md->next->type != FOOTNOTE_BODY_MIT)) {
+		if (mode & TAGS_MDRMODE) HTML_CLOSE("ul");
+	}
+	WRITE("\n");
+	break;
 
 @ And finally, the obvious definition:
 

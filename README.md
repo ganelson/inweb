@@ -1,6 +1,6 @@
 # Inweb 9.0
 
-[Version](notes/versioning.md): 9.0-beta+1B86 'Invasion' (4 October 2025)
+[Version](notes/versioning.md): 9.0-beta+1B87 'Invasion' (5 October 2025)
 
 ## About Inweb
 

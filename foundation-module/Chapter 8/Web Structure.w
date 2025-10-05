@@ -102,6 +102,7 @@ ls_web *WebStructure::read_fully(colony *C, wcl_declaration *D,
 		LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
 			LOOP_OVER_LINKED_LIST(S, ls_section, Ch->sections)
 				LiterateSource::parse_markdown(S->literate_source);
+		WebErrors::issue_all_recorded(W);
 	}
 	return W;
 }

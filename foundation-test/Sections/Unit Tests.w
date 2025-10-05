@@ -508,6 +508,7 @@ void Unit::test_Markdown(text_stream *arg) {
 	variation_to_test_against = MarkdownVariations::CommonMark();
 	testy_Markdown = MarkdownVariations::new(I"Testy Markdown 1.0");
 	MarkdownVariations::make_GitHub_features_active(testy_Markdown);
+	MarkdownVariations::make_Inweb_features_active(testy_Markdown);
 
 	MarkdownVariations::remove_feature(testy_Markdown, HTML_BLOCKS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(testy_Markdown, INLINE_HTML_MARKDOWNFEATURE);
@@ -559,6 +560,8 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 			variation_to_test_against = MarkdownVariations::GitHub_flavored_Markdown();
 		if (Str::includes(text, I"Inform")) 
 			variation_to_test_against = InformFlavouredMarkdown::variation();
+		if (Str::includes(text, I"Inweb")) 
+			variation_to_test_against = MarkdownVariations::Inweb_flavoured_Markdown();
 		if (Str::includes(text, I"Inform-PLUGH")) {
 			variation_to_test_against = InformFlavouredMarkdown::variation();
 			InformFlavouredMarkdown::set_gatekeeper_function(&Unit::test_gatekeeper);

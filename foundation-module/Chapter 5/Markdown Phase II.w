@@ -839,6 +839,8 @@ void MDInlineParser::links_and_images(markdown_variation *variation,
 			if (ref) {
 				PRINT("Link destination (reference): %S\n", ref->destination);
 				PRINT("Link title (reference): %S\n", ref->title);
+			} if (found.footnote_link != 0) {
+				PRINT("Link is footnote cue %d\n", found.footnote_link);
 			} else {
 				PRINT("Link destination: ");
 				if (found.link_destination_empty) PRINT("EMPTY\n");
@@ -874,6 +876,7 @@ typedef struct md_link_parse {
 	struct md_charpos link_title_to;
 	int link_title_empty;
 	struct md_link_dictionary_entry *link_reference; /* or |NULL| if it's not by reference */
+	int footnote_link; /* or 0 if it's not a footnote cue */
 	struct md_charpos last; /* rightmost character of the whole construct */
 } md_link_parse;
 
@@ -913,6 +916,8 @@ typedef struct md_link_parse {
 			title_item->down = Markdown::new_slice(PLAIN_MIT, ref->title, 0, Str::len(ref->title)-1);
 			Markdown::add_to(title_item, link_item);
 		}
+	} else if (found.footnote_link > 0) {
+		link_item->details = found.footnote_link;
 	} else {
 		if (link_destination) {
 			markdown_item *dest_item = Markdown::new_item(LINK_DEST_MIT);
@@ -993,6 +998,7 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 	result.link_title_to = Markdown::nowhere();
 	result.link_title_empty = NOT_APPLICABLE;
 	result.link_reference = FALSE;
+	result.footnote_link = 0;
 	result.last = Markdown::nowhere();
 
 @
@@ -1030,12 +1036,24 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 						if (Markdown::pos_eq(pos, result.link_text_to)) break;
 					}
 					@<Deal with escape characters in the label@>;
-					md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
-					if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
-					#ifdef SUPERVISOR_MODULE
-					DocumentationCompiler::notify_image_use(ref->destination);
-					#endif
-					result.link_reference = ref;
+					
+					int valid = TRUE;
+					if (MarkdownVariations::supports(variation, FOOTNOTES_MARKDOWNFEATURE)) {
+						if (Str::get_at(label, 0) == '0') valid = FALSE;
+						if ((Str::len(label) < 1) || (Str::len(label) > 9)) valid = FALSE;
+						for (int i=0; i<Str::len(label); i++)
+							if (Characters::isdigit(Str::get_at(label, i)) == FALSE)
+								valid = FALSE;
+						if (valid) result.footnote_link = Str::atoi(label, 0);
+					}
+					if (result.footnote_link == 0) {
+						md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
+						if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
+						#ifdef SUPERVISOR_MODULE
+						DocumentationCompiler::notify_image_use(ref->destination);
+						#endif
+						result.link_reference = ref;
+					}
 					pos = result.link_text_to;
 					pos = Markdown::advance_up_to(pos, to);
 					DISCARD_TEXT(label)

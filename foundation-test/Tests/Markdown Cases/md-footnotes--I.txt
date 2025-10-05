@@ -1,0 +1,28 @@
+! Inweb
+! Footnotes 1
+I do think[1] that footnote cues are a good thing.[2]
+
+[1] This is a footnote body.
+
+[2] And so is this,
+    and it continues for some time, and even houses a list:
+
+    * once
+    * twice
+! Solution
+<p>I do think<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> that footnote cues are a good thing.<sup id="fnred:2"><a href="#fn:2" rel="footnote">2</a></sup></p>
+<ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+This is a footnote body.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
+</li>
+<li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+And so is this,
+and it continues for some time, and even houses a list:</p>
+<ul>
+<li>once</li>
+<li>twice</li>
+</ul>
+</p>
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
+</li></ul>
+! End
+

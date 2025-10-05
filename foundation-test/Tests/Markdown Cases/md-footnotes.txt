@@ -1,0 +1,12 @@
+! Inweb
+! Footnotes 1
+I do think[1] that footnote cues are a good thing.[2]
+
+[1] This is a footnote body.
+
+[2] And so is this,
+    and it continues for some time, and even houses a list:
+
+    * once
+    * twice
+! End
