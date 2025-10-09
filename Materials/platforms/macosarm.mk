@@ -1,4 +1,4 @@
-# This makefile was automatically written by inweb -makefile
+# This makefile was automatically written by inweb make-makefile
 # and is not intended for human editing
 
 INWEBPLATFORM = macosarm

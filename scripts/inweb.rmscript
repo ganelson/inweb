@@ -57,19 +57,22 @@ Make a directory in which to work: let's call this `work`. Then:
 	* `bash inweb/scripts/first.sh macos`
 	* `bash inweb/scripts/first.sh macos32`
 	* `bash inweb/scripts/first.sh macosarm`
+	* `bash inweb/scripts/first.sh macosintel`
 	* `bash inweb/scripts/first.sh macosuniv`
 	* `bash inweb/scripts/first.sh unix`
 	* `bash inweb/scripts/first.sh windows`
 * Test that all is well: `inweb/Tangled/inweb -help`
 
 Some notes on which platform to choose:
-* For Intel Macs running MacOS 10.13 ("High Sierra") or earlier, use macos32.
+* For Intel Macs running MacOS 10.13 ("High Sierra") or earlier, use `macos32`.
 This will produce 32-bit x86 executables; we are no longer really supporting this.
-* For Intel Macs running MacOS 10.14 ("Mojave"), use macos. This will produce
-64-bit x86 executables.
-* For Apple Silicon Macs, use macosarm. This will produce 64-bit ARM executables.
+* For Intel Macs running MacOS 10.14 ("Mojave"), use `macosintel`. This will produce
+64-bit x86 executables; similarly, this is now deprecated.
+* For Apple Silicon Macs, the majority of Macs manufactured since 2020 and all of
+them since 2023, use `macosarm` or simply `macos`. This will produce 64-bit
+ARM executables.
 * To produce universal binaries (64-bit x86 and ARM combined) on Apple Silicon
-Macs, use macosuniv, but expect your compilation times to double, of course.
+Macs, use `macosuniv`, but expect your compilation times to double, of course.
 * For a generic version of Unix where the Linux settings do not work, try using
 unix. (For Solaris, for example.)
 * For Windows, the mingw-w64 environment provided by the MSYS2 project is required.
@@ -81,17 +84,16 @@ everything needed:
 	* `pacman -S make`
 	* `pacman -S zip`
 	* `pacman -S mingw-w64-x86_64-clang`
-* Android support has existed in the past, but the Android Inform community
-has not yet an opportunity to contribute build settings.
+* Android support has existed in the past, but not at present.
 
 You should now have a working copy of Inweb, with its own makefile tailored
-to your platform now in place (at inweb/inweb.mk). To build inweb again, e.g.
+to your platform now in place (at `inweb/inweb.mk`). To build inweb again, e.g.
 after editing inweb's source code, do not run the shell script first.sh again.
 Instead, you must use: `make -f inweb/inweb.mk`
 
 If you wish to tweak the makefile, do not edit it directly. Instead,
-edit inweb/scripts/inweb.mkscript and inweb/Materials/platforms/PLATFORM.mkscript,
-where PLATFORM is your choice as above (e.g., 'macos'). Then run `make -f inweb/inweb.mk makers`
+edit `inweb/scripts/inweb.mkscript` and `inweb/Materials/platforms/PLATFORM.mkscript`,
+where `PLATFORM` is your choice as above (e.g., `macos`). Then run `make -f inweb/inweb.mk makers`
 to rebuild all these makefiles with your changes incorporated; and then run
 the shell script `inweb/scripts/first.sh` again.
 

@@ -1,26 +1,26 @@
-# This is "macosarm.mkscript", a script which defines build settings used in
+# This is "macosintel.mkscript", a script which defines build settings used in
 # inweb, intest, inform and all of their subsidiary tools for the platform
-# "macos". The maintainer of this file is Graham Nelson.
+# "macosintel". The maintainer of this file is Graham Nelson.
 
 # The script is used for two purposes. Firstly, it is used to generate the
-# file "macosarm.mk" of platform settings. If an inweb user selects macos as
+# file "macosintel.mk" of platform settings. If an inweb user selects macosintel as
 # platform on a first run, then this is the file copied into place as
 # inweb/platform-settings.mk. But secondly, it also defines macros which
 # can be used by any *.mkscript files being converted to *.mk files on
 # this platform.
 
-# Do not edit "macosarm.mk" directly. Instead, edit this script, and then
-# rebuild "macosarm.mk" by setting the current working directory to the directory
+# Do not edit "macosintel.mk" directly. Instead, edit this script, and then
+# rebuild "macosintel.mk" by setting the current working directory to the directory
 # _above_ "inweb", and using the command:
 
-# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/macosarm.mkscript -to inweb/Materials/platforms/macosarm.mk
+# inweb/Tangled/inweb make-makefile inweb -script inweb/Materials/platforms/macosintel.mkscript -to inweb/Materials/platforms/macosintel.mk
 
 # Or simply:
 
 # make -f inweb/inweb.mk makers
 
 # which recreates all of the make-files in the inweb repository from their
-# scripts, including macosarm.mk among them.
+# scripts, including macosintel.mk among them.
 
 # See the inweb manual for documentation on the *.mkscript file format, i.e.,
 # the format in which this file is written. But it is essentially just a makefile
@@ -34,7 +34,7 @@
 # name, which is the same as the leafname of this file without the ".mkscript"
 # file extension. So:
 
-INWEBPLATFORM = macosarm
+INWEBPLATFORM = macosintel
 
 # The I6 source code has its own set of symbolic names for operating systems,
 # not always the same as inweb's names for platforms, so:
@@ -78,8 +78,8 @@ SDKPATH := $(shell xcrun -show-sdk-path)
 
 # Where:
 
-CCOPTS = -DPLATFORM_MACOS=1 -target arm64-apple-macos11 -isysroot $(SDKPATH) $(CFLAGS)
+CCOPTS = -DPLATFORM_MACOS=1 -mmacosx-version-min=10.6 -arch x86_64 -isysroot $(SDKPATH) $(CFLAGS)
 
 MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-c99-compat -Wno-pre-c11-compat -Wno-switch-default -Wno-reserved-identifier -ferror-limit=1000
 
-FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable
+FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return

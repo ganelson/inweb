@@ -1,4 +1,4 @@
-# This makefile was automatically written by inweb -makefile
+# This makefile was automatically written by inweb make-makefile
 # and is not intended for human editing
 
 INWEBPLATFORM = linux
@@ -27,7 +27,7 @@ FTEST = $(ME)/foundation-test
 LBUILD = $(ME)/licence-build
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
-COLONY = $(ME)/colony.txt
+COLONY = $(ME)/colony.inweb
 
 -include $(ME)/platform-settings.mk
 
@@ -94,7 +94,7 @@ define make-me
 endef
 
 define make-me-using-safety-copy
-	$(SAFETYCOPY) $(ME) -tangle
+	$(SAFETYCOPY) tangle $(ME)
 	$(call make-me-once-tangled)
 endef
 
@@ -111,6 +111,7 @@ endef
 .PHONY: test
 test:
 	$(INTEST) -from $(ME) all
+	$(INTEST) -from $(FTEST) all
 
 .PHONY: commit
 commit:
@@ -125,7 +126,6 @@ pages:
 	$(INWEB) inspect -colony $(COLONY) -member twinprimes -scan > $(ME)/Figures/scan.txt
 	$(INWEB) weave -colony $(COLONY) -member twinprimes -as TestingInweb -to $(ME)/Figures/tree.txt
 	cp -f $(COLONY) $(ME)/Figures/colony.txt
-	cp -f $(ME)/docs-src/nav.html $(ME)/Figures/nav.txt
 	$(INWEB) advance-build $(ME)
 	mkdir -p $(ME)/docs
 	rm -f $(ME)/docs/*.html
