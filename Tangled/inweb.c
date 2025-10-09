@@ -6257,13 +6257,13 @@ void  Swarm__weave_swarm(ls_colony *context, ls_colony_member *CM, ls_web *W, 	t
 weave_order * Swarm__weave_subset(ls_colony *context, ls_colony_member *CM, ls_web *W, text_stream *range, 	text_stream *tag, ls_pattern *pattern, filename *to, pathname *into, 	int verbosely) ;
 #line 244 "inweb/foundation-module/Chapter 10/The Swarm.w"
 weave_order * Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM, ls_web *W, 	text_stream *range, int open_afterwards, text_stream *tag, 	ls_pattern *pattern, filename *to, pathname *into, int verbosely) ;
-#line 422 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 425 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__ensure_plugin(weave_order *wv, text_stream *name) ;
-#line 431 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 434 "inweb/foundation-module/Chapter 10/The Swarm.w"
 colour_scheme * Swarm__ensure_colour_scheme(weave_order *wv, text_stream *name, 	text_stream *pre) ;
-#line 451 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 454 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename *from) ;
-#line 463 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 466 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void  Swarm__weave_index_templates(ls_colony *context, ls_colony_member *CM, ls_web *W, 	text_stream *range, ls_pattern *pattern, pathname *into) ;
 #line 50 "inweb/foundation-module/Chapter 10/Patterns.w"
 ls_pattern * Patterns__find(wcl_declaration *D, text_stream *name) ;
@@ -15231,11 +15231,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1B87";
+			char *svn = "9.0-beta+1B88";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "5 October 2025";
+			char *d = "9 October 2025";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -47230,7 +47230,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\tinweb\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B87\t/built 5 October 2025/\n");
+	WRITE("!_TAG_PROGRAM_VERSION\t9.0-beta+1B88\t/built 9 October 2025/\n");
 
 }
 #line 47 "inweb/foundation-module/Chapter 9/Ctags Support.w"
@@ -49962,34 +49962,37 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	
 {
 #line 350 "inweb/foundation-module/Chapter 10/The Swarm.w"
+	int extend = TRUE;
 	match_results mr = Regexp__create_mr();
 	if (W->single_file) {
 		wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W, TL_IS_4233));
-		Filenames__write_unextended_leafname(leafname, W->single_file);
+		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
+		else Filenames__write_unextended_leafname(leafname, W->single_file);
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 397 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 355 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 357 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (W->is_page) {
 		wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W, TL_IS_4234));
-		WRITE_TO(leafname, "%S", W->declaration->name);
+		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
+		else WRITE_TO(leafname, "%S", W->declaration->name);
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 397 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 360 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 363 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (Str__eq_wide_string(range, U"0")) {
 		wv->booklet_title = Str__new_from_wide_string(U"Complete Program");
@@ -49997,13 +50000,13 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 		if (Str__len(wv->theme_match) > 0)
 			
 {
-#line 394 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 397 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	Str__clear(wv->booklet_title);
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str__copy(leafname, wv->theme_match);
 
 }
-#line 365 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 368 "inweb/foundation-module/Chapter 10/The Swarm.w"
 ;
 	} else if (Regexp__match(&mr, range, U"%d+")) {
 		Str__clear(wv->booklet_title);
@@ -50029,7 +50032,7 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	LOOP_THROUGH_TEXT(P, leafname)
 		if ((Str__get(P) == '/') || (Str__get(P) == ' '))
 			Str__put(P, '-');
-	WRITE_TO(leafname, "%S", WeavingFormats__file_extension(wv->format));
+	if (extend) WRITE_TO(leafname, "%S", WeavingFormats__file_extension(wv->format));
 	Regexp__dispose_of(&mr);
 
 }
@@ -50065,7 +50068,7 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 		WeavingFormats__post_process_weave(wv, open_afterwards);
 		
 {
-#line 401 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 404 "inweb/foundation-module/Chapter 10/The Swarm.w"
 	if (verbosely) {
 		PRINT("    [%S -> ", wv->booklet_title);
 		pathname *P = Filenames__up(wv->weave_to);
@@ -50116,7 +50119,7 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 
 
 
-#line 422 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 425 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void Swarm__ensure_plugin(weave_order *wv, text_stream *name) {
 	weave_plugin *existing;
 	LOOP_OVER_LINKED_LIST(existing, weave_plugin, wv->plugins)
@@ -50155,7 +50158,7 @@ void Swarm__include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename 
 		Assets__include_colour_scheme(OUT, W, cs, wv->pattern, from,  wv->verbosely, wv->weave_colony);
 }
 
-#line 463 "inweb/foundation-module/Chapter 10/The Swarm.w"
+#line 466 "inweb/foundation-module/Chapter 10/The Swarm.w"
 void Swarm__weave_index_templates(ls_colony *context, ls_colony_member *CM, ls_web *W,
 	text_stream *range, ls_pattern *pattern, pathname *into) {
 	if (!(Bibliographic__data_exists(W, TL_IS_4239)))

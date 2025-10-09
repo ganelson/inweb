@@ -347,15 +347,18 @@ typedef struct weave_order {
 and details of any cover-sheet to use.
 
 @<Translate the subweb range into details of what to weave@> =
+	int extend = TRUE;
 	match_results mr = Regexp::create_mr();
 	if (W->single_file) {
 		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
-		Filenames::write_unextended_leafname(leafname, W->single_file);
+		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
+		else Filenames::write_unextended_leafname(leafname, W->single_file);
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
 	} else if (W->is_page) {
 		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
-		WRITE_TO(leafname, "%S", W->declaration->name);
+		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
+		else WRITE_TO(leafname, "%S", W->declaration->name);
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
 	} else if (Str::eq_wide_string(range, U"0")) {
@@ -387,7 +390,7 @@ and details of any cover-sheet to use.
 	LOOP_THROUGH_TEXT(P, leafname)
 		if ((Str::get(P) == '/') || (Str::get(P) == ' '))
 			Str::put(P, '-');
-	WRITE_TO(leafname, "%S", WeavingFormats::file_extension(wv->format));
+	if (extend) WRITE_TO(leafname, "%S", WeavingFormats::file_extension(wv->format));
 	Regexp::dispose_of(&mr);
 
 @<Change the titling and leafname to match the tagged theme@> =
