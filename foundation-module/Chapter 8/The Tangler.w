@@ -62,7 +62,7 @@ void Tangler::tangle_code_with_docket(OUTPUT_STREAM, tangle_docket *docket, text
 	text_file_position origin, programming_language *language) {
 	docket->target = TangleTargets::ad_hoc_target(language);
 	docket->at = origin;
-	ls_unit *lsu = LiterateSource::code_fragment_to_unit(WebSyntax::default(), language,
+	ls_unit *lsu = LiterateSource::code_fragment_to_unit(WebNotation::default(), language,
 		text, docket->at);
 	Tangler::report_errors(docket, lsu);
 	Tangler::tangle_holons_in_segment(OUT, lsu, docket, MAIN_TANGLE_SEGMENT);
@@ -356,7 +356,7 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 
 @<Act on this tangler command@> =
 	int handled = LanguageMethods::special_tangle_command(OUT, docket->target->tangle_language, splice->command);
-	ls_syntax *S = holon->corresponding_chunk->owner->owning_unit->syntax;
+	ls_notation *S = holon->corresponding_chunk->owner->owning_unit->syntax;
 	if (handled == FALSE) {
 		ls_section *sect = LiterateSource::section_of_par(holon->corresponding_chunk->owner);
 		if (sect) {
@@ -368,8 +368,8 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 		}
 	}
 	if (handled == FALSE) {
-		WRITE("%S%S%S", WebSyntax::notation(S, TANGLER_COMMANDS_WSF, 1),
-			splice->command, WebSyntax::notation(S, TANGLER_COMMANDS_WSF, 2));
+		WRITE("%S%S%S", WebNotation::notation(S, TANGLER_COMMANDS_WSF, 1),
+			splice->command, WebNotation::notation(S, TANGLER_COMMANDS_WSF, 2));
 	}
 
 @<Tangle in this splice of raw content@> =
@@ -397,9 +397,9 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	tangle_docket *docket, ls_line *lst) {
 	ls_unit *lsu = LiterateSource::unit_of_line(lst);
 	text_stream *hopen = NULL, *hclose = NULL;
-	if (WebSyntax::supports(lsu->syntax, NAMED_HOLONS_WSF)) {
-		hopen = WebSyntax::notation(lsu->syntax, NAMED_HOLONS_WSF, 1);
-		hclose = WebSyntax::notation(lsu->syntax, NAMED_HOLONS_WSF, 2);
+	if (WebNotation::supports(lsu->syntax, NAMED_HOLONS_WSF)) {
+		hopen = WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 1);
+		hclose = WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 2);
 	}
 	finite_state_machine *machine =
 		HolonSyntax::get(lsu->syntax, docket->target->tangle_language);

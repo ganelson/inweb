@@ -77,7 +77,7 @@ Here's some miscellaneous advice for those who would like to add to Inweb:
 1. To add a new command-line switch, declare this in the relevant subcommand
 section, and follow the general plan used there. But we don't want these
 settings to proliferate: ask first if adding a feature to, say, //Colonies//
-or //weave_pattern// files would meet the same need. And on the other hand,
+or //ls_pattern// files would meet the same need. And on the other hand,
 if the switch really makes the subcommand do something quite different,
 consider making a new subcommand instead.
 

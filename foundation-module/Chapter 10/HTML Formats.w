@@ -71,7 +71,7 @@ void HTMLWeaving::render(weave_format *self, text_stream *OUT, heterogeneous_tre
 	Trees::traverse_from(tree->root, &HTMLWeaving::render_visit, (void *) &hrs, 0);
 	HTML::completed(OUT);
 	if (C->footnotes_present) {
-		text_stream *fn_plugin_name = C->wv->pattern->footnotes_plugin;
+		text_stream *fn_plugin_name = Patterns::get_footnotes_plugin(C->wv->weave_web, C->wv->pattern);
 		if (Str::len(fn_plugin_name) > 0)
 			Swarm::ensure_plugin(C->wv, fn_plugin_name);
 	}
@@ -397,7 +397,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
 	pathname *P = Pathnames::down(hrs->wv->weave_web->path_to_web, I"Downloads");
 	filename *F = Filenames::in(P, C->download_name);
-	filename *TF = Patterns::find_file_in_subdirectory(hrs->wv->pattern, I"Embedding",
+	filename *TF = Patterns::find_file_in_subdirectory(hrs->wv->weave_web, hrs->wv->pattern, I"Embedding",
 		I"Download.html");
 	if (TF == NULL) {
 		WebErrors::issue_at(I"Downloads are not supported", hrs->wv->current_weave_line);
@@ -578,7 +578,7 @@ that service uses to identify the video/audio in question.
 	if (C->h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", C->h); }
 	TEMPORARY_TEXT(embed_leaf)
 	WRITE_TO(embed_leaf, "%S.html", C->service);
-	filename *F = Patterns::find_file_in_subdirectory(hrs->wv->pattern, I"Embedding", embed_leaf);
+	filename *F = Patterns::find_file_in_subdirectory(hrs->wv->weave_web, hrs->wv->pattern, I"Embedding", embed_leaf);
 	DISCARD_TEXT(embed_leaf)
 	if (F == NULL) {
 		WebErrors::issue_at(I"This is not a supported service", hrs->wv->current_weave_line);
@@ -941,7 +941,7 @@ void HTMLWeaving::notify_image(weave_order *wv, text_stream *image) {
 =
 void HTMLWeaving::render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content,
 	int plain, int displayed) {
-	text_stream *plugin_name = (wv)?(wv->pattern->mathematics_plugin):NULL;
+	text_stream *plugin_name = (wv)?(Patterns::get_mathematics_plugin(wv->weave_web, wv->pattern)):NULL;
 	if ((Str::len(plugin_name) == 0) || (plain)) {
 		TEMPORARY_TEXT(R)
 		TeXUtilities::remove_math_mode(R, content);
@@ -1045,11 +1045,11 @@ void HTMLWeaving::escape_text(text_stream *OUT, text_stream *id) {
 @h EPUB-only methods.
 
 =
-int HTMLWeaving::begin_weaving_EPUB(weave_format *wf, ls_web *W, weave_pattern *pattern) {
+int HTMLWeaving::begin_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic::get_datum(W, I"Title"));
 	WeavingDetails::set_as_ebook(W, Epub::new(T, "P"));
-	filename *CSS = Patterns::find_file_in_subdirectory(pattern, I"Base", I"Base.css");
+	filename *CSS = Patterns::find_file_in_subdirectory(W, pattern, I"Base", I"Base.css");
 	Epub::use_CSS_throughout(WeavingDetails::get_as_ebook(W), CSS);
 	Epub::attach_metadata(WeavingDetails::get_as_ebook(W), U"identifier", T);
 	DISCARD_TEXT(T)
@@ -1060,6 +1060,6 @@ int HTMLWeaving::begin_weaving_EPUB(weave_format *wf, ls_web *W, weave_pattern *
 	return SWARM_SECTIONS_SWM;
 }
 
-void HTMLWeaving::end_weaving_EPUB(weave_format *wf, ls_web *W, weave_pattern *pattern) {
+void HTMLWeaving::end_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) {
 	Epub::end_construction(WeavingDetails::get_as_ebook(W));
 }

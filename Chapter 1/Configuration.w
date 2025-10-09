@@ -27,7 +27,7 @@ typedef struct inweb_instructions {
 	struct inweb_test_language_settings test_language_settings;
 
 	struct text_stream *temp_colony_setting; /* |-colony X|: file or path, if supplied */
-	struct text_stream *temp_member_setting; /* |-member X|: sets web to member X of colony */
+	struct text_stream *temp_member_setting; /* |-member X|: sets web to member X of ls_colony */
 	struct pathname *temp_path_setting; /* project folder relative to cwd */
 	struct filename *temp_file_setting; /* or, single file relative to cwd */
 } inweb_instructions;
@@ -199,8 +199,8 @@ temporary settings made above. Our aim will be to produce one of these objects:
 typedef struct inweb_operand {
 	struct wcl_declaration *D;
 	struct ls_web *W;
-	struct colony *C;
-	struct colony_member *CM;
+	struct ls_colony *C;
+	struct ls_colony_member *CM;
 	struct filename *F;
 	struct pathname *P;
 } inweb_operand;
@@ -212,8 +212,9 @@ operand, but otherwise use the same rules for all of them:
 
 @d NO_OPERAND_ALLOWED 0
 @d WEB_OPERAND_ALLOWED 1        /* i.e., a web, a path, or a file */
-@d WEB_OPERAND_DISALLOWED 2     /* i.e., a path or a file only */
-@d WEB_OPERAND_COMPULSORY 3     /* i.e., a web only */
+@d COLONY_OPERAND_PREFERRED 2   /* ditto, but in ambiguous cases, choose a ls_colony */
+@d WEB_OPERAND_DISALLOWED 3     /* i.e., a path or a file only */
+@d WEB_OPERAND_COMPULSORY 4     /* i.e., a web only */
 
 @ A further tweak is that we sometimes want the web to be read in a particular
 way (if a web is what is provided). If |enumerating| is set then values will be
@@ -235,13 +236,15 @@ inweb_operand Configuration::operand(inweb_instructions *ins, int requirement,
 	inweb_operand op = { NULL, NULL, NULL, NULL, NULL, NULL };
 
 	filename *colony_file = NULL;
-	int inferred_web_as_colony_member = FALSE;
+	int inferred_web_as_ls_colony_member = FALSE, colony_file_found_in_named_directory = FALSE;
 	if (requirement != WEB_OPERAND_DISALLOWED) {
 		@<Find the colony@>;
 		if (Str::len(ins->temp_member_setting) > 0) @<Find the member@>;
 	}
 	if (ins->temp_file_setting) @<Read this file as WCL resources@>;
-	if (requirement != WEB_OPERAND_DISALLOWED) @<Try to read our file or path as a web@>;
+	if ((requirement != WEB_OPERAND_DISALLOWED) &&
+		((requirement != COLONY_OPERAND_PREFERRED) || (colony_file_found_in_named_directory == FALSE)))		
+		@<Try to read our file or path as a web@>;
 	@<Tidy up our findings@>;
 
 	if (requirement == WEB_OPERAND_COMPULSORY) @<Fail if no web was supplied@>;
@@ -297,6 +300,9 @@ the relevant path, we'll use that.
 	if (ins->temp_file_setting) search = Filenames::up(ins->temp_file_setting);
 	else if (ins->temp_path_setting) search = ins->temp_path_setting;
 	@<Look for a colony file in the search directory@>;
+	if ((colony_file) && (ins->temp_file_setting == NULL))
+		colony_file_found_in_named_directory = TRUE;
+
 	while ((colony_file == NULL) && (search)) {
 		search = Pathnames::up(search);
 		@<Look for a colony file in the search directory@>;
@@ -344,7 +350,7 @@ the place that the colony file says it will be.
 				WebErrors::issue_at(ERM, NULL);
 				DISCARD_TEXT(ERM)
 			}
-			inferred_web_as_colony_member = TRUE;
+			inferred_web_as_ls_colony_member = TRUE;
 		} else {
 			Errors::fatal("cannot specify a web and also a colony member");
 		}
@@ -358,7 +364,7 @@ Here's where we do the guessing.
 @<Read this file as WCL resources@> =
 	int presume = MISCELLANY_WCLTYPE; /* i.e., make no assumptions */
 	if ((requirement == WEB_OPERAND_COMPULSORY) ||
-		(inferred_web_as_colony_member)) presume = WEB_WCLTYPE;
+		(inferred_web_as_ls_colony_member)) presume = WEB_WCLTYPE;
 	else {
 		if (Str::eq_insensitive(Filenames::get_leafname(ins->temp_file_setting), I"colony.inweb"))
 			presume = COLONY_WCLTYPE;
@@ -409,8 +415,8 @@ But it's probably not wise to rely too much on this.
 			Filenames::write_unextended_leafname(candidate, op.W->single_file);
 		else if (op.W->path_to_web)
 			WRITE_TO(candidate, "%S", Pathnames::directory_name(op.W->path_to_web));
-		colony_member *CM;
-		LOOP_OVER_LINKED_LIST(CM, colony_member, op.C->members) {
+		ls_colony_member *CM;
+		LOOP_OVER_LINKED_LIST(CM, ls_colony_member, op.C->members) {
 			if (Str::eq_insensitive(CM->name, candidate)) {
 				op.CM = CM; break;
 			}

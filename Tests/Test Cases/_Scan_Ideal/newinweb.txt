@@ -1,4 +1,4 @@
-web "The New Inweb Syntax Exhausted" (Inweb, C): 1 section : 8 paragraphs : 110 lines
+web "The New Inweb Syntax Exhausted" (C program): 1 section : 8 paragraphs : 110 lines
 Purpose 'Some of everything you can write in this syntax.'
 S1
     C1: commentary

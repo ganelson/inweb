@@ -1,4 +1,4 @@
-web "perl" (Inweb, Perl): 1 section : 3 paragraphs : 15 lines
+web "perl" (Perl program): 1 section : 3 paragraphs : 15 lines
 Purpose 'A test Perl script for inweb.'
 S1
     C1: holon (used sequentially)

@@ -1,49 +1,47 @@
-[WebSyntax::] Web Syntax.
+[WebNotation::] Web Notations.
 
-To manage possible syntaxes for webs.
+To manage possible notations for writing programs in web form.
 
 @h Introduction.
 We want to provide a literate-programming engine which can handle a wide range
 of different possible markup notations for LP. Each such notation is represented
-by an |ls_syntax| object. These can even be created on the fly, so that a
+by an |ls_notation| object. These can even be created on the fly, so that a
 single-file web can contain instructions defining its own unique notation.
 
-Until 2025, only two fixed syntaxes were supported: version 1 ("old-Inweb"),
+Until 2025, only two fixed notations were supported: version 1 ("old-Inweb"),
 used until about 2020; and version 2 ("Inweb"), used since then. Version 1
 is gone and unmourned, so we won't complicate the code by supporting it.
-Version 2 is loaded on demand, and is the default syntax for webs whose
-syntax is otherwise unclear.
 
 =
-ls_syntax *default_ls_syntax = NULL;
+ls_notation *default_ls_notation = NULL;
 
-void WebSyntax::create(void) {
-	ls_syntax *O = WebSyntax::new(I"old-Inweb");
+void WebNotation::create(void) {
+	ls_notation *O = WebNotation::new(I"old-Inweb");
 	O->legacy_name = I"1";
-	WebSyntax::does_support(O, WITHDRAWN_FROM_USAGE_WSF);
+	WebNotation::does_support(O, WITHDRAWN_FROM_USAGE_WSF);
 }
 
-ls_syntax *WebSyntax::default(void) {
-	if (default_ls_syntax == NULL) {
+ls_notation *WebNotation::default(void) {
+	if (default_ls_notation == NULL) {
 		wcl_declaration *D = WCL::resolve_resource(NULL, NOTATION_WCLTYPE, I"Inweb");
-		if (D) default_ls_syntax = RETRIEVE_POINTER_ls_syntax(D->object_declared);
-		if (default_ls_syntax == NULL)
+		if (D) default_ls_notation = RETRIEVE_POINTER_ls_notation(D->object_declared);
+		if (default_ls_notation == NULL)
 			Errors::fatal("Unable to locate notation 'Inweb' for literate programs");
 	}
-	return default_ls_syntax;
+	return default_ls_notation;
 }
 
-@ Each syntax is represented by a |ls_syntax| object:
+@ Each syntax is represented by a |ls_notation| object:
 
 =
-typedef struct ls_syntax {
+typedef struct ls_notation {
 	struct wcl_declaration *declaration;
 
 	/* for deciding what syntax we should use when reading a given web */
 	struct text_stream *name;
 	struct text_stream *legacy_name;
 	struct linked_list *recognised_filename_extensions; /* of |text_stream| */
-	int (*shebang_detector)(struct ls_syntax *, struct text_stream *,
+	int (*shebang_detector)(struct ls_notation *, struct text_stream *,
 		struct text_file_position *, struct text_stream *, struct text_stream *);
 
 	/* what settings of the web this changes (if any) */
@@ -55,22 +53,22 @@ typedef struct ls_syntax {
 	struct text_stream *feature_notation2[NO_DEFINED_WSF_VALUES];
 
 	/* how input lines are classified when this syntax is used */
-	struct linked_list *rules; /* of |ls_syntax_rule| */
+	struct linked_list *rules; /* of |ls_notation_rule| */
 	struct linked_list *residue_rules[NO_DEFINED_WSRULEOUTCOME_VALUES]; /* ditto */
 	struct linked_list *options_rules[NO_DEFINED_WSRULEOUTCOME_VALUES]; /* ditto */
-	struct ls_class_parsing (*line_classifier)(struct ls_syntax *,
+	struct ls_class_parsing (*line_classifier)(struct ls_notation *,
 		struct text_stream *, struct ls_class *);
 
 	/* temporarily needed in parsing syntax files */
 	struct linked_list *stanza;
 	CLASS_DEFINITION
-} ls_syntax;
+} ls_notation;
 
 @
 
 =
-ls_syntax *WebSyntax::new(text_stream *name) {
-	ls_syntax *S = CREATE(ls_syntax);
+ls_notation *WebNotation::new(text_stream *name) {
+	ls_notation *S = CREATE(ls_notation);
 	S->declaration = NULL;
 	S->name = Str::duplicate(name);
 	S->legacy_name = NULL;
@@ -85,10 +83,10 @@ ls_syntax *WebSyntax::new(text_stream *name) {
 		S->feature_notation2[i] = NULL;
 	}
 
-	S->rules = NEW_LINKED_LIST(ls_syntax_rule);
+	S->rules = NEW_LINKED_LIST(ls_notation_rule);
 	for (int i=0; i<NO_DEFINED_WSRULEOUTCOME_VALUES; i++) {
-		S->residue_rules[i] = NEW_LINKED_LIST(ls_syntax_rule);
-		S->options_rules[i] = NEW_LINKED_LIST(ls_syntax_rule);
+		S->residue_rules[i] = NEW_LINKED_LIST(ls_notation_rule);
+		S->options_rules[i] = NEW_LINKED_LIST(ls_notation_rule);
 	}
 	S->line_classifier = NULL;
 	
@@ -111,20 +109,20 @@ Legacy names are used only so that "2" can be recognised as an alternative
 to "Inweb", for the default syntax. (As noted above, this was once version 2.)
 
 =
-ls_syntax *WebSyntax::syntax_by_name(ls_web *W, text_stream *name) {
+ls_notation *WebNotation::syntax_by_name(ls_web *W, text_stream *name) {
 	wcl_declaration *X = WCL::resolve_resource(W?(W->declaration):NULL, NOTATION_WCLTYPE, name);
-	if (X) return RETRIEVE_POINTER_ls_syntax(X->object_declared);
+	if (X) return RETRIEVE_POINTER_ls_notation(X->object_declared);
 	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
 	wcl_declaration *D;
 	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
-		ls_syntax *T = RETRIEVE_POINTER_ls_syntax(D->object_declared);
+		ls_notation *T = RETRIEVE_POINTER_ls_notation(D->object_declared);
 		if (Str::eq_insensitive(name, T->legacy_name))
 			return T;
 	}
 	return NULL;
 }
 
-void WebSyntax::write_known_syntaxes(OUTPUT_STREAM, ls_web *W) {
+void WebNotation::write_known_syntaxes(OUTPUT_STREAM, ls_web *W) {
 	WRITE("I can see the following literate programming notations:\n\n");
 	WCL::write_sorted_list_of_resources(OUT, W, NOTATION_WCLTYPE);
 }
@@ -132,14 +130,14 @@ void WebSyntax::write_known_syntaxes(OUTPUT_STREAM, ls_web *W) {
 @ Here we take a guess from a filename:
 
 =
-ls_syntax *WebSyntax::guess_from_filename(ls_web *W, filename *F) {
+ls_notation *WebNotation::guess_from_filename(ls_web *W, filename *F) {
 	TEMPORARY_TEXT(extension)
 	Filenames::write_extension(extension, F);
-	ls_syntax *result = NULL;
+	ls_notation *result = NULL;
 	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
 	wcl_declaration *D;
 	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
-		ls_syntax *T = RETRIEVE_POINTER_ls_syntax(D->object_declared);
+		ls_notation *T = RETRIEVE_POINTER_ls_notation(D->object_declared);
 		text_stream *ext;
 		LOOP_OVER_LINKED_LIST(ext, text_stream, T->recognised_filename_extensions)
 			if (Str::eq_insensitive(ext, extension)) {
@@ -156,12 +154,12 @@ ls_syntax *WebSyntax::guess_from_filename(ls_web *W, filename *F) {
 top of a web section which gives away its syntax.
 
 =
-ls_syntax *WebSyntax::guess_from_shebang(ls_web *W, text_stream *line,
+ls_notation *WebNotation::guess_from_shebang(ls_web *W, text_stream *line,
 	text_file_position *tfp, text_stream *title, text_stream *author) {
 	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
 	wcl_declaration *D;
 	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
-		ls_syntax *T = RETRIEVE_POINTER_ls_syntax(D->object_declared);
+		ls_notation *T = RETRIEVE_POINTER_ls_notation(D->object_declared);
 		if ((T->shebang_detector) &&
 			((*(T->shebang_detector))(T, line, tfp, title, author)))
 			return T;
@@ -169,7 +167,7 @@ ls_syntax *WebSyntax::guess_from_shebang(ls_web *W, text_stream *line,
 	return NULL;
 }
 
-int WebSyntax::markdown_shebang_detector(ls_syntax *T, text_stream *line,
+int WebNotation::markdown_shebang_detector(ls_notation *T, text_stream *line,
 	text_file_position *tfp, text_stream *title, text_stream *author) {
 	int rv = FALSE;
 	match_results mr = Regexp::create_mr();
@@ -192,9 +190,9 @@ with syntax |S|. What happens then?
 The answer is that we set some bibliographic data.
 
 =
-void WebSyntax::declare_syntax_for_web(ls_web *W, ls_syntax *S) {
+void WebNotation::declare_syntax_for_web(ls_web *W, ls_notation *S) {
 	W->web_syntax = S;
-	Bibliographic::set_datum(W, I"Web Syntax Version", S->name);
+	Bibliographic::set_datum(W, I"Notation", S->name);
 	text_file_position tfp = TextFiles::nowhere();
 	text_stream *setting;
 	LOOP_OVER_LINKED_LIST(setting, text_stream, S->bibliographic_settings)
@@ -221,7 +219,7 @@ syntaxes, as follows.
 @e TANGLER_COMMANDS_WSF             /* allow special expansions when tangling */
 
 =
-text_stream *WebSyntax::feature_name(int n) {
+text_stream *WebNotation::feature_name(int n) {
 	switch (n) {
 		case WITHDRAWN_FROM_USAGE_WSF:      return I"withdrawn from usage";
 		case KEY_VALUE_PAIRS_WSF:           return I"key-value pairs";
@@ -239,9 +237,9 @@ text_stream *WebSyntax::feature_name(int n) {
 	return NULL;
 }
 
-int WebSyntax::feature_by_name(text_stream *name) {
+int WebNotation::feature_by_name(text_stream *name) {
 	for (int i=0; i<NO_DEFINED_WSF_VALUES; i++)
-		if (Str::eq_insensitive(name, WebSyntax::feature_name(i)))
+		if (Str::eq_insensitive(name, WebNotation::feature_name(i)))
 			return i;
 	return -1;
 }
@@ -249,7 +247,7 @@ int WebSyntax::feature_by_name(text_stream *name) {
 @ Besides a name, some features come with up to two notation texts supplied:
 
 =
-int WebSyntax::feature_notations(int n) {
+int WebNotation::feature_notations(int n) {
 	switch (n) {
 		case FOOTNOTES_WSF:                 return 2;
 		case NAMED_HOLONS_WSF:              return 2;
@@ -261,7 +259,7 @@ int WebSyntax::feature_notations(int n) {
 @ Does the given syntax support a feature?
 
 =
-int WebSyntax::supports(ls_syntax *S, int feature) {
+int WebNotation::supports(ls_notation *S, int feature) {
 	if (S == NULL) return FALSE;
 	if ((feature < 0) || (feature >= NO_DEFINED_WSF_VALUES))
 		internal_error("feature out of range");
@@ -271,10 +269,10 @@ int WebSyntax::supports(ls_syntax *S, int feature) {
 @ If so, what are the associated notation texts?
 
 =
-text_stream *WebSyntax::notation(ls_syntax *S, int feature, int which) {
+text_stream *WebNotation::notation(ls_notation *S, int feature, int which) {
 	if ((feature < 0) || (feature >= NO_DEFINED_WSF_VALUES))
 		internal_error("feature out of range");
-	if ((which < 1) || (which > WebSyntax::feature_notations(feature)))
+	if ((which < 1) || (which > WebNotation::feature_notations(feature)))
 		internal_error("notation out of range");
 	if (which == 1) return S->feature_notation1[feature];
 	return S->feature_notation2[feature];
@@ -284,39 +282,39 @@ text_stream *WebSyntax::notation(ls_syntax *S, int feature, int which) {
 given feature:
 
 =
-void WebSyntax::does_support(ls_syntax *S, int feature) {
+void WebNotation::does_support(ls_notation *S, int feature) {
 	if (S == NULL) internal_error("no syntax");
 	if ((feature < 0) || (feature >= NO_DEFINED_WSF_VALUES))
 		internal_error("feature out of range");
-	if (WebSyntax::feature_notations(feature) != 0)
+	if (WebNotation::feature_notations(feature) != 0)
 		internal_error("wrong number of notations");
 	S->supports[feature] = TRUE;
 	if (feature == MARKDOWN_SHEBANG_WSF)
-		S->shebang_detector = WebSyntax::markdown_shebang_detector;
+		S->shebang_detector = WebNotation::markdown_shebang_detector;
 }
 
-void WebSyntax::does_support1(ls_syntax *S, int feature, text_stream *N1) {
+void WebNotation::does_support1(ls_notation *S, int feature, text_stream *N1) {
 	if (S == NULL) internal_error("no syntax");
 	if ((feature < 0) || (feature >= NO_DEFINED_WSF_VALUES))
 		internal_error("feature out of range");
-	if (WebSyntax::feature_notations(feature) != 1)
+	if (WebNotation::feature_notations(feature) != 1)
 		internal_error("wrong number of notations");
 	S->supports[feature] = TRUE;
 	S->feature_notation1[feature] = Str::duplicate(N1);
 }
 
-void WebSyntax::does_support2(ls_syntax *S, int feature, text_stream *N1, text_stream *N2) {
+void WebNotation::does_support2(ls_notation *S, int feature, text_stream *N1, text_stream *N2) {
 	if (S == NULL) internal_error("no syntax");
 	if ((feature < 0) || (feature >= NO_DEFINED_WSF_VALUES))
 		internal_error("feature out of range");
-	if (WebSyntax::feature_notations(feature) != 2)
+	if (WebNotation::feature_notations(feature) != 2)
 		internal_error("wrong number of notations");
 	S->supports[feature] = TRUE;
 	S->feature_notation1[feature] = Str::duplicate(N1);
 	S->feature_notation2[feature] = Str::duplicate(N2);
 }
 
-void WebSyntax::does_not_support(ls_syntax *S, int feature) {
+void WebNotation::does_not_support(ls_notation *S, int feature) {
 	if (S == NULL) internal_error("no syntax");
 	if ((feature < 0) || (feature >= NO_DEFINED_WSF_VALUES))
 		internal_error("feature out of range");
@@ -331,13 +329,13 @@ void WebSyntax::does_not_support(ls_syntax *S, int feature) {
 We can read in a whole directory of these...
 
 =
-void WebSyntax::read_definitions(pathname *P) {
+void WebNotation::read_definitions(pathname *P) {
 	scan_directory *D = Directories::open(P);
 	TEMPORARY_TEXT(leafname)
 	while (Directories::next(D, leafname)) {
 		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames::in(P, leafname);
-			WebSyntax::read_definition(F);
+			WebNotation::read_definition(F);
 		}
 	}
 	DISCARD_TEXT(leafname)
@@ -348,25 +346,25 @@ void WebSyntax::read_definitions(pathname *P) {
 
 =
 int bare_syntaxes = 0;
-ls_syntax *WebSyntax::read_definition(filename *F) {
+ls_notation *WebNotation::read_definition(filename *F) {
 	wcl_declaration *D = WCL::read_just_one(F, NOTATION_WCLTYPE);
 	if (D == NULL) return NULL;
-	return RETRIEVE_POINTER_ls_syntax(D->object_declared);
+	return RETRIEVE_POINTER_ls_notation(D->object_declared);
 }
 
-ls_syntax *WebSyntax::parse_declaration(wcl_declaration *D) {
-	ls_syntax *S = WebSyntax::new(I"pending_naming_only");
+ls_notation *WebNotation::parse_declaration(wcl_declaration *D) {
+	ls_notation *S = WebNotation::new(I"pending_naming_only");
 	S->declaration = D;
 	text_file_position tfp = D->body_position;
 	text_stream *L;
 	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
 		TEMPORARY_TEXT(line)
 		Str::copy(line, L);
-		WebSyntax::read_definition_line(line, &tfp, (void *) S);
+		WebNotation::read_definition_line(line, &tfp, (void *) S);
 		DISCARD_TEXT(line);
 		tfp.line_count++;
 	}
-	D->object_declared = STORE_POINTER_ls_syntax(S);
+	D->object_declared = STORE_POINTER_ls_notation(S);
 	if (Str::eq(S->name, I"pending_naming_only")) {
 		S->name = Str::duplicate(D->name);
 		if (Str::len(S->name) == 0) {
@@ -385,16 +383,16 @@ ls_syntax *WebSyntax::parse_declaration(wcl_declaration *D) {
 	return S;
 }
 
-void WebSyntax::resolve_declaration(wcl_declaration *D) {
+void WebNotation::resolve_declaration(wcl_declaration *D) {
 }
 
 @ ...and here we receive a single line from such a file.
 
 =
-void WebSyntax::read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
-	ls_syntax *syntax = (ls_syntax *) v_state;
+void WebNotation::read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
+	ls_notation *syntax = (ls_notation *) v_state;
 	Str::trim_white_space(line);
-	text_stream *error = WebSyntax::apply_syntax_setting(syntax, line);
+	text_stream *error = WebNotation::apply_syntax_setting(syntax, line);
 	if (Str::len(error) > 0) WCL::error(syntax->declaration, tfp, error);
 }
 
@@ -403,7 +401,7 @@ context, we funnel all lines through this function, which can also be called
 independently:
 
 =
-text_stream *WebSyntax::apply_syntax_setting(ls_syntax *S, text_stream *cmd) {
+text_stream *WebNotation::apply_syntax_setting(ls_notation *S, text_stream *cmd) {
 	text_stream *error = NULL;
 	match_results mr = Regexp::create_mr();
 	@<Whitespace and comments@>;
@@ -435,7 +433,7 @@ to a particular rule list.
 	}
 	if (Regexp::match(&mr, cmd, U"residue of (%C+) {")) {
 		if (S->stanza) { error = I"cannot nest { ... } blocks"; @<Setting done@>; }
-		int R = WebSyntax::outcome_by_name(mr.exp[0]);
+		int R = WebNotation::outcome_by_name(mr.exp[0]);
 		if (R == NO_WSRULEOUTCOME) {
 			error = Str::new();
 			WRITE_TO(error, "unknown outcome '%S'", mr.exp[0]);
@@ -446,7 +444,7 @@ to a particular rule list.
 	}
 	if (Regexp::match(&mr, cmd, U"options of (%C+) {")) {
 		if (S->stanza) { error = I"cannot nest { ... } blocks"; @<Setting done@>; }
-		int R = WebSyntax::outcome_by_name(mr.exp[0]);
+		int R = WebNotation::outcome_by_name(mr.exp[0]);
 		if (R == NO_WSRULEOUTCOME) {
 			error = Str::new();
 			WRITE_TO(error, "unknown outcome '%S'", mr.exp[0]);
@@ -465,7 +463,7 @@ to a particular rule list.
 @<Inside stanzas@> =
 	if (S->stanza) {
 		if (Regexp::match(&mr, cmd, U"(%c*?) ==> (%c*)")) {
-			error = WebSyntax::parse_grammar(S->stanza, mr.exp[0], mr.exp[1]);
+			error = WebNotation::parse_grammar(S->stanza, mr.exp[0], mr.exp[1]);
 		} else {
 			error = Str::new();
 			WRITE_TO(error, "not a grammar line: '%S'", cmd);
@@ -502,8 +500,8 @@ to a particular rule list.
 		int arity = 0; @<Act on a use command@>; @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"do not use (%c*)")) {
-		int U = WebSyntax::feature_by_name(mr.exp[0]);
-		if (U >= 0) WebSyntax::does_not_support(S, U);
+		int U = WebNotation::feature_by_name(mr.exp[0]);
+		if (U >= 0) WebNotation::does_not_support(S, U);
 		else {
 			error = Str::new();
 			WRITE_TO(error, "unknown feature '%S'", mr.exp[0]);
@@ -512,19 +510,19 @@ to a particular rule list.
 	}
 
 @<Act on a use command@> =
-	int U = WebSyntax::feature_by_name(mr.exp[0]);
+	int U = WebNotation::feature_by_name(mr.exp[0]);
 	if (U < 0) {
 		error = Str::new();
 		WRITE_TO(error, "unknown feature '%S'", mr.exp[0]);
 	} else {
-		if (arity != WebSyntax::feature_notations(U)) {
+		if (arity != WebNotation::feature_notations(U)) {
 			error = Str::new();
 			WRITE_TO(error, "feature '%S' should have %d notation(s) not %d",
-				mr.exp[0], WebSyntax::feature_notations(U), arity);
+				mr.exp[0], WebNotation::feature_notations(U), arity);
 		} else {
-			if (arity == 0) WebSyntax::does_support(S, U);
-			else if (arity == 1) WebSyntax::does_support1(S, U, mr.exp[1]);
-			else if (arity == 2) WebSyntax::does_support2(S, U, mr.exp[1], mr.exp[2]);
+			if (arity == 0) WebNotation::does_support(S, U);
+			else if (arity == 1) WebNotation::does_support1(S, U, mr.exp[1]);
+			else if (arity == 2) WebNotation::does_support2(S, U, mr.exp[1], mr.exp[2]);
 		}
 	}
 
@@ -533,26 +531,26 @@ probably be taken out as redundant now.
 
 @<One-off grammar rule lines@> =
 	if (Regexp::match(&mr, cmd, U"classify (%c*?) ==> (%c*)")) {
-		error = WebSyntax::parse_grammar(S->rules, mr.exp[0], mr.exp[1]);
+		error = WebNotation::parse_grammar(S->rules, mr.exp[0], mr.exp[1]);
 		@<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"residue of (%C+) (%c*?) ==> (%c*)")) {
-		int R = WebSyntax::outcome_by_name(mr.exp[0]);
+		int R = WebNotation::outcome_by_name(mr.exp[0]);
 		if (R == NO_WSRULEOUTCOME) {
 			error = Str::new();
 			WRITE_TO(error, "unknown outcome '%S'", mr.exp[0]);
 		} else {
-			error = WebSyntax::parse_grammar(S->residue_rules[R], mr.exp[1], mr.exp[2]);
+			error = WebNotation::parse_grammar(S->residue_rules[R], mr.exp[1], mr.exp[2]);
 		}
 		@<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"options of (%C+) (%c*?) ==> (%c*)")) {
-		int R = WebSyntax::outcome_by_name(mr.exp[0]);
+		int R = WebNotation::outcome_by_name(mr.exp[0]);
 		if (R == NO_WSRULEOUTCOME) {
 			error = Str::new();
 			WRITE_TO(error, "unknown outcome '%S'", mr.exp[0]);
 		} else {
-			error = WebSyntax::parse_grammar(S->options_rules[R], mr.exp[1], mr.exp[2]);
+			error = WebNotation::parse_grammar(S->options_rules[R], mr.exp[1], mr.exp[2]);
 		}
 		@<Setting done@>;
 	}
@@ -567,7 +565,7 @@ probably be taken out as redundant now.
 into the given list.
 
 =
-text_stream *WebSyntax::parse_grammar(linked_list *rules_list, text_stream *pattern,
+text_stream *WebNotation::parse_grammar(linked_list *rules_list, text_stream *pattern,
 	text_stream *outcome) {
 	if (rules_list == NULL) internal_error("no list");
 	match_results mr = Regexp::create_mr(), mr2 = Regexp::create_mr();
@@ -578,9 +576,9 @@ text_stream *WebSyntax::parse_grammar(linked_list *rules_list, text_stream *patt
 	@<Parse outcomes@>;
 
 	if (Str::len(error) == 0) {
-		ls_syntax_rule *R = WebSyntax::new_rule(O, negate, C, np, match_error);
-		error = WebSyntax::parse_pattern(R, pattern);
-		ADD_TO_LINKED_LIST(R, ls_syntax_rule, rules_list);
+		ls_notation_rule *R = WebNotation::new_rule(O, negate, C, np, match_error);
+		error = WebNotation::parse_pattern(R, pattern);
+		ADD_TO_LINKED_LIST(R, ls_notation_rule, rules_list);
 	}
 
 	Regexp::dispose_of(&mr); Regexp::dispose_of(&mr2);
@@ -602,7 +600,7 @@ text_stream *WebSyntax::parse_grammar(linked_list *rules_list, text_stream *patt
 
 @<Parse applicability condition@> =
 	if (Regexp::match(&mr2, condition, U"in (%c+) context")) {
-		C = WebSyntax::context_by_name(mr2.exp[0]);
+		C = WebNotation::context_by_name(mr2.exp[0]);
 		if (C < 0) {
 			error = Str::new();
 			WRITE_TO(error, "unknown context '%S'", mr2.exp[0]);
@@ -624,7 +622,7 @@ text_stream *WebSyntax::parse_grammar(linked_list *rules_list, text_stream *patt
 			outcome = mr2.exp[0];
 			np = TRUE;
 		}
-		O = WebSyntax::outcome_by_name(outcome);
+		O = WebNotation::outcome_by_name(outcome);
 		if (O == NO_WSRULEOUTCOME) {
 			error = Str::new();
 			WRITE_TO(error, "unknown outcome '%S'", outcome);
@@ -637,7 +635,7 @@ simple: we try a line against a list of rules, and the first which matches
 is the winner. Each rule is like so:
 
 =
-typedef struct ls_syntax_rule {
+typedef struct ls_notation_rule {
 	/* non-textual conditions for the rule to be applicable */
 	int not; /* if |TRUE|, means we must be not in the given context */
 	int context; /* one of the |*_WSRULECONTEXT| values below */
@@ -651,11 +649,11 @@ typedef struct ls_syntax_rule {
 	int new_paragraph; /* does this line implicitly begin a new para? */
 	struct text_stream *error; /* on a match, in fact throw this error */
 	CLASS_DEFINITION
-} ls_syntax_rule;
+} ls_notation_rule;
 
-ls_syntax_rule *WebSyntax::new_rule(int outcome, int negate, int context, int new_par,
+ls_notation_rule *WebNotation::new_rule(int outcome, int negate, int context, int new_par,
 	text_stream *error) {
-	ls_syntax_rule *R = CREATE(ls_syntax_rule);
+	ls_notation_rule *R = CREATE(ls_notation_rule);
 	R->not = negate;
 	R->outcome = outcome;
 	R->no_tokens = 0;
@@ -674,7 +672,7 @@ ls_syntax_rule *WebSyntax::new_rule(int outcome, int negate, int context, int ne
 @e EXTRACT_WSRULECONTEXT
 
 =
-int WebSyntax::context_by_name(text_stream *context) {
+int WebNotation::context_by_name(text_stream *context) {
 	if (Str::eq(context, I"general"))    return ANY_WSRULECONTEXT;
 	if (Str::eq(context, I"first line")) return FIRST_LINE_WSRULECONTEXT;
 	if (Str::eq(context, I"definition")) return DEFINITION_WSRULECONTEXT;
@@ -697,37 +695,37 @@ once; but they need not occur in numerical order, and need not all be present.
 @d MAX_LSSRTOKENS (2*NO_DEFINED_LSWILDCARD_VALUES+1)
 
 =
-text_stream *WebSyntax::parse_pattern(ls_syntax_rule *R, text_stream *pattern) {
+text_stream *WebNotation::parse_pattern(ls_notation_rule *R, text_stream *pattern) {
 	int from = 0;
 	for (int i=0; i<Str::len(pattern); i++) {
 		if (R->no_tokens + 2 > MAX_LSSRTOKENS) break;
 		if (Str::includes_at(pattern, i, I"MATERIAL")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebSyntax::fixed(pattern, from, i-1);
-			R->tokens[R->no_tokens++] = WebSyntax::wildcard(MATERIAL_LSWILDCARD);
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+			R->tokens[R->no_tokens++] = WebNotation::wildcard(MATERIAL_LSWILDCARD);
 			from = i + Str::len(I"MATERIAL");
 			i = from - 1; continue;
 		}
 		if (Str::includes_at(pattern, i, I"SECOND")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebSyntax::fixed(pattern, from, i-1);
-			R->tokens[R->no_tokens++] = WebSyntax::wildcard(SECOND_LSWILDCARD);
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+			R->tokens[R->no_tokens++] = WebNotation::wildcard(SECOND_LSWILDCARD);
 			from = i + Str::len(I"SECOND");
 			i = from - 1; continue;
 		}
 		if (Str::includes_at(pattern, i, I"THIRD")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebSyntax::fixed(pattern, from, i-1);
-			R->tokens[R->no_tokens++] = WebSyntax::wildcard(THIRD_LSWILDCARD);
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+			R->tokens[R->no_tokens++] = WebNotation::wildcard(THIRD_LSWILDCARD);
 			from = i + Str::len(I"THIRD");
 			i = from - 1; continue;
 		}
 		if (Str::includes_at(pattern, i, I"OPTIONS")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebSyntax::fixed(pattern, from, i-1);
-			R->tokens[R->no_tokens++] = WebSyntax::wildcard(OPTIONS_LSWILDCARD);
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+			R->tokens[R->no_tokens++] = WebNotation::wildcard(OPTIONS_LSWILDCARD);
 			from = i + Str::len(I"OPTIONS");
 			i = from - 1; continue;
 		}
 		if (Str::includes_at(pattern, i, I"RESIDUE")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebSyntax::fixed(pattern, from, i-1);
-			R->tokens[R->no_tokens++] = WebSyntax::wildcard(RESIDUE_LSWILDCARD);
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+			R->tokens[R->no_tokens++] = WebNotation::wildcard(RESIDUE_LSWILDCARD);
 			from = i + Str::len(I"RESIDUE");
 			i = from - 1; continue;
 		}
@@ -740,7 +738,7 @@ text_stream *WebSyntax::parse_pattern(ls_syntax_rule *R, text_stream *pattern) {
 		}
 	}
 	if ((from < Str::len(pattern)) && (R->no_tokens < MAX_LSSRTOKENS))
-		R->tokens[R->no_tokens++] = WebSyntax::fixed(pattern, from, Str::len(pattern)-1);
+		R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, Str::len(pattern)-1);
 	int usages[NO_DEFINED_LSWILDCARD_VALUES];
 	for (int i=0; i<NO_DEFINED_LSWILDCARD_VALUES; i++) usages[i] = 0;
 	for (int i=0; i<R->no_tokens; i++)
@@ -765,7 +763,7 @@ typedef struct ls_srtoken {
 	int nonwhitespace;
 } ls_srtoken;
 
-ls_srtoken WebSyntax::fixed(text_stream *text, int from, int to) {
+ls_srtoken WebNotation::fixed(text_stream *text, int from, int to) {
 	ls_srtoken tok;
 	tok.fixed_content = Str::new();
 	for (int j=from; j<=to; j++) PUT_TO(tok.fixed_content, Str::get_at(text, j));
@@ -774,7 +772,7 @@ ls_srtoken WebSyntax::fixed(text_stream *text, int from, int to) {
 	return tok;
 }
 
-ls_srtoken WebSyntax::wildcard(int n) {
+ls_srtoken WebNotation::wildcard(int n) {
 	if ((n < MATERIAL_LSWILDCARD) || (n >= NO_DEFINED_LSWILDCARD_VALUES))
 		internal_error("wildcard out of range");
 	ls_srtoken tok;
@@ -827,7 +825,7 @@ used to mean "nothing matched".
 @e VIDEO_WSRULEOUTCOME
 
 =
-int WebSyntax::outcome_by_name(text_stream *outcome) {
+int WebNotation::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"audio"))                return AUDIO_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"beginparagraph"))       return BEGINPARAGRAPH_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"break"))                return BREAK_WSRULEOUTCOME;
@@ -875,13 +873,13 @@ wildcards is written into the supplied array.
 First we check the context to see whether a rule can apply:
 
 =
-ls_syntax_rule *WebSyntax::match(linked_list *rules_list, text_stream *text,
+ls_notation_rule *WebNotation::match(linked_list *rules_list, text_stream *text,
 	text_stream **wildcards, ls_class *previously) {
 	int top_flag = FALSE, trace = FALSE;
 	if (previously->major == UNCLASSIFIED_MAJLC) top_flag = TRUE;
-	ls_syntax_rule *R;
+	ls_notation_rule *R;
 	if (trace) WRITE_TO(STDERR, "Match %S\n", text);
-	LOOP_OVER_LINKED_LIST(R, ls_syntax_rule, rules_list) {
+	LOOP_OVER_LINKED_LIST(R, ls_notation_rule, rules_list) {
 		int applies = TRUE;
 		switch (R->context) {
 			case FIRST_LINE_WSRULECONTEXT:

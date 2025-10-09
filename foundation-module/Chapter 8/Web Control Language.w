@@ -19,6 +19,7 @@ special type meaning "this is a list of declarations of possibly different types
 @e LANGUAGE_WCLTYPE
 @e NOTATION_WCLTYPE
 @e NAVIGATION_WCLTYPE
+@e PATTERN_WCLTYPE
 
 @e NO_WCLMODIFIER from 0
 @e PAGE_WCLMODIFIER
@@ -32,6 +33,7 @@ void WCL::write_type(OUTPUT_STREAM, int t) {
 		case LANGUAGE_WCLTYPE:   WRITE("Language"); break;
 		case NOTATION_WCLTYPE:   WRITE("Notation"); break;
 		case NAVIGATION_WCLTYPE: WRITE("Navigation"); break;
+		case PATTERN_WCLTYPE:    WRITE("Pattern"); break;
 		default:                 WRITE("<unknown-declaration-type>"); break;
 	}
 }
@@ -124,6 +126,7 @@ void WCL::merge_within(wcl_declaration *D, wcl_declaration *M) {
 	} else {
 		if (WCL::can_contain(M->declaration_type, D->declaration_type))
 			WCL::place_within(D, M);
+		else PRINT("Nope! %d, %d\n", M->declaration_type, D->declaration_type);
 	}	
 }
 
@@ -150,8 +153,12 @@ wcl_error *WCL::error(wcl_declaration *D, text_file_position *tfp, text_stream *
 =
 void WCL::report_errors(wcl_declaration *D) {
 	wcl_error *E;
-	LOOP_OVER_LINKED_LIST(E, wcl_error, D->errors)
+	LOOP_OVER_LINKED_LIST(E, wcl_error, D->errors) {
 		Errors::in_text_file_S(E->message, &(E->tfp));
+		#ifdef THIS_IS_INWEB
+		no_inweb_errors++;
+		#endif
+	}
 	wcl_declaration *X;
 	LOOP_OVER_LINKED_LIST(X, wcl_declaration, D->declarations)
 		WCL::report_errors(X);
@@ -441,6 +448,10 @@ declaration only at the second "}", which is in the right one.
 		new_declaration_type = NAVIGATION_WCLTYPE;
 	if (Regexp::match(&mr, trimmed, U"Navigation \"(%c+)\" { *")) {
 		new_declaration_type = NAVIGATION_WCLTYPE; Str::copy(name, mr.exp[0]); }
+	if (Regexp::match(&mr, trimmed, U"Pattern { *"))
+		new_declaration_type = PATTERN_WCLTYPE;
+	if (Regexp::match(&mr, trimmed, U"Pattern \"(%c+)\" { *")) {
+		new_declaration_type = PATTERN_WCLTYPE; Str::copy(name, mr.exp[0]); }
 	if (Regexp::match(&mr, trimmed, U"Page { *")) {
 		new_declaration_type = WEB_WCLTYPE;
 		new_declaration_modifier = PAGE_WCLMODIFIER;
@@ -499,7 +510,8 @@ void WCL::parse_declarations_r(wcl_declaration *D, int pass) {
 			case COLONY_WCLTYPE:     if (pass == 1) Colonies::parse_declaration(D); break;
 			case LANGUAGE_WCLTYPE:   if (pass == 1) Languages::parse_declaration(D); break;
 			case NAVIGATION_WCLTYPE: if (pass == 1) Colonies::parse_nav_declaration(D); break;
-			case NOTATION_WCLTYPE:   if (pass == 1) WebSyntax::parse_declaration(D); break;
+			case NOTATION_WCLTYPE:   if (pass == 1) WebNotation::parse_declaration(D); break;
+			case PATTERN_WCLTYPE:    if (pass == 1) Patterns::parse_declaration(D); break;
 			case WEB_WCLTYPE:        if (pass == 2) WebStructure::parse_declaration(D); break;
 		}
 	}
@@ -514,7 +526,8 @@ void WCL::resolve_r(wcl_declaration *D) {
 			case COLONY_WCLTYPE:     Colonies::resolve_declaration(D); break;
 			case LANGUAGE_WCLTYPE:   Languages::resolve_declaration(D); break;
 			case NAVIGATION_WCLTYPE: Colonies::resolve_nav_declaration(D); break;
-			case NOTATION_WCLTYPE:   WebSyntax::resolve_declaration(D); break;
+			case NOTATION_WCLTYPE:   WebNotation::resolve_declaration(D); break;
+			case PATTERN_WCLTYPE:    Patterns::resolve_declaration(D); break;
 			case WEB_WCLTYPE:        WebStructure::resolve_declaration(D); break;
 		}
 	}
@@ -565,6 +578,10 @@ void WCL::make_resources_at_path_global(pathname *P) {
 			filename *F = Filenames::in(P, leafname);
 			WCL::make_resources_at_file_global(F);
 		}
+		if (Str::eq_insensitive(leafname, I"Patterns")) {
+			wcl_declaration *M = Patterns::parse_directory(Pathnames::down(P, leafname));
+			if (M) WCL::make_global(M);
+		}
 	}
 	DISCARD_TEXT(leafname)
 	Directories::close(D);
@@ -586,7 +603,7 @@ that colony (as is often the case) then the colony is the scope of the web.
 =
 wcl_declaration *WCL::search_scope(wcl_declaration *D) {
 	if ((D->scope == NULL) && (D->declaration_type == WEB_WCLTYPE)) {
-		colony_member *CM = Colonies::find_colony_member(RETRIEVE_POINTER_ls_web(D->object_declared));
+		ls_colony_member *CM = Colonies::find_ls_colony_member(RETRIEVE_POINTER_ls_web(D->object_declared));
 		if (CM) D->scope = CM->owner->declaration;
 	}
 	return D->scope;
@@ -666,16 +683,32 @@ void WCL::write_sorted_list_of_declaration_resources(OUTPUT_STREAM, wcl_declarat
 
 	qsort(sorted_table, (size_t) N, sizeof(wcl_declaration *), WCL::compare_names);
 
+	textual_table *T = TextualTables::new_table();
+	WRITE_TO(TextualTables::next_cell(T), "name");
+	WRITE_TO(TextualTables::next_cell(T), "resource type");
+	WRITE_TO(TextualTables::next_cell(T), "source");
+
 	wcl_declaration *PD = NULL;
 	for (int i=0; i<N; i++) {
 		wcl_declaration *D = sorted_table[i];
 		if (D != PD) {
-			WCL::write_type(OUT, D->declaration_type);
-			if (Str::len(D->name) == 0) WRITE(" (nameless)\n");
-			else WRITE(": %S\n", D->name);
+			TextualTables::begin_row(T);
+			if (Str::len(D->name) == 0) WRITE_TO(TextualTables::next_cell(T), "(nameless)");
+			else WRITE_TO(TextualTables::next_cell(T), "%S", D->name);
+			WCL::write_type(TextualTables::next_cell(T), D->declaration_type);
+			if ((D->declaration_type == PATTERN_WCLTYPE) && (D->associated_file)) {
+				WRITE_TO(TextualTables::next_cell(T), "%p", Pathnames::up(Filenames::up(D->associated_file)));
+			} else if (D->associated_file) {
+				WRITE_TO(TextualTables::next_cell(T), "%f", D->associated_file);
+			} else {
+				WRITE_TO(TextualTables::next_cell(T), "%f, line %d",
+					D->declaration_position.text_file_filename,
+					D->declaration_position.line_count);
+			}
 		}
 		PD = D;
 	}
+	TextualTables::tabulate(OUT, T);
 	Memory::I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(wcl_declaration *)));
 }
 
@@ -712,6 +745,9 @@ void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M) {
 	presumption = NOTATION_WCLTYPE;
 	P = Pathnames::down(RP, I"Syntaxes");
 	@<Merge from P@>;
+	presumption = PATTERN_WCLTYPE;
+	P = Pathnames::down(RP, I"Patterns");
+	@<Merge from patterns P@>;
 }
 
 @<Merge from P@> =
@@ -727,6 +763,10 @@ void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M) {
 		DISCARD_TEXT(leafname)
 		Directories::close(D);
 	}
+
+@<Merge from patterns P@> =
+	wcl_declaration *PM = Patterns::parse_directory(P);
+	if (PM) WCL::merge_within(PM, M);
 
 @<Merge from F@> =
 	wcl_declaration *D = WCL::read_presumption(F, presumption);

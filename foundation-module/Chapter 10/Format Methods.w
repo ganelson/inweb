@@ -85,16 +85,16 @@ More simply, |END_WEAVING_FOR_MTID| is called when all weaving is done.
 @e END_WEAVING_FOR_MTID
 
 =
-INT_METHOD_TYPE(BEGIN_WEAVING_FOR_MTID, weave_format *wf, ls_web *W, weave_pattern *pattern)
-VOID_METHOD_TYPE(END_WEAVING_FOR_MTID, weave_format *wf, ls_web *W, weave_pattern *pattern)
-int WeavingFormats::begin_weaving(ls_web *W, weave_pattern *pattern) {
+INT_METHOD_TYPE(BEGIN_WEAVING_FOR_MTID, weave_format *wf, ls_web *W, ls_pattern *pattern)
+VOID_METHOD_TYPE(END_WEAVING_FOR_MTID, weave_format *wf, ls_web *W, ls_pattern *pattern)
+int WeavingFormats::begin_weaving(ls_web *W, ls_pattern *pattern) {
 	int rv = FALSE;
-	INT_METHOD_CALL(rv, pattern->pattern_format, BEGIN_WEAVING_FOR_MTID, W, pattern);
+	INT_METHOD_CALL(rv, Patterns::get_format(W, pattern), BEGIN_WEAVING_FOR_MTID, W, pattern);
 	if (rv) return rv;
 	return SWARM_OFF_SWM;
 }
-void WeavingFormats::end_weaving(ls_web *W, weave_pattern *pattern) {
-	VOID_METHOD_CALL(pattern->pattern_format, END_WEAVING_FOR_MTID, W, pattern);
+void WeavingFormats::end_weaving(ls_web *W, ls_pattern *pattern) {
+	VOID_METHOD_CALL(Patterns::get_format(W, pattern), END_WEAVING_FOR_MTID, W, pattern);
 }
 
 @ |RENDER_FOR_MTID| renders the weave tree in the given format: a format must
@@ -115,7 +115,7 @@ void WeavingFormats::render_to(text_stream *OUT, heterogeneous_tree *tree, filen
 	weave_format *wf = C->wv->format;
 	TEMPORARY_TEXT(template)
 	WRITE_TO(template, "template-body%S", wf->woven_extension);
-	filename *F = Patterns::find_template(C->wv->pattern, template);
+	filename *F = Patterns::find_template(C->wv->weave_web, C->wv->pattern, template);
 	TEMPORARY_TEXT(interior)
 	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic::set_datum(C->wv->weave_web, I"Weave Content", interior);
@@ -178,9 +178,9 @@ placeholder text in the template file.
 
 =
 INT_METHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream *OUT,
-	weave_order *wv, text_stream *detail, weave_pattern *pattern)
+	weave_order *wv, text_stream *detail, ls_pattern *pattern)
 int WeavingFormats::substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
-	text_stream *detail, weave_pattern *pattern) {
+	text_stream *detail, ls_pattern *pattern) {
 	int rv = TeXUtilities::substitute_post_processing_data(OUT, wv, detail);
 	INT_METHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
 	return rv;

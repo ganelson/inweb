@@ -7,7 +7,7 @@ weaver results, and update indexes or contents pages.
 Weaves are highly comfigurable, so they depend on several factors:
 (a) Which format is used, as represented by a //weave_format// object. For
 example, HTML, ePub and PDF are all formats.
-(b) Which pattern is used, as represented by a //weave_pattern// object. A
+(b) Which pattern is used, as represented by a //ls_pattern// object. A
 pattern is a choice of format together with some naming conventions and
 auxiliary files. For example, |GitHubPages| is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
@@ -154,8 +154,8 @@ as necessary.
 pathname *last_reported_weave_path = NULL;
 int file_weaving_reports_made = 0;
 
-void Swarm::weave(colony *context, colony_member *CM, ls_web *W, filename *to, pathname *into,
-	weave_pattern *pattern, int swarm_mode, text_stream *range, text_stream *tag,
+void Swarm::weave(ls_colony *context, ls_colony_member *CM, ls_web *W, filename *to, pathname *into,
+	ls_pattern *pattern, int swarm_mode, text_stream *range, text_stream *tag,
 	int verbose_mode) {
 	file_weaving_reports_made = 0;
 	last_reported_weave_path = NULL;
@@ -163,7 +163,7 @@ void Swarm::weave(colony *context, colony_member *CM, ls_web *W, filename *to, p
 	if (into) WeavingDetails::set_redirect_weaves_to(W, into);
 	int r = WeavingFormats::begin_weaving(W, pattern);
 	if (r != SWARM_OFF_SWM) swarm_mode = r;
-	if ((W) && (CM == NULL)) CM = Colonies::find_colony_member(W);
+	if ((W) && (CM == NULL)) CM = Colonies::find_ls_colony_member(W);
 	if (swarm_mode == SWARM_OFF_SWM) {
 		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, into, verbose_mode);
 	} else {
@@ -192,9 +192,9 @@ another. |swarm_mode|, then, is one of these:
 =
 weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 
-void Swarm::weave_swarm(colony *context, colony_member *CM, ls_web *W,
+void Swarm::weave_swarm(ls_colony *context, ls_colony_member *CM, ls_web *W,
 	text_stream *range, int swarm_mode, text_stream *tag,
-	weave_pattern *pattern, filename *to, pathname *into, int verbosely) {
+	ls_pattern *pattern, filename *to, pathname *into, int verbosely) {
 	swarm_leader = NULL;
 	last_reported_weave_path = NULL;
 	file_weaving_reports_made = 0;
@@ -224,8 +224,8 @@ void Swarm::weave_swarm(colony *context, colony_member *CM, ls_web *W,
 	Swarm::weave_index_templates(context, CM, W, range, pattern, into);
 }
 
-weave_order *Swarm::weave_subset(colony *context, colony_member *CM, ls_web *W, text_stream *range,
-	text_stream *tag, weave_pattern *pattern, filename *to, pathname *into,
+weave_order *Swarm::weave_subset(ls_colony *context, ls_colony_member *CM, ls_web *W, text_stream *range,
+	text_stream *tag, ls_pattern *pattern, filename *to, pathname *into,
 	int verbosely) {
 	weave_order *wv = Swarm::weave_subset_inner(context, CM, W, range, FALSE,
 		tag, pattern, to, into, verbosely);
@@ -241,9 +241,9 @@ from the swarm, or has been specified at the command line (in which case
 the call comes from Program Control).
 
 =
-weave_order *Swarm::weave_subset_inner(colony *context, colony_member *CM, ls_web *W,
+weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM, ls_web *W,
 	text_stream *range, int open_afterwards, text_stream *tag,
-	weave_pattern *pattern, filename *to, pathname *into, int verbosely) {
+	ls_pattern *pattern, filename *to, pathname *into, int verbosely) {
 	weave_order *wv = NULL;
 	if (WebStructure::has_errors(W) == FALSE) {
 		CodeAnalysis::analyse_code(W);
@@ -260,12 +260,12 @@ weave_order *Swarm::weave_subset_inner(colony *context, colony_member *CM, ls_we
 
 =
 typedef struct weave_order {
-	struct colony *weave_colony; /* wider context for the weave, relevant to cross-links */
+	struct ls_colony *weave_colony; /* wider context for the weave, relevant to cross-links */
 	struct ls_web *weave_web; /* which web we weave */
 	struct text_stream *weave_range; /* which parts of the web in this weave */
 	struct text_stream *theme_match; /* pick out only paragraphs with this theme */
 	struct text_stream *booklet_title;
-	struct weave_pattern *pattern; /* which pattern is to be followed */
+	struct ls_pattern *pattern; /* which pattern is to be followed */
 	struct filename *weave_to; /* where to put it */
 	struct text_stream *home_leaf; /* leafname of home page for web in this weave */
 	struct weave_format *format; /* plain text, say, or HTML */
@@ -290,7 +290,7 @@ typedef struct weave_order {
 	wv->pattern = pattern;
 	wv->theme_match = Str::duplicate(tag);
 	wv->booklet_title = Str::new();
-	wv->format = pattern->pattern_format;
+	wv->format = Patterns::get_format(W, pattern);
 	wv->post_processing_results = NULL;
 	wv->self_contained = FALSE;
 	if (CM) {
@@ -434,7 +434,7 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 	LOOP_OVER_LINKED_LIST(existing, colour_scheme, wv->colour_schemes)
 		if (Str::eq_insensitive(name, existing->scheme_name))
 			return existing;
-	colour_scheme *cs = Assets::find_colour_scheme(wv->pattern, name, pre);
+	colour_scheme *cs = Assets::find_colour_scheme(wv->weave_web, wv->pattern, name, pre);
 	if (cs == NULL) {
 		if (Str::eq(name, I"Colours")) {
 			TEMPORARY_TEXT(err)
@@ -460,11 +460,11 @@ void Swarm::include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename 
 @ After every swarm, we rebuild the index:
 
 =
-void Swarm::weave_index_templates(colony *context, colony_member *CM, ls_web *W,
-	text_stream *range, weave_pattern *pattern, pathname *into) {
+void Swarm::weave_index_templates(ls_colony *context, ls_colony_member *CM, ls_web *W,
+	text_stream *range, ls_pattern *pattern, pathname *into) {
 	if (!(Bibliographic::data_exists(W, I"Version Number")))
 		Bibliographic::set_datum(W, I"Version Number", I" ");
-	filename *INF = Patterns::find_template(pattern, I"template-index.html");
+	filename *INF = Patterns::find_template(W, pattern, I"template-index.html");
 	if (INF) {
 		pathname *H = WeavingDetails::get_redirect_weaves_to(W);
 		if (H == NULL) H = WebStructure::woven_folder(W);

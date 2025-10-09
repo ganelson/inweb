@@ -28,7 +28,7 @@ void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
 	}
 	web_contents_state RS;
 	@<Initialise the reader state@>;
-	if (W->web_syntax == NULL) W->web_syntax = WebSyntax::default();
+	if (W->web_syntax == NULL) W->web_syntax = WebNotation::default();
 	else RS.syntax_externally_set = TRUE;
 
 	text_file_position tfp = D->body_position;
@@ -56,6 +56,7 @@ typedef struct web_contents_state {
 	struct ls_chapter *chapter_being_scanned;
 	struct text_stream *chapter_dir_name; /* Where sections in the current chapter live */
 	struct text_stream *titling_line_to_insert; /* To be inserted automagically */
+	struct text_stream *at;
 	struct pathname *path_to; /* Where web material is being read from */
 	struct ls_module *reading_from;
 	struct module_search *import_from; /* Where imported webs are */
@@ -79,6 +80,7 @@ typedef struct web_contents_state {
 	RS.chapter_being_scanned = NULL;
 	RS.chapter_dir_name = Str::new();
 	RS.titling_line_to_insert = Str::new();
+	RS.at = Str::new();
 	RS.including_modules = including_modules;
 	RS.path_to = path;
 	RS.import_from = import_path;
@@ -144,7 +146,7 @@ void WebContents::read_contents_line(text_stream *line, text_file_position *tfp,
 	}
 	
 	if ((RS->syntax_externally_set == FALSE) ||
-		(WebSyntax::supports(RS->W->web_syntax, SYNTAX_REDECLARATION_WSF)))
+		(WebNotation::supports(RS->W->web_syntax, SYNTAX_REDECLARATION_WSF)))
 		@<Act immediately if the web syntax version is changed@>;
 	
 	int begins_with_white_space = Characters::is_whitespace(Str::get_first_char(line));
@@ -159,8 +161,14 @@ want to react to an open declaration of that syntax immediately.
 @<Act immediately if the web syntax version is changed@> =
 	match_results mr = Regexp::create_mr();
 	if ((RS->allow_kvps) &&
+		(Regexp::match(&mr, line, U"Notation: (%c+) *"))) {
+		ls_notation *S = WebNotation::syntax_by_name(RS->W, mr.exp[0]);
+		if (S) RS->W->web_syntax = S;
+	}
+	if ((RS->allow_kvps) &&
 		(Regexp::match(&mr, line, U"Web Syntax Version: (%c+) *"))) {
-		ls_syntax *S = WebSyntax::syntax_by_name(RS->W, mr.exp[0]);
+		WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
+		ls_notation *S = WebNotation::syntax_by_name(RS->W, mr.exp[0]);
 		if (S) RS->W->web_syntax = S;
 	}
 	Regexp::dispose_of(&mr);
@@ -170,6 +178,14 @@ will be a series of bibliographic data values; then there's a blank line, and
 then we're into the section listing. Otherwise, we're already in the sections.
 
 @<Read regular contents material@> =
+	match_results mr = Regexp::create_mr();
+	if ((RS->in_biblio) &&
+		(Regexp::match(&mr, line, U"at: *\"(%c+)\" *"))) {
+		RS->at = Str::duplicate(mr.exp[0]);
+		Regexp::dispose_of(&mr);
+		return;
+	}
+	Regexp::dispose_of(&mr);
 	if (RS->in_biblio) {
 		if ((RS->allow_kvps == FALSE) ||
 			(Bibliographic::parse_kvp(RS->W, line, RS->main_web_not_module, tfp, NULL) == FALSE))
@@ -258,7 +274,7 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 				DISCARD_TEXT(err)
 			} else {
 				if (RS->including_modules) {
-					ls_syntax *save_syntax = RS->W->web_syntax;
+					ls_notation *save_syntax = RS->W->web_syntax;
 					WebContents::read_contents_page(RS->W, imported, RS->import_from,
 						RS->including_modules, imported->module_location);
 					RS->W->web_syntax = save_syntax;
@@ -318,7 +334,7 @@ with the same language as the main web unless stated otherwise.
 @ That's enough on creating chapters: now for the sections it contains.
 
 @<Read about, and read in, a new section@> =
-	ls_section *S = WebStructure::new_ls_section(RS->chapter_being_scanned, line);
+	ls_section *S = WebStructure::new_ls_section(RS->chapter_being_scanned, line, RS->at);
 	S->titling_line_to_insert = Str::duplicate(RS->titling_line_to_insert);
 	Str::clear(RS->titling_line_to_insert);
 	RS->section_count++;
@@ -354,10 +370,15 @@ and which for some reason lives on in the web source for kits.)
 	TEMPORARY_TEXT(leafname_to_use)
 	pathname *P = RS->path_to;
 	if (P == NULL) P = RS->W->path_to_web;
-	WRITE_TO(leafname_to_use, "%S", S->sect_title);
+	if (Str::len(S->sect_claimed_location) > 0)
+		WRITE_TO(leafname_to_use, "%S", S->sect_claimed_location);
+	else
+		WRITE_TO(leafname_to_use, "%S", S->sect_title);
 	S->source_file_for_section = Filenames::from_text_relative(P, leafname_to_use);
-	Str::clear(S->sect_title);
-	WRITE_TO(S->sect_title, "%S", Filenames::get_leafname(S->source_file_for_section));
+	if (Str::len(S->sect_claimed_location) == 0) {
+		Str::clear(S->sect_title);
+		WRITE_TO(S->sect_title, "%S", Filenames::get_leafname(S->source_file_for_section));
+	}
 	P = Filenames::up(S->source_file_for_section);
 	if (TextFiles::exists(S->source_file_for_section) == FALSE) {
 		TEMPORARY_TEXT(leaf)

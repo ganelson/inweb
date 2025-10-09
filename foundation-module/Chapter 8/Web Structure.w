@@ -24,7 +24,7 @@ typedef struct ls_web {
 	int is_page; /* is this a simple one-section web with no contents page? */
 	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
-	struct ls_syntax *web_syntax; /* which version syntax the sections will have */
+	struct ls_notation *web_syntax; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 
 	struct programming_language *web_language; /* in which most of the sections are written */
@@ -86,17 +86,16 @@ ls_web *WebStructure::from_declaration(wcl_declaration *D) {
 @h Web reading.
 
 =
-ls_web *WebStructure::read_fully(colony *C, wcl_declaration *D,
+ls_web *WebStructure::read_fully(ls_colony *C, wcl_declaration *D,
 	int enumerating, int weaving, int verbosely) {
 	ls_web *W = WebStructure::from_declaration(D);
 	WebStructure::read_web_source(W, verbosely, weaving);
-	WebErrors::issue_all_recorded(W);
 	@<Write the Inweb Version bibliographic datum@>;
 	CodeAnalysis::initialise_analysis_details(W);
 	WeavingDetails::initialise(W);
 	CodeAnalysis::analyse_web(W, enumerating, weaving);
 	if ((weaving) &&
-		(WebSyntax::supports(W->web_syntax, MARKDOWN_COMMENTARY_WSF))) {
+		(WebNotation::supports(W->web_syntax, MARKDOWN_COMMENTARY_WSF))) {
 		ls_chapter *Ch;
 		ls_section *S;
 		LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
@@ -218,8 +217,19 @@ void WebStructure::print_statistics(ls_web *W) {
 		}
 	}
 	PRINT("web \"%S\"", Bibliographic::get_datum(W, I"Title"));
-	if (W->web_syntax) PRINT(" (%S", W->web_syntax->name); else PRINT(" (no syntax");
-	if (WebStructure::web_language(W)) PRINT(", %S)", WebStructure::web_language(W)->language_name); else PRINT(", no language)");
+
+	int commented = FALSE;
+	if ((WebStructure::web_language(W)) && (Str::ne_insensitive(WebStructure::web_language(W)->language_name, I"None"))) {
+		PRINT(" (%S program", WebStructure::web_language(W)->language_name);
+		commented = TRUE;
+	}
+	if ((W->web_syntax) && (Str::ne_insensitive(W->web_syntax->name, I"Inweb"))) {
+		if (commented) PRINT(" in "); else PRINT(" (");
+		PRINT("%S notation", W->web_syntax->name);
+		commented = TRUE;
+	}
+	if (commented) PRINT(")");
+
 	PRINT(": ");
 	if (W->chaptered) PRINT("%d chapter%s : ",
 		c, (c == 1)?"":"s");
@@ -307,6 +317,7 @@ typedef struct ls_section {
 	struct ls_chapter *owning_chapter;
 
 	struct text_stream *sect_title; /* e.g., "Program Control" */
+	struct text_stream *sect_claimed_location; /* e.g., "../somewhere/else.w" */
 	struct text_stream *sect_range; /* e.g., "2/ct" */
 
 	struct text_stream *titling_line_to_insert;
@@ -334,9 +345,10 @@ typedef struct ls_section {
 	CLASS_DEFINITION
 } ls_section;
 
-ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling) {
+ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling, text_stream *at) {
 	if (C == NULL) internal_error("no chapter for section");
 	ls_section *S = CREATE(ls_section);
+	S->owning_chapter = C;
 	S->source_file_for_section = NULL;
 	S->source_declaration_for_section = NULL;
 	S->skip_from = 0;
@@ -350,16 +362,39 @@ ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling) {
 	S->sect_target = NULL;
 	S->paragraph_numbers_visible = TRUE;
 
+	S->sect_title = NULL;
+	S->sect_claimed_location = NULL;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, titling, U"(%c+) %^\"(%c+)\" *")) {
-		S->sect_title = Str::duplicate(mr.exp[0]);
+	if (Regexp::match(&mr, titling, U"\"(%c+?)\" at \"(%c+)\" %^\"(%c+)\" *")) {
+		WebStructure::name_section(S, mr.exp[0]);
+		S->sect_claimed_location = Str::new();
+		WRITE_TO(S->sect_claimed_location, "%S", at);
+		if (Str::len(at) > 0) WRITE_TO(S->sect_claimed_location, "%c", FOLDER_SEPARATOR);
+		WRITE_TO(S->sect_claimed_location, "%S", mr.exp[1]);
+		S->tag_name = Str::duplicate(mr.exp[2]);
+	} else if (Regexp::match(&mr, titling, U"\"(%c+?)\" at \"(%c+)\" *")) {
+		S->sect_claimed_location = Str::new();
+		WRITE_TO(S->sect_claimed_location, "%S", at);
+		if (Str::len(at) > 0) WRITE_TO(S->sect_claimed_location, "%c", FOLDER_SEPARATOR);
+		WRITE_TO(S->sect_claimed_location, "%S", mr.exp[1]);
+	} else if (Regexp::match(&mr, titling, U"(%c+) %^\"(%c+)\" *")) {
+		TEMPORARY_TEXT(name)
+		WRITE_TO(name, "%S", at);
+		if (Str::len(at) > 0) WRITE_TO(name, "%c", FOLDER_SEPARATOR);
+		WRITE_TO(name, "%S", mr.exp[0]);
+		WebStructure::name_section(S, name);
+		DISCARD_TEXT(name)
 		S->tag_name = Str::duplicate(mr.exp[1]);
 	} else {
-		S->sect_title = Str::duplicate(titling);
+		TEMPORARY_TEXT(name)
+		WRITE_TO(name, "%S", at);
+		if (Str::len(at) > 0) WRITE_TO(name, "%c", FOLDER_SEPARATOR);
+		WRITE_TO(name, "%S",titling);
+		WebStructure::name_section(S, name);
+		DISCARD_TEXT(name)
 		S->tag_name = NULL;
 	}
 	Regexp::dispose_of(&mr);
-	S->owning_chapter = C;
 	
 	S->scratch_flag = FALSE;
 	S->sect_extent = 0;
@@ -370,6 +405,21 @@ ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling) {
 
 	ADD_TO_LINKED_LIST(S, ls_section, C->sections);
 	return S;
+}
+
+void WebStructure::name_section(ls_section *S, text_stream *name) {
+	if ((Str::len(S->sect_title) > 0) &&
+		(Str::ne(S->sect_title, I"All")) &&
+		(Str::ne(name, S->sect_title))) {
+		ls_web *W = S->owning_chapter->owning_web;
+		wcl_declaration *D = W->declaration;
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "section '%S' seems on closer inspection to be called '%S'",
+			S->sect_title, name);	
+		WCL::error(D, &(D->declaration_position), msg);
+		DISCARD_TEXT(msg)
+	}
+	S->sect_title = Str::duplicate(name);
 }
 
 int WebStructure::paragraph_count_within_section(ls_section *S) {
@@ -427,7 +477,7 @@ ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
 	else
 		WebContents::read_contents_page(W, W->main_module,
 			WebModules::get_default_search_path(), TRUE, NULL);
-	if (W->web_syntax == NULL) internal_error("no LS syntax for web");
+	if (W->web_syntax == NULL) internal_error("no notation for web");
 
 	Bibliographic::check_required_data(W);
 	BuildFiles::set_bibliographic_data_for(W);
@@ -448,6 +498,8 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			@<Read one section from a file@>;
+	WebErrors::issue_all_recorded(W);
+	WCL::report_errors(W->declaration);
 }
 
 @<Read one section from a file@> =
@@ -460,7 +512,7 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	if (Str::eq(Bibliographic::get_datum(W, I"Paragraph Numbers Visibility"), I"Off"))
 		S->paragraph_numbers_visible = FALSE;
 
-	if (WebSyntax::supports(W->web_syntax, EXPLICIT_SECTION_HEADINGS_WSF)) {
+	if (WebNotation::supports(W->web_syntax, EXPLICIT_SECTION_HEADINGS_WSF)) {
 		if (W->is_page)
 			@<Insert an implied purpose, for a single-file web@>;
 	}
@@ -487,7 +539,7 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 
 	LiterateSource::complete_unit(S->literate_source);
 	if (Str::len(S->literate_source->heading.operand1) > 0) {
-		S->sect_title = Str::duplicate(S->literate_source->heading.operand1);
+		WebStructure::name_section(S, S->literate_source->heading.operand1);
 		if (W->is_page) Bibliographic::set_datum(W, I"Title", S->sect_title);
 	}
 	if (verbosely) PRINT("Read section: '%S' (%d lines)\n", S->sect_title, cl);

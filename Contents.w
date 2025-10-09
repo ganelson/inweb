@@ -2,7 +2,6 @@ Title: inweb
 Author: Graham Nelson
 Purpose: A modern system for literate programming.
 Language: InC
-Web Syntax Version: 2
 Licence: This is a free, open-source program published under the Artistic License 2.0.
 Version Name: Invasion
 Version Number: 9.0

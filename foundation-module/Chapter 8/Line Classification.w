@@ -202,7 +202,7 @@ ls_class_parsing LineClassification::no_results(void) {
 	return LineClassification::new_results(UNCLASSIFIED_MAJLC, NO_MINLC);
 }
 
-ls_class_parsing LineClassification::classify(ls_syntax *syntax, text_stream *line, ls_class *previously) {
+ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *line, ls_class *previously) {
 	ls_class_parsing results;
 	if (syntax->line_classifier) {
 		results = (*(syntax->line_classifier))(syntax, line, previously);
@@ -220,7 +220,7 @@ ls_class_parsing LineClassification::classify(ls_syntax *syntax, text_stream *li
 as commentary, with no code in: in other words, regards the file as plain text.
 
 =
-ls_class_parsing LineClassification::all_commentary_classifier(ls_syntax *syntax,
+ls_class_parsing LineClassification::all_commentary_classifier(ls_notation *syntax,
 	text_stream *line, ls_class *previously) {
 	ls_class_parsing res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
 	if (previously->major == UNCLASSIFIED_MAJLC) {
@@ -232,7 +232,7 @@ ls_class_parsing LineClassification::all_commentary_classifier(ls_syntax *syntax
 @ And the second regards it as purely code, with no commentary:
 
 =
-ls_class_parsing LineClassification::all_code_classifier(ls_syntax *syntax,
+ls_class_parsing LineClassification::all_code_classifier(ls_notation *syntax,
 	text_stream *line, ls_class *previously) {
 	ls_class_parsing res = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
 	res.cf.operand1 = Str::duplicate(line);
@@ -246,7 +246,7 @@ ls_class_parsing LineClassification::all_code_classifier(ls_syntax *syntax,
 @ This, more ambitiously, parses using the grammar for a syntax:
 
 =
-ls_class_parsing LineClassification::rules_based_classifier(ls_syntax *syntax,
+ls_class_parsing LineClassification::rules_based_classifier(ls_notation *syntax,
 	text_stream *line, ls_class *previously) {
 	int follows_extract = LineClassification::extract_lines_can_follow(
 		previously->major, previously->minor);
@@ -283,7 +283,7 @@ match, we consider that line to be code.
 	wildcards[THIRD_LSWILDCARD] = third;
 	wildcards[OPTIONS_LSWILDCARD] = options;
 	wildcards[RESIDUE_LSWILDCARD] = residue;
-	ls_syntax_rule *OR = WebSyntax::match(syntax->rules, line, wildcards, previously);
+	ls_notation_rule *OR = WebNotation::match(syntax->rules, line, wildcards, previously);
 	if (OR) {
 		@<Translate the outcome and variables into a line classification@>;
 		if (OR->new_paragraph) res.implies_paragraph = TRUE;
@@ -485,7 +485,7 @@ towel after what are clearly too many iterations.
 	ls_class never = LineClassification::unclassified();
 	int ni = 0;
 	while ((Str::len(res.residue) > 0) && (ni++ < MAX_RESIDUE_OR_OPTIONS_ITERATIONS)) {
-		ls_syntax_rule *RR = WebSyntax::match(syntax->residue_rules[OR->outcome],
+		ls_notation_rule *RR = WebNotation::match(syntax->residue_rules[OR->outcome],
 			res.residue, wildcards, &never);
 		if (RR == NULL) break;
 		@<Deal with a RESIDUE grammar match@>;
@@ -518,7 +518,7 @@ exhaust the content completely, or there's an error.
 	ls_class never = LineClassification::unclassified();
 	int ni = 0;
 	while ((Str::len(opts) > 0) && (ni++ < MAX_RESIDUE_OR_OPTIONS_ITERATIONS)) {
-		ls_syntax_rule *OPR = WebSyntax::match(syntax->options_rules[OR->outcome],
+		ls_notation_rule *OPR = WebNotation::match(syntax->options_rules[OR->outcome],
 			opts, wildcards, &never);
 		if (OPR == NULL) break;
 		@<Deal with an OPTIONS grammar match@>;

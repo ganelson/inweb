@@ -79,6 +79,8 @@ Chapter 7: Semantic Versioning
 
 Chapter 8: Literate Programming
 "Configuring LP syntax, parsing raw LP material, and tangling it."
+	Web Control Language
+	Colonies
 	Web Structure
 	Bibliographic Data for Webs
 	Web Contents Pages
@@ -88,13 +90,12 @@ Chapter 8: Literate Programming
 	Literate Source
 	Line Classification
 	Web Errors
-	Web Syntax
+	Web Notations
 	Holons
 	Holon Syntax
 	Tangle Targets
 	The Tangler
 	Build Files
-	Web Control Language
 
 Chapter 9: Programming
 "Reading some basic syntax of different programming languages."
@@ -133,4 +134,3 @@ Chapter 11: Project Management
 	Makefiles
 	Git Support
 	Readme Writeme
-	Colonies

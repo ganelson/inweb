@@ -15,17 +15,19 @@ Orb-Weaving Spiders With Communal Webbing in a Man-Made Structural Habitat
 (Arachnida: Araneae: Tetragnathidae, Araneidae)",
 //American Entomologist (Fall 2010) -> https://doi.org/10.1093/ae/56.3.146//.
 
-@ So, then, a colony is really just a membership list:
+@ Colonies began as really just a membership list, but gradually gained the
+ability to provide those members with shared resources such as patterns or
+notations:
 
 =
-typedef struct colony {
+typedef struct ls_colony {
 	struct wcl_declaration *declaration;
-	struct linked_list *members; /* of |colony_member| */
+	struct linked_list *members; /* of |ls_colony_member| */
 	struct text_stream *home; /* path of home repository */
 	struct text_stream *assets_path; /* where assets shared between weaves live */
 	struct pathname *patterns_path; /* where additional patterns live */
 	CLASS_DEFINITION
-} colony;
+} ls_colony;
 
 @ Each member is represented by an instance of the following. Note the |loaded|
 field: this holds metadata on the web/module in question.
@@ -34,14 +36,14 @@ Note that the |path| might be either the name of a single-file web, or of a
 directory holding a multi-section web.
 
 =
-typedef struct colony_member {
-	struct colony *owner;
+typedef struct ls_colony_member {
+	struct ls_colony *owner;
 
 	struct text_stream *name; /* the |N| in |N at P in W| */
 	struct text_stream *path; /* the |P| in |N at P in W| */
 	struct text_stream *weave_path; /* the |W| in |N at P in W| */
 	struct text_stream *home_leaf; /* usually |index.html|, but not for single-file webs */
-	struct text_stream *default_weave_pattern; /* for use when weaving */
+	struct text_stream *default_pattern_name; /* for use when weaving */
 	int external; /* belongs to another colony, really */
 
 	struct wcl_declaration *internal_declaration; /* for a member defined within the Colony declaration */
@@ -51,17 +53,17 @@ typedef struct colony_member {
 	struct text_stream *crumbs; /* textual form of breadcrumbs */
 	struct linked_list *breadcrumb_tail; /* of |breadcrumb_request| */
 	CLASS_DEFINITION
-} colony_member;
+} ls_colony_member;
 
-colony_member *Colonies::new_member(text_stream *name, colony *C, int ext) {
-	colony_member *CM = CREATE(colony_member);
+ls_colony_member *Colonies::new_member(text_stream *name, ls_colony *C, int ext) {
+	ls_colony_member *CM = CREATE(ls_colony_member);
 	CM->owner = C;
 	CM->name = Str::duplicate(name);
 	CM->path = Str::new();
 	CM->internal_declaration = NULL;
 	CM->weave_path = NULL;
 	CM->home_leaf = Str::new();
-	CM->default_weave_pattern = Str::new();
+	CM->default_pattern_name = Str::new();
 	CM->external = ext;
 	
 	CM->loaded = NULL;
@@ -70,7 +72,7 @@ colony_member *Colonies::new_member(text_stream *name, colony *C, int ext) {
 	CM->crumbs = NULL;
 	CM->breadcrumb_tail = NEW_LINKED_LIST(breadcrumb_request);
 
-	ADD_TO_LINKED_LIST(CM, colony_member, C->members);
+	ADD_TO_LINKED_LIST(CM, ls_colony_member, C->members);
 	return CM;
 }
 
@@ -81,11 +83,11 @@ this as finding the earliest-loaded colony which has a member whose location
 in the file system matches the location of the web.
 
 =
-colony_member *Colonies::find_colony_member(ls_web *W) {
-	colony *C;
-	LOOP_OVER(C, colony) {
-		colony_member *CM;
-		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members) {
+ls_colony_member *Colonies::find_ls_colony_member(ls_web *W) {
+	ls_colony *C;
+	LOOP_OVER(C, ls_colony) {
+		ls_colony_member *CM;
+		LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members) {
 			if (CM->loaded == W) return CM;
 			if (CM->internal_declaration) {
 				ls_web *CMW = RETRIEVE_POINTER_ls_web(CM->internal_declaration->object_declared);
@@ -106,13 +108,13 @@ colony_member *Colonies::find_colony_member(ls_web *W) {
 	return NULL;
 }
 
-void Colonies::fully_load(colony *C) {
-	colony_member *CM;
-	LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
+void Colonies::fully_load(ls_colony *C) {
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
 		Colonies::fully_load_member(CM);
 }
 
-void Colonies::fully_load_member(colony_member *CM) {
+void Colonies::fully_load_member(ls_colony_member *CM) {
 	if (CM->loaded == NULL) {
 		if (CM->internal_declaration) {
 			ls_web *CMW = RETRIEVE_POINTER_ls_web(CM->internal_declaration->object_declared);
@@ -127,12 +129,12 @@ void Colonies::fully_load_member(colony_member *CM) {
 	}
 }
 
-void Colonies::fully_load_contents(OUTPUT_STREAM, colony *C) {
+void Colonies::fully_load_contents(OUTPUT_STREAM, ls_colony *C) {
 	Colonies::fully_load(C);
 	WRITE("loading full literate source of all colony members: ");
-	colony_member *CM;
+	ls_colony_member *CM;
 	int n = 0;
-	LOOP_OVER_LINKED_LIST(CM, colony_member, C->members) {
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members) {
 		n++;
 		if (n > 1) WRITE(" ");
 		WRITE("[%d]", n);
@@ -145,7 +147,7 @@ void Colonies::fully_load_contents(OUTPUT_STREAM, colony *C) {
 @ Here we parse member declaration lines from colony declarations.
 
 =
-void Colonies::website_feature(colony *C, text_stream *feature, text_stream *value) {
+void Colonies::website_feature(ls_colony *C, text_stream *feature, text_stream *value) {
 	if (Str::eq(feature, I"home")) {
 		C->home = Str::new();
 		Colonies::expand_relative_path(C->home, value, C);
@@ -159,7 +161,7 @@ void Colonies::website_feature(colony *C, text_stream *feature, text_stream *val
 	}
 }
 
-void Colonies::website_features(colony *C, text_stream *features, text_file_position *tfp) {
+void Colonies::website_features(ls_colony *C, text_stream *features, text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, features, U" *(%C+) \"(%c*?)\" *(%c*)")) {
 		Colonies::website_feature(C, mr.exp[0], mr.exp[1]);
@@ -175,12 +177,12 @@ void Colonies::website_features(colony *C, text_stream *features, text_file_posi
 	Regexp::dispose_of(&mr);
 }
 
-void Colonies::member_feature(colony_member *CM, text_stream *feature, text_stream *value) {
+void Colonies::member_feature(ls_colony_member *CM, text_stream *feature, text_stream *value) {
 	if (Str::eq(feature, I"at")) {
 		Colonies::expand_relative_path(CM->path, value, CM->owner);
 	} else if (Str::eq(feature, I"pattern")) {
-		Str::clear(CM->default_weave_pattern);
-		Str::copy(CM->default_weave_pattern, value);
+		Str::clear(CM->default_pattern_name);
+		Str::copy(CM->default_pattern_name, value);
 	} else if (Str::eq(feature, I"navigation")) {
 		CM->navigation_name = Str::duplicate(value);
 	} else if (Str::eq(feature, I"breadcrumbs")) {
@@ -208,7 +210,7 @@ void Colonies::member_feature(colony_member *CM, text_stream *feature, text_stre
 	}
 }
 
-void Colonies::member_features(colony_member *CM, text_stream *features,
+void Colonies::member_features(ls_colony_member *CM, text_stream *features,
 	colony_reader_state *crs, text_file_position *tfp) {
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, features, U" *(%C+) \"(%c*?)\" *(%c*)")) {
@@ -263,7 +265,7 @@ void Colonies::default_features(text_stream *features, colony_reader_state *crs,
 	Regexp::dispose_of(&mr);
 }
 
-void Colonies::member_complete(colony_member *CM, colony_reader_state *crs, text_file_position *tfp) {
+void Colonies::member_complete(ls_colony_member *CM, colony_reader_state *crs, text_file_position *tfp) {
 	wcl_declaration *X;
 	LOOP_OVER_LINKED_LIST(X, wcl_declaration, CM->owner->declaration->declarations)
 		if (X->declaration_type == WEB_WCLTYPE)
@@ -312,8 +314,8 @@ void Colonies::member_complete(colony_member *CM, colony_reader_state *crs, text
 		}
 	}
 
-	if (Str::len(CM->default_weave_pattern) == 0)
-		CM->default_weave_pattern = Str::duplicate(crs->pattern);
+	if (Str::len(CM->default_pattern_name) == 0)
+		CM->default_pattern_name = Str::duplicate(crs->pattern);
 	if ((Str::len(CM->navigation_name) == 0) && (Str::len(crs->nav) > 0))
 		CM->navigation_name = Str::duplicate(crs->nav);
 
@@ -335,22 +337,22 @@ object from it.
 =
 typedef struct colony_reader_state {
 	struct wcl_declaration *D;
-	struct colony *province;
+	struct ls_colony *province;
 	struct text_stream *nav;
 	struct text_stream *crumbs; /* of |breadcrumb_request| */
 	struct text_stream *pattern;
 } colony_reader_state;
 
-colony *Colonies::load(filename *F) {
+ls_colony *Colonies::load(filename *F) {
 	wcl_declaration *D = WCL::read_just_one(F, COLONY_WCLTYPE);
 	if (D == NULL) return NULL;
-	return RETRIEVE_POINTER_colony(D->object_declared);
+	return RETRIEVE_POINTER_ls_colony(D->object_declared);
 }
 
-colony *Colonies::parse_declaration(wcl_declaration *D) {
-	colony *C = CREATE(colony);
+ls_colony *Colonies::parse_declaration(wcl_declaration *D) {
+	ls_colony *C = CREATE(ls_colony);
 	C->declaration = D;
-	C->members = NEW_LINKED_LIST(colony_member);
+	C->members = NEW_LINKED_LIST(ls_colony_member);
 	C->home = Str::new();
 	Colonies::expand_relative_path(C->home, I"docs", C);
 	C->assets_path = NULL;
@@ -371,14 +373,14 @@ colony *Colonies::parse_declaration(wcl_declaration *D) {
 		DISCARD_TEXT(line);
 		tfp.line_count++;
 	}
-	D->object_declared = STORE_POINTER_colony(C);
+	D->object_declared = STORE_POINTER_ls_colony(C);
 	return C;
 }
 
 void Colonies::resolve_declaration(wcl_declaration *D) {
-	colony *C = RETRIEVE_POINTER_colony(D->object_declared);
-	colony_member *CM;
-	LOOP_OVER_LINKED_LIST(CM, colony_member, C->members) {
+	ls_colony *C = RETRIEVE_POINTER_ls_colony(D->object_declared);
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members) {
 		if (CM->navigation == NULL) {
 			wcl_declaration *N = WCL::resolve_resource(D, NAVIGATION_WCLTYPE, CM->navigation_name);
 			if (N) {
@@ -396,6 +398,10 @@ void Colonies::resolve_declaration(wcl_declaration *D) {
 			Colonies::fully_load_member(CM);
 	}
 	if (C->assets_path == NULL) Colonies::website_feature(C, I"assets", I"docs-assets");
+	if (C->patterns_path) {
+		wcl_declaration *PM = Patterns::parse_directory(C->patterns_path);
+		if (PM) WCL::merge_within(PM, D);
+	}
 }
 
 @ Lines from the colony file are fed, one by one, into:
@@ -403,7 +409,7 @@ void Colonies::resolve_declaration(wcl_declaration *D) {
 =
 void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs) {
 	colony_reader_state *crs = (colony_reader_state *) v_crs;
-	colony *C = crs->province;
+	ls_colony *C = crs->province;
 
 	Str::trim_white_space(line); /* ignore trailing space */
 	if (Str::len(line) == 0) return; /* ignore blank lines */
@@ -414,14 +420,14 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		Colonies::website_feature(C, I"home", mr.exp[0]);
 		Colonies::website_features(C, mr.exp[1], tfp);
 	} else if (Regexp::match(&mr, line, U"member: \"*(%C+)\" *(%c*)")) {
-		colony_member *CM = Colonies::new_member(mr.exp[0], C, FALSE);
+		ls_colony_member *CM = Colonies::new_member(mr.exp[0], C, FALSE);
 		Colonies::member_features(CM, mr.exp[1], crs, tfp);
 	} else if (Regexp::match(&mr, line, U"external: \"*(%C+)\" *(%c*)")) {
-		colony_member *CM = Colonies::new_member(mr.exp[0], C, TRUE);
+		ls_colony_member *CM = Colonies::new_member(mr.exp[0], C, TRUE);
 		Colonies::member_features(CM, mr.exp[1], crs, tfp);
 	} else if (Regexp::match(&mr, line, U"default: *(%c*)")) {
 		Colonies::default_features(mr.exp[0], crs, tfp);
-	} else if (Regexp::match(&mr, line, U"patterns: *(%c*)")) {
+	} else if (Regexp::match(&mr, line, U"patterns: *\"(%c*)\" *")) {
 		TEMPORARY_TEXT(path)
 		Colonies::expand_relative_path(path, mr.exp[0], C);
 		C->patterns_path = Pathnames::from_text(path);
@@ -432,7 +438,7 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 	Regexp::dispose_of(&mr);
 }
 
-pathname *Colonies::base_pathname(colony *C) {
+pathname *Colonies::base_pathname(ls_colony *C) {
 	pathname *P = NULL;
 	filename *F = NULL;
 	if (C) {
@@ -443,11 +449,11 @@ pathname *Colonies::base_pathname(colony *C) {
 	return P;
 }
 
-void Colonies::expand_relative_path(OUTPUT_STREAM, text_stream *from, colony *C) {
+void Colonies::expand_relative_path(OUTPUT_STREAM, text_stream *from, ls_colony *C) {
 	Colonies::expand_relative_path_to(OUT, from, C, Colonies::base_pathname(C));
 }
 
-void Colonies::expand_relative_path_to(OUTPUT_STREAM, text_stream *from, colony *C, pathname *P) {
+void Colonies::expand_relative_path_to(OUTPUT_STREAM, text_stream *from, ls_colony *C, pathname *P) {
 	if (Str::len(from) == 0) {
 		WRITE("%p", P);
 		return;
@@ -498,7 +504,7 @@ breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {
 	return BR;
 }
 
-void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, colony *context, filename *F, linked_list *crumbs) {
+void Colonies::drop_initial_breadcrumbs(OUTPUT_STREAM, ls_colony *context, filename *F, linked_list *crumbs) {
 	breadcrumb_request *BR;
 	LOOP_OVER_LINKED_LIST(BR, breadcrumb_request, crumbs) {
 		TEMPORARY_TEXT(url)
@@ -539,10 +545,10 @@ Given a name |T|, we try to find a colony member of that name, returning the
 first we find.
 
 =
-colony_member *Colonies::find(colony *C, text_stream *T) {
-	colony_member *CM;
+ls_colony_member *Colonies::find(ls_colony *C, text_stream *T) {
+	ls_colony_member *CM;
 	if (C)
-		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
+		LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
 			if (Str::eq_insensitive(T, CM->name))
 				return CM;
 	return NULL;
@@ -555,7 +561,7 @@ web even if not now being woven). If it is, we want to use the data we already
 have; but if not, we read it in.
 
 =
-ls_module *Colonies::as_module(colony_member *CM, ls_line *lst, ls_web *Wm) {
+ls_module *Colonies::as_module(ls_colony_member *CM, ls_line *lst, ls_web *Wm) {
 	if (CM->loaded == NULL) @<Perhaps the web being woven@>;
 	if (CM->loaded == NULL) @<Perhaps a module imported by the web being woven@>;
 	if (CM->loaded == NULL) @<Perhaps a web not yet loaded@>;
@@ -582,16 +588,17 @@ ls_module *Colonies::as_module(colony_member *CM, ls_line *lst, ls_web *Wm) {
 	TEMPORARY_TEXT(err)
 	WRITE_TO(err, "unable to load '%S'", CM->name);
 	WebErrors::issue_at(err, lst);
+	return NULL;
 
 @ Finally:
 
 =
-pathname *Colonies::home(colony *C) {
+pathname *Colonies::home(ls_colony *C) {
 	if (C) return Pathnames::from_text(C->home);
 	return Pathnames::from_text(I"docs");
 }
 
-pathname *Colonies::assets_path(colony *C) {
+pathname *Colonies::assets_path(ls_colony *C) {
 	if (C) {
 		TEMPORARY_TEXT(path)
 		Colonies::expand_relative_path_to(path, C->assets_path, C, Colonies::home(C));
@@ -602,20 +609,13 @@ pathname *Colonies::assets_path(colony *C) {
 	return Pathnames::down(Colonies::home(C), I"docs-assets");
 }
 
-pathname *Colonies::weave_path(colony_member *CM) {
-	colony *C = CM->owner;
+pathname *Colonies::weave_path(ls_colony_member *CM) {
+	ls_colony *C = CM->owner;
 	TEMPORARY_TEXT(path)
 	Colonies::expand_relative_path_to(path, CM->weave_path, C, Colonies::home(C));
 	pathname *P = Pathnames::from_text(path);
 	DISCARD_TEXT(path)
 	return P;
-}
-
-pathname *Colonies::patterns_path(void) {
-	colony *C;
-	LOOP_OVER(C, colony)
-		return C->patterns_path;
-	return NULL;
 }
 
 @h Cross-references.
@@ -644,7 +644,7 @@ int Colonies::resolve_reference_in_weave_order(weave_order *wv,
 		(wv)?wv->weave_web:NULL, (wv)?wv->current_weave_line:NULL, ext);
 }
 
-int Colonies::resolve_reference_in_weave(colony *C, text_stream *url, text_stream *title,
+int Colonies::resolve_reference_in_weave(ls_colony *C, text_stream *url, text_stream *title,
 	filename *for_HTML_file, text_stream *text, ls_web *Wm, ls_line *lst, int *ext) {
 	int r = 0;
 	if (ext) *ext = FALSE;
@@ -661,12 +661,12 @@ int Colonies::resolve_reference_in_weave(colony *C, text_stream *url, text_strea
 	return r;
 }
 
-int Colonies::resolve_reference_in_weave_inner(colony *C, text_stream *url, text_stream *title,
+int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, text_stream *title,
 	filename *for_HTML_file, text_stream *text, ls_web *Wm, ls_line *lst,
 	int *ext) {
 	ls_module *from_M = (Wm)?(Wm->main_module):NULL;
 	ls_module *search_M = from_M;
-	colony_member *search_CM = NULL;
+	ls_colony_member *search_CM = NULL;
 	int external = FALSE;
 	
 	@<Is it an explicit URL?@>;
@@ -727,7 +727,7 @@ int Colonies::resolve_reference_in_weave_inner(colony *C, text_stream *url, text
 	search_CM = Colonies::find(C, text);
 	if (search_CM) {
 		ls_module *found_M = Colonies::as_module(search_CM, lst, Wm);
-		if (found_M == NULL) internal_error("could not locate M");
+		if (found_M == NULL) return FALSE; /* for error recovery */
 		ls_chapter *found_C = FIRST_IN_LINKED_LIST(ls_chapter, found_M->chapters);
 		if (found_C == NULL) internal_error("module without chapters");
 		ls_section *found_Sm = FIRST_IN_LINKED_LIST(ls_section, found_C->sections);
@@ -804,7 +804,7 @@ make is that modules of the current web will be woven alongside the main one.
 @h URL management.
 
 =
-void Colonies::link_URL(OUTPUT_STREAM, colony *context, text_stream *link_text, filename *F) {
+void Colonies::link_URL(OUTPUT_STREAM, ls_colony *context, text_stream *link_text, filename *F) {
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, link_text, U" *//(%c+)// *"))
 		Colonies::reference_URL(OUT, context, mr.exp[0], F);
@@ -813,7 +813,7 @@ void Colonies::link_URL(OUTPUT_STREAM, colony *context, text_stream *link_text, 
 	Regexp::dispose_of(&mr);
 }
 
-void Colonies::reference_URL(OUTPUT_STREAM, colony *context, text_stream *link_text, filename *F) {
+void Colonies::reference_URL(OUTPUT_STREAM, ls_colony *context, text_stream *link_text, filename *F) {
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(url)
 	if (Colonies::resolve_reference_in_weave(context, url, title, F, link_text, NULL, NULL, NULL))
@@ -839,13 +839,13 @@ void Colonies::section_URL(OUTPUT_STREAM, ls_section *S) {
 	}
 }
 
-void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from, colony *context) {
+void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from, ls_colony *context) {
 	if (from == NULL) internal_error("no from file");
 	if (par == NULL) internal_error("no para");
 	ls_section *to_S = LiterateSource::section_of_par(par);
 	ls_module *to_M = to_S->owning_chapter->owning_module;
 	if (Str::ne(to_M->module_name, I"(main)")) {
-		colony_member *to_C = Colonies::find(context, to_M->module_name);
+		ls_colony_member *to_C = Colonies::find(context, to_M->module_name);
 		if (to_C) {
 			pathname *from_path = Filenames::up(from);
 			pathname *to_path = Colonies::weave_path(to_C);
@@ -870,7 +870,7 @@ void Colonies::paragraph_anchor(OUTPUT_STREAM, ls_paragraph *par) {
 		else PUT(Str::get(pos));
 }
 
-void Colonies::write_map(OUTPUT_STREAM, colony *C, int fully) {
+void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 	if (C == NULL) { WRITE("<no colony>\n"); return; }
 	WRITE("colony declared in the file: %f\nweave output to the directory: %S\n\n",
 		C->declaration->associated_file, C->home);
@@ -889,8 +889,8 @@ void Colonies::write_map(OUTPUT_STREAM, colony *C, int fully) {
 	WRITE_TO(TextualTables::next_cell(T), "member");
 	WRITE_TO(TextualTables::next_cell(T), "type");
 	WRITE_TO(TextualTables::next_cell(T), "source location");
-	colony_member *CM;
-	LOOP_OVER_LINKED_LIST(CM, colony_member, L) {
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, L) {
 		ls_web *W = CM->loaded;
 		if (CM->loaded == NULL) Errors::fatal_with_text("Could not load colony member '%S'", CM->name);
 		TextualTables::begin_row(T);
@@ -931,8 +931,8 @@ void Colonies::write_map(OUTPUT_STREAM, colony *C, int fully) {
 	if (fully) WRITE_TO(TextualTables::next_cell(T), "paragraphs");
 	if (fully) WRITE_TO(TextualTables::next_cell(T), "lines");
 	int tcc = 0, tsc = 0, tpc = 0, tlc = 0, tm = 0;
-	colony_member *CM;
-	LOOP_OVER_LINKED_LIST(CM, colony_member, L) {
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, L) {
 		tm++;
 		ls_web *W = CM->loaded;
 		TextualTables::begin_row(T);
@@ -985,38 +985,38 @@ void Colonies::write_map(OUTPUT_STREAM, colony *C, int fully) {
 	WRITE_TO(TextualTables::next_cell(T), "pattern");
 	int no_known_crumbs = 0;
 	text_stream *known_crumbs[26];
-	colony_member *CM;
-	LOOP_OVER_LINKED_LIST(CM, colony_member, L) {
-		TextualTables::begin_row(T);
-		if (CM->external) {
-			WRITE_TO(TextualTables::next_cell(T), "(external)");
-			WRITE_TO(TextualTables::next_cell(T), "--");
-		} else {
-			WRITE_TO(TextualTables::next_cell(T), "%S/", CM->weave_path);
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, L)
+		if (CM->external == FALSE) {
+			TextualTables::begin_row(T);
+			if (Str::len(CM->weave_path) > 0)
+				WRITE_TO(TextualTables::next_cell(T), "%S/", CM->weave_path);
+			else
+				TextualTables::next_cell(T);
 			WRITE_TO(TextualTables::next_cell(T), "%S", CM->home_leaf);
+			WRITE_TO(TextualTables::next_cell(T), "%S", CM->name);
+			@<Columns about HTML weaving@>;
+			if (fully) {
+				ls_web *W = CM->loaded;
+				ls_chapter *C; ls_section *S;
+				LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+					LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
+						TEMPORARY_TEXT(url)
+						Colonies::section_URL(url, S);
+						TextualTables::begin_row(T);
+						if (CM->external) {
+							WRITE_TO(TextualTables::next_cell(T), "--");
+							WRITE_TO(TextualTables::next_cell(T), "--");
+						} else {
+							WRITE_TO(TextualTables::next_cell(T), "%S/", CM->weave_path);
+							WRITE_TO(TextualTables::next_cell(T), "%S", url);
+						}
+						WRITE_TO(TextualTables::next_cell(T), "%S: %S", CM->name, S->sect_title);
+						@<Columns about HTML weaving@>;
+					} 
+			}
 		}
-		WRITE_TO(TextualTables::next_cell(T), "%S", CM->name);
-		@<Columns about HTML weaving@>;
-		if (fully) {
-			ls_web *W = CM->loaded;
-			ls_chapter *C; ls_section *S;
-			LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-				LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
-					TEMPORARY_TEXT(url)
-					Colonies::section_URL(url, S);
-					TextualTables::begin_row(T);
-					if (CM->external) {
-						WRITE_TO(TextualTables::next_cell(T), "--");
-						WRITE_TO(TextualTables::next_cell(T), "--");
-					} else {
-						WRITE_TO(TextualTables::next_cell(T), "%S/", CM->weave_path);
-						WRITE_TO(TextualTables::next_cell(T), "%S", url);
-					}
-					WRITE_TO(TextualTables::next_cell(T), "%S: %S", CM->name, S->sect_title);
-					@<Columns about HTML weaving@>;
-				} 
-		}
-	}
+
 	TextualTables::begin_row(T);
 	WRITE_TO(TextualTables::next_cell(T), "%S/", C->assets_path);
 	WRITE_TO(TextualTables::next_cell(T), "--");
@@ -1061,5 +1061,5 @@ void Colonies::write_map(OUTPUT_STREAM, colony *C, int fully) {
 		} else {
 			TextualTables::next_cell(T);
 		}
-		WRITE_TO(TextualTables::next_cell(T), "%S", CM->default_weave_pattern);
+		WRITE_TO(TextualTables::next_cell(T), "%S", CM->default_pattern_name);
 	}

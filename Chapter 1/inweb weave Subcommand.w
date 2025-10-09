@@ -59,7 +59,7 @@ typedef struct inweb_weave_settings {
 	struct filename *weave_to_setting;
 	struct pathname *weave_into_setting;
 	struct text_stream *tag_setting;
-	struct text_stream *weave_pattern;
+	struct text_stream *pattern_name;
 } inweb_weave_settings;
 
 void InwebWeave::initialise(inweb_weave_settings *iws) {
@@ -67,7 +67,7 @@ void InwebWeave::initialise(inweb_weave_settings *iws) {
 	iws->weave_to_setting = NULL;
 	iws->weave_into_setting = NULL;
 	iws->tag_setting = Str::new();
-	iws->weave_pattern = I"";
+	iws->pattern_name = I"";
 }
 
 int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
@@ -80,7 +80,7 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 			iws->weave_into_setting = NULL;
 			iws->weave_to_setting = Filenames::from_text(arg);
 			return TRUE;
-		case WEAVE_AS_CLSW: iws->weave_pattern = Str::duplicate(arg); return TRUE;
+		case WEAVE_AS_CLSW: iws->pattern_name = Str::duplicate(arg); return TRUE;
 		case ONLY_CLSW: Configuration::set_range(&(iws->subset), arg, TRUE); return TRUE;
 		case WEAVE_TAG_CLSW: iws->tag_setting = Str::duplicate(arg); return TRUE;
 	}
@@ -92,38 +92,44 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 =
 void InwebWeave::run(inweb_instructions *ins) {
 	inweb_weave_settings *iws = &(ins->weave_settings);
-	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_ALLOWED, FALSE, TRUE);
+	inweb_operand op = Configuration::operand(ins, COLONY_OPERAND_PREFERRED, FALSE, TRUE);
 	if (op.W) InwebWeave::run_on(iws, op.C, op.CM, op.W);
+	else if (op.C) InwebWeave::run_on_colony(iws, op.C);
 	else if ((op.D) && (op.D->declaration_type == COLONY_WCLTYPE)) {
 		WCL::parse_declarations_throwing_errors(op.D);
-		colony *C = RETRIEVE_POINTER_colony(op.D->object_declared);
-		Colonies::fully_load(C);
-		int N = 0;
-		colony_member *CM;
-		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
-			if (CM->external == FALSE)
-				N++;
-		int M = 0;
-		LOOP_OVER_LINKED_LIST(CM, colony_member, C->members)
-			if (CM->external == FALSE) {
-				M++;
-				if (M > 1) PRINT("\n");
-				PRINT("(Weave %d of %d: %S)\n", M, N, CM->name);
-				ls_web *W = WebStructure::read_fully(C, CM->loaded->declaration, FALSE, TRUE, verbose_mode);
-				inweb_weave_settings mutable_copy = *iws;
-				InwebWeave::run_on(&mutable_copy, C, CM, W);
-			}
+		ls_colony *C = RETRIEVE_POINTER_ls_colony(op.D->object_declared);
+		InwebWeave::run_on_colony(iws, C);
 	} else Errors::fatal("inweb weave has to apply to a web or a colony");
 }
 
-void InwebWeave::run_on(inweb_weave_settings *iws, colony *C, colony_member *CM, ls_web *W) {
+void InwebWeave::run_on_colony(inweb_weave_settings *iws, ls_colony *C) {
+	Colonies::fully_load(C);
+	int N = 0;
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
+		if (CM->external == FALSE)
+			N++;
+	int M = 0;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
+		if (CM->external == FALSE) {
+			M++;
+			if (M > 1) PRINT("\n");
+			PRINT("(Weave %d of %d: %S)\n", M, N, CM->name);
+			ls_web *W = WebStructure::read_fully(C, CM->loaded->declaration, FALSE, TRUE, verbose_mode);
+			inweb_weave_settings mutable_copy = *iws;
+			InwebWeave::run_on(&mutable_copy, C, CM, W);
+		}
+}
+
+void InwebWeave::run_on(inweb_weave_settings *iws, ls_colony *C, ls_colony_member *CM, ls_web *W) {
 	WebStructure::print_statistics(W);
 	if (CM) @<Fill in some blanks from the colony membership@>;
-	text_stream *name = iws->weave_pattern;
+	text_stream *name = iws->pattern_name;
 	if (Str::len(name) == 0) name = I"HTML";
-	weave_pattern *pattern = Patterns::find(W, name);
+	ls_pattern *pattern = Patterns::find(W->declaration, name);
+	Patterns::impose(W, pattern);
 	if ((iws->subset.chosen_range_actually_chosen == FALSE) && (W->is_page == FALSE))
-		Configuration::set_range(&(iws->subset), pattern->default_range, TRUE);
+		Configuration::set_range(&(iws->subset), Patterns::get_default_range(W, pattern), TRUE);
 	Swarm::weave(C, CM, W, iws->weave_to_setting, iws->weave_into_setting, pattern,
 		iws->subset.swarm_mode, iws->subset.range, iws->tag_setting, verbose_mode);
 }
@@ -133,7 +139,7 @@ which even so is used only for putting together the panels of navigation links
 in HTML to other colony members, or for re-routing the output.
 
 @<Fill in some blanks from the colony membership@> =
-	if (Str::len(iws->weave_pattern) == 0)
-		iws->weave_pattern = CM->default_weave_pattern;
+	if (Str::len(iws->pattern_name) == 0)
+		iws->pattern_name = CM->default_pattern_name;
 	if (iws->weave_into_setting == NULL)
 		iws->weave_into_setting = Colonies::weave_path(CM);

@@ -75,7 +75,7 @@ void Bibliographic::initialise_data(ls_web *W) {
 	bd = Bibliographic::set_datum(W, I"Code In Commentary Notation", I"|");
 	bd = Bibliographic::set_datum(W, I"Code In Code Comments Notation", I"|");
 	bd = Bibliographic::set_datum(W, I"Cross-References Notation", I"//");
-	bd = Bibliographic::set_datum(W, I"Web Syntax Version", NULL);
+	bd = Bibliographic::set_datum(W, I"Notation", NULL);
 	bd = Bibliographic::set_datum(W, I"Paragraph Numbers Visibility", I"On");
 }
 

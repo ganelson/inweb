@@ -40,7 +40,7 @@ typedef struct colour_scheme {
 } colour_scheme;
 
 @ =
-colour_scheme *Assets::find_colour_scheme(weave_pattern *pattern,
+colour_scheme *Assets::find_colour_scheme(ls_web *W, ls_pattern *pattern,
 	text_stream *name, text_stream *pre) {
 	colour_scheme *cs;
 	LOOP_OVER(cs, colour_scheme)
@@ -48,8 +48,8 @@ colour_scheme *Assets::find_colour_scheme(weave_pattern *pattern,
 			return cs;
 	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", name);
-	filename *F = Patterns::find_file_in_subdirectory(pattern, I"Colouring", css);
-	if (F == NULL) F = Patterns::find_file_in_subdirectory(pattern, I"Coloring", css);
+	filename *F = Patterns::find_file_in_subdirectory(W, pattern, I"Colouring", css);
+	if (F == NULL) F = Patterns::find_file_in_subdirectory(W, pattern, I"Coloring", css);
 	DISCARD_TEXT(css)
 	if (F == NULL) return NULL;
 	cs = CREATE(colour_scheme);
@@ -68,8 +68,8 @@ need has arisen on a particular file.
 
 =
 int current_inclusion_round = 0;
-void Assets::include_relevant_plugins(text_stream *OUT, weave_pattern *pattern,
-	ls_web *W, weave_order *wv, filename *from, colony *context) {
+void Assets::include_relevant_plugins(text_stream *OUT, ls_pattern *pattern,
+	ls_web *W, weave_order *wv, filename *from, ls_colony *context) {
 	current_inclusion_round++;
 	STREAM_INDENT(STDOUT);
 	Patterns::include_plugins(OUT, W, pattern, from,
@@ -93,13 +93,13 @@ this, we store the leafnames in a dictionary.
 
 =
 void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
-	weave_pattern *pattern, filename *from, int verbosely, colony *context) {	
+	ls_pattern *pattern, filename *from, int verbosely, ls_colony *context) {	
 	if (wp->last_included_in_round == current_inclusion_round) return;
 	wp->last_included_in_round = current_inclusion_round;
 	if (verbosely) PRINT("Include plugin '%S'\n", wp->plugin_name);
 	int finds = 0;
 	dictionary *leaves_gathered = Dictionaries::new(128, TRUE);
-	for (weave_pattern *p = pattern; p; p = p->based_on) {
+	for (ls_pattern *p = pattern; p; p = Patterns::basis(W->declaration, p)) {
 		pathname *P = Pathnames::down(p->pattern_location, wp->plugin_name);
 		scan_directory *D = Directories::open(P);
 		if (D) {
@@ -134,14 +134,14 @@ file, no matter how many times this is called.
 
 =
 void Assets::include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
-	weave_pattern *pattern, filename *from, int verbosely, colony *context) {	
+	ls_pattern *pattern, filename *from, int verbosely, ls_colony *context) {	
 	if (cs->last_included_in_round == current_inclusion_round) return;
 	cs->last_included_in_round = current_inclusion_round;
 	if (verbosely) PRINT("Include colour scheme '%S'\n", cs->scheme_name);
 	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", cs->scheme_name);
-	filename *F = Patterns::find_file_in_subdirectory(pattern, I"Colouring", css);
-	if (F == NULL) F = Patterns::find_file_in_subdirectory(pattern, I"Coloring", css);
+	filename *F = Patterns::find_file_in_subdirectory(W, pattern, I"Colouring", css);
+	if (F == NULL) F = Patterns::find_file_in_subdirectory(W, pattern, I"Coloring", css);
 	if (F == NULL) {
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "No CSS file for the colour scheme '%S' can be found",
@@ -250,10 +250,10 @@ is that if the current pattern, or any pattern it is based on, defines a rule,
 then the topmost one applies; and otherwise the default rule applies.
 
 =
-asset_rule *Assets::applicable_rule(weave_pattern *pattern, filename *F) {
+asset_rule *Assets::applicable_rule(wcl_declaration *D, ls_pattern *pattern, filename *F) {
 	TEMPORARY_TEXT(ext)
 	Filenames::write_extension(ext, F);
-	for (weave_pattern *p = pattern; p; p = p->based_on) {
+	for (ls_pattern *p = pattern; p; p = Patterns::basis(D, p)) {
 		asset_rule *R;
 		LOOP_OVER_LINKED_LIST(R, asset_rule, p->asset_rules)
 			if (Str::eq_insensitive(R->applies_to, ext))
@@ -273,8 +273,8 @@ at filename |F|, and we now know how to find the applicable rule.
 
 =
 pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filename *F,
-	text_stream *trans, weave_pattern *pattern, filename *from, int verbosely, colony *context) {
-	if (R == NULL) R = Assets::applicable_rule(pattern, F);
+	text_stream *trans, ls_pattern *pattern, filename *from, int verbosely, ls_colony *context) {
+	if (R == NULL) R = Assets::applicable_rule(W->declaration, pattern, F);
 	TEMPORARY_TEXT(url)
 	pathname *AP = Colonies::assets_path(context);
 	if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);

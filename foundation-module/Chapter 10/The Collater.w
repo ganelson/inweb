@@ -17,20 +17,20 @@ For convenience, we provide three ways to call:
 
 =
 void Collater::for_web_and_pattern(text_stream *OUT, ls_web *W,
-	weave_pattern *pattern, filename *F, filename *into, colony *context) {
+	ls_pattern *pattern, filename *F, filename *into, ls_colony *context) {
 	Collater::collate(OUT, W, I"", F, NULL, pattern, NULL, NULL, NULL, into, context);
 }
 
 void Collater::for_order(text_stream *OUT, weave_order *wv,
-	filename *F, filename *into, colony *context) {
+	filename *F, filename *into, ls_colony *context) {
 	Collater::collate(OUT, wv->weave_web, wv->weave_range, F, NULL, wv->pattern,
 		wv->navigation, wv->breadcrumbs, wv, into, context);
 }
 
 void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 	filename *template_filename, wcl_declaration *template_wcl,
-	weave_pattern *pattern, wcl_declaration *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into, colony *context) {
+	ls_pattern *pattern, wcl_declaration *nav_file,
+	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context) {
 	collater_state actual_ies =
 		Collater::initial_state(W, range, template_filename, template_wcl, pattern, 
 			nav_file, crumbs, wv, into, context);
@@ -47,7 +47,7 @@ void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 
 =
 typedef struct collater_state {
-	struct colony *context;
+	struct ls_colony *context;
 	struct ls_web *for_web;
 	struct text_stream *tlines[MAX_TEMPLATE_LINES];
 	int no_tlines;
@@ -57,7 +57,7 @@ typedef struct collater_state {
 	int repeat_stack_startpos[CI_STACK_CAPACITY];
 	int sp; /* And this is our stack pointer for tracking of loops */
 	struct text_stream *restrict_to_range;
-	struct weave_pattern *nav_pattern;
+	struct ls_pattern *nav_pattern;
 	struct wcl_declaration *nav_file;
 	struct linked_list *crumbs;
 	int inside_navigation_submenu;
@@ -74,8 +74,8 @@ if so, they can always be subdivided.
 =
 collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	filename *template_filename, wcl_declaration *template_wcl,
-	weave_pattern *pattern, wcl_declaration *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into, colony *context) {
+	ls_pattern *pattern, wcl_declaration *nav_file,
+	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context) {
 	collater_state cls;
 	cls.no_tlines = 0;
 	cls.restrict_to_range = Str::duplicate(range);

@@ -24,6 +24,10 @@ int main(int argc, char **argv) {
 	@<Make some global settings@>;
 	if (no_inweb_errors == 0) {
 		switch (args.subcommand) {
+			case NO_CLSUB:
+				if (argc <= 1)
+					PRINT("inweb: a tool for literate programming. See 'inweb help' for more.\n");
+				break;
 			case ADVANCE_BUILD_CLSUB:  InwebAdvanceBuild::run(&args); break;
 			case INSPECT_CLSUB:        InwebInspect::run(&args); break;
 			case MAP_CLSUB:            InwebMap::run(&args); break;

@@ -81,8 +81,9 @@ void InwebInspect::run(inweb_instructions *ins) {
 	inweb_operand op = Configuration::operand(ins, type, FALSE, FALSE);
 	if (iis->resources_switch) {
 		if (op.D) {
-			WCL::write_briefly(STDOUT, op.D);
-			PRINT("-- with the following Inweb resources available for use:\n");
+			if (op.W) WebStructure::print_statistics(op.W);
+			else { WCL::write_briefly(STDOUT, op.D); PRINT("-- "); }
+			PRINT("with the following Inweb resources available for use:\n");
 		} else {
 			PRINT("The following Inweb resources are available for any web or colony to use:\n");
 		}

@@ -20,13 +20,13 @@ a new FSM every time, so we cache the results.
 
 =
 typedef struct ls_holon_scanner {
-	struct ls_syntax *syntax;
+	struct ls_notation *syntax;
 	struct programming_language *pl;
 	struct finite_state_machine *machine;
 	CLASS_DEFINITION
 } ls_holon_scanner;
 
-finite_state_machine *HolonSyntax::get(ls_syntax *S, programming_language *pl) {
+finite_state_machine *HolonSyntax::get(ls_notation *S, programming_language *pl) {
 	ls_holon_scanner *sc;
 	LOOP_OVER(sc, ls_holon_scanner)
 		if ((sc->syntax == S) && (sc->pl == pl))
@@ -90,24 +90,24 @@ the user of the machine.
 @e COMMAND_END_FSMEVENT
 
 @<Add literate syntax to finite state machine@> =
-	if (WebSyntax::supports(S, NAMED_HOLONS_WSF)) {
+	if (WebNotation::supports(S, NAMED_HOLONS_WSF)) {
 		fsm_state *holon_name_state = FSM::new_state(I"holon");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebSyntax::notation(S, NAMED_HOLONS_WSF, 1),
+			WebNotation::notation(S, NAMED_HOLONS_WSF, 1),
 			holon_name_state, NO_FSMEVENT, NAME_START_FSMEVENT);
 		FSM::add_transition_spelling_out_with_events(holon_name_state,
-			WebSyntax::notation(S, NAMED_HOLONS_WSF, 2),		
+			WebNotation::notation(S, NAMED_HOLONS_WSF, 2),		
 			code_state, NO_FSMEVENT, NAME_END_FSMEVENT);
 	}
-	if (WebSyntax::supports(S, TANGLER_COMMANDS_WSF)) {
+	if (WebNotation::supports(S, TANGLER_COMMANDS_WSF)) {
 		fsm_state *command_name_state = FSM::new_state(I"tangle-command");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebSyntax::notation(S, TANGLER_COMMANDS_WSF, 1),
+			WebNotation::notation(S, TANGLER_COMMANDS_WSF, 1),
 			command_name_state, NO_FSMEVENT, COMMAND_START_FSMEVENT);
 		FSM::add_transition(command_name_state, '"', code_state);
 		FSM::add_transition(command_name_state, '\n', code_state);
 		FSM::add_transition_spelling_out_with_events(command_name_state,
-			WebSyntax::notation(S, TANGLER_COMMANDS_WSF, 2),
+			WebNotation::notation(S, TANGLER_COMMANDS_WSF, 2),
 			code_state, NO_FSMEVENT, COMMAND_END_FSMEVENT);
 	}
 
@@ -153,15 +153,15 @@ We forbid this for all other languages.
 		FSM::add_transition_spelling_out(code_state, pl->string_literal, string_state);
 		FSM::add_transition_spelling_out(string_state, pl->string_literal, code_state);
 		if (((Str::eq(pl->language_name, I"Inform 6")) || (pl->C_like)) &&
-			(WebSyntax::supports(S, TANGLER_COMMANDS_WSF))) {
+			(WebNotation::supports(S, TANGLER_COMMANDS_WSF))) {
 			fsm_state *smlc_state = FSM::new_state(I"command-in-string");
 			FSM::add_transition_spelling_out_with_events(string_state,
-				WebSyntax::notation(S, TANGLER_COMMANDS_WSF, 1),
+				WebNotation::notation(S, TANGLER_COMMANDS_WSF, 1),
 				smlc_state, AGAIN_FSMEVENT, COMMAND_START_FSMEVENT);
 			FSM::add_transition(smlc_state, '"', code_state);
 			FSM::add_transition(smlc_state, '\n', code_state);
 			FSM::add_transition_spelling_out_with_events(smlc_state,
-				WebSyntax::notation(S, TANGLER_COMMANDS_WSF, 2),
+				WebNotation::notation(S, TANGLER_COMMANDS_WSF, 2),
 				string_state, AGAIN_FSMEVENT, COMMAND_END_FSMEVENT);
 		}
 		if (Str::len(pl->string_literal_escape) > 0) {

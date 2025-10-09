@@ -118,8 +118,8 @@ here we are.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">tree_type_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">web_bibliographic_datum_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ls_web_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_syntax_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_syntax_rule_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_notation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_notation_rule_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">finite_state_machine_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">fsm_state_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">nonterminal_variable_CLASS</span>
@@ -137,8 +137,8 @@ here we are.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">asset_rule_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">breadcrumb_request_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ls_chapter_weaving_details_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">colony_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">colony_member_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_colony_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_colony_member_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">colour_scheme_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">macro_usage_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">makefile_specifics_CLASS</span>
@@ -146,7 +146,8 @@ here we are.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ls_section_weaving_details_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">tex_results_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_format_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">weave_pattern_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_pattern_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ls_pattern_pair_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_plugin_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">weave_order_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">ls_web_weaving_details_CLASS</span>
@@ -260,8 +261,8 @@ here we are.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tree_type</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">web_bibliographic_datum</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_web</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_syntax</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_syntax_rule</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_notation</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_notation_rule</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">finite_state_machine</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">fsm_state</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_holon_scanner</span><span class="plain-syntax">)</span>
@@ -279,14 +280,15 @@ here we are.
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">asset_rule</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">breadcrumb_request</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_chapter_weaving_details</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colony_member</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_colony</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_colony_member</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">colour_scheme</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">makefile_specifics</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_section_weaving_details</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tex_results</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_format</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pattern</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_pattern</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_pattern_pair</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_plugin</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_order</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_web_weaving_details</span><span class="plain-syntax">)</span>
@@ -366,7 +368,7 @@ here we are.
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-mmr.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-dl.html">dl</a></li><li class="progresssection"><a href="2-mmr.html">mmr</a></li><li class="progresscurrent">fc</li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-str.html">str</a></li><li class="progresssection"><a href="2-wal.html">wal</a></li><li class="progresssection"><a href="2-mth.html">mth</a></li><li class="progresssection"><a href="2-llas.html">llas</a></li><li class="progresssection"><a href="2-dct.html">dct</a></li><li class="progresssection"><a href="2-trs.html">trs</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progresschapter"><a href="8-ws.html">8</a></li><li class="progresschapter"><a href="9-pl.html">9</a></li><li class="progresschapter"><a href="10-wd.html">10</a></li><li class="progresschapter"><a href="11-mk.html">11</a></li><li class="progressnext"><a href="2-lcl.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-mmr.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-dl.html">dl</a></li><li class="progresssection"><a href="2-mmr.html">mmr</a></li><li class="progresscurrent">fc</li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-str.html">str</a></li><li class="progresssection"><a href="2-wal.html">wal</a></li><li class="progresssection"><a href="2-mth.html">mth</a></li><li class="progresssection"><a href="2-llas.html">llas</a></li><li class="progresssection"><a href="2-dct.html">dct</a></li><li class="progresssection"><a href="2-trs.html">trs</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progresschapter"><a href="8-wcl.html">8</a></li><li class="progresschapter"><a href="9-pl.html">9</a></li><li class="progresschapter"><a href="10-wd.html">10</a></li><li class="progresschapter"><a href="11-mk.html">11</a></li><li class="progressnext"><a href="2-lcl.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

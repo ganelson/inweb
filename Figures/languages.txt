@@ -1,25 +1,34 @@
 The following Inweb resources are available for any web or colony to use:
-Language: ACME
-Language: Blurb
-Language: BoxArt
-Language: C
-Language: C++
-Language: ConsoleText
-Language: Delia
-Language: Extracts
-Language: ILDF
-Language: InC
-Language: Indoc
-Language: Inform 6
-Language: Inform 7
-Language: Inter
-Language: Inter Pipeline
-Language: Inweb
-Language: None
-Language: PainterOutput
-Language: Perl
-Language: Plain Text
-Language: Preform
-Language: REPL
-Notation: Inweb
-Notation: Markdown
+name           | resource type | source                                                                       
+-------------- | ------------- | -----------------------------------------------------------------------------
+ACME           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 4  
+Blurb          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 34 
+BoxArt         | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 46 
+C              | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 66 
+C++            | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 148
+ConsoleText    | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 228
+Delia          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 249
+Extracts       | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 273
+ILDF           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 278
+InC            | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 345
+Indoc          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 443
+Inform 6       | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 452
+Inform 7       | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 544
+Inter          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 576
+Inter Pipeline | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 557
+Inweb          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 637
+None           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 675
+PainterOutput  | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 680
+Perl           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 701
+Plain Text     | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 722
+Preform        | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 731
+REPL           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 753
+Inweb          | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 1  
+Markdown       | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 121
+Ebook          | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+GitHubPages    | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+HTML           | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+PDFTeX         | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+Plain          | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+TestingInweb   | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+TeX            | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       

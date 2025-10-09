@@ -1,4 +1,4 @@
-[SPDXLicences::] SPDX Licenses.
+[SPDXLicences::] SPDX Licences.
 
 This section was mechanically generated from the JSON file provided by
 https://spdx.org/licenses/. The version used was 747753e, dated 2024-04-24.

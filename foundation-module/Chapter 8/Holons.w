@@ -149,7 +149,7 @@ void Holons::scan(ls_unit *lsu) {
 			break;
 		case NAME_END_FSMEVENT: {
 			recording_to = NULL;
-			int excess = Str::len(WebSyntax::notation(lsu->syntax, NAMED_HOLONS_WSF, 2));
+			int excess = Str::len(WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 2));
 			Str::truncate(name, Str::len(name) - excess);
 			
 			ls_paragraph *defining_par = Holons::find_holon(name, lsu);
@@ -171,7 +171,7 @@ void Holons::scan(ls_unit *lsu) {
 		case COMMAND_END_FSMEVENT: {
 			recording_to = NULL;
 			@<Splice code@>;
-			int excess = Str::len(WebSyntax::notation(lsu->syntax, TANGLER_COMMANDS_WSF, 2));
+			int excess = Str::len(WebNotation::notation(lsu->syntax, TANGLER_COMMANDS_WSF, 2));
 			Str::truncate(command, Str::len(command) - excess);
 			to = i;
 			@<Splice command@>;

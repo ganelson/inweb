@@ -80,8 +80,8 @@ here we are.
 @e tree_type_CLASS
 @e web_bibliographic_datum_CLASS
 @e ls_web_CLASS
-@e ls_syntax_CLASS
-@e ls_syntax_rule_CLASS
+@e ls_notation_CLASS
+@e ls_notation_rule_CLASS
 @e finite_state_machine_CLASS
 @e fsm_state_CLASS
 @e nonterminal_variable_CLASS
@@ -99,8 +99,8 @@ here we are.
 @e asset_rule_CLASS
 @e breadcrumb_request_CLASS
 @e ls_chapter_weaving_details_CLASS
-@e colony_CLASS
-@e colony_member_CLASS
+@e ls_colony_CLASS
+@e ls_colony_member_CLASS
 @e colour_scheme_CLASS
 @e macro_usage_CLASS
 @e makefile_specifics_CLASS
@@ -108,7 +108,8 @@ here we are.
 @e ls_section_weaving_details_CLASS
 @e tex_results_CLASS
 @e weave_format_CLASS
-@e weave_pattern_CLASS
+@e ls_pattern_CLASS
+@e ls_pattern_pair_CLASS
 @e weave_plugin_CLASS
 @e weave_order_CLASS
 @e ls_web_weaving_details_CLASS
@@ -223,8 +224,8 @@ DECLARE_CLASS(tree_node)
 DECLARE_CLASS(tree_type)
 DECLARE_CLASS(web_bibliographic_datum)
 DECLARE_CLASS(ls_web)
-DECLARE_CLASS(ls_syntax)
-DECLARE_CLASS(ls_syntax_rule)
+DECLARE_CLASS(ls_notation)
+DECLARE_CLASS(ls_notation_rule)
 DECLARE_CLASS(finite_state_machine)
 DECLARE_CLASS(fsm_state)
 DECLARE_CLASS(ls_holon_scanner)
@@ -242,14 +243,15 @@ DECLARE_CLASS(structure_element)
 DECLARE_CLASS(asset_rule)
 DECLARE_CLASS(breadcrumb_request)
 DECLARE_CLASS(ls_chapter_weaving_details)
-DECLARE_CLASS(colony)
-DECLARE_CLASS(colony_member)
+DECLARE_CLASS(ls_colony)
+DECLARE_CLASS(ls_colony_member)
 DECLARE_CLASS(colour_scheme)
 DECLARE_CLASS(makefile_specifics)
 DECLARE_CLASS(ls_section_weaving_details)
 DECLARE_CLASS(tex_results)
 DECLARE_CLASS(weave_format)
-DECLARE_CLASS(weave_pattern)
+DECLARE_CLASS(ls_pattern)
+DECLARE_CLASS(ls_pattern_pair)
 DECLARE_CLASS(weave_plugin)
 DECLARE_CLASS(weave_order)
 DECLARE_CLASS(ls_web_weaving_details)

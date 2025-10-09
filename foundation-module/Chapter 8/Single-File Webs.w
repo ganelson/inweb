@@ -14,7 +14,7 @@ simply takes a preliminary look.
 void SingleFileWebs::reconnoiter(ls_web *W) {
 	sfw_reader_state RS;
 	@<Initialise the reader state@>;
-	if (W->web_syntax) WebSyntax::declare_syntax_for_web(W, W->web_syntax);
+	if (W->web_syntax) WebNotation::declare_syntax_for_web(W, W->web_syntax);
 	
 	wcl_declaration *D = W->declaration;
 	text_file_position tfp = D->body_position;
@@ -30,7 +30,7 @@ void SingleFileWebs::reconnoiter(ls_web *W) {
 
 	ls_chapter *C = WebStructure::new_ls_chapter(W, I"S", I"Sections");
 	WebModules::add_chapter(W->main_module, C);
-	ls_section *S = WebStructure::new_ls_section(C, I"All");
+	ls_section *S = WebStructure::new_ls_section(C, I"All", NULL);
 	S->source_file_for_section = W->single_file;
 	S->source_declaration_for_section = D;
 	if (RS.skip_from > 0) S->skip_from = RS.skip_from;
@@ -46,11 +46,11 @@ advance, and the file didn't declare one explicitly, and didn't have a shebang.
 
 @<Try to deduce the syntax from the filename extension@> =
 	if (W->single_file)
-		RS.detected_syntax = WebSyntax::guess_from_filename(W, W->single_file);
-	if (RS.detected_syntax == NULL) RS.detected_syntax = WebSyntax::default();
+		RS.detected_syntax = WebNotation::guess_from_filename(W, W->single_file);
+	if (RS.detected_syntax == NULL) RS.detected_syntax = WebNotation::default();
 
 @<Apply any detected syntax and programming language to the web@> =
-	WebSyntax::declare_syntax_for_web(W, RS.detected_syntax);
+	WebNotation::declare_syntax_for_web(W, RS.detected_syntax);
 
 	if (RS.detected_language) WebStructure::set_language(W, RS.detected_language);
 
@@ -76,7 +76,7 @@ typedef struct sfw_reader_state {
 	struct ls_web *W;
 
 	/* What we aim to find out: */
-	struct ls_syntax *detected_syntax;
+	struct ls_notation *detected_syntax;
 	struct programming_language *detected_language;
 	int skip_from;
 	int skip_to;
@@ -118,7 +118,7 @@ part of the web, and is not skipped.
 @<Look for a shebang on line 1@> =
 	TEMPORARY_TEXT(title)
 	TEMPORARY_TEXT(author)
-	ls_syntax *S = WebSyntax::guess_from_shebang(RS->W, line, tfp, title, author);
+	ls_notation *S = WebNotation::guess_from_shebang(RS->W, line, tfp, title, author);
 	if (S) {
 		RS->detected_syntax = S;
 		if (Str::len(title) > 0) Bibliographic::set_datum(RS->W, I"Title", title);
@@ -136,10 +136,15 @@ the first line which doesn't match, and is then trimmed away by being skipped.
 @<Look for key-value pairs at the top of the file@> =
 	TEMPORARY_TEXT(key)
 	if (((RS->detected_syntax == NULL) ||
-			(WebSyntax::supports(RS->detected_syntax, KEY_VALUE_PAIRS_WSF))) &&
+			(WebNotation::supports(RS->detected_syntax, KEY_VALUE_PAIRS_WSF))) &&
 		(Bibliographic::parse_kvp(RS->W, line, TRUE, tfp, key))) {
 		if (Str::eq(key, I"Web Syntax Version")) {
-			ls_syntax *S = WebSyntax::syntax_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
+			WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
+			ls_notation *S = WebNotation::syntax_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
+			if (S) RS->detected_syntax = S;
+		}
+		if (Str::eq(key, I"Notation")) {
+			ls_notation *S = WebNotation::syntax_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
 			if (S) RS->detected_syntax = S;
 		}
 		if (Str::eq(key, I"Language")) {

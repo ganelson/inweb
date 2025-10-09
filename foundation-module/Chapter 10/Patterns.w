@@ -4,21 +4,23 @@ Managing weave patterns, which are bundled configuration settings for weaving.
 
 @h Reading in.
 Patterns are stored as directories in the file system, and are identified by
-names such as |HTML|. On request, we need to find the directory corresponding
-to such a name, and to read it in. This structure holds the result:
+names such as |HTML|. Within those directories, though, the file |pattern.inweb|
+contains a WCL file which is parsed to give details, and those details are
+stored in instances of the following:
 
 =
-typedef struct weave_pattern {
+typedef struct ls_pattern {
+	struct wcl_declaration *declaration;
 	struct text_stream *pattern_name; /* such as |HTML| */
 	struct pathname *pattern_location; /* the directory */
-	struct weave_pattern *based_on; /* inherit from which other pattern? */
+	struct text_stream *based_on_name; /* inherit from which other pattern? */
 
 	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
 	struct linked_list *plugins; /* of |weave_plugin|: any extras needed */
 	struct linked_list *colour_schemes; /* of |colour_scheme|: any extras needed */
 
-	struct text_stream *mathematics_plugin; /* name only, not a |weave_pattern *| */
-	struct text_stream *footnotes_plugin; /* name only, not a |weave_pattern *| */
+	struct text_stream *mathematics_plugin; /* name only, not a |ls_pattern *| */
+	struct text_stream *footnotes_plugin; /* name only, not a |ls_pattern *| */
 
 	struct text_stream *initial_extension; /* filename extension, that is */
 	struct linked_list *post_commands; /* of |text_stream| */
@@ -29,72 +31,175 @@ typedef struct weave_pattern {
 	int number_sections; /* insert section numbers into the weave? */
 	struct text_stream *default_range; /* for example, |sections| */
 
-	struct ls_web *patterned_for; /* the web which caused this to be read in */
+	struct linked_list *bibliographic_settings; /* of |ls_pattern_pair| */
 	
 	int commands;
 	int name_command_given;
 	CLASS_DEFINITION
-} weave_pattern;
+} ls_pattern;
+
+typedef struct ls_pattern_pair {
+	struct text_stream *key;
+	struct text_stream *value;
+	CLASS_DEFINITION
+} ls_pattern_pair;
 
 @ When a given web needs a pattern with a given name, this is where it comes.
 
 =
-weave_pattern *Patterns::find(ls_web *W, text_stream *name) {
-	filename *pattern_file = NULL;
-	weave_pattern *wp = CREATE(weave_pattern);
+ls_pattern *Patterns::find(wcl_declaration *D, text_stream *name) {
+	wcl_declaration *R = WCL::resolve_resource(D, PATTERN_WCLTYPE, name);
+	if (R == NULL) Errors::fatal_with_text("could not find weave pattern '%S'", name);
+	return RETRIEVE_POINTER_ls_pattern(R->object_declared);
+}
+
+void Patterns::impose(ls_web *W, ls_pattern *wp) {
+	ls_pattern *basis = Patterns::basis(W->declaration, wp);
+	if (basis) Patterns::impose(W, basis);
+	ls_pattern_pair *pair;
+	LOOP_OVER_LINKED_LIST(pair, ls_pattern_pair, wp->bibliographic_settings) {
+		Bibliographic::set_datum(W, pair->key, pair->value);
+	}
+}
+
+@
+
+=
+wcl_declaration *Patterns::parse_directory(pathname *P) {
+	wcl_declaration *M = WCL::new(MISCELLANY_WCLTYPE);
+	M->associated_path = P;
+	scan_directory *D = Directories::open(P);
+	if (D) {
+		TEMPORARY_TEXT(leafname)
+		while (Directories::next(D, leafname)) {
+			if (Platform::is_folder_separator(Str::get_last_char(leafname))) {
+				TEMPORARY_TEXT(name)
+				WRITE_TO(name, "%S", leafname);
+				Str::delete_last_character(name);
+				pathname *Q = Pathnames::down(P, name);
+				filename *pattern_file = Filenames::in(Q, I"pattern.inweb");
+				if (TextFiles::exists(pattern_file) == FALSE) {
+					pattern_file = Filenames::in(Q, I"pattern.txt");
+					if (TextFiles::exists(pattern_file) == FALSE)
+						continue;
+				}
+				wcl_declaration *D = WCL::read_just_one(pattern_file, PATTERN_WCLTYPE);
+				if (D) WCL::place_within(D, M);
+				DISCARD_TEXT(name)
+			}
+		}
+		DISCARD_TEXT(leafname)
+		Directories::close(D);
+	}
+	return M;
+}
+
+@ Pattern files are WCL:
+
+=
+void Patterns::parse_declaration(wcl_declaration *D) {
+	ls_pattern *wp = CREATE(ls_pattern);
 	@<Initialise the pattern structure@>;
-	@<Locate the pattern directory@>;
-	@<Read in the pattern.txt file@>;
-	return wp;
+	@<Read in the pattern file@>;
 }
 
 @<Initialise the pattern structure@> =
-	wp->pattern_name = Str::duplicate(name);
+	wp->declaration = D;
+	wp->pattern_format = NULL;
+	wp->pattern_name = NULL;
 	wp->pattern_location = NULL;
 	wp->plugins = NEW_LINKED_LIST(weave_plugin);
 	wp->colour_schemes = NEW_LINKED_LIST(colour_scheme);
-	wp->based_on = NULL;
+	wp->based_on_name = NULL;
 	wp->asset_rules = Assets::new_asset_rules_list();
-	wp->patterned_for = W;
 	wp->footnotes_plugin = NULL;
 	wp->mathematics_plugin = NULL;
-	wp->default_range = Str::duplicate(I"0");
+	wp->default_range = NULL;
 	wp->initial_extension = NULL;
 	wp->post_commands = NEW_LINKED_LIST(text_stream);
 	wp->blocked_templates = NEW_LINKED_LIST(text_stream);
+	wp->bibliographic_settings = NEW_LINKED_LIST(ls_pattern_pair);
 	wp->commands = 0;
 	wp->name_command_given = FALSE;
 
-@<Locate the pattern directory@> =
-	wp->pattern_location = NULL;
-	pathname *CP = Colonies::patterns_path();
-	if (CP) {
-		wp->pattern_location = Pathnames::down(CP, name);
-		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
-		if (TextFiles::exists(pattern_file) == FALSE) wp->pattern_location = NULL;
+@<Read in the pattern file@> =
+	text_file_position tfp = D->body_position;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		Patterns::scan_pattern_line(line, &tfp, (void *) wp);
+		DISCARD_TEXT(line);
+		tfp.line_count++;
 	}
-	if (wp->pattern_location == NULL) {
-		wp->pattern_location = Pathnames::down(
-			Pathnames::down(W->path_to_web, I"Patterns"), name);
-		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
-		if (TextFiles::exists(pattern_file) == FALSE) wp->pattern_location = NULL;
-	}
-	if (wp->pattern_location == NULL) {
-		wp->pattern_location = Pathnames::down(Pathnames::path_to_inweb_patterns(), name);
-		pattern_file = Filenames::in(wp->pattern_location, I"pattern.txt");
-		if (TextFiles::exists(pattern_file) == FALSE) wp->pattern_location = NULL;
-	}
-	if (wp->pattern_location == NULL)
-		Errors::fatal_with_text("no such weave pattern as '%S'", name);
-
-@<Read in the pattern.txt file@> =
-	if (pattern_file)
-		TextFiles::read(pattern_file, FALSE, "can't open pattern.txt file",
-			TRUE, Patterns::scan_pattern_line, NULL, wp);
-	if (wp->pattern_format == NULL)
-		Errors::fatal_with_text("pattern did not specify a format", name);
+	D->object_declared = STORE_POINTER_ls_pattern(wp);
 	if (wp->name_command_given == FALSE)
-		Errors::fatal_with_text("pattern did not name itself at the top", name);
+		Errors::fatal("pattern did not name itself at the top");
+	wp->pattern_location = Filenames::up(D->associated_file);
+	if (WCL::check_name(D, wp->pattern_name) == FALSE) {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "pattern has two different names, '%S' and '%S'",
+			D->name, wp->pattern_name);
+		WCL::error(D, &(D->declaration_position), msg);
+		DISCARD_TEXT(msg)
+	}
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%S", Pathnames::directory_name(wp->pattern_location));
+	if (Str::ne_insensitive(name, wp->pattern_name)) {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "pattern has two different names, '%S' and '%S'",
+			name, wp->pattern_name);
+		WCL::error(D, &(D->declaration_position), msg);
+		DISCARD_TEXT(msg)
+	}
+	DISCARD_TEXT(name)
+
+@ =
+void Patterns::resolve_declaration(wcl_declaration *D) {
+}
+
+weave_format *Patterns::get_format(ls_web *W, ls_pattern *wp) {
+	if (wp == NULL) return NULL;
+	if (wp->pattern_format == NULL) {
+		ls_pattern *basis = Patterns::basis(W->declaration, wp);
+		if (basis) return Patterns::get_format(W, basis);
+	}
+	return wp->pattern_format;
+}
+
+text_stream *Patterns::get_default_range(ls_web *W, ls_pattern *wp) {
+	if (wp == NULL) return I"0";
+	if (Str::len(wp->default_range) == 0) {
+		ls_pattern *basis = Patterns::basis(W->declaration, wp);
+		if (basis) return Patterns::get_default_range(W, basis);
+		return I"0";
+	}
+	return wp->default_range;
+}
+
+text_stream *Patterns::get_mathematics_plugin(ls_web *W, ls_pattern *wp) {
+	if (wp == NULL) return NULL;
+	if (Str::len(wp->mathematics_plugin) == 0) {
+		ls_pattern *basis = Patterns::basis(W->declaration, wp);
+		if (basis) return Patterns::get_mathematics_plugin(W, basis);
+	}
+	return wp->mathematics_plugin;
+}
+
+text_stream *Patterns::get_footnotes_plugin(ls_web *W, ls_pattern *wp) {
+	if (wp == NULL) return NULL;
+	if (Str::len(wp->footnotes_plugin) == 0) {
+		ls_pattern *basis = Patterns::basis(W->declaration, wp);
+		if (basis) return Patterns::get_footnotes_plugin(W, basis);
+	}
+	return wp->footnotes_plugin;
+}
+
+ls_pattern *Patterns::basis(wcl_declaration *D, ls_pattern *wp) {
+	if ((wp) && (Str::len(wp->based_on_name) > 0))
+		return Patterns::find(D, wp->based_on_name);
+	return NULL;
+}
 
 @ The Foundation module provides a standard way to scan text files line by
 line, and this is used to send each line in the |pattern.txt| file to the
@@ -102,7 +207,7 @@ following routine:
 
 =
 void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, void *X) {
-	weave_pattern *wp = (weave_pattern *) X;
+	ls_pattern *wp = (ls_pattern *) X;
 
 	Str::trim_white_space(line); /* ignore trailing space */
 	if (Str::len(line) == 0) return; /* ignore blank lines */
@@ -115,18 +220,10 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 		if ((Str::eq_insensitive(key, I"name")) && (wp->commands == 1)) {
 			match_results mr2 = Regexp::create_mr();
 			if (Regexp::match(&mr2, value, U"(%c+?) based on (%c+)")) {
-				if (Str::ne_insensitive(mr2.exp[0], wp->pattern_name)) {
-					Errors::in_text_file("wrong pattern name", tfp);
-				}
-				wp->based_on = Patterns::find(wp->patterned_for, mr2.exp[1]);
-				wp->pattern_format = wp->based_on->pattern_format;
-				wp->default_range = Str::duplicate(wp->based_on->default_range);
-				wp->mathematics_plugin = Str::duplicate(wp->based_on->mathematics_plugin);
-				wp->footnotes_plugin = Str::duplicate(wp->based_on->footnotes_plugin);
+				wp->pattern_name = Str::duplicate(mr2.exp[0]);
+				wp->based_on_name = Str::duplicate(mr2.exp[1]);
 			} else {
-				if (Str::ne_insensitive(value, wp->pattern_name)) {
-					Errors::in_text_file("wrong pattern name", tfp);
-				}
+				wp->pattern_name = Str::duplicate(value);
 			}
 			Regexp::dispose_of(&mr2);
 			wp->name_command_given = TRUE;
@@ -153,7 +250,10 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 		} else if (Str::eq_insensitive(key, I"bibliographic data")) {
 			match_results mr2 = Regexp::create_mr();
 			if (Regexp::match(&mr2, value, U"(%c+?) = (%c+)")) {
-				Bibliographic::set_datum(wp->patterned_for, mr2.exp[0], mr2.exp[1]);
+				ls_pattern_pair *pair = CREATE(ls_pattern_pair);
+				pair->key = Str::duplicate(mr2.exp[0]);
+				pair->value = Str::duplicate(mr2.exp[1]);
+				ADD_TO_LINKED_LIST(pair, ls_pattern_pair, wp->bibliographic_settings);
 			} else {
 				Errors::in_text_file("syntax is 'bibliographic data: X = Y'", tfp);
 			}
@@ -200,7 +300,7 @@ In effect, a pattern can hold a shell script to run after each weave (subset)
 completes.
 
 =
-void Patterns::post_process(weave_pattern *pattern, weave_order *wv) {
+void Patterns::post_process(ls_pattern *pattern, weave_order *wv) {
 	text_stream *T;
 	LOOP_OVER_LINKED_LIST(T, text_stream, pattern->post_commands) {
 		filename *last_F = NULL;
@@ -244,8 +344,8 @@ Note that if you're rash enough to set up a cycle of patterns inheriting
 from each other then this routine will lock up into an infinite loop.
 
 =
-filename *Patterns::find_template(weave_pattern *pattern, text_stream *leafname) {
-	for (weave_pattern *wp = pattern; wp; wp = wp->based_on) {
+filename *Patterns::find_template(ls_web *W, ls_pattern *pattern, text_stream *leafname) {
+	for (ls_pattern *wp = pattern; wp; wp = Patterns::basis(W->declaration, wp)) {
 		text_stream *T;
 		LOOP_OVER_LINKED_LIST(T, text_stream, pattern->blocked_templates)
 			if (Str::eq_insensitive(T, leafname))
@@ -259,9 +359,9 @@ filename *Patterns::find_template(weave_pattern *pattern, text_stream *leafname)
 @ Similarly, but looking in an intermediate directory:
 
 =
-filename *Patterns::find_file_in_subdirectory(weave_pattern *pattern,
+filename *Patterns::find_file_in_subdirectory(ls_web *W, ls_pattern *pattern,
 	text_stream *dirname, text_stream *leafname) {
-	for (weave_pattern *wp = pattern; wp; wp = wp->based_on) {
+	for (ls_pattern *wp = pattern; wp; wp = Patterns::basis(W->declaration, wp)) {
 		pathname *P = Pathnames::down(wp->pattern_location, dirname);
 		filename *F = Filenames::in(P, leafname);
 		if (TextFiles::exists(F)) return F;
@@ -270,9 +370,9 @@ filename *Patterns::find_file_in_subdirectory(weave_pattern *pattern,
 }
 
 @ =
-void Patterns::include_plugins(OUTPUT_STREAM, ls_web *W, weave_pattern *pattern,
-	filename *from, int verbosely, colony *context) {
-	for (weave_pattern *p = pattern; p; p = p->based_on) {
+void Patterns::include_plugins(OUTPUT_STREAM, ls_web *W, ls_pattern *pattern,
+	filename *from, int verbosely, ls_colony *context) {
+	for (ls_pattern *p = pattern; p; p = Patterns::basis(W->declaration, p)) {
 		weave_plugin *wp;
 		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
 			Assets::include_plugin(OUT, W, wp, pattern, from, verbosely, context);

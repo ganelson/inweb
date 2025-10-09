@@ -436,7 +436,7 @@ held in |ls_holon| objects. (Note that a definition of a symbol is not a holon.)
 
 Parsing a unit mostly involves "classifying" its lines according to the current
 notation being used for LP. We support multiple notations, with the current
-parsing rules being expressed as an |ls_syntax| object. Classification of a
+parsing rules being expressed as an |ls_notation| object. Classification of a
 line produces |ls_class| objects as intermediate results, and if it goes badly
 then it can also produce errors, each stored as an |ls_error|.
 
@@ -471,7 +471,7 @@ chunk must have at least one line. The empty program would be stored as:
 @ The fundamental things we can do with a web, then, are:
 
 (a) Parsing. Literate source has highly customisable markup syntax: see
-//Web Syntax//.
+//Web Notations//.
 
 (b) Tangling. See //The Tangler// for how this is done. Note that tangling
 can be performed entirely in memory, so that tools such as Inform can read

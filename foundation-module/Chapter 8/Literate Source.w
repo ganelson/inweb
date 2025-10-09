@@ -14,7 +14,7 @@ which is a list of |ls_chunk|, which is a list of |ls_line|.
 
 =
 typedef struct ls_unit {
-	struct ls_syntax *syntax; /* what notation is this unit written with? */
+	struct ls_notation *syntax; /* what notation is this unit written with? */
 	struct programming_language *language; /* what language is the program in? */
 
 	struct ls_section *owning_section; /* can be NULL if not read from a web */
@@ -53,7 +53,7 @@ need to get that from somewhere, too. Either or both can be |NULL|, which
 means the current working directory.
 
 =
-ls_unit *LiterateSource::begin_unit(ls_section *S, ls_syntax *syntax,
+ls_unit *LiterateSource::begin_unit(ls_section *S, ls_notation *syntax,
 	programming_language *language, pathname *extracts_path, ls_web *context) {
 	ls_unit *lsu = CREATE(ls_unit);
 	lsu->syntax = syntax;
@@ -262,7 +262,7 @@ void LiterateSource::complete_unit(ls_unit *lsu) {
 	@<Trim redundant lines away from the chunks@>;
 
 	if ((LiterateSource::unit_has_purpose(lsu) == FALSE) &&
-		(WebSyntax::supports(lsu->syntax, PURPOSE_UNDER_HEADING_WSF)))
+		(WebNotation::supports(lsu->syntax, PURPOSE_UNDER_HEADING_WSF)))
 		@<Construe an opening paragraph consisting only of commentary as a purpose text@>;
 
 	@<Parse some last nuances for text extracts@>;
@@ -690,7 +690,7 @@ empty as a result.
 		else chunk->last_line->next_line = NULL;
 	}
 	if (chunk->first_line == NULL) LiterateSource::remove_chunk_from_par(chunk, par);
-	else if (WebSyntax::supports(lsu->syntax, TRIMMED_EXTRACTS_WSF))
+	else if (WebNotation::supports(lsu->syntax, TRIMMED_EXTRACTS_WSF))
 		@<Trim whitespace lines from start or end of this chunk@>;
 
 @ A definition chunk begins with a |DEFINITION_MAJLC| line, followed by 0
@@ -993,7 +993,7 @@ The result will be a unit of one paragraph, holding one chunk, corresponding
 to a single nameless holon.
 
 =
-ls_unit *LiterateSource::code_fragment_to_unit(ls_syntax *syntax,
+ls_unit *LiterateSource::code_fragment_to_unit(ls_notation *syntax,
 	programming_language *language, text_stream *code, text_file_position tfp) {
 	ls_unit *lsu = LiterateSource::begin_unit(NULL, syntax, language, NULL, NULL);
 	LiterateSource::feed_paragraph_start(lsu, &tfp);
@@ -1258,11 +1258,11 @@ typedef struct ls_footnote {
 @ Where:
 
 =
-int LiterateSource::detect_footnote(ls_syntax *S,
+int LiterateSource::detect_footnote(ls_notation *S,
 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) {
-	if (WebSyntax::supports(S, FOOTNOTES_WSF)) {
-		text_stream *on_notation = WebSyntax::notation(S, FOOTNOTES_WSF, 1);
-		text_stream *off_notation = WebSyntax::notation(S, FOOTNOTES_WSF, 2);
+	if (WebNotation::supports(S, FOOTNOTES_WSF)) {
+		text_stream *on_notation = WebNotation::notation(S, FOOTNOTES_WSF, 1);
+		text_stream *off_notation = WebNotation::notation(S, FOOTNOTES_WSF, 2);
 		int N1 = Str::len(on_notation);
 		int N2 = Str::len(off_notation);
 		if ((N1 > 0) && (N2 > 0))

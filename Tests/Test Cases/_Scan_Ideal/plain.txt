@@ -1,4 +1,4 @@
-web "plain" (Inweb, Plain Text): 1 section : 3 paragraphs : 19 lines
+web "plain" (Plain Text program): 1 section : 3 paragraphs : 19 lines
 Purpose 'Tangling and weaving some text file.'
 S1
     C1: holon (used sequentially)
