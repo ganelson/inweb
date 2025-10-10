@@ -1,0 +1,20 @@
+-cases 'inweb/literate-test/Tests/Test Cases'
+-singular temp
+
+-recipe
+
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/$CASE--I.txt
+
+	step: inweb/literate-test/Tangled/literate-test -test-$CASE $PATH/$CASE.txt >$A 2>&1
+	or: 'produced errors in literate-test' $A
+
+	show: $A
+
+	exists: $I
+	or: 'passed without errors but no blessed output existed'
+
+	match platform text: $A $I
+	or: 'produced incorrect output'
+
+-end

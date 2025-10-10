@@ -14,12 +14,13 @@ SDKPATH := $(shell xcrun -show-sdk-path)
 
 CCOPTS = -DPLATFORM_MACOS=1 -target arm64-apple-macos11 -isysroot $(SDKPATH) $(CFLAGS)
 
-MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-c99-compat -ferror-limit=1000
+MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-unused-macros -Wno-shadow -Wno-cast-align -Wno-variadic-macros -Wno-missing-noreturn -Wno-missing-prototypes -Wno-unused-parameter -Wno-padded -Wno-missing-variable-declarations -Wno-unreachable-code-break -Wno-class-varargs -Wno-format-nonliteral -Wno-cast-qual -Wno-double-promotion -Wno-comma -Wno-strict-prototypes -Wno-extra-semi-stmt -Wno-unreachable-code-return -Wno-unused-but-set-variable -Wno-declaration-after-statement -Wno-c99-compat -Wno-pre-c11-compat -Wno-switch-default -Wno-reserved-identifier -ferror-limit=1000
 
 FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable
 
 ME = inweb
 FTEST = $(ME)/foundation-test
+LTEST = $(ME)/literate-test
 LBUILD = $(ME)/licence-build
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
@@ -29,7 +30,7 @@ COLONY = $(ME)/colony.inweb
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
+all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test $(LTEST)/Tangled/literate-test
 
 $(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-licence-build)
@@ -40,15 +41,20 @@ $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module
 $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-ftest)
 
+$(LTEST)/Tangled/literate-test: $(LTEST)/Contents.w $(LTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w $(ME)/literate-module/Contents.w $(ME)/literate-module/Chapter*/*.w
+	$(call make-ltest)
+
 .PHONY: force
 force: $(ME)/platform-settings.mk
 	$(call make-me)
 	$(call make-ftest)
+	$(call make-ltest)
 	$(call make-licence-build)
 
 .PHONY: makers
 makers:
 	$(INWEB) make-makefile $(FTEST) -to $(FTEST)/foundation-test.mk
+	$(INWEB) make-makefile $(LTEST) -to $(LTEST)/literate-test.mk
 	$(INWEB) make-makefile $(LBUILD) -to $(LBUILD)/licence-build.mk
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macos.mk -script $(ME)/Materials/platforms/macos.mkscript
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macos.mk -platform macos -script $(ME)/scripts/inweb.mkscript
@@ -56,6 +62,8 @@ makers:
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macos32.mk -platform macos32 -script $(ME)/scripts/inweb.mkscript
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macosarm.mk -script $(ME)/Materials/platforms/macosarm.mkscript
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macosarm.mk -platform macosarm -script $(ME)/scripts/inweb.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macosintel.mk -script $(ME)/Materials/platforms/macosintel.mkscript
+	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macosintel.mk -platform macosintel -script $(ME)/scripts/inweb.mkscript
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/macosuniv.mk -script $(ME)/Materials/platforms/macosuniv.mkscript
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/inweb-on-macosuniv.mk -platform macosuniv -script $(ME)/scripts/inweb.mkscript
 	$(INWEB) make-makefile -to $(ME)/Materials/platforms/windows.mk -script $(ME)/Materials/platforms/windows.mkscript
@@ -69,6 +77,7 @@ makers:
 initial: $(ME)/platform-settings.mk
 	$(call make-me-once-tangled)
 	$(call make-ftest)
+	$(call make-ltest)
 	$(call make-licence-build)
 
 .PHONY: safe
@@ -99,6 +108,11 @@ define make-ftest
 	make -f $(FTEST)/foundation-test.mk force
 endef
 
+define make-ltest
+	$(INWEB) make-makefile $(LTEST) -to $(LTEST)/literate-test.mk
+	make -f $(LTEST)/literate-test.mk force
+endef
+
 define make-licence-build
 	$(INWEB) make-makefile $(LBUILD) -to $(LBUILD)/licence-build.mk
 	make -f $(LBUILD)/licence-build.mk force
@@ -108,6 +122,7 @@ endef
 test:
 	$(INTEST) -from $(ME) all
 	$(INTEST) -from $(FTEST) all
+	$(INTEST) -from $(LTEST) all
 
 .PHONY: commit
 commit:
@@ -154,6 +169,8 @@ pages:
 	$(INWEB) weave -colony $(COLONY) -member inweb
 	$(INWEB) weave -colony $(COLONY) -member foundation
 	$(INWEB) weave -colony $(COLONY) -member foundation-test
+	$(INWEB) weave -colony $(COLONY) -member literate
+	$(INWEB) weave -colony $(COLONY) -member literate-test
 
 .PHONY: clean
 clean:

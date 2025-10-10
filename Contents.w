@@ -7,6 +7,7 @@ Version Name: Invasion
 Version Number: 9.0
 
 Import: foundation
+Import: literate
 
 Manual
 	Introduction to Inweb

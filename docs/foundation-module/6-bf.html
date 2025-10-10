@@ -41,9 +41,11 @@ MathJax = {
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Octagram.png" height=72> </a></h1>
 <ul><li><a href="../inweb/index.html">inweb</a></li>
-</ul><h2>Foundation Module</h2><ul>
+</ul><h2>Foundation Modules</h2><ul>
 <li><a href="index.html"><span class="selectedlink">foundation</span></a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
+<li><a href="../literate-module/index.html">literate</a></li>
+<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -254,7 +256,7 @@ be at least <span class="extract"><span class="extract-syntax">length</span></sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">handle</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="function-syntax">BinaryFiles::try_to_open_for_reading</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">BinaryFiles::try_to_open_for_reading</span></span>:<br/><a href="6-bf.html#SP7">&#167;7</a>, <a href="6-bf.html#SP9">&#167;9</a><br/>HTML Formats - <a href="10-hf.html#SP5_11">&#167;5.11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="function-syntax">BinaryFiles::try_to_open_for_reading</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">BinaryFiles::try_to_open_for_reading</span></span>:<br/><a href="6-bf.html#SP7">&#167;7</a>, <a href="6-bf.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-fln.html#SP10" class="function-link"><span class="function-syntax">Filenames::fopen</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="string-syntax">"rb"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
@@ -268,7 +270,7 @@ be at least <span class="extract"><span class="extract-syntax">length</span></sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="3-fln.html#SP10" class="function-link"><span class="function-syntax">Filenames::fopen</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="string-syntax">"wb"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BinaryFiles::close</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">BinaryFiles::close</span></span>:<br/><a href="6-bf.html#SP7">&#167;7</a>, <a href="6-bf.html#SP9">&#167;9</a>, <a href="6-bf.html#SP11">&#167;11</a><br/>HTML Formats - <a href="10-hf.html#SP5_11">&#167;5.11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">handle</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BinaryFiles::close</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">BinaryFiles::close</span></span>:<br/><a href="6-bf.html#SP7">&#167;7</a>, <a href="6-bf.html#SP9">&#167;9</a>, <a href="6-bf.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">handle</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">fclose</span><span class="plain-syntax">(</span><span class="identifier-syntax">handle</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -472,7 +474,7 @@ by <span class="extract"><span class="extract-syntax">shift</span></span> number
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="5-ee.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-dl.html">2</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresscurrent">bf</li><li class="progresssection"><a href="6-id.html">id</a></li><li class="progresssection"><a href="6-sd.html">sd</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progresschapter"><a href="8-wcl.html">8</a></li><li class="progresschapter"><a href="9-pl.html">9</a></li><li class="progresschapter"><a href="10-wd.html">10</a></li><li class="progresschapter"><a href="11-mk.html">11</a></li><li class="progressnext"><a href="6-id.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="5-ee.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-dl.html">2</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresscurrent">bf</li><li class="progresssection"><a href="6-id.html">id</a></li><li class="progresssection"><a href="6-sd.html">sd</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progressnext"><a href="6-id.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

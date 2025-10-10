@@ -444,17 +444,17 @@ signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:
 = (text)
 	To see how cross-references are implemented, see //Format Methods//,
-	or more generally the whole of //Chapter 5//; to decipher the text,
-	Inweb uses code from //foundation// at //foundation: Web Modules//.
+	or more generally the whole of //Weaving//; to decipher the text,
+	Inweb uses code from //literate// at //literate: Web Modules//.
 =
 To see how cross-references are implemented, see //Format Methods//,
-or more generally the whole of //Chapter 5//; to decipher the text,
-Inweb uses code from //foundation// at //foundation: Web Modules//.
+or more generally the whole of //Weaving//; to decipher the text,
+Inweb uses code from //literate// at //literate: Web Modules//.
 
 What happened in that last sentence is that Inweb noticed the following:
 (a) "Format Methods" is the name of a section of code in the Inweb web;
-(b) The web also has a "Chapter 5";
-(c) It uses a module called "foundation";
+(b) The web also has a chapter called "Weaving";
+(c) It uses a module called "literate";
 (d) And that module has a section called "Web Modules".
 
 Inweb then made links accordingly. Chapters, which can be referred to either

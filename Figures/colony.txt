@@ -5,6 +5,8 @@ Colony {
 	member: "inweb"           at ""                     to "inweb"
 	member: "foundation"      at "foundation-module"    to "foundation-module"
 	member: "foundation-test" at "foundation-test"
+	member: "literate"        at "literate-module"      to "literate-module"
+	member: "literate-test"   at "literate-test"
 	member: "goldbach"        at "Examples/goldbach"
 	member: "twinprimes"      at "Examples/twinprimes.inweb"
 	member: "eastertide"      at "Examples/eastertide"
@@ -12,9 +14,11 @@ Colony {
 	Navigation {
 		[[Home "<Octagram.png@72>" -> overview]]
 		[[Item "inweb"]]
-		[[Menu "Foundation Module"]]
+		[[Menu "Foundation Modules"]]
 		[[Item "foundation"]]
 		[[Item "foundation-test"]]
+		[[Item "literate"]]
+		[[Item "literate-test"]]
 		[[Menu "Example Webs"]]
 		[[Item "goldbach"]]
 		[[Item "twinprimes"]]

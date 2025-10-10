@@ -484,16 +484,6 @@ void Unit::test_JSON_helper(text_stream *text, text_file_position *tfp, void *st
 	}
 }
 
-@h Web Control Language.
-
-=
-void Unit::test_WCL(text_stream *arg) {
-	filename *F = Filenames::from_text(arg);
-	wcl_declaration *D = WCL::read_for_type_only(F, MISCELLANY_WCLTYPE);
-	WCL::write(STDOUT, D);
-	WCL::summarise(STDOUT, D);
-}
-
 @h Markdown.
 
 @e BOXED_QUOTES_MARKDOWNFEATURE

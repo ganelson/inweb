@@ -357,6 +357,7 @@ been taken out at the parsing stage.)
 	DISCARD_TEXT(title)
 
 @<Render Inweb link@> =
+	#ifdef LITERATE_MODULE
 	TEMPORARY_TEXT(address)
 	MDRenderer::recurse(address, state, md->down, RAW_MDRMODE, variation);
 	TEMPORARY_TEXT(url)
@@ -375,6 +376,7 @@ been taken out at the parsing stage.)
 	DISCARD_TEXT(url)
 	DISCARD_TEXT(title)
 	DISCARD_TEXT(address)
+	#endif
 
 @<Render image@> =
 	TEMPORARY_TEXT(URI)
@@ -415,7 +417,9 @@ been taken out at the parsing stage.)
 				Str::truncate(URI, j);
 			}
 		}
+		#ifdef LITERATE_MODULE
 		HTMLWeaving::notify_image((weave_order *) state, URI);
+		#endif
 	}
 	if (Str::len(title) > 0) {
 		if (mode & TAGS_MDRMODE) {
@@ -457,8 +461,10 @@ been taken out at the parsing stage.)
 		MDRenderer::recurse(TEX, state, c, m, variation);
 		m = m & (~EXISTING_PAR_MDRMODE);
 	}
+	#ifdef LITERATE_MODULE
 	HTMLWeaving::render_maths(OUT, (weave_order *) state, TEX, FALSE,
 		(md->type == DISPLAYED_TEX_MIT)?TRUE:FALSE);
+	#endif
 	DISCARD_TEXT(TEX)
 
 @<Render a footnote body@> =

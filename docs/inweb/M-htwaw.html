@@ -42,9 +42,11 @@ MathJax = {
 		<nav role="navigation">
 		<h1><a href="../index.html"><img src="../docs-assets/Octagram.png" height=72> </a></h1>
 <ul><li><a href="index.html"><span class="selectedlink">inweb</span></a></li>
-</ul><h2>Foundation Module</h2><ul>
+</ul><h2>Foundation Modules</h2><ul>
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
+<li><a href="../literate-module/index.html">literate</a></li>
+<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -617,20 +619,20 @@ place cross-references like so:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="identifier-syntax">how</span><span class="plain-syntax"> </span><span class="identifier-syntax">cross</span><span class="plain-syntax">-</span><span class="identifier-syntax">references</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">implemented</span><span class="plain-syntax">, </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="comment-syntax">Format Methods//,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">generally</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">whole</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="comment-syntax">Chapter 5//; to decipher the text,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Inweb</span><span class="plain-syntax"> </span><span class="identifier-syntax">uses</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="comment-syntax">foundation// at </span><a href="../foundation-module/8-wm.html" class="internal">Web Modules (in foundation)</a><span class="comment-syntax">.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">generally</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">whole</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="comment-syntax">Weaving//; to decipher the text,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Inweb</span><span class="plain-syntax"> </span><span class="identifier-syntax">uses</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="comment-syntax">literate// at </span><a href="../literate-module/1-wm.html" class="internal">Web Modules (in literate)</a><span class="comment-syntax">.</span>
 </pre>
-<p class="commentary">To see how cross-references are implemented, see <a href="../foundation-module/10-fm.html" class="internal">Format Methods (in foundation)</a>,
-or more generally the whole of <a href="../foundation-module/5-htm.html" class="internal">Chapter 5: Generating Websites (in foundation)</a>; to decipher the text,
-Inweb uses code from <a href="../foundation-module/index.html" class="internal">foundation</a> at <a href="../foundation-module/8-wm.html" class="internal">Web Modules (in foundation)</a>.
+<p class="commentary">To see how cross-references are implemented, see <a href="../literate-module/5-fm.html" class="internal">Format Methods (in literate)</a>,
+or more generally the whole of <a href="../literate-module/5-wd.html" class="internal">Chapter 5: Weaving (in literate)</a>; to decipher the text,
+Inweb uses code from <a href="../literate-module/index.html" class="internal">literate</a> at <a href="../literate-module/1-wm.html" class="internal">Web Modules (in literate)</a>.
 </p>
 
 <p class="commentary">What happened in that last sentence is that Inweb noticed the following:
 </p>
 
 <ul class="items"><li>(a) "Format Methods" is the name of a section of code in the Inweb web;
-</li><li>(b) The web also has a "Chapter 5";
-</li><li>(c) It uses a module called "foundation";
+</li><li>(b) The web also has a chapter called "Weaving";
+</li><li>(c) It uses a module called "literate";
 </li><li>(d) And that module has a section called "Web Modules".
 </li></ul>
 <p class="commentary">Inweb then made links accordingly. Chapters, which can be referred to either
@@ -667,8 +669,8 @@ this is certainly the case for C-like languages. For example,
 <span class="plain-syntax">    </span><span class="identifier-syntax">Individual</span><span class="plain-syntax"> </span><span class="identifier-syntax">sections</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">web</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">stored</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="comment-syntax">ls_section// structures,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">mostly</span><span class="plain-syntax"> </span><span class="identifier-syntax">created</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="comment-syntax">WebStructure::new_ls_section//.</span>
 </pre>
-<p class="commentary">produces: Individual lines of a web are stored in <a href="../foundation-module/8-ws.html#SP7" class="internal">ls_section</a> structures,
-and mostly created by <a href="../foundation-module/8-ws.html#SP7" class="internal">WebStructure::new_ls_section</a>. And that should link to the
+<p class="commentary">produces: Individual lines of a web are stored in <a href="../literate-module/1-ws.html#SP7" class="internal">ls_section</a> structures,
+and mostly created by <a href="../literate-module/1-ws.html#SP7" class="internal">WebStructure::new_ls_section</a>. And that should link to the
 structure definition and function of these names inside the Inweb program.
 </p>
 

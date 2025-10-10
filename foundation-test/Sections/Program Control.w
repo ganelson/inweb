@@ -17,7 +17,6 @@ Choosing which unit test to run on the basis of the command-line arguments.
 @e TEST_TREES_CLSW
 @e TEST_JSON_CLSW
 @e TEST_MARKDOWN_CLSW
-@e TEST_WCL_CLSW
 
 =
 int main(int argc, char **argv) {
@@ -44,8 +43,6 @@ int main(int argc, char **argv) {
 		U"test heterogeneous trees (X is ignored)");
 	CommandLine::declare_switch(TEST_JSON_CLSW, U"test-json", 2,
 		U"test decoding and encoding of JSON file X");
-	CommandLine::declare_switch(TEST_WCL_CLSW, U"test-wcl", 2,
-		U"test parsing of WCL file X");
 	CommandLine::declare_switch(TEST_MARKDOWN_CLSW, U"test-markdown", 2,
 		U"test decoding and rendering of Markdown notation in file X");
 
@@ -67,7 +64,6 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case TEST_TREES_CLSW: Unit::test_trees(); break;
 		case TEST_JSON_CLSW: Unit::test_JSON(arg); break;
 		case TEST_MARKDOWN_CLSW: Unit::test_Markdown(arg); break;
-		case TEST_WCL_CLSW: Unit::test_WCL(arg); break;
 	}
 }
 

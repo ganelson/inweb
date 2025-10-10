@@ -921,6 +921,7 @@ block (if there is one) names the language in use.
 		MDRenderer::slice(language, md, mode | ENTITIES_MDRMODE);
 	}
 	@<Decide on a language if none was supplied@>;
+	#ifdef LITERATE_MODULE
 	if ((Str::eq_insensitive(language, I"inform")) ||
 		(Str::eq_insensitive(language, I"inform7"))) {
 		@<Render as Inform 7 source text@>;
@@ -929,6 +930,7 @@ block (if there is one) names the language in use.
 	} else {
 		@<Render as some other programming language content@>;
 	}
+	#endif
 	DISCARD_TEXT(language_text)
 	DISCARD_TEXT(language)
 
@@ -1163,20 +1165,9 @@ void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 		if (col != current_col) {
 			if (current_col) HTML_CLOSE("span");
 			text_stream *span_class = NULL;
-			switch (col) {
-				case DEFINITION_COLOUR: span_class = I"syntaxdefinition"; break;
-				case FUNCTION_COLOUR:   span_class = I"syntaxfunction"; break;
-				case RESERVED_COLOUR:   span_class = I"syntaxreserved"; break;
-				case ELEMENT_COLOUR:    span_class = I"syntaxelement"; break;
-				case IDENTIFIER_COLOUR: span_class = I"syntaxidentifier"; break;
-				case HEADING_COLOUR:    span_class = I"syntaxheading"; break;
-				case CHARACTER_COLOUR:  span_class = I"syntaxcharacter"; break;
-				case CONSTANT_COLOUR:   span_class = I"syntaxconstant"; break;
-				case STRING_COLOUR:     span_class = I"syntaxstring"; break;
-				case PLAIN_COLOUR:      span_class = I"syntaxplain"; break;
-				case EXTRACT_COLOUR:    span_class = I"syntaxextract"; break;
-				case COMMENT_COLOUR:    span_class = I"syntaxcomment"; break;
-			}
+			#ifdef LITERATE_MODULE
+			span_class = Languages::colour_classname(col);
+			#endif
 			HTML_OPEN_WITH("span", "class=\"%S\"", span_class);
 			current_col = col;
 		}

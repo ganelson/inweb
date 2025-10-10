@@ -92,7 +92,6 @@ void Foundation::start(int argc, char **argv) {
 	Time::begin();
 	Pathnames::start();
 	MarkdownVariations::start();
-	WebNotation::create();
 	SPDXLicences::create();
 	@<Register the default debugging log aspects@>;
 	@<Register the default debugging log writers@>;

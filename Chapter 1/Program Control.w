@@ -44,6 +44,7 @@ int main(int argc, char **argv) {
 
 @<Initialise inweb@> =
 	Foundation::start(argc, argv);
+	LiterateModule::start();
 	WeavingFormats::create_weave_formats();
 
 @ We keep global settings to a minimum. Note that the installation path can
