@@ -543,7 +543,7 @@ void CommandLine::write_help(OUTPUT_STREAM, command_line_subcommand *help_on) {
 	if (NS > 0) {
 		OUTDENT;
 		WRITE("\n");
-		WRITE("Use '%s help COMMAND' for more on each command.\n\n");
+		WRITE("Use '%s help COMMAND' for more on each command.\n\n", PROGRAM_NAME);
 		WRITE("The following options are always available:\n\n");
 	}
 
