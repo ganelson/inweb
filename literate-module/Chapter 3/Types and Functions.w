@@ -40,7 +40,7 @@ language_type *Functions::new_struct(ls_web *W, text_stream *name, ls_section *S
 	str->elements = NEW_LINKED_LIST(structure_element);
 
 @<Add this to the lists for its web and its paragraph@> =
-	LiterateSource::tag_paragraph(par, I"Structures");
+	ParagraphTags::tag(par, I"Structures");
 	ADD_TO_LINKED_LIST(str, language_type, CodeAnalysis::language_types_list(W));
 	ls_paragraph_analysis *P = CodeAnalysis::paragraph_details(lst);
 	ADD_TO_LINKED_LIST(str, language_type, P->structures);

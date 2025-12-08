@@ -5,7 +5,7 @@ associated with a given web.
 
 @h Storing data.
 There are never more than a dozen or so key-value pairs, and it's more
-convenient to store them directly here than to use a dictionary.
+convenient to store them in a linked list than to use a dictionary.
 
 =
 typedef struct web_bibliographic_datum {
@@ -14,6 +14,7 @@ typedef struct web_bibliographic_datum {
 	int declaration_permitted; /* is the contents page of the web allowed to set this? */
 	int declaration_mandatory; /* is it positively required to? */
 	int on_or_off; /* boolean: which we handle as the string "On" or "Off" */
+	int default_setting_only; /* made by Inweb to ensure the key's existence */
 	struct web_bibliographic_datum *alias;
 	CLASS_DEFINITION
 } web_bibliographic_datum;
@@ -29,12 +30,14 @@ typedef struct web_bibliographic_datum {
 int Bibliographic::datum_can_be_declared(ls_web *W, text_stream *key) {
 	web_bibliographic_datum *bd = Bibliographic::look_up_datum(W, key);
 	if (bd == NULL) return FALSE;
+	while ((bd) && (bd->alias)) bd = bd->alias;
 	return bd->declaration_permitted;
 }
 
 int Bibliographic::datum_on_or_off(ls_web *W, text_stream *key) {
 	web_bibliographic_datum *bd = Bibliographic::look_up_datum(W, key);
 	if (bd == NULL) return FALSE;
+	while ((bd) && (bd->alias)) bd = bd->alias;
 	return bd->on_or_off;
 }
 
@@ -47,36 +50,21 @@ void Bibliographic::initialise_data(ls_web *W) {
 
 	bd = Bibliographic::set_datum(W, I"Title", I"Untitled");
 	bd = Bibliographic::set_datum(W, I"Author", I"Anonymous");
+	bd = Bibliographic::preset_datum(W, I"Purpose", I"");
 	bd = Bibliographic::set_datum(W, I"Language", I"None");
-	bd = Bibliographic::set_datum(W, I"Purpose", I"");
+	bd = Bibliographic::set_datum(W, I"Notation", I"");
 
 	bd = Bibliographic::set_datum(W, I"License", NULL);
-	bd->alias = Bibliographic::set_datum(W, I"Licence", NULL); /* alias US to UK spelling */
+	bd->alias = Bibliographic::preset_datum(W, I"Licence", NULL); /* alias US to UK spelling */
 
-	Bibliographic::set_datum(W, I"Short Title", NULL);
-	Bibliographic::set_datum(W, I"Capitalized Title", NULL);
-	Bibliographic::set_datum(W, I"Build Date", NULL);
-	Bibliographic::set_datum(W, I"Build Number", NULL);
-	Bibliographic::set_datum(W, I"Prerelease", NULL);
-	Bibliographic::set_datum(W, I"Semantic Version Number", NULL);
-	Bibliographic::set_datum(W, I"Version Number", I"1");
-	Bibliographic::set_datum(W, I"Version Name", NULL);
-	Bibliographic::set_datum(W, I"Index Template", NULL);
-	Bibliographic::set_datum(W, I"Preform Language", NULL);
-
-	bd = Bibliographic::set_datum(W, I"Declare Section Usage", I"Off"); bd->on_or_off = TRUE;
-	bd = Bibliographic::set_datum(W, I"Namespaces", I"Off"); bd->on_or_off = TRUE;
-	bd = Bibliographic::set_datum(W, I"Sequential Section Ranges", I"Off"); bd->on_or_off = TRUE;
-	bd = Bibliographic::set_datum(W, I"Strict Usage Rules", I"Off"); bd->on_or_off = TRUE;
-	bd = Bibliographic::set_datum(W, I"TeX Mathematics Notation", I"$");
-	bd = Bibliographic::set_datum(W, I"TeX Mathematics Displayed Notation", I"$$");
-	bd = Bibliographic::set_datum(W, I"Footnote Begins Notation", I"[");
-	bd = Bibliographic::set_datum(W, I"Footnote Ends Notation", I"]");
-	bd = Bibliographic::set_datum(W, I"Code In Commentary Notation", I"|");
-	bd = Bibliographic::set_datum(W, I"Code In Code Comments Notation", I"|");
-	bd = Bibliographic::set_datum(W, I"Cross-References Notation", I"//");
-	bd = Bibliographic::set_datum(W, I"Notation", NULL);
-	bd = Bibliographic::set_datum(W, I"Paragraph Numbers Visibility", I"On");
+	Bibliographic::preset_datum(W, I"Short Title", NULL);
+	Bibliographic::preset_datum(W, I"Build Date", NULL);
+	Bibliographic::preset_datum(W, I"Build Number", NULL);
+	Bibliographic::preset_datum(W, I"Prerelease", NULL);
+	Bibliographic::preset_datum(W, I"Semantic Version Number", NULL);
+	Bibliographic::preset_datum(W, I"Version Number", I"1");
+	Bibliographic::preset_datum(W, I"Version Name", NULL);
+	Bibliographic::preset_datum(W, I"Preform Language", NULL);
 }
 
 @ Once the declarations for a web have been processed, the following is called
@@ -95,8 +83,24 @@ void Bibliographic::check_required_data(ls_web *W) {
 @h Reading bibliographic data.
 Key names are case-sensitive.
 
+A slightly foolish feature, this; if text like "Wuthering Heights" is written to
+the "Title" key, then a full-caps "WUTHERING HEIGHTS" is returned by the query
+for "Capitalized Title". (This enables cover sheets which want to typeset the
+title in full caps to do so.) But strictly speaking the key "Capitalized Title"
+does not exist.
+
 =
 text_stream *Bibliographic::get_datum(ls_web *W, text_stream *key) {
+	if ((Str::begins_with(key, I"Capitalized ")) ||
+		(Str::begins_with(key, I"Capitalised "))) {
+		TEMPORARY_TEXT(key2)
+		Str::substr(key2, Str::at(key, 12), Str::end(key));
+		text_stream *value2 = Str::duplicate(Bibliographic::get_datum(W, key2));
+		DISCARD_TEXT(key2)
+		LOOP_THROUGH_TEXT(P, value2)
+			Str::put(P, Characters::toupper(Str::get(P)));
+		return value2;
+	}
 	web_bibliographic_datum *bd = Bibliographic::look_up_datum(W, key);
 	if (bd) return bd->value;
 	return NULL;
@@ -108,11 +112,17 @@ int Bibliographic::data_exists(ls_web *W, text_stream *key) {
 	return FALSE;
 }
 
+int Bibliographic::datum_has_been_set(ls_web *W, text_stream *key) {
+	web_bibliographic_datum *bd = Bibliographic::look_up_datum(W, key);
+	if ((bd) && (bd->default_setting_only == FALSE)) return TRUE;
+	return FALSE;
+}
+
 web_bibliographic_datum *Bibliographic::look_up_datum(ls_web *W, text_stream *key) {
 	web_bibliographic_datum *bd;
 	LOOP_OVER_BIBLIOGRAPHIC_DATA(bd, W)
 		if (Str::eq(key, bd->key)) {
-			if (bd->alias) return bd->alias;
+			while ((bd) && (bd->alias)) bd = bd->alias;
 			return bd;
 		}
 	return NULL;
@@ -126,8 +136,11 @@ so this routine never fails.
 web_bibliographic_datum *Bibliographic::set_datum(ls_web *W, text_stream *key, text_stream *val) {
 	web_bibliographic_datum *bd = Bibliographic::look_up_datum(W, key);
 	if (bd == NULL) @<Create a new datum, then@>
-	else Str::copy(bd->value, val);
-	if (Str::eq_wide_string(key, U"Title")) @<Also set a capitalized form@>;
+	else {
+		while ((bd) && (bd->alias)) bd = bd->alias;
+		Str::copy(bd->value, val);
+		bd->default_setting_only = FALSE;
+	}
 	return bd;
 }
 
@@ -139,20 +152,19 @@ web_bibliographic_datum *Bibliographic::set_datum(ls_web *W, text_stream *key, t
 	bd->declaration_permitted = TRUE;
 	bd->on_or_off = FALSE;
 	bd->alias = NULL;
+	bd->default_setting_only = FALSE;
 	ADD_TO_LINKED_LIST(bd, web_bibliographic_datum, W->bibliographic_data);
 
-@ A slightly foolish feature, this; if text like "Wuthering Heights" is
-written to the "Title" key, then a full-caps "WUTHERING HEIGHTS" is
-written to a "Capitalized Title" key. (This enables cover sheets which
-want to typeset the title in full caps to do so.)
+@ Almost the same, but distinguishing between default settings made here, and
+explicit settings from the user:
 
-@<Also set a capitalized form@> =
-	TEMPORARY_TEXT(recapped)
-	Str::copy(recapped, val);
-	LOOP_THROUGH_TEXT(P, recapped)
-		Str::put(P, Characters::toupper(Str::get(P)));
-	Bibliographic::set_datum(W, I"Capitalized Title", recapped);
-	DISCARD_TEXT(recapped)
+=
+web_bibliographic_datum *Bibliographic::preset_datum(ls_web *W, text_stream *key,
+	text_stream *val) {
+	web_bibliographic_datum *bd = Bibliographic::set_datum(W, key, val);
+	bd->default_setting_only = TRUE;
+	return bd;
+}
 
 @h Parsing bibliographic data.
 The following attempts to parse |line| as a key-value pair, i.e., as text
@@ -163,10 +175,11 @@ If |set| is |TRUE| then the setting is made in the web |W|: or, it that's not
 possible, an error is issued (but the function still returns |TRUE|).
 
 =
-int Bibliographic::parse_kvp(ls_web *W, text_stream *line, int set, text_file_position *tfp, text_stream *k) {
+int Bibliographic::parse_kvp(ls_web *W, text_stream *line, int set,
+	text_file_position *tfp, text_stream *k, int throw_error) {
 	int rv = FALSE;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, U"(%c+?): (%c+?) *")) {
+	if (Regexp::match(&mr, line, U"([A-Z]%c+?): (%c+?) *")) {
 		TEMPORARY_TEXT(key)
 		Str::copy(key, mr.exp[0]);
 		TEMPORARY_TEXT(value)
@@ -198,8 +211,12 @@ int Bibliographic::parse_kvp(ls_web *W, text_stream *line, int set, text_file_po
 		}
 		Bibliographic::set_datum(W, key, value);
 	} else {
-		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "no such bibliographic datum: %S", key);
-		Errors::in_text_file_S(err, tfp);
-		DISCARD_TEXT(err)
+		if (throw_error) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "no such bibliographic datum: %S", key);
+			Errors::in_text_file_S(err, tfp);
+			DISCARD_TEXT(err)
+		} else {
+			return FALSE;
+		}
 	}

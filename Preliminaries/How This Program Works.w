@@ -11,7 +11,7 @@ Inweb, which is a literate program or "web". Before diving in:
 fact that it uses some extension syntaxes provided by //inweb// itself.
 Turn to //The InC Dialect// for full details, but essentially: it's plain
 old C without predeclarations or header files, and where functions have names
-like |LiterateSource::tag_paragraph| rather than just |add_by_name|.
+like |ParagraphTags::tag| rather than just |add_by_name|.
 (c) Inweb makes use of a "module" of utility functions called //foundation//.
 Indeed, as will become quickly apparent, almost its entire functionality is
 carried out by foundation: Inweb itself is little more than a command-line

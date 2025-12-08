@@ -29,6 +29,8 @@
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -48,91 +50,82 @@
 
 <ul class="toc"><li><a href="P-htpw.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-htpw.html#SP2">&#167;2. Working out what to do, and what to do it to</a></li><li><a href="P-htpw.html#SP4">&#167;4. Adding to Inweb</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites.</b>This page is to help readers to get their bearings in the source code for
-Inweb, which is a literate program or "web". Before diving in:
-</p>
-
-<ul class="items"><li>(a) It helps to have some experience of reading webs. The short examples
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites.</b>  This page is to help readers to get their bearings in the source code for
+Inweb, which is a literate program or &quot;web&quot;. Before diving in:
+(a) It helps to have some experience of reading webs. The short examples
 <a href="../goldbach/index.html" class="internal">goldbach</a> and <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a> are enough to give the idea.
-</li><li>(b) Inweb is written in C, in fact ANSI C99, but this is disguised by the
+(b) Inweb is written in C, in fact ANSI C99, but this is disguised by the
 fact that it uses some extension syntaxes provided by <a href="index.html" class="internal">inweb</a> itself.
 Turn to <a href="M-tid.html" class="internal">The InC Dialect</a> for full details, but essentially: it's plain
 old C without predeclarations or header files, and where functions have names
-like <span class="extract"><span class="extract-syntax">LiterateSource::tag_paragraph</span></span> rather than just <span class="extract"><span class="extract-syntax">add_by_name</span></span>.
-</li><li>(c) Inweb makes use of a "module" of utility functions called <a href="../foundation-module/index.html" class="internal">foundation</a>.
+like <code>ParagraphTags::tag</code> rather than just <code>add_by_name</code>.
+(c) Inweb makes use of a &quot;module&quot; of utility functions called <a href="../foundation-module/index.html" class="internal">foundation</a>.
 Indeed, as will become quickly apparent, almost its entire functionality is
 carried out by foundation: Inweb itself is little more than a command-line
-interface to control what is done. See <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Working out what to do, and what to do it to.</b>Inweb is a C program, so it begins at <a href="1-pc.html#SP3" class="internal">main</a>, in <a href="1-pc.html" class="internal">Program Control</a>. PC
+interface to control what is done. See <a href="../foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Working out what to do, and what to do it to.</b>  Inweb is a C program, so it begins at <a href="1-pc.html#SP3" class="internal">main</a>, in <a href="1-pc.html" class="internal">Program Control</a>. PC
 works out where Inweb is installed, then calls <a href="1-cnf.html" class="internal">Configuration</a>, which
-<a href="1-cnf.html#SP2" class="internal">reads the command line options</a>.
-</p>
-
-<p class="commentary">The user's choices are stored in an <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> object, and Inweb
+<a href="1-cnf.html#SP2" class="internal">reads the command line options</a>.</p>
+<p>The user's choices are stored in an <a href="1-cnf.html#SP1" class="internal">inweb_instructions</a> object, and Inweb
 works out which subcommand it will be executing. It runs only one subcommand
 in each execution, and halts after doing essentially nothing if no subcommand
-was given (for example, if help information was requested but nothing else).
-</p>
-
-<p class="commentary">All errors in configuration are sent to <a href="../foundation-module/3-em.html#SP2" class="internal">Errors::fatal</a>, from whose bourne
-no traveller returns.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b><a href="1-pc.html" class="internal">Program Control</a> then resumes, calling the relevant subcommand to take
+was given (for example, if help information was requested but nothing else).</p>
+<p>All errors in configuration are sent to <a href="../foundation-module/3-em.html#SP2" class="internal">Errors::fatal</a>, from whose bourne
+no traveller returns.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  <a href="1-pc.html" class="internal">Program Control</a> then resumes, calling the relevant subcommand to take
 action. Most of the subcommands then call back to <a href="1-cnf.html" class="internal">Configuration</a> in order to
-make sense of their main "operands", that is, the settings which say what web to
-act upon: this ensures that they share conventions as far as possible.
-</p>
-
-<p class="commentary">In most cases, though, a web must be read into memory. This is done in full &mdash;
+make sense of their main &quot;operands&quot;, that is, the settings which say what web to
+act upon: this ensures that they share conventions as far as possible.</p>
+<p>In most cases, though, a web must be read into memory. This is done in full --
 that is, reading not only metadata such as its title, author, and section
 breakdown, but also the completely parsed text of the source. All this work is
 delegated to the foundation library, so if you're interested in how it's done,
 and in how webs are stored in memory, see there. The result is a single
-<a href="../literate-module/1-ws.html#SP1" class="internal">ls_web</a> object, containing a list of <a href="../literate-module/1-ws.html#SP6" class="internal">ls_chapter</a> objects for each chapter,
-each of which in turn is a list of <a href="../literate-module/1-ws.html#SP7" class="internal">ls_section</a> objects for each section.
-There is always at least one <a href="../literate-module/1-ws.html#SP6" class="internal">ls_chapter</a>, each of which has at least one
-<a href="../literate-module/1-ws.html#SP7" class="internal">ls_section</a>.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> The "range text" for each chapter and section is set along
-the way, which affects leafnames used in woven websites.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
-</p>
-
-<p class="commentary">Where a web imports a module, as for instance the <a href="../eastertide/index.html" class="internal">eastertide</a> example does,
+<a href="../literate-module/1-ws.html#SP1" class="internal">ls_web</a> object, containing a list of <a href="../literate-module/1-ws.html#SP7" class="internal">ls_chapter</a> objects for each chapter,
+each of which in turn is a list of <a href="../literate-module/1-ws.html#SP8" class="internal">ls_section</a> objects for each section.
+There is always at least one <a href="../literate-module/1-ws.html#SP7" class="internal">ls_chapter</a>, each of which has at least one
+<a href="../literate-module/1-ws.html#SP8" class="internal">ls_section</a>.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> The &quot;range text&quot; for each chapter and section is set along
+the way, which affects leafnames used in woven websites.<sup id="fnred:2"><a href="#fn:2" rel="footnote">2</a></sup></p>
+<p>Where a web imports a module, as for instance the <a href="../eastertide/index.html" class="internal">eastertide</a> example does,
 <a href="../literate-module/1-ws.html#SP1" class="internal">WebStructure::from_declaration</a> creates a <a href="../literate-module/1-wm.html#SP2" class="internal">ls_module</a> object for each
-import. In any event, it also creates a module called <span class="extract"><span class="extract-syntax">"(main)"</span></span> to represent
+import. In any event, it also creates a module called <code>&quot;(main)&quot;</code> to represent
 the main, non-imported, part of the overall program. Each module object also
-refers to the <a href="../literate-module/1-ws.html#SP6" class="internal">ls_chapter</a> and <a href="../literate-module/1-ws.html#SP7" class="internal">ls_section</a> objects.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
-</p>
-
-<p class="commentary">So, then, the subcommand does its thing &mdash; which invariably means simply
+refers to the <a href="../literate-module/1-ws.html#SP7" class="internal">ls_chapter</a> and <a href="../literate-module/1-ws.html#SP8" class="internal">ls_section</a> objects.<sup id="fnred:3"><a href="#fn:3" rel="footnote">3</a></sup></p>
+<p>So, then, the subcommand does its thing -- which invariably means simply
 calling a convenient function somewhere in <a href="../foundation-module/index.html" class="internal">foundation</a> and then returns
 to <a href="1-pc.html" class="internal">Program Control</a>. And that is essentially it. Inweb winds up by returning
-exit code 1 if there were errors, or 0 if not, like a good Unix citizen.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> For single-file webs like <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a>, with no contents pages, Inweb
-makes what it calls an "implied" chapter and section heading.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Range texts are used at the command line, and in <span class="extract"><span class="extract-syntax">inweb inspect</span></span> output, for
+exit code 1 if there were errors, or 0 if not, like a good Unix citizen.</p>
+<ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+For single-file webs like <a href="../twinprimes/twinprimes.html" class="internal">twinprimes</a>, with no contents pages, Inweb
+makes what it calls an &quot;implied&quot; chapter and section heading.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
+</li>
+<li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
+Range texts are used at the command line, and in <code>inweb inspect</code> output, for
 example; and also to determine leafnames of pages in a website being woven.
-A range is really just an abbreviation. For example, <span class="extract"><span class="extract-syntax">M</span></span> is the range for the
-Manual chapter, <span class="extract"><span class="extract-syntax">2/tp</span></span> for the section "The Parser" in Chapter 2, and <span class="extract"><span class="extract-syntax">3</span></span> means
-all of chapter 3.
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The difference is that the <a href="../literate-module/1-ws.html#SP1" class="internal">ls_web</a> lists every chapter and section,
+A range is really just an abbreviation. For example, <code>M</code> is the range for the
+Manual chapter, <code>2/tp</code> for the section &quot;The Parser&quot; in Chapter 2, and <code>3</code> means
+all of chapter 3.<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
+</li>
+<li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
+The difference is that the <a href="../literate-module/1-ws.html#SP1" class="internal">ls_web</a> lists every chapter and section,
 imported or not, whereas the <a href="../literate-module/1-wm.html#SP2" class="internal">ls_module</a> lists only those falling under its
-own aegis.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Adding to Inweb.</b>Here's some miscellaneous advice for those who would like to add to Inweb:
-</p>
-
-<p class="commentary">1. To add a new command-line switch, declare this in the relevant subcommand
+own aegis.<a href="#fnref:3" title="return to text"> &#x21A9;</a></p>
+</li></ul>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Adding to Inweb.</b>  Here's some miscellaneous advice for those who would like to add to Inweb:</p>
+<p>1. To add a new command-line switch, declare this in the relevant subcommand
 section, and follow the general plan used there. But we don't want these
 settings to proliferate: ask first if adding a feature to, say, <a href="../literate-module/1-cln.html" class="internal">Colonies (in literate)</a>
 or <a href="../literate-module/5-ptt.html#SP1" class="internal">ls_pattern</a> files would meet the same need. And on the other hand,
 if the switch really makes the subcommand do something quite different,
-consider making a new subcommand instead.
-</p>
-
-<p class="commentary">2. To add new programming languages, try if possible to do everything you
+consider making a new subcommand instead.</p>
+<p>2. To add new programming languages, try if possible to do everything you
 need with a new definition file alone: see <a href="M-spl.html" class="internal">Supporting Programming Languages</a>.
 Failing that, foundation will need to be added to. see if making definition
 files more powerful would do it (for example, by making the ACME support more
@@ -140,15 +133,12 @@ general-purpose). Failing even that, follow the model of <a href="../literate-mo
 that is, add logic to <a href="../literate-module/3-pl.html#SP2" class="internal">Languages::read_definition</a> which adds receiver functions
 to a language with a given name, or, preferably, some given declaration in the
 language definition file. On no account insert any language bias into
-<a href="../literate-module/5-tw.html" class="internal">The Weaver (in literate)</a> or <a href="../literate-module/4-tt3.html" class="internal">The Tangler (in literate)</a>.
-</p>
-
-<p class="commentary">3. To add new forms of weave output, try if possible to make a new pattern:
+<a href="../literate-module/5-tw.html" class="internal">The Weaver (in literate)</a> or <a href="../literate-module/4-tt3.html" class="internal">The Tangler (in literate)</a>.</p>
+<p>3. To add new forms of weave output, try if possible to make a new pattern:
 see <a href="M-awwp.html" class="internal">Advanced Weaving with Patterns</a>. But this won't always be good enough.
-For example, "an HTML website but done differently" should be a pattern based
-on HTML.
-</p>
-
+For example, &quot;an HTML website but done differently&quot; should be a pattern based
+on HTML.</p>
+</div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-rc.html">&#10094;</a></li><li class="progresschapter"><a href="M-iti.html">M</a></li><li class="progresscurrentchapter">P</li><li class="progresscurrent">htpw</li><li class="progresschapter"><a href="1-pc.html">1</a></li><li class="progressnext"><a href="1-pc.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

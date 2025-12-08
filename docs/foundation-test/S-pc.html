@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -24,6 +29,8 @@
 <li><a href="index.html"><span class="selectedlink">foundation-test</span></a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -43,20 +50,20 @@
 
 <ul class="toc"><li><a href="S-pc.html#SP1">&#167;1. Main routine</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Main routine.</b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Main routine.</b> </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"foundation-test"</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_STRINGS_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_RE_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_DICT_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_LITERALS_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_REPLACEMENT_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_LISTS_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_STACKS_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_SEMVER_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_TREES_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_JSON_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEST_MARKDOWN_CLSW</span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_STRINGS_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_RE_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_DICT_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_LITERALS_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_REPLACEMENT_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_LISTS_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_STACKS_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_SEMVER_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_TREES_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_JSON_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEST_MARKDOWN_CLSW</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>

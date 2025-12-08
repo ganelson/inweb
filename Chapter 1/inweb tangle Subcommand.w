@@ -17,7 +17,7 @@ The inweb tangle subcommand tangles a web.
 void InwebTangle::cli(void) {
 	CommandLine::begin_subcommand(TANGLING_CLSUB, U"tangle");
 	CommandLine::declare_heading(
-		U"Usage: inweb weave [WEB]\n\n"
+		U"Usage: inweb tangle [WEB]\n\n"
 		U"Tangling is one of the two fundamental operations of literate programming\n"
 		U"(for the other, see 'inweb help weave'). It strips out the markup in a web,\n"
 		U"rearranging it back into its linear structure if it had been presented\n"
@@ -41,9 +41,9 @@ void InwebTangle::cli(void) {
 	CommandLine::begin_group(CTAGS_CLSG,
 		I"support for Universal Ctags");
 	CommandLine::declare_switch(CTAGS_TO_CLSW, U"ctags-to", 2,
-		U"write Universal Ctags file to X rarther than to 'tags'");
+		U"write Universal Ctags file to X rather than to 'tags'");
 	CommandLine::declare_boolean_switch(CTAGS_CLSW, U"ctags", 1,
-		U"write a Universal Ctags file when tangling", TRUE);
+		U"write a Universal Ctags file when tangling larger webs", TRUE);
 	CommandLine::end_group();
 	CommandLine::end_subcommand();
 }
@@ -53,6 +53,7 @@ void InwebTangle::cli(void) {
 =
 typedef struct inweb_tangle_settings {
 	struct filename *tangle_setting; /* |-to X|: the tangling */
+	int tangle_to_STDOUT; /* |-to -| */
 	struct inweb_range_specifier subset;
 	int ctags_switch; /* |-ctags|: generate a set of Universal Ctags on each tangle */
 	struct filename *ctags_setting; /* |-ctags-to X|: the pathname X, if supplied */
@@ -60,15 +61,22 @@ typedef struct inweb_tangle_settings {
 
 void InwebTangle::initialise(inweb_tangle_settings *its) {
 	its->tangle_setting = NULL;
+	its->tangle_to_STDOUT = FALSE;
 	its->subset = Configuration::new_range_specifier();
-	its->ctags_switch = TRUE;
+	its->ctags_switch = NOT_APPLICABLE;
 	its->ctags_setting = NULL;
 }
 
 int InwebTangle::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
 	inweb_tangle_settings *its = &(ins->tangle_settings);
 	switch (id) {
-		case TANGLE_TO_CLSW: its->tangle_setting = Filenames::from_text(arg); return TRUE;
+		case TANGLE_TO_CLSW:
+			if (Str::eq(arg, I"-")) {
+				its->tangle_to_STDOUT = TRUE; its->tangle_setting = NULL;
+			} else {
+				its->tangle_to_STDOUT = FALSE; its->tangle_setting = Filenames::from_text(arg);
+			}
+			return TRUE;
 		case TANGLE_ONLY_CLSW: Configuration::set_range(&(its->subset), arg, FALSE); return TRUE;
 		case CTAGS_CLSW: its->ctags_switch = val; return TRUE;
 		case CTAGS_TO_CLSW: its->ctags_setting = Filenames::from_text(arg); return TRUE;
@@ -82,8 +90,12 @@ int InwebTangle::switch(inweb_instructions *ins, int id, int val, text_stream *a
 void InwebTangle::run(inweb_instructions *ins) {
 	inweb_tangle_settings *its = &(ins->tangle_settings);
 	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_COMPULSORY, TRUE, FALSE);
+	if (no_inweb_errors > 0) return;
 	ls_web *W = op.W;
-	WebStructure::print_statistics(W);
+	if (its->ctags_switch == NOT_APPLICABLE) {
+		if ((W->is_page == FALSE) && (Ctags::useful_tags_exist(W))) its->ctags_switch = TRUE;
+		else its->ctags_switch = FALSE;
+	}
 	@<Tangle the web@>;
 }
 
@@ -111,20 +123,28 @@ line , but otherwise we impose a sensible choice based on the target.
 	if (Str::len(tangle_leaf) == 0) Errors::fatal("no tangle destination known");
 
 	filename *tangle_to = its->tangle_setting;
-	if (tangle_to == NULL) {
-		pathname *P = WebStructure::tangled_folder(W);
+	if (its->tangle_to_STDOUT) silent_mode = TRUE;
+	else if (tangle_to == NULL) {
+		pathname *P;
 		if (W->single_file) P = Filenames::up(W->single_file);
+		else P = WebStructure::tangled_folder(W);
 		tangle_to = Filenames::in(P, tangle_leaf);
 	}
-	programming_language *pl = target->tangle_language;
-	PRINT("  tangling <%/f> (written in %S)\n", tangle_to, pl->language_name);
+	if (silent_mode == FALSE) {
+		PRINT("tangling "); WebStructure::print_web_identity(W);
+		PRINT(" to file '%f'\n", tangle_to);
+	}
+	text_stream *OUT = STDOUT;
 	text_stream TO_struct;
-	text_stream *OUT = &TO_struct;
-	if (STREAM_OPEN_TO_FILE(OUT, tangle_to, ISO_ENC) == FALSE)
-		Errors::fatal_with_file("unable to write tangled file", tangle_to);
+	if (its->tangle_to_STDOUT == FALSE) {
+		OUT = &TO_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, tangle_to, ISO_ENC) == FALSE)
+			Errors::fatal_with_file("unable to write tangled file", tangle_to);
+	}
 	Tangler::tangle_web(OUT, W, Filenames::up(tangle_to), TangleTargets::primary_target(W));
-	STREAM_CLOSE(OUT);
-	if (its->ctags_switch) Ctags::write(W, its->ctags_setting);
+	if (its->tangle_to_STDOUT == FALSE)
+		STREAM_CLOSE(OUT);
+	if (its->ctags_switch == TRUE) Ctags::write(W, its->ctags_setting);
 	DISCARD_TEXT(tangle_leaf)
 
 @ For the main tangle of a web (usually the only one), the destination leafname
@@ -133,11 +153,22 @@ as appropriate) tacked on:
 
 @<Work out main tangle destination@> =
 	target = TangleTargets::primary_target(W);
-	if (Bibliographic::data_exists(W, I"Short Title"))
-		Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Short Title"));
-	else
-		Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Title"));
-	Str::concatenate(tangle_leaf, WebStructure::web_language(W)->file_extension);
+	if (W->single_file) {
+		Filenames::write_unextended_leafname(tangle_leaf, W->single_file);
+		TEMPORARY_TEXT(pen)
+		Filenames::write_penultimate_extension(pen, W->single_file);
+		if (Str::len(pen) > 0)
+			Str::concatenate(tangle_leaf, pen);
+		else
+			Str::concatenate(tangle_leaf, Languages::canonical_file_extension(WebStructure::web_language(W)));
+		DISCARD_TEXT(pen)
+	} else {
+		if (Bibliographic::data_exists(W, I"Short Title"))
+			Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Short Title"));
+		else
+			Str::copy(tangle_leaf, Bibliographic::get_datum(W, I"Title"));
+		Str::concatenate(tangle_leaf, Languages::canonical_file_extension(WebStructure::web_language(W)));
+	}
 
 @ Side-tangles, which most webs do not have, default to the leafname of
 their sections:

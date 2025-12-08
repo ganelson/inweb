@@ -53,11 +53,12 @@ only be set after the command-line switches are read, since they can change it.
 = (early code)
 pathname *path_to_inweb = NULL; /* where we are installed */
 int no_inweb_errors = 0;
-int verbose_mode = FALSE;
+int verbose_mode = FALSE, silent_mode = FALSE;
 int old_inweb_compatibility_mode = TRUE;
 
 @<Make some global settings@> =
 	verbose_mode = args.verbose_switch;
+	silent_mode = args.silent_switch;
 	old_inweb_compatibility_mode = TRUE;
 	path_to_inweb = Pathnames::installation_path("INWEB_PATH", I"inweb");
 	if (verbose_mode) {
@@ -66,9 +67,6 @@ int old_inweb_compatibility_mode = TRUE;
 	}
 	pathname *M = Pathnames::path_to_inweb_materials();
 	Pathnames::set_path_to_LP_resources(M);
-	if (args.import_setting)
-		WebModules::set_default_search_path(
-			WebModules::make_search_path(args.import_setting));
 
 @<Shut inweb down@> =
 	Foundation::end();

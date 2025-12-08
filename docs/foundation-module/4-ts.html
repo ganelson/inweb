@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -49,18 +56,16 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#4">Chapter 4: Text Handling</a></li><li><b>Tab Stops</b></li></ul></div>
 <p class="purpose">Reading strings where tab characters need to be interpreted as if spaces had been used for the same visual effect.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>Suppose we want to read through a line in which tab characters mean "this
-material occurs on the next tab stop position", with stops every 8 characters.
-We want to treat the sequence A, space, B, tab, C, D exactly as <span class="extract"><span class="extract-syntax">"A B     CD"</span></span>,
-that is, as if had been typed with spaces to reach the same visual outcome.
-</p>
-
-<p class="commentary">Writing code to handle such lines, without modifying them, is tricky, and the
-following gadget can help. Be a little wary, though: if the text in <span class="extract"><span class="extract-syntax">line</span></span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Suppose we want to read through a line in which tab characters mean &quot;this
+material occurs on the next tab stop position&quot;, with stops every 8 characters.
+We want to treat the sequence A, space, B, tab, C, D exactly as <code>&quot;A B     CD&quot;</code>,
+that is, as if had been typed with spaces to reach the same visual outcome.</p>
+<p>Writing code to handle such lines, without modifying them, is tricky, and the
+following gadget can help. Be a little wary, though: if the text in <code>line</code>
 is freed in memory, this will leave a dangling pointer, so it's best not to
-keep these iterators alive for longer than necessary.
-</p>
-
+keep these iterators alive for longer than necessary.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">;</span>
@@ -79,10 +84,10 @@ keep these iterators alive for longer than necessary.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure tabbed_string_iterator is accessed in 4/tf, 5/mpi and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>The sequence A, space, B, tab, C, D has 6 code points, but is visually
-10 characters wide. D appears in "position" 9 but at "index" 5.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The sequence A, space, B, tab, C, D has 6 code points, but is visually
+10 characters wide. D appears in &quot;position&quot; 9 but at &quot;index&quot; 5.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::get_index</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::get_index</span></span>:<br/>Markdown Phase I - <a href="5-mpi.html#SP14">&#167;14</a>, <a href="5-mpi.html#SP15">&#167;15</a>, <a href="5-mpi.html#SP16">&#167;16</a>, <a href="5-mpi.html#SP25_3">&#167;25.3</a>, <a href="5-mpi.html#SP25_3_3_5">&#167;25.3.3.5</a>, <a href="5-mpi.html#SP25_3_3_10">&#167;25.3.3.10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_index</span><span class="plain-syntax">;</span>
@@ -92,11 +97,11 @@ keep these iterators alive for longer than necessary.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_position</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>We want to treat tabs as runs of 1 or more spaces, so if the character
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  We want to treat tabs as runs of 1 or more spaces, so if the character
 stored at the read index is a tab then it represents a space for parsing
-purposes.
-</p>
-
+purposes.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::get_character</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::get_character</span></span>:<br/><a href="4-ts.html#SP7">&#167;7</a><br/>Markdown Phase I - <a href="5-mpi.html#SP13">&#167;13</a>, <a href="5-mpi.html#SP14">&#167;14</a>, <a href="5-mpi.html#SP15">&#167;15</a>, <a href="5-mpi.html#SP16">&#167;16</a>, <a href="5-mpi.html#SP18_2_2">&#167;18.2.2</a>, <a href="5-mpi.html#SP18_2_3">&#167;18.2.3</a>, <a href="5-mpi.html#SP18_2_4">&#167;18.2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_index</span><span class="plain-syntax">);</span>
@@ -104,10 +109,10 @@ purposes.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>It's possible for the index point to be at a tab which is incompletely
-being expanded into spaces: then the following returns <span class="extract"><span class="extract-syntax">FALSE</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  It's possible for the index point to be at a tab which is incompletely
+being expanded into spaces: then the following returns <code>FALSE</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::at_whole_character</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::at_whole_character</span></span>:<br/><a href="4-ts.html#SP5">&#167;5</a><br/>Markdown Phase I - <a href="5-mpi.html#SP25_3_3_5">&#167;25.3.3.5</a>, <a href="5-mpi.html#SP25_3_3_10">&#167;25.3.3.10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_index</span><span class="plain-syntax">);</span>
@@ -116,9 +121,9 @@ being expanded into spaces: then the following returns <span class="extract"><sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>Here we advance the position, which may or may not advance the index as well.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Here we advance the position, which may or may not advance the index as well.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::advance</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::advance</span></span>:<br/><a href="4-ts.html#SP6">&#167;6</a>, <a href="4-ts.html#SP7">&#167;7</a><br/>Markdown Phase I - <a href="5-mpi.html#SP13">&#167;13</a>, <a href="5-mpi.html#SP14">&#167;14</a>, <a href="5-mpi.html#SP15">&#167;15</a>, <a href="5-mpi.html#SP16">&#167;16</a>, <a href="5-mpi.html#SP25_3_3_5">&#167;25.3.3.5</a>, <a href="5-mpi.html#SP25_3_3_10">&#167;25.3.3.10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">line_position</span><span class="plain-syntax">++;</span>
@@ -130,10 +135,10 @@ being expanded into spaces: then the following returns <span class="extract"><sp
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">N</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) </span><a href="4-ts.html#SP5" class="function-link"><span class="function-syntax">TabbedStr::advance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>This is much slower, and seeks a given position the hard way, by rewinding
-to the start of the string and counting it out.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  This is much slower, and seeks a given position the hard way, by rewinding
+to the start of the string and counting it out.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::seek</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::seek</span></span>:<br/>Markdown Phase I - <a href="5-mpi.html#SP25_2_1">&#167;25.2.1</a>, <a href="5-mpi.html#SP25_3_3_5">&#167;25.3.3.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_index</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -145,9 +150,9 @@ to the start of the string and counting it out.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>To "eat" a space is to advance the position past a (conceptual) space.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  To &quot;eat&quot; a space is to advance the position past a (conceptual) space.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::eat_space</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::eat_space</span></span>:<br/><a href="4-ts.html#SP8">&#167;8</a><br/>Markdown Phase I - <a href="5-mpi.html#SP18_2_1">&#167;18.2.1</a>, <a href="5-mpi.html#SP18_2_2">&#167;18.2.2</a>, <a href="5-mpi.html#SP18_2_3">&#167;18.2.3</a>, <a href="5-mpi.html#SP18_2_4">&#167;18.2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mdw</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no mdw"</span><span class="plain-syntax">);</span>
@@ -168,10 +173,10 @@ to the start of the string and counting it out.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>The number of spaces available to be eaten can be read off in advance,
-that is, without moving the position or index:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The number of spaces available to be eaten can be read off in advance,
+that is, without moving the position or index:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::spaces_available</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::spaces_available</span></span>:<br/>Markdown Phase I - <a href="5-mpi.html#SP18">&#167;18</a>, <a href="5-mpi.html#SP18_2_1">&#167;18.2.1</a>, <a href="5-mpi.html#SP18_2_2">&#167;18.2.2</a>, <a href="5-mpi.html#SP18_2_3">&#167;18.2.3</a>, <a href="5-mpi.html#SP18_2_4">&#167;18.2.4</a>, <a href="5-mpi.html#SP25_2">&#167;25.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> </span><span class="identifier-syntax">copy</span><span class="plain-syntax"> = *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">;</span>
@@ -180,9 +185,9 @@ that is, without moving the position or index:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">total</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>And this is a quick way to see if there are any non-spaces left to find:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  And this is a quick way to see if there are any non-spaces left to find:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">TabbedStr::blank_from_here</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">TabbedStr::blank_from_here</span></span>:<br/>Markdown Phase I - <a href="5-mpi.html#SP18_1">&#167;18.1</a>, <a href="5-mpi.html#SP18_2_2">&#167;18.2.2</a>, <a href="5-mpi.html#SP18_2_3">&#167;18.2.3</a>, <a href="5-mpi.html#SP18_2_4">&#167;18.2.4</a>, <a href="5-mpi.html#SP25_2">&#167;25.2</a>, <a href="5-mpi.html#SP25_2_1">&#167;25.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">tabbed_string_iterator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=</span><span class="identifier-syntax">mdw</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_index</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;Str::len(mdw-&gt;</span><span class="element-syntax">line</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>

@@ -73,6 +73,7 @@ have this major, and no minor:
 of the code followed usually by an equals sign, with this major:
 
 @e HOLON_DECLARATION_MAJLC
+@e ADDENDUM_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
 
 @ An insertion marks to include a picture or similar in the woven web, and
 always has one of the following minors.
@@ -130,6 +131,8 @@ typedef struct ls_class {
 	int major;
 	int minor;
 	int options_bitmap;
+	int whitespace_nature;
+	int follows_title;
 	struct text_stream *operand1;
 	struct text_stream *operand2;
 	struct text_stream *operand3;
@@ -141,6 +144,8 @@ ls_class LineClassification::new(int major, int minor) {
 	cf.major = major;
 	cf.minor = minor;
 	cf.options_bitmap = 0;
+	cf.whitespace_nature = BLACK_LINESHADE;
+	cf.follows_title = 0;
 	cf.operand1 = NULL;
 	cf.operand2 = NULL;
 	cf.operand3 = NULL;
@@ -150,6 +155,31 @@ ls_class LineClassification::new(int major, int minor) {
 
 ls_class LineClassification::unclassified(void) {
 	return LineClassification::new(UNCLASSIFIED_MAJLC, NO_MINLC);
+}
+
+@h Line shades.
+Three Shades of Grey: not a bestseller. We'll say that a line is white
+if fully white space, or indented black if not but there are at least 4 spaces
+of indentation (or one tab) at the start, or failing that, plain black.
+
+@d WHITE_LINESHADE 0
+@d INDENTED_BLACK_LINESHADE 1
+@d BLACK_LINESHADE 2
+
+=
+int LineClassification::shade(text_stream *line) {
+	int wsc = 0;
+	int whitespace_nature = WHITE_LINESHADE;
+	for (int i=0; i<Str::len(line); i++) {
+		switch (Str::get_at(line, i)) {
+			case ' ': wsc++; break;
+			case '\t': wsc = (wsc/4)*4 + 4; break;
+			default: whitespace_nature = INDENTED_BLACK_LINESHADE; i = Str::len(line); break;
+		}
+	}
+	if ((wsc < 4) && (whitespace_nature == INDENTED_BLACK_LINESHADE))
+		whitespace_nature = BLACK_LINESHADE;
+	return whitespace_nature;
 }
 
 @h Classifier functions.
@@ -202,14 +232,15 @@ ls_class_parsing LineClassification::no_results(void) {
 	return LineClassification::new_results(UNCLASSIFIED_MAJLC, NO_MINLC);
 }
 
-ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *line, ls_class *previously) {
+ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *line,
+	ls_class *previously, int sff) {
 	ls_class_parsing results;
 	if (syntax->line_classifier) {
 		results = (*(syntax->line_classifier))(syntax, line, previously);
 		if (results.cf.major != UNCLASSIFIED_MAJLC) return results;
 	}
 
-	results = LineClassification::rules_based_classifier(syntax, line, previously);
+	results = LineClassification::rules_based_classifier(syntax, line, previously, sff);
 	if (results.cf.major != UNCLASSIFIED_MAJLC) return results;
 
 	results = LineClassification::all_code_classifier(syntax, line, previously);
@@ -247,11 +278,12 @@ ls_class_parsing LineClassification::all_code_classifier(ls_notation *syntax,
 
 =
 ls_class_parsing LineClassification::rules_based_classifier(ls_notation *syntax,
-	text_stream *line, ls_class *previously) {
+	text_stream *line, ls_class *previously, int sff) {
 	int follows_extract = LineClassification::extract_lines_can_follow(
 		previously->major, previously->minor);
 	int first_line = (previously->major == UNCLASSIFIED_MAJLC)?TRUE:FALSE;
-	if (Str::is_whitespace(line)) @<Handle whitespace lines@>
+	int whitespace_nature = LineClassification::shade(line);
+	if (whitespace_nature == WHITE_LINESHADE) @<Handle whitespace lines@>
 	else @<Handle nonwhitespace lines@>;
 }
 
@@ -262,8 +294,13 @@ on subsequent lines. If we read all blank lines as commentary, then code
 fragments would break up at blank lines.
 
 @<Handle whitespace lines@> =
-	if (follows_extract) return LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
-	return LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
+	ls_class_parsing res;
+	if ((follows_extract) && (previously->major != HOLON_DECLARATION_MAJLC))
+		res = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
+	else res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
+	res.cf.whitespace_nature = whitespace_nature;
+	res.cf.follows_title = previously->follows_title;
+	return res;
 
 @ Otherwise, we consult the main grammar for our web syntax. If well-designed,
 it will always match all nonempty lines of text. But if it should fail to
@@ -283,7 +320,8 @@ match, we consider that line to be code.
 	wildcards[THIRD_LSWILDCARD] = third;
 	wildcards[OPTIONS_LSWILDCARD] = options;
 	wildcards[RESIDUE_LSWILDCARD] = residue;
-	ls_notation_rule *OR = WebNotation::match(syntax->rules, line, wildcards, previously);
+	
+	ls_notation_rule *OR = WebNotation::match(syntax->rules, line, whitespace_nature, wildcards, previously, sff, syntax);
 	if (OR) {
 		@<Translate the outcome and variables into a line classification@>;
 		if (OR->new_paragraph) res.implies_paragraph = TRUE;
@@ -301,6 +339,7 @@ match, we consider that line to be code.
 @ Sometimes, boring and repetitive code is the quickest:
 
 @<Translate the outcome and variables into a line classification@> =
+	res.cf.follows_title = FALSE;
 	switch (OR->outcome) {
 		case COMMENTARY_WSRULEOUTCOME:
 			res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
@@ -342,6 +381,15 @@ match, we consider that line to be code.
 		case TITLE_WSRULEOUTCOME:
 			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, SECTION_HEADING_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
+			if (Str::len(third) > 0) res.cf.operand3 = Str::duplicate(third);
+			res.cf.follows_title = TRUE;
+			break;
+		case TITLEANDAUTHOR_WSRULEOUTCOME:
+			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, SECTION_HEADING_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.operand2 = Str::duplicate(second);
+			if (Str::len(third) > 0) res.cf.operand3 = Str::duplicate(third);
+			res.cf.follows_title = TRUE;
 			break;
 		case CODEEXTRACT_WSRULEOUTCOME:
 			res = LineClassification::new_results(EXTRACT_START_MAJLC, CODE_MINLC);
@@ -365,6 +413,7 @@ match, we consider that line to be code.
 				res.residue_cf = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
 			}
 			Regexp::dispose_of(&mr);		
+			res.cf.follows_title = TRUE;
 			break;
 		}
 		case EXTRACT_WSRULEOUTCOME:
@@ -438,6 +487,12 @@ match, we consider that line to be code.
 			res.cf.operand1 = Str::duplicate(material);
 			if (follows_extract) res.implies_paragraph = TRUE;
 			break;
+
+		case NAMEDCODEFRAGMENTADDENDUM_WSRULEOUTCOME:
+			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, ADDENDUM_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			if (follows_extract) res.implies_paragraph = TRUE;
+			break;
 		
 		case BEGINPARAGRAPH_WSRULEOUTCOME:
 			if (Str::len(material) > 0)
@@ -470,6 +525,7 @@ match, we consider that line to be code.
 
 		default: internal_error("unimplemented rule outcome");
 	}
+	res.cf.whitespace_nature = whitespace_nature;
 
 @ Anything in the RESIDUE variable is passed back to become another "line" of
 the source code, but first it is run through a special grammar depending on
@@ -486,7 +542,7 @@ towel after what are clearly too many iterations.
 	int ni = 0;
 	while ((Str::len(res.residue) > 0) && (ni++ < MAX_RESIDUE_OR_OPTIONS_ITERATIONS)) {
 		ls_notation_rule *RR = WebNotation::match(syntax->residue_rules[OR->outcome],
-			res.residue, wildcards, &never);
+			res.residue, 2, wildcards, &never, sff, syntax);
 		if (RR == NULL) break;
 		@<Deal with a RESIDUE grammar match@>;
 		if (RR->outcome == PARAGRAPHTAG_WSRULEOUTCOME) {
@@ -506,11 +562,26 @@ and at present that's the only thing a residue grammar can usefully match:
 			text_stream *tag = Str::duplicate(material);
 			if (res.cf.tag_list == NULL) res.cf.tag_list = NEW_LINKED_LIST(text_stream);
 			ADD_TO_LINKED_LIST(tag, text_stream, res.cf.tag_list);
+			break;
+		}
+		case PARAGRAPHTITLING_WSRULEOUTCOME: {
+			res.cf.operand1 = Str::duplicate(material);
+			break;
 		}
 	}
 
 @ The OPTIONS variable is handled similarly, but here the grammar needs to
 exhaust the content completely, or there's an error.
+
+@d HYPERLINKED_CHMOB     1
+@d UNDISPLAYED_CHMOB     2
+
+@d WEBWIDEHOLON_CHMOB    4
+@d VERYEARLYHOLON_CHMOB  8
+@d EARLYHOLON_CHMOB      16
+@d LATEHOLON_CHMOB       32
+@d VERYLATEHOLON_CHMOB   64
+
 
 @<Deal with the OPTIONS variable, if anything is in it@> =
 	TEMPORARY_TEXT(opts)
@@ -519,9 +590,10 @@ exhaust the content completely, or there's an error.
 	int ni = 0;
 	while ((Str::len(opts) > 0) && (ni++ < MAX_RESIDUE_OR_OPTIONS_ITERATIONS)) {
 		ls_notation_rule *OPR = WebNotation::match(syntax->options_rules[OR->outcome],
-			opts, wildcards, &never);
+			opts, 2, wildcards, &never, sff, syntax);
 		if (OPR == NULL) break;
-		@<Deal with an OPTIONS grammar match@>;
+		if (Str::len(OPR->error) > 0) res.error = OPR->error;
+		else @<Deal with an OPTIONS grammar match@>;
 		Str::clear(opts);
 		Str::copy(opts, options);
 	}
@@ -533,6 +605,12 @@ exhaust the content completely, or there's an error.
 
 @<Deal with an OPTIONS grammar match@> =
 	switch (OPR->outcome) {
-		case HYPERLINKED_WSRULEOUTCOME: res.cf.options_bitmap |= 1; break;
-		case UNDISPLAYED_WSRULEOUTCOME: res.cf.options_bitmap |= 2; break;
+		case HYPERLINKED_WSRULEOUTCOME: res.cf.options_bitmap |= HYPERLINKED_CHMOB; break;
+		case UNDISPLAYED_WSRULEOUTCOME: res.cf.options_bitmap |= UNDISPLAYED_CHMOB; break;
+
+		case WEBWIDEHOLON_WSRULEOUTCOME:  res.cf.options_bitmap |= WEBWIDEHOLON_CHMOB; break;
+		case VERYEARLYHOLON_WSRULEOUTCOME: res.cf.options_bitmap |= VERYEARLYHOLON_CHMOB; break;
+		case EARLYHOLON_WSRULEOUTCOME:    res.cf.options_bitmap |= EARLYHOLON_CHMOB; break;
+		case LATEHOLON_WSRULEOUTCOME:     res.cf.options_bitmap |= LATEHOLON_CHMOB; break;
+		case VERYLATEHOLON_WSRULEOUTCOME: res.cf.options_bitmap |= VERYLATEHOLON_CHMOB; break;
 	}

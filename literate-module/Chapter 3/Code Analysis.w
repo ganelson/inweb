@@ -66,9 +66,9 @@ void CodeAnalysis::initialise_analysis_details(ls_web *W) {
 
 	text_stream *tag;
 	LOOP_OVER_LINKED_LIST(tag, text_stream, par->titling.tag_list)
-		LiterateSource::tag_paragraph(par, tag);
+		ParagraphTags::tag(par, tag);
 	if (Str::len(S->tag_name) > 0)
-		LiterateSource::tag_paragraph_with_caption(par, S->tag_name, NULL);
+		ParagraphTags::tag_with_caption(par, S->tag_name, NULL);
 
 @<Give the line analysis details@> =
 	ls_line_analysis *sl = CREATE(ls_line_analysis);
@@ -370,42 +370,4 @@ void CodeAnalysis::write_gitignore(ls_web *W, filename *F,
 	if (!(TextFiles::exists(prototype)))
 		prototype = Filenames::in(path_to_inweb_materials, I"default.giscript");
 	Git::write_gitignore(prototype, F);
-}
-
-@h The section catalogue.
-This provides quite a useful overview of the sections:
-
-@enum BASIC_SECTIONCAT from 1
-@enum STRUCTURES_SECTIONCAT
-@enum FUNCTIONS_SECTIONCAT
-
-=
-void CodeAnalysis::catalogue_the_sections(ls_web *W, text_stream *range, int form) {
-	int max_width = 0, max_range_width = 0;
-	ls_chapter *C;
-	ls_section *S;
-	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
-			if (max_range_width < Str::len(WebRanges::of(S))) max_range_width = Str::len(WebRanges::of(S));
-			TEMPORARY_TEXT(main_title)
-			WRITE_TO(main_title, "%S/%S", C->ch_basic_title, S->sect_title);
-			if (max_width < Str::len(main_title)) max_width = Str::len(main_title);
-			DISCARD_TEXT(main_title)
-		}
-	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-		if ((Str::eq_wide_string(range, U"0")) || (Str::eq(range, C->ch_range))) {
-			PRINT("      -----\n");
-			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
-				TEMPORARY_TEXT(main_title)
-				WRITE_TO(main_title, "%S/%S", C->ch_basic_title, S->sect_title);
-				PRINT("%4d  %S", S->sect_extent, WebRanges::of(S));
-				for (int i = Str::len(WebRanges::of(S)); i<max_range_width+2; i++) PRINT(" ");
-				PRINT("%S", main_title);
-				for (int i = Str::len(main_title); i<max_width+2; i++) PRINT(" ");
-				if (form != BASIC_SECTIONCAT)
-					Functions::catalogue(S, (form == FUNCTIONS_SECTIONCAT)?TRUE:FALSE);
-				PRINT("\n");
-				DISCARD_TEXT(main_title)
-			}
-		}
 }

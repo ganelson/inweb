@@ -100,16 +100,22 @@ guaranteed to produce a semver-legal version number.
 
 =
 void BuildFiles::deduce_semver(ls_web *WS) {
+	int preset = TRUE;
 	TEMPORARY_TEXT(combined)
 	text_stream *s = Bibliographic::get_datum(WS, I"Semantic Version Number");
-	if (Str::len(s) > 0) WRITE_TO(combined, "%S", s);
-	else {
+	if (Str::len(s) > 0) {
+		preset = FALSE;
+		WRITE_TO(combined, "%S", s);
+	} else {
 		text_stream *v = Bibliographic::get_datum(WS, I"Version Number");
 		if (Str::len(v) > 0) WRITE_TO(combined, "%S", v);
 		text_stream *p = Bibliographic::get_datum(WS, I"Prerelease");
 		if (Str::len(p) > 0) WRITE_TO(combined, "-%S", p);
 		text_stream *b = Bibliographic::get_datum(WS, I"Build Number");
 		if (Str::len(b) > 0) WRITE_TO(combined, "+%S", b);
+		if (Bibliographic::datum_has_been_set(WS, I"Version Number")) preset = FALSE;
+		if (Bibliographic::datum_has_been_set(WS, I"Prerelease")) preset = FALSE;
+		if (Bibliographic::datum_has_been_set(WS, I"Build Number")) preset = FALSE;
 	}
 	if (Str::len(combined) > 0) {
 		WS->version_number = VersionNumbers::from_text(combined);
@@ -118,7 +124,8 @@ void BuildFiles::deduce_semver(ls_web *WS) {
 				"Combined version '%S' does not comply with the semver standard",
 				combined);
 		} else {
-			Bibliographic::set_datum(WS, I"Semantic Version Number", combined);
+			if (preset) Bibliographic::preset_datum(WS, I"Semantic Version Number", combined);
+			else Bibliographic::set_datum(WS, I"Semantic Version Number", combined);
 		}
 	}
 	DISCARD_TEXT(combined)

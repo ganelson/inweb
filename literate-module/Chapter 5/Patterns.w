@@ -328,9 +328,9 @@ void Patterns::post_process(ls_pattern *pattern, weave_order *wv) {
 		if ((Str::includes_at(cmd, 0, I"PROCESS ")) && (last_F)) {
 			TeXUtilities::post_process_weave(wv, last_F);
 		} else {
-			if (wv->verbosely) PRINT("(%S)\n", cmd);
+			if (wv->reportage) PRINT("(%S)\n", cmd);
 			int rv = Shell::run(cmd);
-			if (rv != 0) Errors::fatal("post-processing command failed");
+			if (rv != 0) WRITE_TO(STDERR, "warning: post-processing command failed\n");
 		}
 		DISCARD_TEXT(cmd)
 	}
@@ -371,13 +371,13 @@ filename *Patterns::find_file_in_subdirectory(ls_web *W, ls_pattern *pattern,
 
 @ =
 void Patterns::include_plugins(OUTPUT_STREAM, ls_web *W, ls_pattern *pattern,
-	filename *from, int verbosely, ls_colony *context) {
+	filename *from, weave_reporting *R, ls_colony *context) {
 	for (ls_pattern *p = pattern; p; p = Patterns::basis(W->declaration, p)) {
 		weave_plugin *wp;
 		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
-			Assets::include_plugin(OUT, W, wp, pattern, from, verbosely, context);
+			Assets::include_plugin(OUT, W, wp, pattern, from, R, context);
 		colour_scheme *cs;
 		LOOP_OVER_LINKED_LIST(cs, colour_scheme, p->colour_schemes)
-			Assets::include_colour_scheme(OUT, W, cs, pattern, from, verbosely, context);
+			Assets::include_colour_scheme(OUT, W, cs, pattern, from, R, context);
 	}
 }

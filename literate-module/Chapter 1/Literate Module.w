@@ -23,6 +23,7 @@ which use this module:
 @e ls_holon_CLASS
 @e ls_holon_scanner_CLASS
 @e holon_splice_CLASS
+@e ls_holon_namespace_CLASS
 @e ls_error_CLASS
 @e ls_footnote_CLASS
 @e ls_paragraph_CLASS
@@ -65,6 +66,8 @@ which use this module:
 @e writeme_asset_CLASS
 @e colouring_language_block_CLASS
 @e colouring_rule_CLASS
+@e weave_copy_record_CLASS
+@e ls_conventions_CLASS
 
 @e weave_document_node_CLASS
 @e weave_head_node_CLASS
@@ -77,6 +80,7 @@ which use this module:
 @e weave_verbatim_node_CLASS
 @e weave_section_purpose_node_CLASS
 @e weave_subheading_node_CLASS
+@e weave_subsubheading_node_CLASS
 @e weave_bar_node_CLASS
 @e weave_linebreak_node_CLASS
 @e weave_pagebreak_node_CLASS
@@ -90,6 +94,7 @@ which use this module:
 @e weave_video_node_CLASS
 @e weave_embed_node_CLASS
 @e weave_pmac_node_CLASS
+@e weave_tangler_command_node_CLASS
 @e weave_vskip_node_CLASS
 @e weave_chapter_node_CLASS
 @e weave_section_node_CLASS
@@ -100,6 +105,7 @@ which use this module:
 @e weave_toc_node_CLASS
 @e weave_toc_line_node_CLASS
 @e weave_chapter_title_page_node_CLASS
+@e weave_holon_declaration_node_CLASS
 @e weave_defn_node_CLASS
 @e weave_source_code_node_CLASS
 @e weave_url_node_CLASS
@@ -161,6 +167,9 @@ DECLARE_CLASS(colour_scheme)
 DECLARE_CLASS(nonterminal_variable)
 DECLARE_CLASS(preform_nonterminal)
 DECLARE_CLASS(text_literal)
+DECLARE_CLASS(weave_copy_record)
+DECLARE_CLASS(ls_holon_namespace)
+DECLARE_CLASS(ls_conventions)
 
 DECLARE_CLASS(weave_document_node)
 DECLARE_CLASS(weave_head_node)
@@ -173,6 +182,7 @@ DECLARE_CLASS(weave_chapter_footer_node)
 DECLARE_CLASS(weave_verbatim_node)
 DECLARE_CLASS(weave_section_purpose_node)
 DECLARE_CLASS(weave_subheading_node)
+DECLARE_CLASS(weave_subsubheading_node)
 DECLARE_CLASS(weave_bar_node)
 DECLARE_CLASS(weave_linebreak_node)
 DECLARE_CLASS(weave_pagebreak_node)
@@ -186,6 +196,7 @@ DECLARE_CLASS(weave_video_node)
 DECLARE_CLASS(weave_download_node)
 DECLARE_CLASS(weave_embed_node)
 DECLARE_CLASS(weave_pmac_node)
+DECLARE_CLASS(weave_tangler_command_node)
 DECLARE_CLASS(weave_vskip_node)
 DECLARE_CLASS(weave_chapter_node)
 DECLARE_CLASS(weave_section_node)
@@ -196,6 +207,7 @@ DECLARE_CLASS(weave_carousel_slide_node)
 DECLARE_CLASS(weave_toc_node)
 DECLARE_CLASS(weave_toc_line_node)
 DECLARE_CLASS(weave_chapter_title_page_node)
+DECLARE_CLASS(weave_holon_declaration_node)
 DECLARE_CLASS(weave_defn_node)
 DECLARE_CLASS(weave_source_code_node)
 DECLARE_CLASS(weave_url_node)
@@ -225,7 +237,6 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(literate_source_tagging, 100)
 
 =
 void LiterateModule::start(void) {
-	WebNotation::create();
 }
 
 void LiterateModule::end(void) {

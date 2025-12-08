@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -25,6 +30,8 @@
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -44,130 +51,115 @@
 
 <ul class="toc"><li><a href="M-awwp.html#SP1">&#167;1. Patterns versus formats</a></li><li><a href="M-awwp.html#SP3">&#167;3. Basic settings</a></li><li><a href="M-awwp.html#SP7">&#167;7. Plugins and assets</a></li><li><a href="M-awwp.html#SP12">&#167;12. Embeddings</a></li><li><a href="M-awwp.html#SP13">&#167;13. Syntax colouring</a></li><li><a href="M-awwp.html#SP15">&#167;15. Templates</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Patterns versus formats.</b>Every weave produces output in a "format". The formats are built in to Inweb,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Patterns versus formats.</b>  Every weave produces output in a &quot;format&quot;. The formats are built in to Inweb,
 and adding new ones would mean contributing code to the project: currently
-we have HTML, ePub, Plain Text, PDF, DIV, and TeX.
-</p>
-
-<p class="commentary">There is no way to specify the format at the command line. That's because
-<span class="extract"><span class="extract-syntax">-weave-as P</span></span> tells Inweb to weave with a given "pattern": a weave pattern
+we have HTML, ePub, Plain Text, PDF, DIV, and TeX.</p>
+<p>There is no way to specify the format at the command line. That's because
+<code>-weave-as P</code> tells Inweb to weave with a given &quot;pattern&quot;: a weave pattern
 combines a choice of format with other settings to produce a customised
 weave. Patterns can also be based on other patterns: one can, in effect, say
-"I want something like P but with some differences". For example, the Inweb
-manual at GitHub is woven with <span class="extract"><span class="extract-syntax">-weave-as GitHubPages</span></span>, which is a pattern
-based heavily on a generic website-producing pattern called <span class="extract"><span class="extract-syntax">HTML</span></span>.
-</p>
-
-<p class="commentary">The upshot of all this is that if you want a website, but one which looks and
-behaves differently from what <span class="extract"><span class="extract-syntax">-weave-as HTML</span></span> would give, you should create
+&quot;I want something like P but with some differences&quot;. For example, the Inweb
+manual at GitHub is woven with <code>-weave-as GitHubPages</code>, which is a pattern
+based heavily on a generic website-producing pattern called <code>HTML</code>.</p>
+<p>The upshot of all this is that if you want a website, but one which looks and
+behaves differently from what <code>-weave-as HTML</code> would give, you should create
 a new pattern based on it, and work from there. But patterns are not just
-for websites.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>A pattern definition is a directory containing various files, which we'll
+for websites.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  A pattern definition is a directory containing various files, which we'll
 get to in due course. Inweb looks for patterns in three places in turn:
-</p>
-
-<ul class="items"><li>(a) The location given by the <span class="extract"><span class="extract-syntax">patterns</span></span> command in the current colony file,
+(a) The location given by the <code>patterns</code> command in the current colony file,
 if there is one: see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.
-</li><li>(b) The <span class="extract"><span class="extract-syntax">Patterns</span></span> subdirectory of the current web, if there is a current web,
+(b) The <code>Patterns</code> subdirectory of the current web, if there is a current web,
 and if it has such a subdirectory.
-</li><li>(c) The set of built-in patterns supplied with Inweb, at <span class="extract"><span class="extract-syntax">inweb/Patterns</span></span>
-in the usual distribution.
-</li></ul>
-<p class="commentary">For example, the command
-</p>
-
+(c) The set of built-in patterns supplied with Inweb, at <code>inweb/Patterns</code>
+in the usual distribution.</p>
+<p>For example, the command</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb/Tangled/inweb</span><span class="ConsoleText-plain-syntax"> inweb/Examples/goldbach</span><span class="ConsoleText-identifier-syntax"> -weave-as</span><span class="ConsoleText-plain-syntax"> Tapestry</span>
 </pre>
-<p class="commentary">didn't set a colony file, so (a) doesn't apply. Inweb first tries
-<span class="extract"><span class="ConsoleText-extract-syntax">inweb/Examples/goldbach/Patterns/Tapestry</span></span> and then <span class="extract"><span class="ConsoleText-extract-syntax">inweb/Patterns/Tapestry</span></span>.
-If it can't find either, Inweb issues an error.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Basic settings.</b>Patterns allow for extensive customisation of the woven output, especially
+<div class="lsmarkdown">
+<p>didn't set a colony file, so (a) doesn't apply. Inweb first tries
+<code>inweb/Examples/goldbach/Patterns/Tapestry</code> and then <code>inweb/Patterns/Tapestry</code>.
+If it can't find either, Inweb issues an error.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Basic settings.</b>  Patterns allow for extensive customisation of the woven output, especially
 through the use of plugins (see below). But they can also be extremely minimal.
 The one absolute requirement is to include a configuration file called
-<span class="extract"><span class="ConsoleText-extract-syntax">pattern.txt</span></span>, which consists of a series of simple one-line commands.
+<code>pattern.txt</code>, which consists of a series of simple one-line commands.
 In this file, blank lines, leading and trailing white space are all ignored,
-as is any file whose first character is <span class="extract"><span class="ConsoleText-extract-syntax">#</span></span>.
-</p>
-
-<p class="commentary">The first genuine line of the file should always give the pattern's name,
-and say what if anything it is based on. For example, this might be:
-</p>
-
+as is any file whose first character is <code>#</code>.</p>
+<p>The first genuine line of the file should always give the pattern's name,
+and say what if anything it is based on. For example, this might be:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> Tapestry based on HTML</span>
 </pre>
-<p class="commentary">That is the only compulsory content; with that one line in one file, the
+<div class="lsmarkdown">
+<p>That is the only compulsory content; with that one line in one file, the
 Tapestry pattern is ready for use. (But of course it behaves identically
-to HTML in every respect, so it's not very useful yet.)
-</p>
-
-<p class="commentary">Do not get these into loops, with A based on B and B based on A.
-</p>
-
-<p class="commentary">For a pattern not based on an existing one, simply omit the "based on X"
-part. Thus, for example,
-</p>
-
+to HTML in every respect, so it's not very useful yet.)</p>
+<p>Do not get these into loops, with A based on B and B based on A.</p>
+<p>For a pattern not based on an existing one, simply omit the &quot;based on X&quot;
+part. Thus, for example,</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> HTML</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>There are then a handful of other, optional, settings. The following are
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  There are then a handful of other, optional, settings. The following are
 all inherited automatically from the pattern we are based on, unless we
-set them ourselves.
-</p>
-
+set them ourselves.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">format</span><span class="plain-syntax">:</span><span class="string-syntax"> F</span>
 </pre>
-<p class="commentary">sets the format. At present, this must be <span class="extract"><span class="extract-syntax">HTML</span></span>, <span class="extract"><span class="extract-syntax">plain</span></span> (plain text),
-<span class="extract"><span class="extract-syntax">ePub</span></span>, <span class="extract"><span class="extract-syntax">TeX</span></span>, or <span class="extract"><span class="extract-syntax">TestingInweb</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p>sets the format. At present, this must be <code>HTML</code>, <code>plain</code> (plain text),
+<code>ePub</code>, <code>TeX</code>, or <code>TestingInweb</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">number sections</span><span class="plain-syntax">:</span><span class="string-syntax"> yes</span>
 <span class="plain-syntax">    </span><span class="element-syntax">number sections</span><span class="plain-syntax">:</span><span class="string-syntax"> no</span>
 </pre>
-<p class="commentary">causes the weaver to apply numbers to section headings: the first included will
-be number 1, and so on. Default is <span class="extract"><span class="extract-syntax">no</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p>causes the weaver to apply numbers to section headings: the first included will
+be number 1, and so on. Default is <code>no</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">default range</span><span class="plain-syntax">:</span><span class="string-syntax"> R</span>
 </pre>
-<p class="commentary">tells the weaver to assume the range <span class="extract"><span class="extract-syntax">R</span></span>, if the user tries to weave a
+<div class="lsmarkdown">
+<p>tells the weaver to assume the range <code>R</code>, if the user tries to weave a
 multi-section web with this pattern. (For example, the standard HTML pattern
-sets this to <span class="extract"><span class="extract-syntax">sections</span></span>, causing a swarm of individual HTML files to be produced.)
-</p>
-
-<p class="commentary">Lastly, there are commands to do with plugins, covered below, which are also
-inherited.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>Bibliographic data can also be set, but this applies only to the current
-pattern, and is not inherited from any patterns it is based on.
-</p>
-
+sets this to <code>sections</code>, causing a swarm of individual HTML files to be produced.)</p>
+<p>Lastly, there are commands to do with plugins, covered below, which are also
+inherited.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Bibliographic data can also be set, but this applies only to the current
+pattern, and is not inherited from any patterns it is based on.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">bibliographic data</span><span class="plain-syntax">:</span><span class="string-syntax"> K = V</span>
 </pre>
-<p class="commentary">tells the weaver to override the bibliographic data on any web it weaves, setting
-the key <span class="extract"><span class="extract-syntax">K</span></span> to the value <span class="extract"><span class="extract-syntax">V</span></span>. For example:
-</p>
-
+<div class="lsmarkdown">
+<p>tells the weaver to override the bibliographic data on any web it weaves, setting
+the key <code>K</code> to the value <code>V</code>. For example:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">bibliographic data</span><span class="plain-syntax">:</span><span class="string-syntax"> Booklet Title = A formal grammar for Inform 7</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>It can be useful to do some post-processing after each woven file is made.
-For an example, see the <span class="extract"><span class="extract-syntax">PDFTeX</span></span> pattern, which simply uses the <span class="extract"><span class="extract-syntax">TeX</span></span> pattern
-to make a TeX file, and then runs it through the <span class="extract"><span class="extract-syntax">pdftex</span></span> command-line tool.
-This is done by giving the necessary commands in the pattern file:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  It can be useful to do some post-processing after each woven file is made.
+For an example, see the <code>PDFTeX</code> pattern, which simply uses the <code>TeX</code> pattern
+to make a TeX file, and then runs it through the <code>pdftex</code> command-line tool.
+This is done by giving the necessary commands in the pattern file:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> PDFTeX based on TeX</span>
 <span class="plain-syntax">    </span><span class="element-syntax">initial extension</span><span class="plain-syntax">:</span><span class="string-syntax"> .tex</span>
@@ -175,148 +167,128 @@ This is done by giving the necessary commands in the pattern file:
 <span class="plain-syntax">    </span><span class="element-syntax">command</span><span class="plain-syntax">:</span><span class="string-syntax"> rm WOVEN.tex</span>
 <span class="plain-syntax">    </span><span class="element-syntax">command</span><span class="plain-syntax">:</span><span class="string-syntax"> rm WOVEN.log</span>
 </pre>
-<p class="commentary">Here <span class="extract"><span class="extract-syntax">WOVEN</span></span> expands to the filename of the file which has just been woven,
-but stripped of its filename extension.
-</p>
-
-<p class="commentary">Note also the "initial extension" setting. The point of this is that if the
-user calls Inweb setting <span class="extract"><span class="extract-syntax">-weave-to Whatever.pdf</span></span>, this pattern setting causes
-Inweb first to weave <span class="extract"><span class="extract-syntax">Whatever.tex</span></span>; the post-processing commands will then
-make <span class="extract"><span class="extract-syntax">Whatever.pdf</span></span> as expected.
-</p>
-
-<p class="commentary">As soon as any command in the list fails, Inweb halts with an error. To see
-the exact shell commands being issued, run Inweb with <span class="extract"><span class="extract-syntax">-verbose</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Plugins and assets.</b>Plugins are named bundles of resources which are sometimes added to a weave,
+<div class="lsmarkdown">
+<p>Here <code>WOVEN</code> expands to the filename of the file which has just been woven,
+but stripped of its filename extension.</p>
+<p>Note also the &quot;initial extension&quot; setting. The point of this is that if the
+user calls Inweb setting <code>-weave-to Whatever.pdf</code>, this pattern setting causes
+Inweb first to weave <code>Whatever.tex</code>; the post-processing commands will then
+make <code>Whatever.pdf</code> as expected.</p>
+<p>As soon as any command in the list fails, Inweb halts with an error. To see
+the exact shell commands being issued, run Inweb with <code>-verbose</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Plugins and assets.</b>  Plugins are named bundles of resources which are sometimes added to a weave,
 and sometimes not, depending on its needs; they are placed in the pattern's
 folder, and Inweb has access to the plugins not only for the current pattern,
 but also for any pattern(s) it is based on. Plugins were designed for HTML,
-but there's no reason they shouldn't also be useful for other formats.
-</p>
-
-<p class="commentary">A plugin is identified by name alone, case-insensitively, and that name should
-be a single alphanumeric word. For example, the HTML pattern file says
-</p>
-
+but there's no reason they shouldn't also be useful for other formats.</p>
+<p>A plugin is identified by name alone, case-insensitively, and that name should
+be a single alphanumeric word. For example, the HTML pattern file says</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">plugin</span><span class="plain-syntax">:</span><span class="string-syntax"> Base</span>
 </pre>
-<p class="commentary">and this ensures that every file woven by this pattern, or any pattern based
-on it, will use <span class="extract"><span class="extract-syntax">Base</span></span>. There can be multiple such commands, for multiple such
-plugins, and the ability isn't restricted to HTML alone.
-</p>
-
-<p class="commentary">In addition, the HTML format:
-</p>
-
-<ul class="items"><li>(a) includes <span class="extract"><span class="extract-syntax">MathJax3</span></span> if the woven file needs mathematics notation;
-</li><li>(b) includes <span class="extract"><span class="extract-syntax">Breadcrumbs</span></span> if it has a breadcrumb navigation trail;
-</li><li>(c) includes <span class="extract"><span class="extract-syntax">Carousel</span></span> if it has any image carousels;
-</li><li>(d) includes <span class="extract"><span class="extract-syntax">Popups</span></span> if it has any clickable popups (for example, to show
+<div class="lsmarkdown">
+<p>and this ensures that every file woven by this pattern, or any pattern based
+on it, will use <code>Base</code>. There can be multiple such commands, for multiple such
+plugins, and the ability isn't restricted to HTML alone.</p>
+<p>In addition, the HTML format:
+(a) includes <code>MathJax3</code> if the woven file needs mathematics notation;
+(b) includes <code>Breadcrumbs</code> if it has a breadcrumb navigation trail;
+(c) includes <code>Carousel</code> if it has any image carousels;
+(d) includes <code>Popups</code> if it has any clickable popups (for example, to show
 function usage);
-</li><li>(e) includes <span class="extract"><span class="extract-syntax">Bigfoot</span></span> if it includes footnotes.
-</li></ul>
-<p class="commentary">Two of these draw on other open-source projects:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">MathJax3</span></span> is an excellent rendering system for mathematics on the web: see
-<a href="https://docs.mathjax.org/en/latest/index.html" class="external">https://docs.mathjax.org/en/latest/index.html</a>
-</li><li>(b) <span class="extract"><span class="extract-syntax">Bigfoot</span></span> is adapted from a popularly used piece of web coding: see
-<a href="https://github.com/lemonmade/bigfoot" class="external">https://github.com/lemonmade/bigfoot</a>
-</li></ul>
-<p class="commentary">But if you would like your pattern to use different plugins to handle
+(e) includes <code>Bigfoot</code> if it includes footnotes.</p>
+<p>Two of these draw on other open-source projects:
+(a) <code>MathJax3</code> is an excellent rendering system for mathematics on the web: see
+https://docs.mathjax.org/en/latest/index.html
+(b) <code>Bigfoot</code> is adapted from a popularly used piece of web coding: see
+https://github.com/lemonmade/bigfoot</p>
+<p>But if you would like your pattern to use different plugins to handle
 mathematics and footnoting, provide lines like these in your pattern file,
-but with your preferred plugin names:
-</p>
-
+but with your preferred plugin names:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">mathematics plugin</span><span class="plain-syntax">:</span><span class="string-syntax"> MathJax3</span>
 <span class="plain-syntax">    </span><span class="element-syntax">footnotes plugin</span><span class="plain-syntax">:</span><span class="string-syntax"> Bigfoot</span>
 </pre>
-<p class="commentary"><span class="extract"><span class="extract-syntax">Bigfoot</span></span> may eventually need to be simplified and rewritten: its big feet
-presently tread on the <span class="extract"><span class="extract-syntax">MathJax3</span></span> plugin, so right now it's not possible to
-have mathematics in a footnote when <span class="extract"><span class="extract-syntax">Bigfoot</span></span> is in use.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>So what's in a plugin? A plugin is simply a set of "assets", which are
+<div class="lsmarkdown">
+<p><code>Bigfoot</code> may eventually need to be simplified and rewritten: its big feet
+presently tread on the <code>MathJax3</code> plugin, so right now it's not possible to
+have mathematics in a footnote when <code>Bigfoot</code> is in use.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  So what's in a plugin? A plugin is simply a set of &quot;assets&quot;, which are
 individual files stored in the plugin's directory. A typical asset might be
 a CSS file to help making web pages, or a file of TeX macros to help
-typeset a PDF.
-</p>
-
-<p class="commentary">Plugin inclusion happens like this:
-</p>
-
-<ul class="items"><li>(a) for each file Inweb weaves, it includes only the plugins it needs;
-</li><li>(b) if it needs <span class="extract"><span class="extract-syntax">X</span></span>, Inweb includes every asset &mdash; meaning, every file whose
-name does not begin with a <span class="extract"><span class="extract-syntax">.</span></span> &mdash; from the <span class="extract"><span class="extract-syntax">X</span></span> subdirectory of the pattern,
-or from the <span class="extract"><span class="extract-syntax">X</span></span> subdirectory of any pattern it is based on;
-</li><li>(c) but it never includes the same-named asset twice.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>This means it's possible to supply your own version of any plugin you would
-like to tinker with. If you want <span class="extract"><span class="extract-syntax">Carousel</span></span> to have rather different CSS effects,
-for example, make your own copy of <span class="extract"><span class="extract-syntax">Carousel</span></span> (copying it from the one in
-the Inweb distribution at <span class="extract"><span class="extract-syntax">inweb/Patterns/HTML/Carousel</span></span>) and place it in your
-own pattern. Files in your version will prevail over files in the built-in one.
-</p>
-
-<p class="commentary">As a simple example, suppose you want a pattern just like <span class="extract"><span class="extract-syntax">GitHubPages</span></span> but
+typeset a PDF.</p>
+<p>Plugin inclusion happens like this:
+(a) for each file Inweb weaves, it includes only the plugins it needs;
+(b) if it needs <code>X</code>, Inweb includes every asset -- meaning, every file whose
+name does not begin with a <code>.</code> -- from the <code>X</code> subdirectory of the pattern,
+or from the <code>X</code> subdirectory of any pattern it is based on;
+(c) but it never includes the same-named asset twice.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  This means it's possible to supply your own version of any plugin you would
+like to tinker with. If you want <code>Carousel</code> to have rather different CSS effects,
+for example, make your own copy of <code>Carousel</code> (copying it from the one in
+the Inweb distribution at <code>inweb/Patterns/HTML/Carousel</code>) and place it in your
+own pattern. Files in your version will prevail over files in the built-in one.</p>
+<p>As a simple example, suppose you want a pattern just like <code>GitHubPages</code> but
 which uses monospaced fonts throughout, for commentary as well as code. The
-pattern file can just be:
-</p>
-
+pattern file can just be:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> MonoGitHub based on GitHubPages</span>
 </pre>
-<p class="commentary">Then create just one subdirectory of <span class="extract"><span class="extract-syntax">MonoGitHub</span></span>, called <span class="extract"><span class="extract-syntax">Base</span></span>, and create
-a single file in that called <span class="extract"><span class="extract-syntax">Fonts.css</span></span>, reading:
-</p>
-
+<div class="lsmarkdown">
+<p>Then create just one subdirectory of <code>MonoGitHub</code>, called <code>Base</code>, and create
+a single file in that called <code>Fonts.css</code>, reading:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    .</span><span class="identifier-syntax">code</span><span class="plain-syntax">-</span><span class="identifier-syntax">font</span><span class="plain-syntax"> { </span><span class="identifier-syntax">font</span><span class="plain-syntax">-</span><span class="identifier-syntax">family:</span><span class="plain-syntax"> </span><span class="identifier-syntax">monospace</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    .</span><span class="identifier-syntax">commentary</span><span class="plain-syntax">-</span><span class="identifier-syntax">font</span><span class="plain-syntax"> { </span><span class="identifier-syntax">font</span><span class="plain-syntax">-</span><span class="identifier-syntax">family:</span><span class="plain-syntax"> </span><span class="identifier-syntax">monospace</span><span class="plain-syntax">; }</span>
 </pre>
-<p class="commentary">And that should work nicely. What happens here is that when pages are woven
-with <span class="extract"><span class="extract-syntax">MonoGitHub</span></span>, they use this custom <span class="extract"><span class="extract-syntax">Fonts.css</span></span> instead of the one in
-the <span class="extract"><span class="extract-syntax">Base</span></span> plugin from <span class="extract"><span class="extract-syntax">HTML</span></span>. (<span class="extract"><span class="extract-syntax">MonoGitHub</span></span> is based on <span class="extract"><span class="extract-syntax">GitHubPages</span></span>, but
-that in turn is based on <span class="extract"><span class="extract-syntax">HTML</span></span>.) All the other files of <span class="extract"><span class="extract-syntax">Base</span></span> remain as
-they were, and there's no need to provide duplicates here.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>But wait, there's more. How is an asset actually "included"? The pattern
+<div class="lsmarkdown">
+<p>And that should work nicely. What happens here is that when pages are woven
+with <code>MonoGitHub</code>, they use this custom <code>Fonts.css</code> instead of the one in
+the <code>Base</code> plugin from <code>HTML</code>. (<code>MonoGitHub</code> is based on <code>GitHubPages</code>, but
+that in turn is based on <code>HTML</code>.) All the other files of <code>Base</code> remain as
+they were, and there's no need to provide duplicates here.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  But wait, there's more. How is an asset actually &quot;included&quot;? The pattern
 gets to decide this, based on the file-type of the asset, as expressed by
-its filename extension. For example, the TeX pattern says:
-</p>
-
+its filename extension. For example, the TeX pattern says:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">assets:</span><span class="plain-syntax"> .</span><span class="identifier-syntax">tex</span><span class="plain-syntax"> </span><span class="identifier-syntax">embed</span>
 </pre>
-<p class="commentary">This admittedly cryptic line tells Inweb that when it includes plugins for
-this pattern, any assets ending <span class="extract"><span class="extract-syntax">.tex</span></span> should be "embedded", rather than
+<div class="lsmarkdown">
+<p>This admittedly cryptic line tells Inweb that when it includes plugins for
+this pattern, any assets ending <code>.tex</code> should be &quot;embedded&quot;, rather than
 copied. There are four things it can do:
-</p>
-
-<ul class="items"><li>(1) <span class="extract"><span class="extract-syntax">copy</span></span>. This is the default, and means that the file is simply copied
-into the weave directory, or into the <span class="extract"><span class="extract-syntax">assets</span></span> directory specified in the
-colony file, if the user gave one with <span class="extract"><span class="extract-syntax">-colony</span></span>.
-</li><li>(2) <span class="extract"><span class="extract-syntax">private copy</span></span>. The same, but this is never put into the shared <span class="extract"><span class="extract-syntax">assets</span></span>
+(1) <code>copy</code>. This is the default, and means that the file is simply copied
+into the weave directory, or into the <code>assets</code> directory specified in the
+colony file, if the user gave one with <code>-colony</code>.
+(2) <code>private copy</code>. The same, but this is never put into the shared <code>assets</code>
 directory: it's always copied alongside the woven files for the web.
-</li><li>(3) <span class="extract"><span class="extract-syntax">embed</span></span>. The file is not copied. Instead, its entire contents are
-pasted into the woven file itself, when the <span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> placeholder in
+(3) <code>embed</code>. The file is not copied. Instead, its entire contents are
+pasted into the woven file itself, when the <code>[[Plugins]]</code> placeholder in
 the template is expanded (see below). Do not use this for binary files.
-</li><li>(4) <span class="extract"><span class="extract-syntax">collate</span></span>. The file is not copied. Instead, its entire contents are
-pasted into the woven file itself, when the <span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> placeholder in
+(4) <code>collate</code>. The file is not copied. Instead, its entire contents are
+pasted into the woven file itself, when the <code>[[Plugins]]</code> placeholder in
 the template is expanded (see below); but this is done as a further collation,
 not a simple transcription, so any placeholders found in the file will
-themselves be expanded. Do not use this for binary files.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>In addition, the pattern can specify that some text referring to the
+themselves be expanded. Do not use this for binary files.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  In addition, the pattern can specify that some text referring to the
 asset file should be put into the woven file. For example, an HTML pattern
-might say this:
-</p>
-
+might say this:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js copy</span>
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js prefix = &lt;script src="URL"&gt;&lt;/script&gt;</span>
@@ -324,20 +296,16 @@ might say this:
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css prefix = &lt;link href="URL" rel="stylesheet" rev="stylesheet" type="text/css"&gt;</span>
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css transform names</span>
 </pre>
-<p class="commentary">With that done, any Javascript or CSS files in its plugins will be copied over,
+<div class="lsmarkdown">
+<p>With that done, any Javascript or CSS files in its plugins will be copied over,
 but links to them will be placed into the header of the HTML file being woven.
-(The text <span class="extract"><span class="extract-syntax">URL</span></span>, in a prefix or suffix, expands to the relative URL from the
-path being woven to the asset file.)
-</p>
-
-<p class="commentary">The unique command "transform names", which should be used only for CSS,
-enables the colour-scheme renaming business described below.
-</p>
-
-<p class="commentary">An alternative scheme would be to embed all CSS and Javascript, thus producing
-a stand-alone HTML file. This could be achieved by:
-</p>
-
+(The text <code>URL</code>, in a prefix or suffix, expands to the relative URL from the
+path being woven to the asset file.)</p>
+<p>The unique command &quot;transform names&quot;, which should be used only for CSS,
+enables the colour-scheme renaming business described below.</p>
+<p>An alternative scheme would be to embed all CSS and Javascript, thus producing
+a stand-alone HTML file. This could be achieved by:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js embed</span>
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js prefix = &lt;script&gt;</span>
@@ -347,85 +315,74 @@ a stand-alone HTML file. This could be achieved by:
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css suffix = &lt;/style&gt;</span>
 <span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css transform names</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Embeddings.</b>Patterns with the HTML format may also want to provide "embeddings". These
-are for embedded video/audio or other gadgets, and each different "service" &mdash;
-<span class="extract"><span class="extract-syntax">YouTube</span></span>, <span class="extract"><span class="extract-syntax">SoundCloud</span></span>, and such &mdash; is represented by an embedding file.
-Inweb looks for these in the pattern's <span class="extract"><span class="extract-syntax">Embedding</span></span> subdirectory, if there is
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Embeddings.</b>  Patterns with the HTML format may also want to provide &quot;embeddings&quot;. These
+are for embedded video/audio or other gadgets, and each different &quot;service&quot; --
+<code>YouTube</code>, <code>SoundCloud</code>, and such -- is represented by an embedding file.
+Inweb looks for these in the pattern's <code>Embedding</code> subdirectory, if there is
 one; then it tries in the pattern we are based on, and so on until it gives
-up and throws an error.
-</p>
-
-<p class="commentary">The services in the standard Inweb installation, then, are in
-<span class="extract"><span class="extract-syntax">inweb/Patterns/HTML/Embeddings</span></span>. It's easy to add new ones; for example,
-by creating a similar fragment in <span class="extract"><span class="extract-syntax">Tapestry/Embedding/WebTubeo.html</span></span> you
-would provide for embedding videos from <span class="extract"><span class="extract-syntax">WebTubeo</span></span> when using your pattern.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Syntax colouring.</b>No two people ever agree on the ideal colour scheme for syntax-colouring,
-so one prime reason to create a custom pattern is to change Inweb's defaults.
-</p>
-
-<p class="commentary">Suppose Inweb wants to weave an extract of code written in, say, C. It will
+up and throws an error.</p>
+<p>The services in the standard Inweb installation, then, are in
+<code>inweb/Patterns/HTML/Embeddings</code>. It's easy to add new ones; for example,
+by creating a similar fragment in <code>Tapestry/Embedding/WebTubeo.html</code> you
+would provide for embedding videos from <code>WebTubeo</code> when using your pattern.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Syntax colouring.</b>  No two people ever agree on the ideal colour scheme for syntax-colouring,
+so one prime reason to create a custom pattern is to change Inweb's defaults.</p>
+<p>Suppose Inweb wants to weave an extract of code written in, say, C. It will
 use the programming language definition for C to make a syntax-colouring,
 but then use the weave pattern to decide the colour scheme. For example,
 it's up to the C language to say which text is a function name: but it's up
-to the pattern to say whether functions are red or green.
-</p>
-
-<p class="commentary">A pattern based on HTML may provide a subdirectory called <span class="extract"><span class="extract-syntax">Colouring</span></span>. If it
+to the pattern to say whether functions are red or green.</p>
+<p>A pattern based on HTML may provide a subdirectory called <code>Colouring</code>. If it
 does, then the contents will be CSS files which provide colour schemes for
-different programming languages. The scheme <span class="extract"><span class="extract-syntax">Colours.css</span></span> is the fallback,
+different programming languages. The scheme <code>Colours.css</code> is the fallback,
 and is used for any language not providing a colour scheme; otherwise, a
-language called, say, <span class="extract"><span class="extract-syntax">Anaconda</span></span> would be coloured by <span class="extract"><span class="extract-syntax">Anaconda-Colours.css</span></span>.
-Inweb looks first in the <span class="extract"><span class="extract-syntax">Colouring</span></span> directory of the current pattern, then
-tries the pattern it is based on, and so on.
-</p>
-
-<p class="commentary">The practical effect is that if you want a pattern to colour Anaconda programs
-in your own preferred way &mdash; let's call this hypothetical pattern <span class="extract"><span class="extract-syntax">SnakeSkin</span></span> &mdash;
-then you need only write two files: <span class="extract"><span class="extract-syntax">SnakeSkin/pattern.txt</span></span>, consisting of
-the single line
-</p>
-
+language called, say, <code>Anaconda</code> would be coloured by <code>Anaconda-Colours.css</code>.
+Inweb looks first in the <code>Colouring</code> directory of the current pattern, then
+tries the pattern it is based on, and so on.</p>
+<p>The practical effect is that if you want a pattern to colour Anaconda programs
+in your own preferred way -- let's call this hypothetical pattern <code>SnakeSkin</code> --
+then you need only write two files: <code>SnakeSkin/pattern.txt</code>, consisting of
+the single line</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> SnakeSkin based on HTML</span>
 </pre>
-<p class="commentary">(or perhaps based on <span class="extract"><span class="extract-syntax">GitHubPages</span></span>, if you want to host there); and then
-a colouring file in <span class="extract"><span class="extract-syntax">SnakeSkin/Colouring/Anaconda-Colours.css</span></span>. You should
-make this by copying the default <span class="extract"><span class="extract-syntax">Colours.css</span></span> and tinkering.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>Note that Inweb supports multiple languages in the same weave, each having
+<div class="lsmarkdown">
+<p>(or perhaps based on <code>GitHubPages</code>, if you want to host there); and then
+a colouring file in <code>SnakeSkin/Colouring/Anaconda-Colours.css</code>. You should
+make this by copying the default <code>Colours.css</code> and tinkering.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  Note that Inweb supports multiple languages in the same weave, each having
 their own colour schemes. To do this, it renames CSS spans on the fly in
 order to prevent namespace clashes. But you can forget this, because it's
-automatic.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Templates.</b>The final possible ingredient for a pattern is a "template"; this is a file
+automatic.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Templates.</b>  The final possible ingredient for a pattern is a &quot;template&quot;; this is a file
 like a pro-forma letter, into which just the details need to be entered.
 Inweb does this in two main circumstances:
-</p>
-
-<ul class="items"><li>(a) For each woven file, for example each HTML page generated in a website,
-Inweb looks for <span class="extract"><span class="extract-syntax">template-body.html</span></span> (or <span class="extract"><span class="extract-syntax">.tex</span></span>, or <span class="extract"><span class="extract-syntax">.txt</span></span> &mdash; whatever
+(a) For each woven file, for example each HTML page generated in a website,
+Inweb looks for <code>template-body.html</code> (or <code>.tex</code>, or <code>.txt</code> -- whatever
 file extension is used for files in the current format), and uses that
 to top and tail the weaver's output. Not all formats or patterns need that.
-</li><li>(b) If Inweb is weaving a large number of individual files for sections or
+(b) If Inweb is weaving a large number of individual files for sections or
 chapters, it will try also to make an accompanying contents page, though
-it uses the term "index" for this. It does this by looking for the
-template <span class="extract"><span class="extract-syntax">template-index.html</span></span> &mdash; this time, it's always HTML: the idea is
+it uses the term &quot;index&quot; for this. It does this by looking for the
+template <code>template-index.html</code> -- this time, it's always HTML: the idea is
 that whatever file type you're making, you will want an HTML index page
-offering downloads or links to them.
-</li></ul>
-<p class="commentary">In fact the same process, called "collation", is also used internally to
+offering downloads or links to them.</p>
+<p>In fact the same process, called &quot;collation&quot;, is also used internally to
 produce navigation sidebars in HTML, and to inject HTML into headers for
 the sake of plugins. But the author of a pattern can't control that, whereas
-she can write her own <span class="extract"><span class="extract-syntax">template-body.html</span></span> and/or <span class="extract"><span class="extract-syntax">template-index.html</span></span>.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>For example, here is a template file for making an HTML page:
-</p>
-
+she can write her own <code>template-body.html</code> and/or <code>template-index.html</code>.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  For example, here is a template file for making an HTML page:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
 <span class="plain-syntax">&lt;html&gt;</span>
@@ -438,90 +395,84 @@ she can write her own <span class="extract"><span class="extract-syntax">templat
 <span class="plain-syntax">    &lt;/body&gt;</span>
 <span class="plain-syntax">&lt;/html&gt;</span>
 </pre>
-<p class="commentary">The weaver uses this to generate any HTML page of program taken from the
+<div class="lsmarkdown">
+<p>The weaver uses this to generate any HTML page of program taken from the
 web being woven. What you see is what you get, except for the placeholders in
 double square brackets:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[Weave Content]]</span></span> expands to the body of the web page &mdash; the headings,
+(a) <code>[[Weave Content]]</code> expands to the body of the web page -- the headings,
 paragraphs and so on.
-</li><li>(b) <span class="extract"><span class="extract-syntax">[[Plugins]]</span></span> expands to any links to CSS or Javascript files needed
-by the plugins being used &mdash; see above.
-</li><li>(c) Any bibliographic datum for the web expands to its value: thus <span class="extract"><span class="extract-syntax">[[Title]]</span></span>,
-<span class="extract"><span class="extract-syntax">[[Author]]</span></span> and so on. Booklet Title is one of these, but the weaver always
-sets it to a sensible title for the current file being woven &mdash; typically the
+(b) <code>[[Plugins]]</code> expands to any links to CSS or Javascript files needed
+by the plugins being used -- see above.
+(c) Any bibliographic datum for the web expands to its value: thus <code>[[Title]]</code>,
+<code>[[Author]]</code> and so on. Booklet Title is one of these, but the weaver always
+sets it to a sensible title for the current file being woven -- typically the
 name of a section or chapter, if that's what the file will contain. Another
-sometimes useful case to know is <span class="extract"><span class="extract-syntax">[[Capitalized Title]]</span></span>, which is the title
-in BLOCK CAPITAL LETTERS.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>Other placeholders, not used in the example above, include:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">[[Navigation]]</span></span> expands to the navigation sidebar in use when weaving
-a colony of webs &mdash; see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a> for more, and for
+sometimes useful case to know is <code>[[Capitalized Title]]</code>, which is the title
+in BLOCK CAPITAL LETTERS.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  Other placeholders, not used in the example above, include:
+(a) <code>[[Navigation]]</code> expands to the navigation sidebar in use when weaving
+a colony of webs -- see <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a> for more, and for
 syntaxes to do with links and URLs.
-</li><li>(b) <span class="extract"><span class="extract-syntax">[[Breadcrumbs]]</span></span> expands to the HTML for the breadcrumb trail.
-</li><li>(c) <span class="extract"><span class="extract-syntax">[[Docs]]</span></span> expands to the URL to the home page of a colony.
-</li><li>(d) <span class="extract"><span class="extract-syntax">[[Assets]]</span></span> expands to the URL of the directory into which plugin
-assets such as images are placed.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>The <span class="extract"><span class="extract-syntax">template-index.html</span></span> file has access to additional placeholders
-enabling it to generate contents pages:
-</p>
-
-<ul class="items"><li>(a) One of the following details about the entire-web PDF (see below):
-</li></ul>
+(b) <code>[[Breadcrumbs]]</code> expands to the HTML for the breadcrumb trail.
+(c) <code>[[Docs]]</code> expands to the URL to the home page of a colony.
+(d) <code>[[Assets]]</code> expands to the URL of the directory into which plugin
+assets such as images are placed.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  The <code>template-index.html</code> file has access to additional placeholders
+enabling it to generate contents pages:</p>
+<p>(a) One of the following details about the entire-web PDF (see below):</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
 </pre>
-<ul class="items"><li>(b) One of the following details about the "current chapter" (again, see below):
-</li></ul>
+<div class="lsmarkdown">
+<p>(b) One of the following details about the &quot;current chapter&quot; (again, see below):</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
 </pre>
-<ul class="items"><li> The leafname is that of the typeset PDF; the extent is a page count;
-the errors result is a usually blank report.
-</li><li>(c) One of the following details about the "current section" (again, see below):
-</li></ul>
+<div class="lsmarkdown">
+<p>(...) The leafname is that of the typeset PDF; the extent is a page count;
+the errors result is a usually blank report.</p>
+<p>(c) One of the following details about the &quot;current section&quot; (again, see below):</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Errors]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Section Source]]</span>
 </pre>
-<ul class="items"><li> Lines and Paragraphs are counts of the number of each; the Source
-substitution is the leafname of the original <span class="extract"><span class="extract-syntax">.w</span></span> file. The Mean is the
+<div class="lsmarkdown">
+<p>(...) Lines and Paragraphs are counts of the number of each; the Source
+substitution is the leafname of the original <code>.w</code> file. The Mean is the
 average number of lines per paragraph: where this is large, the section
-is rather raw and literate programming is not being used to the full.
-</li></ul>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b><span class="extract"><span class="extract-syntax">[[Repeat Chapter]]</span></span> and <span class="extract"><span class="extract-syntax">[[Repeat Section]]</span></span> begin blocks of lines which
+is rather raw and literate programming is not being used to the full.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  <code>[[Repeat Chapter]]</code> and <code>[[Repeat Section]]</code> begin blocks of lines which
 are repeated for each chapter or section: the material to be repeated
-continues to the matching <span class="extract"><span class="extract-syntax">[[End Repeat]</span></span> line. The "current chapter or
-section" mentioned above is the one selected in the current innermost
-loop of that description.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">[[Repeat Module]]</span></span>, similarly, begins a repeat through the imported
+continues to the matching <code>[[End Repeat]</code> line. The &quot;current chapter or
+section&quot; mentioned above is the one selected in the current innermost
+loop of that description.</p>
+<p><code>[[Repeat Module]]</code>, similarly, begins a repeat through the imported
 modules of the current web. (The main module, containing the actual material
-of the current web, does not count.) Within such a loop,
-</p>
-
+of the current web, does not count.) Within such a loop,</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">[[Module Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Module Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Module Page]]</span>
 </pre>
-<p class="commentary">can all be used to refer to the current module. <span class="extract"><span class="extract-syntax">[[Module Page]]</span></span> expands
+<div class="lsmarkdown">
+<p>can all be used to refer to the current module. <code>[[Module Page]]</code> expands
 to the relative URL of the module's own woven HTML form, provided that
-the module is listed as a member of the current colony file.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">[[Select ...]]</span></span> and <span class="extract"><span class="extract-syntax">[[End Select]</span></span> form a block which behaves like
-a repetition, but happens just once, for the named chapter or section.
-</p>
-
-<p class="commentary">For example, the following pattern:
-</p>
-
+the module is listed as a member of the current colony file.</p>
+<p><code>[[Select ...]]</code> and <code>[[End Select]</code> form a block which behaves like
+a repetition, but happens just once, for the named chapter or section.</p>
+<p>For example, the following pattern:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
@@ -530,9 +481,9 @@ a repetition, but happens just once, for the named chapter or section.
 <span class="plain-syntax">    </span><span class="function-syntax">[[End Repeat]]</span>
 <span class="plain-syntax">    </span><span class="function-syntax">[[End Select]]</span>
 </pre>
-<p class="commentary">weaves a report somewhat like this:
-</p>
-
+<div class="lsmarkdown">
+<p>weaves a report somewhat like this:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">take</span><span class="plain-syntax"> </span><span class="identifier-syntax">chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax">, </span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">find</span><span class="plain-syntax"> -</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="identifier-syntax">Lexer</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">/</span><span class="identifier-syntax">lex</span><span class="plain-syntax">, </span><span class="constant-syntax">1011</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines</span><span class="plain-syntax">.</span>
@@ -542,30 +493,22 @@ a repetition, but happens just once, for the named chapter or section.
 <span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="identifier-syntax">Vocabulary</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">/</span><span class="identifier-syntax">vocab</span><span class="plain-syntax">, </span><span class="constant-syntax">338</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines</span><span class="plain-syntax">.</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="identifier-syntax">Built</span><span class="plain-syntax">-</span><span class="identifier-syntax">In</span><span class="plain-syntax"> </span><span class="identifier-syntax">Words</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">/</span><span class="identifier-syntax">words</span><span class="plain-syntax">, </span><span class="constant-syntax">1207</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines</span><span class="plain-syntax">.</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>Finally, there is very limited support for conditionals with
-<span class="extract"><span class="extract-syntax">[[If CONDITION]]</span></span>, an optional <span class="extract"><span class="extract-syntax">Else</span></span>, and a compulsory <span class="extract"><span class="extract-syntax">Endif</span></span>.
-Very few conditions are in fact allowed:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Chapters]]</span></span> tests whether the current web is divided into chapters,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  Finally, there is very limited support for conditionals with
+<code>[[If CONDITION]]</code>, an optional <code>Else</code>, and a compulsory <code>Endif</code>.
+Very few conditions are in fact allowed:</p>
+<p><code>[[If Chapters]]</code> tests whether the current web is divided into chapters,
 the alternative being that all the sections are in a notional chapter just
-called <span class="extract"><span class="extract-syntax">Sections</span></span>.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Modules]]</span></span> tests whether the current web imports any modules.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Chapter Purpose]]</span></span>, inside a <span class="extract"><span class="extract-syntax">[[Repeat Chapter]]</span></span>, tests whether the
-current chapter has a (non-empty) purpose text. Similarly for <span class="extract"><span class="extract-syntax">[[If Section Purpose]]</span></span>
-and <span class="extract"><span class="extract-syntax">[[If Module Purpose]].
-</span></span></p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">[[If Module Page]]</span></span>, inside a <span class="extract"><span class="extract-syntax">[[Repeat Module]]</span></span>, tests whether the module
+called <code>Sections</code>.</p>
+<p><code>[[If Modules]]</code> tests whether the current web imports any modules.</p>
+<p><code>[[If Chapter Purpose]]</code>, inside a <code>[[Repeat Chapter]]</code>, tests whether the
+current chapter has a (non-empty) purpose text. Similarly for <code>[[If Section Purpose]]</code>
+and |[[If Module Purpose]].</p>
+<p><code>[[If Module Page]]</code>, inside a <code>[[Repeat Module]]</code>, tests whether the module
 appears (under its own name, i.e., not by a different name) as a member in
 the colony file, if there is one. In effect, this can be used to test whether
-it is safe to make a link to the module's own woven pages using <span class="extract"><span class="extract-syntax">[[Module Page]]</span></span>.
-</p>
-
+it is safe to make a link to the module's own woven pages using <code>[[Module Page]]</code>.</p>
+</div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-mwiw.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-iti.html">iti</a></li><li class="progresssection"><a href="M-wtaw.html">wtaw</a></li><li class="progresssection"><a href="M-htwaw.html">htwaw</a></li><li class="progresssection"><a href="M-mwiw.html">mwiw</a></li><li class="progresscurrent">awwp</li><li class="progresssection"><a href="M-spl.html">spl</a></li><li class="progresssection"><a href="M-tid.html">tid</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="P-htpw.html">P</a></li><li class="progresschapter"><a href="1-pc.html">1</a></li><li class="progressnext"><a href="M-spl.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

@@ -119,7 +119,7 @@ void WeavingFormats::render_to(text_stream *OUT, heterogeneous_tree *tree, filen
 	TEMPORARY_TEXT(interior)
 	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic::set_datum(C->wv->weave_web, I"Weave Content", interior);
-	if (F) Collater::for_order(OUT, C->wv, F, into, C->wv->weave_colony);
+	if (F) Collater::for_order(OUT, C->wv, F, into, C->wv->weave_colony, C->wv->reportage);
 	else WRITE("%S", interior);
 	DISCARD_TEXT(interior)
 	DISCARD_TEXT(template)

@@ -145,33 +145,227 @@ presented online are made this way. The Collater is also recursive, in that
 some collation commands call for further acts of collation to happen inside
 the original. See //Collater::collate// for the machinery.
 
+@h Weave reporting.
+This is more fiddly than it first appears to be: it's a challenge to produce
+the right amount of output here. Small webs and large webs have different needs.
+
+=
+typedef struct weave_reporting {
+	struct text_stream *OUT;
+	struct ls_web *W;
+	int verbose;
+	struct pathname *last_reported_weave_path;
+	int file_weaving_reports_made;
+	struct linked_list *files_copied; /* of |weave_copy_record| */
+	struct linked_list *plugins_copied; /* of |weave_plugin| */
+} weave_reporting;
+
+typedef struct weave_copy_record {
+	struct text_stream *filename_text;
+	struct text_stream *pathname_text;
+	int noted;
+	CLASS_DEFINITION
+} weave_copy_record;
+
+weave_reporting Swarm::new_reportage(OUTPUT_STREAM, ls_web *W, int verbose_mode) {
+	weave_reporting R;
+	R.OUT = OUT;
+	R.W = W;
+	R.verbose = verbose_mode;
+	R.last_reported_weave_path = NULL;
+	R.file_weaving_reports_made = 0;
+	R.files_copied = NEW_LINKED_LIST(weave_copy_record);
+	R.plugins_copied = NEW_LINKED_LIST(weave_plugin);
+	return R;
+}
+
+void Swarm::begin_report_run(weave_reporting *R) {
+	if (R) {
+		R->last_reported_weave_path = NULL;
+		R->file_weaving_reports_made = 0;
+	} else internal_error("no weave reporting");
+}
+
+int Swarm::report_copy(weave_reporting *R, filename *F, pathname *P, int creating) {
+	int copy_needed = TRUE;
+	if (R) {
+		TEMPORARY_TEXT(file_text)
+		TEMPORARY_TEXT(path_text)
+		WRITE_TO(file_text, "%f", F);
+		WRITE_TO(path_text, "%p", P);
+		
+		weave_copy_record *wcr;
+		LOOP_OVER_LINKED_LIST(wcr, weave_copy_record, R->files_copied)
+			if ((Str::eq(file_text, wcr->filename_text)) &&
+				(Str::eq(path_text, wcr->pathname_text))) {
+				copy_needed = FALSE;
+				break;
+			}
+		if (copy_needed) {
+			wcr = CREATE(weave_copy_record);
+			wcr->filename_text = Str::duplicate(file_text);
+			wcr->pathname_text = Str::duplicate(path_text);
+			wcr->noted = FALSE;
+			ADD_TO_LINKED_LIST(wcr, weave_copy_record, R->files_copied);
+		}
+		DISCARD_TEXT(file_text)
+		DISCARD_TEXT(path_text)
+		
+		if (copy_needed) {
+			text_stream *OUT = R->OUT;
+			if (R->verbose) {
+				if (creating) WRITE("Creating %p\n", P);
+				WRITE("Copy asset %f -> %p\n", F, P);
+			} else {
+				if (creating) WRITE("created: %p\n", P);
+			}
+		}
+	} else internal_error("no weave reporting");
+	return copy_needed;
+}
+
+void Swarm::report_embedding(weave_reporting *R, filename *F) {
+	if (R) {
+		text_stream *OUT = R->OUT;
+		if (R->verbose) WRITE("Embed asset %f\n", F);
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::report_collation(weave_reporting *R, filename *F) {
+	if (R) {
+		text_stream *OUT = R->OUT;
+		if (R->verbose) WRITE("Collate asset %f\n", F);
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::report_woven_file(weave_reporting *R, filename *F, weave_order *wv) {
+	if (R) {
+		text_stream *OUT = R->OUT;
+		if (R->verbose) {
+			if (wv) WRITE("    [%S -> ", wv->booklet_title);
+			else WRITE("    [");
+			pathname *P = Filenames::up(F);
+			if (Pathnames::resemble(P, R->last_reported_weave_path) == FALSE) WRITE("%f", F);
+			else WRITE("... %S", Filenames::get_leafname(F));
+			R->last_reported_weave_path = P;
+			if (wv) WeavingFormats::report_on_post_processing(wv);
+			WRITE("]\n");
+		} else {
+			if (R->W->single_file) {
+				WRITE("    generated: %f\n", F);
+			} else {
+				if (R->file_weaving_reports_made == 0) WRITE("    ");
+				WRITE("[");
+				pathname *P = Filenames::up(F);
+				if (Pathnames::resemble(P, R->last_reported_weave_path) == FALSE) WRITE("%f", F);
+				else Filenames::write_unextended_leafname(OUT, F);
+				R->last_reported_weave_path = P;
+				if (wv) WeavingFormats::report_on_post_processing(wv);
+				WRITE("] ");
+				R->file_weaving_reports_made++;
+			}
+		}
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::report_plugin(weave_reporting *R, weave_plugin *wp) {
+	if (R) {
+		weave_plugin *wp2;
+		LOOP_OVER_LINKED_LIST(wp2, weave_plugin, R->plugins_copied)
+			if (wp2 == wp)
+				return;
+		ADD_TO_LINKED_LIST(wp, weave_plugin, R->plugins_copied);
+		text_stream *OUT = R->OUT;
+		if (R->verbose) WRITE("Include plugin '%S'\n", wp->plugin_name);
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::report_colour_scheme(weave_reporting *R, colour_scheme *cs) {
+	if (R) {
+		text_stream *OUT = R->OUT;
+		if (R->verbose) WRITE("Include colour scheme '%S'\n", cs->scheme_name);
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::report_empty_warning(weave_reporting *R, text_stream *tag) {
+	if (R) {
+		text_stream *OUT = R->OUT;
+		WRITE("    warning: no paragraphs were tagged '%S', so weave was empty\n", tag);
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::end_report_run(weave_reporting *R) {
+	if (R) {
+		if (R->file_weaving_reports_made > 0) {
+			WRITE_TO(R->OUT, "\n");
+			R->file_weaving_reports_made = 0;
+		}
+	} else internal_error("no weave reporting");
+}
+
+void Swarm::end_report(weave_reporting *R) {
+	if (R) {
+		text_stream *OUT = R->OUT;
+		int NC = LinkedLists::len(R->files_copied);
+		int NP = LinkedLists::len(R->plugins_copied);
+		Swarm::end_report_run(R);
+		if (NC > 0) {
+			weave_copy_record *wcr;
+			LOOP_OVER_LINKED_LIST(wcr, weave_copy_record, R->files_copied)
+				if (wcr->noted == FALSE) {
+					int n = 0;
+					weave_copy_record *wcr2;
+					LOOP_OVER_LINKED_LIST(wcr2, weave_copy_record, R->files_copied)
+						if ((wcr2->noted == FALSE) &&
+							(Str::eq(wcr->pathname_text, wcr2->pathname_text))) {
+							n++; wcr2->noted = TRUE;
+						}
+					WRITE("    %d file%s copied to: %S\n", n, (n != 1)?"s":"", wcr->pathname_text);
+				}
+		}
+		if ((R->verbose) && (NP > 0)) {
+			WRITE("    used plugin%s: ", (NP != 1)?"s":"");
+			weave_plugin *wp;
+			int c = 0;
+			LOOP_OVER_LINKED_LIST(wp, weave_plugin, R->plugins_copied) {
+				if (c++ > 0) WRITE(", ");
+				WRITE("%S", wp->plugin_name);
+			}
+			WRITE("\n");
+		}
+	} else internal_error("no weave reporting");
+}
 
 @h Front end.
 This function performs a general weave of a web, or part of a web, swarming
 as necessary.
 
 =
-pathname *last_reported_weave_path = NULL;
-int file_weaving_reports_made = 0;
-
 void Swarm::weave(ls_colony *context, ls_colony_member *CM, ls_web *W, filename *to, pathname *into,
 	ls_pattern *pattern, int swarm_mode, text_stream *range, text_stream *tag,
-	int verbose_mode) {
-	file_weaving_reports_made = 0;
-	last_reported_weave_path = NULL;
+	int verbose_mode, int silent_mode) {
+	weave_reporting R = Swarm::new_reportage(silent_mode?NULL:STDOUT, W, verbose_mode);
 	if (context) Colonies::fully_load(context);
-	if (into) WeavingDetails::set_redirect_weaves_to(W, into);
+	W->conventions = Conventions::applicable(W, context);
+	if (into == NULL) {
+		if (CM) into = Colonies::weave_path(CM);
+		else if (W->single_file) into = Filenames::up(W->single_file);
+		else into = WebStructure::woven_folder(W, 6);
+	}
+	WeavingDetails::set_redirect_weaves_to(W, into);
 	int r = WeavingFormats::begin_weaving(W, pattern);
 	if (r != SWARM_OFF_SWM) swarm_mode = r;
+	if (Str::len(tag) > 0) swarm_mode = SWARM_OFF_SWM;
 	if ((W) && (CM == NULL)) CM = Colonies::find_ls_colony_member(W);
 	if (swarm_mode == SWARM_OFF_SWM) {
-		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, into, verbose_mode);
+		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, into, &R);
 	} else {
-		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern, to, into, verbose_mode);
+		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern, to, into, &R);
 	}
 	WeavingFormats::end_weaving(W, pattern);
-	if (into) WeavingDetails::set_redirect_weaves_to(W, NULL);
+	Swarm::end_report(&R);
 }
+
 @h Swarming.
 A "weave" occurs when we take a portion of a literate web -- one section, one
 chapter, or the whole thing -- and write it out in a human-readable form (or
@@ -194,45 +388,49 @@ weave_order *swarm_leader = NULL; /* the most inclusive one we weave */
 
 void Swarm::weave_swarm(ls_colony *context, ls_colony_member *CM, ls_web *W,
 	text_stream *range, int swarm_mode, text_stream *tag,
-	ls_pattern *pattern, filename *to, pathname *into, int verbosely) {
+	ls_pattern *pattern, filename *to, pathname *into, weave_reporting *R) {
 	swarm_leader = NULL;
-	last_reported_weave_path = NULL;
-	file_weaving_reports_made = 0;
+	Swarm::begin_report_run(R);
 	ls_chapter *C;
 	ls_section *S;
+	int pc = 0;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters) {
 		if (C->imported == FALSE) {
 			if (swarm_mode == SWARM_CHAPTERS_SWM)
 				if ((W->chaptered == TRUE) && (WebRanges::is_within(C->ch_range, range))) {
-					weave_order *wo = Swarm::weave_subset_inner(context, CM, W, C->ch_range, FALSE,
-						tag, pattern, to, into, verbosely);
-					WeavingDetails::set_ch_weave(C, wo);
-					if (Str::len(range) > 0) swarm_leader = wo;
-				}
+					weave_order *wv = Swarm::weave_subset_inner(context, CM, W, C->ch_range, FALSE,
+						tag, pattern, to, into, R);
+					if (wv) {
+						pc += wv->paragraphs_woven;
+						WeavingDetails::set_ch_weave(C, wv);
+						if (Str::len(range) > 0) swarm_leader = wv;
+					}
+				}	
 			if (swarm_mode == SWARM_SECTIONS_SWM)
 				LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
-					if (WebRanges::is_within(WebRanges::of(S), range))
-						WeavingDetails::set_sect_weave(S,
+					if (WebRanges::is_within(WebRanges::of(S), range)) {
+						weave_order *wv = 
 							Swarm::weave_subset_inner(context, CM, W,
-								WebRanges::of(S), FALSE, tag, pattern, to, into, verbosely));
-		}
-		if (file_weaving_reports_made > 0) {
-			PRINT("\n");
-			file_weaving_reports_made = 0;
+								WebRanges::of(S), FALSE, tag, pattern, to, into, R);
+						if (wv) {
+							pc += wv->paragraphs_woven;
+							WeavingDetails::set_sect_weave(S, wv);
+						}
+					}
+			Swarm::end_report_run(R);
 		}
 	}
-	Swarm::weave_index_templates(context, CM, W, range, pattern, into);
+	Swarm::weave_index_templates(context, CM, W, range, pattern, into, R);
+	if ((Str::len(tag) > 0) && (pc == 0)) Swarm::report_empty_warning(R, tag);
 }
 
 weave_order *Swarm::weave_subset(ls_colony *context, ls_colony_member *CM, ls_web *W, text_stream *range,
 	text_stream *tag, ls_pattern *pattern, filename *to, pathname *into,
-	int verbosely) {
+	weave_reporting *R) {
 	weave_order *wv = Swarm::weave_subset_inner(context, CM, W, range, FALSE,
-		tag, pattern, to, into, verbosely);
-	if (file_weaving_reports_made > 0) {
-		PRINT("\n");
-		file_weaving_reports_made = 0;
-	}
+		tag, pattern, to, into, R);
+	Swarm::end_report_run(R);
+	if ((Str::len(tag) > 0) && (wv->paragraphs_woven == 0)) Swarm::report_empty_warning(R, tag);
 	return wv;
 }
 
@@ -243,7 +441,7 @@ the call comes from Program Control).
 =
 weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM, ls_web *W,
 	text_stream *range, int open_afterwards, text_stream *tag,
-	ls_pattern *pattern, filename *to, pathname *into, int verbosely) {
+	ls_pattern *pattern, filename *to, pathname *into, weave_reporting *R) {
 	weave_order *wv = NULL;
 	if (WebStructure::has_errors(W) == FALSE) {
 		CodeAnalysis::analyse_code(W);
@@ -251,7 +449,7 @@ weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 		Weaver::weave(wv);
 		Patterns::post_process(wv->pattern, wv);
 		WeavingFormats::post_process_weave(wv, open_afterwards);
-		@<Report on the outcome of the weave to the console@>;
+		Swarm::report_woven_file(R, wv->weave_to, wv);
 	}
 	return wv;
 }
@@ -275,7 +473,8 @@ typedef struct weave_order {
 	struct wcl_declaration *navigation; /* navigation links, or |NULL| if not supplied */
 	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
 	struct linked_list *colour_schemes; /* of |colour_scheme|: these are for HTML */
-	int verbosely; /* logging to standard output */
+	struct weave_reporting *reportage; /* how to report what has been done */
+	int paragraphs_woven;
 
 	/* used for workspace during an actual weave: */
 	struct ls_line *current_weave_line;
@@ -305,7 +504,8 @@ typedef struct weave_order {
 	wv->plugins = NEW_LINKED_LIST(weave_plugin);
 	wv->colour_schemes = NEW_LINKED_LIST(colour_scheme);
 	if (WebStructure::has_only_one_section(W)) wv->self_contained = TRUE;
-	wv->verbosely = verbosely;
+	wv->reportage = R;
+	wv->paragraphs_woven = 0;
 	
 	wv->current_weave_line = NULL;
 
@@ -325,7 +525,7 @@ typedef struct weave_order {
 	if (H == NULL) H = into;
 	if (H == NULL) {
 		if (W->single_file == NULL)
-	 		H = WebStructure::woven_folder(W);
+	 		H = WebStructure::woven_folder(W, 3);
 	 	else
 	 		H = Filenames::up(W->single_file);
 	}
@@ -398,29 +598,6 @@ and details of any cover-sheet to use.
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str::copy(leafname, wv->theme_match);
 
-@ Each weave results in a compressed one-line printed report:
-
-@<Report on the outcome of the weave to the console@> =
-	if (verbosely) {
-		PRINT("    [%S -> ", wv->booklet_title);
-		pathname *P = Filenames::up(wv->weave_to);
-		if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
-		else PRINT("... %S", Filenames::get_leafname(wv->weave_to));
-		last_reported_weave_path = P;
-		WeavingFormats::report_on_post_processing(wv);
-		PRINT("]\n");
-	} else {
-		if (file_weaving_reports_made == 0) PRINT("    ");
-		PRINT("[");
-		pathname *P = Filenames::up(wv->weave_to);
-		if (P != last_reported_weave_path) PRINT("%f", wv->weave_to);
-		else Filenames::write_unextended_leafname(STDOUT, wv->weave_to);
-		last_reported_weave_path = P;
-		WeavingFormats::report_on_post_processing(wv);
-		PRINT("] ");
-		file_weaving_reports_made++;
-	}
-
 @ =
 void Swarm::ensure_plugin(weave_order *wv, text_stream *name) {
 	weave_plugin *existing;
@@ -454,30 +631,30 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 void Swarm::include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename *from) {
 	weave_plugin *wp;
 	LOOP_OVER_LINKED_LIST(wp, weave_plugin, wv->plugins)
-		Assets::include_plugin(OUT, W, wp, wv->pattern, from, wv->verbosely, wv->weave_colony);
+		Assets::include_plugin(OUT, W, wp, wv->pattern, from, wv->reportage, wv->weave_colony);
 	colour_scheme *cs;
 	LOOP_OVER_LINKED_LIST(cs, colour_scheme, wv->colour_schemes)
-		Assets::include_colour_scheme(OUT, W, cs, wv->pattern, from,  wv->verbosely, wv->weave_colony);
+		Assets::include_colour_scheme(OUT, W, cs, wv->pattern, from, wv->reportage, wv->weave_colony);
 }
 
 @ After every swarm, we rebuild the index:
 
 =
 void Swarm::weave_index_templates(ls_colony *context, ls_colony_member *CM, ls_web *W,
-	text_stream *range, ls_pattern *pattern, pathname *into) {
+	text_stream *range, ls_pattern *pattern, pathname *into, weave_reporting *R) {
 	if (!(Bibliographic::data_exists(W, I"Version Number")))
 		Bibliographic::set_datum(W, I"Version Number", I" ");
 	filename *INF = Patterns::find_template(W, pattern, I"template-index.html");
 	if (INF) {
 		pathname *H = WeavingDetails::get_redirect_weaves_to(W);
-		if (H == NULL) H = WebStructure::woven_folder(W);
+		if ((H == NULL) && (W->single_file == FALSE)) H = WebStructure::woven_folder(W, 4);
 		filename *Contents = Filenames::in(H, (CM)?(CM->home_leaf):I"index.html");
 		text_stream TO_struct; text_stream *OUT = &TO_struct;
 		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
 			Errors::fatal_with_file("unable to write contents file", Contents);
 		if (WeavingDetails::get_as_ebook(W))
 			Epub::note_page(WeavingDetails::get_as_ebook(W), Contents, I"Index", I"index");
-		PRINT("    [index file: %f]\n", Contents);
+		Swarm::report_woven_file(R, Contents, NULL);
 
 		wcl_declaration *nav;
 		linked_list *crumbs;
@@ -489,7 +666,7 @@ void Swarm::weave_index_templates(ls_colony *context, ls_colony_member *CM, ls_w
 			crumbs = NEW_LINKED_LIST(breadcrumb_request);
 		}
 
-		Collater::collate(OUT, W, range, INF, NULL, pattern, nav, crumbs, NULL, Contents, context);
+		Collater::collate(OUT, W, range, INF, NULL, pattern, nav, crumbs, NULL, Contents, context, R);
 		STREAM_CLOSE(OUT);
 	}
 }

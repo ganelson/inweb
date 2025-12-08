@@ -344,7 +344,7 @@ int LanguageMethods::syntax_colour(programming_language *pl,
 	programming_language *colour_as = lst->owning_chunk->extract_language;
 	if (colour_as == NULL) colour_as = pl;
 	ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-	if (LiterateSource::is_tagged_with(LiterateSource::par_of_line(lst), I"Preform")) {
+	if (ParagraphTags::is_tagged_with(LiterateSource::par_of_line(lst), I"Preform")) {
 		programming_language *prepl = Languages::find(wv->weave_web, I"Preform");
 		if ((L->preform_nonterminal_defined) || (L->preform_grammar))
 			if (prepl) colour_as = prepl;

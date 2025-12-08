@@ -90,7 +90,7 @@ the user of the machine.
 @e COMMAND_END_FSMEVENT
 
 @<Add literate syntax to finite state machine@> =
-	if (WebNotation::supports(S, NAMED_HOLONS_WSF)) {
+	if (WebNotation::supports_named_holons(S)) {
 		fsm_state *holon_name_state = FSM::new_state(I"holon");
 		FSM::add_transition_spelling_out_with_events(code_state,
 			WebNotation::notation(S, NAMED_HOLONS_WSF, 1),
@@ -99,17 +99,18 @@ the user of the machine.
 			WebNotation::notation(S, NAMED_HOLONS_WSF, 2),		
 			code_state, NO_FSMEVENT, NAME_END_FSMEVENT);
 	}
-	if (WebNotation::supports(S, TANGLER_COMMANDS_WSF)) {
+/*	if (WebNotation::supports_metadata_in_strings(S)) {
 		fsm_state *command_name_state = FSM::new_state(I"tangle-command");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebNotation::notation(S, TANGLER_COMMANDS_WSF, 1),
+			WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 1),
 			command_name_state, NO_FSMEVENT, COMMAND_START_FSMEVENT);
 		FSM::add_transition(command_name_state, '"', code_state);
 		FSM::add_transition(command_name_state, '\n', code_state);
 		FSM::add_transition_spelling_out_with_events(command_name_state,
-			WebNotation::notation(S, TANGLER_COMMANDS_WSF, 2),
+			WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2),
 			code_state, NO_FSMEVENT, COMMAND_END_FSMEVENT);
 	}
+*/
 
 @ These are mostly straightforward. For example, if you're scanning code and
 you see the notation to start a line comment, then transition to line-comment
@@ -144,24 +145,23 @@ notation must not occur inside double-quoted matter in a comment.
 		FSM::add_transition(wlc_state, '\n', code_state);
 	}
 
-@ Also annoyingly, Inform 6 allows tangle commands to be used inside string literals.
-We forbid this for all other languages.
+@ Also annoyingly, InC and Inform 6 allow tangle commands to be used inside
+string literals. We forbid this for most other languages.
 
 @<Add string literal syntax to finite state machine@> =
 	if (Str::len(pl->string_literal) > 0) {
 		fsm_state *string_state = FSM::new_state(I"string");
 		FSM::add_transition_spelling_out(code_state, pl->string_literal, string_state);
 		FSM::add_transition_spelling_out(string_state, pl->string_literal, code_state);
-		if (((Str::eq(pl->language_name, I"Inform 6")) || (pl->C_like)) &&
-			(WebNotation::supports(S, TANGLER_COMMANDS_WSF))) {
-			fsm_state *smlc_state = FSM::new_state(I"command-in-string");
+		if (WebNotation::supports_metadata_in_strings(S)) {
+			fsm_state *smlc_state = FSM::new_state(I"metadata-in-string");
 			FSM::add_transition_spelling_out_with_events(string_state,
-				WebNotation::notation(S, TANGLER_COMMANDS_WSF, 1),
+				WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 1),
 				smlc_state, AGAIN_FSMEVENT, COMMAND_START_FSMEVENT);
 			FSM::add_transition(smlc_state, '"', code_state);
 			FSM::add_transition(smlc_state, '\n', code_state);
 			FSM::add_transition_spelling_out_with_events(smlc_state,
-				WebNotation::notation(S, TANGLER_COMMANDS_WSF, 2),
+				WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2),
 				string_state, AGAIN_FSMEVENT, COMMAND_END_FSMEVENT);
 		}
 		if (Str::len(pl->string_literal_escape) > 0) {

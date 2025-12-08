@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -33,6 +38,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -50,22 +57,20 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">Eastertide</a></li><li><b>Reporting the Date</b></li></ul></div>
 <p class="purpose">This is really the whole Eastertide program, in a single section.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>This utility, or perhaps futility, is a minimal example of the use of the
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  This utility, or perhaps futility, is a minimal example of the use of the
 Foundation library, which comes supplied with <a href="../inweb/index.html" class="internal">inweb</a> for the benefit
 of C programs wanting to use it. We will do everything in an unnecessarily
-fancy way, just to give the tires a kick.
-</p>
-
-<p class="commentary">Any program using Foundation must define this constant:
-</p>
-
+fancy way, just to give the tires a kick.</p>
+<p>Any program using Foundation must define this constant:</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"eastertide"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>The <span class="extract"><span class="extract-syntax">main</span></span> routine must start and end Foundation, and is not allowed to
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The <code>main</code> routine must start and end Foundation, and is not allowed to
 do much after that; but it is allowed to ask if error messages were generated,
-so that it can return conventional Unix return values 0 (okay) or 1 (not okay).
-</p>
-
+so that it can return conventional Unix return values 0 (okay) or 1 (not okay).</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">argv</span><span class="plain-syntax">[]) {</span>
 <span class="plain-syntax">    </span><a href="../foundation-module/1-fm.html#SP8" class="function-link"><span class="function-syntax">Foundation::start</span></a><span class="plain-syntax">();</span>
@@ -78,31 +83,29 @@ so that it can return conventional Unix return values 0 (okay) or 1 (not okay).
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b>The general scheme here is that we read the command line to work out which
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b>  The general scheme here is that we read the command line to work out which
 the user is interested in, and store those in memory; but eventually we will
-actually report on them, thus. <span class="extract"><span class="extract-syntax">STDOUT</span></span> is the "text stream" for standard
-output, i.e., writing to it will print to the Terminal or similar console.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the report to the console</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
-</p>
+actually report on them, thus. <code>STDOUT</code> is the &quot;text stream&quot; for standard
+output, i.e., writing to it will print to the Terminal or similar console.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Write the report to the console</span><span class="named-paragraph-number">2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="S-rtd.html#SP9" class="function-link"><span class="function-syntax">Main::report_on_years</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="S-rtd.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b>All this program does is to print the date of Easter on any years requested,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b>  All this program does is to print the date of Easter on any years requested,
 but we'll give it some command-line options anyway. Foundation will add also
-<span class="extract"><span class="extract-syntax">-help</span></span> and a few others to the mix.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CALENDAR_FILE_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">QUALIFYING_CLSG</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">VERBOSE_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">AMERICAN_CLSW</span>
+<code>-help</code> and a few others to the mix.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">CALENDAR_FILE_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">QUALIFYING_CLSG</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VERBOSE_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">AMERICAN_CLSW</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the command line</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the command line</span><span class="named-paragraph-number">2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP2" class="function-link"><span class="function-syntax">CommandLine::declare_heading</span></a><span class="plain-syntax">(</span>
@@ -121,9 +124,9 @@ but we'll give it some command-line options anyway. Foundation will add also
 <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP8" class="function-link"><span class="function-syntax">CommandLine::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><a href="S-rtd.html#SP4" class="function-link"><span class="function-syntax">Main::switch</span></a><span class="plain-syntax">, &amp;</span><a href="S-rtd.html#SP4" class="function-link"><span class="function-syntax">Main::bareword</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="S-rtd.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>That results in dialogue like the following:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  That results in dialogue like the following:</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">eastertide</span><span class="ConsoleText-plain-syntax"> 2020</span>
 <span class="ConsoleText-plain-syntax">    12/4/2020</span>
@@ -157,18 +160,18 @@ but we'll give it some command-line options anyway. Foundation will add also
 <span class="ConsoleText-plain-syntax">    15/4/1770</span>
 <span class="ConsoleText-plain-syntax">    15/4/1827</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>So let's get back to how this is done. The Foundation function <a href="../foundation-module/3-cla.html#SP8" class="internal">CommandLine::read</a>
-calls our function <span class="extract"><span class="ConsoleText-extract-syntax">Main::switch</span></span> when any of our three switches is used
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  So let's get back to how this is done. The Foundation function <a href="../foundation-module/3-cla.html#SP8" class="internal">CommandLine::read</a>
+calls our function <code>Main::switch</code> when any of our three switches is used
 (we don't need to handle the ones Foundation added, only our own); and
-<span class="extract"><span class="ConsoleText-extract-syntax">Main::bareword</span></span> for any other words given on the command line. For example,
-</p>
-
+<code>Main::bareword</code> for any other words given on the command line. For example,</p>
+</div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">eastertide</span><span class="ConsoleText-identifier-syntax"> -american -calendar-file</span><span class="ConsoleText-plain-syntax"> cal.txt 1982 2007</span>
 </pre>
-<p class="commentary">...results in two calls to <span class="extract"><span class="ConsoleText-extract-syntax">Main::switch</span></span>, then two to <span class="extract"><span class="ConsoleText-extract-syntax">Main::bareword</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p>...results in two calls to <code>Main::switch</code>, then two to <code>Main::bareword</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbose_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">american_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -185,11 +188,10 @@ calls our function <span class="extract"><span class="ConsoleText-extract-syntax
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b>We will read in the calendar file as soon as it is mentioned:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Process calendar file</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b>  We will read in the calendar file as soon as it is mentioned:</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Process calendar file</span><span class="named-paragraph-number">4.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
@@ -197,25 +199,25 @@ calls our function <span class="extract"><span class="ConsoleText-extract-syntax
 <span class="plain-syntax">        </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><a href="S-rtd.html#SP5" class="function-link"><span class="function-syntax">Main::calendar_line</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="S-rtd.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>To make this a little more gratuitous, we'll give calendar files some
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  To make this a little more gratuitous, we'll give calendar files some
 syntax. The following function is called on each line in turn; we're going
 to trim white space, ignore blank lines, and also ignore any line beginning
-withn a <span class="extract"><span class="extract-syntax">#</span></span> as being a comment.
-</p>
-
+withn a <code>#</code> as being a comment.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::calendar_line</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Main::calendar_line</span></span>:<br/><a href="S-rtd.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP24" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">) == </span><span class="character-syntax">'#'</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="S-rtd.html#SP6" class="function-link"><span class="function-syntax">Main::request</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>And with that done, we can process a request for a year, which comes from
-either the command lihe (in which case <span class="extract"><span class="extract-syntax">tfp</span></span> here is null), or from the
-calendar file (in which case it remembers the filename and line number).
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  And with that done, we can process a request for a year, which comes from
+either the command lihe (in which case <code>tfp</code> here is null), or from the
+calendar file (in which case it remembers the filename and line number).</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::request</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Main::request</span></span>:<br/><a href="S-rtd.html#SP4">&#167;4</a>, <a href="S-rtd.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">year</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">bad_digit</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -236,23 +238,23 @@ calendar file (in which case it remembers the filename and line number).
 <span class="plain-syntax">    </span><a href="S-rtd.html#SP8" class="function-link"><span class="function-syntax">Main::new_year</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Y</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>Now it's time to actually store a request. There are many simpler ways to
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Now it's time to actually store a request. There are many simpler ways to
 do this, but we want to demonstrate Foundation's objects system in action,
 so we'll wrap each year supplied in an object. First, we have to define an
 ID constant for this new class of object, and use a macro which causes
-Foundation to generate the necessary handling functions:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">year_request_MT</span>
+Foundation to generate the necessary handling functions:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">year_request_MT</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">year_request</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>Now we should define the rather unnecessary structure itself, and then
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Now we should define the rather unnecessary structure itself, and then
 a sort of constructor function. We won't need a destructor: we will never
-destroy the years.
-</p>
-
+destroy the years.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">year_request</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">year</span><span class="plain-syntax">;</span>
@@ -266,11 +268,11 @@ destroy the years.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure year_request is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>We can't spin this out much longer, though... This is the actually
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  We can't spin this out much longer, though... This is the actually
 functional part of the program, and even so, it only calls a routine
-in Foundation. (See <a href="../foundation-module/3-tm.html#SP3" class="internal">Time::easter</a>.)
-</p>
-
+in Foundation. (See <a href="../foundation-module/3-tm.html#SP3" class="internal">Time::easter</a>.)</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::report_on_years</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Main::report_on_years</span></span>:<br/><a href="S-rtd.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">year_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">YR</span><span class="plain-syntax">;</span>

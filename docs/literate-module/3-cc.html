@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="index.html"><span class="selectedlink">literate</span></a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,12 +58,12 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-cc.html#SP1">&#167;1. Tag representation</a></li><li><a href="3-cc.html#SP2">&#167;2. Effect on tangling</a></li><li><a href="3-cc.html#SP4">&#167;4. Effect on weaving</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Tag representation.</b>Paragraph tagging is used to mark that code should be conditional. For
-example, a para which should be included only if <span class="extract"><span class="extract-syntax">WINDOWS</span></span> is defined
-should be tagged <span class="extract"><span class="extract-syntax">ifdef-WINDOWS</span></span>. The "valency" of that tag is 1, and
-the "identifier" is <span class="extract"><span class="extract-syntax">WINDOWS</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Tag representation.</b>  Paragraph tagging is used to mark that code should be conditional. For
+example, a para which should be included only if <code>WINDOWS</code> is defined
+should be tagged <code>ifdef-WINDOWS</code>. The &quot;valency&quot; of that tag is 1, and
+the &quot;identifier&quot; is <code>WINDOWS</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">IfdefTags::ifdef_valency</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">IfdefTags::ifdef_valency</span></span>:<br/><a href="3-cc.html#SP2">&#167;2</a>, <a href="3-cc.html#SP3">&#167;3</a>, <a href="3-cc.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tag</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::begins_with</span><span class="plain-syntax">(</span><span class="identifier-syntax">tag</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"ifdef-"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -71,7 +78,7 @@ the "identifier" is <span class="extract"><span class="extract-syntax">WINDOWS</
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Effect on tangling.</b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Effect on tangling.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IfdefTags::open_ifdefs</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">IfdefTags::open_ifdefs</span></span>:<br/>C-Like Languages - <a href="3-cl.html#SP5">&#167;5</a>, <a href="3-cl.html#SP6_1">&#167;6.1</a>, <a href="3-cl.html#SP7">&#167;7</a>, <a href="3-cl.html#SP6_3">&#167;6.3</a><br/>The Tangler - <a href="4-tt2.html#SP8_1_1">&#167;8.1.1</a>, <a href="4-tt2.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
@@ -84,12 +91,12 @@ the "identifier" is <span class="extract"><span class="extract-syntax">WINDOWS</
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><a href="3-cc.html#SP1" class="function-link"><span class="function-syntax">IfdefTags::conditional_identifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_tag</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::open_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP14" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::open_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP15" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> -1:</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><a href="3-cc.html#SP1" class="function-link"><span class="function-syntax">IfdefTags::conditional_identifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_tag</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::open_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP14" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::open_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP15" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
@@ -97,11 +104,11 @@ the "identifier" is <span class="extract"><span class="extract-syntax">WINDOWS</
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>This should arguably close the conditionals in reverse order, but it's a
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  This should arguably close the conditionals in reverse order, but it's a
 nuisance to loop backwards through a singly-linked list, and it doesn't really
-matter in practice.
-</p>
-
+matter in practice.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IfdefTags::close_ifdefs</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">IfdefTags::close_ifdefs</span></span>:<br/>C-Like Languages - <a href="3-cl.html#SP5">&#167;5</a>, <a href="3-cl.html#SP6_1">&#167;6.1</a>, <a href="3-cl.html#SP7">&#167;7</a>, <a href="3-cl.html#SP6_3">&#167;6.3</a><br/>The Tangler - <a href="4-tt2.html#SP8_1_1">&#167;8.1.1</a>, <a href="4-tt2.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">par</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">par</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">taggings</span><span class="plain-syntax">)) {</span>
@@ -113,12 +120,12 @@ matter in practice.
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><a href="3-cc.html#SP1" class="function-link"><span class="function-syntax">IfdefTags::conditional_identifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_tag</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::close_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP14" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::close_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP15" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">case</span><span class="plain-syntax"> -1:</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><a href="3-cc.html#SP1" class="function-link"><span class="function-syntax">IfdefTags::conditional_identifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">pt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">the_tag</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::close_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP14" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                    </span><a href="3-lm.html#SP15" class="function-link"><span class="function-syntax">LanguageMethods::close_ifdef</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><a href="1-ws.html#SP15" class="function-link"><span class="function-syntax">WebStructure::section_language</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">), </span><span class="identifier-syntax">identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
@@ -126,7 +133,7 @@ matter in practice.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Effect on weaving.</b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Effect on weaving.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">IfdefTags::show_endnote_on_ifdefs</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">IfdefTags::show_endnote_on_ifdefs</span></span>:<br/>The Weaver - <a href="5-tw.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">heterogeneous_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
@@ -137,8 +144,7 @@ matter in practice.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">d</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="5-twot.html#SP1" class="function-link"><span class="function-syntax">TextWeaver::commentary_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Show ifdef endnoting</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Show ifdef endnoting</span><span class="named-paragraph-number">4.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">par</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">par</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">taggings</span><span class="plain-syntax">)) {</span>
@@ -168,6 +174,7 @@ matter in practice.
 <span class="plain-syntax">            </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><a href="5-twot.html#SP1" class="function-link"><span class="function-syntax">TextWeaver::commentary_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">ap</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">" undefined"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
+
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-cc.html#SP4">&#167;4</a> (twice).</li></ul>
 <nav role="progress"><div class="progresscontainer">

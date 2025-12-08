@@ -9,7 +9,7 @@
 		</nav>
 		<main role="main">
 		<ul class="crumbs">[[Breadcrumbs]]<li><b>[[Title]]</b></li></ul>
-		<p class="purpose">[[Purpose]] This is version [[Version Number]].</p>
+		<p class="purpose">[[Optional Purpose]] This is version [[Version Number]].</p>
 		<hr>
 		<div class="contentspage">
 [[If Chapters]]
@@ -25,8 +25,11 @@
 		[[Repeat Section]]
 						<li>
 							<p class="sectionentry"><a href="[[Section Page]]">
-								<spon class="sectiontitle">[[Section Title]]</span></a> -
-							<span class="sectionpurpose">[[Section Purpose]]</span></p>
+								<spon class="sectiontitle">[[Section Title]]</span></a>
+[[If Section Purpose]]
+							XYZZY- <span class="sectionpurpose">[[Section Purpose]]</span>
+[[End If]]
+							</p>
 						</li>
 		[[End Repeat]]
 					</ul>
@@ -39,8 +42,11 @@
 		[[Repeat Section]]
 				<li>
 					<p class="chapterentry"><a href="[[Section Page]]">
-					<spon class="sectiontitle">[[Section Title]]</span></a> -
-					<span class="sectionpurpose">[[Section Purpose]]</span></p>
+					<span class="sectiontitle">[[Section Title]]</span></a>
+[[If Section Purpose]]
+					- <span class="sectionpurpose">[[Section Purpose]]</span>
+[[End If]]
+					</p>
 				</li>
 		[[End Repeat]]
 			</ul>

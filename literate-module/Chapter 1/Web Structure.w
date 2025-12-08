@@ -23,6 +23,7 @@ typedef struct ls_web {
 	struct filename *single_file; /* relative to the current working directory */
 	int is_page; /* is this a simple one-section web with no contents page? */
 	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
+	struct linked_list *conventions; /* of |ls_conventions| */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_notation *web_syntax; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
@@ -33,6 +34,8 @@ typedef struct ls_web {
 
 	struct filename *contents_filename; /* or |NULL| for a single-file web */
 	struct linked_list *header_filenames; /* of |filename| */
+
+	struct ls_holon_namespace *global_holon_namespace;
 
 	void *weaving_ref;
 	void *tangling_ref;
@@ -46,6 +49,8 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	if (D) D->object_declared = STORE_POINTER_ls_web(W);
 	W->bibliographic_data = NEW_LINKED_LIST(web_bibliographic_datum);
 	Bibliographic::initialise_data(W);
+	W->conventions = NEW_LINKED_LIST(ls_conventions);
+	ADD_TO_LINKED_LIST(Conventions::generic(), ls_conventions, W->conventions);
 	W->is_page = FALSE;
 	if ((D) && (D->modifier == PAGE_WCLMODIFIER)) W->is_page = TRUE;
 	if ((D) && (D->scope)) {
@@ -72,6 +77,7 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	W->web_language = NULL;
 	W->header_filenames = NEW_LINKED_LIST(filename);
 	W->main_module = WebModules::create_main_module(W);
+	W->global_holon_namespace = Holons::new_namespace(W, NULL);
 	W->weaving_ref = NULL;
 	W->tangling_ref = NULL;
 	W->analysis_ref = NULL;
@@ -89,29 +95,38 @@ ls_web *WebStructure::from_declaration(wcl_declaration *D) {
 ls_web *WebStructure::read_fully(ls_colony *C, wcl_declaration *D,
 	int enumerating, int weaving, int verbosely) {
 	ls_web *W = WebStructure::from_declaration(D);
+	Conventions::establish(W, C);
+	WebNotation::prepare_for(W->web_syntax, W);
 	WebStructure::read_web_source(W, verbosely, weaving);
 	@<Write the Inweb Version bibliographic datum@>;
 	CodeAnalysis::initialise_analysis_details(W);
 	WeavingDetails::initialise(W);
 	CodeAnalysis::analyse_web(W, enumerating, weaving);
-	if ((weaving) &&
-		(WebNotation::supports(W->web_syntax, MARKDOWN_COMMENTARY_WSF))) {
-		ls_chapter *Ch;
-		ls_section *S;
-		LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
-			LOOP_OVER_LINKED_LIST(S, ls_section, Ch->sections)
-				LiterateSource::parse_markdown(S->literate_source);
-		WebErrors::issue_all_recorded(W);
-	}
+	if (weaving) WebStructure::parse_markdown(W);
 	return W;
 }
 
 @<Write the Inweb Version bibliographic datum@> =
 	TEMPORARY_TEXT(IB)
 	WRITE_TO(IB, "[[Version Number]]");
-	web_bibliographic_datum *bd = Bibliographic::set_datum(W, I"Inweb Version", IB);
+	web_bibliographic_datum *bd = Bibliographic::preset_datum(W, I"Inweb Version", IB);
 	bd->declaration_permitted = FALSE;
 	DISCARD_TEXT(IB)
+
+@ In some webs, the content of the commentary chunks is written in Markdown
+format. We're only going to parse this if we need to: for tangling, for example,
+we don't need to, and nor if the syntax doesn't use Markdown anyway.
+
+=
+void WebStructure::parse_markdown(ls_web *W) {
+	ls_chapter *Ch;
+	ls_section *S;
+	LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, Ch->sections)
+			LiterateSource::parse_markdown(S->literate_source,
+				WebNotation::commentary_variation(W));
+	WebErrors::issue_all_recorded(W);
+}
 
 @ Statistics:
 
@@ -216,6 +231,21 @@ void WebStructure::print_statistics(ls_web *W) {
 			lc += S->literate_source->lines_read;
 		}
 	}
+	WebStructure::print_web_identity(W);
+	PRINT(": ");
+	int nm = WebModules::no_dependencies(W->main_module);
+	if (nm > 1)
+		PRINT("%d module%s : ", nm, (nm == 1)?"":"s");
+	if (W->chaptered)
+		PRINT("%d chapter%s : ", c, (c == 1)?"":"s");
+	if (W->is_page == FALSE)
+		PRINT("%d section%s : ", s, (s == 1)?"":"s");
+	PRINT("%d paragraph%s : %d line%s\n",
+		n, (n == 1)?"":"s",
+		lc, (lc == 1)?"":"s");
+}
+
+void WebStructure::print_web_identity(ls_web *W) {
 	PRINT("web \"%S\"", Bibliographic::get_datum(W, I"Title"));
 
 	int commented = FALSE;
@@ -229,14 +259,6 @@ void WebStructure::print_statistics(ls_web *W) {
 		commented = TRUE;
 	}
 	if (commented) PRINT(")");
-
-	PRINT(": ");
-	if (W->chaptered) PRINT("%d chapter%s : ",
-		c, (c == 1)?"":"s");
-	PRINT("%d section%s : %d paragraph%s : %d line%s\n",
-		s, (s == 1)?"":"s",
-		n, (n == 1)?"":"s",
-		lc, (lc == 1)?"":"s");
 }
 
 @ This is really for debugging:
@@ -335,7 +357,6 @@ typedef struct ls_section {
 	struct text_stream *sect_language_name;
 	int is_independent_target;
 	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
-	int paragraph_numbers_visible;
 
 	int scratch_flag; /* temporary workspace */
 
@@ -360,7 +381,6 @@ ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling, te
 	S->sect_language = NULL;
 	S->is_independent_target = FALSE;
 	S->sect_target = NULL;
-	S->paragraph_numbers_visible = TRUE;
 
 	S->sect_title = NULL;
 	S->sect_claimed_location = NULL;
@@ -433,7 +453,7 @@ int WebStructure::paragraph_count_within_section(ls_section *S) {
 We abstract these in order to be able to respond well to their not existing:
 
 =
-pathname *WebStructure::woven_folder(ls_web *W) {
+pathname *WebStructure::woven_folder(ls_web *W, int n) {
 	pathname *P = Pathnames::down(W->path_to_web, I"Woven");
 	if (Pathnames::create_in_file_system(P) == FALSE)
 		Errors::fatal_with_path("unable to create Woven subdirectory", P);
@@ -451,7 +471,9 @@ The contents page for a large web is usually at a fixed leafname, so:
 
 =
 int WebStructure::directory_looks_like_a_web(pathname *P) {
-	return TextFiles::exists(Filenames::in(P, I"Contents.w"));
+	if (TextFiles::exists(Filenames::in(P, I"Contents.w"))) return TRUE;
+	if (TextFiles::exists(Filenames::in(P, I"Contents.inweb"))) return TRUE;
+	return FALSE;
 }
 
 @ But mid-sized webs can consist more or less of an arbitrary file itself
@@ -475,13 +497,13 @@ ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
 	if (W->is_page)
 		SingleFileWebs::reconnoiter(W);
 	else
-		WebContents::read_contents_page(W, W->main_module,
-			WebModules::get_default_search_path(), TRUE, NULL);
+		WebContents::read_contents_page(W, W->main_module, TRUE, NULL);
 	if (W->web_syntax == NULL) internal_error("no notation for web");
 
 	Bibliographic::check_required_data(W);
 	BuildFiles::set_bibliographic_data_for(W);
 	BuildFiles::deduce_semver(W);
+	Conventions::establish(W, NULL);
 	return W;
 }
 
@@ -498,6 +520,9 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			@<Read one section from a file@>;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+			Holons::vet_usage(S->literate_source);
 	WebErrors::issue_all_recorded(W);
 	WCL::report_errors(W->declaration);
 }
@@ -509,13 +534,8 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 		P = M->module_location; /* references are relative to module */
 
 	S->literate_source = LiterateSource::begin_unit(S, W->web_syntax, WebStructure::section_language(S), P, W);
-	if (Str::eq(Bibliographic::get_datum(W, I"Paragraph Numbers Visibility"), I"Off"))
-		S->paragraph_numbers_visible = FALSE;
 
-	if (WebNotation::supports(W->web_syntax, EXPLICIT_SECTION_HEADINGS_WSF)) {
-		if (W->is_page)
-			@<Insert an implied purpose, for a single-file web@>;
-	}
+	if (W->is_page) @<Insert an implied purpose, for a single-file web@>;
 
 	int cl = 0;
 	if (S->source_declaration_for_section) {
@@ -581,6 +601,7 @@ void WebStructure::resolve_declaration(wcl_declaration *D) {
 			if (Str::len(S->sect_language_name) > 0)
 				S->sect_language = Languages::find_or_fail(W, S->sect_language_name);
 	}
+	Conventions::set_level(D, WEB_LSCONVENTIONLEVEL);
 }
 
 programming_language *WebStructure::section_language(ls_section *S) {

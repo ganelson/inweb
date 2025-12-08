@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,12 +58,12 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="2-llas.html#SP1">&#167;1. Implementation</a></li><li><a href="2-llas.html#SP7">&#167;7. A function call API</a></li><li><a href="2-llas.html#SP8">&#167;8. A macro-ized API</a></li><li><a href="2-llas.html#SP10">&#167;10. LIFO stacks</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Implementation.</b>Basically, there's a head structure, which points to a chain of body structures,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Implementation.</b>  Basically, there's a head structure, which points to a chain of body structures,
 each linking to the next. But to reduce memory manager overhead, we're going to store
 the first few body structures inside the head structure: that way, for a list of just
-a few items, only one call to the memory manager is needed.
-</p>
-
+a few items, only one call to the memory manager is needed.</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">NO_LL_EARLY_ITEMS</span><span class="plain-syntax"> </span><span class="constant-syntax">32</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -75,7 +82,7 @@ a few items, only one call to the memory manager is needed.
 <span class="plain-syntax">} </span><span class="reserved-syntax">linked_list_item</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure linked_list is private to this section.</li><li>The structure linked_list_item is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">LinkedLists::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">LinkedLists::new</span></span>:<br/><a href="2-llas.html#SP8">&#167;8</a>, <a href="2-llas.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -91,10 +98,10 @@ a few items, only one call to the memory manager is needed.
 <span class="plain-syntax">    </span><span class="identifier-syntax">ll</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_list_item</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>The following runs in constant time, i.e., performs no loops. In general we
-want speed rather than memory efficiency.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The following runs in constant time, i.e., performs no loops. In general we
+want speed rather than memory efficiency.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LinkedLists::add</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">LinkedLists::add</span></span>:<br/><a href="2-llas.html#SP6">&#167;6</a>, <a href="2-llas.html#SP8">&#167;8</a>, <a href="2-llas.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to_end</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"null list"</span><span class="plain-syntax">);</span>
@@ -121,9 +128,9 @@ want speed rather than memory efficiency.
 <span class="plain-syntax">    </span><span class="identifier-syntax">L</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">linked_list_length</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>Because of the direction of the links, only removing from the front is quick:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  Because of the direction of the links, only removing from the front is quick:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="function-syntax">LinkedLists::remove_from_front</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">LinkedLists::remove_from_front</span></span>:<br/><a href="2-llas.html#SP5">&#167;5</a>, <a href="2-llas.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"null list"</span><span class="plain-syntax">);</span>
@@ -135,9 +142,9 @@ want speed rather than memory efficiency.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">front</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">item_contents</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>It's rather slower to delete from a known position in the middle:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  It's rather slower to delete from a known position in the middle:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="function-syntax">LinkedLists::delete</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">LinkedLists::delete</span></span>:<br/><a href="2-llas.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"null list"</span><span class="plain-syntax">);</span>
@@ -159,10 +166,10 @@ want speed rather than memory efficiency.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>And indeed to insert at a known position, where <span class="extract"><span class="extract-syntax">N</span></span> being 0 means the front
-of the list, <span class="extract"><span class="extract-syntax">N</span></span> being 1 means "after the first item", and so on.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  And indeed to insert at a known position, where <code>N</code> being 0 means the front
+of the list, <code>N</code> being 1 means &quot;after the first item&quot;, and so on.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LinkedLists::insert</span><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><a href="2-llas.html#SP3" class="function-link"><span class="function-syntax">LinkedLists::add</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">, </span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -189,7 +196,7 @@ of the list, <span class="extract"><span class="extract-syntax">N</span></span> 
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. A function call API.</b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. A function call API.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LinkedLists::len</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">LinkedLists::len</span></span>:<br/><a href="2-llas.html#SP11">&#167;11</a><br/>Time - <a href="3-tm.html#SP7">&#167;7</a><br/>Textual Tables - <a href="4-tt.html#SP1">&#167;1</a><br/>JSON - <a href="4-jsn.html#SP29">&#167;29</a>, <a href="4-jsn.html#SP37">&#167;37</a><br/>Epub Ebooks - <a href="5-ee.html#SP7_3">&#167;7.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
@@ -222,16 +229,16 @@ of the list, <span class="extract"><span class="extract-syntax">N</span></span> 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">?(</span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">item_contents</span><span class="plain-syntax">):</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. A macro-ized API.</b>These intentionally hide the implementation. The difference between
-<span class="extract"><span class="extract-syntax">FIRST_IN_LINKED_LIST</span></span> and <span class="extract"><span class="extract-syntax">FIRST_ITEM_IN_LINKED_LIST</span></span> is that one returns
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. A macro-ized API.</b>  These intentionally hide the implementation. The difference between
+<code>FIRST_IN_LINKED_LIST</code> and <code>FIRST_ITEM_IN_LINKED_LIST</code> is that one returns
 the first structure in the list, and the other returns the first
-<span class="extract"><span class="extract-syntax">linked_list_item</span></span> chunk in the list. From the latter you can make the
-former using <span class="extract"><span class="extract-syntax">CONTENT_IN_ITEM</span></span>, but not vice versa. The same object
+<code>linked_list_item</code> chunk in the list. From the latter you can make the
+former using <code>CONTENT_IN_ITEM</code>, but not vice versa. The same object
 may be listed in many different lists, so if all you have is the object,
-you don't know its place in the list.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
+you don't know its place in the list.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">) </span>
 <span class="plain-syntax">    (</span><a href="2-llas.html#SP2" class="function-link"><span class="function-syntax">LinkedLists::new</span></a><span class="plain-syntax">())</span>
 <span class="definition-keyword">define</span> <span class="identifier-syntax">FIRST_ITEM_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    (</span><a href="2-llas.html#SP7" class="function-link"><span class="function-syntax">LinkedLists::first</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">))</span>
@@ -252,39 +259,35 @@ you don't know its place in the list.
 <span class="definition-keyword">define</span> <span class="identifier-syntax">LAST_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    ((</span><span class="identifier-syntax">T</span><span class="plain-syntax"> *) (</span><a href="2-llas.html#SP7" class="function-link"><span class="function-syntax">LinkedLists::content</span></a><span class="plain-syntax">(</span><a href="2-llas.html#SP7" class="function-link"><span class="function-syntax">LinkedLists::last</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="plain-syntax">))))</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>The following macro requires slight care to use: the list <span class="extract"><span class="extract-syntax">L</span></span> needs to be
-calculable without side-effects. There's no such worry over <span class="extract"><span class="extract-syntax">P</span></span> or <span class="extract"><span class="extract-syntax">T</span></span>, since
-they're just identifier names: the loop variable and the type name respectively.
-</p>
-
-<p class="commentary">Note that the loop variable <span class="extract"><span class="extract-syntax">P</span></span> must already be defined. Inside the loop body,
-a new variable will also then exist, <span class="extract"><span class="extract-syntax">P_item</span></span>, to refer to the item which
-points to <span class="extract"><span class="extract-syntax">P</span></span>. This allows us to iterate despite the comments above.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  The following macro requires slight care to use: the list <code>L</code> needs to be
+calculable without side-effects. There's no such worry over <code>P</code> or <code>T</code>, since
+they're just identifier names: the loop variable and the type name respectively.</p>
+<p>Note that the loop variable <code>P</code> must already be defined. Inside the loop body,
+a new variable will also then exist, <code>P_item</code>, to refer to the item which
+points to <code>P</code>. This allows us to iterate despite the comments above.</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">linked_list_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">##</span><span class="identifier-syntax">_item</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FIRST_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">), </span><span class="identifier-syntax">FIRST_ITEM_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax">##</span><span class="identifier-syntax">_item</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">P</span><span class="plain-syntax">##</span><span class="identifier-syntax">_item</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CONTENT_IN_ITEM</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEXT_ITEM_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">##</span><span class="identifier-syntax">_item</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">), </span><span class="identifier-syntax">T</span><span class="plain-syntax">), </span><span class="identifier-syntax">NEXT_ITEM_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">P</span><span class="plain-syntax">##</span><span class="identifier-syntax">_item</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">)))</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. LIFO stacks.</b>The above gives us an almost free implementation of LIFO, last-in-first-out,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. LIFO stacks.</b>  The above gives us an almost free implementation of LIFO, last-in-first-out,
 stacks, where we represent a stack as a linked list whose first entry is at
 the front. To push an item, we add it at the front; to pull, we remove the
-front item.
-</p>
-
-<p class="commentary">We provide an abstract type name for these stacks, even though they're the
-exact same structure. For reasons to do with the way <span class="extract"><span class="extract-syntax">typedef</span></span> works in C,
+front item.</p>
+<p>We provide an abstract type name for these stacks, even though they're the
+exact same structure. For reasons to do with the way <code>typedef</code> works in C,
 it is awkward to typedef the two names together, so we'll simply use the
-preprocessor:
-</p>
-
+preprocessor:</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">lifo_stack</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>Otherwise, it's macros all the way:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NEW_LIFO_STACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  Otherwise, it's macros all the way:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NEW_LIFO_STACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">) </span>
 <span class="plain-syntax">    (</span><a href="2-llas.html#SP2" class="function-link"><span class="function-syntax">LinkedLists::new</span></a><span class="plain-syntax">())</span>
 <span class="definition-keyword">define</span> <span class="identifier-syntax">PUSH_TO_LIFO_STACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><a href="2-llas.html#SP3" class="function-link"><span class="function-syntax">LinkedLists::add</span></a><span class="plain-syntax">((</span><span class="identifier-syntax">L</span><span class="plain-syntax">), (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>

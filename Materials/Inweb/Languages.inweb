@@ -715,7 +715,24 @@ Language "Perl" {
 	
 	// In its usual zany way, Perl recognises the same #line syntax as C, thus in
 	// principle overloading its comment notation #:
+	Line Marker: "#line %d \"%f\"\n"
+}
+
+Language "Python" {
+	Details: "The interpreted language Python"
+	Extension: ".py"
+	Line Comment: "#"
+	String Literal: "\""
+	String Literal Escape: "\\"
+	Character Literal: "'"
+	Character Literal Escape: "\\"
 	
+	Shebang: "#!/usr/bin/python3\n\n"
+	Start Definition: "%S ="
+	End Definition: "\n\n"
+	Indent Named Paragraph Expansion: true
+	
+	// Just a comment in Python-world, but may help some people	
 	Line Marker: "#line %d \"%f\"\n"
 }
 

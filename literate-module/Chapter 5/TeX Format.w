@@ -70,6 +70,7 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_section_header_node_type) @<Render header@>
 	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
+	else if (N->type == weave_subsubheading_node_type) @<Render subsubheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
 	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
 	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
@@ -78,6 +79,7 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_figure_node_type) @<Render figure@>
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
+	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_section_node_type) @<Render section@>
@@ -97,6 +99,7 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_inline_node_type) @<Render inline@>
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
+	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
 
 	else internal_error("unable to render unknown node");
 	return TRUE;
@@ -137,6 +140,10 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Render subheading@> =
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
+	WRITE("\\par\\noindent{\\bf %S}\\mark{%S}\\medskip\n", C->text, NULL);
+
+@<Render subsubheading@> =
+	weave_subsubheading_node *C = RETRIEVE_POINTER_weave_subsubheading_node(N->content);
 	WRITE("\\par\\noindent{\\bf %S}\\mark{%S}\\medskip\n", C->text, NULL);
 
 @<Render bar@> =
@@ -236,6 +243,10 @@ to a given width, into the text at the current position.
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	LOG("It was %d\n", C->allocation_id);
+
+@<Render holon declaration@> =
+	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
+	TeXWeaving::para_macro(OUT, trs->wv, C->holon->corresponding_chunk->owner, TRUE);
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
@@ -387,6 +398,10 @@ are not rendered here, they never will be.)
 	if (C->displayed) WRITE("$$"); else WRITE("$");
 	WRITE("%S", C->content);
 	if (C->displayed) WRITE("$$"); else WRITE("$");
+
+@<Render Markdown@> =
+	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
+	MDRenderer::render_extended(OUT, (void *) trs->wv, C->content, C->variation, 0);
 
 @<Recurse the renderer through children nodes@> =
 	for (tree_node *M = N->child; M; M = M->next)

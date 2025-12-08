@@ -212,7 +212,7 @@ void Makefiles::component_expander(preprocessor_macro *mm, preprocessor_state *P
 }
 
 @<Add to dictionary@> =
-	wcl_declaration *dec = WCL::read_web_or_halt(Pathnames::from_text(path), NULL);
+	wcl_declaration *dec = WCL::read_web_or_halt(Pathnames::from_text(path), NULL, NULL);
 	ls_web *Wm = WebStructure::from_declaration(dec);
 	Wm->main_module->module_name = Str::duplicate(symbol);
 	Wm->main_module->module_tag = Str::duplicate(set);

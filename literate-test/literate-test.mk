@@ -31,7 +31,7 @@ force:
 	$(call make-me)
 
 define make-me
-	$(INWEB) tangle $(ME) -import-from modules
+	$(INWEB) tangle $(ME)
 	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(MYNAME).o $(ME)/Tangled/$(MYNAME).c
 	clang $(CCOPTS) -g -o $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION) $(ME)/Tangled/$(MYNAME).o 
 endef

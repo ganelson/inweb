@@ -16,8 +16,8 @@ providing a common set of conventions for parsing the most common settings.
 =
 typedef struct inweb_instructions {
 	int subcommand; /* our main mode of operation: one of the |*_CLSUB| constants */
-	int verbose_switch; /* |-verbose|: print names of files read to stdout */
-	struct pathname *import_setting; /* |-import X|: where to find imported webs */
+	int verbose_switch; /* |-verbose|: print a narrative of what's happening */
+	int silent_switch; /* |-silent|: print nothing if all is well */
 
 	struct inweb_weave_settings weave_settings;
 	struct inweb_tangle_settings tangle_settings;
@@ -50,7 +50,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 @<Initialise the args@> =
 	args.subcommand = NO_CLSUB;
 	args.verbose_switch = FALSE;
-	args.import_setting = NULL;
+	args.silent_switch = FALSE;
 
 	InwebWeave::initialise(&(args.weave_settings));
 	InwebTangle::initialise(&(args.tangle_settings));
@@ -69,7 +69,7 @@ switches we want, other than the standard set (such as |-help|) which it
 provides automatically.
 
 @e VERBOSE_CLSW
-@e IMPORT_FROM_CLSW
+@e SILENT_CLSW
 @e USING_CLSW
 @e COLONY_CLSW
 @e MEMBER_CLSW
@@ -92,8 +92,8 @@ provides automatically.
 	CommandLine::resume_group(FOUNDATION_CLSG);
 	CommandLine::declare_boolean_switch(VERBOSE_CLSW, U"verbose", 1,
 		U"explain what inweb is doing", FALSE);
-	CommandLine::declare_switch(IMPORT_FROM_CLSW, U"import-from", 2,
-		U"specify that imported modules are at pathname X");
+	CommandLine::declare_boolean_switch(SILENT_CLSW, U"silent", 1,
+		U"print nothing unless errors occur", FALSE);
 	CommandLine::declare_switch(USING_CLSW, U"using", 2,
 		U"making Inweb resources in the file or path X available to all webs");
 	CommandLine::declare_switch(COLONY_CLSW, U"colony", 2,
@@ -123,8 +123,8 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 	if (InwebTestLanguage::switch(args, id, val, arg)) return;
 	switch (id) {
 		/* Miscellaneous */
-		case VERBOSE_CLSW: args->verbose_switch = TRUE; break;
-		case IMPORT_FROM_CLSW: args->import_setting = Pathnames::from_text(arg); break;
+		case VERBOSE_CLSW: args->verbose_switch = val; break;
+		case SILENT_CLSW: args->silent_switch = val; break;
 		case USING_CLSW: {
 			filename *F = Filenames::from_text(arg);
 			if (TextFiles::exists(F)) {
@@ -373,7 +373,7 @@ Here's where we do the guessing.
 			Filenames::write_extension(ext, ins->temp_file_setting);
 			if (Str::eq_insensitive(Filenames::get_leafname(ins->temp_file_setting), I"colony.txt"))
 				presume = COLONY_WCLTYPE;
-			if (Str::eq_insensitive(ext, I".inwebc"))
+			if (WebNotation::guess_from_filename(NULL, ins->temp_file_setting))
 				presume = WEB_WCLTYPE;
 			if (Str::eq_insensitive(ext, I".inwebsyntax"))
 				presume = NOTATION_WCLTYPE;
@@ -390,10 +390,9 @@ contents section.
 
 @<Try to read our file or path as a web@> =
 	if ((op.D == NULL) || (op.D->declaration_type == WEB_WCLTYPE)) {
-		if (((ins->temp_path_setting) &&
-			(TextFiles::exists(Filenames::in(ins->temp_path_setting, I"Contents.w")))) ||
+		if (((ins->temp_path_setting) && (WebStructure::directory_looks_like_a_web(ins->temp_path_setting))) ||
 			(ins->temp_file_setting)) {
-			op.D = WCL::read_web_or_halt(ins->temp_path_setting, ins->temp_file_setting);
+			op.D = WCL::read_web_or_halt(ins->temp_path_setting, ins->temp_file_setting, op.D);
 			op.W = WebStructure::read_fully(op.C, op.D, enumerating, weaving, verbose_mode);
 		}
 	}
@@ -422,6 +421,7 @@ But it's probably not wise to rely too much on this.
 			}
 		}
 	}
+	if (op.W) Conventions::establish(op.W, op.C);
 
 @h Range operand.
 Some subcommands take a further operand called a "range", usually after a |-only|

@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,24 +58,22 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="7-vnr.html#SP1">&#167;1. Ranges</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Ranges.</b>We often want to check if a semver lies in a given precedence range, which we
-store as an "interval" in the mathematical sense. For example, the range <span class="extract"><span class="extract-syntax">[2,6)</span></span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Ranges.</b>  We often want to check if a semver lies in a given precedence range, which we
+store as an &quot;interval&quot; in the mathematical sense. For example, the range <code>[2,6)</code>
 means all versions from 2.0.0 (inclusve) up to, but not equal to, 6.0.0. The
-lower end is called "closed" because it includes the end-value 2.0.0, and the
-upper end "open" because it does not. An infinite end means that there
+lower end is called &quot;closed&quot; because it includes the end-value 2.0.0, and the
+upper end &quot;open&quot; because it does not. An infinite end means that there
 os no restriction in that direction; an empty end means that, in fact, the
-interval is the empty set, that is, that no version number can ever satisfy it.
-</p>
-
-<p class="commentary">The <span class="extract"><span class="extract-syntax">end_value</span></span> element is meaningful only for <span class="extract"><span class="extract-syntax">CLOSED_RANGE_END</span></span> and <span class="extract"><span class="extract-syntax">OPEN_RANGE_END</span></span>
-ends. If one end is marked <span class="extract"><span class="extract-syntax">EMPTY_RANGE_END</span></span>, so must the other be: it makes
-no sense for an interval to be empty seen from one end but not the other.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">OPEN_RANGE_END</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INFINITE_RANGE_END</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EMPTY_RANGE_END</span>
+interval is the empty set, that is, that no version number can ever satisfy it.</p>
+<p>The <code>end_value</code> element is meaningful only for <code>CLOSED_RANGE_END</code> and <code>OPEN_RANGE_END</code>
+ends. If one end is marked <code>EMPTY_RANGE_END</code>, so must the other be: it makes
+no sense for an interval to be empty seen from one end but not the other.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">CLOSED_RANGE_END</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">OPEN_RANGE_END</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INFINITE_RANGE_END</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> {</span>
@@ -83,10 +88,10 @@ no sense for an interval to be empty seen from one end but not the other.
 <span class="plain-syntax">} </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure range_end is private to this section.</li><li>The structure semver_range is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>As hinted above, the notation <span class="extract"><span class="extract-syntax">[</span></span> and <span class="extract"><span class="extract-syntax">]</span></span> is used for closed ends, and <span class="extract"><span class="extract-syntax">(</span></span>
-and <span class="extract"><span class="extract-syntax">)</span></span> for open ones.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  As hinted above, the notation <code>[</code> and <code>]</code> is used for closed ends, and <code>(</code>
+and <code>)</code> for open ones.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::write_range</span><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no range"</span><span class="plain-syntax">);</span>
@@ -103,10 +108,10 @@ and <span class="extract"><span class="extract-syntax">)</span></span> for open 
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>The "allow anything" range runs from minus to plus infinity. Every version
-number lies in this range.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The &quot;allow anything&quot; range runs from minus to plus infinity. Every version
+number lies in this range.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::any_range</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">VersionNumberRanges::any_range</span></span>:<br/><a href="7-vnr.html#SP4">&#167;4</a>, <a href="7-vnr.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax">);</span>
@@ -124,20 +129,18 @@ number lies in this range.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>The "compatibility" range for a given version lies at the heart of semver:
-to be compatible with version <span class="extract"><span class="extract-syntax">V</span></span>, version <span class="extract"><span class="extract-syntax">W</span></span> must be of equal or greater
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The &quot;compatibility&quot; range for a given version lies at the heart of semver:
+to be compatible with version <code>V</code>, version <code>W</code> must be of equal or greater
 precedence, and must have the same major version number. For example,
-for <span class="extract"><span class="extract-syntax">2.1.7</span></span> the range will be <span class="extract"><span class="extract-syntax">[2.1.7, 3-A)</span></span>, all versions at least 2.1.7 but
-not as high as 3.0.0-A.
-</p>
-
-<p class="commentary">Note that <span class="extract"><span class="extract-syntax">3.0.0-A</span></span> is the least precendent version allowed by semver with
-major version 3. The <span class="extract"><span class="extract-syntax">-</span></span> gives it lower precedence than all release versions of
-3.0.0; the fact that upper case <span class="extract"><span class="extract-syntax">A</span></span> is alphabetically the earliest non-empty
+for <code>2.1.7</code> the range will be <code>[2.1.7, 3-A)</code>, all versions at least 2.1.7 but
+not as high as 3.0.0-A.</p>
+<p>Note that <code>3.0.0-A</code> is the least precendent version allowed by semver with
+major version 3. The <code>-</code> gives it lower precedence than all release versions of
+3.0.0; the fact that upper case <code>A</code> is alphabetically the earliest non-empty
 alphanumeric string gives it lower precendence than all other prerelease
-versions.
-</p>
-
+versions.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::compatibility_range</span><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP3" class="function-link"><span class="function-syntax">VersionNumberRanges::any_range</span></a><span class="plain-syntax">();</span>
@@ -154,10 +157,10 @@ versions.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>More straightforwardly, these ranges are for anything from V, or up to V,
-inclusive:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  More straightforwardly, these ranges are for anything from V, or up to V,
+inclusive:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="function-syntax">VersionNumberRanges::at_least_range</span><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP3" class="function-link"><span class="function-syntax">VersionNumberRanges::any_range</span></a><span class="plain-syntax">();</span>
@@ -173,9 +176,9 @@ inclusive:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>Here we test whether V is at least a given end, and then at most:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Here we test whether V is at least a given end, and then at most:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::version_ge_end</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">VersionNumberRanges::version_ge_end</span></span>:<br/><a href="7-vnr.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">E</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax">) {</span>
@@ -209,9 +212,9 @@ inclusive:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>This allows a simple way to write:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  This allows a simple way to write:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::in_range</span><span class="plain-syntax">(</span><span class="reserved-syntax">semantic_version_number</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -220,22 +223,16 @@ inclusive:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>The following decides which end restriction is stricter: it returns 1
-of <span class="extract"><span class="extract-syntax">E1</span></span> is, -1 if <span class="extract"><span class="extract-syntax">E2</span></span> is, and 0 if they are equally onerous.
-</p>
-
-<p class="commentary">The empty set is as strict as it gets: nothing qualifies.
-</p>
-
-<p class="commentary">Similarly, infinite ends are as relaxed as can be: everything qualifies.
-</p>
-
-<p class="commentary">And otherwise, we need to know which end we're looking at in order to decide:
-a lower end of <span class="extract"><span class="extract-syntax">[4, ...]</span></span> is stricter than a lower end of <span class="extract"><span class="extract-syntax">[3, ...]</span></span>, but an
-upper end of <span class="extract"><span class="extract-syntax">[..., 4]</span></span> is not as strict as an upper end of <span class="extract"><span class="extract-syntax">[..., 3]</span></span>. Where
-the boundary value is the same, open ends are stricter than closed ends.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The following decides which end restriction is stricter: it returns 1
+of <code>E1</code> is, -1 if <code>E2</code> is, and 0 if they are equally onerous.</p>
+<p>The empty set is as strict as it gets: nothing qualifies.</p>
+<p>Similarly, infinite ends are as relaxed as can be: everything qualifies.</p>
+<p>And otherwise, we need to know which end we're looking at in order to decide:
+a lower end of <code>[4, ...]</code> is stricter than a lower end of <code>[3, ...]</code>, but an
+upper end of <code>[..., 4]</code> is not as strict as an upper end of <code>[..., 3]</code>. Where
+the boundary value is the same, open ends are stricter than closed ends.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::stricter</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">VersionNumberRanges::stricter</span></span>:<br/><a href="7-vnr.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E1</span><span class="plain-syntax">, </span><span class="reserved-syntax">range_end</span><span class="plain-syntax"> </span><span class="identifier-syntax">E2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lower</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">E1</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">E2</span><span class="plain-syntax">.</span><span class="element-syntax">end_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EMPTY_RANGE_END</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -253,14 +250,14 @@ the boundary value is the same, open ends are stricter than closed ends.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>And so we finally arrive at the following, which intersects two ranges:
-that is, it changes <span class="extract"><span class="extract-syntax">R1</span></span> to the range of versions which lie inside both the
-original <span class="extract"><span class="extract-syntax">R1</span></span> and also <span class="extract"><span class="extract-syntax">R2</span></span>. (This is used by Inbuild when an extension is
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  And so we finally arrive at the following, which intersects two ranges:
+that is, it changes <code>R1</code> to the range of versions which lie inside both the
+original <code>R1</code> and also <code>R2</code>. (This is used by Inbuild when an extension is
 included in two different places in the source text, but with possibly
 different version needs.) The return value is true if an actual change took
-place, and false otherwise.
-</p>
-
+place, and false otherwise.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">VersionNumberRanges::intersect_range</span><span class="plain-syntax">(</span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R1</span><span class="plain-syntax">, </span><span class="reserved-syntax">semver_range</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lc</span><span class="plain-syntax"> = </span><a href="7-vnr.html#SP8" class="function-link"><span class="function-syntax">VersionNumberRanges::stricter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">R1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">, </span><span class="identifier-syntax">R2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lower</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">);</span>

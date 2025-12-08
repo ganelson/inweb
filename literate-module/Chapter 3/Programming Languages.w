@@ -83,6 +83,42 @@ programming_language *Languages::find_or_fail(ls_web *W, text_stream *language_n
 	return pl;
 }
 
+@ Here we take a guess from a filename in the form |leaf.language.notation|:
+
+=
+programming_language *Languages::guess_from_filename(ls_web *W, filename *F) {
+	if ((F == NULL) || (W->single_file == NULL)) return NULL;
+	TEMPORARY_TEXT(extension)
+	Filenames::write_penultimate_extension(extension, F);
+//	PRINT("Guessing L from '%S' (%f)\n", extension, F);
+
+	programming_language *result = NULL;
+	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, LANGUAGE_WCLTYPE, NULL);
+	wcl_declaration *D;
+	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
+		programming_language *pl = RETRIEVE_POINTER_programming_language(D->object_declared);
+		text_stream *ext;
+		LOOP_OVER_LINKED_LIST(ext, text_stream, pl->recognised_filename_extensions)
+			if (Str::eq_insensitive(ext, extension)) {
+				result = pl;
+				goto DoubleBreak;
+			}
+	}	
+	DoubleBreak: ;
+	DISCARD_TEXT(extension)
+	return result;
+}
+
+@ We support multiple file extensions, but the first is preferred:
+
+=
+text_stream *Languages::canonical_file_extension(programming_language *pl) {
+	text_stream *ext;
+	LOOP_OVER_LINKED_LIST(ext, text_stream, pl->recognised_filename_extensions)
+		return ext;
+	return NULL;
+}
+
 @ Once initially read in, language declarations are parsed into the following
 structure (one per language):
 
@@ -92,7 +128,7 @@ typedef struct programming_language {
 	text_stream *language_name; /* identifies it: see above */
 	
 	/* then a great many fields set directly in the definition file: */
-	text_stream *file_extension; /* by default output to a file whose name has this extension */
+	linked_list *recognised_filename_extensions; /* of |text_stream| */
 	text_stream *language_details; /* brief explanation of what language is */
 	int supports_namespaces;
 	text_stream *line_comment;
@@ -111,6 +147,7 @@ typedef struct programming_language {
 	text_stream *line_marker;
 	text_stream *before_holon_expansion;
 	text_stream *after_holon_expansion;
+	int indent_holon_expansion;
 	text_stream *start_definition;
 	text_stream *prolong_definition;
 	text_stream *end_definition;
@@ -181,12 +218,13 @@ programming_language *Languages::parse_declaration(wcl_declaration *D) {
 }
 
 void Languages::resolve_declaration(wcl_declaration *D) {
+	Conventions::set_level(D, LANGUAGE_LSCONVENTIONLEVEL);
 }
 
 @<Initialise the language to a plain-text state@> =
 	pl->declaration = D;
 	pl->language_name = NULL;
-	pl->file_extension = NULL;
+	pl->recognised_filename_extensions = NEW_LINKED_LIST(text_stream);
 	pl->supports_namespaces = FALSE;
 	pl->line_comment = NULL;
 	pl->whole_line_comment = NULL;
@@ -203,6 +241,7 @@ void Languages::resolve_declaration(wcl_declaration *D) {
 	pl->shebang = NULL;
 	pl->line_marker = NULL;
 	pl->before_holon_expansion = NULL;
+	pl->indent_holon_expansion = FALSE;
 	pl->after_holon_expansion = NULL;
 	pl->start_definition = NULL;
 	pl->prolong_definition = NULL;
@@ -268,8 +307,10 @@ declare a reserved keyword, or set a key to a value.
 		if (Str::eq(key, I"Name")) pl->language_name = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Details"))
 			pl->language_details = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Extension"))
-			pl->file_extension = Languages::text(state, value, tfp, TRUE);
+		else if (Str::eq(key, I"Extension")) {
+			text_stream *ext = Languages::text(state, value, tfp, TRUE);
+			ADD_TO_LINKED_LIST(ext, text_stream, pl->recognised_filename_extensions);
+		}
 		else if (Str::eq(key, I"Line Comment"))
 			pl->line_comment = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Whole Line Comment"))
@@ -300,6 +341,8 @@ declare a reserved keyword, or set a key to a value.
 			pl->line_marker = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Before Named Paragraph Expansion"))
 			pl->before_holon_expansion = Languages::text(state, value, tfp, TRUE);
+		else if (Str::eq(key, I"Indent Named Paragraph Expansion"))
+			pl->indent_holon_expansion = Languages::boolean(state, value, tfp);
 		else if (Str::eq(key, I"After Named Paragraph Expansion"))
 			pl->after_holon_expansion = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Start Definition"))

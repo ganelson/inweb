@@ -54,12 +54,14 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_section_footer_node_type) @<Render footer@>
 	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
+	else if (N->type == weave_subsubheading_node_type) @<Render subsubheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
 	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
 	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
+	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_section_node_type) @<Render section@>
@@ -76,6 +78,7 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_item_node_type) @<Render item@>
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
+	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
 
 	else internal_error("unable to render unknown node");
 	return TRUE;
@@ -104,6 +107,10 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Render subheading@> =
 	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
+	WRITE("%S\n\n", C->text);
+
+@<Render subsubheading@> =
+	weave_subsubheading_node *C = RETRIEVE_POINTER_weave_subsubheading_node(N->content);
 	WRITE("%S\n\n", C->text);
 
 @<Render bar@> =
@@ -138,6 +145,11 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
 	WRITE("[See %S video with ID %S.]\n", C->service, C->ID);
+
+@<Render holon declaration@> =
+	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
+	WRITE("<%S (%S)> =",
+		C->holon->holon_name, C->holon->corresponding_chunk->owner->paragraph_number);
 
 @<Render pmac@> =
 	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
@@ -212,6 +224,10 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	if (C->displayed) WRITE("\n");
 	WRITE("%S", C->content);
 	if (C->displayed) WRITE("\n\n");
+
+@<Render Markdown@> =
+	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
+	MDRenderer::render_extended(OUT, (void *) prs->wv, C->content, C->variation, 0);
 
 @<Recurse tne renderer through children nodes@> =
 	for (tree_node *M = N->child; M; M = M->next)

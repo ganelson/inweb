@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -49,15 +56,15 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inweb</a></li><li><a href="index.html#1">Chapter 1: Top Level</a></li><li><b>inweb make- Subcommands</b></li></ul></div>
 <p class="purpose">The inweb make-makefile, make-gitignore and make-readme subcommands are for setting up a web. They share a common implementation.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>The command line interface and help text:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">MAKE_README_CLSUB</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SCRIPT_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">MAKE_TO_CLSW</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">MAKE_GITIGNORE_CLSUB</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">MAKE_MAKEFILE_CLSUB</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">PLATFORM_CLSW</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  The command line interface and help text:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">MAKE_README_CLSUB</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SCRIPT_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">MAKE_TO_CLSW</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">MAKE_GITIGNORE_CLSUB</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">MAKE_MAKEFILE_CLSUB</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">PLATFORM_CLSW</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InwebMake::cli</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">InwebMake::cli</span></span>:<br/>Configuration - <a href="1-cnf.html#SP2_2">&#167;2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -131,14 +138,14 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../foundation-module/3-cla.html#SP2" class="function-link"><span class="function-syntax">CommandLine::end_subcommand</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>Changing the settings:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Changing the settings:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">inweb_make_settings</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">make_to_setting</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">-to X</span></span><span class="comment-syntax">: for the various make commands</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prototype_setting</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">-script X</span></span><span class="comment-syntax">: the pathname X, if supplied</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">platform_setting</span><span class="plain-syntax">; </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">-platform X</span></span><span class="comment-syntax">: sets prevailing platform to X</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">make_to_setting</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |-to X|: for the various make commands */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prototype_setting</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |-script X|: the pathname X, if supplied */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">platform_setting</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |-platform X|: sets prevailing platform to X */</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inweb_make_settings</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InwebMake::initialise</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">InwebMake::initialise</span></span>:<br/>Configuration - <a href="1-cnf.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inweb_make_settings</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ims</span><span class="plain-syntax">) {</span>
@@ -158,9 +165,9 @@ function togglePopup(material_id) {
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inweb_make_settings is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>In operation:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  In operation:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InwebMake::run</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">InwebMake::run</span></span>:<br/>Program Control - <a href="1-pc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inweb_instructions</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ins</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inweb_make_settings</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ims</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">ins</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">make_settings</span><span class="plain-syntax">);</span>
@@ -171,8 +178,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inweb make-readme command</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inweb make-readme command</span><span class="named-paragraph-number">3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">inweb_operand</span><span class="plain-syntax"> </span><span class="identifier-syntax">op</span><span class="plain-syntax"> = </span><a href="1-cnf.html#SP8" class="function-link"><span class="function-syntax">Configuration::operand</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ins</span><span class="plain-syntax">, </span><span class="constant-syntax">WEB_OPERAND_ALLOWED</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -185,8 +191,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../literate-module/6-rw.html#SP1" class="function-link"><span class="function-syntax">Readme::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">script</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_write</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ims.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inweb make-gitignore command</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inweb make-gitignore command</span><span class="named-paragraph-number">3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">inweb_operand</span><span class="plain-syntax"> </span><span class="identifier-syntax">op</span><span class="plain-syntax"> = </span><a href="1-cnf.html#SP8" class="function-link"><span class="function-syntax">Configuration::operand</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ins</span><span class="plain-syntax">, </span><span class="constant-syntax">WEB_OPERAND_ALLOWED</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -199,8 +204,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../literate-module/6-gs.html#SP1" class="function-link"><span class="function-syntax">Git::write_gitignore</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">script</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_write</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ims.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inweb make-makefile command</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inweb make-makefile command</span><span class="named-paragraph-number">3.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">inweb_operand</span><span class="plain-syntax"> </span><span class="identifier-syntax">op</span><span class="plain-syntax"> = </span><a href="1-cnf.html#SP8" class="function-link"><span class="function-syntax">Configuration::operand</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ins</span><span class="plain-syntax">, </span><span class="constant-syntax">WEB_OPERAND_ALLOWED</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">);</span>
@@ -213,12 +217,11 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../literate-module/6-mkf.html#SP1" class="function-link"><span class="function-syntax">Makefiles::write</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">op</span><span class="plain-syntax">.</span><span class="element-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">script</span><span class="plain-syntax">, </span><span class="identifier-syntax">to_write</span><span class="plain-syntax">, </span><span class="identifier-syntax">ims</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">platform_setting</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-ims.html#SP3">&#167;3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1. </b>These make-something subcommands share a common set of conventions about how
-to find the script, and so on:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the script and destination</span><span class="named-paragraph-number">3.1.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3_1_1" class="paragraph-anchor"></a><b>&#167;3.1.1. </b>  These make-something subcommands share a common set of conventions about how
+to find the script, and so on:</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Work out the script and destination</span><span class="named-paragraph-number">3.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax"> = </span><span class="identifier-syntax">op</span><span class="plain-syntax">.</span><span class="element-syntax">P</span><span class="plain-syntax">;</span>

@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="index.html"><span class="selectedlink">literate</span></a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,18 +58,16 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tp.html#SP8">&#167;8. Painting a file</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>This is a very simple syntax colouring algorithm. The work is done by the
-function <span class="extract"><span class="extract-syntax">Painter::syntax_colour</span></span>, which can in principle be applied to texts
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  This is a very simple syntax colouring algorithm. The work is done by the
+function <code>Painter::syntax_colour</code>, which can in principle be applied to texts
 of any length. But it's usually convenient to run it on a long file one line
-at a time, so that it is called repeatedly. The variable <span class="extract"><span class="extract-syntax">colouring_state</span></span>
+at a time, so that it is called repeatedly. The variable <code>colouring_state</code>
 remembers where we were at the end of the previous line, so that we can pick
-up again later at the start of the next.
-</p>
-
-<p class="commentary">Because of that, we need to call the following before we begin a run of calls
-to <span class="extract"><span class="extract-syntax">Painter::syntax_colour</span></span>:
-</p>
-
+up again later at the start of the next.</p>
+<p>Because of that, we need to call the following before we begin a run of calls
+to <code>Painter::syntax_colour</code>:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">colouring_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">PLAIN_COLOUR</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
@@ -71,26 +76,26 @@ to <span class="extract"><span class="extract-syntax">Painter::syntax_colour</sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>As we begin, the text to colour is in <span class="extract"><span class="extract-syntax">matter</span></span>, while <span class="extract"><span class="extract-syntax">colouring</span></span> is an
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  As we begin, the text to colour is in <code>matter</code>, while <code>colouring</code> is an
 equal-length text where each character represents the colour of its
-corresponding character in <span class="extract"><span class="extract-syntax">matter</span></span>. For example, we might start as:
-</p>
-
+corresponding character in <code>matter</code>. For example, we might start as:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    int x = 55;</span>
 <span class="plain-syntax">    ppppppppppp</span>
 </pre>
-<p class="commentary">with every character having <span class="extract"><span class="extract-syntax">PLAIN_COLOUR</span></span>, but end up with:
-</p>
-
+<div class="lsmarkdown">
+<p>with every character having <code>PLAIN_COLOUR</code>, but end up with:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    int x = 55;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rrr</span><span class="plain-syntax">p</span><span class="identifier-syntax">i</span><span class="plain-syntax">ppp</span><span class="constant-syntax">nn</span><span class="plain-syntax">p</span>
 </pre>
-<p class="commentary">We get to that by using a language's rules on literals, and then executing
-its colouring program.
-</p>
-
+<div class="lsmarkdown">
+<p>We get to that by using a language's rules on literals, and then executing
+its colouring program.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::syntax_colour</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Painter::syntax_colour</span></span>:<br/><a href="3-tp.html#SP8">&#167;8</a><br/>ACME Support - <a href="3-as.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">with_comments</span><span class="plain-syntax">) {</span>
@@ -121,8 +126,7 @@ its colouring program.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-tp.html#SP2_3" class="named-paragraph-link"><span class="named-paragraph">Now run the colouring program</span><span class="named-paragraph-number">2.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spot identifiers, literal text and character constants</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spot identifiers, literal text and character constants</span><span class="named-paragraph-number">2.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">squote</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::get_first_char</span><span class="plain-syntax">(</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">character_literal</span><span class="plain-syntax">);</span>
@@ -185,8 +189,7 @@ its colouring program.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spot literal numerical constants</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Spot literal numerical constants</span><span class="named-paragraph-number">2.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">base</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">dec_possible</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -245,12 +248,12 @@ its colouring program.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>For the moment, we always adopt the C rules on identifiers: they have to
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  For the moment, we always adopt the C rules on identifiers: they have to
 begin with an underscore or letter, then continue with underscores or
 alphanumeric characters, except that if the language allows it then they
-can contain a <span class="extract"><span class="extract-syntax">::</span></span> namespace divider.
-</p>
-
+can contain a <code>::</code> namespace divider.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::identifier_at</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Painter::identifier_at</span></span>:<br/><a href="3-tp.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">) {</span>
@@ -272,24 +275,23 @@ can contain a <span class="extract"><span class="extract-syntax">::</span></span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3. </b>With those preliminaries out of the way, the language's colouring program
-takes over.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Now run the colouring program</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3. </b>  With those preliminaries out of the way, the language's colouring program
+takes over.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Now run the colouring program</span><span class="named-paragraph-number">2.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">program</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><a href="3-tp.html#SP4" class="function-link"><span class="function-syntax">Painter::execute</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">program</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="identifier-syntax">painter_count</span><span class="plain-syntax">++);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>The run-type for a block determines what the rules in it apply to: the
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The run-type for a block determines what the rules in it apply to: the
 whole snippet of text, or each character on its own, or each run of characters
 of a given sort. Note that we work width-first, as it were: we complete each
-rule across the whole snippet before moving on to the next.
-</p>
-
+rule across the whole snippet before moving on to the next.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::execute</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Painter::execute</span></span>:<br/><a href="3-tp.html#SP2_3">&#167;2.3</a>, <a href="3-tp.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_language_block</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
@@ -369,9 +371,9 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">colouring_at_start</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>Rules have the form: if X, then Y.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  Rules have the form: if X, then Y.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::execute_rule</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Painter::execute_rule</span></span>:<br/><a href="3-tp.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">) {</span>
@@ -379,15 +381,15 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">        </span><a href="3-tp.html#SP7" class="function-link"><span class="function-syntax">Painter::follow</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>Here we test the "if X":
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="plain-syntax"> </span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Here we test the &quot;if X&quot;:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">spaced prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_PREFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">optionally spaced prefix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">UNSPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">5</span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">spaced suffix P</span></span>
+<span class="definition-keyword">define</span> <span class="constant-syntax">OPTIONALLY_SPACED_RULE_SUFFIX</span><span class="plain-syntax"> </span><span class="constant-syntax">7</span><span class="comment-syntax"> for </span><span class="extract"><span class="extract-syntax">optionally spaced suffix P</span></span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::satisfies</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Painter::satisfies</span></span>:<br/><a href="3-tp.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
@@ -451,9 +453,9 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>And here we carry out the "then Y":
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  And here we carry out the &quot;then Y&quot;:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::follow</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Painter::follow</span></span>:<br/><a href="3-tp.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table</span><span class="plain-syntax"> *</span><span class="identifier-syntax">HT</span><span class="plain-syntax">, </span><span class="reserved-syntax">colouring_rule</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rule</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colouring</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
@@ -470,8 +472,7 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print some debugging text</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print some debugging text</span><span class="named-paragraph-number">7.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"[%d, %d] text: "</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">to</span><span class="plain-syntax">);</span>
@@ -483,7 +484,7 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Painting a file.</b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Painting a file.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">Painter::lines</span><span class="plain-syntax">(</span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
@@ -540,11 +541,11 @@ rule across the whole snippet before moving on to the next.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">to</span><span class="plain-syntax">, </span><span class="character-syntax">'\n'</span><span class="plain-syntax">); </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">coloured</span><span class="plain-syntax">, </span><span class="identifier-syntax">NEWLINE_COLOUR</span><span class="plain-syntax">); }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>In the following, <span class="extract"><span class="extract-syntax">q_mode</span></span> is 0 outside quotes, 1 inside a character literal,
-and 2 inside a string literal; <span class="extract"><span class="extract-syntax">c_mode</span></span> is 0 outside comments, 1 inside a line
-comment, and 2 inside a multiline comment.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  In the following, <code>q_mode</code> is 0 outside quotes, 1 inside a character literal,
+and 2 inside a string literal; <code>c_mode</code> is 0 outside comments, 1 inside a line
+comment, and 2 inside a multiline comment.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Painter::parse_comment</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Painter::parse_comment</span></span>:<br/>ACME Support - <a href="3-as.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">part_before_comment</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">part_within_comment</span><span class="plain-syntax">) {</span>
@@ -571,8 +572,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a multiline comment</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a multiline comment</span><span class="named-paragraph-number">9.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::includes_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">pl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">multiline_comment_close</span><span class="plain-syntax">)) {</span>
@@ -580,15 +580,13 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a line comment</span><span class="named-paragraph-number">9.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a line comment</span><span class="named-paragraph-number">9.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    ;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside commentary</span><span class="named-paragraph-number">9.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside commentary</span><span class="named-paragraph-number">9.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">q_mode</span><span class="plain-syntax">) {</span>
@@ -598,8 +596,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_1" class="paragraph-anchor"></a><b>&#167;9.3.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside quoted matter</span><span class="named-paragraph-number">9.3.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_3_1" class="paragraph-anchor"></a><b>&#167;9.3.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Outside quoted matter</span><span class="named-paragraph-number">9.3.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!(</span><span class="identifier-syntax">Characters::is_whitespace</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">))) </span><span class="identifier-syntax">non_white_space</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -624,8 +621,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP9_3">&#167;9.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_2" class="paragraph-anchor"></a><b>&#167;9.3.2. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal character</span><span class="named-paragraph-number">9.3.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_3_2" class="paragraph-anchor"></a><b>&#167;9.3.2. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal character</span><span class="named-paragraph-number">9.3.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!(</span><span class="identifier-syntax">Characters::is_whitespace</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">))) </span><span class="identifier-syntax">non_white_space</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -634,8 +630,7 @@ comment, and 2 inside a multiline comment.
 <span class="plain-syntax">    </span><span class="identifier-syntax">q_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tp.html#SP9_3">&#167;9.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3_3" class="paragraph-anchor"></a><b>&#167;9.3.3. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal string</span><span class="named-paragraph-number">9.3.3</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP9_3_3" class="paragraph-anchor"></a><b>&#167;9.3.3. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inside a literal string</span><span class="named-paragraph-number">9.3.3</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (!(</span><span class="identifier-syntax">Characters::is_whitespace</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">))) </span><span class="identifier-syntax">non_white_space</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>

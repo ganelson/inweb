@@ -20,6 +20,7 @@ special type meaning "this is a list of declarations of possibly different types
 @e NOTATION_WCLTYPE
 @e NAVIGATION_WCLTYPE
 @e PATTERN_WCLTYPE
+@e CONVENTIONS_WCLTYPE
 
 @e NO_WCLMODIFIER from 0
 @e PAGE_WCLMODIFIER
@@ -27,14 +28,15 @@ special type meaning "this is a list of declarations of possibly different types
 =
 void WCL::write_type(OUTPUT_STREAM, int t) {
 	switch (t) {
-		case MISCELLANY_WCLTYPE: WRITE("Miscellany"); break;
-		case COLONY_WCLTYPE:     WRITE("Colony"); break;
-		case WEB_WCLTYPE:        WRITE("Web"); break;
-		case LANGUAGE_WCLTYPE:   WRITE("Language"); break;
-		case NOTATION_WCLTYPE:   WRITE("Notation"); break;
-		case NAVIGATION_WCLTYPE: WRITE("Navigation"); break;
-		case PATTERN_WCLTYPE:    WRITE("Pattern"); break;
-		default:                 WRITE("<unknown-declaration-type>"); break;
+		case MISCELLANY_WCLTYPE:  WRITE("Miscellany"); break;
+		case COLONY_WCLTYPE:      WRITE("Colony"); break;
+		case WEB_WCLTYPE:         WRITE("Web"); break;
+		case LANGUAGE_WCLTYPE:    WRITE("Language"); break;
+		case NOTATION_WCLTYPE:    WRITE("Notation"); break;
+		case NAVIGATION_WCLTYPE:  WRITE("Navigation"); break;
+		case PATTERN_WCLTYPE:     WRITE("Pattern"); break;
+		case CONVENTIONS_WCLTYPE: WRITE("Conventions"); break;
+		default:                  WRITE("<unknown-declaration-type>"); break;
 	}
 }
 
@@ -51,7 +53,11 @@ int WCL::can_contain(int outer_type, int type) {
 			if ((type != MISCELLANY_WCLTYPE) && (type != COLONY_WCLTYPE)) return TRUE;
 			break;
 		case WEB_WCLTYPE:
-			if ((type == LANGUAGE_WCLTYPE) || (type == NOTATION_WCLTYPE)) return TRUE;
+			if ((type == LANGUAGE_WCLTYPE) || (type == NOTATION_WCLTYPE) || (type == CONVENTIONS_WCLTYPE)) return TRUE;
+			break;
+		case LANGUAGE_WCLTYPE:
+		case NOTATION_WCLTYPE:
+			if (type == CONVENTIONS_WCLTYPE) return TRUE;
 			break;
 	}
 	return FALSE;
@@ -280,8 +286,11 @@ declarations of the same type as itself.
 		LOOP_OVER_LINKED_LIST(X, wcl_declaration, D->declarations)
 			if (WCL::can_contain(presumed, X->declaration_type) == FALSE)
 				forbid_assumption = TRUE;
-		if (forbid_assumption == FALSE)
+		if (forbid_assumption == FALSE) {
 			D->declaration_type = presumed;
+			if ((presumed == WEB_WCLTYPE) && (WCL::contents_page_file(F) == FALSE))
+				D->modifier = PAGE_WCLMODIFIER;
+		}
 	}
 
 @<If we have a miscellany which wraps a singleton, throw away the wrapper@> =
@@ -452,6 +461,10 @@ declaration only at the second "}", which is in the right one.
 		new_declaration_type = PATTERN_WCLTYPE;
 	if (Regexp::match(&mr, trimmed, U"Pattern \"(%c+)\" { *")) {
 		new_declaration_type = PATTERN_WCLTYPE; Str::copy(name, mr.exp[0]); }
+	if (Regexp::match(&mr, trimmed, U"Conventions { *"))
+		new_declaration_type = CONVENTIONS_WCLTYPE;
+	if (Regexp::match(&mr, trimmed, U"Conventions \"(%c+)\" { *")) {
+		new_declaration_type = CONVENTIONS_WCLTYPE; Str::copy(name, mr.exp[0]); }
 	if (Regexp::match(&mr, trimmed, U"Page { *")) {
 		new_declaration_type = WEB_WCLTYPE;
 		new_declaration_modifier = PAGE_WCLMODIFIER;
@@ -513,6 +526,7 @@ void WCL::parse_declarations_r(wcl_declaration *D, int pass) {
 			case NOTATION_WCLTYPE:   if (pass == 1) WebNotation::parse_declaration(D); break;
 			case PATTERN_WCLTYPE:    if (pass == 1) Patterns::parse_declaration(D); break;
 			case WEB_WCLTYPE:        if (pass == 2) WebStructure::parse_declaration(D); break;
+			case CONVENTIONS_WCLTYPE: if (pass == 2) Conventions::parse_declaration(D); break;
 		}
 	}
 }
@@ -529,6 +543,7 @@ void WCL::resolve_r(wcl_declaration *D) {
 			case NOTATION_WCLTYPE:   WebNotation::resolve_declaration(D); break;
 			case PATTERN_WCLTYPE:    Patterns::resolve_declaration(D); break;
 			case WEB_WCLTYPE:        WebStructure::resolve_declaration(D); break;
+			case CONVENTIONS_WCLTYPE: Conventions::resolve_declaration(D); break;
 		}
 	}
 }
@@ -837,9 +852,17 @@ So we provide a function which can handle either: the web should either be in
 the file |F| or the directory |P|; however, if |F| is indeed a contents page,
 then the web will be treated as the directory containing it.
 
+Here, |D| can be a partly parsed declaration as returned by |WCL::read_for_type_only_forgivingly|,
+or can be |NULL| to start from scratch.
+
 =
-wcl_declaration *WCL::read_web_or_halt(pathname *P, filename *F) {
-	wcl_declaration *D = WCL::read_web(P, F);
+wcl_declaration *WCL::read_web_or_halt(pathname *P, filename *F, wcl_declaration *D) {
+	if (D) {
+		WCL::parse_declarations_throwing_errors(D);
+		if (WCL::is_incorrect(D)) D = NULL;
+	} else {
+		D = WCL::read_web(P, F);
+	}
 	if (D == NULL) {
 		if (P) Errors::fatal_with_path("unable to read this web", P);
 		else if (F) Errors::fatal_with_file("unable to read this web", F);
@@ -848,21 +871,31 @@ wcl_declaration *WCL::read_web_or_halt(pathname *P, filename *F) {
 	return D;
 }
 
+int WCL::contents_page_file(filename *F) {
+	int conts = FALSE;
+	TEMPORARY_TEXT(extension)
+	Filenames::write_extension(extension, F);
+	if ((Str::eq_insensitive(extension, I".inwebc")) ||
+		(Str::eq_insensitive(Filenames::get_leafname(F), I"Contents.inweb")) ||
+		(Str::eq_insensitive(Filenames::get_leafname(F), I"Contents.w")))
+		conts = TRUE;
+	DISCARD_TEXT(extension)
+	return conts;
+}
+
 wcl_declaration *WCL::read_web(pathname *P, filename *F) {
 	filename *WCL_file = NULL;
 	pathname *web_directory = NULL;
 	if ((F) && (TextFiles::exists(F))) {
-		TEMPORARY_TEXT(extension)
-		Filenames::write_extension(extension, F);
-		if ((Str::eq_insensitive(extension, I".inwebc")) ||
-			(Str::eq_insensitive(Filenames::get_leafname(F), I"Contents.w"))) {
+		if (WCL::contents_page_file(F)) {
 			web_directory = Filenames::up(F);
 			WCL_file = F;
 		}
-		DISCARD_TEXT(extension)
 	} else if (P) {
 		web_directory = P;
 		WCL_file = Filenames::in(P, I"Contents.w");
+		if (TextFiles::exists(WCL_file) == FALSE)
+			WCL_file = Filenames::in(P, I"Contents.inweb");
 	} else internal_error("no location for web");
 
 	wcl_declaration *D = NULL;

@@ -107,6 +107,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_section_footer_node_type) @<Render footer@>
 	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
 	else if (N->type == weave_subheading_node_type) @<Render subheading@>
+	else if (N->type == weave_subsubheading_node_type) @<Render subsubheading@>
 	else if (N->type == weave_bar_node_type) @<Render bar@>
 	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
@@ -118,8 +119,10 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_pmac_node_type) @<Render pmac@>
+	else if (N->type == weave_tangler_command_node_type) @<Render tangler command@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_section_node_type) @<Render section@>
+	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
 	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
@@ -237,8 +240,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 							else if (on) PUT_TO(label, Str::get(pos));
 						}
 						if (on == FALSE) Str::copy(label, range);
-						if (Str::eq(Bibliographic::get_datum(hrs->wv->weave_web,
-							I"Sequential Section Ranges"), I"On"))
+						if (Conventions::get_int(hrs->wv->weave_web, SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION))
 							Str::delete_first_character(label);
 						if (S == C->sect) {
 							HTML_OPEN_WITH("li", "class=\"progresscurrent\"");
@@ -304,6 +306,12 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	HTMLWeaving::escape_text(OUT, C->text);
 	HTML_CLOSE("h3"); WRITE("\n");
 
+@<Render subsubheading@> =
+	weave_subsubheading_node *C = RETRIEVE_POINTER_weave_subsubheading_node(N->content);
+	HTML_OPEN("h4");
+	HTMLWeaving::escape_text(OUT, C->text);
+	HTML_CLOSE("h4"); WRITE("\n");
+
 @<Render bar@> =
 	HTML::hr(OUT, NULL);
 
@@ -331,7 +339,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	HTML::image_to_dimensions(OUT, RF, C->alt_text, C->w, C->h);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
+		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
 	HTML_CLOSE("p");
 	WRITE("\n");
 
@@ -362,7 +370,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Pathnames::down(hrs->wv->weave_web->path_to_web, I"Audio"),
 		C->audio_name);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
+		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	WRITE("<audio controls>\n");
 	WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", C->audio_name);
@@ -377,7 +385,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Pathnames::down(hrs->wv->weave_web->path_to_web, I"Video"),
 		C->video_name);
 	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
+		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	if ((C->w > 0) && (C->h > 0))
 		WRITE("<video width=\"%d\" height=\"%d\" controls>", C->w, C->h);
@@ -405,7 +413,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Swarm::ensure_plugin(hrs->wv, I"Downloads");
 		pathname *TOP =
 			Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-				hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->verbosely, hrs->wv->weave_colony);
+				hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
 		if (TOP == NULL) TOP = Filenames::up(F);
 		TEMPORARY_TEXT(url)
 		TEMPORARY_TEXT(size)
@@ -421,7 +429,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 		Bibliographic::set_datum(hrs->wv->weave_web, I"File URL", url);
 		Bibliographic::set_datum(hrs->wv->weave_web, I"File Details", size);
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
-			TF, hrs->into_file, hrs->wv->weave_colony);
+			TF, hrs->into_file, hrs->wv->weave_colony, hrs->wv->reportage);
 		WRITE("\n");
 		DISCARD_TEXT(url)
 		DISCARD_TEXT(size)
@@ -588,7 +596,7 @@ that service uses to identify the video/audio in question.
 		Bibliographic::set_datum(hrs->wv->weave_web, I"Content Height", CH);
 		HTML_OPEN_WITH("p", "class=\"center-p\"");
 		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
-			F, hrs->into_file, hrs->wv->weave_colony);
+			F, hrs->into_file, hrs->wv->weave_colony, hrs->wv->reportage);
 		HTML_CLOSE("p");
 		WRITE("\n");
 	}
@@ -616,6 +624,16 @@ that service uses to identify the video/audio in question.
 		WRITE(" =");
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
 	}
+
+@<Render tangler command@> =
+	weave_tangler_command_node *C = RETRIEVE_POINTER_weave_tangler_command_node(N->content);
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
+	HTML_OPEN_WITH("span", "class=\"named-paragraph\"");
+	HTMLWeaving::escape_text(OUT, I"output from tangler command '");
+	HTMLWeaving::escape_text(OUT, C->command);
+	HTMLWeaving::escape_text(OUT, I"'");
+	HTML_CLOSE("span");
+	HTML_CLOSE("span");
 
 @<Render vskip@> =
 	WRITE("\n");
@@ -759,6 +777,28 @@ that service uses to identify the video/audio in question.
 	HTML_CLOSE("span");
 	WRITE(" ");
 
+@<Render holon declaration@> =
+	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
+	ls_holon *label_holon = C->holon;
+	if (C->holon->addendum_to) {
+		label_holon = C->holon->addendum_to;
+		TEMPORARY_TEXT(url)
+		Colonies::paragraph_URL(url, label_holon->corresponding_chunk->owner, hrs->wv->weave_to, hrs->wv->weave_colony);
+		HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
+		DISCARD_TEXT(url)
+	}
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-defn\"");
+	HTMLWeaving::escape_text(OUT, label_holon->holon_name);
+	HTML_CLOSE("span");
+	HTML_OPEN_WITH("span", "class=\"named-paragraph-number\"");
+	HTMLWeaving::escape_text(OUT, label_holon->corresponding_chunk->owner->paragraph_number);
+	HTML_CLOSE("span");
+	if (C->holon->addendum_to) HTML::end_link(OUT);
+	HTML_CLOSE("span");
+	if (C->holon->addendum_to) HTMLWeaving::escape_text(OUT, I" +=");
+	else HTMLWeaving::escape_text(OUT, I" =");
+
 @<Render source code@> =
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	int starts = FALSE;
@@ -875,6 +915,12 @@ that service uses to identify the video/audio in question.
 	Colonies::paragraph_URL(TEMP, C->par1, hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
+	if (C->distant) {
+		if (C->par1->owning_unit->owning_section)
+			WRITE("%S:", C->par1->owning_unit->owning_section->sect_range);
+		else
+			WRITE("external:");
+	}
 	WRITE("%s%S",
 		(Str::get_first_char(LiterateSource::par_ornament(C->par1)) == 'S')?"&#167;":"&para;",
 		C->par1->paragraph_number);
@@ -907,8 +953,7 @@ that service uses to identify the video/audio in question.
 			HTML_CLOSE("p");
 		}
 	}
-	MDRenderer::render_extended(OUT, (void *) hrs->wv, C->content,
-		MarkdownVariations::Inweb_flavoured_Markdown(), mode);
+	MDRenderer::render_extended(OUT, (void *) hrs->wv, C->content, C->variation, mode);
 	INDENT;
 	HTML_CLOSE("div");
 
@@ -933,7 +978,7 @@ void HTMLWeaving::notify_image(weave_order *wv, text_stream *image) {
 		image);
 	Assets::include_asset(NULL, Assets::new_rule(NULL, I"", I"private copy", NULL),
 		wv->weave_web, F, NULL,
-		wv->pattern, wv->weave_to, wv->verbosely, wv->weave_colony);
+		wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
 }
 
 @ The necessary escapes for the use of the MathJax plugin.
@@ -1005,6 +1050,7 @@ void HTMLWeaving::paragraph_number(text_stream *OUT, ls_paragraph *par) {
 		HTMLWeaving::escape_text(OUT, title);
 		if (Str::len(title) > 0) WRITE(".");
 		HTML_CLOSE("b");
+		WRITE(" ");
 	}
 }
 
@@ -1054,7 +1100,7 @@ int HTMLWeaving::begin_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pat
 	Epub::attach_metadata(WeavingDetails::get_as_ebook(W), U"identifier", T);
 	DISCARD_TEXT(T)
 
-	pathname *P = WebStructure::woven_folder(W);
+	pathname *P = WebStructure::woven_folder(W, 2);
 	WeavingDetails::set_redirect_weaves_to(W, Epub::begin_construction(WeavingDetails::get_as_ebook(W), P, NULL));
 	Shell::copy(CSS, WeavingDetails::get_redirect_weaves_to(W), "");
 	return SWARM_SECTIONS_SWM;

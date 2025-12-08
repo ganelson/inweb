@@ -129,6 +129,14 @@ text_stream *Filenames::get_leafname(filename *F) {
 	return F->leafname;
 }
 
+@h Filename extensions.
+The following functions are written cautiously because of an oddity in
+Windows's handling of filenames, which are allowed to have trailing dots or
+spaces, in a way which isn't necessarily visible to the user, who may have added
+these by an accidental brush of the keyboard. Thus |frog.jpg .| should be
+treated as equivalent to |frog.jpg| when deciding the likely file format.
+
+=
 void Filenames::write_unextended_leafname(OUTPUT_STREAM, filename *F) {
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
 		inchar32_t c = Str::get(pos);
@@ -137,30 +145,24 @@ void Filenames::write_unextended_leafname(OUTPUT_STREAM, filename *F) {
 	}
 }
 
-@h Filename extensions.
-The following is cautiously written because of an oddity in Windows's handling
-of filenames, which are allowed to have trailing dots or spaces, in a way
-which isn't necessarily visible to the user, who may have added these by
-an accidental brush of the keyboard. Thus |frog.jpg .| should be treated
-as equivalent to |frog.jpg| when deciding the likely file format.
-
-=
 void Filenames::write_extension(OUTPUT_STREAM, filename *F) {
+	TEMPORARY_TEXT(EXT)
 	int on = FALSE;
 	LOOP_THROUGH_TEXT(pos, F->leafname) {
 		inchar32_t c = Str::get(pos);
 		if (c == '.') on = TRUE;
-		if (on) PUT(c);
+		if (on) PUT_TO(EXT, c);
 	}
+	while ((Characters::is_Unicode_whitespace(Str::get_last_char(EXT))) ||
+		(Str::get_last_char(EXT) == '.'))
+		Str::delete_last_character(EXT);
+	WRITE("%S", EXT);
+	DISCARD_TEXT(EXT)
 }
 
 filename *Filenames::set_extension(filename *F, text_stream *extension) {
 	TEMPORARY_TEXT(NEWLEAF)
-	LOOP_THROUGH_TEXT(pos, F->leafname) {
-		inchar32_t c = Str::get(pos);
-		if (c == '.') break;
-		PUT_TO(NEWLEAF, c);
-	}
+	Filenames::write_unextended_leafname(NEWLEAF, F);
 	if (Str::len(extension) > 0) {
 		if (Str::get_first_char(extension) != '.') WRITE_TO(NEWLEAF, ".");
 		WRITE_TO(NEWLEAF, "%S", extension);
@@ -168,6 +170,37 @@ filename *Filenames::set_extension(filename *F, text_stream *extension) {
 	filename *N = Filenames::in(F->pathname_of_location, NEWLEAF);
 	DISCARD_TEXT(NEWLEAF)
 	return N;
+}
+
+@ It's occasionally useful to dismantle two-deck extensions like |.tar.zip|:
+
+=
+void Filenames::write_final_extension(OUTPUT_STREAM, filename *F) {
+	TEMPORARY_TEXT(EXT)
+	Filenames::write_extension(EXT, F);
+	int penultimate_dot = -1, last_dot = -1;
+	for (int i=0; i<Str::len(EXT); i++) {
+		inchar32_t c = Str::get_at(EXT, i);
+		if (c == '.') { penultimate_dot = last_dot; last_dot = i; }
+	}
+	if (last_dot >= 0)
+		for (int i=last_dot; i<Str::len(EXT); i++)
+			PUT(Str::get_at(EXT, i));
+	DISCARD_TEXT(EXT)
+}
+
+void Filenames::write_penultimate_extension(OUTPUT_STREAM, filename *F) {
+	TEMPORARY_TEXT(EXT)
+	Filenames::write_extension(EXT, F);
+	int penultimate_dot = -1, last_dot = -1;
+	for (int i=0; i<Str::len(EXT); i++) {
+		inchar32_t c = Str::get_at(EXT, i);
+		if (c == '.') { penultimate_dot = last_dot; last_dot = i; }
+	}
+	if (penultimate_dot >= 0)
+		for (int i=penultimate_dot; i<last_dot; i++)
+			PUT(Str::get_at(EXT, i));
+	DISCARD_TEXT(EXT)
 }
 
 @h Guessing file formats.

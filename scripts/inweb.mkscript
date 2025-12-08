@@ -51,7 +51,7 @@ all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(
 $(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-licence-build)
 
-$(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
+$(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w $(ME)/literate-module/Contents.w $(ME)/literate-module/Chapter*/*.w
 	$(call make-me)
 
 $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w

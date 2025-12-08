@@ -203,9 +203,7 @@ bibliographic variable, but don't do that.
 
 =
 void ACMESupport::post_analysis(programming_language *self, ls_web *W) {
-	int check_namespaces = FALSE;
-	if (Str::eq_wide_string(Bibliographic::get_datum(W, I"Namespaces"), U"On"))
-		check_namespaces = TRUE;
+	int check_namespaces = Conventions::get_int(W, NAMESPACES_ENFORCED_LSCONVENTION);
 	language_function *fn;
 	LOOP_OVER_LINKED_LIST(fn, language_function, CodeAnalysis::language_functions_list(W)) {
 		hash_table_entry *hte =

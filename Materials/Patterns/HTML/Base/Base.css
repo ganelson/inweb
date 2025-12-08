@@ -259,9 +259,18 @@ a.paragraph-anchor::before {
 
 /* These are for commentary rendered out from Markdown */
 
-div.lsmarkdown li {
+div.lsmarkdown ul {
 	list-style-type:circle;
 	margin-left: 30px;
+}
+
+div.lsmarkdown ol {
+	list-style-type:decimal;
+	margin-left: 30px;
+}
+
+div.lsmarkdown li {
+	list-style-type:inherit;
 }
 
 div.lsmarkdown pre {
@@ -276,6 +285,7 @@ div.lsmarkdown pre {
 	border-radius: 3px;
 	background-color: #eef;
 	width: 100%;
+	tab-size: 4
 }
 
 div.lsmarkdown code {

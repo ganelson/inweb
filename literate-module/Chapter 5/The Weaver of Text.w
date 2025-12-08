@@ -23,23 +23,20 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	int within, int in_code) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
 	weave_order *wv = C->wv;
-	text_stream *code_in_comments_notation =
-		Bibliographic::get_datum(wv->weave_web,
-		(in_code)?(I"Code In Code Comments Notation"):(I"Code In Commentary Notation"));
-	if (Str::ne(code_in_comments_notation, I"Off")) @<Split text and code extracts@>;
+	text_stream *code_in_comments_notation = I"|";
+	@<Split text and code extracts@>;
 
-	int display_flag = TRUE;
-	text_stream *tex_notation = Bibliographic::get_datum(wv->weave_web,
-		I"TeX Mathematics Displayed Notation");
-	if (Str::ne(tex_notation, I"Off")) @<Recognise mathematics@>;
-	display_flag = FALSE;
-	tex_notation = Bibliographic::get_datum(wv->weave_web,
-		I"TeX Mathematics Notation");
-	if (Str::ne(tex_notation, I"Off")) @<Recognise mathematics@>;
+	if (Conventions::get_int(wv->weave_web, TEX_NOTATION_LSCONVENTION)) {
+		int display_flag = TRUE;
+		text_stream *tex_notation = I"$$";
+		if (Str::ne(tex_notation, I"Off")) @<Recognise mathematics@>;
+		display_flag = FALSE;
+		tex_notation = I"$";
+		if (Str::ne(tex_notation, I"Off")) @<Recognise mathematics@>;
+	}
 
-	text_stream *xref_notation = Bibliographic::get_datum(wv->weave_web,
-		I"Cross-References Notation");
-	if (Str::ne(xref_notation, I"Off")) @<Recognise cross-references@>;
+	text_stream *xref_notation = I"//";
+	@<Recognise cross-references@>;
 
 	if (within) {
 		TextWeaver::inline_code_fragment(tree, ap, matter);

@@ -446,6 +446,38 @@ int Str::ends_with(text_stream *S1, text_stream *S2) {
 	return Str::suffix_eq(S1, S2, Str::len(S2));
 }
 
+@ And the obvious analogues:
+
+=
+int Str::prefix_eq_insensitive(text_stream *S1, text_stream *S2, int N) {
+	int L1 = Str::len(S1), L2 = Str::len(S2);
+	if ((N > L1) || (N > L2)) return FALSE;
+	for (int i=0; i<N; i++)
+		if (tolower((int) Str::get_at(S1, i)) != tolower((int) (Str::get_at(S2, i))))
+			return FALSE;
+	return TRUE;
+}
+
+int Str::suffix_eq_insensitive(text_stream *S1, text_stream *S2, int N) {
+	int L1 = Str::len(S1), L2 = Str::len(S2);
+	if ((N > L1) || (N > L2)) return FALSE;
+	for (int i=1; i<=N; i++)
+		if (tolower((int) Str::get_at(S1, L1-i)) != tolower((int) Str::get_at(S2, L2-i)))
+			return FALSE;
+	return TRUE;
+}
+
+int Str::begins_with_insensitive(text_stream *S1, text_stream *S2) {
+	return Str::prefix_eq_insensitive(S1, S2, Str::len(S2));
+}
+
+int Str::ends_with_insensitive(text_stream *S1, text_stream *S2) {
+	return Str::suffix_eq_insensitive(S1, S2, Str::len(S2));
+}
+
+@ An occasional convenience:
+
+=
 int Str::begins_with_wide_string(text_stream *S, inchar32_t *prefix) {
 	if ((prefix == NULL) || (*prefix == 0)) return TRUE;
 	if (S == NULL) return FALSE;

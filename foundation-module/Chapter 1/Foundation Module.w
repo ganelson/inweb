@@ -78,9 +78,11 @@ typedef uintptr_t pointer_sized_int;
 As noted above, the client needs to call these when starting up and when
 shutting down.
 
-The tangling command |[[textliterals]]| inserts declarations of I-literals,
-that is, literal |text_stream *| values written as |I"strings"|. It should
-never be used anywhere but here.
+The function |Inweb_InC_register_I_literals| is not declared anywhere in the
+source, but is instead written automatically by Inweb whenever it tangles
+an InC program. It inserts declarations of I-literals, that is, literal
+|text_stream *| values written as |I"strings"|. It should never be used
+anywhere but here.
 
 =
 void Foundation::start(int argc, char **argv) {
@@ -88,7 +90,7 @@ void Foundation::start(int argc, char **argv) {
 	Platform::configure_terminal();	
 	Memory::start();
 	@<Register the default stream writers@>;
-	[[textliterals]];
+	Inweb_InC_register_I_literals();
 	Time::begin();
 	Pathnames::start();
 	MarkdownVariations::start();

@@ -18,10 +18,12 @@ Chapter 1: Colonies and Webs
 	Single-File Webs
 	Web Modules
 	Web Ranges
+	Conventions
 
 Chapter 2: Literate Code
 "Configuring LP notations, and parsing raw LP code against them."
 	Literate Source
+	Paragraph Tags
 	Line Classification
 	Web Errors
 	Web Notations

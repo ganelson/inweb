@@ -13,15 +13,8 @@ used until about 2020; and version 2 ("Inweb"), used since then. Version 1
 is gone and unmourned, so we won't complicate the code by supporting it.
 
 =
-ls_notation *default_ls_notation = NULL;
-
-void WebNotation::create(void) {
-	ls_notation *O = WebNotation::new(I"old-Inweb");
-	O->legacy_name = I"1";
-	WebNotation::does_support(O, WITHDRAWN_FROM_USAGE_WSF);
-}
-
 ls_notation *WebNotation::default(void) {
+	static ls_notation *default_ls_notation = NULL;
 	if (default_ls_notation == NULL) {
 		wcl_declaration *D = WCL::resolve_resource(NULL, NOTATION_WCLTYPE, I"Inweb");
 		if (D) default_ls_notation = RETRIEVE_POINTER_ls_notation(D->object_declared);
@@ -41,8 +34,6 @@ typedef struct ls_notation {
 	struct text_stream *name;
 	struct text_stream *legacy_name;
 	struct linked_list *recognised_filename_extensions; /* of |text_stream| */
-	int (*shebang_detector)(struct ls_notation *, struct text_stream *,
-		struct text_file_position *, struct text_stream *, struct text_stream *);
 
 	/* what settings of the web this changes (if any) */
 	struct linked_list *bibliographic_settings; /* of |text_stream| */
@@ -73,7 +64,6 @@ ls_notation *WebNotation::new(text_stream *name) {
 	S->name = Str::duplicate(name);
 	S->legacy_name = NULL;
 	S->recognised_filename_extensions = NEW_LINKED_LIST(text_stream);
-	S->shebang_detector = NULL;
 
 	S->bibliographic_settings = NEW_LINKED_LIST(text_stream);
 
@@ -132,7 +122,10 @@ void WebNotation::write_known_syntaxes(OUTPUT_STREAM, ls_web *W) {
 =
 ls_notation *WebNotation::guess_from_filename(ls_web *W, filename *F) {
 	TEMPORARY_TEXT(extension)
-	Filenames::write_extension(extension, F);
+	TEMPORARY_TEXT(penultimate_extension)
+	Filenames::write_final_extension(extension, F);
+	Filenames::write_penultimate_extension(penultimate_extension, F);
+//	PRINT("Guessing N from '%S' (%f, pen %S)\n", extension, F, penultimate_extension);
 	ls_notation *result = NULL;
 	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
 	wcl_declaration *D;
@@ -140,47 +133,20 @@ ls_notation *WebNotation::guess_from_filename(ls_web *W, filename *F) {
 		ls_notation *T = RETRIEVE_POINTER_ls_notation(D->object_declared);
 		text_stream *ext;
 		LOOP_OVER_LINKED_LIST(ext, text_stream, T->recognised_filename_extensions)
-			if (Str::eq_insensitive(ext, extension)) {
+			if (Str::begins_with(ext, I".*.")) {
+				if ((Str::len(penultimate_extension) > 0) && (Str::ends_with(ext, extension))) {
+					result = T;
+					goto DoubleBreak;
+				}
+			} else if (Str::eq_insensitive(ext, extension)) {
 				result = T;
 				goto DoubleBreak;
 			}
 	}	
 	DoubleBreak: ;
+	DISCARD_TEXT(penultimate_extension)
 	DISCARD_TEXT(extension)
 	return result;
-}
-
-@ Here's how a "shebang" is noticed: that is, a specially-formatted line at the
-top of a web section which gives away its syntax.
-
-=
-ls_notation *WebNotation::guess_from_shebang(ls_web *W, text_stream *line,
-	text_file_position *tfp, text_stream *title, text_stream *author) {
-	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
-	wcl_declaration *D;
-	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
-		ls_notation *T = RETRIEVE_POINTER_ls_notation(D->object_declared);
-		if ((T->shebang_detector) &&
-			((*(T->shebang_detector))(T, line, tfp, title, author)))
-			return T;
-	}
-	return NULL;
-}
-
-int WebNotation::markdown_shebang_detector(ls_notation *T, text_stream *line,
-	text_file_position *tfp, text_stream *title, text_stream *author) {
-	int rv = FALSE;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, U"# (%c+) by (%c+?")) {
-		Str::copy(title, mr.exp[0]);
-		Str::copy(title, mr.exp[1]);
-		rv = TRUE;
-	} else if (Regexp::match(&mr, line, U"# (%c+)")) {
-		Str::copy(title, mr.exp[0]);
-		rv = TRUE;
-	}
-	Regexp::dispose_of(&mr);
-	return rv;
 }
 
 @h Adoption.
@@ -190,49 +156,34 @@ with syntax |S|. What happens then?
 The answer is that we set some bibliographic data.
 
 =
-void WebNotation::declare_syntax_for_web(ls_web *W, ls_notation *S) {
-	W->web_syntax = S;
-	Bibliographic::set_datum(W, I"Notation", S->name);
-	text_file_position tfp = TextFiles::nowhere();
-	text_stream *setting;
-	LOOP_OVER_LINKED_LIST(setting, text_stream, S->bibliographic_settings)
-		Bibliographic::parse_kvp(W, setting, TRUE, &tfp, NULL);
+void WebNotation::declare_for_web(ls_web *W, ls_notation *S) {
+	if (W->web_syntax != S) {
+		W->web_syntax = S;
+		if (S) {
+			Bibliographic::set_datum(W, I"Notation", S->name);
+			text_file_position tfp = TextFiles::nowhere();
+			text_stream *setting;
+			LOOP_OVER_LINKED_LIST(setting, text_stream, S->bibliographic_settings)
+				Bibliographic::parse_kvp(W, setting, TRUE, &tfp, NULL, TRUE);
+		}
+	}
 }
 
 @h Features.
-Individual features of literate programming can be supported piecemeal by
-syntaxes, as follows.
+These can't be set directly, but are deduced when a notation is customised for a
+web using its conventions:
 
-@e WITHDRAWN_FROM_USAGE_WSF from 0  /* meaning: this syntax can no longer be used */
-
-@e KEY_VALUE_PAIRS_WSF              /* bibliographic data can be specified with k-v pairs */
-@e PURPOSE_UNDER_HEADING_WSF        /* read the para under the heading as a purpose */
-@e SYNTAX_REDECLARATION_WSF         /* if one of those wants to change the syntax, allow it */
+@e TRIMMED_HOLONS_ABOVE_WSF from 0  /* when tangling, trim initial blank lines from a holon */
+@e TRIMMED_HOLONS_BELOW_WSF         /* when tangling, trim final blank lines from a holon */
+@e FOOTNOTES_IN_COMMENTARY_WSF      /* commentary in paragraphs can have footnotes */
+@e NAMED_HOLONS_WSF                 /* notation for holon names */
+@e METADATA_IN_STRINGS_WSF          /* notation for metadata in strings */
 @e PARAGRAPH_TAGS_WSF               /* paragraphs can be tagged */
-@e EXPLICIT_SECTION_HEADINGS_WSF
-@e TRIMMED_EXTRACTS_WSF             /* when tangling, trim initial or final blank lines from a holon */
-
-@e MARKDOWN_SHEBANG_WSF             /* commentary in paragraphs uses Markdown markup */
-@e MARKDOWN_COMMENTARY_WSF          /* commentary in paragraphs uses Markdown markup */
-@e FOOTNOTES_WSF                    /* commentary in paragraphs can have footnotes */
-@e NAMED_HOLONS_WSF                 /* when tangling, trim initial or final blank lines from a holon */
-@e TANGLER_COMMANDS_WSF             /* allow special expansions when tangling */
 
 =
 text_stream *WebNotation::feature_name(int n) {
 	switch (n) {
-		case WITHDRAWN_FROM_USAGE_WSF:      return I"withdrawn from usage";
 		case KEY_VALUE_PAIRS_WSF:           return I"key-value pairs";
-		case PURPOSE_UNDER_HEADING_WSF:     return I"purpose under heading";
-		case SYNTAX_REDECLARATION_WSF:      return I"syntax redeclaration";
-		case PARAGRAPH_TAGS_WSF:            return I"paragraph tags";
-		case EXPLICIT_SECTION_HEADINGS_WSF: return I"explicit section headings";
-		case TRIMMED_EXTRACTS_WSF:          return I"trimmed extracts";
-		case MARKDOWN_COMMENTARY_WSF:       return I"Markdown commentary";
-		case MARKDOWN_SHEBANG_WSF:          return I"Markdown shebang";
-		case FOOTNOTES_WSF:                 return I"footnotes";
-		case NAMED_HOLONS_WSF:              return I"named holons";
-		case TANGLER_COMMANDS_WSF:          return I"tangler commands";
 	}
 	return NULL;
 }
@@ -249,9 +200,8 @@ int WebNotation::feature_by_name(text_stream *name) {
 =
 int WebNotation::feature_notations(int n) {
 	switch (n) {
-		case FOOTNOTES_WSF:                 return 2;
 		case NAMED_HOLONS_WSF:              return 2;
-		case TANGLER_COMMANDS_WSF:          return 2;
+		case METADATA_IN_STRINGS_WSF:          return 2;
 		default: return 0;
 	}
 }
@@ -289,8 +239,6 @@ void WebNotation::does_support(ls_notation *S, int feature) {
 	if (WebNotation::feature_notations(feature) != 0)
 		internal_error("wrong number of notations");
 	S->supports[feature] = TRUE;
-	if (feature == MARKDOWN_SHEBANG_WSF)
-		S->shebang_detector = WebNotation::markdown_shebang_detector;
 }
 
 void WebNotation::does_support1(ls_notation *S, int feature, text_stream *N1) {
@@ -321,8 +269,6 @@ void WebNotation::does_not_support(ls_notation *S, int feature) {
 	S->supports[feature] = FALSE;
 	S->feature_notation1[feature] = NULL;
 	S->feature_notation2[feature] = NULL;
-	if (feature == MARKDOWN_SHEBANG_WSF)
-		S->shebang_detector = NULL;
 }
 
 @h Reading syntax definitions.
@@ -384,6 +330,7 @@ ls_notation *WebNotation::parse_declaration(wcl_declaration *D) {
 }
 
 void WebNotation::resolve_declaration(wcl_declaration *D) {
+	Conventions::set_level(D, NOTATION_LSCONVENTIONLEVEL);
 }
 
 @ ...and here we receive a single line from such a file.
@@ -409,7 +356,6 @@ text_stream *WebNotation::apply_syntax_setting(ls_notation *S, text_stream *cmd)
 	@<Inside stanzas@>;
 	@<Miscellaneous settings@>;
 	@<Activating or deactivating features@>;
-	@<One-off grammar rule lines@>;
 	error = Str::new();
 	WRITE_TO(error, "unknown inweb syntax command '%S'", cmd);
 	@<Setting done@>;
@@ -463,7 +409,9 @@ to a particular rule list.
 @<Inside stanzas@> =
 	if (S->stanza) {
 		if (Regexp::match(&mr, cmd, U"(%c*?) ==> (%c*)")) {
-			error = WebNotation::parse_grammar(S->stanza, mr.exp[0], mr.exp[1]);
+			error = WebNotation::parse_grammar(S, S->stanza, mr.exp[0], mr.exp[1]);
+		} else if (Regexp::match(&mr, cmd, U" *==> (%c*)")) {
+			error = WebNotation::parse_grammar(S, S->stanza, NULL, mr.exp[0]);
 		} else {
 			error = Str::new();
 			WRITE_TO(error, "not a grammar line: '%S'", cmd);
@@ -526,47 +474,18 @@ to a particular rule list.
 		}
 	}
 
-@ Grammar rules can also be specified outside of stanzas, but this should
-probably be taken out as redundant now.
-
-@<One-off grammar rule lines@> =
-	if (Regexp::match(&mr, cmd, U"classify (%c*?) ==> (%c*)")) {
-		error = WebNotation::parse_grammar(S->rules, mr.exp[0], mr.exp[1]);
-		@<Setting done@>;
-	}
-	if (Regexp::match(&mr, cmd, U"residue of (%C+) (%c*?) ==> (%c*)")) {
-		int R = WebNotation::outcome_by_name(mr.exp[0]);
-		if (R == NO_WSRULEOUTCOME) {
-			error = Str::new();
-			WRITE_TO(error, "unknown outcome '%S'", mr.exp[0]);
-		} else {
-			error = WebNotation::parse_grammar(S->residue_rules[R], mr.exp[1], mr.exp[2]);
-		}
-		@<Setting done@>;
-	}
-	if (Regexp::match(&mr, cmd, U"options of (%C+) (%c*?) ==> (%c*)")) {
-		int R = WebNotation::outcome_by_name(mr.exp[0]);
-		if (R == NO_WSRULEOUTCOME) {
-			error = Str::new();
-			WRITE_TO(error, "unknown outcome '%S'", mr.exp[0]);
-		} else {
-			error = WebNotation::parse_grammar(S->options_rules[R], mr.exp[1], mr.exp[2]);
-		}
-		@<Setting done@>;
-	}
-
 @ And, in all cases, this is where we end up.
 
 @<Setting done@> =
 	Regexp::dispose_of(&mr);
 	return error;
 
-@ The function above made frequent use of this, which parses an |X ==> Y| pattern
+@ The function above made use of this, which parses an |X ==> Y| pattern
 into the given list.
 
 =
-text_stream *WebNotation::parse_grammar(linked_list *rules_list, text_stream *pattern,
-	text_stream *outcome) {
+text_stream *WebNotation::parse_grammar(ls_notation *S, linked_list *rules_list,
+	text_stream *pattern, text_stream *outcome) {
 	if (rules_list == NULL) internal_error("no list");
 	match_results mr = Regexp::create_mr(), mr2 = Regexp::create_mr();
 	text_stream *error = NULL;
@@ -575,9 +494,14 @@ text_stream *WebNotation::parse_grammar(linked_list *rules_list, text_stream *pa
 	@<Parse conditions on applicability@>;
 	@<Parse outcomes@>;
 
+	linked_list *conventions = NEW_LINKED_LIST(ls_conventions);
+	ls_conventions *generic = Conventions::generic();
+	ADD_TO_LINKED_LIST(generic, ls_conventions, conventions);
+
 	if (Str::len(error) == 0) {
 		ls_notation_rule *R = WebNotation::new_rule(O, negate, C, np, match_error);
-		error = WebNotation::parse_pattern(R, pattern);
+		R->parsed_from = Str::duplicate(pattern);
+		error = WebNotation::parse_pattern(R, pattern, conventions);
 		ADD_TO_LINKED_LIST(R, ls_notation_rule, rules_list);
 	}
 
@@ -608,6 +532,12 @@ text_stream *WebNotation::parse_grammar(linked_list *rules_list, text_stream *pa
 		}
 	} else if (Regexp::match(&mr2, condition, U"on first line")) {
 		C = FIRST_LINE_WSRULECONTEXT;
+	} else if (Regexp::match(&mr2, condition, U"on first line of only file")) {
+		C = FIRST_LINE_SF_WSRULECONTEXT;
+	} else if (Regexp::match(&mr2, condition, U"following title")) {
+		C = FOLLOWING_TITLE_WSRULECONTEXT;
+	} else if (Regexp::match(&mr2, condition, U"indented")) {
+		C = INDENTED_WSRULECONTEXT;
 	} else {
 		error = Str::new();
 		WRITE_TO(error, "unknown condition '%S'", condition);
@@ -630,6 +560,85 @@ text_stream *WebNotation::parse_grammar(linked_list *rules_list, text_stream *pa
 		}
 	}
 
+@ Sneakily, we will in fact reparse the patterns before every web read, in
+case it has conventions which override the notation (for example by changing
+the holon notation).
+
+=
+void WebNotation::prepare_for(ls_notation *S, ls_web *W) {
+	// PRINT("Preparing %S for %S\n", S->name, Bibliographic::get_datum(W, I"Title"));
+	S->feature_notation1[NAMED_HOLONS_WSF] =
+		Str::duplicate(Conventions::get_textual_from(W->conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
+	S->feature_notation2[NAMED_HOLONS_WSF] =
+		Str::duplicate(Conventions::get_textual2_from(W->conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
+	S->feature_notation1[METADATA_IN_STRINGS_WSF] =
+		Str::duplicate(Conventions::get_textual_from(W->conventions, METADATA_IN_STRINGS_SYNTAX_LSCONVENTION));
+	S->feature_notation2[METADATA_IN_STRINGS_WSF] =
+		Str::duplicate(Conventions::get_textual2_from(W->conventions, METADATA_IN_STRINGS_SYNTAX_LSCONVENTION));
+	S->feature_notation1[PARAGRAPH_TAGS_WSF] =
+		Str::duplicate(Conventions::get_textual_from(W->conventions, TAGS_SYNTAX_LSCONVENTION));
+	S->feature_notation2[PARAGRAPH_TAGS_WSF] =
+		Str::duplicate(Conventions::get_textual2_from(W->conventions, TAGS_SYNTAX_LSCONVENTION));
+	S->supports[FOOTNOTES_IN_COMMENTARY_WSF] =
+		Conventions::get_int_from(W->conventions, FOOTNOTES_LSCONVENTION);
+
+	S->supports[TRIMMED_HOLONS_ABOVE_WSF] =
+		Conventions::get_int_from(W->conventions, HOLONS_ARE_TRIMMED_ABOVE_LSCONVENTION);
+	S->supports[TRIMMED_HOLONS_BELOW_WSF] =
+		Conventions::get_int_from(W->conventions, HOLONS_ARE_TRIMMED_BELOW_LSCONVENTION);
+
+	ls_notation_rule *R;
+	LOOP_OVER_LINKED_LIST(R, ls_notation_rule, S->rules) {
+		text_stream *error = WebNotation::parse_pattern(R, R->parsed_from, W->conventions);
+		if (Str::len(error) > 0)
+			WebErrors::issue_at(error, NULL);
+	}
+	for (int i = 0; i < NO_DEFINED_WSRULEOUTCOME_VALUES; i++) {
+		if (S->residue_rules[i])
+			LOOP_OVER_LINKED_LIST(R, ls_notation_rule, S->residue_rules[i]) {
+				text_stream *error = WebNotation::parse_pattern(R, R->parsed_from, W->conventions);
+				if (Str::len(error) > 0)
+					WebErrors::issue_at(error, NULL);
+			}
+		if (S->options_rules[i])
+			LOOP_OVER_LINKED_LIST(R, ls_notation_rule, S->options_rules[i]) {
+				text_stream *error = WebNotation::parse_pattern(R, R->parsed_from, W->conventions);
+				if (Str::len(error) > 0)
+					WebErrors::issue_at(error, NULL);
+			}
+	}
+}
+
+int WebNotation::supports_named_holons(ls_notation *S) {
+	if ((Str::len(S->feature_notation1[NAMED_HOLONS_WSF]) > 0) &&
+		(Str::len(S->feature_notation2[NAMED_HOLONS_WSF]) > 0)) return TRUE;
+	return FALSE;
+}
+
+int WebNotation::supports_metadata_in_strings(ls_notation *S) {
+	if ((Str::len(S->feature_notation1[METADATA_IN_STRINGS_WSF]) > 0) &&
+		(Str::len(S->feature_notation2[METADATA_IN_STRINGS_WSF]) > 0)) return TRUE;
+	return FALSE;
+}
+
+int WebNotation::supports_paragraph_tags(ls_notation *S) {
+	if ((Str::len(S->feature_notation1[PARAGRAPH_TAGS_WSF]) > 0) &&
+		(Str::len(S->feature_notation2[PARAGRAPH_TAGS_WSF]) > 0)) return TRUE;
+	return FALSE;
+}
+
+int WebNotation::commentary_markup(ls_web *W) {
+	if (W == NULL) return SIMPLIFIED_COMMENTARY_MARKUPCHOICE;
+	return Conventions::get_int(W, COMMENTARY_MARKUP_LSCONVENTION);
+}
+
+markdown_variation *WebNotation::commentary_variation(ls_web *W) {
+	int markup = WebNotation::commentary_markup(W);
+	if (markup == SIMPLIFIED_COMMENTARY_MARKUPCHOICE)
+		return MarkdownVariations::simplified_Inweb_flavoured_Markdown();
+	return MarkdownVariations::Inweb_flavoured_Markdown();
+}
+
 @ So now we dig into the details of these grammar rules. The model for this is
 simple: we try a line against a list of rules, and the first which matches
 is the winner. Each rule is like so:
@@ -643,6 +652,7 @@ typedef struct ls_notation_rule {
 	/* pattern which a line must match */
 	int no_tokens;
 	struct ls_srtoken tokens[MAX_LSSRTOKENS];
+	struct text_stream *parsed_from;
 	
 	/* result of a match */
 	int outcome; /* one of the |*_WSRULEOUTCOME| values below */
@@ -657,6 +667,7 @@ ls_notation_rule *WebNotation::new_rule(int outcome, int negate, int context, in
 	R->not = negate;
 	R->outcome = outcome;
 	R->no_tokens = 0;
+	R->parsed_from = NULL;
 	R->context = context;
 	R->new_paragraph = new_par;
 	R->error = error;
@@ -668,15 +679,21 @@ ls_notation_rule *WebNotation::new_rule(int outcome, int negate, int context, in
 
 @e ANY_WSRULECONTEXT from 0
 @e FIRST_LINE_WSRULECONTEXT
+@e FIRST_LINE_SF_WSRULECONTEXT
+@e FOLLOWING_TITLE_WSRULECONTEXT
 @e DEFINITION_WSRULECONTEXT
 @e EXTRACT_WSRULECONTEXT
+@e INDENTED_WSRULECONTEXT
 
 =
 int WebNotation::context_by_name(text_stream *context) {
 	if (Str::eq(context, I"general"))    return ANY_WSRULECONTEXT;
 	if (Str::eq(context, I"first line")) return FIRST_LINE_WSRULECONTEXT;
+	if (Str::eq(context, I"first line of single file")) return FIRST_LINE_SF_WSRULECONTEXT;
+	if (Str::eq(context, I"following title")) return FOLLOWING_TITLE_WSRULECONTEXT;
 	if (Str::eq(context, I"definition")) return DEFINITION_WSRULECONTEXT;
 	if (Str::eq(context, I"extract"))    return EXTRACT_WSRULECONTEXT;
+	if (Str::eq(context, I"indented"))   return INDENTED_WSRULECONTEXT;
 	return -1;
 }
 
@@ -695,41 +712,74 @@ once; but they need not occur in numerical order, and need not all be present.
 @d MAX_LSSRTOKENS (2*NO_DEFINED_LSWILDCARD_VALUES+1)
 
 =
-text_stream *WebNotation::parse_pattern(ls_notation_rule *R, text_stream *pattern) {
-	int from = 0;
+text_stream *WebNotation::parse_pattern(ls_notation_rule *R, text_stream *pattern,
+	linked_list *conventions) {
+	R->no_tokens = 0;
+	TEMPORARY_TEXT(text)
 	for (int i=0; i<Str::len(pattern); i++) {
+		if (Str::includes_at(pattern, i, I"<OPENHOLON>")) {
+			WRITE_TO(text, "%S",
+				Conventions::get_textual_from(conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
+			i += Str::len(I"<OPENHOLON>") - 1; continue;
+		}
+		if (Str::includes_at(pattern, i, I"<CLOSEHOLON>")) {
+			WRITE_TO(text, "%S",
+				Conventions::get_textual2_from(conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
+			i += Str::len(I"<CLOSEHOLON>") - 1; continue;
+		}
+		if (Str::includes_at(pattern, i, I"<OPENTAG>")) {
+			WRITE_TO(text, "%S",
+				Conventions::get_textual_from(conventions, TAGS_SYNTAX_LSCONVENTION));
+			i += Str::len(I"<OPENTAG>") - 1; continue;
+		}
+		if (Str::includes_at(pattern, i, I"<CLOSETAG>")) {
+			WRITE_TO(text, "%S",
+				Conventions::get_textual2_from(conventions, TAGS_SYNTAX_LSCONVENTION));
+			i += Str::len(I"<CLOSETAG>") - 1; continue;
+		}
+		PUT_TO(text, Str::get_at(pattern, i));
+	}
+	int from = 0;
+	for (int i=0; i<Str::len(text); i++) {
 		if (R->no_tokens + 2 > MAX_LSSRTOKENS) break;
-		if (Str::includes_at(pattern, i, I"MATERIAL")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+		if (Str::includes_at(text, i, I"MATERIAL")) {
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(text, from, i-1);
 			R->tokens[R->no_tokens++] = WebNotation::wildcard(MATERIAL_LSWILDCARD);
 			from = i + Str::len(I"MATERIAL");
 			i = from - 1; continue;
 		}
-		if (Str::includes_at(pattern, i, I"SECOND")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+		if (Str::includes_at(text, i, I"SECOND")) {
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(text, from, i-1);
 			R->tokens[R->no_tokens++] = WebNotation::wildcard(SECOND_LSWILDCARD);
 			from = i + Str::len(I"SECOND");
 			i = from - 1; continue;
 		}
-		if (Str::includes_at(pattern, i, I"THIRD")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+		if (Str::includes_at(text, i, I"THIRD")) {
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(text, from, i-1);
 			R->tokens[R->no_tokens++] = WebNotation::wildcard(THIRD_LSWILDCARD);
 			from = i + Str::len(I"THIRD");
 			i = from - 1; continue;
 		}
-		if (Str::includes_at(pattern, i, I"OPTIONS")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+		if (Str::includes_at(text, i, I"OPTIONS")) {
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(text, from, i-1);
 			R->tokens[R->no_tokens++] = WebNotation::wildcard(OPTIONS_LSWILDCARD);
 			from = i + Str::len(I"OPTIONS");
 			i = from - 1; continue;
 		}
-		if (Str::includes_at(pattern, i, I"RESIDUE")) {
-			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, i-1);
+		if (Str::includes_at(text, i, I"RESIDUE")) {
+			if (from < i) R->tokens[R->no_tokens++] = WebNotation::fixed(text, from, i-1);
 			R->tokens[R->no_tokens++] = WebNotation::wildcard(RESIDUE_LSWILDCARD);
 			from = i + Str::len(I"RESIDUE");
 			i = from - 1; continue;
 		}
-		if (Str::includes_at(pattern, i, I"(NONWHITESPACE)")) {
+		if (Str::includes_at(text, i, I"(WHITESPACE)")) {
+			if ((R->no_tokens == 0) || (R->tokens[R->no_tokens-1].wildcard < 0) || (i != from))
+				return I"(WHITESPACE) can be used only immediately after a wildcard";
+			R->tokens[R->no_tokens-1].whitespace = TRUE;
+			from = i + Str::len(I"(WHITESPACE)");
+			i = from - 1; continue;
+		}
+		if (Str::includes_at(text, i, I"(NONWHITESPACE)")) {
 			if ((R->no_tokens == 0) || (R->tokens[R->no_tokens-1].wildcard < 0) || (i != from))
 				return I"(NONWHITESPACE) can be used only immediately after a wildcard";
 			R->tokens[R->no_tokens-1].nonwhitespace = TRUE;
@@ -737,8 +787,8 @@ text_stream *WebNotation::parse_pattern(ls_notation_rule *R, text_stream *patter
 			i = from - 1; continue;
 		}
 	}
-	if ((from < Str::len(pattern)) && (R->no_tokens < MAX_LSSRTOKENS))
-		R->tokens[R->no_tokens++] = WebNotation::fixed(pattern, from, Str::len(pattern)-1);
+	if ((from < Str::len(text)) && (R->no_tokens < MAX_LSSRTOKENS))
+		R->tokens[R->no_tokens++] = WebNotation::fixed(text, from, Str::len(text)-1);
 	int usages[NO_DEFINED_LSWILDCARD_VALUES];
 	for (int i=0; i<NO_DEFINED_LSWILDCARD_VALUES; i++) usages[i] = 0;
 	for (int i=0; i<R->no_tokens; i++)
@@ -754,12 +804,14 @@ text_stream *WebNotation::parse_pattern(ls_notation_rule *R, text_stream *patter
 			R->no_tokens = 1;
 			return I"wildcards can be used only once each in a pattern";
 		}
+	DISCARD_TEXT(text)
 	return NULL;
 }
 
 typedef struct ls_srtoken {
 	struct text_stream *fixed_content;
 	int wildcard;
+	int whitespace;
 	int nonwhitespace;
 } ls_srtoken;
 
@@ -768,6 +820,7 @@ ls_srtoken WebNotation::fixed(text_stream *text, int from, int to) {
 	tok.fixed_content = Str::new();
 	for (int j=from; j<=to; j++) PUT_TO(tok.fixed_content, Str::get_at(text, j));
 	tok.wildcard = -1;
+	tok.whitespace = FALSE;
 	tok.nonwhitespace = FALSE;
 	return tok;
 }
@@ -778,6 +831,7 @@ ls_srtoken WebNotation::wildcard(int n) {
 	ls_srtoken tok;
 	tok.fixed_content = NULL;
 	tok.wildcard = n;
+	tok.whitespace = FALSE;
 	tok.nonwhitespace = FALSE;
 	return tok;
 }
@@ -812,7 +866,9 @@ used to mean "nothing matched".
 @e HTML_WSRULEOUTCOME
 @e HYPERLINKED_WSRULEOUTCOME
 @e NAMEDCODEFRAGMENT_WSRULEOUTCOME
+@e NAMEDCODEFRAGMENTADDENDUM_WSRULEOUTCOME
 @e PARAGRAPHTAG_WSRULEOUTCOME
+@e PARAGRAPHTITLING_WSRULEOUTCOME
 @e PURPOSE_WSRULEOUTCOME
 @e QUOTATION_WSRULEOUTCOME
 @e SECTIONTITLE_WSRULEOUTCOME
@@ -820,9 +876,16 @@ used to mean "nothing matched".
 @e TEXTEXTRACT_WSRULEOUTCOME
 @e TEXTEXTRACTTO_WSRULEOUTCOME
 @e TITLE_WSRULEOUTCOME
+@e TITLEANDAUTHOR_WSRULEOUTCOME
 @e UNDISPLAYED_WSRULEOUTCOME
 @e VERYEARLYCODEEXTRACT_WSRULEOUTCOME
 @e VIDEO_WSRULEOUTCOME
+
+@e WEBWIDEHOLON_WSRULEOUTCOME
+@e VERYEARLYHOLON_WSRULEOUTCOME
+@e EARLYHOLON_WSRULEOUTCOME
+@e LATEHOLON_WSRULEOUTCOME
+@e VERYLATEHOLON_WSRULEOUTCOME
 
 =
 int WebNotation::outcome_by_name(text_stream *outcome) {
@@ -850,7 +913,9 @@ int WebNotation::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"html"))                 return HTML_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"hyperlinked"))          return HYPERLINKED_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"namedcodefragment"))    return NAMEDCODEFRAGMENT_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"namedcodefragmentaddendum")) return NAMEDCODEFRAGMENTADDENDUM_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"paragraphtag"))         return PARAGRAPHTAG_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"paragraphtitling"))     return PARAGRAPHTITLING_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"purpose"))              return PURPOSE_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"quotation"))            return QUOTATION_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"sectiontitle"))         return SECTIONTITLE_WSRULEOUTCOME;
@@ -858,10 +923,17 @@ int WebNotation::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"textextract"))          return TEXTEXTRACT_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"textextractto"))        return TEXTEXTRACTTO_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"title"))                return TITLE_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"titleandauthor"))       return TITLEANDAUTHOR_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"titleandpurpose"))      return COMBINED_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"undisplayed"))          return UNDISPLAYED_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"veryearlycodeextract")) return VERYEARLYCODEEXTRACT_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"video"))                return VIDEO_WSRULEOUTCOME;
+
+	if (Str::eq(outcome, I"webwideholon"))         return WEBWIDEHOLON_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"veryearlyholon"))       return VERYEARLYHOLON_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"earlyholon"))           return EARLYHOLON_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"lateholon"))            return LATEHOLON_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"verylateholon"))        return VERYLATEHOLON_WSRULEOUTCOME;
 	return NO_WSRULEOUTCOME;
 }
 
@@ -873,27 +945,69 @@ wildcards is written into the supplied array.
 First we check the context to see whether a rule can apply:
 
 =
-ls_notation_rule *WebNotation::match(linked_list *rules_list, text_stream *text,
-	text_stream **wildcards, ls_class *previously) {
+ls_notation_rule *WebNotation::match(linked_list *rules_list, text_stream *full_text,
+	int whitespace_nature, text_stream **wildcards, ls_class *previously, int single_file,
+	ls_notation *S) {
 	int top_flag = FALSE, trace = FALSE;
 	if (previously->major == UNCLASSIFIED_MAJLC) top_flag = TRUE;
 	ls_notation_rule *R;
-	if (trace) WRITE_TO(STDERR, "Match %S\n", text);
+	if (trace) WRITE_TO(STDERR, "Match %S (wsn %d, pwsn %d, psft %d)\n",
+		full_text, whitespace_nature, previously->whitespace_nature, previously->follows_title);
+
 	LOOP_OVER_LINKED_LIST(R, ls_notation_rule, rules_list) {
-		int applies = TRUE;
+		int applies = FALSE;
 		switch (R->context) {
 			case FIRST_LINE_WSRULECONTEXT:
-				if (top_flag == FALSE) applies = FALSE; break;
+				if (top_flag) applies = TRUE; break;
+			case FIRST_LINE_SF_WSRULECONTEXT:
+				if ((single_file) && (top_flag)) applies = TRUE; break;
+			case FOLLOWING_TITLE_WSRULECONTEXT:
+				if (previously->follows_title) applies = TRUE; break;
+			case INDENTED_WSRULECONTEXT:
+				if ((whitespace_nature == WHITE_LINESHADE) && (previously->whitespace_nature == BLACK_LINESHADE))
+					applies = FALSE;
+				else if ((whitespace_nature != BLACK_LINESHADE) && (previously->whitespace_nature != BLACK_LINESHADE))
+					applies = TRUE;
+				break;
 			case DEFINITION_WSRULECONTEXT:
 				if (LineClassification::definition_lines_can_follow(
-					previously->major, previously->minor) == FALSE) applies = FALSE;
+					previously->major, previously->minor)) applies = TRUE;
 				break;
 			case EXTRACT_WSRULECONTEXT:
 				if (LineClassification::extract_lines_can_follow(
-					previously->major, previously->minor) == FALSE) applies = FALSE;
+					previously->major, previously->minor)) applies = TRUE;
+				break;
+			default:
+				applies = TRUE;
 				break;
 		}
-		if (R->not != applies) @<Try to find a match against the text@>;
+		switch (R->outcome) {
+			case PARAGRAPHTAG_WSRULEOUTCOME:
+				if (WebNotation::supports_paragraph_tags(S) == FALSE) applies = (R->not)?FALSE:TRUE;
+				break;
+		}
+		
+		if (R->not != applies) {
+			if (R->context == INDENTED_WSRULECONTEXT) {
+				TEMPORARY_TEXT(text)
+				int wsc = 0, on = FALSE;
+				for (int i=0; i<Str::len(full_text); i++) {
+					inchar32_t c = Str::get_at(full_text, i);
+					if (on) {
+						PUT_TO(text, c);
+					} else {
+						if (c == ' ') wsc++;
+						else if (c == '\t') wsc = (wsc/4+1)*4;
+						if (wsc == 4) on = TRUE;
+					}
+				}
+				@<Try to find a match against the text@>;
+				DISCARD_TEXT(text)
+			} else {
+				text_stream *text = full_text;
+				@<Try to find a match against the text@>;
+			}
+		}
 	}
 	return NULL;
 }
@@ -946,6 +1060,8 @@ a whitespace line leads to the empty text here.
 		Str::substr(WT, Str::at(text, p_from), Str::at(text, p_to+1));
 		if ((R->tokens[match_from].nonwhitespace) &&
 			((Str::includes_character(WT, ' ')) || (Str::includes_character(WT, '\t'))))
+			break;
+		if ((R->tokens[match_from].whitespace) && (Str::is_whitespace(WT) == FALSE))
 			break;
 		p_from = p_to + 1;
 		match_from++;

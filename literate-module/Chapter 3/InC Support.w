@@ -10,7 +10,6 @@ all of those methods, it has a whole lot more of its own.
 void InCSupport::add_features(programming_language *pl) {
 	METHOD_ADD(pl, FURTHER_PARSING_PAR_MTID, InCSupport::further_parsing);
 
-	METHOD_ADD(pl, TANGLE_COMMAND_TAN_MTID, InCSupport::special_tangle_command);
 	METHOD_ADD(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, InCSupport::additional_predeclarations);
 	METHOD_ADD(pl, TANGLE_EXTRA_LINE_TAN_MTID, InCSupport::insert_in_tangle);
 	METHOD_ADD(pl, TANGLE_LINE_UNUSUALLY_TAN_MTID, InCSupport::tangle_line);
@@ -35,7 +34,7 @@ void InCSupport::further_parsing(programming_language *self, ls_web *W, int weav
 	ls_section *S;
 	LOOP_WITHIN_CODE_AND_DEFINITIONS(C, S, TangleTargets::primary_target(W)) {
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-		text_stream *line = lst->text;
+		text_stream *line = Holons::line_code(lst);
 		@<Detect and deal with Preform grammar@>;
 		@<Detect and deal with I-literals@>;
 	}
@@ -194,7 +193,7 @@ the following definition:
 
 @<Register the nonterminal with the line and paragraph from which it comes@> =
 	L->preform_nonterminal_defined = pnt;
-	LiterateSource::tag_paragraph_with_caption(L_par, I"Preform", NULL);
+	ParagraphTags::tag_with_caption(L_par, I"Preform", NULL);
 	lst->classification.operand1 = Str::duplicate(header);
 
 @h Parsing the body of Preform grammar.
@@ -208,7 +207,7 @@ then the text on the left goes into |text_operand| and the right into
 |text_operand2|, with the arrow itself (and white space around it) cut out.
 
 @<Parse the subsequent lines as Preform grammar@> =
-	LiterateSource::tag_paragraph(L_par, I"Preform");
+	ParagraphTags::tag(L_par, I"Preform");
 	for (ls_line *A_lst = lst; A_lst; A_lst = A_lst->next_line) {
 		ls_line_analysis *AL = (ls_line_analysis *) A_lst->analysis_ref;
 		if (Regexp::string_is_white_space(A_lst->text)) break;
@@ -348,11 +347,11 @@ weave run; we're actually amending the code of the web.)
 
 	if (lst->owning_chunk->holon) {
 		int delta = (i+1 - i_was) - Str::len(tl->tl_identifier);
-		holon_splice *splice;
-		LOOP_OVER_LINKED_LIST(splice, holon_splice, lst->owning_chunk->holon->splice_list)
-			if (splice->line == lst) {
-				if (splice->from >= i_was) splice->from -= delta;
-				if (splice->to >= i_was) splice->to -= delta;
+		holon_splice *hs;
+		LOOP_OVER_LINKED_LIST(hs, holon_splice, lst->owning_chunk->holon->splice_list)
+			if (hs->line == lst) {
+				if (hs->from >= i_was) hs->from -= delta;
+				if (hs->to >= i_was) hs->to -= delta;
 			}
 	}
 
@@ -362,36 +361,6 @@ weave run; we're actually amending the code of the web.)
 	WRITE_TO(line, "%S", after);
 	DISCARD_TEXT(before)
 	DISCARD_TEXT(after)
-
-@ InC does three things which C doesn't: it allows the namespaced function
-names like |Section::function()|; it allows Foundation-class-style string
-literals marked with an I, |I"like this"|, which we will call I-literals;
-and it allows Preform natural language grammar to be mixed in with code.
-
-The following routine is a hook needed for two of these. It recognises
-two special tangling commands:
-
-(a) |[[nonterminals]]| tangles to code which initialises the Preform
-grammar. (The grammar defines the meaning of nonterminals such as
-|<sentence>|. They're not terminal in the sense that they are defined
-as combinations of other things.) In practice, this needs to appear once
-in any program using Preform. For the Inform project, that's done in the
-|words| module of the Inform 7 compiler.
-
-(b) |[[textliterals]]| tangles to code which initialises the I-literals.
-
-=
-int InCSupport::special_tangle_command(programming_language *me, OUTPUT_STREAM, text_stream *data) {
-	if (Str::eq_wide_string(data, U"nonterminals")) {
-		WRITE("register_tangled_nonterminals();\n");
-		return TRUE;
-	}
-	if (Str::eq_wide_string(data, U"textliterals")) {
-		WRITE("register_tangled_text_literals();\n");
-		return TRUE;
-	}
-	return FALSE;
-}
 
 @ Time to predeclare things. InC is going to create a special function, right
 at the end of the code, which "registers" the nonterminals, creating their
@@ -423,13 +392,13 @@ void InCSupport::additional_predeclarations(programming_language *self, text_str
 			ntv->ntv_type, ntv->ntv_identifier,
 			(Str::eq_wide_string(ntv->ntv_type, U"int"))?"0":"NULL");
 
-	WRITE("void register_tangled_nonterminals(void);\n");
+	WRITE("void Inweb_InC_register_nonterminals(void);\n");
 
 	text_literal *tl;
 	LOOP_OVER(tl, text_literal)
 		WRITE("text_stream *%S = NULL;\n", tl->tl_identifier);
 
-	WRITE("void register_tangled_text_literals(void);\n");
+	WRITE("void Inweb_InC_register_I_literals(void);\n");
 }
 
 @ And here are the promised routines, which appear at the very end of the code.
@@ -437,7 +406,7 @@ They make use of macros and data structures defined in the Inform 7 web.
 
 =
 void InCSupport::gnabehs(programming_language *self, text_stream *OUT, ls_web *W) {
-	WRITE("void register_tangled_nonterminals(void) {\n");
+	WRITE("void Inweb_InC_register_nonterminals(void) {\n");
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {
@@ -458,7 +427,7 @@ void InCSupport::gnabehs(programming_language *self, text_stream *OUT, ls_web *W
 		}
 	}
 	WRITE("}\n");
-	WRITE("void register_tangled_text_literals(void) {\n"); INDENT;
+	WRITE("void Inweb_InC_register_I_literals(void) {\n"); INDENT;
 	text_literal *tl;
 	LOOP_OVER(tl, text_literal)
 		WRITE("%S = Str::literal(U\"%S\");\n", tl->tl_identifier, tl->tl_content);

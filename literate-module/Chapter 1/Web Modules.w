@@ -117,18 +117,18 @@ module_search *WebModules::make_search_path(pathname *ext_path) {
 }
 
 @ When a web's contents page says to |import Blah|, how do we find the module
-called |Blah| on disc? We try four possibilities in sequence:
+called |Blah| on disc? We try two or sometimes three possibilities in sequence:
 
 =
-ls_module *WebModules::find(ls_web *WS, module_search *ms, text_stream *name) {
+ls_module *WebModules::find(ls_web *WS, text_stream *name) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S-module", name);
-	pathname *tries[4];
+	pathname *tries[3];
 	tries[0] = WS?(WS->path_to_web):NULL;
 	tries[1] = tries[0]?(Pathnames::up(tries[0])):NULL;
 	tries[2] = Pathnames::path_to_inweb();
-	tries[3] = ms->path_to_search;
-	int N = 4;
+	int N = 2;
+	if ((Str::eq(name, I"foundation")) || (Str::eq(name, I"literate"))) N = 3;
 	for (int i=0; i<N; i++) {
 		pathname *P = Pathnames::from_text_relative(tries[i], T);
 		if ((P) && (WebModules::exists(P))) @<Accept this directory as the module@>;

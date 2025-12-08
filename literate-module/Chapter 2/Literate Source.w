@@ -24,6 +24,8 @@ typedef struct ls_unit {
 	struct ls_paragraph *first_par;
 	struct ls_paragraph *last_par;
 	
+	struct ls_holon_namespace *local_holon_namespace;
+	
 	/* result of parsing */
 	int lines_read;
 	struct linked_list *errors; /* of |ls_error| */
@@ -65,6 +67,8 @@ ls_unit *LiterateSource::begin_unit(ls_section *S, ls_notation *syntax,
 	lsu->purpose = LineClassification::unclassified();
 	lsu->first_par = NULL;
 	lsu->last_par = NULL;
+	
+	lsu->local_holon_namespace = Holons::new_namespace(context, lsu);
 
 	lsu->lines_read = 0;
 	lsu->errors = NEW_LINKED_LIST(ls_error);
@@ -135,8 +139,49 @@ provided by the previous line segment's classification.
 		ls_class last_cf;
 		if (lsu->temp_last_line == NULL) last_cf = LineClassification::unclassified();
 		else last_cf = lsu->temp_last_line->classification;
-		res = LineClassification::classify(lsu->syntax, text, &last_cf);
-
+		int sff = FALSE;
+		if ((lsu->context) && (lsu->context->single_file)) sff = TRUE;
+		res = LineClassification::classify(lsu->syntax, text, &last_cf, sff);
+		if ((sff) && (res.cf.major == COMMENTARY_MAJLC) && (res.cf.minor == PURPOSE_MINLC)) {
+			Bibliographic::set_datum(lsu->context, I"Purpose", res.cf.operand1);
+		}
+		if ((sff) && (res.cf.major == PARAGRAPH_START_MAJLC) && (res.cf.minor == SECTION_HEADING_MINLC)) {
+			if (Str::len(res.cf.operand2) > 0)
+				Bibliographic::set_datum(lsu->context, I"Author", res.cf.operand2);
+			if (Str::len(res.cf.operand3) > 0) {
+				semantic_version_number V = VersionNumbers::from_text(res.cf.operand3);
+				if (VersionNumbers::is_null(V)) {
+					WRITE_TO(res.error, "no such version number as '%S'", res.cf.operand3);
+				} else {
+					if (Str::len(V.build_metadata) > 0) {
+						TEMPORARY_TEXT(plus)
+						WRITE_TO(plus, "+%S", V.build_metadata);
+						Bibliographic::set_datum(lsu->context, I"Build Number", plus);
+						DISCARD_TEXT(plus)
+					}
+					if (V.prerelease_segments) {
+						TEMPORARY_TEXT(minus)
+						int c = 0;
+						text_stream *T;
+						LOOP_OVER_LINKED_LIST(T, text_stream, V.prerelease_segments) {
+							if (c++ == 0) WRITE_TO(minus, "-"); else WRITE_TO(minus, ".");
+							WRITE_TO(minus, "%S", T);
+						}
+						Bibliographic::set_datum(lsu->context, I"Prerelease", minus);
+						DISCARD_TEXT(minus)
+					}
+					if ((V.prerelease_segments) || (Str::len(V.build_metadata) > 0))
+						Bibliographic::set_datum(lsu->context, I"Semantic Version Number", res.cf.operand3);
+					else
+						Bibliographic::preset_datum(lsu->context, I"Semantic Version Number", res.cf.operand3);
+					V.build_metadata = NULL; V.prerelease_segments = NULL;
+					TEMPORARY_TEXT(numbers)
+					WRITE_TO(numbers, "%v", &V);
+					Bibliographic::set_datum(lsu->context, I"Version Number", numbers);
+					DISCARD_TEXT(numbers)
+				}
+			}
+		}
 		if ((res.cf.major == COMMENTARY_MAJLC) && (lsu->window_for_implicit_purpose_open)) {
 			if (Str::is_whitespace(text) == FALSE)
 				lsu->eligible_to_have_implicit_purpose = TRUE;
@@ -262,7 +307,7 @@ void LiterateSource::complete_unit(ls_unit *lsu) {
 	@<Trim redundant lines away from the chunks@>;
 
 	if ((LiterateSource::unit_has_purpose(lsu) == FALSE) &&
-		(WebNotation::supports(lsu->syntax, PURPOSE_UNDER_HEADING_WSF)))
+		(lsu->eligible_to_have_implicit_purpose))
 		@<Construe an opening paragraph consisting only of commentary as a purpose text@>;
 
 	@<Parse some last nuances for text extracts@>;
@@ -426,7 +471,10 @@ altogether, so that nobody uses it by mistake.
 			case DEFINITION_MAJLC:           ct = DEFINITION_LSCT; break;
 			case DEFINITION_CONTINUED_MAJLC: ct = DEFINITION_LSCT; break;
 			case QUOTATION_MAJLC:            ct = QUOTATION_LSCT; break;
-			case HOLON_DECLARATION_MAJLC:    ct = HOLON_DECLARATION_LSCT; break;
+			case HOLON_DECLARATION_MAJLC:
+				ct = HOLON_DECLARATION_LSCT;
+				if (line->classification.minor) ct = HOLON_ADDENDUM_LSCT;
+				break;
 			case INSERTION_MAJLC:            ct = INSERTION_LSCT; break;
 			default:                         ct = OTHER_LSCT; break;
 		}
@@ -517,6 +565,7 @@ following:
 @e QUOTATION_LSCT
 @e DEFINITION_LSCT
 @e HOLON_DECLARATION_LSCT
+@e HOLON_ADDENDUM_LSCT
 @e INSERTION_LSCT
 @e OTHER_LSCT
 
@@ -596,16 +645,16 @@ just those paragraphs containing figures.
 
 @<Tag the paragraph as containing a particular sort of insertion@> =
 	switch (line->classification.minor) {
-		case AUDIO_MINLC:          LiterateSource::tag_paragraph(par, I"Audio"); break;
-		case EMBEDDED_AV_MINLC:    LiterateSource::tag_paragraph(par, I"Video"); break;
-		case FIGURE_MINLC:         LiterateSource::tag_paragraph(par, I"Figures"); break;
-		case DOWNLOAD_MINLC:       LiterateSource::tag_paragraph(par, I"Downloads"); break;
-		case VIDEO_MINLC:          LiterateSource::tag_paragraph(par, I"Video"); break;
-		case HTML_MINLC:           LiterateSource::tag_paragraph(par, I"HTML"); break;
-		case CAROUSEL_ABOVE_MINLC: LiterateSource::tag_paragraph(par, I"Carousels"); break;
-		case CAROUSEL_BELOW_MINLC: LiterateSource::tag_paragraph(par, I"Carousels"); break;
-		case CAROUSEL_SLIDE_MINLC: LiterateSource::tag_paragraph(par, I"Carousels"); break;
-		case CAROUSEL_END_MINLC:   LiterateSource::tag_paragraph(par, I"Carousels"); break;			
+		case AUDIO_MINLC:          ParagraphTags::tag(par, I"Audio"); break;
+		case EMBEDDED_AV_MINLC:    ParagraphTags::tag(par, I"Video"); break;
+		case FIGURE_MINLC:         ParagraphTags::tag(par, I"Figures"); break;
+		case DOWNLOAD_MINLC:       ParagraphTags::tag(par, I"Downloads"); break;
+		case VIDEO_MINLC:          ParagraphTags::tag(par, I"Video"); break;
+		case HTML_MINLC:           ParagraphTags::tag(par, I"HTML"); break;
+		case CAROUSEL_ABOVE_MINLC: ParagraphTags::tag(par, I"Carousels"); break;
+		case CAROUSEL_BELOW_MINLC: ParagraphTags::tag(par, I"Carousels"); break;
+		case CAROUSEL_SLIDE_MINLC: ParagraphTags::tag(par, I"Carousels"); break;
+		case CAROUSEL_END_MINLC:   ParagraphTags::tag(par, I"Carousels"); break;			
 	}
 
 @ In some syntaxes, blank lines are used to indicate extract or commentary
@@ -627,6 +676,9 @@ material).
 
 			if (chunk->chunk_type == DEFINITION_LSCT)
 				@<Tidy up definition chunks@>;
+
+			if (chunk->chunk_type == HOLON_DECLARATION_LSCT)
+				chunk->metadata = chunk->first_line->classification;
 
 			if (chunk->chunk_type == INSERTION_LSCT)
 				@<Tidy up insertion chunks@>;
@@ -656,6 +708,40 @@ the chunk, then we remove the chunk entirely, because we do not allow empty chun
 		chunk->first_line = first_dark;
 		chunk->last_line = last_dark;
 		chunk->first_line->prev_line = NULL;
+		chunk->last_line->next_line = NULL;
+	}
+
+@ And two variations:
+
+@<Trim whitespace lines from start of this chunk@> =
+	ls_line *first_dark = NULL;
+	ls_line *last_dark = NULL;
+	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
+		if (Str::is_whitespace(line->classification.operand1) == FALSE) {
+			if (first_dark == NULL) first_dark = line;
+			last_dark = line;
+		}
+	}
+	if (first_dark == NULL) {
+		LiterateSource::remove_chunk_from_par(chunk, par);
+	} else {
+		chunk->first_line = first_dark;
+		chunk->first_line->prev_line = NULL;
+	}
+
+@<Trim whitespace lines from end of this chunk@> =
+	ls_line *first_dark = NULL;
+	ls_line *last_dark = NULL;
+	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
+		if (Str::is_whitespace(line->classification.operand1) == FALSE) {
+			if (first_dark == NULL) first_dark = line;
+			last_dark = line;
+		}
+	}
+	if (first_dark == NULL) {
+		LiterateSource::remove_chunk_from_par(chunk, par);
+	} else {
+		chunk->last_line = last_dark;
 		chunk->last_line->next_line = NULL;
 	}
 
@@ -690,8 +776,15 @@ empty as a result.
 		else chunk->last_line->next_line = NULL;
 	}
 	if (chunk->first_line == NULL) LiterateSource::remove_chunk_from_par(chunk, par);
-	else if (WebNotation::supports(lsu->syntax, TRIMMED_EXTRACTS_WSF))
-		@<Trim whitespace lines from start or end of this chunk@>;
+	else {
+		if ((WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_ABOVE_WSF)) &&
+			(WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_BELOW_WSF)))
+			@<Trim whitespace lines from start or end of this chunk@>
+		else if (WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_ABOVE_WSF))
+			@<Trim whitespace lines from start of this chunk@>
+		else if (WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_BELOW_WSF))
+			@<Trim whitespace lines from end of this chunk@>;
+	}
 
 @ A definition chunk begins with a |DEFINITION_MAJLC| line, followed by 0
 or more |DEFINITION_CONTINUED_MAJLC| lines. We trim away any blank continuation
@@ -734,19 +827,50 @@ for it.
 	}
 
 @ If there's just one chunk in the opening para, and it contains commentary,
-read this as a purpose written in plain text, and remove the para.
+we sometimes read this as a purpose written in plain text, and remove the para.
 
 @<Construe an opening paragraph consisting only of commentary as a purpose text@> =
-	ls_paragraph *par = lsu->first_par;
-	if ((par) && (par->first_chunk) && (par->first_chunk == par->last_chunk) &&
-		(par->first_chunk->chunk_type == COMMENTARY_LSCT) && (lsu->eligible_to_have_implicit_purpose)) {
-		lsu->purpose = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
-		lsu->purpose.operand1 = Str::new();
-		for (ls_line *line = par->first_chunk->first_line; line; line = line->next_line) {
-			WRITE_TO(lsu->purpose.operand1, "%S", line->classification.operand1);
-			if (line->next_line) WRITE_TO(lsu->purpose.operand1, " ");
+	int sum = NO_SUMMARYCHOICE;
+	if (lsu->context) sum = Conventions::get_int(lsu->context, SUMMARY_UNDER_TITLE_LSCONVENTION);
+	if (sum == PURPOSE_SUMMARYCHOICE) {
+		ls_paragraph *par = lsu->first_par;
+		if ((par) && (par->first_chunk) && (par->first_chunk == par->last_chunk) &&
+			(par->first_chunk->chunk_type == COMMENTARY_LSCT)) {
+			lsu->purpose = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
+			lsu->purpose.operand1 = Str::new();
+			for (ls_line *line = par->first_chunk->first_line; line; line = line->next_line) {
+				WRITE_TO(lsu->purpose.operand1, "%S", line->classification.operand1);
+				if (line->next_line) WRITE_TO(lsu->purpose.operand1, " ");
+			}
+			LiterateSource::remove_par_from_unit(par, lsu);
 		}
-		LiterateSource::remove_par_from_unit(par, lsu);
+	}
+	if (sum == PURPOSE_IF_ITALIC_SUMMARYCHOICE) {
+		ls_paragraph *par = lsu->first_par;
+		if ((par) && (par->first_chunk) && (par->first_chunk->chunk_type == COMMENTARY_LSCT)) {
+			TEMPORARY_TEXT(extracted)
+			ls_line *interrupted = NULL;
+			for (ls_line *line = par->first_chunk->first_line; line; line = line->next_line) {
+				if (Str::is_whitespace(line->classification.operand1)) { interrupted = line; break; }
+				WRITE_TO(extracted, "%S", line->classification.operand1);
+				if (line->next_line) WRITE_TO(extracted, " ");
+			}
+			Str::trim_white_space(extracted);
+			if ((Str::get_first_char(extracted) == '_') &&
+				(Str::get_last_char(extracted) == '_')) {
+				Str::delete_first_character(extracted);
+				Str::delete_last_character(extracted);
+				lsu->purpose = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
+				lsu->purpose.operand1 = Str::duplicate(extracted);
+				if ((interrupted) && (interrupted->next_line)) {
+					par->first_chunk->first_line = interrupted;
+					interrupted->prev_line = NULL;
+				} else {
+					LiterateSource::remove_chunk_from_par(par->first_chunk, par);
+				}
+			}
+			DISCARD_TEXT(extracted)
+		}
 	}
 
 @<Parse some last nuances for text extracts@> =
@@ -776,8 +900,8 @@ read this as a purpose written in plain text, and remove the para.
 @ This is all a little clumsy, but it'll do:
 
 @<Parse out the optional undisplayed and hyperlinked keywords@> =
-	if (chunk->metadata.options_bitmap & 1) chunk->hyperlinked = TRUE;
-	if (chunk->metadata.options_bitmap & 2) chunk->plainer = TRUE;
+	if (chunk->metadata.options_bitmap & HYPERLINKED_CHMOB) chunk->hyperlinked = TRUE;
+	if (chunk->metadata.options_bitmap & UNDISPLAYED_CHMOB) chunk->plainer = TRUE;
 
 @ So, each chunk which contains a fragment of the actual program code (rather
 than, say, a definition, or commentary, or an extract of other code not to be
@@ -793,15 +917,23 @@ between them, but that's another story: see //Holons::scan//.
 @<Assign holons to chunks containing fragments of the target code@> =
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		TEMPORARY_TEXT(holon_name)
+		int addendum_flag = FALSE, holon_bitmap = 0;
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			for (ls_line *line = chunk->first_line; line; line = line->next_line)
 				line->owning_chunk = chunk;
-			if (chunk->chunk_type == HOLON_DECLARATION_LSCT) {
+			if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
+				(chunk->chunk_type == HOLON_ADDENDUM_LSCT)) {
 				if (Str::len(holon_name) > 0)
 					WebErrors::record_at(I"second fragment name declaration in one paragraph",
 						chunk->first_line);
 				Str::clear(holon_name);
 				WRITE_TO(holon_name, "%S", chunk->first_line->classification.operand1);
+				if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) &&
+					(Str::ends_with(holon_name, I"...")))
+					WebErrors::record_at(I"a holon name must not end '...'",
+						chunk->first_line);
+				if (chunk->chunk_type == HOLON_ADDENDUM_LSCT) addendum_flag = TRUE;
+				holon_bitmap = chunk->metadata.options_bitmap;
 			}
 			if (chunk->chunk_type == EXTRACT_LSCT) {
 				switch (chunk->metadata.minor) {
@@ -823,13 +955,15 @@ between them, but that's another story: see //Holons::scan//.
 				par->first_chunk->first_line);
 		DISCARD_TEXT(holon_name)
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
-			if (chunk->chunk_type == HOLON_DECLARATION_LSCT)
+			if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
+				(chunk->chunk_type == HOLON_ADDENDUM_LSCT))
 				LiterateSource::remove_chunk_from_par(chunk, par);
 	}
-	Holons::scan(lsu);
+	Holons::scan(lsu->local_holon_namespace, lsu->syntax, lsu->language);
 
 @<Assign a holon to this chunk@> =
-	chunk->holon = Holons::new(chunk, holon_name);
+	chunk->holon = Holons::new(chunk, holon_name, addendum_flag,
+		lsu->local_holon_namespace, holon_bitmap);
 	if (chunk->owner->holon)
 		WebErrors::record_at(I"two code fragments in the same paragraph",
 			chunk->first_line);
@@ -857,21 +991,27 @@ between them, but that's another story: see //Holons::scan//.
 		if (in_carousel) WebErrors::record_at(I"this carousel has no end", in_carousel->onset_line);
 	}
 
-@ In some webs, the content of the commentary chunks is written in Markdown
-format. We're only going to parse this if we need to: for tangling, for example,
-we don't need to, and nor if the syntax doesn't use Markdown anyway. So this
-is a further function which can be called after completion of a unit:
+@ This is a further function which can be called after completion of a unit,
+but only when necessary, and of course only if commentary is written in Markdown:
 
 =
-void LiterateSource::parse_markdown(ls_unit *lsu) {
+void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation) {
+	if (lsu->context) {
+		int TeX = Conventions::get_int(lsu->context, TEX_NOTATION_LSCONVENTION);
+		if (TeX) MarkdownVariations::add_feature(variation, TEX_MARKDOWNFEATURE);
+		else MarkdownVariations::remove_feature(variation, TEX_MARKDOWNFEATURE);
+		int notes = Conventions::get_int(lsu->context, FOOTNOTES_LSCONVENTION);
+		if (notes) MarkdownVariations::add_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
+		else MarkdownVariations::remove_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
+	}
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
 			if (chunk->chunk_type == COMMENTARY_LSCT) {
 				TEMPORARY_TEXT(concatenated)
 				for (ls_line *line = chunk->first_line; line; line = line->next_line)
 					WRITE_TO(concatenated, "%S\n", line->classification.operand1);
-				chunk->as_markdown = Markdown::parse_extended(concatenated,
-					MarkdownVariations::Inweb_flavoured_Markdown());
+				chunk->as_markdown = Markdown::parse_extended(concatenated, variation);
+				ParagraphTags::autotag(NULL, par, chunk->as_markdown);
 				DISCARD_TEXT(concatenated)
 			}
 	int cumulative_C = 1, cumulative_N = 1;
@@ -905,6 +1045,8 @@ void LiterateSource::parse_markdown(ls_unit *lsu) {
 		}
 		par->footnote_count = next_N;
 	}
+	MarkdownVariations::add_feature(variation, TEX_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
 }
 
 void LiterateSource::recursively_check_note_numbering(markdown_item *md, int depth,
@@ -1013,6 +1155,7 @@ ls_unit *LiterateSource::code_fragment_to_unit(ls_notation *syntax,
 	DISCARD_TEXT(buffer)
 	LiterateSource::feed_code_end(lsu, &tfp);
 	LiterateSource::complete_unit(lsu);
+	Holons::vet_usage(lsu);
 	return lsu;
 }
 
@@ -1053,7 +1196,12 @@ text_stream *LiterateSource::par_ornament(ls_paragraph *par) {
 
 int LiterateSource::par_has_visible_number(ls_paragraph *par) {
 	ls_section *S = LiterateSource::section_of_par(par);
-	if (S) return S->paragraph_numbers_visible;
+	if (S) {
+		ls_web *W = S->owning_chapter->owning_web;
+		if (Conventions::get_int(W, PARAGRAPH_NUMBERS_VISIBLE_LSCONVENTION))
+			return TRUE;
+		return FALSE;
+	}
 	return TRUE;
 }
 
@@ -1065,6 +1213,16 @@ int LiterateSource::par_contains_early_code(ls_paragraph *par) {
 int LiterateSource::par_contains_very_early_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
 	return par->holon->placed_very_early;
+}
+
+int LiterateSource::par_contains_late_code(ls_paragraph *par) {
+	if ((par == NULL) || (par->holon == NULL)) return FALSE;
+	return par->holon->placed_late;
+}
+
+int LiterateSource::par_contains_very_late_code(ls_paragraph *par) {
+	if ((par == NULL) || (par->holon == NULL)) return FALSE;
+	return par->holon->placed_very_late;
 }
 
 int LiterateSource::par_contains_named_holon(ls_paragraph *par) {
@@ -1121,86 +1279,6 @@ ls_section *LiterateSource::section_of_line(ls_line *line) {
 	return LiterateSource::section_of_par(LiterateSource::par_of_line(line));
 }
 
-@h Tagging of paragraphs.
-A "tagging" occurs when a paragraph is marked with a given tag, and perhaps
-also with a contextually relevant caption. The following records those;
-they're stored as a linked list within each paragraph.
-
-=
-typedef struct literate_source_tagging {
-	struct text_stream *the_tag;
-	struct text_stream *caption;
-	CLASS_DEFINITION
-} literate_source_tagging;
-
-void LiterateSource::tag_paragraph_with_caption(ls_paragraph *par, text_stream *tag, text_stream *caption) {
-	if (Str::len(tag) == 0) internal_error("empty tag name");
-	if (par) {
-		if (par->taggings == NULL) par->taggings = NEW_LINKED_LIST(literate_source_tagging);
-		literate_source_tagging *pt;
-		LOOP_OVER_LINKED_LIST(pt, literate_source_tagging, par->taggings)
-			if ((Str::eq(pt->the_tag, tag)) && (Str::eq(pt->caption, caption)))
-				return;
-		pt = CREATE(literate_source_tagging);
-		pt->the_tag = Str::duplicate(tag);
-		if (caption) pt->caption = Str::duplicate(caption);
-		else pt->caption = Str::new();
-		ADD_TO_LINKED_LIST(pt, literate_source_tagging, par->taggings);
-	}
-}
-
-@ Tags are created simply by being used in taggings. If the tag notation
-|^"History: How tags came about"| is found, the following is called, and
-the tag is |History|, the caption "How tags came about".
-
-=
-void LiterateSource::tag_paragraph(ls_paragraph *par, text_stream *text) {
-	if (Str::len(text) == 0) internal_error("empty tag name");
-	if (par) {
-		TEMPORARY_TEXT(name) Str::copy(name, text);
-		TEMPORARY_TEXT(caption)
-		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, name, U"(%c+?): (%c+)")) {
-			Str::copy(name, mr.exp[0]);
-			Str::copy(caption, mr.exp[1]);
-		}
-		LiterateSource::tag_paragraph_with_caption(par, name, caption);
-		DISCARD_TEXT(name)
-		DISCARD_TEXT(caption)
-		Regexp::dispose_of(&mr);
-	}
-}
-
-@ If a given line is tagged with a given tag, what caption does it have?
-
-=
-text_stream *LiterateSource::retrieve_caption_for_tag(ls_paragraph *par, text_stream *tag) {
-	if (Str::len(tag) == 0) return NULL;
-	if ((par) && (par->taggings)) {
-		literate_source_tagging *pt;
-		LOOP_OVER_LINKED_LIST(pt, literate_source_tagging, par->taggings)
-			if (tag == pt->the_tag)
-				return pt->caption;
-	}
-	return NULL;
-}
-
-@ Finally, this tests whether a given paragraph falls under a given tag.
-(Everything falls under the null non-tag: this ensures that a weave which
-doesn't specify a tag will include everything.)
-
-=
-int LiterateSource::is_tagged_with(ls_paragraph *par, text_stream *tag) {
-	if (Str::len(tag) == 0) return TRUE; /* see above! */
-	if ((par) && (par->taggings)) {
-		literate_source_tagging *pt;
-		LOOP_OVER_LINKED_LIST(pt, literate_source_tagging, par->taggings)
-			if (tag == pt->the_tag)
-				return TRUE;
-	}
-	return FALSE;
-}
-
 @h Footnote notation.
 
 =
@@ -1222,11 +1300,15 @@ typedef struct ls_footnote {
 			for (ls_line *line = chunk->first_line; line; line = line->next_line) {
 				Str::clear(before); Str::clear(cue); Str::clear(after);
 				if (LiterateSource::detect_footnote(par->owning_unit->syntax, line->text, before, cue, after)) {
-					int this_is_a_cue = FALSE;
-					LOOP_THROUGH_TEXT(pos, before)
-						if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+					int this_is_a_cue = FALSE, w = 0;
+					LOOP_THROUGH_TEXT(pos, before) {
+						inchar32_t c = Str::get(pos);
+						if (Characters::is_whitespace(c) == FALSE)
 							this_is_a_cue = TRUE;
-					if (this_is_a_cue == FALSE)
+						if (c == ' ') w++;
+						if (c == '\t') w+= 4;
+					}
+					if ((w < 4) && (this_is_a_cue == FALSE))
 						@<This line begins a footnote text@>;
 				}
 				line->footnote_text = current_text;
@@ -1260,9 +1342,9 @@ typedef struct ls_footnote {
 =
 int LiterateSource::detect_footnote(ls_notation *S,
 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) {
-	if (WebNotation::supports(S, FOOTNOTES_WSF)) {
-		text_stream *on_notation = WebNotation::notation(S, FOOTNOTES_WSF, 1);
-		text_stream *off_notation = WebNotation::notation(S, FOOTNOTES_WSF, 2);
+	if (WebNotation::supports(S, FOOTNOTES_IN_COMMENTARY_WSF)) {
+		text_stream *on_notation = I"[";
+		text_stream *off_notation = I"]";
 		int N1 = Str::len(on_notation);
 		int N2 = Str::len(off_notation);
 		if ((N1 > 0) && (N2 > 0))
@@ -1399,7 +1481,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 				par->paragraph_number);
 		} else if (Str::len(hs->command) > 0) WRITE("command '%S'", hs->command);
 		else {
-			LiterateSource::write_code(OUT, hs->line, hs->line->text, hs->from, hs->to);
+			LiterateSource::write_code(OUT, hs->line, Holons::splice_code(hs), hs->from, hs->to);
 		}
 		WRITE("\n");
 	}
@@ -1455,6 +1537,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 			WRITE("\n");
 			break;
 		case HOLON_DECLARATION_LSCT: WRITE("holon definition\n"); break;
+		case HOLON_ADDENDUM_LSCT: WRITE("holon addendum\n"); break;
 		case OTHER_LSCT: WRITE("other\n"); break;
 		default: WRITE("?\n"); break;
 	}
@@ -1469,7 +1552,11 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 					0, Str::len(line->classification.operand1)-1);
 				WRITE("\n"); break;
 			case HOLON_DECLARATION_MAJLC:
-				WRITE("holon declaration '%S'\n", line->classification.operand1); break;
+				if (line->classification.minor == ADDENDUM_MINLC)
+					WRITE("holon addendum '%S'\n", line->classification.operand1);
+				else
+					WRITE("holon declaration '%S'\n", line->classification.operand1);
+				break;
 			case DEFINITION_MAJLC: break;
 			case DEFINITION_CONTINUED_MAJLC:
 				LiterateSource::write_code(OUT, line, line->text, 0, Str::len(line->text)-1);

@@ -69,11 +69,11 @@ need has arisen on a particular file.
 =
 int current_inclusion_round = 0;
 void Assets::include_relevant_plugins(text_stream *OUT, ls_pattern *pattern,
-	ls_web *W, weave_order *wv, filename *from, ls_colony *context) {
+	ls_web *W, weave_order *wv, filename *from, ls_colony *context, weave_reporting *R) {
 	current_inclusion_round++;
 	STREAM_INDENT(STDOUT);
 	Patterns::include_plugins(OUT, W, pattern, from,
-		(wv)?(wv->verbosely):FALSE, (wv)?(wv->weave_colony):context);
+		R, (wv)?(wv->weave_colony):context);
 	if (wv) Swarm::include_plugins(OUT, W, wv, from);
 	STREAM_OUTDENT(STDOUT);
 }
@@ -93,10 +93,10 @@ this, we store the leafnames in a dictionary.
 
 =
 void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
-	ls_pattern *pattern, filename *from, int verbosely, ls_colony *context) {	
+	ls_pattern *pattern, filename *from, weave_reporting *R, ls_colony *context) {	
 	if (wp->last_included_in_round == current_inclusion_round) return;
 	wp->last_included_in_round = current_inclusion_round;
-	if (verbosely) PRINT("Include plugin '%S'\n", wp->plugin_name);
+	Swarm::report_plugin(R, wp);
 	int finds = 0;
 	dictionary *leaves_gathered = Dictionaries::new(128, TRUE);
 	for (ls_pattern *p = pattern; p; p = Patterns::basis(W->declaration, p)) {
@@ -110,7 +110,7 @@ void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
 					if (Dictionaries::find(leaves_gathered, leafname) == NULL) {
 						WRITE_TO(Dictionaries::create_text(leaves_gathered, leafname), "y");
 						filename *F = Filenames::in(P, leafname);
-						Assets::include_asset(OUT, NULL, W, F, NULL, pattern, from, verbosely, context);
+						Assets::include_asset(OUT, NULL, W, F, NULL, pattern, from, R, context);
 						finds++;
 					}
 				}
@@ -134,10 +134,10 @@ file, no matter how many times this is called.
 
 =
 void Assets::include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
-	ls_pattern *pattern, filename *from, int verbosely, ls_colony *context) {	
+	ls_pattern *pattern, filename *from, weave_reporting *R, ls_colony *context) {	
 	if (cs->last_included_in_round == current_inclusion_round) return;
 	cs->last_included_in_round = current_inclusion_round;
-	if (verbosely) PRINT("Include colour scheme '%S'\n", cs->scheme_name);
+	Swarm::report_colour_scheme(R, cs);
 	TEMPORARY_TEXT(css)
 	WRITE_TO(css, "%S.css", cs->scheme_name);
 	filename *F = Patterns::find_file_in_subdirectory(W, pattern, I"Colouring", css);
@@ -149,7 +149,7 @@ void Assets::include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
 		WebErrors::issue_at(err, NULL);
 		DISCARD_TEXT(err)
 	} else {
-		Assets::include_asset(OUT, NULL, W, F, cs->prefix, pattern, from, verbosely, context);
+		Assets::include_asset(OUT, NULL, W, F, cs->prefix, pattern, from, R, context);
 	}
 	DISCARD_TEXT(css)
 }
@@ -273,10 +273,10 @@ at filename |F|, and we now know how to find the applicable rule.
 
 =
 pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filename *F,
-	text_stream *trans, ls_pattern *pattern, filename *from, int verbosely, ls_colony *context) {
+	text_stream *trans, ls_pattern *pattern, filename *from, weave_reporting *WR, ls_colony *context) {
 	if (R == NULL) R = Assets::applicable_rule(W->declaration, pattern, F);
 	TEMPORARY_TEXT(url)
-	pathname *AP = Colonies::assets_path(context);
+	pathname *AP = Colonies::assets_path(context, W);
 	if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
 	WRITE_TO(url, "%S", Filenames::get_leafname(F));
 	if (R->transform_names == FALSE) trans = NULL;
@@ -303,24 +303,35 @@ pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	WRITE("\n");
 
 @<Embed asset@> =
-	if (verbosely) PRINT("Embed asset %f\n", F);
+	Swarm::report_embedding(WR, F);
 	Assets::transform(OUT, F, trans);
 
 @<Copy asset@> =
 	pathname *H = WeavingDetails::get_redirect_weaves_to(W);
-	if (H == NULL) H = WebStructure::woven_folder(W);
+	if ((H == NULL) && (W->single_file == FALSE)) H = WebStructure::woven_folder(W, 1);
 	if ((AP) && (R->method != PRIVATE_COPY_ASSET_METHOD)) H = AP;
-	if (verbosely) PRINT("Copy asset %f -> %p\n", F, H);
-	if (Str::len(trans) > 0) {
-		text_stream css_S;
-		filename *G = Filenames::in(H, Filenames::get_leafname(F));
-		if (STREAM_OPEN_TO_FILE(&css_S, G, ISO_ENC) == FALSE)
-			Errors::fatal_with_file("unable to write tangled file", F);
-		Assets::transform(&css_S, F, trans);
-		STREAM_CLOSE(&css_S);
-	} else {
-		Shell::copy(F, H, "");
-		result = H;
+	int creating = FALSE;
+	if ((H) && (Directories::exists(H) == FALSE)) {
+		if (context == NULL) {
+			creating = TRUE;
+			if (Pathnames::create_in_file_system(H) == FALSE)
+				Errors::fatal_with_path("unable to create directory to copy assets into", H);
+		} else {
+			Errors::fatal_with_path("directory to copy assets into does not exist", H);
+		}
+	}
+	if (Swarm::report_copy(WR, F, H, creating) == TRUE) {
+		if (Str::len(trans) > 0) {
+			text_stream css_S;
+			filename *G = Filenames::in(H, Filenames::get_leafname(F));
+			if (STREAM_OPEN_TO_FILE(&css_S, G, ISO_ENC) == FALSE)
+				Errors::fatal_with_file("unable to write tangled file", F);
+			Assets::transform(&css_S, F, trans);
+			STREAM_CLOSE(&css_S);
+		} else {
+			Shell::copy(F, H, "");
+			result = H;
+		}
 	}
 	if (WeavingDetails::get_as_ebook(W)) {
 		filename *rel = Filenames::in(NULL, Filenames::get_leafname(F));
@@ -328,8 +339,8 @@ pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	}
 
 @<Collate asset@> =
-	if (verbosely) PRINT("Collate asset %f\n", F);
-	Collater::for_web_and_pattern(OUT, W, pattern, F, from, context);
+	Swarm::report_collation(WR, F);
+	Collater::for_web_and_pattern(OUT, W, pattern, F, from, context, WR);
 
 @<Embed the suffix, if any@> =
 	for (int i=0; i<Str::len(R->post); i++) {

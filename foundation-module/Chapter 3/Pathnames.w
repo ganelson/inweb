@@ -264,6 +264,20 @@ text_stream *Pathnames::directory_name(pathname *P) {
 	return P->intermediate;
 }
 
+@ And as an application of this:
+
+=
+int Pathnames::resemble(pathname *P1, pathname *P2) {
+	TEMPORARY_TEXT(t1)
+	TEMPORARY_TEXT(t2)
+	WRITE_TO(t1, "%p", P1);
+	WRITE_TO(t2, "%p", P2);
+	int rv = Str::eq(t1, t2);
+	DISCARD_TEXT(t1)
+	DISCARD_TEXT(t2)
+	return rv;
+}
+
 @h Relative URLs.
 Suppose a web page in the directory at |from| wants to link to a page in
 the directory |to|. The following composes a minimal-length URL to do so:

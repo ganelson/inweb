@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,12 +58,12 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-mv.html#SP5">&#167;5. The CommonMark variation</a></li><li><a href="5-mv.html#SP6">&#167;6. Github extensions to CommonMark</a></li><li><a href="5-mv.html#SP7">&#167;7. Inweb extensions to GFM</a></li><li><a href="5-mv.html#SP8">&#167;8. Methods for features</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>In practice, nobody quite uses pure Markdown, because there are always
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  In practice, nobody quite uses pure Markdown, because there are always
 minor additions or removals people want to make in particular use cases.
-We'll call modified versions of the Markdown syntax "variations", but
-will provide only one of these here: the baseline of CommonMark.
-</p>
-
+We'll call modified versions of the Markdown syntax &quot;variations&quot;, but
+will provide only one of these here: the baseline of CommonMark.</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_MARKDOWNFEATURES</span><span class="plain-syntax"> </span><span class="constant-syntax">256</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
@@ -73,6 +80,7 @@ will provide only one of these here: the baseline of CommonMark.
 <span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CommonMark_variation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">GitHub_flavored_Markdown_variation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">Inweb_flavoured_Markdown_variation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">simplified_Inweb_flavoured_Markdown_variation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="function-syntax">MarkdownVariations::CommonMark</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">MarkdownVariations::CommonMark</span></span>:<br/>Markdown - <a href="5-mrk.html#SP5">&#167;5</a>, <a href="5-mrk.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">CommonMark_variation</span><span class="plain-syntax">;</span>
@@ -85,17 +93,19 @@ will provide only one of these here: the baseline of CommonMark.
 <span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="function-syntax">MarkdownVariations::Inweb_flavoured_Markdown</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inweb_flavoured_Markdown_variation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="function-syntax">MarkdownVariations::simplified_Inweb_flavoured_Markdown</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">simplified_Inweb_flavoured_Markdown_variation</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>A variation is essentially a named collection of features, which may affect
-parsing, or rendering, or both.
-</p>
-
-<p class="commentary">All newly-created variations begin with the CommonMark baseline set of features
-active, and no others. The caller should use <span class="extract"><span class="extract-syntax">MarkdownVariations::add_feature</span></span> to
-add a home-brew feature, or <span class="extract"><span class="extract-syntax">MarkdownVariations::remove_feature</span></span> to take away
-one of the CommonMark ones.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  A variation is essentially a named collection of features, which may affect
+parsing, or rendering, or both.</p>
+<p>All newly-created variations begin with the CommonMark baseline set of features
+active, and no others. The caller should use <code>MarkdownVariations::add_feature</code> to
+add a home-brew feature, or <code>MarkdownVariations::remove_feature</code> to take away
+one of the CommonMark ones.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
@@ -118,7 +128,7 @@ one of the CommonMark ones.
 <span class="plain-syntax">    </span><span class="identifier-syntax">variation</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active_built_in_features</span><span class="plain-syntax">[</span><span class="identifier-syntax">feature_id</span><span class="plain-syntax">] = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::remove_feature</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">MarkdownVariations::remove_feature</span></span>:<br/>Inform-Flavoured Markdown - <a href="5-im.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">feature_id</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::remove_feature</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">MarkdownVariations::remove_feature</span></span>:<br/><a href="5-mv.html#SP7">&#167;7</a><br/>Inform-Flavoured Markdown - <a href="5-im.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">feature_id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">variation</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active_built_in_features</span><span class="plain-syntax">[</span><span class="identifier-syntax">feature_id</span><span class="plain-syntax">] = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -128,10 +138,10 @@ one of the CommonMark ones.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure markdown_variation is accessed in 2/mth, 2/trs, 4/prp, 4/jsn, 5/mrk, 5/im, 7/ld and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>A "feature" is an aspect of Markdown syntax or behaviour; any given variation
-can either support it or not.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  A &quot;feature&quot; is an aspect of Markdown syntax or behaviour; any given variation
+can either support it or not.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
@@ -153,36 +163,36 @@ can either support it or not.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure markdown_feature is accessed in 2/mth, 2/trs, 4/prp, 4/jsn, 5/mrk, 5/im, 7/ld and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>The point of the cumbersome business of both defining an ID and creating
-an object to represent the same feature was to make this function quick.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The point of the cumbersome business of both defining an ID and creating
+an object to represent the same feature was to make this function quick.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::supports</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">MarkdownVariations::supports</span></span>:<br/><a href="5-mv.html#SP8">&#167;8</a>, <a href="5-mv.html#SP9">&#167;9</a>, <a href="5-mv.html#SP10">&#167;10</a><br/>Markdown - <a href="5-mrk.html#SP5_1">&#167;5.1</a><br/>Markdown Phase I - <a href="5-mpi.html#SP18_2_1">&#167;18.2.1</a>, <a href="5-mpi.html#SP18_2_2">&#167;18.2.2</a>, <a href="5-mpi.html#SP18_2_3">&#167;18.2.3</a>, <a href="5-mpi.html#SP18_2_4">&#167;18.2.4</a>, <a href="5-mpi.html#SP25_2">&#167;25.2</a>, <a href="5-mpi.html#SP26_2">&#167;26.2</a>, <a href="5-mpi.html#SP26_3">&#167;26.3</a>, <a href="5-mpi.html#SP26_4">&#167;26.4</a>, <a href="5-mpi.html#SP26_5">&#167;26.5</a>, <a href="5-mpi.html#SP26_6">&#167;26.6</a>, <a href="5-mpi.html#SP28">&#167;28</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP3">&#167;3</a>, <a href="5-mpi2.html#SP3_1">&#167;3.1</a>, <a href="5-mpi2.html#SP3_2">&#167;3.2</a>, <a href="5-mpi2.html#SP3_3">&#167;3.3</a>, <a href="5-mpi2.html#SP3_4">&#167;3.4</a>, <a href="5-mpi2.html#SP3_4_5_1">&#167;3.4.5.1</a>, <a href="5-mpi2.html#SP9">&#167;9</a>, <a href="5-mpi2.html#SP11_2">&#167;11.2</a><br/>Markdown Rendering - <a href="5-mr.html#SP2">&#167;2</a>, <a href="5-mr.html#SP2_6">&#167;2.6</a>, <a href="5-mr.html#SP2_7">&#167;2.7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">feature_id</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">variation</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">active_built_in_features</span><span class="plain-syntax">[</span><span class="identifier-syntax">feature_id</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The CommonMark variation.</b>Vanilla ice cream is under-rated:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">BLOCK_QUOTES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ORDERED_LISTS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">UNORDERED_LISTS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INDENTED_CODE_BLOCKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">FENCED_CODE_BLOCKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">HTML_BLOCKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">THEMATIC_MARKERS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ATX_HEADINGS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SETEXT_HEADINGS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">WEB_AUTOLINKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EMAIL_AUTOLINKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INLINE_HTML_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">BACKTICKED_CODE_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">LINKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">IMAGES_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ASTERISK_EMPHASIS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">UNDERSCORE_EMPHASIS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ENTITIES_MARKDOWNFEATURE</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The CommonMark variation.</b>  Vanilla ice cream is under-rated:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">BLOCK_QUOTES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ORDERED_LISTS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">UNORDERED_LISTS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INDENTED_CODE_BLOCKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FENCED_CODE_BLOCKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HTML_BLOCKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">THEMATIC_MARKERS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ATX_HEADINGS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SETEXT_HEADINGS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">WEB_AUTOLINKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMAIL_AUTOLINKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INLINE_HTML_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">BACKTICKED_CODE_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">IMAGES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ASTERISK_EMPHASIS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">UNDERSCORE_EMPHASIS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ENTITIES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block_quotes_Markdown_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -254,16 +264,16 @@ an object to represent the same feature was to make this function quick.
 <span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">ENTITIES_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Github extensions to CommonMark.</b>See <a href="https://github.github.com/gfm" class="external">GitHub's specification</a>, which is based
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Github extensions to CommonMark.</b>  See <a href="https://github.github.com/gfm" class="external">GitHub's specification</a>, which is based
 on CommonMark, though its description of new features is a little more concise,
-since these have been added with more prudent syntax.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">STRIKETHROUGH_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TABLES_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TASK_LIST_ITEMS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EXTENDED_AUTOLINKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">DISALLOWED_RAW_HTML_MARKDOWNFEATURE</span>
+since these have been added with more prudent syntax.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">STRIKETHROUGH_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TASK_LIST_ITEMS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EXTENDED_AUTOLINKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">DISALLOWED_RAW_HTML_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">strikethrough_Markdown_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -291,41 +301,71 @@ since these have been added with more prudent syntax.
 <span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">DISALLOWED_RAW_HTML_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Inweb extensions to GFM.</b>We provide just two of these, and they are intended to be used on top of GFM:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TEX_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INWEB_LINKS_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">FOOTNOTES_MARKDOWNFEATURE</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Inweb extensions to GFM.</b>  We provide just a few of these, and they are intended to be used on top of GFM:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEX_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INWEB_LINKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FOOTNOTES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">STROKED_CODE_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">TeX_Markdown_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inweb_links_Markdown_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">footnotes_Markdown_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stroked_code_Markdown_feature</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::define_IWFM</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">MarkdownVariations::define_IWFM</span></span>:<br/><a href="5-mv.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">TeX_Markdown_feature</span><span class="plain-syntax"> =         </span><a href="5-mv.html#SP3" class="function-link"><span class="function-syntax">MarkdownVariations::new_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"TeX"</span><span class="plain-syntax">,         </span><span class="constant-syntax">TEX_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">inweb_links_Markdown_feature</span><span class="plain-syntax"> = </span><a href="5-mv.html#SP3" class="function-link"><span class="function-syntax">MarkdownVariations::new_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"inweb links"</span><span class="plain-syntax">, </span><span class="constant-syntax">INWEB_LINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TeX_Markdown_feature</span><span class="plain-syntax"> =          </span><a href="5-mv.html#SP3" class="function-link"><span class="function-syntax">MarkdownVariations::new_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"TeX"</span><span class="plain-syntax">,             </span><span class="constant-syntax">TEX_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inweb_links_Markdown_feature</span><span class="plain-syntax"> =  </span><a href="5-mv.html#SP3" class="function-link"><span class="function-syntax">MarkdownVariations::new_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"inweb links"</span><span class="plain-syntax">,     </span><span class="constant-syntax">INWEB_LINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">footnotes_Markdown_feature</span><span class="plain-syntax"> =    </span><a href="5-mv.html#SP3" class="function-link"><span class="function-syntax">MarkdownVariations::new_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"inweb footnotes"</span><span class="plain-syntax">, </span><span class="constant-syntax">FOOTNOTES_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">stroked_code_Markdown_feature</span><span class="plain-syntax"> = </span><a href="5-mv.html#SP3" class="function-link"><span class="function-syntax">MarkdownVariations::new_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"stroked code"</span><span class="plain-syntax">,    </span><span class="constant-syntax">STROKED_CODE_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">Inweb_flavoured_Markdown_variation</span><span class="plain-syntax"> = </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Inweb-flavoured Markdown"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-mv.html#SP6" class="function-link"><span class="function-syntax">MarkdownVariations::make_GitHub_features_active</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Inweb_flavoured_Markdown_variation</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-mv.html#SP7" class="function-link"><span class="function-syntax">MarkdownVariations::make_Inweb_features_active</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">Inweb_flavoured_Markdown_variation</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">simplified_Inweb_flavoured_Markdown_variation</span><span class="plain-syntax"> = </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"Inweb-flavoured Markdown"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP7" class="function-link"><span class="function-syntax">MarkdownVariations::make_simplified_Inweb_features_active</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">simplified_Inweb_flavoured_Markdown_variation</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::make_Inweb_features_active</span><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">TEX_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">INWEB_LINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">FOOTNOTES_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">EXTENDED_AUTOLINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::make_simplified_Inweb_features_active</span><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">BLOCK_QUOTES_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">ORDERED_LISTS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">UNORDERED_LISTS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">INDENTED_CODE_BLOCKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">FENCED_CODE_BLOCKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">HTML_BLOCKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">THEMATIC_MARKERS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">ATX_HEADINGS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">SETEXT_HEADINGS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">WEB_AUTOLINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">EMAIL_AUTOLINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">INLINE_HTML_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">BACKTICKED_CODE_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">LINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::remove_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">IMAGES_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">TEX_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">INWEB_LINKS_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">FOOTNOTES_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="5-mv.html#SP2" class="function-link"><span class="function-syntax">MarkdownVariations::add_feature</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">STROKED_CODE_MARKDOWNFEATURE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Methods for features.</b>New features need to be able to intervene in the parsing or rendering algorithms,
-so for that we provide methods.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">RENDER_MARKDOWN_MTID</span></span> allows a feature to meddle in how a node is rendered.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">RENDER_MARKDOWN_MTID</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Methods for features.</b>  New features need to be able to intervene in the parsing or rendering algorithms,
+so for that we provide methods.</p>
+<p><code>RENDER_MARKDOWN_MTID</code> allows a feature to meddle in how a node is rendered.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">RENDER_MARKDOWN_MTID</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">RENDER_MARKDOWN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">feature</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">,</span>
@@ -343,12 +383,12 @@ so for that we provide methods.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b><span class="extract"><span class="extract-syntax">POST_PHASE_I_MARKDOWN_MTID</span></span> allows a feature to restructure or annotate the
-block tree produced by Phase I parsing; similarly <span class="extract"><span class="extract-syntax">POST_PHASE_II_MARKDOWN_MTID</span></span>.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">POST_PHASE_I_MARKDOWN_MTID</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">POST_PHASE_II_MARKDOWN_MTID</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  <code>POST_PHASE_I_MARKDOWN_MTID</code> allows a feature to restructure or annotate the
+block tree produced by Phase I parsing; similarly <code>POST_PHASE_II_MARKDOWN_MTID</code>.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">POST_PHASE_I_MARKDOWN_MTID</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">POST_PHASE_II_MARKDOWN_MTID</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">POST_PHASE_I_MARKDOWN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">feature</span><span class="plain-syntax">,</span>
@@ -374,13 +414,13 @@ block tree produced by Phase I parsing; similarly <span class="extract"><span cl
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b><span class="extract"><span class="extract-syntax">MULTIFILE_MARKDOWN_MTID</span></span> allows a feature to tell the parser that the content
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  <code>MULTIFILE_MARKDOWN_MTID</code> allows a feature to tell the parser that the content
 will end up being split across multiple HTML files. If a feature wants to do
-this, it should then set a "file point" at any top-level positions of its
-choice, and return <span class="extract"><span class="extract-syntax">TRUE</span></span>.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">MULTIFILE_MARKDOWN_MTID</span>
+this, it should then set a &quot;file point&quot; at any top-level positions of its
+choice, and return <code>TRUE</code>.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">MULTIFILE_MARKDOWN_MTID</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">MULTIFILE_MARKDOWN_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_feature</span><span class="plain-syntax"> *</span><span class="identifier-syntax">feature</span><span class="plain-syntax">,</span>
@@ -444,7 +484,7 @@ choice, and return <span class="extract"><span class="extract-syntax">TRUE</span
 <span class="plain-syntax">    </span><a href="5-mv.html#SP11" class="function-link"><span class="function-syntax">MarkdownVariations::multifile_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_references</span><span class="plain-syntax">, </span><span class="identifier-syntax">headings</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MarkdownVariations::multifile_r</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">MarkdownVariations::multifile_r</span></span>:<br/><a href="5-mv.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_references</span><span class="plain-syntax">,</span>

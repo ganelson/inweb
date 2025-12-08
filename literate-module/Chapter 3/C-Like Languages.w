@@ -56,7 +56,7 @@ takes care of it automatically.
 
 			if (Regexp::match(&mr, line, U"typedef struct (%i+) %c*{%c*")) {
 				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
-				LiterateSource::tag_paragraph(L_par, I"Structures");
+				ParagraphTags::tag(L_par, I"Structures");
 			} else if ((Str::get_first_char(line) == '}') && (current_str)) {
 				current_str->typedef_ends = lst;
 				current_str = NULL;

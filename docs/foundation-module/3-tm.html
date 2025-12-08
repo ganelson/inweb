@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,9 +58,9 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="3-tm.html#SP1">&#167;1. Clock</a></li><li><a href="3-tm.html#SP3">&#167;3. Calendrical</a></li><li><a href="3-tm.html#SP5">&#167;5. Stopwatch timings</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Clock.</b>From the local environment, we'll extract the time at which we're running.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Clock.</b>  From the local environment, we'll extract the time at which we're running.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">time_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">right_now</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">tm</span><span class="plain-syntax"> *</span><span class="identifier-syntax">the_present</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -65,13 +72,13 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">fix_time_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>The command line option <span class="extract"><span class="extract-syntax">-fixtime</span></span> causes any tool compiled with Foundation
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The command line option <code>-fixtime</code> causes any tool compiled with Foundation
 to fix the date as 11 a.m. on 28 March 2016, which is Inform's birthday. This
 makes it easier to automate testing, since we can compare output generated
 in one session with output generated another, even though that was on two
-different dates.
-</p>
-
+different dates.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Time::fix</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Time::fix</span></span>:<br/>Command Line Arguments - <a href="3-cla.html#SP13_1">&#167;13.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">tm</span><span class="plain-syntax"> </span><span class="identifier-syntax">start</span><span class="plain-syntax">;</span>
@@ -86,7 +93,8 @@ different dates.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">fix_time_mode</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Calendrical.</b>The date of Easter depends on who and where you are. Inform's notional home
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Calendrical.</b>  The date of Easter depends on who and where you are. Inform's notional home
 is England. Following League of Nations advice in 1926, Easter is legally
 celebrated in England on the Sunday after the second Saturday in April, unless
 the Church requests otherwise. Since the Church has made this request every
@@ -96,10 +104,8 @@ algorithms ordained by major Christian churches: Catholic, continental
 European Protestant, Church of England, Eastern and Russian Orthodox. The
 first three always agree on the date, but usually disagree with the last
 two. The two eastern algorithms only disagree with each other once or twice
-a century, but the usual result has been riots with significant loss of life.
-</p>
-
-<p class="commentary">The official Church of England algorithm is a clumsy one adopted during the
+a century, but the usual result has been riots with significant loss of life.</p>
+<p>The official Church of England algorithm is a clumsy one adopted during the
 reign of George II. It was then thought important to use a non-Catholic
 method of calculation even though the same answer was required. We'll
 instead follow the algorithm of J.-M. Oudin, first published in the
@@ -107,27 +113,22 @@ Bulletin astronomique in 1940, as adapted by the US Naval Observatory.
 Oudin corrected a small mistake in the calculation by Gauss (1800) of the
 Allgemeiner Reichskalender (1776) which reconciled Lutheran Easter with
 Gregorian, which in turn followed the reforms of Clavius et al. (1582),
-which in turn... and so on. See Leofranc Holford-Strevens, "The History of
-Time" (Oxford, 2005).
-</p>
-
-<p class="commentary">In principle we calculate the first Sunday after the first ecclesiastical
-moon that occurs on or after March 21. An "ecclesiastical moon" is one as
+which in turn... and so on. See Leofranc Holford-Strevens, &quot;The History of
+Time&quot; (Oxford, 2005).</p>
+<p>In principle we calculate the first Sunday after the first ecclesiastical
+moon that occurs on or after March 21. An &quot;ecclesiastical moon&quot; is one as
 seen from a longitude near Rome, except that the ratios used to adjust lunar and
 solar calendars are not quite right. The result is also tampered with to
 stop Easter from coinciding with the pagan anniversary of the founding of
 Rome (for the convenience of people living in the Vatican) and also to
 stop it from coinciding with Passover (because of anti-Semitism). However,
-since they botched this tampering, it sometimes does.
-</p>
-
-<p class="commentary">Knuth remarks that calculating Easter was almost the only algorithmic
+since they botched this tampering, it sometimes does.</p>
+<p>Knuth remarks that calculating Easter was almost the only algorithmic
 research in the West for many centuries. Nevertheless the result is
 practically a random-number generator. The one thing to be said in its
 favour is that it can be computed accurately with integer arithmetic using
-fairly low numbers, and this we now do.
-</p>
-
+fairly low numbers, and this we now do.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Time::easter</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Time::easter</span></span>:<br/><a href="3-tm.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">year</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">d</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">m</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">, </span><span class="identifier-syntax">k</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">, </span><span class="identifier-syntax">j</span><span class="plain-syntax">, </span><span class="identifier-syntax">l</span><span class="plain-syntax">;</span>
@@ -145,9 +146,9 @@ fairly low numbers, and this we now do.
 <span class="plain-syntax">    *</span><span class="identifier-syntax">d</span><span class="plain-syntax"> = </span><span class="identifier-syntax">l</span><span class="plain-syntax">+28-31*(*</span><span class="identifier-syntax">m</span><span class="plain-syntax">/4);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>And we can use this to tell if the season's merry:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  And we can use this to tell if the season's merry:</p>
+</div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">CHRISTMAS_FEAST</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">EASTER_FEAST</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">NON_FEAST</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span>
@@ -162,41 +163,41 @@ fairly low numbers, and this we now do.
 <span class="plain-syntax">    </span><a href="3-tm.html#SP3" class="function-link"><span class="function-syntax">Time::easter</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">this_year</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">m</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">d</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">this_month</span><span class="plain-syntax"> == </span><span class="identifier-syntax">m</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">this_day</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">d</span><span class="plain-syntax">-2) &amp;&amp; (</span><span class="identifier-syntax">this_day</span><span class="plain-syntax"> &lt;= </span><span class="identifier-syntax">d</span><span class="plain-syntax">+1))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">EASTER_FEAST</span><span class="plain-syntax">; </span><span class="comment-syntax"> that is, Good Friday to Easter Monday</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">EASTER_FEAST</span><span class="plain-syntax">; </span><span class="comment-syntax">/* that is, Good Friday to Easter Monday */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">this_year</span><span class="plain-syntax"> == </span><span class="constant-syntax">2018</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">this_month</span><span class="plain-syntax"> == </span><span class="constant-syntax">3</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">this_day</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">30</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">EASTER_FEAST</span><span class="plain-syntax">; </span><span class="comment-syntax"> Easter Sunday falls on 1 April in 2018</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">EASTER_FEAST</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Easter Sunday falls on 1 April in 2018 */</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">this_month</span><span class="plain-syntax"> == </span><span class="constant-syntax">12</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">this_day</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">25</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">CHRISTMAS_FEAST</span><span class="plain-syntax">; </span><span class="comment-syntax"> that is, Christmas Day to New Year's Eve</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">CHRISTMAS_FEAST</span><span class="plain-syntax">; </span><span class="comment-syntax">/* that is, Christmas Day to New Year's Eve */</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">NON_FEAST</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Stopwatch timings.</b>The following provides a sort of hierarchical stopwatch. In principle it
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Stopwatch timings.</b>  The following provides a sort of hierarchical stopwatch. In principle it
 could time anything (though not very accurately), but it's mainly intended
 for monitoring how long programs internally work, since it reads time from
-the <span class="extract"><span class="extract-syntax">clock()</span></span> (i.e., how much CPU time the current process has taken) rather
-than from the actual time of day.
-</p>
-
+the <code>clock()</code> (i.e., how much CPU time the current process has taken) rather
+than from the actual time of day.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax">; </span><span class="comment-syntax"> set if this has been started but not stopped</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax">; </span><span class="comment-syntax">/* set if this has been started but not stopped */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">event</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">clock_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">start_time</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">clock_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_time</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_taken</span><span class="plain-syntax">; </span><span class="comment-syntax"> measured in centiseconds of CPU time</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_chronological</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">stopwatch_timer</span></span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_sorted</span><span class="plain-syntax">; </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">stopwatch_timer</span></span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_taken</span><span class="plain-syntax">; </span><span class="comment-syntax">/* measured in centiseconds of CPU time */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_chronological</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |stopwatch_timer| */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_sorted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |stopwatch_timer| */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure stopwatch_timer is accessed in 4/fsm and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>If <span class="extract"><span class="extract-syntax">within</span></span> is not null, it must be another stopwatch which is also running;
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  If <code>within</code> is not null, it must be another stopwatch which is also running;
 the idea is that the new stopwatch is to time a sub-task of the main task which
-<span class="extract"><span class="extract-syntax">within</span></span> is timing.
-</p>
-
+<code>within</code> is timing.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="function-syntax">Time::start_stopwatch</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">within</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">st</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax">);</span>
@@ -215,10 +216,10 @@ the idea is that the new stopwatch is to time a sub-task of the main task which
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">st</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>Every started stopwatch must be stopped in order to register time having
-been used. Once this is done, we sort:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Every started stopwatch must be stopped in order to register time having
+been used. Once this is done, we sort:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Time::stop_stopwatch</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">st</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">st</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">running</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"already stopped"</span><span class="plain-syntax">);</span>
@@ -231,8 +232,7 @@ been used. Once this is done, we sort:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">st</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">time_taken</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Sort the subtasks in descreasing order of how much time they took</span><span class="named-paragraph-number">7.1</span></span><span class="comment-syntax"> =</span>
-</p>
+<p class="commentary firstcommentary"><a id="SP7_1" class="paragraph-anchor"></a><b>&#167;7.1. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Sort the subtasks in descreasing order of how much time they took</span><span class="named-paragraph-number">7.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">st</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stages_sorted</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax">);</span>
@@ -248,9 +248,9 @@ been used. Once this is done, we sort:
 <span class="plain-syntax">        </span><span class="constant-syntax">ARRAY_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-tm.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>This sorts first by elapsed time, then by event name in alphabetical order:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  This sorts first by elapsed time, then by event name in alphabetical order:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Time::compare_watches</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Time::compare_watches</span></span>:<br/><a href="3-tm.html#SP7_1">&#167;7.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">w1</span><span class="plain-syntax">, </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">w2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> **</span><span class="identifier-syntax">st1</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> **) </span><span class="identifier-syntax">w1</span><span class="plain-syntax">;</span>
@@ -263,10 +263,10 @@ been used. Once this is done, we sort:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-sm.html#SP20" class="function-link"><span class="function-syntax">Str::cmp</span></a><span class="plain-syntax">((*</span><span class="identifier-syntax">st1</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">event</span><span class="plain-syntax">, (*</span><span class="identifier-syntax">st2</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">event</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>Once started and then stopped, a stopwatch can be "resumed", provided it
-is then stopped again. The elapsed time is accumulated.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Once started and then stopped, a stopwatch can be &quot;resumed&quot;, provided it
+is then stopped again. The elapsed time is accumulated.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Time::resume_stopwatch</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">st</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">st</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">running</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"already running"</span><span class="plain-syntax">);</span>
@@ -275,11 +275,11 @@ is then stopped again. The elapsed time is accumulated.
 <span class="plain-syntax">    </span><span class="identifier-syntax">st</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">end_time</span><span class="plain-syntax"> = </span><span class="identifier-syntax">st</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">start_time</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>All of which enables a neat hierarchical printout. The task is timed to
-an accuracy of 1/1000th of the <span class="extract"><span class="extract-syntax">total</span></span> supplied, and sub-tasks taking less
-than that are omitted from the log.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  All of which enables a neat hierarchical printout. The task is timed to
+an accuracy of 1/1000th of the <code>total</code> supplied, and sub-tasks taking less
+than that are omitted from the log.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Time::log_timing</span><span class="plain-syntax">(</span><span class="reserved-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">st</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">total</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">st</span><span class="plain-syntax">) {</span>

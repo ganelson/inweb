@@ -17,23 +17,25 @@ For convenience, we provide three ways to call:
 
 =
 void Collater::for_web_and_pattern(text_stream *OUT, ls_web *W,
-	ls_pattern *pattern, filename *F, filename *into, ls_colony *context) {
-	Collater::collate(OUT, W, I"", F, NULL, pattern, NULL, NULL, NULL, into, context);
+	ls_pattern *pattern, filename *F, filename *into, ls_colony *context,
+	weave_reporting *R) {
+	Collater::collate(OUT, W, I"", F, NULL, pattern, NULL, NULL, NULL, into, context, R);
 }
 
 void Collater::for_order(text_stream *OUT, weave_order *wv,
-	filename *F, filename *into, ls_colony *context) {
+	filename *F, filename *into, ls_colony *context, weave_reporting *R) {
 	Collater::collate(OUT, wv->weave_web, wv->weave_range, F, NULL, wv->pattern,
-		wv->navigation, wv->breadcrumbs, wv, into, context);
+		wv->navigation, wv->breadcrumbs, wv, into, context, R);
 }
 
 void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 	filename *template_filename, wcl_declaration *template_wcl,
 	ls_pattern *pattern, wcl_declaration *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context) {
+	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context,
+	weave_reporting *R) {
 	collater_state actual_ies =
 		Collater::initial_state(W, range, template_filename, template_wcl, pattern, 
-			nav_file, crumbs, wv, into, context);
+			nav_file, crumbs, wv, into, context, R);
 	collater_state *ies = &actual_ies;
 	Collater::process(OUT, ies);
 }
@@ -65,6 +67,7 @@ typedef struct collater_state {
 	struct weave_order *wv;
 	struct filename *into_file;
 	struct linked_list *modules; /* of |ls_module| */
+	struct weave_reporting *reportage;
 } collater_state;
 
 @ Note the unfortunate maximum size limit on the template file. It means
@@ -75,7 +78,8 @@ if so, they can always be subdivided.
 collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	filename *template_filename, wcl_declaration *template_wcl,
 	ls_pattern *pattern, wcl_declaration *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context) {
+	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context,
+	weave_reporting *R) {
 	collater_state cls;
 	cls.no_tlines = 0;
 	cls.restrict_to_range = Str::duplicate(range);
@@ -90,6 +94,7 @@ collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	cls.into_file = into;
 	cls.modules = NEW_LINKED_LIST(ls_module);
 	cls.context = context;
+	cls.reportage = R;
 	if ((context == NULL) && (wv)) cls.context = wv->weave_colony;
 	if (W) {
 		int c = LinkedLists::len(W->main_module->dependencies);
@@ -258,7 +263,7 @@ chapter as its value during the sole iteration.
 		} else if (Str::eq(condition, I"Section Purpose")) {
 			ls_section *S = CONTENT_IN_ITEM(
 				Collater::heading_topmost_on_stack(cls, SECTION_LEVEL), ls_section);
-			if (LiterateSource::unit_has_purpose(S->literate_source)) level = IF_TRUE_LEVEL;
+			if (Str::len(LiterateSource::unit_purpose(S->literate_source)) > 0) level = IF_TRUE_LEVEL;
 		} else {
 			Errors::at_position("don't recognise the condition",
 				cls->errors_at, lpos);
@@ -489,7 +494,7 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 
 		match_results mr = Regexp::create_mr();
 		if (Bibliographic::data_exists(cls->for_web, varname)) {
-			@<Substitute any bibliographic datum named@>;
+			WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->for_web, varname));
 		} else if (Regexp::match(&mr, varname, U"Navigation")) {
 			@<Substitute Navigation@>;
 		} else if (Regexp::match(&mr, varname, U"Breadcrumbs")) {
@@ -542,6 +547,10 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 			text_stream *icon_text = NULL;
 			@<Look for icon text@>;
 			@<Substitute a home Item@>;
+		} else if (Regexp::match(&mr, varname, U"Optional (%c+)")) {
+			if (Bibliographic::data_exists(cls->for_web, mr.exp[0])) {
+				WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->for_web, mr.exp[0]));
+			}
 		} else {
 			WRITE_TO(substituted, "%S", varname);
 			if (Regexp::match(&mr, varname, U"%i+%c*"))
@@ -559,18 +568,14 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 	Str::clear(tl); Str::copy(tl, rewritten);
 	DISCARD_TEXT(rewritten)
 
-@ This is why, for instance, |[[Author]]| is replaced by the author's name:
-
-@<Substitute any bibliographic datum named@> =
-	WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->for_web, varname));
-
 @ |[[Navigation]]| substitutes to the content of the sidebar navigation file;
 this will recursively call The Collater, in fact.
 
 @<Substitute Navigation@> =
 	if (cls->nav_file) {
 		Collater::collate(substituted, cls->for_web, cls->restrict_to_range,
-			NULL, cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file, cls->context);
+			NULL, cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file,
+			cls->context, cls->reportage);
 	} else {
 		PRINT("Warning: no sidebar links will be generated, as -navigation is unset");
 	}
@@ -583,7 +588,7 @@ this will recursively call The Collater, in fact.
 
 @<Substitute Plugins@> =
 	Assets::include_relevant_plugins(OUT, cls->nav_pattern, cls->for_web,
-		cls->wv, cls->into_file, cls->context);
+		cls->wv, cls->into_file, cls->context, cls->reportage);
 
 @ We store little about the complete-web-in-one-file PDF:
 
@@ -688,7 +693,7 @@ navigation purposes.
 		Filenames::up(cls->into_file), Colonies::home(cls->context));
 
 @<Substitute an Assets@> =
-	pathname *P = Colonies::assets_path(cls->context);
+	pathname *P = Colonies::assets_path(cls->context, cls->for_web);
 	if (P == NULL) P = Filenames::up(cls->into_file);
 	Pathnames::relative_URL(substituted,
 		Filenames::up(cls->into_file), P);
@@ -766,7 +771,7 @@ navigation purposes.
 @<Substitute icon and name@> =
 	if (Str::len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
-		pathname *I = Colonies::assets_path(cls->context);
+		pathname *I = Colonies::assets_path(cls->context, cls->for_web);
 		Pathnames::relative_URL(substituted, Filenames::up(cls->into_file), I);
 		WRITE_TO(substituted, "%S\" height=%d> ", icon_text, icon_size);
 	}

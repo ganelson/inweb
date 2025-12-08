@@ -25,7 +25,7 @@ force:
 	$(call make-me)
 
 define make-me
-	$(INWEB) tangle $(ME) -import-from modules
+	$(INWEB) tangle $(ME)
 	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
 	{link from:    $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
 endef

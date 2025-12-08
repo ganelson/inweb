@@ -20,11 +20,13 @@ Inweb          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/I
 None           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 675
 PainterOutput  | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 680
 Perl           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 701
-Plain Text     | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 722
-Preform        | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 731
-REPL           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 753
+Plain Text     | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 739
+Preform        | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 748
+Python         | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 721
+REPL           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 770
 Inweb          | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 1  
-Markdown       | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 121
+Markdown       | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 182
+MarkdownCode   | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 126
 Ebook          | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
 GitHubPages    | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
 HTML           | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       

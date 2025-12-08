@@ -9,17 +9,7 @@ document weave order 1
           toc line - <S1, Storage> P1'Storage'
           toc line - <S2, Primality> P2'Primality'
         paragraph P1'Storage'
-          material discussion
-            commentary <This technique, still essentially the best sieve for finding prime\n>
-            commentary <numbers, is attributed to Eratosthenes of Cyrene and dates from the 200s BC.\n>
-            commentary <Since composite numbers are exactly those numbers which are multiples of\n>
-            commentary <something, the idea is to remove everything which is a multiple: whatever\n>
-            commentary <is left, must be prime.\n>
-            vskip (in comment)
-            commentary <This is very fast (and can be done more quickly than the implementation\n>
-            commentary <below), but (a) uses storage to hold the sieve, and (b) has to start right\n>
-            commentary <back at 2 - so it can't efficiently test just, say, the eight-digit numbers\n>
-            commentary <for primality.\n>
+          markdownUnknown node
           material code: C
             code line
               source_code <int still_in_sieve[RANGE + 1];>
@@ -28,8 +18,7 @@ document weave order 1
               source_code <int sieve_performed = FALSE;>
                           _rrrpiiiiiiiiiiiiiiipppnnnnnp_
         paragraph P2'Primality'
-          material discussion
-            commentary <We provide this as a function which determines whether a number is prime:\n>
+          markdownUnknown node
           material definition
             code line
               defn <define>
@@ -68,22 +57,9 @@ document weave order 1
               source_code <}>
                           _p_
         paragraph P2.1
-          material discussion
-            commentary <We save a little time by noting that if a number up to >
-            inline
-              source_code <RANGE>
-                          _xxxxx_
-            commentary < is composite\n>
-            commentary <then one of its factors must be smaller than the square root of >
-            inline
-              source_code <RANGE>
-                          _xxxxx_
-            commentary <. Thus,\n>
-            commentary <in a sieve of size 10000, one only needs to remove multiples of 2 up to 100,\n>
-            commentary <for example.\n>
+          markdownUnknown node
           material paragraph macro
-            code line
-              pmac <Perform the sieve> (definition)
+            holon declaration <Perform the sieve> (definition)
           material code: C
             code line
               source_code <    >
@@ -114,8 +90,7 @@ document weave order 1
               commentary <.>
         paragraph P2.1.1
           material paragraph macro
-            code line
-              pmac <Start with all numbers from 2 upwards in the sieve> (definition)
+            holon declaration <Start with all numbers from 2 upwards in the sieve> (definition)
           material code: C
             code line
               source_code <    still_in_sieve[1] = FALSE;>
@@ -131,8 +106,7 @@ document weave order 1
               commentary <.>
         paragraph P2.1.2
           material paragraph macro
-            code line
-              pmac <Shake out multiples of n> (definition)
+            holon declaration <Shake out multiples of n> (definition)
           material code: C
             code line
               source_code <    for (int m= n+n; m <= RANGE; m += n) still_in_sieve[m] = FALSE;>

@@ -108,20 +108,24 @@ the length of a backtick string beginning at |at|, if one does, or 0 if it
 does not.
 
 =
-int MDInlineParser::backtick_string(text_stream *text, int at) {
+int MDInlineParser::backtick_string(text_stream *text, int at, inchar32_t btc) {
 	int count = 0;
-	while (Str::get_at(text, at + count) == '`') count++;
+	while (Str::get_at(text, at + count) == btc) count++;
 	if (count == 0) return 0;
-	if ((at > 0) && (Str::get_at(text, at - 1) == '`')) return 0;
+	if ((at > 0) && (Str::get_at(text, at - 1) == btc)) return 0;
 	return count;
 }
 
 @<Does a backtick begin here?@> =
-	if (MarkdownVariations::supports(variation, BACKTICKED_CODE_MARKDOWNFEATURE)) {
-		int count = MDInlineParser::backtick_string(text, i);
+	inchar32_t btc = 0;
+	if (MarkdownVariations::supports(variation, BACKTICKED_CODE_MARKDOWNFEATURE)) btc = '`';
+	if (MarkdownVariations::supports(variation, STROKED_CODE_MARKDOWNFEATURE)) btc = '|';
+
+	if (btc) {
+		int count = MDInlineParser::backtick_string(text, i, btc);
 		if (count > 0) {
 			for (int j=i+count+1; j<Str::len(text); j++) {
-				if (MDInlineParser::backtick_string(text, j) == count) {
+				if (MDInlineParser::backtick_string(text, j, btc) == count) {
 					if (i-1 >= from) {
 						markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
 						Markdown::add_to(md, owner);
@@ -811,7 +815,8 @@ void MDInlineParser::links_and_images(markdown_variation *variation,
 	md_links_dictionary *link_refs, markdown_item *owner, int images_only) {
 	if (owner == NULL) return;
 	if ((MarkdownVariations::supports(variation, LINKS_MARKDOWNFEATURE) == FALSE) &&
-		(MarkdownVariations::supports(variation, IMAGES_MARKDOWNFEATURE) == FALSE))
+		(MarkdownVariations::supports(variation, IMAGES_MARKDOWNFEATURE) == FALSE) &&
+		(MarkdownVariations::supports(variation, FOOTNOTES_MARKDOWNFEATURE) == FALSE))
 		return;
 	if (tracing_Markdown_parser) {
 		PRINT("Beginning link/image pass:\n");
@@ -1017,7 +1022,9 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 			uses = IMAGES_MARKDOWNFEATURE;
 			result.first = prev_pos;
 		}
-		if (MarkdownVariations::supports(variation, uses)) {
+		if ((MarkdownVariations::supports(variation, uses)) ||
+			((uses == LINKS_MARKDOWNFEATURE) &&
+				(MarkdownVariations::supports(variation, FOOTNOTES_MARKDOWNFEATURE)))) {
 			if (link_rather_than_image) {
 				if (tracing_Markdown_parser) PRINT("Potential link found\n");
 			} else {
@@ -1047,6 +1054,8 @@ md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
 						if (valid) result.footnote_link = Str::atoi(label, 0);
 					}
 					if (result.footnote_link == 0) {
+						if (MarkdownVariations::supports(variation, uses) == FALSE)
+							ABANDON_LINK("not a valid footnote number");
 						md_link_dictionary_entry *ref = Markdown::look_up(link_refs, label);
 						if (ref == NULL) ABANDON_LINK("no '(' and not a valid reference");
 						#ifdef SUPERVISOR_MODULE

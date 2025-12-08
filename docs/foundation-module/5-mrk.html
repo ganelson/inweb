@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,33 +58,24 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-mrk.html#SP1">&#167;1. Introduction</a></li><li><a href="5-mrk.html#SP7">&#167;7. Storing marked-up copy</a></li><li><a href="5-mrk.html#SP19">&#167;19. Items</a></li><li><a href="5-mrk.html#SP32">&#167;32. File markers</a></li><li><a href="5-mrk.html#SP33">&#167;33. Working with slices</a></li><li><a href="5-mrk.html#SP49">&#167;49. Links dictionary</a></li><li><a href="5-mrk.html#SP53">&#167;53. Debugging</a></li><li><a href="5-mrk.html#SP54">&#167;54. Trees and chains</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>The following is not a simple algorithm. Those who, like myself three days ago,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  The following is not a simple algorithm. Those who, like myself three days ago,
 think there ought to be a simple way to parse Markdown are invited to read
 through the invaluable <a href="https://spec.commonmark.org/0.30" class="external">CommonMark specification</a>.
-I am following version 0.30, from 2019, the most recent at time of writing.
-</p>
-
-<p class="commentary">The functions in this section provide a public API for dealing with Markdown.
-We provide two basic functions:
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">Markdown::parse(text)</span></span> turns the text <span class="extract"><span class="extract-syntax">T</span></span> into a "Markdown tree".
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">Markdown::render(OUT, tree)</span></span> outputs HTML expressing the Markdown tree <span class="extract"><span class="extract-syntax">tree</span></span>.
-</p>
-
-<p class="commentary">The combination <span class="extract"><span class="extract-syntax">Markdown::render(OUT, Markdown::parse(T))</span></span> thus turns
-Markdown into HTML.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>Markdown was devised by John Gruber in 2004, building on the work of Aaron Swartz
+I am following version 0.30, from 2019, the most recent at time of writing.</p>
+<p>The functions in this section provide a public API for dealing with Markdown.
+We provide two basic functions:</p>
+<p><code>Markdown::parse(text)</code> turns the text <code>T</code> into a &quot;Markdown tree&quot;.</p>
+<p><code>Markdown::render(OUT, tree)</code> outputs HTML expressing the Markdown tree <code>tree</code>.</p>
+<p>The combination <code>Markdown::render(OUT, Markdown::parse(T))</code> thus turns
+Markdown into HTML.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Markdown was devised by John Gruber in 2004, building on the work of Aaron Swartz
 in 2002; CommonMark is the work of John MacFarlane and others, and began around 2012,
 reflecting that Markdown was becoming indispensable to users and needed to be
-codified.
-</p>
-
-<p class="commentary">This was difficult partly because early implementations of Markdown were fairly
+codified.</p>
+<p>This was difficult partly because early implementations of Markdown were fairly
 hit-and-miss, but that can be exaggerated. No human being would ever naturally
 write any of the syntaxes which trip up bad Markdown parsers, which is why
 the CommonMark test suite often looks like the effect of monkeys discovering
@@ -85,74 +83,61 @@ the top row on a typewriter. Gruber declines to specify Markdown precisely, and
 perhaps he's right about that. Markdown is more of a social construct than
 a technological one. The practical effect is that his early Perl script
 is studied as if it were a sometimes baffling scripture. But in many ways
-that doesn't matter.
-</p>
-
-<p class="commentary">The challenge of Markdown is that its genius is also its greatest weakness:
+that doesn't matter.</p>
+<p>The challenge of Markdown is that its genius is also its greatest weakness:
 that no input text is illegal. There is no such thing as erroneous Markdown.
 There is only Markdown that formats what you wrote in a way you perhaps didn't
 expect. And because all inputs are legal, we cannot exclude tremendously unwise
 or on-its-face ambiguous syntax. We have to take a decision on what it means in
-every conceivable case.
-</p>
-
-<p class="commentary">CommonMark is not wholly unambiguous, which is next to impossible, but it's very
+every conceivable case.</p>
+<p>CommonMark is not wholly unambiguous, which is next to impossible, but it's very
 precise and is certainly now best practice. In particular, it's the one used by
 GitHub, though it doesn't include GitHub's extensions. It also provides an
 immensely valuable test suite, as noted above, of 652 test examples. In every
-case <span class="extract"><span class="extract-syntax">Markdown::render(OUT, Markdown::parse(T))</span></span> exactly agrees with CommonMark,
+case <code>Markdown::render(OUT, Markdown::parse(T))</code> exactly agrees with CommonMark,
 producing precisely the same (and not simply equivalent) HTML output. These are
-all organised as test cases of <span class="extract"><span class="extract-syntax">foundation-test</span></span>, so if Intest passes all the
-<span class="extract"><span class="extract-syntax">foundation-test</span></span> cases then this parser is in agreement with CommonMark. Do not
-modify it without checking this.
-</p>
-
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>We will certainly want to know what's going on for debugging purposes, so:
-</p>
-
+all organised as test cases of <code>foundation-test</code>, so if Intest passes all the
+<code>foundation-test</code> cases then this parser is in agreement with CommonMark. Do not
+modify it without checking this.</p>
+</div>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  We will certainly want to know what's going on for debugging purposes, so:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::set_tracing</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax"> = </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>As CommonMark recommends, I take the obvious two-stage strategy:
-</p>
-
-<ul class="items"><li>(1) Dividing the text into lines and building a block structure out of that,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  As CommonMark recommends, I take the obvious two-stage strategy:</p>
+<p>(1) Dividing the text into lines and building a block structure out of that,
 which results in a complete and final tree for all of the container and leaf
-block types.
-</li><li>(2) Refining the copy inside these containers to break down the inline content
-into what's emphasised, and so on.
-</li></ul>
-<p class="commentary">Phase I has to preserve some state between lines in order to keep track of
-context, but that is opaque to us here.
-</p>
-
-<p class="commentary">There are altogether 16 functions here, but they are really all the same
-functions. The choices we offer are:
-</p>
-
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">Markdown::parse</span></span>, the default choice, performs Phase I then Phase II,
-using CommonMark only, and with a fresh empty links dictionary at the start.
-</li><li>(b) <span class="extract"><span class="extract-syntax">Markdown::parse_block_structure</span></span> performs Phase I only.
-</li><li>(c) <span class="extract"><span class="extract-syntax">Markdown::parse_all_blocks_inline</span></span> performs Phase II only, on a tree
-which has presumably been generated by <span class="extract"><span class="extract-syntax">Markdown::parse_block_structure</span></span>
-earlier on, and then perhaps modified by the user.
-</li><li>(d) <span class="extract"><span class="extract-syntax">Markdown::parse_inline</span></span> performs Phase II only, and just on a tiny
+block types.</p>
+<p>(2) Refining the copy inside these containers to break down the inline content
+into what's emphasised, and so on.</p>
+<p>Phase I has to preserve some state between lines in order to keep track of
+context, but that is opaque to us here.</p>
+<p>There are altogether 16 functions here, but they are really all the same
+functions. The choices we offer are:</p>
+<p>(a) <code>Markdown::parse</code>, the default choice, performs Phase I then Phase II,
+using CommonMark only, and with a fresh empty links dictionary at the start.</p>
+<p>(b) <code>Markdown::parse_block_structure</code> performs Phase I only.</p>
+<p>(c) <code>Markdown::parse_all_blocks_inline</code> performs Phase II only, on a tree
+which has presumably been generated by <code>Markdown::parse_block_structure</code>
+earlier on, and then perhaps modified by the user.</p>
+<p>(d) <code>Markdown::parse_inline</code> performs Phase II only, and just on a tiny
 snippet of text with no wider sense of paragraphs or blocks at all. This
 means it picks up notations like emphasis, links and HTML elements, but
 not code blocks, lists and the like. The return value is a subtree headed
-by a <span class="extract"><span class="extract-syntax">MATERIAL_MIT</span></span> item, not a full tree representing a document, as in
-cases (a), (b) and (c).
-</li></ul>
-<p class="commentary">That makes four possibilities, but adding <span class="extract"><span class="extract-syntax">_using</span></span> to the function name
+by a <code>MATERIAL_MIT</code> item, not a full tree representing a document, as in
+cases (a), (b) and (c).</p>
+<p>That makes four possibilities, but adding <code>_using</code> to the function name
 allows the caller to supply a pre-populated link references dictionary.
-Adding <span class="extract"><span class="extract-syntax">_extended</span></span> allows the caller to specify an extended or otherwise
+Adding <code>_extended</code> allows the caller to specify an extended or otherwise
 modified form of Markdown. Either or both options can be chosen here, so
-we end up with 16 functions in all.
-</p>
-
+we end up with 16 functions in all.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::parse</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP5" class="function-link"><span class="function-syntax">Markdown::parse_general</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
@@ -227,10 +212,10 @@ we end up with 16 functions in all.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP5" class="function-link"><span class="function-syntax">Markdown::parse_general</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">dict</span><span class="plain-syntax">, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">variation</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>All of which use this function. The defaults are: make a new tree, make a
-new link references dictionary, use plain CommonMark, perform both phases.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  All of which use this function. The defaults are: make a new tree, make a
+new link references dictionary, use plain CommonMark, perform both phases.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::parse_general</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Markdown::parse_general</span></span>:<br/><a href="5-mrk.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">phase_I</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">phase_II</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">) {</span>
@@ -263,25 +248,22 @@ new link references dictionary, use plain CommonMark, perform both phases.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"======\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tree_supplied</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">; </span><span class="comment-syntax"> i.e., the same tree we were given</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tree_supplied</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">; </span><span class="comment-syntax">/* i.e., the same tree we were given */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">phase_I</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">phase_II</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;    </span><span class="comment-syntax"> i.e., just the </span><span class="extract"><span class="extract-syntax">MATERIAL_MIT</span></span><span class="comment-syntax"> subtree</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">;                    </span><span class="comment-syntax"> i.e., the whole tree we made</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;    </span><span class="comment-syntax">/* i.e., just the |MATERIAL_MIT| subtree */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">;                    </span><span class="comment-syntax">/* i.e., the whole tree we made */</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. </b>The following divides <span class="extract"><span class="extract-syntax">line</span></span> into lines at newline characters. We don't need
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5_1" class="paragraph-anchor"></a><b>&#167;5.1. </b>  The following divides <code>line</code> into lines at newline characters. We don't need
 to worry about Windows line endings, etc., because the copy arriving here will
 all have arrived via other Foundation functions which took care of all that:
-so we can assume that our input is a string of Unicode code points, with <span class="extract"><span class="extract-syntax">'\n'</span></span>
-as the newline.
-</p>
-
-<p class="commentary">Note that any final newline is ignored: thus <span class="extract"><span class="extract-syntax">This\nThat\n</span></span> is two lines, not
-three lines of which the third is empty.
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Phase I</span><span class="named-paragraph-number">5.1</span></span><span class="comment-syntax"> =</span>
-</p>
+so we can assume that our input is a string of Unicode code points, with <code>'\n'</code>
+as the newline.</p>
+<p>Note that any final newline is ignored: thus <code>This\nThat\n</code> is two lines, not
+three lines of which the third is empty.</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Phase I</span><span class="named-paragraph-number">5.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">line</span><span class="plain-syntax">)</span>
@@ -304,21 +286,20 @@ three lines of which the third is empty.
 <span class="plain-syntax">    </span><a href="5-mv.html#SP9" class="function-link"><span class="function-syntax">MarkdownVariations::intervene_after_Phase_I</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">dict</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-mrk.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2. </b>Note that the Phase I parser state is not used in Phase II, which is
-context-free except for its use of the links dictionary:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Phase II</span><span class="named-paragraph-number">5.2</span></span><span class="comment-syntax"> =</span>
-</p>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP5_2" class="paragraph-anchor"></a><b>&#167;5.2. </b>  Note that the Phase I parser state is not used in Phase II, which is
+context-free except for its use of the links dictionary:</p>
+</div>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Phase II</span><span class="named-paragraph-number">5.2</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="5-mpi2.html#SP2" class="function-link"><span class="function-syntax">MDInlineParser::inline_recursion</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="identifier-syntax">dict</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-mv.html#SP9" class="function-link"><span class="function-syntax">MarkdownVariations::intervene_after_Phase_II</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">dict</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-mrk.html#SP5">&#167;5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>Rendering is similarly delegated:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Rendering is similarly delegated:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::render</span><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tree</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="5-mr.html#SP2" class="function-link"><span class="function-syntax">MDRenderer::render_extended</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><a href="5-mv.html#SP1" class="function-link"><span class="function-syntax">MarkdownVariations::CommonMark</span></a><span class="plain-syntax">(), </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
@@ -334,96 +315,91 @@ context-free except for its use of the links dictionary:
 <span class="plain-syntax">    </span><a href="5-mr.html#SP2" class="function-link"><span class="function-syntax">MDRenderer::render_extended</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">tree</span><span class="plain-syntax">, </span><span class="identifier-syntax">variation</span><span class="plain-syntax">, </span><span class="constant-syntax">EXAMPLE_BODIES_MDRMODE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Storing marked-up copy.</b>We will represent the results of parsing Markdown in the obvious way: as a
-tree structure, made of nodes called "items" which are <span class="extract"><span class="extract-syntax">markdown_item</span></span> objects.
-</p>
-
-<p class="commentary">Each node used by CommonMark has one of the following types, but variations
-can add their own further types.
-</p>
-
-<p class="commentary"><span class="extract"><span class="extract-syntax">DOCUMENT_MIT</span></span> is for the head node, and no other. <span class="extract"><span class="extract-syntax">VOLUME_MIT</span></span> and <span class="extract"><span class="extract-syntax">FILE_MIT</span></span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Storing marked-up copy.</b>  We will represent the results of parsing Markdown in the obvious way: as a
+tree structure, made of nodes called &quot;items&quot; which are <code>markdown_item</code> objects.</p>
+<p>Each node used by CommonMark has one of the following types, but variations
+can add their own further types.</p>
+<p><code>DOCUMENT_MIT</code> is for the head node, and no other. <code>VOLUME_MIT</code> and <code>FILE_MIT</code>
 are used as a marker by extensions which break up documents into multiple
-files: they render to nothing in themselves.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">DOCUMENT_MIT</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">VOLUME_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">FILE_MIT</span>
+files: they render to nothing in themselves.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">DOCUMENT_MIT</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VOLUME_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FILE_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>Next we have the (other) "container block" items, which can contain either
-other containers (though not <span class="extract"><span class="extract-syntax">DOCUMENT_MIT) or leaf blocks. An </span></span>ORDERED_LIST_MIT<span class="extract"><span class="extract-syntax">
-</span></span>can only contain <span class="extract"><span class="extract-syntax">ORDERED_LIST_ITEM_MIT</span></span> blocks, and similarly for unordered lists.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">BLOCK_QUOTE_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">UNORDERED_LIST_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ORDERED_LIST_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">UNORDERED_LIST_ITEM_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ORDERED_LIST_ITEM_MIT</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Next we have the (other) &quot;container block&quot; items, which can contain either
+other containers (though not <code>DOCUMENT_MIT) or leaf blocks. An </code>ORDERED_LIST_MIT<code>can only contain</code>ORDERED_LIST_ITEM_MIT| blocks, and similarly for unordered lists.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">BLOCK_QUOTE_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">UNORDERED_LIST_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ORDERED_LIST_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">UNORDERED_LIST_ITEM_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ORDERED_LIST_ITEM_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>Now the "leaf block" items. <span class="extract"><span class="extract-syntax">EMPTY_MIT</span></span> items are ignored: they are used
-to represent that <span class="extract"><span class="extract-syntax">PARAGRAPH_MIT</span></span> turned out to contain only link references
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Now the &quot;leaf block&quot; items. <code>EMPTY_MIT</code> items are ignored: they are used
+to represent that <code>PARAGRAPH_MIT</code> turned out to contain only link references
 and was discarded. (Properly, we should simply remove such items from the tree,
-but it's more convenient not to have to do the necessary surgery.)
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PARAGRAPH_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">THEMATIC_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">HEADING_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CODE_BLOCK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">HTML_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EMPTY_MIT</span>
+but it's more convenient not to have to do the necessary surgery.)</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PARAGRAPH_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">THEMATIC_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HEADING_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CODE_BLOCK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HTML_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMPTY_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>Each leaf block is either empty, or contains a <span class="extract"><span class="extract-syntax">MATERIAL_MIT</span></span> item, which
-holds what CommonMark calls "inline content". For example, the body text of a
-paragraph is inline content.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">MATERIAL_MIT</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Each leaf block is either empty, or contains a <code>MATERIAL_MIT</code> item, which
+holds what CommonMark calls &quot;inline content&quot;. For example, the body text of a
+paragraph is inline content.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">MATERIAL_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>And a material item contains a list of the following.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">PLAIN_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">LINE_BREAK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">SOFT_BREAK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EMPHASIS_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">STRONG_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">CODE_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">URI_AUTOLINK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">EMAIL_AUTOLINK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INLINE_HTML_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">LINK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">IMAGE_MIT</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  And a material item contains a list of the following.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PLAIN_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINE_BREAK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SOFT_BREAK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMPHASIS_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">STRONG_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CODE_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">URI_AUTOLINK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMAIL_AUTOLINK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INLINE_HTML_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">IMAGE_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>And these are used only as child nodes of <span class="extract"><span class="extract-syntax">LINK_MIT</span></span> or <span class="extract"><span class="extract-syntax">IMAGE_MIT</span></span> items:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">LINK_DEST_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">LINK_TITLE_MIT</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And these are used only as child nodes of <code>LINK_MIT</code> or <code>IMAGE_MIT</code> items:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINK_DEST_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINK_TITLE_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>Now for GitHub extensions:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TABLE_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TABLE_COLUMN_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TABLE_ROW_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TICKBOX_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">STRIKETHROUGH_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">XMPP_AUTOLINK_MIT</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Now for GitHub extensions:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLE_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLE_COLUMN_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLE_ROW_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TICKBOX_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">STRIKETHROUGH_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">XMPP_AUTOLINK_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>And Inweb extensions:
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">TEX_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">DISPLAYED_TEX_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INWEB_LINK_MIT</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">FOOTNOTE_BODY_MIT</span>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  And Inweb extensions:</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEX_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">DISPLAYED_TEX_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INWEB_LINK_MIT</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FOOTNOTE_BODY_MIT</span><span class="plain-syntax"> </span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>Recapitulating all of that:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  Recapitulating all of that:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_type_metadata</span><span class="plain-syntax"> </span><span class="identifier-syntax">markdown_type_metadata_registry</span><span class="plain-syntax">[</span><span class="identifier-syntax">NO_DEFINED_MIT_VALUES</span><span class="plain-syntax">+1];</span>
 
@@ -543,18 +519,18 @@ paragraph is inline content.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure markdown_type_metadata is accessed in 2/trs, 4/prp, 4/jsn, 5/mv, 5/im, 7/ld and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>All nodes other than blocks are "inline" items:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. </b>  All nodes other than blocks are &quot;inline&quot; items:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::item_type_inline</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Markdown::item_type_inline</span></span>:<br/><a href="5-mrk.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">t</span><span class="plain-syntax">&lt;1) || (</span><span class="identifier-syntax">t</span><span class="plain-syntax">&gt;</span><span class="identifier-syntax">NO_DEFINED_MIT_VALUES</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">markdown_type_metadata_registry</span><span class="plain-syntax">[</span><span class="identifier-syntax">t</span><span class="plain-syntax">].</span><span class="element-syntax">is_inline</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>A "plainish" item contains plain text and/or line breaks:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  A &quot;plainish&quot; item contains plain text and/or line breaks:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::plainish</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Markdown::plainish</span></span>:<br/><a href="5-mrk.html#SP41">&#167;41</a>, <a href="5-mrk.html#SP42">&#167;42</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP11">&#167;11</a>, <a href="5-mpi2.html#SP12_1_1">&#167;12.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP17" class="function-link"><span class="function-syntax">Markdown::item_type_plainish</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax">);</span>
@@ -566,9 +542,9 @@ paragraph is inline content.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">markdown_type_metadata_registry</span><span class="plain-syntax">[</span><span class="identifier-syntax">t</span><span class="plain-syntax">].</span><span class="element-syntax">is_plainish</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>A "quasi-plainish" item can also include autolinks:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. </b>  A &quot;quasi-plainish&quot; item can also include autolinks:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::quasi_plainish</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Markdown::quasi_plainish</span></span>:<br/><a href="5-mrk.html#SP43">&#167;43</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP18" class="function-link"><span class="function-syntax">Markdown::item_type_quasi_plainish</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax">);</span>
@@ -580,39 +556,39 @@ paragraph is inline content.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">markdown_type_metadata_registry</span><span class="plain-syntax">[</span><span class="identifier-syntax">t</span><span class="plain-syntax">].</span><span class="element-syntax">is_quasiplainish</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Items.</b>Clearly with only a little effort we could make this structure smaller, but
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Items.</b>  Clearly with only a little effort we could make this structure smaller, but
 clarity seems more important. In typical MD text, there are only about two
-or three items per line, so the memory overhead is harmless enough.
-</p>
-
+or three items per line, so the memory overhead is harmless enough.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">; </span><span class="comment-syntax"> one of the </span><span class="extract"><span class="extract-syntax">*_MIT</span></span><span class="comment-syntax"> types above</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_MIT| types above */</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> text storage for inline items</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* text storage for inline items */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sliced_from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">; </span><span class="comment-syntax">inline nodes only</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">; </span><span class="comment-syntax">inline nodes only</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">; </span><span class="comment-syntax">/*inline nodes only */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">; </span><span class="comment-syntax">/*inline nodes only */</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> text storage for block items</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* text storage for block items */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stashed</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> relevant for block nodes only</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* relevant for block nodes only */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">whitespace_follows</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">info_string</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">details</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">invisible</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax"> tree position of this item</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/* tree position of this item */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">down</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">copied_from</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">user_state</span><span class="plain-syntax">; </span><span class="comment-syntax"> for users of this API to annotate the tree</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">user_state</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for users of this API to annotate the tree */</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cycle_count</span><span class="plain-syntax">; </span><span class="comment-syntax"> used only for tracing the tree when debugging</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;          </span><span class="comment-syntax"> used only for tracing the tree when debugging</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cycle_count</span><span class="plain-syntax">; </span><span class="comment-syntax">/* used only for tracing the tree when debugging */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;          </span><span class="comment-syntax">/* used only for tracing the tree when debugging */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax">;</span>
 
@@ -641,10 +617,10 @@ or three items per line, so the memory overhead is harmless enough.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure markdown_item is accessed in 2/mmr, 2/trs, 4/taa, 4/fsm, 5/mpi, 5/mpi2, 5/mr, 5/mv, 5/im and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>A deep copy of the tree hanging from node <span class="extract"><span class="extract-syntax">md</span></span>. Because this is only ever
-done for subtrees at the inline level, we can ignore many of the fields.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. </b>  A deep copy of the tree hanging from node <code>md</code>. Because this is only ever
+done for subtrees at the inline level, we can ignore many of the fields.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::deep_copy</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Markdown::deep_copy</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP12_1_3">&#167;12.1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"cannot copy null node"</span><span class="plain-syntax">);</span>
@@ -664,9 +640,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">copied</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>Enough of creation. The following makes <span class="extract"><span class="extract-syntax">md</span></span> the latest child of <span class="extract"><span class="extract-syntax">owner</span></span>:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. </b>  Enough of creation. The following makes <code>md</code> the latest child of <code>owner</code>:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::add_to</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Markdown::add_to</span></span>:<br/><a href="5-mrk.html#SP20">&#167;20</a><br/>Markdown Phase I - <a href="5-mpi.html#SP23">&#167;23</a>, <a href="5-mpi.html#SP25_3_3_1_3">&#167;25.3.3.1.3</a>, <a href="5-mpi.html#SP29">&#167;29</a>, <a href="5-mpi.html#SP29_1">&#167;29.1</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP2">&#167;2</a>, <a href="5-mpi2.html#SP3">&#167;3</a>, <a href="5-mpi2.html#SP3_1">&#167;3.1</a>, <a href="5-mpi2.html#SP3_1_1">&#167;3.1.1</a>, <a href="5-mpi2.html#SP3_2">&#167;3.2</a>, <a href="5-mpi2.html#SP3_2_1">&#167;3.2.1</a>, <a href="5-mpi2.html#SP3_3_1">&#167;3.3.1</a>, <a href="5-mpi2.html#SP3_3_2">&#167;3.3.2</a>, <a href="5-mpi2.html#SP3_3_3_6">&#167;3.3.3.6</a>, <a href="5-mpi2.html#SP3_4_1_1">&#167;3.4.1.1</a>, <a href="5-mpi2.html#SP3_5">&#167;3.5</a>, <a href="5-mpi2.html#SP9_1">&#167;9.1</a><br/>Inform-Flavoured Markdown - <a href="5-im.html#SP14">&#167;14</a>, <a href="5-im.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -675,9 +651,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">md</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>The <span class="extract"><span class="extract-syntax">HEADING_MIT</span></span> item, and no other, has a "level" from 1 to 6.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. </b>  The <code>HEADING_MIT</code> item, and no other, has a &quot;level&quot; from 1 to 6.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_heading_level</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_heading_level</span></span>:<br/>Markdown Rendering - <a href="5-mr.html#SP2_5">&#167;2.5</a><br/>Markdown Variations - <a href="5-mv.html#SP11">&#167;11</a><br/>Inform-Flavoured Markdown - <a href="5-im.html#SP5">&#167;5</a>, <a href="5-im.html#SP6">&#167;6</a>, <a href="5-im.html#SP7">&#167;7</a>, <a href="5-im.html#SP9">&#167;9</a>, <a href="5-im.html#SP14">&#167;14</a>, <a href="5-im.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">HEADING_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -690,9 +666,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>The <span class="extract"><span class="extract-syntax">TABLE_MIT</span></span> item, and no other, has a "column count" which is at least 1.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. </b>  The <code>TABLE_MIT</code> item, and no other, has a &quot;column count&quot; which is at least 1.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_column_count</span><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">TABLE_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -705,9 +681,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>The <span class="extract"><span class="extract-syntax">TABLE_COLUMN_MIT</span></span> item, and no other, has an "alignment" which is 0 to 3.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. </b>  The <code>TABLE_COLUMN_MIT</code> item, and no other, has an &quot;alignment&quot; which is 0 to 3.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_alignment</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_alignment</span></span>:<br/>Markdown Rendering - <a href="5-mr.html#SP2_8">&#167;2.8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">TABLE_COLUMN_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -720,9 +696,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. </b>The <span class="extract"><span class="extract-syntax">INLINE_HTML_MIT</span></span> item, and no other, can be "filtered" or not:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. </b>  The <code>INLINE_HTML_MIT</code> item, and no other, can be &quot;filtered&quot; or not:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_filtered_state</span><button class="popup" onclick="togglePopup('usagePopup20')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup20">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_filtered_state</span></span>:<br/><a href="5-mrk.html#SP53">&#167;53</a><br/>Markdown Rendering - <a href="5-mr.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">INLINE_HTML_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -748,9 +724,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b>The autolink items can be marked to prefix with their respective protocols:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. </b>  The autolink items can be marked to prefix with their respective protocols:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_add_protocol_state</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_add_protocol_state</span></span>:<br/>Markdown Rendering - <a href="5-mr.html#SP2_9">&#167;2.9</a>, <a href="5-mr.html#SP2_10">&#167;2.10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) ||</span>
@@ -767,9 +743,9 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>The <span class="extract"><span class="extract-syntax">TICKBOX_MIT</span></span> item, and no other, has a "state" which is <span class="extract"><span class="extract-syntax">TRUE</span></span> or <span class="extract"><span class="extract-syntax">FALSE</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. </b>  The <code>TICKBOX_MIT</code> item, and no other, has a &quot;state&quot; which is <code>TRUE</code> or <code>FALSE</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_tick_state</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_tick_state</span></span>:<br/><a href="5-mrk.html#SP53">&#167;53</a><br/>Markdown Rendering - <a href="5-mr.html#SP2_4">&#167;2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">TICKBOX_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -782,10 +758,10 @@ done for subtrees at the inline level, we can ignore many of the fields.
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>The <span class="extract"><span class="extract-syntax">CODE_MIT</span></span> item, and no other, has a "backtick count" which is 1 or more,
-and means the number of backticks used to embrace it.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. </b>  The <code>CODE_MIT</code> item, and no other, has a &quot;backtick count&quot; which is 1 or more,
+and means the number of backticks used to embrace it.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_backtick_count</span><button class="popup" onclick="togglePopup('usagePopup27')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup27">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_backtick_count</span></span>:<br/>Inform-Flavoured Markdown - <a href="5-im.html#SP18_1">&#167;18.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">CODE_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -798,9 +774,9 @@ and means the number of backticks used to embrace it.
 <span class="plain-syntax">    </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">details</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>List items have a "flavour".
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29. </b>  List items have a &quot;flavour&quot;.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_item_number</span><button class="popup" onclick="togglePopup('usagePopup29')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup29">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_item_number</span></span>:<br/>Markdown Rendering - <a href="5-mr.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> != </span><span class="constant-syntax">ORDERED_LIST_ITEM_MIT</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -834,15 +810,13 @@ and means the number of backticks used to embrace it.
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>Markdown uses backslash as an escape character, with double-backslash meaning
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30. </b>  Markdown uses backslash as an escape character, with double-backslash meaning
 a literal backslash. It follows that if a character is preceded by an odd number
-of backslashes, it must be escaped; if an even (including zero) it is unescaped.
-</p>
-
-<p class="commentary">This function returns a harmless letter for an escaped active character, so
-that it can be used to test for unescaped active characters.
-</p>
-
+of backslashes, it must be escaped; if an even (including zero) it is unescaped.</p>
+<p>This function returns a harmless letter for an escaped active character, so
+that it can be used to test for unescaped active characters.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_unescaped</span><button class="popup" onclick="togglePopup('usagePopup32')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup32">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_unescaped</span></span>:<br/><a href="5-mrk.html#SP31">&#167;31</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP13">&#167;13</a>, <a href="5-mpi2.html#SP14">&#167;14</a>, <a href="5-mpi2.html#SP15">&#167;15</a>, <a href="5-mpi2.html#SP12_1_1">&#167;12.1.1</a>, <a href="5-mpi2.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">offset</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><a href="5-mrk.html#SP45" class="function-link"><span class="function-syntax">Markdown::get_offset</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">offset</span><span class="plain-syntax">);</span>
@@ -853,10 +827,10 @@ that it can be used to test for unescaped active characters.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b>An "unescaped run" is a sequence of one or more instances of <span class="extract"><span class="extract-syntax">of</span></span>, which
-must be non-zero, which are not escaped with a backslash.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31. </b>  An &quot;unescaped run&quot; is a sequence of one or more instances of <code>of</code>, which
+must be non-zero, which are not escaped with a backslash.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::unescaped_run</span><button class="popup" onclick="togglePopup('usagePopup33')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup33">Usage of <span class="code-font"><span class="function-syntax">Markdown::unescaped_run</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -865,7 +839,7 @@ must be non-zero, which are not escaped with a backslash.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. File markers.</b></p>
+<p class="commentary firstcommentary"><a id="SP32" class="paragraph-anchor"></a><b>&#167;32. File markers.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::new_volume_marker</span><button class="popup" onclick="togglePopup('usagePopup34')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup34">Usage of <span class="code-font"><span class="function-syntax">Markdown::new_volume_marker</span></span>:<br/>Markdown Variations - <a href="5-mv.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">) {</span>
@@ -885,12 +859,12 @@ must be non-zero, which are not escaped with a backslash.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RETRIEVE_POINTER_filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">user_state</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. Working with slices.</b>A "slice" contains a snipped of text, where by convention the portion is
-from character positions <span class="extract"><span class="extract-syntax">from</span></span> to <span class="extract"><span class="extract-syntax">to</span></span> inclusive. If <span class="extract"><span class="extract-syntax">to</span></span> is less than <span class="extract"><span class="extract-syntax">from</span></span>,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP33" class="paragraph-anchor"></a><b>&#167;33. Working with slices.</b>  A &quot;slice&quot; contains a snipped of text, where by convention the portion is
+from character positions <code>from</code> to <code>to</code> inclusive. If <code>to</code> is less than <code>from</code>,
 it represents the empty snippet. Slices are used only by inline items, and
-are a way of saving memory rather than endless duplicating fragments of text.
-</p>
-
+are a way of saving memory rather than endless duplicating fragments of text.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::new_slice</span><button class="popup" onclick="togglePopup('usagePopup37')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup37">Usage of <span class="code-font"><span class="function-syntax">Markdown::new_slice</span></span>:<br/><a href="5-mrk.html#SP46">&#167;46</a>, <a href="5-mrk.html#SP47">&#167;47</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP3">&#167;3</a>, <a href="5-mpi2.html#SP3_1">&#167;3.1</a>, <a href="5-mpi2.html#SP3_1_1">&#167;3.1.1</a>, <a href="5-mpi2.html#SP3_2">&#167;3.2</a>, <a href="5-mpi2.html#SP3_2_1">&#167;3.2.1</a>, <a href="5-mpi2.html#SP3_3_1">&#167;3.3.1</a>, <a href="5-mpi2.html#SP3_3_2">&#167;3.3.2</a>, <a href="5-mpi2.html#SP3_3_3_6">&#167;3.3.3.6</a>, <a href="5-mpi2.html#SP3_4_1_1">&#167;3.4.1.1</a>, <a href="5-mpi2.html#SP3_5">&#167;3.5</a>, <a href="5-mpi2.html#SP9_1">&#167;9.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax"> = </span><a href="5-mrk.html#SP19" class="function-link"><span class="function-syntax">Markdown::new_item</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">type</span><span class="plain-syntax">);</span>
@@ -900,12 +874,12 @@ are a way of saving memory rather than endless duplicating fragments of text.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">md</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>This is a convenient adaptation of <span class="extract"><span class="extract-syntax">Str::get_at</span></span> which reads from the slice
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP34" class="paragraph-anchor"></a><b>&#167;34. </b>  This is a convenient adaptation of <code>Str::get_at</code> which reads from the slice
 inside a markdown node. Note that it is able to see characters outside the
 range being sliced: this is intentional and is needed for some of the
-delimiter-scanning.
-</p>
-
+delimiter-scanning.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get_at</span><button class="popup" onclick="togglePopup('usagePopup38')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup38">Usage of <span class="code-font"><span class="function-syntax">Markdown::get_at</span></span>:<br/><a href="5-mrk.html#SP35">&#167;35</a>, <a href="5-mrk.html#SP45">&#167;45</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP3_3_1">&#167;3.3.1</a><br/>Markdown Rendering - <a href="5-mr.html#SP3">&#167;3</a><br/>Inform-Flavoured Markdown - <a href="5-im.html#SP18_1">&#167;18.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -913,11 +887,11 @@ delimiter-scanning.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sliced_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">at</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>This function recursively calculates the number of characters of actual text
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP35" class="paragraph-anchor"></a><b>&#167;35. </b>  This function recursively calculates the number of characters of actual text
 represented by a subtree. (Well, strictly speaking, code points. It would
-read <span class="extract"><span class="extract-syntax">&amp;HilbertSpace;</span></span> as width 14, not 1.)
-</p>
-
+read <code>&amp;HilbertSpace;</code> as width 14, not 1.)</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::width</span><button class="popup" onclick="togglePopup('usagePopup39')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup39">Usage of <span class="code-font"><span class="function-syntax">Markdown::width</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
@@ -944,12 +918,12 @@ read <span class="extract"><span class="extract-syntax">&amp;HilbertSpace;</span
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>It turns out to be convenient to represent a run of material being worked
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP36" class="paragraph-anchor"></a><b>&#167;36. </b>  It turns out to be convenient to represent a run of material being worked
 on as a linked list of items, and then we want to represent sub-intervals of
-that list, which means we need a way to indicate "character position X in item Y".
-This is provided by:
-</p>
-
+that list, which means we need a way to indicate &quot;character position X in item Y&quot;.
+This is provided by:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">;</span>
@@ -957,9 +931,9 @@ This is provided by:
 <span class="plain-syntax">} </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure md_charpos is accessed in 4/jsn, 5/mpi, 5/mpi2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>The equivalent of a null pointer, or an unset marker:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP37" class="paragraph-anchor"></a><b>&#167;37. </b>  The equivalent of a null pointer, or an unset marker:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::nowhere</span><button class="popup" onclick="togglePopup('usagePopup40')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup40">Usage of <span class="code-font"><span class="function-syntax">Markdown::nowhere</span></span>:<br/><a href="5-mrk.html#SP40">&#167;40</a>, <a href="5-mrk.html#SP41">&#167;41</a>, <a href="5-mrk.html#SP42">&#167;42</a>, <a href="5-mrk.html#SP43">&#167;43</a>, <a href="5-mrk.html#SP44">&#167;44</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP9">&#167;9</a>, <a href="5-mpi2.html#SP11">&#167;11</a>, <a href="5-mpi2.html#SP11_1">&#167;11.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">;</span>
@@ -981,9 +955,9 @@ This is provided by:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>This is a rather strict form of equality:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP38" class="paragraph-anchor"></a><b>&#167;38. </b>  This is a rather strict form of equality:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::pos_eq</span><button class="popup" onclick="togglePopup('usagePopup43')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup43">Usage of <span class="code-font"><span class="function-syntax">Markdown::pos_eq</span></span>:<br/><a href="5-mrk.html#SP53">&#167;53</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP11_2">&#167;11.2</a>, <a href="5-mpi2.html#SP11_2_2">&#167;11.2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">A</span><span class="plain-syntax">.</span><span class="element-syntax">md</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">A</span><span class="plain-syntax">.</span><span class="element-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">B</span><span class="plain-syntax">.</span><span class="element-syntax">md</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">A</span><span class="plain-syntax">.</span><span class="element-syntax">at</span><span class="plain-syntax"> == </span><span class="identifier-syntax">B</span><span class="plain-syntax">.</span><span class="element-syntax">at</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
@@ -991,11 +965,11 @@ This is provided by:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>Whereas this is more lax, and reflects the fact that, when surgery
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP39" class="paragraph-anchor"></a><b>&#167;39. </b>  Whereas this is more lax, and reflects the fact that, when surgery
 is going on to split items into new items, there can be multiple items which
-represent the same piece of text:
-</p>
-
+represent the same piece of text:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::is_in</span><button class="popup" onclick="togglePopup('usagePopup44')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup44">Usage of <span class="code-font"><span class="function-syntax">Markdown::is_in</span></span>:<br/><a href="5-mrk.html#SP46">&#167;46</a>, <a href="5-mrk.html#SP47">&#167;47</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::somewhere</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">md</span><span class="plain-syntax">)) {</span>
@@ -1005,21 +979,21 @@ represent the same piece of text:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. </b>"The Left Edge of Nowhere" would make a good pulp 70s sci-fi paperback, but
-failing that:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP40" class="paragraph-anchor"></a><b>&#167;40. </b>  &quot;The Left Edge of Nowhere&quot; would make a good pulp 70s sci-fi paperback, but
+failing that:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::left_edge_of</span><button class="popup" onclick="togglePopup('usagePopup45')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup45">Usage of <span class="code-font"><span class="function-syntax">Markdown::left_edge_of</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP9">&#167;9</a>, <a href="5-mpi2.html#SP9_1">&#167;9.1</a>, <a href="5-mpi2.html#SP12_1_1">&#167;12.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::nowhere</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::pos</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">md</span><span class="plain-syntax">, </span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">from</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. </b>To "advance" is to move one character position forward in the linked list
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP41" class="paragraph-anchor"></a><b>&#167;41. </b>  To &quot;advance&quot; is to move one character position forward in the linked list
 of items. Note that the position must remain in a plainish item at all times,
-and this may mean that whole non-plainish items are skipped.
-</p>
-
+and this may mean that whole non-plainish items are skipped.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::advance</span><button class="popup" onclick="togglePopup('usagePopup46')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup46">Usage of <span class="code-font"><span class="function-syntax">Markdown::advance</span></span>:<br/><a href="5-mrk.html#SP44">&#167;44</a>, <a href="5-mrk.html#SP53">&#167;53</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP11_2">&#167;11.2</a>, <a href="5-mpi2.html#SP11_2_2">&#167;11.2.2</a>, <a href="5-mpi2.html#SP12_1_1">&#167;12.1.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::somewhere</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) {</span>
@@ -1031,9 +1005,9 @@ and this may mean that whole non-plainish items are skipped.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::nowhere</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. </b>A more restrictive version halts at the first non-plainish item:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP42" class="paragraph-anchor"></a><b>&#167;42. </b>  A more restrictive version halts at the first non-plainish item:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::advance_plainish_only</span><button class="popup" onclick="togglePopup('usagePopup47')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup47">Usage of <span class="code-font"><span class="function-syntax">Markdown::advance_plainish_only</span></span>:<br/><a href="5-mrk.html#SP44">&#167;44</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::somewhere</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) {</span>
@@ -1044,9 +1018,9 @@ and this may mean that whole non-plainish items are skipped.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::nowhere</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. </b>A fractionally different version again:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP43" class="paragraph-anchor"></a><b>&#167;43. </b>  A fractionally different version again:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::advance_quasi_plainish_only</span><button class="popup" onclick="togglePopup('usagePopup48')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup48">Usage of <span class="code-font"><span class="function-syntax">Markdown::advance_quasi_plainish_only</span></span>:<br/><a href="5-mrk.html#SP44">&#167;44</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::somewhere</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) {</span>
@@ -1057,9 +1031,9 @@ and this may mean that whole non-plainish items are skipped.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::nowhere</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. </b>And these halt at a specific point:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP44" class="paragraph-anchor"></a><b>&#167;44. </b>  And these halt at a specific point:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::advance_up_to</span><button class="popup" onclick="togglePopup('usagePopup49')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup49">Usage of <span class="code-font"><span class="function-syntax">Markdown::advance_up_to</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP11">&#167;11</a>, <a href="5-mpi2.html#SP11_2">&#167;11.2</a>, <a href="5-mpi2.html#SP11_2_1">&#167;11.2.1</a>, <a href="5-mpi2.html#SP11_2_5">&#167;11.2.5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::somewhere</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">end</span><span class="plain-syntax">)) &amp;&amp;</span>
@@ -1082,9 +1056,9 @@ and this may mean that whole non-plainish items are skipped.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP43" class="function-link"><span class="function-syntax">Markdown::advance_quasi_plainish_only</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. </b>The character at a given position:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP45" class="paragraph-anchor"></a><b>&#167;45. </b>  The character at a given position:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::get</span><button class="popup" onclick="togglePopup('usagePopup52')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup52">Usage of <span class="code-font"><span class="function-syntax">Markdown::get</span></span>:<br/><a href="5-mrk.html#SP53">&#167;53</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP9">&#167;9</a>, <a href="5-mpi2.html#SP11">&#167;11</a>, <a href="5-mpi2.html#SP11_2">&#167;11.2</a>, <a href="5-mpi2.html#SP11_2_1">&#167;11.2.1</a>, <a href="5-mpi2.html#SP11_2_2">&#167;11.2.2</a>, <a href="5-mpi2.html#SP11_2_4">&#167;11.2.4</a>, <a href="5-mpi2.html#SP11_2_5">&#167;11.2.5</a>, <a href="5-mpi2.html#SP11_2_6">&#167;11.2.6</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">pos</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-mrk.html#SP45" class="function-link"><span class="function-syntax">Markdown::get_offset</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
@@ -1103,16 +1077,14 @@ and this may mean that whole non-plainish items are skipped.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="5-mrk.html#SP37" class="function-link"><span class="function-syntax">Markdown::somewhere</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">)) </span><a href="4-sm.html#SP14" class="function-link"><span class="function-syntax">Str::put_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">pos</span><span class="plain-syntax">.</span><span class="element-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sliced_from</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax">.</span><span class="element-syntax">at</span><span class="plain-syntax"> + </span><span class="identifier-syntax">by</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. </b>Now for some surgery. We want to take a linked list (the "chain") and cut
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP46" class="paragraph-anchor"></a><b>&#167;46. </b>  Now for some surgery. We want to take a linked list (the &quot;chain&quot;) and cut
 it into a left and right hand side, which partition its character positions
 exactly. If the cut point does not represent a position in the list, then
-the righthand piece will be empty.
-</p>
-
-<p class="commentary">We will need two versions of this: in the first, the "cut point" character
-becomes the leftmost character of the righthand piece.
-</p>
-
+the righthand piece will be empty.</p>
+<p>We will need two versions of this: in the first, the &quot;cut point&quot; character
+becomes the leftmost character of the righthand piece.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::cut_to_just_before</span><button class="popup" onclick="togglePopup('usagePopup55')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup55">Usage of <span class="code-font"><span class="function-syntax">Markdown::cut_to_just_before</span></span>:<br/><a href="5-mrk.html#SP48">&#167;48</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP12_1_3_4">&#167;12.1.3.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chain_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">cut_point</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">left_segment</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax">) {</span>
@@ -1140,10 +1112,10 @@ becomes the leftmost character of the righthand piece.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax">) *</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax"> = </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. </b>In this version, the "cut point" becomes the rightmost character of the
-lefthand piece.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP47" class="paragraph-anchor"></a><b>&#167;47. </b>  In this version, the &quot;cut point&quot; becomes the rightmost character of the
+lefthand piece.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::cut_to_just_at</span><button class="popup" onclick="togglePopup('usagePopup56')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup56">Usage of <span class="code-font"><span class="function-syntax">Markdown::cut_to_just_at</span></span>:<br/><a href="5-mrk.html#SP48">&#167;48</a><br/>Markdown Phase II - <a href="5-mpi2.html#SP12_1_3_4">&#167;12.1.3.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chain_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">cut_point</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">left_segment</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax">) {</span>
@@ -1171,10 +1143,10 @@ lefthand piece.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax">) *</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax"> = </span><span class="identifier-syntax">R</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>Combining these, we can cut a chain into three, with the middle part being
-the range <span class="extract"><span class="extract-syntax">A</span></span> to <span class="extract"><span class="extract-syntax">B</span></span> inclusive.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP48" class="paragraph-anchor"></a><b>&#167;48. </b>  Combining these, we can cut a chain into three, with the middle part being
+the range <code>A</code> to <code>B</code> inclusive.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::cut_interval</span><button class="popup" onclick="togglePopup('usagePopup57')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup57">Usage of <span class="code-font"><span class="function-syntax">Markdown::cut_interval</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP9_1">&#167;9.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chain_from</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="reserved-syntax">md_charpos</span><span class="plain-syntax"> </span><span class="identifier-syntax">B</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">left_segment</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">middle_segment</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> **</span><span class="identifier-syntax">right_segment</span><span class="plain-syntax">) {</span>
@@ -1184,11 +1156,11 @@ the range <span class="extract"><span class="extract-syntax">A</span></span> to 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">middle_segment</span><span class="plain-syntax">) *</span><span class="identifier-syntax">middle_segment</span><span class="plain-syntax"> = </span><span class="identifier-syntax">interstitial</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Links dictionary.</b>Every Markdown document has its own dictionary of link labels, built during
-Phase I and used during Phase II. For example, the label <span class="extract"><span class="extract-syntax">home</span></span> might have
-destination <span class="extract"><span class="extract-syntax">https://supervillain.com/secret-lair</span></span> and title <span class="extract"><span class="extract-syntax">"Evil Plans"</span></span>.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP49" class="paragraph-anchor"></a><b>&#167;49. Links dictionary.</b>  Every Markdown document has its own dictionary of link labels, built during
+Phase I and used during Phase II. For example, the label <code>home</code> might have
+destination <code>https://supervillain.com/secret-lair</code> and title <code>&quot;Evil Plans&quot;</code>.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax">;</span>
@@ -1203,18 +1175,18 @@ destination <span class="extract"><span class="extract-syntax">https://supervill
 
 <span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::new_links_dictionary</span><button class="popup" onclick="togglePopup('usagePopup58')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup58">Usage of <span class="code-font"><span class="function-syntax">Markdown::new_links_dictionary</span></span>:<br/><a href="5-mrk.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dict</span><span class="plain-syntax"> = </span><a href="2-dct.html#SP2" class="function-link"><span class="function-syntax">Dictionaries::new</span></a><span class="plain-syntax">(32, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="comment-syntax"> of </span><span class="extract"><span class="extract-syntax">md_link_dictionary_entry</span></span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">dict</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dict</span><span class="plain-syntax"> = </span><a href="2-dct.html#SP2" class="function-link"><span class="function-syntax">Dictionaries::new</span></a><span class="plain-syntax">(32, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="comment-syntax">/* of |md_link_dictionary_entry| */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">dict</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure md_links_dictionary is accessed in 4/jsn and here.</li><li>The structure md_link_dictionary_entry is accessed in 5/mpi2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. </b>Here we create entries. A second definition of the same label is not an
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP50" class="paragraph-anchor"></a><b>&#167;50. </b>  Here we create entries. A second definition of the same label is not an
 error, because nothing is ever an error. The first definition remains, and
-subsequent ones are ignored. (See CommonMark at 6.3: "If there are multiple
+subsequent ones are ignored. (See CommonMark at 6.3: &quot;If there are multiple
 matching reference link definitions, the one that comes first in the document
-is used." Phase I parsing calls the following in sequential order.)
-</p>
-
+is used.&quot; Phase I parsing calls the following in sequential order.)</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::create</span><button class="popup" onclick="togglePopup('usagePopup59')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup59">Usage of <span class="code-font"><span class="function-syntax">Markdown::create</span></span>:<br/>Markdown Phase I - <a href="5-mpi.html#SP28_1">&#167;28.1</a><br/>Markdown Variations - <a href="5-mv.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">destination</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">title</span><span class="plain-syntax">) {</span>
@@ -1235,14 +1207,14 @@ is used." Phase I parsing calls the following in sequential order.)
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. </b>And here we query the dictionary, returning either the entry or <span class="extract"><span class="extract-syntax">NULL</span></span>
-if it isn't there.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP51" class="paragraph-anchor"></a><b>&#167;51. </b>  And here we query the dictionary, returning either the entry or <code>NULL</code>
+if it isn't there.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">md_link_dictionary_entry</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::look_up</span><button class="popup" onclick="togglePopup('usagePopup60')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup60">Usage of <span class="code-font"><span class="function-syntax">Markdown::look_up</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP11_2">&#167;11.2</a>, <a href="5-mpi2.html#SP11_2_2">&#167;11.2.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">dict</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP23" class="function-link"><span class="function-syntax">Str::is_whitespace</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">label</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::is_whitespace</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">label</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">label</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">999</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Looking up reference '%S' -&gt; "</span><span class="plain-syntax">, </span><span class="identifier-syntax">label</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-mrk.html#SP52" class="function-link"><span class="function-syntax">Markdown::normalise_link_label</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">label</span><span class="plain-syntax">);</span>
@@ -1252,16 +1224,14 @@ if it isn't there.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. </b>Labels are not matched literally: that would be too easy. CommonMark:
-</p>
-
-<p class="commentary">"One label matches another just in case their normalized forms are equal. To
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP52" class="paragraph-anchor"></a><b>&#167;52. </b>  Labels are not matched literally: that would be too easy. CommonMark:</p>
+<p>&quot;One label matches another just in case their normalized forms are equal. To
 normalize a label, strip off the opening and closing brackets, perform the
 Unicode case fold, strip leading and trailing spaces, tabs, and line endings,
 and collapse consecutive internal spaces, tabs, and line endings to a single
-space."
-</p>
-
+space.&quot;</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::normalise_link_label</span><button class="popup" onclick="togglePopup('usagePopup61')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup61">Usage of <span class="code-font"><span class="function-syntax">Markdown::normalise_link_label</span></span>:<br/><a href="5-mrk.html#SP50">&#167;50</a>, <a href="5-mrk.html#SP51">&#167;51</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">label</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">normal</span><span class="plain-syntax">)</span>
@@ -1281,10 +1251,10 @@ space."
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">normal</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. Debugging.</b>This prints the internal tree representation of Markdown: none of this code
-is needed either for parsing or rendering.
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP53" class="paragraph-anchor"></a><b>&#167;53. Debugging.</b>  This prints the internal tree representation of Markdown: none of this code
+is needed either for parsing or rendering.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::debug_char</span><button class="popup" onclick="togglePopup('usagePopup62')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup62">Usage of <span class="code-font"><span class="function-syntax">Markdown::debug_char</span></span>:<br/>Markdown Phase II - <a href="5-mpi2.html#SP12_1_1">&#167;12.1.1</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax">) {</span>
@@ -1371,11 +1341,11 @@ is needed either for parsing or rendering.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">whitespace_follows</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"+ws"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54. Trees and chains.</b>This rather defensively-written code is to print a tree or chain which may be
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP54" class="paragraph-anchor"></a><b>&#167;54. Trees and chains.</b>  This rather defensively-written code is to print a tree or chain which may be
 ill-founded or otherwise damaged. That should never happen, but if things which
-should never happen never happened, we wouldn't need to debug.
-</p>
-
+should never happen never happened, we wouldn't need to debug.</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">md_db_cycle_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 
@@ -1402,9 +1372,9 @@ should never happen never happened, we wouldn't need to debug.
 <span class="plain-syntax">    </span><span class="constant-syntax">OUTDENT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55. </b>Both of which recursively use:
-</p>
-
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP55" class="paragraph-anchor"></a><b>&#167;55. </b>  Both of which recursively use:</p>
+</div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Markdown::debug_item_r</span><button class="popup" onclick="togglePopup('usagePopup69')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup69">Usage of <span class="code-font"><span class="function-syntax">Markdown::debug_item_r</span></span>:<br/><a href="5-mrk.html#SP54">&#167;54</a></span></button><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">md</span><span class="plain-syntax">) {</span>

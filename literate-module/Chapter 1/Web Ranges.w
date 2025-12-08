@@ -13,9 +13,7 @@ text_stream *WebRanges::of(ls_section *S) {
 	if (Str::len(S->sect_range) == 0) {
 		ls_web *W = S->owning_chapter->owning_web;
 		if (W == NULL) internal_error("unowned section");
-		int sequential = FALSE; /* are we numbering sections sequentially? */
-		if (Str::eq(Bibliographic::get_datum(W, I"Sequential Section Ranges"), I"On"))
-			sequential = TRUE;
+		int sequential = Conventions::get_int(W, SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION);
 		int section_counter = -1;
 		int chapter_count = 0;
 		ls_chapter *C;

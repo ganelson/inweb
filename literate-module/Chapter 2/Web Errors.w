@@ -8,6 +8,7 @@ need to store them up, with this:
 
 =
 typedef struct ls_error {
+	int issued_already;
 	int warning;
 	struct ls_line *line;
 	struct text_file_position tfp;
@@ -35,6 +36,7 @@ void WebErrors::record_warning_at(text_stream *message, ls_line *lst) {
 
 ls_error *WebErrors::record_in_unit(text_stream *message, ls_line *lst, ls_unit *lsu) {
 	ls_error *error = CREATE(ls_error);
+	error->issued_already = FALSE;
 	error->warning = FALSE;
 	error->message = Str::duplicate(message);
 	error->tfp = lst->origin;
@@ -78,6 +80,8 @@ void WebErrors::issue_at(text_stream *message, ls_line *lst) {
 }
 
 void WebErrors::issue_recorded(ls_error *error) {
+	if (error->issued_already) return;
+	error->issued_already = TRUE;
 	if (error->warning) {
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "warning: %S", error->message);

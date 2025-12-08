@@ -20,6 +20,11 @@ function togglePopup(material_id) {
 </script>
 
 <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -32,6 +37,8 @@ function togglePopup(material_id) {
 <li><a href="index.html"><span class="selectedlink">foundation-test</span></a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -51,7 +58,7 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="S-ut.html#SP1">&#167;1. Strings</a></li><li><a href="S-ut.html#SP2">&#167;2. Literals</a></li><li><a href="S-ut.html#SP3">&#167;3. Dictionaries</a></li><li><a href="S-ut.html#SP4">&#167;4. Regexp</a></li><li><a href="S-ut.html#SP5">&#167;5. Replacements</a></li><li><a href="S-ut.html#SP6">&#167;6. Linked lists</a></li><li><a href="S-ut.html#SP7">&#167;7. Stacks</a></li><li><a href="S-ut.html#SP8">&#167;8. Semantic versions</a></li><li><a href="S-ut.html#SP9">&#167;9. Trees</a></li><li><a href="S-ut.html#SP13">&#167;13. JSON</a></li><li><a href="S-ut.html#SP14">&#167;14. Markdown</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Strings.</b></p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Strings.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_strings</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Unit::test_strings</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -65,7 +72,7 @@ function togglePopup(material_id) {
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BB</span><span class="plain-syntax"> = </span><a href="../foundation-module/4-sm.html#SP4" class="function-link"><span class="function-syntax">Str::new_from_wide_string</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">U</span><span class="string-syntax">"   banana bread  is fun   "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Setup statically: &lt;%S&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">BB</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP24" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">BB</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::trim_white_space</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">BB</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Trimmed: &lt;%S&gt;\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">BB</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="../foundation-module/4-sm.html#SP17" class="function-link"><span class="function-syntax">Str::copy</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">BB</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
@@ -85,7 +92,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"%S ci-ne %S? %d\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::ne_insensitive</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Literals.</b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Literals.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_literals</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Unit::test_literals</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -101,7 +108,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"and A == B as pointers, too\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Dictionaries.</b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Dictionaries.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_dictionaries</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Unit::test_dictionaries</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
@@ -152,7 +159,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"test case won't parse"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Regexp.</b></p>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Regexp.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_regexp</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">Unit::test_regexp</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
@@ -184,7 +191,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"test case won't parse"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Replacements.</b></p>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Replacements.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_replacement</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">Unit::test_replacement</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
@@ -210,7 +217,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="../foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::in_text_file</span></a><span class="plain-syntax">(</span><span class="string-syntax">"test case won't parse"</span><span class="plain-syntax">, </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Linked lists.</b></p>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Linked lists.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_linked_lists</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">Unit::test_linked_lists</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -235,7 +242,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Last is: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">LAST_IN_LINKED_LIST</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">test_list</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Stacks.</b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Stacks.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_stacks</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Unit::test_stacks</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -262,7 +269,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">LIFO_STACK_EMPTY</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax">, </span><span class="identifier-syntax">test_stack</span><span class="plain-syntax">)) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Stack is empty\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Semantic versions.</b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Semantic versions.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_range</span><span class="plain-syntax">(</span><span class="constant-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
@@ -365,16 +372,16 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><a href="S-ut.html#SP8" class="function-link"><span class="function-syntax">Unit::test_intersect</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"6.4.2"</span><span class="plain-syntax">, -1, </span><span class="identifier-syntax">I</span><span class="string-syntax">"3.5.5"</span><span class="plain-syntax">, -1);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Trees.</b></p>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Trees.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">prince_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">princess_CLASS</span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">prince_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">princess_CLASS</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">prince</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">princess</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">prince</span><span class="plain-syntax"> {</span>
@@ -391,7 +398,7 @@ function togglePopup(material_id) {
 <span class="reserved-syntax">tree_node_type</span><span class="plain-syntax"> *</span><span class="identifier-syntax">M</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure prince is private to this section.</li><li>The structure princess is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_trees</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Unit::test_trees</span></span>:<br/>Program Control - <a href="S-pc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -447,7 +454,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b></p>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::show_tree</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Unit::show_tree</span></span>:<br/><a href="S-ut.html#SP11">&#167;11</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="reserved-syntax">heterogeneous_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
@@ -471,7 +478,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. JSON.</b></p>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. JSON.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">known_JSON_reqs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -540,10 +547,10 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Markdown.</b></p>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Markdown.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">BOXED_QUOTES_MARKDOWNFEATURE</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">PASTE_ICONS_MARKDOWNFEATURE</span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">BOXED_QUOTES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">PASTE_ICONS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, *</span><span class="identifier-syntax">testy_Markdown</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -588,7 +595,7 @@ function togglePopup(material_id) {
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Unit::test_MD_helper</span><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">marked_up</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP19" class="function-link"><span class="function-syntax">Str::eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"! End"</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_last_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">marked_up</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_last_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">marked_up</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="string-syntax">"%S\n! Solution\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">marked_up</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="../foundation-module/5-mrk.html#SP6" class="function-link"><span class="function-syntax">Markdown::render_extended</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><a href="../foundation-module/5-mrk.html#SP4" class="function-link"><span class="function-syntax">Markdown::parse_extended</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">marked_up</span><span class="plain-syntax">, </span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax">),</span>
@@ -600,15 +607,15 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><a href="../foundation-module/5-im.html#SP17" class="function-link"><span class="function-syntax">InformFlavouredMarkdown::set_gatekeeper_function</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_first_char</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">) == </span><span class="character-syntax">'!'</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation-module/4-sm.html#SP13" class="function-link"><span class="function-syntax">Str::get_at</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">) == </span><span class="character-syntax">' '</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="string-syntax">"%S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">); </span><a href="../foundation-module/4-sm.html#SP15" class="function-link"><span class="function-syntax">Str::clear</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">marked_up</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Variation"</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Variation"</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax"> = </span><span class="identifier-syntax">testy_Markdown</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"GitHub"</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"GitHub"</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax"> = </span><a href="../foundation-module/5-mv.html#SP1" class="function-link"><span class="function-syntax">MarkdownVariations::GitHub_flavored_Markdown</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform"</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform"</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax"> = </span><a href="../foundation-module/5-im.html#SP1" class="function-link"><span class="function-syntax">InformFlavouredMarkdown::variation</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inweb"</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inweb"</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax"> = </span><a href="../foundation-module/5-mv.html#SP1" class="function-link"><span class="function-syntax">MarkdownVariations::Inweb_flavoured_Markdown</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP26" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform-PLUGH"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../foundation-module/4-sm.html#SP28" class="function-link"><span class="function-syntax">Str::includes</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"Inform-PLUGH"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">variation_to_test_against</span><span class="plain-syntax"> = </span><a href="../foundation-module/5-im.html#SP1" class="function-link"><span class="function-syntax">InformFlavouredMarkdown::variation</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><a href="../foundation-module/5-im.html#SP17" class="function-link"><span class="function-syntax">InformFlavouredMarkdown::set_gatekeeper_function</span></a><span class="plain-syntax">(&amp;</span><a href="S-ut.html#SP14" class="function-link"><span class="function-syntax">Unit::test_gatekeeper</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
@@ -640,16 +647,16 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> == </span><span class="constant-syntax">CODE_BLOCK_MIT</span><span class="plain-syntax">) &amp;&amp; (</span><a href="../foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::prefix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"{*}"</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">user_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STORE_POINTER_markdown_item</span><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">current_sample</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ch</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">type</span><span class="plain-syntax"> == </span><span class="constant-syntax">CODE_BLOCK_MIT</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">            (</span><a href="../foundation-module/4-sm.html#SP21" class="function-link"><span class="function-syntax">Str::prefix_eq</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"{**}"</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="identifier-syntax">current_sample</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">user_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">STORE_POINTER_markdown_item</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_sample</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP25" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../foundation-module/4-sm.html#SP27" class="function-link"><span class="function-syntax">Str::delete_first_character</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stashed</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><a href="S-ut.html#SP14" class="function-link"><span class="function-syntax">Unit::paiapi_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">ch</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>

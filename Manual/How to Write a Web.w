@@ -711,6 +711,7 @@ references.[2]
 
 [1] But see Anthony Grafton, "The Footnote: A Curious History" (Harvard
 University Press, 1999).
+
 [2] For example, to cite Donald Knuth, "Evaluation of Porter's constant",
 Computers & Mathematics with Applications, 2, 137-39 (1976).
 

@@ -28,7 +28,7 @@ but it omits details of, e.g., exactly what characters must be escaped and how;
 what characters can legally be part of a tagname; and so on.
 
 @ As mentioned above, Ctags go back to an age before filenames necessarily had
-extensions, and just as the defaukt make file is |makefile| and not |makefile.mk|,
+extensions, and just as the default make file is |makefile| and not |makefile.mk|,
 so the default Ctags file is called |tags| and not |tags.ctag|.
 
 =
@@ -125,6 +125,14 @@ here, with an "r", is not a mistake. This is what Universal |ctags| calls it.)
 		WRITE("f");
 		WRITE("\n");
 	}
+
+@ =
+int Ctags::useful_tags_exist(ls_web *W) {
+	if (LinkedLists::len(CodeAnalysis::defined_constants_list(W)) > 0) return TRUE;
+	if (LinkedLists::len(CodeAnalysis::language_types_list(W)) > 0) return TRUE;
+	if (LinkedLists::len(CodeAnalysis::language_functions_list(W)) > 0) return TRUE;
+	return FALSE;
+}
 
 @ So, then, here we write the |filename| and |find| fields for a given
 source line |lst| in our web. Note that:

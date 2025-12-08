@@ -402,6 +402,7 @@ void Colonies::resolve_declaration(wcl_declaration *D) {
 		wcl_declaration *PM = Patterns::parse_directory(C->patterns_path);
 		if (PM) WCL::merge_within(PM, D);
 	}
+	Conventions::set_level(D, COLONY_LSCONVENTIONLEVEL);
 }
 
 @ Lines from the colony file are fed, one by one, into:
@@ -598,7 +599,7 @@ pathname *Colonies::home(ls_colony *C) {
 	return Pathnames::from_text(I"docs");
 }
 
-pathname *Colonies::assets_path(ls_colony *C) {
+pathname *Colonies::assets_path(ls_colony *C, ls_web *W) {
 	if (C) {
 		TEMPORARY_TEXT(path)
 		Colonies::expand_relative_path_to(path, C->assets_path, C, Colonies::home(C));
@@ -606,7 +607,17 @@ pathname *Colonies::assets_path(ls_colony *C) {
 		DISCARD_TEXT(path)
 		return P;
 	}
-	return Pathnames::down(Colonies::home(C), I"docs-assets");
+	if ((W) && (W->single_file)) {
+		TEMPORARY_TEXT(path)
+		Filenames::write_unextended_leafname(path, W->single_file);
+		WRITE_TO(path, "-assets");
+		pathname *P = Pathnames::down(Filenames::up(W->single_file), path);
+		DISCARD_TEXT(path)
+		return P;
+	}
+	pathname *H = WeavingDetails::get_redirect_weaves_to(W);
+	if (H == NULL) H = WebStructure::woven_folder(W, 5);
+	return Pathnames::down(H, I"assets");
 }
 
 pathname *Colonies::weave_path(ls_colony_member *CM) {
@@ -721,6 +732,19 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 		if (ext) *ext = TRUE;
 		return TRUE;
 	}
+	int wsc = 0, dc = 0;
+	for (int i=0; i<Str::len(text); i++) {
+		inchar32_t c = Str::get_at(text, i);
+		if (Characters::is_whitespace(c)) wsc++;
+		if (c == '.') dc++;
+	}
+	if ((wsc == 0) && (dc > 0)) {
+		WRITE_TO(url, "%S", text);
+		WRITE_TO(title, "%S", text);
+		Regexp::dispose_of(&mr);
+		if (ext) *ext = TRUE;
+		return TRUE;
+	}
 	Regexp::dispose_of(&mr);
 
 @<Is it the name of a member of our colony?@> =	
@@ -800,6 +824,31 @@ make is that modules of the current web will be woven alongside the main one.
 		if (bare_module_name == FALSE)
 			WRITE_TO(title, " (in %S)", found_M->module_name);
 	}
+
+@ If all we want is to establish whether it's internal or external:
+
+=
+int Colonies::is_reference_external(text_stream *text, text_stream *URL) {
+	int ext = FALSE;
+	match_results mr = Regexp::create_mr();
+	text_stream *address = text;
+	if ((URL) && (Regexp::match(&mr, text, U"(%c+?) -> (%c+)"))) {
+		address = mr.exp[1];
+	}
+	if (URL) Str::copy(URL, address);
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, address, U"https*://%c*")) ext = TRUE;
+	int wsc = 0, dc = 0;
+	for (int i=0; i<Str::len(text); i++) {
+		inchar32_t c = Str::get_at(text, i);
+		if (Characters::is_whitespace(c)) wsc++;
+		if (c == '.') dc++;
+	}
+	if ((wsc == 0) && (dc > 0)) ext = TRUE;
+	Regexp::dispose_of(&mr2);
+	Regexp::dispose_of(&mr);
+	return ext;
+}
 
 @h URL management.
 
@@ -1018,7 +1067,7 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 		}
 
 	TextualTables::begin_row(T);
-	WRITE_TO(TextualTables::next_cell(T), "%S/", C->assets_path);
+	WRITE_TO(TextualTables::next_cell(T), "%p/", Colonies::assets_path(C, NULL));
 	WRITE_TO(TextualTables::next_cell(T), "--");
 	WRITE_TO(TextualTables::next_cell(T), "--");
 	WRITE_TO(TextualTables::next_cell(T), "--");

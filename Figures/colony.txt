@@ -8,8 +8,9 @@ Colony {
 	member: "literate"        at "literate-module"      to "literate-module"
 	member: "literate-test"   at "literate-test"
 	member: "goldbach"        at "Examples/goldbach"
-	member: "twinprimes"      at "Examples/twinprimes.inweb"
+	member: "twinprimes"      at "Examples/twinprimes.c.w"
 	member: "eastertide"      at "Examples/eastertide"
+	member: "guide"           at "guide"
 	
 	Navigation {
 		[[Home "<Octagram.png@72>" -> overview]]
@@ -19,6 +20,8 @@ Colony {
 		[[Item "foundation-test"]]
 		[[Item "literate"]]
 		[[Item "literate-test"]]
+		[[Menu "Documentation"]]
+		[[Item "guide"]]
 		[[Menu "Example Webs"]]
 		[[Item "goldbach"]]
 		[[Item "twinprimes"]]
@@ -28,5 +31,9 @@ Colony {
 		[[Menu "Related Projects"]]
 		[[Item "<github.png> inform" -> https://github.com/ganelson/inform]]
 		[[Item "<github.png> intest" -> https://github.com/ganelson/intest]]
+	}
+	
+	Conventions {
+		sections are not numbered sequentially
 	}
 }

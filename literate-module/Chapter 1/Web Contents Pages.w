@@ -14,7 +14,7 @@ can recurse.
 
 =
 void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
-	module_search *import_path, int including_modules, pathname *path) {
+	int including_modules, pathname *path) {
 	wcl_declaration *D = W->declaration;
 	if (of_module != W->main_module) {
 		filename *F = WebModules::contents_filename(of_module);
@@ -28,8 +28,10 @@ void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
 	}
 	web_contents_state RS;
 	@<Initialise the reader state@>;
-	if (W->web_syntax == NULL) W->web_syntax = WebNotation::default();
-	else RS.syntax_externally_set = TRUE;
+	if (W->web_syntax == NULL)
+		WebNotation::declare_for_web(W, WebNotation::default());
+	else
+		RS.syntax_externally_set = TRUE;
 
 	text_file_position tfp = D->body_position;
 	text_stream *L;
@@ -59,7 +61,6 @@ typedef struct web_contents_state {
 	struct text_stream *at;
 	struct pathname *path_to; /* Where web material is being read from */
 	struct ls_module *reading_from;
-	struct module_search *import_from; /* Where imported webs are */
 	int syntax_externally_set;
 	int including_modules;
 	int main_web_not_module; /* Reading the original web, or an included one? */
@@ -83,7 +84,6 @@ typedef struct web_contents_state {
 	RS.at = Str::new();
 	RS.including_modules = including_modules;
 	RS.path_to = path;
-	RS.import_from = import_path;
 	RS.syntax_externally_set = FALSE;
 	if (path == NULL) {
 		path = W->path_to_web;
@@ -145,9 +145,7 @@ void WebContents::read_contents_line(text_stream *line, text_file_position *tfp,
 		}
 	}
 	
-	if ((RS->syntax_externally_set == FALSE) ||
-		(WebNotation::supports(RS->W->web_syntax, SYNTAX_REDECLARATION_WSF)))
-		@<Act immediately if the web syntax version is changed@>;
+	@<Act immediately if the web syntax version is changed@>;
 	
 	int begins_with_white_space = Characters::is_whitespace(Str::get_first_char(line));
 	Str::trim_white_space(line);
@@ -163,13 +161,13 @@ want to react to an open declaration of that syntax immediately.
 	if ((RS->allow_kvps) &&
 		(Regexp::match(&mr, line, U"Notation: (%c+) *"))) {
 		ls_notation *S = WebNotation::syntax_by_name(RS->W, mr.exp[0]);
-		if (S) RS->W->web_syntax = S;
+		if (S) WebNotation::declare_for_web(RS->W, S);
 	}
 	if ((RS->allow_kvps) &&
 		(Regexp::match(&mr, line, U"Web Syntax Version: (%c+) *"))) {
 		WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
 		ls_notation *S = WebNotation::syntax_by_name(RS->W, mr.exp[0]);
-		if (S) RS->W->web_syntax = S;
+		if (S) WebNotation::declare_for_web(RS->W, S);
 	}
 	Regexp::dispose_of(&mr);
 
@@ -188,7 +186,7 @@ then we're into the section listing. Otherwise, we're already in the sections.
 	Regexp::dispose_of(&mr);
 	if (RS->in_biblio) {
 		if ((RS->allow_kvps == FALSE) ||
-			(Bibliographic::parse_kvp(RS->W, line, RS->main_web_not_module, tfp, NULL) == FALSE))
+			(Bibliographic::parse_kvp(RS->W, line, RS->main_web_not_module, tfp, NULL, TRUE) == FALSE))
 			RS->in_biblio = FALSE;
 	}
 	if ((RS->in_biblio == FALSE) && (Str::is_whitespace(line) == FALSE))
@@ -264,21 +262,18 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 		ADD_TO_LINKED_LIST(HF, filename, RS->W->header_filenames);
 		this_is_a_chapter = FALSE;
 	} else if (Regexp::match(&mr, line, U"Import: (%c+)")) {
-		if (RS->import_from) {
-			ls_module *imported =
-				WebModules::find(RS->W, RS->import_from, mr.exp[0]);
-			if (imported == NULL) {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "unable to find module '%S'", mr.exp[0]);
-				Errors::in_text_file_S(err, tfp);
-				DISCARD_TEXT(err)
-			} else {
-				if (RS->including_modules) {
-					ls_notation *save_syntax = RS->W->web_syntax;
-					WebContents::read_contents_page(RS->W, imported, RS->import_from,
-						RS->including_modules, imported->module_location);
-					RS->W->web_syntax = save_syntax;
-				}
+		ls_module *imported = WebModules::find(RS->W, mr.exp[0]);
+		if (imported == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "unable to find module '%S'", mr.exp[0]);
+			Errors::in_text_file_S(err, tfp);
+			DISCARD_TEXT(err)
+		} else {
+			if (RS->including_modules) {
+				ls_notation *save_syntax = RS->W->web_syntax;
+				WebContents::read_contents_page(RS->W, imported,
+					RS->including_modules, imported->module_location);
+				WebNotation::declare_for_web(RS->W, save_syntax);
 			}
 		}
 		this_is_a_chapter = FALSE;
@@ -360,11 +355,8 @@ with the same language as the main web unless stated otherwise.
 	S->is_independent_target = TRUE;
 	S->sect_language_name = Str::duplicate(p);
 
-@ The filename for a section is as given in the contents listing: unless,
-when |.w| is appended, a file of that name exists in the relevant chapter
-directory, in which case that's the file. (Or, failing that, |.i6t|, which
-is a hangover from the days of Inform 6 template files in the Inform compiler,
-and which for some reason lives on in the web source for kits.)
+@ The filename for a section is as given in the contents listing, relative
+to the contents file location...
 
 @<Work out the filename of this section file@> =
 	TEMPORARY_TEXT(leafname_to_use)
@@ -374,23 +366,50 @@ and which for some reason lives on in the web source for kits.)
 		WRITE_TO(leafname_to_use, "%S", S->sect_claimed_location);
 	else
 		WRITE_TO(leafname_to_use, "%S", S->sect_title);
-	S->source_file_for_section = Filenames::from_text_relative(P, leafname_to_use);
+	filename *F = Filenames::from_text_relative(P, leafname_to_use);
+	DISCARD_TEXT(leafname_to_use)
+
 	if (Str::len(S->sect_claimed_location) == 0) {
 		Str::clear(S->sect_title);
-		WRITE_TO(S->sect_title, "%S", Filenames::get_leafname(S->source_file_for_section));
+		Filenames::write_unextended_leafname(S->sect_title, F);
 	}
-	P = Filenames::up(S->source_file_for_section);
-	if (TextFiles::exists(S->source_file_for_section) == FALSE) {
-		TEMPORARY_TEXT(leaf)
-		WRITE_TO(leaf, "%S.w", Filenames::get_leafname(S->source_file_for_section));
-		if (Str::len(RS->chapter_dir_name) > 0)
-			P = Pathnames::down(P, RS->chapter_dir_name);
-		S->source_file_for_section = Filenames::in(P, leaf);
-		if (TextFiles::exists(S->source_file_for_section) == FALSE) {
-			Str::delete_last_character(leaf);
-			Str::delete_last_character(leaf);
-			WRITE_TO(leaf, ".i6t");
-			S->source_file_for_section = Filenames::in(P, leaf);
+
+	if (TextFiles::exists(F) == FALSE) {
+		TEMPORARY_TEXT(unextended)
+		Filenames::write_unextended_leafname(unextended, F);
+		F = WebContents::find_file(Filenames::up(F), unextended);
+		if ((F == NULL) && (Str::len(RS->chapter_dir_name) > 0))
+			F = WebContents::find_file(Pathnames::down(P, RS->chapter_dir_name), unextended);
+		DISCARD_TEXT(unextended)
+	}
+	S->source_file_for_section = F;
+	if (F == NULL) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "unable to locate the section '%S'", leafname_to_use);
+		Errors::in_text_file_S(err, tfp);
+		DISCARD_TEXT(err)
+	}
+
+@ ...except that if that filename doesn't seem to exist, then Inweb next
+tries it with different file extensions, and in a suitable chapter directory:
+
+=
+filename *WebContents::find_file(pathname *P, text_stream *unextended) {
+	TEMPORARY_TEXT(leaf)
+	WRITE_TO(leaf, "%S.w", unextended);
+	filename *F = Filenames::in(P, leaf);
+	if (TextFiles::exists(F) == FALSE) {
+		Str::clear(leaf);
+		WRITE_TO(leaf, "%S.i6t", unextended);
+		F = Filenames::in(P, leaf);
+		if (TextFiles::exists(F) == FALSE) {
+			Str::clear(leaf);
+			WRITE_TO(leaf, "%S.md", unextended);
+			F = Filenames::in(P, leaf);
+			if (TextFiles::exists(F) == FALSE)
+				F = NULL;
 		}
 	}
-	DISCARD_TEXT(leafname_to_use)
+	DISCARD_TEXT(leaf)
+	return F;
+}

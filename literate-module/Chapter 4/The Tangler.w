@@ -76,7 +76,7 @@ But we need to know in advance what programming language the program is.
 =
 void Tangler::tangle_web_directory_with_docket(OUTPUT_STREAM, tangle_docket *docket,
 	pathname *P, programming_language *language) {
-	wcl_declaration *D = WCL::read_web_or_halt(P, NULL);
+	wcl_declaration *D = WCL::read_web_or_halt(P, NULL, NULL);
 	ls_web *W = WebStructure::from_declaration(D);
 	WebStructure::set_language(W, language);
 	WebStructure::read_web_source(W, FALSE, FALSE);
@@ -101,11 +101,15 @@ Only code specially marked as early or very early is an exception.
 @d VERY_EARLY_TANGLE_SEGMENT 1
 @d EARLY_TANGLE_SEGMENT 2
 @d MAIN_TANGLE_SEGMENT 3
+@d LATE_TANGLE_SEGMENT 4
+@d VERY_LATE_TANGLE_SEGMENT 5
 
 =
 int Tangler::segment_of_par(ls_paragraph *par) {
 	if (LiterateSource::par_contains_very_early_code(par)) return VERY_EARLY_TANGLE_SEGMENT;
 	if (LiterateSource::par_contains_early_code(par)) return EARLY_TANGLE_SEGMENT;
+	if (LiterateSource::par_contains_late_code(par)) return LATE_TANGLE_SEGMENT;
+	if (LiterateSource::par_contains_very_late_code(par)) return VERY_LATE_TANGLE_SEGMENT;
 	return MAIN_TANGLE_SEGMENT;
 }
 
@@ -157,6 +161,12 @@ void Tangler::tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W,
 
 	LOOP_OVER_TARGET_SECTIONS(C, S, target)
 		Tangler::tangle_holons_in_segment(OUT, S->literate_source, docket, MAIN_TANGLE_SEGMENT);
+
+	LOOP_OVER_TARGET_SECTIONS(C, S, target)
+		Tangler::tangle_holons_in_segment(OUT, S->literate_source, docket, LATE_TANGLE_SEGMENT);
+
+	LOOP_OVER_TARGET_SECTIONS(C, S, target)
+		Tangler::tangle_holons_in_segment(OUT, S->literate_source, docket, VERY_LATE_TANGLE_SEGMENT);
 
 	LanguageMethods::gnabehs(OUT, language, W);
 
@@ -244,10 +254,10 @@ void Tangler::tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu,
 	tangle_docket *docket, int segment) {
 	if (lsu == NULL) internal_error("no holon");
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
-		if ((par->holon) && (Str::len(par->holon->holon_name) == 0))
+		if ((par->holon) && (par->holon->top_level))
 			if (segment == Tangler::segment_of_par(par)) {
 				IfdefTags::open_ifdefs(OUT, par);
-				Tangler::tangle_holon(OUT, par->holon, docket);
+				Tangler::tangle_holon(OUT, par->holon, docket, NULL);
 				IfdefTags::close_ifdefs(OUT, par);
 			}
 }
@@ -257,17 +267,28 @@ other, in a tangle. We enter it with a nameless holon, then it calls itself
 to include tangled contents of any named holons referred to, and so on.
 
 =
-void Tangler::tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket) {
-	if (holon == NULL) internal_error("no holon");
+void Tangler::tangle_holon(OUTPUT_STREAM, ls_holon *main_holon, tangle_docket *docket,
+	text_stream *indentation) {
+	if (main_holon == NULL) internal_error("no holon");
 	tangle_target *target = docket->target;
 	if (target == NULL) internal_error("tangling holon with no target");
-	holon_splice *splice;
+
+	ls_holon *holon = main_holon;
+	@<Tangle this holon alone@>;
+	LOOP_OVER_LINKED_LIST(holon, ls_holon, main_holon->addenda)
+		@<Tangle this holon alone@>;
+	WRITE("\n%S", indentation);
+}
+
+@<Tangle this holon alone@> =
+	holon_splice *hs;
 	ls_line *last_line = NULL;
 	int next_line_does_not_follow = TRUE;
-	LOOP_OVER_LINKED_LIST(splice, holon_splice, holon->splice_list) {
-		ls_line *lst = splice->line;
+	TEMPORARY_TEXT(buffer)
+	LOOP_OVER_LINKED_LIST(hs, holon_splice, holon->splice_list) {
+		ls_line *lst = hs->line;
 		if (lst != last_line) {
-			if (last_line != NULL) WRITE("\n");
+			if (last_line != NULL) WRITE("\n%S", indentation);
 			last_line = lst;
 			int did_insert = FALSE;
 			LanguageMethods::insert_in_tangle(OUT, &(did_insert), target->tangle_language, lst, docket);
@@ -279,13 +300,13 @@ void Tangler::tangle_holon(OUTPUT_STREAM, ls_holon *holon, tangle_docket *docket
 		}
 		if (next_line_does_not_follow) {
 			Tangler::tangle_line_marker(OUT, lst, docket);
+			WRITE("%S", indentation);
 			next_line_does_not_follow = FALSE;
 		}
 		@<Tangle this splice@>;
 	}
-	if (last_line != NULL) WRITE("\n");
-	WRITE("\n");
-}
+	DISCARD_TEXT(buffer)
+	if (last_line != NULL) WRITE("\n%S", indentation);
 
 @ Much of the complexity here lies in tracking whether we need to insert another
 line marker or not. These are compiler features saying "the next line derived
@@ -313,18 +334,20 @@ void Tangler::tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	ls_holon *holon = lst->owning_chunk->holon;
 	if (holon == NULL) internal_error("no holon");
 	Tangler::tangle_line_marker(OUT, lst, docket);
-	holon_splice *splice;
-	LOOP_OVER_LINKED_LIST(splice, holon_splice, holon->splice_list)
-		if (lst == splice->line)
+	TEMPORARY_TEXT(buffer)
+	holon_splice *hs;
+	LOOP_OVER_LINKED_LIST(hs, holon_splice, holon->splice_list)
+		if (lst == hs->line)
 			@<Tangle this splice@>;
 	WRITE("\n");
+	DISCARD_TEXT(buffer)
 }
 
 @ Whether tangling a holon or just a line, then, we need this:
 
 @<Tangle this splice@> =
-	if (splice->expansion) @<Recursively tangle this named holon in@>
-	else if (Str::len(splice->command) > 0) @<Act on this tangler command@>
+	if (hs->expansion) @<Recursively tangle this named holon in@>
+	else if (Str::len(hs->command) > 0) @<Act on this tangler command@>
 	else @<Tangle in this splice of raw content@>;
 
 @ Here's the recursion taking place:
@@ -332,12 +355,15 @@ void Tangler::tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 @<Recursively tangle this named holon in@> =
 	if (docket->target) 
 		LanguageMethods::before_holon_expansion(OUT,
-			docket->target->tangle_language, splice->expansion->corresponding_chunk->owner);
-	Tangler::tangle_holon(OUT, splice->expansion, docket);
+			docket->target->tangle_language, hs->expansion->corresponding_chunk->owner);
+	text_stream *indentation = NULL;
+	if ((docket->target->tangle_language->indent_holon_expansion) &&
+		(Str::len(buffer) > 0) && (Str::is_whitespace(buffer))) indentation = buffer;
+	Tangler::tangle_holon(OUT, hs->expansion, docket, indentation);
 	if (docket->target) 
 		LanguageMethods::after_holon_expansion(OUT,
-			docket->target->tangle_language, splice->expansion->corresponding_chunk->owner);
-	Tangler::tangle_line_marker(OUT, splice->line, docket);
+			docket->target->tangle_language, hs->expansion->corresponding_chunk->owner);
+	Tangler::tangle_line_marker(OUT, hs->line, docket);
 
 @ This is a similar matter, except that it expands bibliographic data:
 = (text)
@@ -355,38 +381,38 @@ If the text in double-squares isn't recognised, that's not an error: it simply
 passes straight through. So |[[water]]| becomes just |[[water]]|.
 
 @<Act on this tangler command@> =
-	int handled = LanguageMethods::special_tangle_command(OUT, docket->target->tangle_language, splice->command);
+	int handled = LanguageMethods::special_tangle_command(OUT, docket->target->tangle_language, hs->command);
 	ls_notation *S = holon->corresponding_chunk->owner->owning_unit->syntax;
 	if (handled == FALSE) {
 		ls_section *sect = LiterateSource::section_of_par(holon->corresponding_chunk->owner);
 		if (sect) {
 			ls_web *W = sect->owning_chapter->owning_web;
-			if ((W) && (Bibliographic::look_up_datum(W, splice->command))) {
-				WRITE("%S", Bibliographic::get_datum(W, splice->command));
+			if ((W) && (Bibliographic::look_up_datum(W, hs->command))) {
+				WRITE("%S", Bibliographic::get_datum(W, hs->command));
 				handled = TRUE;
 			}
 		}
 	}
 	if (handled == FALSE) {
-		WRITE("%S%S%S", WebNotation::notation(S, TANGLER_COMMANDS_WSF, 1),
-			splice->command, WebNotation::notation(S, TANGLER_COMMANDS_WSF, 2));
+		WRITE("%S%S%S", WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 1),
+			hs->command, WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2));
 	}
 
 @<Tangle in this splice of raw content@> =
-	if ((splice->from == 0) && (splice->to == Str::len(splice->line->text) - 1)) {
-		Tangler::tangle_illiterate_code_fragment(OUT, splice->line->text, docket);
+	Str::clear(buffer);
+	text_stream *matter = Holons::splice_code(hs);
+	if ((hs->from == 0) && (hs->to == Str::len(matter) - 1)) {
+		Str::copy(buffer, matter);
 	} else {
-		if ((splice->from < 0) || (splice->to >= Str::len(splice->line->text))) {
+		if ((hs->from < 0) || (hs->to >= Str::len(matter))) {
 			WRITE_TO(STDERR, "Splice out of range: %d to %d in %S with len %d\n",
-				splice->from, splice->to, splice->line->text, Str::len(splice->line->text));
+				hs->from, hs->to, matter, Str::len(matter));
 			internal_error("splice out of range");
 		}
-		TEMPORARY_TEXT(text)
-		for (int i=splice->from; i<=splice->to; i++)
-			PUT_TO(text, Str::get_at(splice->line->text, i));
-		Tangler::tangle_illiterate_code_fragment(OUT, text, docket);
-		DISCARD_TEXT(text)
+		for (int i=hs->from; i<=hs->to; i++)
+			PUT_TO(buffer, Str::get_at(matter, i));
 	}
+	Tangler::tangle_illiterate_code_fragment(OUT, buffer, docket);
 
 @ Before we get down to illiterate code (i.e., code with all literate programming
 syntax removed), here's a convenient way to tangle a small text which may,
@@ -397,7 +423,7 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	tangle_docket *docket, ls_line *lst) {
 	ls_unit *lsu = LiterateSource::unit_of_line(lst);
 	text_stream *hopen = NULL, *hclose = NULL;
-	if (WebNotation::supports(lsu->syntax, NAMED_HOLONS_WSF)) {
+	if (WebNotation::supports_named_holons(lsu->syntax)) {
 		hopen = WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 1);
 		hclose = WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 2);
 	}
@@ -419,15 +445,15 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 			case NAME_END_FSMEVENT: {
 				int excess = Str::len(hclose);
 				Str::truncate(name, Str::len(name) - excess);
-				ls_paragraph *defining_par = Holons::find_holon(name, lsu);
-				if (defining_par) {
+				ls_holon *holon = Holons::find_holon(name, lsu->local_holon_namespace, FALSE, NULL);
+				if (holon) {
 					int excess = Str::len(hopen) + Str::len(name) + Str::len(hclose);
 					Str::truncate(output, Str::len(output) - excess);
 					LanguageMethods::before_holon_expansion(output,
-						docket->target->tangle_language, defining_par);
-					Tangler::tangle_holon(output, defining_par->holon, docket);
+						docket->target->tangle_language, holon->corresponding_chunk->owner);
+					Tangler::tangle_holon(output, holon, docket, NULL);
 					LanguageMethods::after_holon_expansion(output,
-						docket->target->tangle_language, defining_par);
+						docket->target->tangle_language, holon->corresponding_chunk->owner);
 				}
 				break;
 			}

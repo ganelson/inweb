@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -24,6 +29,8 @@
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
 <li><a href="../literate-test/index.html">literate-test</a></li>
+</ul><h2>Documentation</h2><ul>
+<li><a href="../guide/index.html">guide</a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
@@ -41,70 +48,70 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#2">Chapter 2: Memory, Streams and Collections</a></li><li><b>Foundation Classes</b></li></ul></div>
 <p class="purpose">To declare the object classes used in the Foundation module.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>These class declarations would ordinarily go at the front of a module,
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  These class declarations would ordinarily go at the front of a module,
 by convention, in an early section of its Chapter 1. <a href="index.html" class="internal">foundation</a> is an
 exception because it's the module which defines the memory manager: class
 declarations have to come after that point in the tangled code. But now
-here we are.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">command_line_switch_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">debugging_aspect_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">dict_entry_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">dictionary_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_chapter_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_datum_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_image_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_mark_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_page_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ebook_volume_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">filename_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">heterogeneous_tree_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">holon_usage_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">HTML_file_state_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">HTML_tag_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">IFM_example_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">JSON_pair_requirement_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">JSON_requirement_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">JSON_single_requirement_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">JSON_type_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">JSON_value_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">linked_list_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">linked_list_item_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">markdown_item_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">markdown_feature_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">markdown_variation_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">match_avinue_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">match_trie_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">md_link_dictionary_entry_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">method_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">method_set_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">module_search_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">pathname_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">md_doc_state_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">md_links_dictionary_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">md_emphasis_delimiter_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">open_source_licence_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_macro_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_macro_parameter_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_variable_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">preprocessor_variable_set_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">scan_directory_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">semantic_version_number_holder_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">semver_range_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">stopwatch_timer_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">string_storage_area_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">text_stream_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">tree_node_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">tree_node_type_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">tree_type_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">finite_state_machine_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">fsm_state_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">fsm_transition_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">command_line_subcommand_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">textual_table_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">textual_table_row_CLASS</span>
+here we are.</p>
+</div>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">command_line_switch_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">debugging_aspect_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">dict_entry_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">dictionary_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_chapter_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_datum_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_image_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_mark_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_page_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ebook_volume_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">filename_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">heterogeneous_tree_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">holon_usage_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HTML_file_state_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HTML_tag_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">IFM_example_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">JSON_pair_requirement_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">JSON_requirement_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">JSON_single_requirement_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">JSON_type_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">JSON_value_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">linked_list_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">linked_list_item_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">markdown_item_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">markdown_feature_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">markdown_variation_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">match_avinue_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">match_trie_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">md_link_dictionary_entry_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">method_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">method_set_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">module_search_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">pathname_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">md_doc_state_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">md_links_dictionary_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">md_emphasis_delimiter_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">open_source_licence_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">preprocessor_macro_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">preprocessor_macro_parameter_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">preprocessor_variable_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">preprocessor_variable_set_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">scan_directory_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">semantic_version_number_holder_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">semver_range_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">stopwatch_timer_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">string_storage_area_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">text_stream_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">tree_node_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">tree_node_type_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">tree_type_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">finite_state_machine_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">fsm_state_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">fsm_transition_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">command_line_subcommand_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">textual_table_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">textual_table_row_CLASS</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">command_line_switch</span><span class="plain-syntax">)</span>
