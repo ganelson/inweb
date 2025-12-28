@@ -8,8 +8,8 @@ There are numerous ways to make preference settings (well, six), and we need
 to adjudicate which take precedence over which. High levels beat low ones:
 
 @e GENERIC_LSCONVENTIONLEVEL from 1
-@e NOTATION_LSCONVENTIONLEVEL
 @e LANGUAGE_LSCONVENTIONLEVEL
+@e NOTATION_LSCONVENTIONLEVEL
 @e PERSONAL_LSCONVENTIONLEVEL
 @e COLONY_LSCONVENTIONLEVEL
 @e WEB_LSCONVENTIONLEVEL
@@ -20,17 +20,33 @@ And the individual conventions are also enumerated:
 @e PARAGRAPH_NUMBERS_VISIBLE_LSCONVENTION from 0
 @e NAMESPACES_ENFORCED_LSCONVENTION
 @e SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION
+@e PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION
 @e TEX_NOTATION_LSCONVENTION
 @e FOOTNOTES_LSCONVENTION
 @e HOLON_NAME_SYNTAX_LSCONVENTION
+@e FILE_HOLON_NAME_SYNTAX_LSCONVENTION
+@e VERBATIM_LSCONVENTION
 @e METADATA_IN_STRINGS_SYNTAX_LSCONVENTION
 @e TAGS_SYNTAX_LSCONVENTION
 @e HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION
+@e HOLONS_STYLED_LSCONVENTION
+@e COMMENTS_STYLED_LSCONVENTION
 @e HOLONS_ARE_TRIMMED_ABOVE_LSCONVENTION
 @e HOLONS_ARE_TRIMMED_BELOW_LSCONVENTION
+@e TANGLED_BETWEEN_LSCONVENTION
 @e COMMENTARY_MARKUP_LSCONVENTION
 @e SUMMARY_UNDER_TITLE_LSCONVENTION
 @e SINGLE_FILE_METADATA_PAIRS_LSCONVENTION
+@e LIBRARY_INCLUDES_EARLY_LSCONVENTION
+@e TYPEDEFS_EARLY_LSCONVENTION
+@e TYPEDEF_STRUCTS_EARLY_LSCONVENTION
+@e FUNCTION_PREDECLARATIONS_LSCONVENTION
+@e INDEX_LSCONVENTION
+@e IMPORTANT_INDEX_LSCONVENTION
+@e TT_INDEX_LSCONVENTION
+@e IMPORTANT_TT_INDEX_LSCONVENTION
+@e NS_INDEX_LSCONVENTION
+@e IMPORTANT_NS_INDEX_LSCONVENTION
 
 @e INT_LSCONVENTIONTYPE from 1
 @e TEXTUAL_LSCONVENTIONTYPE
@@ -44,18 +60,34 @@ int Conventions::type(int conv) {
 		case PARAGRAPH_NUMBERS_VISIBLE_LSCONVENTION:
 		case NAMESPACES_ENFORCED_LSCONVENTION:
 		case SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
+		case PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
 		case TEX_NOTATION_LSCONVENTION:
 		case FOOTNOTES_LSCONVENTION:
 		case HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION:
+		case HOLONS_STYLED_LSCONVENTION:
+		case COMMENTS_STYLED_LSCONVENTION:
 		case HOLONS_ARE_TRIMMED_ABOVE_LSCONVENTION:
 		case HOLONS_ARE_TRIMMED_BELOW_LSCONVENTION:
 		case COMMENTARY_MARKUP_LSCONVENTION:
 		case SUMMARY_UNDER_TITLE_LSCONVENTION:
 		case SINGLE_FILE_METADATA_PAIRS_LSCONVENTION:
+		case LIBRARY_INCLUDES_EARLY_LSCONVENTION:
+		case TYPEDEFS_EARLY_LSCONVENTION:
+		case TYPEDEF_STRUCTS_EARLY_LSCONVENTION:
+		case FUNCTION_PREDECLARATIONS_LSCONVENTION:
 			return INT_LSCONVENTIONTYPE;
 		case HOLON_NAME_SYNTAX_LSCONVENTION:
+		case FILE_HOLON_NAME_SYNTAX_LSCONVENTION:
 		case METADATA_IN_STRINGS_SYNTAX_LSCONVENTION:
 		case TAGS_SYNTAX_LSCONVENTION:
+		case TANGLED_BETWEEN_LSCONVENTION:
+		case VERBATIM_LSCONVENTION:
+		case INDEX_LSCONVENTION:
+		case IMPORTANT_INDEX_LSCONVENTION:
+		case TT_INDEX_LSCONVENTION:
+		case IMPORTANT_TT_INDEX_LSCONVENTION:
+		case NS_INDEX_LSCONVENTION:
+		case IMPORTANT_NS_INDEX_LSCONVENTION:
 			return TEXTUAL_PAIR_LSCONVENTIONTYPE;
 	}
 	internal_error("unimplemented convention");
@@ -73,6 +105,12 @@ int Conventions::type(int conv) {
 @e PURPOSE_IF_ITALIC_SUMMARYCHOICE
 @e NO_SUMMARYCHOICE
 
+@ And |HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION| must be one of:
+
+@e NO_ABBREVCHOICE from 1
+@e YES_ABBREVCHOICE
+@e EVEN_ABBREVCHOICE
+
 =
 void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, text_stream *tv2) {
 	if ((conv < 0) || (conv >= NO_DEFINED_LSCONVENTION_VALUES)) internal_error("convention out of range");
@@ -89,6 +127,10 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 			if (iv) WRITE("sections are numbered sequentially");
 			else WRITE("sections are not numbered sequentially");
 			break;
+		case PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
+			if (iv) WRITE("paragraphs are numbered sequentially");
+			else WRITE("paragraphs are numbered hierarchically");
+			break;
 		case SINGLE_FILE_METADATA_PAIRS_LSCONVENTION:
 			if (iv) WRITE("metadata key-value pairs are allowed at the top of single-file webs");
 			else WRITE("metadata key-value pairs are not allowed at the top of single-file webs");
@@ -102,8 +144,11 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 			else WRITE("footnotes are not recognised");
 			break;
 		case HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION:
-			if (iv) WRITE("holon names can be abbreviated");
-			else WRITE("holon names cannot be abbreviated");
+			switch (iv) {
+				case YES_ABBREVCHOICE: WRITE("holon names can be abbreviated"); break;
+				case EVEN_ABBREVCHOICE: WRITE("holon names can be abbreviated even at declarations"); break;
+				case NO_ABBREVCHOICE: WRITE("holon names cannot be abbreviated"); break;
+			}
 			break;
 		case HOLONS_ARE_TRIMMED_ABOVE_LSCONVENTION:
 			if (iv) WRITE("whitespace lines opening holons are not tangled");
@@ -113,38 +158,107 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 			if (iv) WRITE("whitespace lines closing holons are not tangled");
 			else WRITE("whitespace lines closing holons are tangled");
 			break;
+		case TANGLED_BETWEEN_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("named holons are not tangled with prefix or suffix");
+			else WRITE("named holons are tangled between %S and %S", Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
 		case HOLON_NAME_SYNTAX_LSCONVENTION:
 			if (Str::len(tv) == 0) WRITE("holons are not named");
-			else WRITE("holon names are written between %S and %S", tv, tv2);
+			else WRITE("holon names are written between %S and %S", Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case FILE_HOLON_NAME_SYNTAX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("holons are not extracted to files");
+			else WRITE("holon names to be extracted to files are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case VERBATIM_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no verbatim tangle material syntax");
+			else WRITE("verbatim tangle material is written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case INDEX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no index entry syntax");
+			else WRITE("index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case IMPORTANT_INDEX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no important index entry syntax");
+			else WRITE("important index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case TT_INDEX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no typewritten index entry syntax");
+			else WRITE("typewritten index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case IMPORTANT_TT_INDEX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no important typewritten index entry syntax");
+			else WRITE("important typewritten index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case NS_INDEX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no nonstandard index entry syntax");
+			else WRITE("nonstandard index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case IMPORTANT_NS_INDEX_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no important nonstandard index entry syntax");
+			else WRITE("important nonstandard index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case HOLONS_STYLED_LSCONVENTION:
+			if (iv) WRITE("holon names can contain styling");
+			else WRITE("holon names cannot contain styling");
+			break;
+		case COMMENTS_STYLED_LSCONVENTION:
+			if (iv) WRITE("comments can contain styling");
+			else WRITE("comments cannot contain styling");
 			break;
 		case TAGS_SYNTAX_LSCONVENTION:
 			if (Str::len(tv) == 0) WRITE("paragraph tags are not recognised");
-			else WRITE("paragraph tags are written between %S and %S", tv, tv2);
+			else WRITE("paragraph tags are written between %S and %S", Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
 			break;
 		case METADATA_IN_STRINGS_SYNTAX_LSCONVENTION:
 			if (Str::len(tv) == 0) WRITE("metadata in strings are not recognised");
-			else WRITE("metadata in strings are written between %S and %S", tv, tv2);
+			else WRITE("metadata in strings are written between %S and %S", Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
 			break;
 		case COMMENTARY_MARKUP_LSCONVENTION:
 			switch (iv) {
 				case MARKDOWN_COMMENTARY_MARKUPCHOICE:
-					WRITE("commentary uses Markdown notation"); break;
+					WRITE("commentary uses Markdown markup"); break;
 				case SIMPLIFIED_COMMENTARY_MARKUPCHOICE:
-					WRITE("commentary uses simplified notation"); break;
+					WRITE("commentary uses simplified markup"); break;
 				case TEX_COMMENTARY_MARKUPCHOICE:
-					WRITE("commentary uses TeX notation"); break;
+					WRITE("commentary uses TeX markup"); break;
 			}
 			break;
 		case SUMMARY_UNDER_TITLE_LSCONVENTION:
 			switch (iv) {
 				case PURPOSE_SUMMARYCHOICE:
-					WRITE("read a summary under the title as the purpose"); break;
+					WRITE("a summary under the title is read as the purpose"); break;
 				case PURPOSE_IF_ITALIC_SUMMARYCHOICE:
-					WRITE("read an italicised summary under the title as the purpose"); break;
+					WRITE("an italicised summary under the title is read as the purpose"); break;
 				case NO_SUMMARYCHOICE:
-					WRITE("do not read a summary under the title as the purpose"); break;
+					WRITE("a summary under the title is not read as the purpose"); break;
 			}
 			break;
+		case LIBRARY_INCLUDES_EARLY_LSCONVENTION:
+			if (iv) WRITE("standard library #includes are tangled early in the program");
+			else WRITE("standard library #includes are treated like any other code");
+			break;
+		case TYPEDEFS_EARLY_LSCONVENTION:
+			if (iv) WRITE("typedefs are tangled early in the program");
+			else WRITE("typedefs are treated like any other code");
+			break;
+		case TYPEDEF_STRUCTS_EARLY_LSCONVENTION:
+			if (iv) WRITE("typedef structs are tangled early and reordered logically");
+			else WRITE("typedef structs are treated like any other code");
+			break;
+		case FUNCTION_PREDECLARATIONS_LSCONVENTION:
+			if (iv) WRITE("function predeclarations are tangled automatically");
+			else WRITE("functions are treated like any other code");
+			break;
+
 		default:
 			internal_error("unimplemented convention");
 	}
@@ -179,8 +293,47 @@ void Conventions::set_both(ls_conventions *conventions, int conv, int val, text_
 	if ((conv < 0) || (conv >= NO_DEFINED_LSCONVENTION_VALUES)) internal_error("convention out of range");
 	conventions->setting_made[conv] = TRUE;
 	conventions->integer_value[conv] = val;
-	conventions->textual_value[conv] = (text)?(Str::duplicate(text)):NULL;
-	conventions->textual_value2[conv] = (text2)?(Str::duplicate(text2)):NULL;
+	conventions->textual_value[conv] = Conventions::convert_from_angled(text);
+	conventions->textual_value2[conv] = Conventions::convert_from_angled(text2);
+}
+
+text_stream *Conventions::convert_from_angled(text_stream *text) {
+	if (text) {
+		text_stream *OUT = Str::new();
+		for (int i=0; i<Str::len(text); i++) {
+			if (Str::includes_at(text, i, I"<NEWLINE>")) {
+				PUT('\n'); i += 8;
+			} else if (Str::includes_at(text, i, I"<NOTHING>")) {
+				i += 8;
+			} else if (Str::includes_at(text, i, I"<SPACE>")) {
+				PUT('\n'); i += 6;
+			} else if (Str::includes_at(text, i, I"<LEFTANGLE>")) {
+				PUT('<'); i += 10;
+			} else if (Str::includes_at(text, i, I"<RIGHTANGLE>")) {
+				PUT('>'); i += 11;
+			} else {
+				PUT(Str::get_at(text, i));
+			}
+		}
+		return OUT;
+	} else {
+		return NULL;
+	}
+}
+
+text_stream *Conventions::convert_to_angled(text_stream *text) {
+	text_stream *OUT = Str::new();
+	for (int i=0; i<Str::len(text); i++) {
+		inchar32_t c = Str::get_at(text, i);
+		switch (c) {
+			case '\n': WRITE("<NEWLINE>"); break;
+			case ' ': if ((i==0) || (i==Str::len(text)-1)) WRITE("<SPACE>"); else PUT(' '); break;
+			case '<': WRITE("<LEFTANGLE>"); break;
+			case '>': WRITE("<RIGHTANGLE>"); break;
+			default: PUT(c); break;
+		}
+	}
+	return OUT;
 }
 
 void Conventions::set_int(ls_conventions *conventions, int conv, int val) {
@@ -227,6 +380,10 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 		conv = SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION; iv = TRUE;
 	} else if (Regexp::match(&mr, line, U" *sections are not numbered sequentially *")) {
 		conv = SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *paragraphs are numbered sequentially *")) {
+		conv = PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *paragraphs are numbered hierarchically *")) {
+		conv = PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION; iv = FALSE;
 	} else if (Regexp::match(&mr, line, U" *metadata key-value pairs are allowed at the top of single-file webs *")) {
 		conv = SINGLE_FILE_METADATA_PAIRS_LSCONVENTION; iv = TRUE;
 	} else if (Regexp::match(&mr, line, U" *metadata key-value pairs are not allowed at the top of single-file webs *")) {
@@ -248,13 +405,55 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 	} else if (Regexp::match(&mr, line, U" *whitespace lines closing holons are tangled *")) {
 		conv = HOLONS_ARE_TRIMMED_BELOW_LSCONVENTION; iv = FALSE;
 	} else if (Regexp::match(&mr, line, U" *holon names can be abbreviated *")) {
-		conv = HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION; iv = TRUE;
+		conv = HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION; iv = YES_ABBREVCHOICE;
+	} else if (Regexp::match(&mr, line, U" *holon names can be abbreviated even at declarations *")) {
+		conv = HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION; iv = EVEN_ABBREVCHOICE;
 	} else if (Regexp::match(&mr, line, U" *holon names cannot be abbreviated *")) {
-		conv = HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION; iv = FALSE;
+		conv = HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION; iv = NO_ABBREVCHOICE;
+	} else if (Regexp::match(&mr, line, U" *holon names can contain styling *")) {
+		conv = HOLONS_STYLED_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *holon names cannot contain styling *")) {
+		conv = HOLONS_STYLED_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *comments can contain styling *")) {
+		conv = COMMENTS_STYLED_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *comments cannot contain styling *")) {
+		conv = COMMENTS_STYLED_LSCONVENTION; iv = FALSE;
 	} else if (Regexp::match(&mr, line, U" *holon names are written between (%c+) and (%c+) *")) {
 		conv = HOLON_NAME_SYNTAX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *holons are not named *")) {
 		conv = HOLON_NAME_SYNTAX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *holon names to be extracted to files are written between (%c+) and (%c+) *")) {
+		conv = FILE_HOLON_NAME_SYNTAX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *holons are not extracted to files *")) {
+		conv = FILE_HOLON_NAME_SYNTAX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *verbatim tangle material is written between (%c+) and (%c+) *")) {
+		conv = VERBATIM_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no verbatim tangle material syntax *")) {
+		conv = VERBATIM_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *index entries are written between (%c+) and (%c+) *")) {
+		conv = INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no index entry syntax *")) {
+		conv = INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *important index entries are written between (%c+) and (%c+) *")) {
+		conv = IMPORTANT_INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no important index entry syntax *")) {
+		conv = IMPORTANT_INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *typewritten index entries are written between (%c+) and (%c+) *")) {
+		conv = TT_INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no typewritten index entry syntax *")) {
+		conv = TT_INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *important typewritten index entries are written between (%c+) and (%c+) *")) {
+		conv = IMPORTANT_TT_INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no important typewritten index entry syntax *")) {
+		conv = IMPORTANT_TT_INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *nonstandard index entries are written between (%c+) and (%c+) *")) {
+		conv = NS_INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no nonstandard index entry syntax *")) {
+		conv = NS_INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *important nonstandard index entries are written between (%c+) and (%c+) *")) {
+		conv = IMPORTANT_NS_INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no important nonstandard index entry syntax *")) {
+		conv = IMPORTANT_NS_INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
 	} else if (Regexp::match(&mr, line, U" *metadata in strings are written between (%c+) and (%c+) *")) {
 		conv = METADATA_IN_STRINGS_SYNTAX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *metadata in strings are not recognised *")) {
@@ -263,20 +462,40 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 		conv = TAGS_SYNTAX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *paragraph tags are not recognised *")) {
 		conv = TAGS_SYNTAX_LSCONVENTION; tv = NULL; tv2 = NULL;
-	} else if (Regexp::match(&mr, line, U" *commentary uses Markdown notation *")) {
+	} else if (Regexp::match(&mr, line, U" *named holons are tangled between (%c+) and (%c+) *")) {
+		conv = TANGLED_BETWEEN_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *named holons are not tangled with prefix or suffix *")) {
+		conv = TANGLED_BETWEEN_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *commentary uses Markdown markup *")) {
 		conv = COMMENTARY_MARKUP_LSCONVENTION; iv = MARKDOWN_COMMENTARY_MARKUPCHOICE;
-	} else if (Regexp::match(&mr, line, U" *commentary uses simplified notation *")) {
+	} else if (Regexp::match(&mr, line, U" *commentary uses simplified markup *")) {
 		conv = COMMENTARY_MARKUP_LSCONVENTION; iv = SIMPLIFIED_COMMENTARY_MARKUPCHOICE;
-	} else if (Regexp::match(&mr, line, U" *commentary uses TeX notation *")) {
+	} else if (Regexp::match(&mr, line, U" *commentary uses TeX markup *")) {
 		conv = COMMENTARY_MARKUP_LSCONVENTION; iv = TEX_COMMENTARY_MARKUPCHOICE;
-	} else if (Regexp::match(&mr, line, U" *read a summary under the title as the purpose *")) {
+	} else if (Regexp::match(&mr, line, U" *a summary under the title is read as the purpose *")) {
 		conv = SUMMARY_UNDER_TITLE_LSCONVENTION; iv = PURPOSE_SUMMARYCHOICE;
-	} else if (Regexp::match(&mr, line, U" *read an italicised summary under the title as the purpose *")) {
+	} else if (Regexp::match(&mr, line, U" *an italicized summary under the title is read as the purpose *")) {
 		conv = SUMMARY_UNDER_TITLE_LSCONVENTION; iv = PURPOSE_IF_ITALIC_SUMMARYCHOICE;
-	} else if (Regexp::match(&mr, line, U" *read an italicized summary under the title as the purpose *")) {
+	} else if (Regexp::match(&mr, line, U" *an italicised summary under the title is read as the purpose *")) {
 		conv = SUMMARY_UNDER_TITLE_LSCONVENTION; iv = PURPOSE_IF_ITALIC_SUMMARYCHOICE;
-	} else if (Regexp::match(&mr, line, U" *do not read a summary under the title as the purpose *")) {
+	} else if (Regexp::match(&mr, line, U" *a summary under the title is not read as the purpose *")) {
 		conv = SUMMARY_UNDER_TITLE_LSCONVENTION; iv = NO_SUMMARYCHOICE;
+	} else if (Regexp::match(&mr, line, U" *standard library #includes are tangled early in the program *")) {
+		conv = LIBRARY_INCLUDES_EARLY_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *standard library #includes are treated like any other code *")) {
+		conv = LIBRARY_INCLUDES_EARLY_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *typedefs are tangled early in the program *")) {
+		conv = TYPEDEFS_EARLY_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *typedefs are treated like any other code *")) {
+		conv = TYPEDEFS_EARLY_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *typedef structs are tangled early and reordered logically *")) {
+		conv = TYPEDEF_STRUCTS_EARLY_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *typedef structs are treated like any other code *")) {
+		conv = TYPEDEF_STRUCTS_EARLY_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *function predeclarations are tangled automatically *")) {
+		conv = FUNCTION_PREDECLARATIONS_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *functions are treated like any other code *")) {
+		conv = FUNCTION_PREDECLARATIONS_LSCONVENTION; iv = FALSE;
 	} else {
 		text_stream *err = Str::new();
 		WRITE_TO(err, "unknown convention: %S", line);
@@ -380,18 +599,35 @@ ls_conventions *Conventions::generic(void) {
 		Conventions::set_int(generic, PARAGRAPH_NUMBERS_VISIBLE_LSCONVENTION, TRUE);
 		Conventions::set_int(generic, NAMESPACES_ENFORCED_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, SINGLE_FILE_METADATA_PAIRS_LSCONVENTION, TRUE);
 		Conventions::set_int(generic, HOLONS_ARE_TRIMMED_ABOVE_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, HOLONS_ARE_TRIMMED_BELOW_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, HOLONS_STYLED_LSCONVENTION, TRUE);
+		Conventions::set_int(generic, COMMENTS_STYLED_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, TEX_NOTATION_LSCONVENTION, TRUE);
 		Conventions::set_int(generic, FOOTNOTES_LSCONVENTION, TRUE);
-		Conventions::set_int(generic, HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION, TRUE);
+		Conventions::set_int(generic, HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION, YES_ABBREVCHOICE);
 		Conventions::set_int(generic, COMMENTARY_MARKUP_LSCONVENTION, SIMPLIFIED_COMMENTARY_MARKUPCHOICE);
 		Conventions::set_int(generic, SUMMARY_UNDER_TITLE_LSCONVENTION, NO_SUMMARYCHOICE);
+		Conventions::set_int(generic, LIBRARY_INCLUDES_EARLY_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, TYPEDEFS_EARLY_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, TYPEDEF_STRUCTS_EARLY_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, FUNCTION_PREDECLARATIONS_LSCONVENTION, FALSE);
 
 		Conventions::set_textual(generic, HOLON_NAME_SYNTAX_LSCONVENTION, I"{{", I"}}");
+		Conventions::set_textual(generic, FILE_HOLON_NAME_SYNTAX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, VERBATIM_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, METADATA_IN_STRINGS_SYNTAX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, TAGS_SYNTAX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, TANGLED_BETWEEN_LSCONVENTION, I"\n", I"\n");
+
+		Conventions::set_textual(generic, INDEX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, IMPORTANT_INDEX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, TT_INDEX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, IMPORTANT_TT_INDEX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, NS_INDEX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, IMPORTANT_NS_INDEX_LSCONVENTION, NULL, NULL);
 	}
 	return generic;
 }
@@ -401,10 +637,10 @@ linked_list *Conventions::applicable(ls_web *W, ls_colony *C) {
 	linked_list *L = NEW_LINKED_LIST(ls_conventions);
 	ADD_TO_LINKED_LIST(generic, ls_conventions, L);
 	if (W) {
-		ls_notation *N = W->web_syntax;
-		if (N) Conventions::apply(L, N->declaration);
 		programming_language *pl = W->web_language;
 		if (pl) Conventions::apply(L, pl->declaration);
+		ls_notation *N = W->web_syntax;
+		if (N) Conventions::apply(L, N->declaration);
 	}
 	Conventions::set_level(WCL::global_resources_declaration(), PERSONAL_LSCONVENTIONLEVEL);
 	Conventions::apply(L, WCL::global_resources_declaration());

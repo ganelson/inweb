@@ -2,7 +2,7 @@
 # in the inweb repository. Do not edit ".gitignore" directly. Instead,
 # edit this script, and then rebuild ".gitignore" with the command:
 
-# inweb/Tangled/inweb -prototype inweb/scripts/inweb.giscript -gitignore inweb/.gitignore
+# inweb make-gitignore inweb
 
 .DS_Store
 inweb.mk
@@ -30,7 +30,8 @@ Examples/*.html
 Examples/goldbach/Tangled
 Examples/goldbach/Woven
 Tests/Test Cases/_Scan_Actual/
-Tests/Test Cases/_Tangled_Actual/
+Tests/Test Cases/_Results_Actual/
+Tests/Test Errors/_Results_Actual/
 Tests/Test Cases/_Tangled_Console/
 Tests/Test Painter/_Results_Actual/
 Tests/Test Weave Tree/_Results_Actual/

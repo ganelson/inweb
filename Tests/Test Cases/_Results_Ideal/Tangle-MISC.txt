@@ -1,0 +1,20 @@
+(Tangle 1 of 7: twinprimes)
+tangling web "The Twin Primes Conjecture" (C program in InwebClassic notation) to file 'twinprimes.c'
+
+(Tangle 2 of 7: perl)
+tangling web "perl" (Perl program in InwebClassic notation) to file 'perl.pl'
+
+(Tangle 3 of 7: plain)
+tangling web "plain" (Plain Text program in InwebClassic notation) to file 'plain.txt'
+
+(Tangle 4 of 7: hellow)
+tangling web "hellow" (C program in InwebClassic notation) to file 'hellow.c'
+
+(Tangle 5 of 7: exhaustive)
+tangling web "The Inweb Syntax Exhausted" (C program in InwebClassic notation) to file 'exhaustive.c'
+
+(Tangle 6 of 7: empty)
+tangling web "test" (C program in InwebClassic notation) to file 'empty.c'
+
+(Tangle 7 of 7: conditional)
+tangling web "hellow" (C program in InwebClassic notation) to file 'conditional.c'

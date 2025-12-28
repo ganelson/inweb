@@ -13,7 +13,7 @@ Colony {
 	member: "guide"           at "guide"
 	
 	Navigation {
-		[[Home "<Octagram.png@72>" -> overview]]
+		[[Home "<Octagram.png@72>" -> //overview//]]
 		[[Item "inweb"]]
 		[[Menu "Foundation Modules"]]
 		[[Item "foundation"]]
@@ -31,9 +31,5 @@ Colony {
 		[[Menu "Related Projects"]]
 		[[Item "<github.png> inform" -> https://github.com/ganelson/inform]]
 		[[Item "<github.png> intest" -> https://github.com/ganelson/intest]]
-	}
-	
-	Conventions {
-		sections are not numbered sequentially
 	}
 }

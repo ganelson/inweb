@@ -29,7 +29,7 @@ void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
 	web_contents_state RS;
 	@<Initialise the reader state@>;
 	if (W->web_syntax == NULL)
-		WebNotation::declare_for_web(W, WebNotation::default());
+		WebNotation::declare_for_web(W, WebNotation::default(FALSE));
 	else
 		RS.syntax_externally_set = TRUE;
 

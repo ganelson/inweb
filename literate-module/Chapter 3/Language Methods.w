@@ -166,9 +166,11 @@ automatically predeclare all functions, obviating the need for header files.
 @e ADDITIONAL_PREDECLARATIONS_TAN_MTID
 
 =
-INT_METHOD_TYPE(ADDITIONAL_PREDECLARATIONS_TAN_MTID, programming_language *pl, text_stream *OUT, ls_web *W)
-void LanguageMethods::additional_predeclarations(OUTPUT_STREAM, programming_language *pl, ls_web *W) {
-	VOID_METHOD_CALL(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, OUT, W);
+INT_METHOD_TYPE(ADDITIONAL_PREDECLARATIONS_TAN_MTID, programming_language *pl,
+	text_stream *OUT, tangle_docket *docket, ls_web *W)
+void LanguageMethods::additional_predeclarations(OUTPUT_STREAM, programming_language *pl,
+	tangle_docket *docket, ls_web *W) {
+	VOID_METHOD_CALL(pl, ADDITIONAL_PREDECLARATIONS_TAN_MTID, OUT, docket, W);
 }
 
 @ So much for the special material at the top of a tangle: now we're into
@@ -220,13 +222,13 @@ splice |{| and |}| around the expanded matter.
 @e AFTER_HOLON_EXPANSION_TAN_MTID
 
 =
-VOID_METHOD_TYPE(BEFORE_HOLON_EXPANSION_TAN_MTID, programming_language *pl, text_stream *OUT, ls_paragraph *par)
-VOID_METHOD_TYPE(AFTER_HOLON_EXPANSION_TAN_MTID, programming_language *pl, text_stream *OUT, ls_paragraph *par)
-void LanguageMethods::before_holon_expansion(OUTPUT_STREAM, programming_language *pl, ls_paragraph *par) {
-	VOID_METHOD_CALL(pl, BEFORE_HOLON_EXPANSION_TAN_MTID, OUT, par);
+VOID_METHOD_TYPE(BEFORE_HOLON_EXPANSION_TAN_MTID, programming_language *pl, tangle_docket *D, text_stream *OUT, ls_paragraph *par)
+VOID_METHOD_TYPE(AFTER_HOLON_EXPANSION_TAN_MTID, programming_language *pl, tangle_docket *D, text_stream *OUT, ls_paragraph *par)
+void LanguageMethods::before_holon_expansion(OUTPUT_STREAM, programming_language *pl, tangle_docket *D, ls_paragraph *par) {
+	VOID_METHOD_CALL(pl, BEFORE_HOLON_EXPANSION_TAN_MTID, D, OUT, par);
 }
-void LanguageMethods::after_holon_expansion(OUTPUT_STREAM, programming_language *pl, ls_paragraph *par) {
-	VOID_METHOD_CALL(pl, AFTER_HOLON_EXPANSION_TAN_MTID, OUT, par);
+void LanguageMethods::after_holon_expansion(OUTPUT_STREAM, programming_language *pl, tangle_docket *D, ls_paragraph *par) {
+	VOID_METHOD_CALL(pl, AFTER_HOLON_EXPANSION_TAN_MTID, D, OUT, par);
 }
 
 @ It's a sad necessity, but sometimes we have to unconditionally tangle code

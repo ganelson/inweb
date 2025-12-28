@@ -188,6 +188,8 @@ typedef struct weaver_state {
 			@<Deal with some other sort of chunk@>;
 	}
 	Weaver::change_material(tree, state, ENDNOTES_MATERIAL, FALSE, NULL, NULL);
+	if (Str::eq_insensitive(LiterateSource::par_title(par), I"Index"))
+		@<Weave the index@>;
 	Weaver::show_endnotes_on_previous_paragraph(tree, wv, state->ap, par);
 
 @ Markdown commentary bypasses the need to make elaborate subtrees here: we
@@ -203,7 +205,8 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 	LanguageMethods::reset_syntax_colouring(WebStructure::section_language(S));
 	if (Str::len(chunk->holon->holon_name) > 0) {
 		Weaver::change_material(tree, state, MACRO_MATERIAL, chunk->plainer, WebStructure::section_language(S), NULL);
-		Trees::make_child(WeaveTree::holon_declaration(tree, chunk->holon), state->ap);
+		Trees::make_child(WeaveTree::holon_declaration(tree, chunk->holon,
+			WebNotation::commentary_variation(wv->weave_web)), state->ap);
 		state->line_break_pending = FALSE;
 	}
 
@@ -230,13 +233,29 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 @<Weave holonic matter in code style@> =
 	if (hs->expansion) @<Deal with a named holon usage@>
 	else if (Str::len(hs->command) > 0) @<Deal with a tangler command@>
+	else if (Str::len(hs->comment) > 0) @<Deal with a comment@>
+	else if (Str::len(hs->verbatim) > 0) @<Deal with a verbatim@>
 	else @<Deal with a splice of raw content@>;
 
 @<Deal with a named holon usage@> =
-	Trees::make_child(WeaveTree::pmac(tree, hs->expansion->corresponding_chunk->owner, FALSE), CL);
+	Trees::make_child(WeaveTree::holon_usage(tree, hs->expansion, WebNotation::commentary_variation(wv->weave_web)), CL);
 
 @<Deal with a tangler command@> =
 	Trees::make_child(WeaveTree::tangler_command(tree, hs->command), CL);
+
+@<Deal with a verbatim@> =
+	text_stream *matter = hs->verbatim;
+	text_stream *concluding_comment = NULL;
+	int suppress = FALSE;
+	@<Offer the line to the language to weave@>;
+
+	if (suppress == FALSE) {
+		TEMPORARY_TEXT(colouring)
+		LanguageMethods::syntax_colour(WebStructure::section_language(S), wv, lst, matter, colouring,
+			Pathnames::path_to_inweb());
+		TextWeaver::source_code(tree, CL, matter, colouring, chunk->hyperlinked);
+		DISCARD_TEXT(colouring)
+	}
 
 @<Deal with a splice of raw content@> =
 	TEMPORARY_TEXT(matter)
@@ -257,6 +276,27 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 
 	DISCARD_TEXT(matter)
 
+@<Deal with a comment@> =
+	if (hs->comment_as_markdown) {
+		Trees::make_child(WeaveTree::comment_in_holon(tree, hs->comment, hs->comment_as_markdown, WebNotation::commentary_variation(wv->weave_web)), CL);
+	} else {
+		TEMPORARY_TEXT(matter)
+		WRITE_TO(matter, "COMMENT(%S)", hs->comment);
+		Str::rectify_indentation(matter, 4);
+		text_stream *concluding_comment = NULL;
+		int suppress = FALSE;
+		@<Offer the line to the language to weave@>;
+	
+		if (suppress == FALSE) {
+			TEMPORARY_TEXT(colouring)
+			LanguageMethods::syntax_colour(WebStructure::section_language(S), wv, lst, matter, colouring,
+				Pathnames::path_to_inweb());
+			TextWeaver::source_code(tree, CL, matter, colouring, chunk->hyperlinked);
+			DISCARD_TEXT(colouring)
+		}
+		DISCARD_TEXT(matter)
+	}
+
 @<Deal with an extract chunk@> =
 	state->line_break_pending = FALSE;
 	LanguageMethods::reset_syntax_colouring(WebStructure::section_language(S));
@@ -274,6 +314,11 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 			@<Weave this line@>;
 		}
 	}
+
+@
+
+@<Weave the index@> =
+	Trees::make_child(WeaveTree::index_marker(tree, par), state->ap);
 
 @h How paragraphs begin.
 
@@ -611,7 +656,13 @@ example, or flush left.
 		} else if (chunk->metadata.minor == DEFAULT_COMMAND_MINLC) {
 			Str::copy(prefatory, I"default");
 			Str::clear(matter);
-			WRITE_TO(matter, "%S", chunk->symbol_defined);
+			WRITE_TO(matter, "%S %S", chunk->symbol_defined, chunk->symbol_value);
+		} else if (chunk->metadata.minor == FORMAT_COMMAND_MINLC) {
+			Str::copy(prefatory, I"format");
+			Str::clear(matter);
+			WRITE_TO(matter, "%S %S", chunk->symbol_defined, chunk->symbol_value);
+		} else if (chunk->metadata.minor == SILENTLY_FORMAT_COMMAND_MINLC) {
+			suppress = TRUE;
 		}
 	}
 
@@ -693,7 +744,10 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 			Trees::make_child(WeaveTree::locale(tree,
 				par->holon->addendum_to->corresponding_chunk->owner, NULL, we_are_in), ap);
 		} else if (ct == 0) {
-			if (par->holon->webwide == FALSE) {
+			if (par->holon->file_form) {
+				if (at > 0) TextWeaver::commentary_text(tree, ap, I", and ");
+				TextWeaver::commentary_text(tree, ap, I"written to an external file");
+			} else if (par->holon->webwide == FALSE) {
 				if (at > 0) TextWeaver::commentary_text(tree, ap, I", and ");
 				TextWeaver::commentary_text(tree, ap, I"never used");
 			}

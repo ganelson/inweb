@@ -133,11 +133,11 @@ typedef struct weave_embed_node {
 	CLASS_DEFINITION
 } weave_embed_node;
 
-typedef struct weave_pmac_node {
-	struct ls_paragraph *pmac;
-	int defn;
+typedef struct weave_holon_usage_node {
+	struct ls_holon *holon;
+	struct markdown_variation *variation;
 	CLASS_DEFINITION
-} weave_pmac_node;
+} weave_holon_usage_node;
 
 typedef struct weave_tangler_command_node {
 	struct text_stream *command;
@@ -146,6 +146,7 @@ typedef struct weave_tangler_command_node {
 
 typedef struct weave_holon_declaration_node {
 	struct ls_holon *holon;
+	struct markdown_variation *variation;
 	CLASS_DEFINITION
 } weave_holon_declaration_node;
 
@@ -224,6 +225,13 @@ typedef struct weave_source_code_node {
 	CLASS_DEFINITION
 } weave_source_code_node;
 
+typedef struct weave_comment_in_holon_node {
+	struct text_stream *raw;
+	struct markdown_item *as_markdown;
+	struct markdown_variation *variation;
+	CLASS_DEFINITION
+} weave_comment_in_holon_node;
+
 typedef struct weave_url_node {
 	struct text_stream *url;
 	struct text_stream *content;
@@ -278,6 +286,11 @@ typedef struct weave_verbatim_node {
 	CLASS_DEFINITION
 } weave_verbatim_node;
 
+typedef struct weave_index_marker_node {
+	struct ls_paragraph *par;
+	CLASS_DEFINITION
+} weave_index_marker_node;
+
 @ =
 tree_type *weave_tree_type = NULL;
 tree_node_type *weave_document_node_type = NULL;
@@ -304,7 +317,7 @@ tree_node_type *weave_video_node_type = NULL;
 tree_node_type *weave_download_node_type = NULL;
 tree_node_type *weave_material_node_type = NULL;
 tree_node_type *weave_embed_node_type = NULL;
-tree_node_type *weave_pmac_node_type = NULL;
+tree_node_type *weave_holon_usage_node_type = NULL;
 tree_node_type *weave_tangler_command_node_type = NULL;
 tree_node_type *weave_vskip_node_type = NULL;
 tree_node_type *weave_chapter_node_type = NULL;
@@ -319,6 +332,7 @@ tree_node_type *weave_toc_line_node_type = NULL;
 tree_node_type *weave_chapter_title_page_node_type = NULL;
 tree_node_type *weave_defn_node_type = NULL;
 tree_node_type *weave_source_code_node_type = NULL;
+tree_node_type *weave_comment_in_holon_node_type = NULL;
 tree_node_type *weave_url_node_type = NULL;
 tree_node_type *weave_footnote_cue_node_type = NULL;
 tree_node_type *weave_begin_footnote_text_node_type = NULL;
@@ -330,6 +344,7 @@ tree_node_type *weave_inline_node_type = NULL;
 tree_node_type *weave_locale_node_type = NULL;
 tree_node_type *weave_maths_node_type = NULL;
 tree_node_type *weave_markdown_node_type = NULL;
+tree_node_type *weave_index_marker_node_type = NULL;
 
 heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) {
 	if (weave_tree_type == NULL) {
@@ -381,8 +396,8 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) 
 			Trees::new_node_type(I"material", weave_material_node_CLASS, NULL);
 		weave_embed_node_type =
 			Trees::new_node_type(I"embed", weave_embed_node_CLASS, NULL);
-		weave_pmac_node_type =
-			Trees::new_node_type(I"pmac", weave_pmac_node_CLASS, NULL);
+		weave_holon_usage_node_type =
+			Trees::new_node_type(I"pmac", weave_holon_usage_node_CLASS, NULL);
 		weave_tangler_command_node_type =
 			Trees::new_node_type(I"tangler command", weave_tangler_command_node_CLASS, NULL);
 		weave_vskip_node_type =
@@ -411,6 +426,8 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) 
 			Trees::new_node_type(I"defn", weave_defn_node_CLASS, NULL);
 		weave_source_code_node_type =
 			Trees::new_node_type(I"source_code", weave_source_code_node_CLASS, NULL);
+		weave_comment_in_holon_node_type =
+			Trees::new_node_type(I"comment in holon", weave_comment_in_holon_node_CLASS, NULL);
 		weave_url_node_type =
 			Trees::new_node_type(I"url", weave_url_node_CLASS, NULL);
 		weave_footnote_cue_node_type =
@@ -433,6 +450,8 @@ heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) 
 			Trees::new_node_type(I"mathematics", weave_maths_node_CLASS, NULL);
 		weave_markdown_node_type =
 			Trees::new_node_type(I"markdown", weave_markdown_node_CLASS, NULL);
+		weave_index_marker_node_type =
+			Trees::new_node_type(I"index marker", weave_index_marker_node_CLASS, NULL);
 
 		weave_verbatim_node_type =
 			Trees::new_node_type(I"verbatim", weave_verbatim_node_CLASS, NULL);
@@ -636,11 +655,11 @@ if and only if this is the place where the macro is defined -- the usual
 thing is to render some sort of equals sign after it, if so.
 
 =
-tree_node *WeaveTree::pmac(heterogeneous_tree *tree, ls_paragraph *pmac, int defn) {
-	weave_pmac_node *C = CREATE(weave_pmac_node);
-	C->pmac = pmac;
-	C->defn = defn;
-	return Trees::new_node(tree, weave_pmac_node_type, STORE_POINTER_weave_pmac_node(C));
+tree_node *WeaveTree::holon_usage(heterogeneous_tree *tree, ls_holon *holon, markdown_variation *variation) {
+	weave_holon_usage_node *C = CREATE(weave_holon_usage_node);
+	C->holon = holon;
+	C->variation = variation;
+	return Trees::new_node(tree, weave_holon_usage_node_type, STORE_POINTER_weave_holon_usage_node(C));
 }
 
 @ Similarly, if less often used:
@@ -722,9 +741,11 @@ tree_node *WeaveTree::weave_defn_node(heterogeneous_tree *tree, text_stream *key
 	return Trees::new_node(tree, weave_defn_node_type, STORE_POINTER_weave_defn_node(C));
 }
 
-tree_node *WeaveTree::holon_declaration(heterogeneous_tree *tree, ls_holon *holon) {
+tree_node *WeaveTree::holon_declaration(heterogeneous_tree *tree, ls_holon *holon,
+	markdown_variation *variation) {
 	weave_holon_declaration_node *C = CREATE(weave_holon_declaration_node);
 	C->holon = holon;
+	C->variation = variation;
 	return Trees::new_node(tree, weave_holon_declaration_node_type, STORE_POINTER_weave_holon_declaration_node(C));
 }
 
@@ -769,6 +790,15 @@ tree_node *WeaveTree::source_code(heterogeneous_tree *tree,
 	C->matter = Str::duplicate(matter);
 	C->colouring = Str::duplicate(colouring);
 	return Trees::new_node(tree, weave_source_code_node_type, STORE_POINTER_weave_source_code_node(C));
+}
+
+tree_node *WeaveTree::comment_in_holon(heterogeneous_tree *tree, text_stream *raw,
+	markdown_item *as_markdown, markdown_variation *variation) {
+	weave_comment_in_holon_node *C = CREATE(weave_comment_in_holon_node);
+	C->raw = Str::duplicate(raw);
+	C->as_markdown = as_markdown;
+	C->variation = variation;
+	return Trees::new_node(tree, weave_comment_in_holon_node_type, STORE_POINTER_weave_comment_in_holon_node(C));
 }
 
 tree_node *WeaveTree::url(heterogeneous_tree *tree, text_stream *url,
@@ -866,6 +896,12 @@ tree_node *WeaveTree::markdown_chunk(heterogeneous_tree *tree, markdown_item *co
 	C->content = content;
 	C->variation = variation;
 	return Trees::new_node(tree, weave_markdown_node_type, STORE_POINTER_weave_markdown_node(C));
+}
+
+tree_node *WeaveTree::index_marker(heterogeneous_tree *tree, ls_paragraph *par) {
+	weave_index_marker_node *C = CREATE(weave_index_marker_node);
+	C->par = par;
+	return Trees::new_node(tree, weave_index_marker_node_type, STORE_POINTER_weave_index_marker_node(C));
 }
 
 void WeaveTree::show(text_stream *OUT, heterogeneous_tree *T) {

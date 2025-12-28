@@ -1,0 +1,6 @@
+web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 16 paragraphs : 221 lines
+
+tag      | paragraphs tagged
+-------- | -----------------
+Outlinks | cnsr:1, qcsr:1   
+verdicts | cnsr:5, qcsr:6   

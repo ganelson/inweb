@@ -7,6 +7,8 @@ following traditional Inform conventions.
 
 @e ADVANCE_BUILD_CLSUB
 
+@e CREATING_BUILD_CLSW
+
 =
 void InwebAdvanceBuild::cli(void) {
 	CommandLine::begin_subcommand(ADVANCE_BUILD_CLSUB, U"advance-build");
@@ -22,20 +24,48 @@ void InwebAdvanceBuild::cli(void) {
 		U"with a message like one of these:\n\n"
 		U"    Build code advanced from 6X87 (set on 8 September 2025) to 6X88\n"
 		U"    Build code remains 6X88 since it is still 16 September 2025");
+
+	CommandLine::declare_boolean_switch(CREATING_BUILD_CLSW, U"creating", 1,
+		U"start a new build file if it does not already exist", FALSE);
+
 	CommandLine::end_subcommand();
+}
+
+@ Changing the settings:
+
+=
+typedef struct inweb_advance_build_settings {
+	int creating_setting;
+} inweb_advance_build_settings;
+
+void InwebAdvanceBuild::initialise(inweb_advance_build_settings *iabs) {
+	iabs->creating_setting = FALSE;
+}
+
+int InwebAdvanceBuild::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
+	inweb_advance_build_settings *iabs = &(ins->advance_build_settings);
+	switch (id) {
+		case CREATING_BUILD_CLSW: iabs->creating_setting = val; return TRUE;
+	}
+	return FALSE;
 }
 
 @ In operation:
 
 =
 void InwebAdvanceBuild::run(inweb_instructions *ins) {
+	inweb_advance_build_settings *iabs = &(ins->advance_build_settings);
 	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_ALLOWED, FALSE, FALSE);
-	if (op.W) BuildFiles::advance_for_web(op.W);
-	else if ((op.F) && (TextFiles::exists(op.F)))
-		BuildFiles::advance(op.F);
-	else if (op.P) {
+	if (op.W) {
+		BuildFiles::advance_for_web(op.W, iabs->creating_setting);
+	} else if (op.F) {
+		if (TextFiles::exists(op.F)) BuildFiles::advance(op.F);
+		else if (iabs->creating_setting) BuildFiles::new(op.F);
+		else Errors::fatal_with_file("build file not found", op.F);
+	} else {
 		filename *F = Filenames::in(op.P, I"build.txt");
 		if (TextFiles::exists(F)) BuildFiles::advance(F);
+		else if (iabs->creating_setting) BuildFiles::new(F);
 		else Errors::fatal_with_file("build file not found", F);
-	} else Errors::fatal("must specify a web, a path or an (existing) file");
+	}
 }

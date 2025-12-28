@@ -1,4 +1,4 @@
-# This gitignore was automatically written by inweb -gitignore
+# This gitignore was automatically written by inweb make-gitignore
 # and is not intended for human editing
 
 .DS_Store
@@ -27,7 +27,8 @@ Examples/*.html
 Examples/goldbach/Tangled
 Examples/goldbach/Woven
 Tests/Test Cases/_Scan_Actual/
-Tests/Test Cases/_Tangled_Actual/
+Tests/Test Cases/_Results_Actual/
+Tests/Test Errors/_Results_Actual/
 Tests/Test Cases/_Tangled_Console/
 Tests/Test Painter/_Results_Actual/
 Tests/Test Weave Tree/_Results_Actual/

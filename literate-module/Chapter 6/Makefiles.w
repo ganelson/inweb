@@ -7,7 +7,7 @@ We will use //foundation: Preprocessor// with four special macros and one
 special loop construct.
 
 =
-void Makefiles::write(ls_web *W, filename *prototype, filename *F,
+linked_list *Makefiles::write(ls_web *W, filename *prototype, filename *F,
 	text_stream *platform) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor::new_macro(L,
@@ -38,7 +38,7 @@ void Makefiles::write(ls_web *W, filename *prototype, filename *F,
 	WRITE_TO(header, "# and is not intended for human editing\n\n");
 	WRITE_TO(STDOUT, "(Read script from %f)\n", prototype);
 
-	Preprocessor::preprocess(prototype, F, header, L,
+	return Preprocessor::preprocess(prototype, F, header, L,
 		STORE_POINTER_makefile_specifics(specifics), '#', ISO_ENC);
 }
 

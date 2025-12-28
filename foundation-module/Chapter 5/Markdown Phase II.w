@@ -62,7 +62,7 @@ markdown_item *MDInlineParser::inline(markdown_variation *variation,
 		mask += UNDERSCORE_EMPHASIS_BIT;
 	if (MarkdownVariations::supports(variation, STRIKETHROUGH_MARKDOWNFEATURE))
 		mask += TILDE_STRIKETHROUGH_BIT;
-	if (MarkdownVariations::supports(variation, TEX_MARKDOWNFEATURE))
+	if (MarkdownVariations::supports(variation, ALT_TEX_MARKDOWNFEATURE))
 		mask += DOLLAR_TEX_BIT;
 	if (MarkdownVariations::supports(variation, INWEB_LINKS_MARKDOWNFEATURE))
 		mask += SLASHSLASH_LINK_BIT;
@@ -82,6 +82,7 @@ markdown_item *MDInlineParser::make_inline_chain(markdown_variation *variation,
 		} else {
 			if (escaped == FALSE) {
 				@<Does a backtick begin here?@>;
+				@<Does TeX mathematics begin here?@>;
 				@<Does an index mark begin here?@>;
 				@<Does an autolink begin here?@>;
 				@<Does a raw HTML tag begin here?@>;
@@ -163,6 +164,45 @@ space characters, a single space character is removed from the front and back."
 		Markdown::set_backtick_count(md, count);
 		Markdown::add_to(md, owner);
 	}
+
+@ Until December 2025, TeX was handled as a form of inline emphasis markup, that
+is, |$| and |$$| were treated as of equal precedence with |_| and |*|. This
+worked well in some ways, but had poor running time on really messy TeX code
+because there were too many potential matches, and also meant that e.g.
+|now read~$N$| would fail to work because the non-breaking space |~| would
+prevent |$| from being recognised as a TeX opening. It seems cleaner to regard
+TeX as on a part with backticked code in precedence, so that's what we now do,
+and this removes both problems.
+
+The code for the old way remains, though, as the |ALT_TEX_MARKDOWNFEATURE|.
+They should not both be used.
+
+@<Does TeX mathematics begin here?@> =
+	if (MarkdownVariations::supports(variation, TEX_MARKDOWNFEATURE)) {
+		if (Str::get_at(text, i) == '$') {
+			int j = i+1, count = 1;
+			if (Str::get_at(text, j) == '$') j++, count++;
+			for (; j<Str::len(text); j++) {
+				if ((Str::get_at(text, j) == '$') &&
+					((count == 1) || (Str::get_at(text, j+1) == '$'))) {
+					if (i-1 >= from) {
+						markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+						Markdown::add_to(md, owner);
+					}
+					@<Insert a TeX maths item@>;
+					i = j+count; from = j+count;
+					goto ContinueOuter;
+				}
+			}
+			
+		}
+	}
+
+@<Insert a TeX maths item@> =
+	int start = i+count, end = j-1;
+	markdown_item *md =
+		Markdown::new_slice((count == 1)?TEX_MIT:DISPLAYED_TEX_MIT, Str::duplicate(text), start, end);
+	Markdown::add_to(md, owner);
 
 @ This provides an extension borrowed from traditional TeX manual-indexing
 notation, also used by indoc.

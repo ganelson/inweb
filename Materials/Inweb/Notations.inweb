@@ -1,6 +1,5 @@
-Notation "Inweb" {
-	legacy name "2"
-	
+Notation "InwebClassic" {
+	recognise .w
 	recognise .*.w
 	
 	classify {
@@ -113,8 +112,8 @@ Notation "Inweb" {
 	}
 	
 	Conventions {
-		commentary uses simplified notation
-		read a summary under the title as the purpose
+		commentary uses simplified markup
+		a summary under the title is read as the purpose
 		holon names are written between @< and @>
 		metadata in strings are written between [[ and ]]
 		paragraph tags are written between ^" and "
@@ -169,8 +168,8 @@ Notation "MarkdownCode" {
 	}
 	
 	Conventions {
-		commentary uses Markdown notation
-		read an italicised summary under the title as the purpose
+		commentary uses Markdown markup
+		an italicised summary under the title is read as the purpose
 		holon names are written between {{ and }}
 		metadata in strings are written between [[ and ]]
 		paragraph tags are written between ^" and "
@@ -185,8 +184,8 @@ Notation "Markdown" {
 	}
 	
 	Conventions {
-		commentary uses Markdown notation
-		read an italicised summary under the title as the purpose
+		commentary uses Markdown markup
+		an italicised summary under the title is read as the purpose
 		paragraph numbers are invisible
 	}
 }

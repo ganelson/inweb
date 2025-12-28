@@ -15,7 +15,7 @@ void InwebMap::cli(void) {
 		U"Shows a sitemap for the website which is (or would be) woven from the "
 		U"colony of the WEB, or the colony whose colony file is FILE.");
 
-	CommandLine::declare_boolean_switch(MAP_FULLY_CLSW, U"full", 1,
+	CommandLine::declare_boolean_switch(MAP_FULLY_CLSW, U"fuller", 1,
 		U"draw up a larger map (may take some time)", FALSE);
 
 	CommandLine::end_subcommand();

@@ -27,10 +27,12 @@ typedef struct ls_web {
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_notation *web_syntax; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
+	struct ls_index *index;
 
 	struct programming_language *web_language; /* in which most of the sections are written */
 	struct linked_list *tangle_target_names; /* of |text_stream| */
 	struct linked_list *tangle_targets; /* of |tangle_target| */
+	struct ls_chunk *definitions_chunk;
 
 	struct filename *contents_filename; /* or |NULL| for a single-file web */
 	struct linked_list *header_filenames; /* of |filename| */
@@ -71,9 +73,11 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	W->version_number = VersionNumbers::null();
 	W->web_syntax = NULL;
 	W->chaptered = FALSE;
+	W->index = WebIndexing::new_index();
 	W->chapters = NEW_LINKED_LIST(ls_chapter);
 	W->tangle_target_names = NEW_LINKED_LIST(text_stream);
 	W->tangle_targets = NEW_LINKED_LIST(tangle_target);
+	W->definitions_chunk = NULL;
 	W->web_language = NULL;
 	W->header_filenames = NEW_LINKED_LIST(filename);
 	W->main_module = WebModules::create_main_module(W);
@@ -119,12 +123,12 @@ we don't need to, and nor if the syntax doesn't use Markdown anyway.
 
 =
 void WebStructure::parse_markdown(ls_web *W) {
+	markdown_variation *variation = WebNotation::commentary_variation(W);
 	ls_chapter *Ch;
 	ls_section *S;
 	LOOP_OVER_LINKED_LIST(Ch, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, Ch->sections)
-			LiterateSource::parse_markdown(S->literate_source,
-				WebNotation::commentary_variation(W));
+			LiterateSource::parse_markdown(S->literate_source, variation);
 	WebErrors::issue_all_recorded(W);
 }
 
@@ -253,7 +257,7 @@ void WebStructure::print_web_identity(ls_web *W) {
 		PRINT(" (%S program", WebStructure::web_language(W)->language_name);
 		commented = TRUE;
 	}
-	if ((W->web_syntax) && (Str::ne_insensitive(W->web_syntax->name, I"Inweb"))) {
+	if (W->web_syntax) {
 		if (commented) PRINT(" in "); else PRINT(" (");
 		PRINT("%S notation", W->web_syntax->name);
 		commented = TRUE;
@@ -292,7 +296,6 @@ typedef struct ls_chapter {
 
 	struct text_stream *ch_language_name; /* in which most of the sections are written */
 	struct programming_language *ch_language; /* in which this chapter is written */
-
 
 	void *weaving_ref;
 	void *tangling_ref;
@@ -520,9 +523,23 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			@<Read one section from a file@>;
+	int dc = 0;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
 			Holons::vet_usage(S->literate_source);
+			for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par)
+				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+					if (chunk->chunk_type == DEFINITIONS_HERE_LSCT) {
+						dc++;
+						if (dc > 1) {
+							WebErrors::record_at(
+								I"definitions position set for a second time",
+								chunk->first_line);
+						} else {
+							W->definitions_chunk = chunk;
+						}
+					}
+		}
 	WebErrors::issue_all_recorded(W);
 	WCL::report_errors(W->declaration);
 }
@@ -581,7 +598,20 @@ void WebStructure::scan_source_line(text_stream *line, text_file_position *tfp, 
 	int l = Str::len(line) - 1;
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
-	LiterateSource::feed_line(S->literate_source, tfp, line);
+	ls_line *L = LiterateSource::feed_line(S->literate_source, tfp, line);
+	if (L->classification.major == INCLUDE_FILE_MAJLC) {
+		filename *F = Filenames::from_text_relative(
+			Filenames::up(tfp->text_file_filename), L->classification.operand1);
+		if (TextFiles::exists(F)) {
+			TextFiles::read(F, FALSE, "can't open included file", TRUE,
+				WebStructure::scan_source_line, NULL, (void *) S);
+		} else {
+			Errors::fatal_with_file("include file not found", F);
+		}
+		L->classification.major = COMMENTARY_MAJLC;
+		L->classification.minor = NO_MINLC;
+		L->classification.operand1 = Str::new();
+	}
 }
 
 @h Language.

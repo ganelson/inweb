@@ -145,8 +145,6 @@ typedef struct programming_language {
 	text_stream *negative_literal_prefix;
 	text_stream *shebang;
 	text_stream *line_marker;
-	text_stream *before_holon_expansion;
-	text_stream *after_holon_expansion;
 	int indent_holon_expansion;
 	text_stream *start_definition;
 	text_stream *prolong_definition;
@@ -158,7 +156,6 @@ typedef struct programming_language {
 	inchar32_t type_notation[MAX_ILDF_REGEXP_LENGTH];
 	inchar32_t function_notation[MAX_ILDF_REGEXP_LENGTH];
 
-	int suppress_disclaimer;
 	int C_like; /* languages with this set have access to extra features */
 
 	struct linked_list *reserved_words; /* of |reserved_word| */
@@ -240,9 +237,7 @@ void Languages::resolve_declaration(wcl_declaration *D) {
 	pl->negative_literal_prefix = NULL;
 	pl->shebang = NULL;
 	pl->line_marker = NULL;
-	pl->before_holon_expansion = NULL;
 	pl->indent_holon_expansion = FALSE;
-	pl->after_holon_expansion = NULL;
 	pl->start_definition = NULL;
 	pl->prolong_definition = NULL;
 	pl->end_definition = NULL;
@@ -251,7 +246,6 @@ void Languages::resolve_declaration(wcl_declaration *D) {
 	pl->start_ifndef = NULL;
 	pl->end_ifndef = NULL;
 	pl->C_like = FALSE;
-	pl->suppress_disclaimer = FALSE;
 	pl->type_notation[0] = 0;
 	pl->function_notation[0] = 0;
 
@@ -339,12 +333,8 @@ declare a reserved keyword, or set a key to a value.
 			pl->shebang = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Line Marker"))
 			pl->line_marker = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Before Named Paragraph Expansion"))
-			pl->before_holon_expansion = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Indent Named Paragraph Expansion"))
 			pl->indent_holon_expansion = Languages::boolean(state, value, tfp);
-		else if (Str::eq(key, I"After Named Paragraph Expansion"))
-			pl->after_holon_expansion = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Start Definition"))
 			pl->start_definition = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"Prolong Definition"))
@@ -361,8 +351,6 @@ declare a reserved keyword, or set a key to a value.
 			pl->end_ifndef = Languages::text(state, value, tfp, TRUE);
 		else if (Str::eq(key, I"C-Like"))
 			pl->C_like = Languages::boolean(state, value, tfp);
-		else if (Str::eq(key, I"Suppress Disclaimer"))
-			pl->suppress_disclaimer = Languages::boolean(state, value, tfp);
 		else if (Str::eq(key, I"Supports Namespaces"))
 			pl->supports_namespaces = Languages::boolean(state, value, tfp);
 		else if (Str::eq(key, I"Function Declaration Notation"))

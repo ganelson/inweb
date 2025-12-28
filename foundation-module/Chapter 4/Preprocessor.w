@@ -20,18 +20,21 @@ set up with special meanings to the situation, and |specifics| is a general
 pointer to any data those special meanings need to use. |encoding| should be
 one of |UTF8_ENC| or |ISO_ENC|.
 
+If |to| is |NULL|, we write to standard output instead of a file.
+
 @d PROTECTED_OPEN_BRACE_PPCHAR 0x25A0
 @d PROTECTED_CLOSE_BRACE_PPCHAR 0x25A1
 @d PROTECTED_BLANK_PPCHAR 0x25A2
 
 =
-void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *header,
+linked_list *Preprocessor::preprocess(filename *prototype, filename *F, text_stream *header,
 	linked_list *special_macros, general_pointer specifics, inchar32_t comment_char,
 	int encoding) {
 	struct text_stream processed_file;
-	if (STREAM_OPEN_TO_FILE(&processed_file, F, encoding) == FALSE)
+	struct text_stream *OUT = &processed_file;
+	if (F == NULL) OUT = STDOUT;
+	else if (STREAM_OPEN_TO_FILE(&processed_file, F, encoding) == FALSE)
 		Errors::fatal_with_file("unable to write tangled file", F);
-	text_stream *OUT = &processed_file;
 	WRITE("%S", header);
 
 	preprocessor_state PPS;
@@ -44,7 +47,8 @@ void Preprocessor::preprocess(filename *prototype, filename *F, text_stream *hea
 		else if (c == PROTECTED_CLOSE_BRACE_PPCHAR) PUT('}');
 		else if (c != PROTECTED_BLANK_PPCHAR) PUT(c);
 	}
-	STREAM_CLOSE(OUT);
+	if (F) STREAM_CLOSE(OUT);
+	return PPS.errors;
 }
 
 @ The following imposing-looking set of state data is used as we work through
@@ -65,6 +69,7 @@ typedef struct preprocessor_state {
 	struct preprocessor_variable_set *stack_frame;
 	struct linked_list *known_macros; /* of |preprocessor_macro| */
 	struct general_pointer specifics;
+	struct linked_list *errors; /* of |preprocessor_error| */
 	inchar32_t comment_character;
 } preprocessor_state;
 
@@ -86,6 +91,7 @@ typedef struct preprocessor_loop {
 	PPS.stack_frame = PPS.global_variables;
 	PPS.known_macros = Preprocessor::list_of_reserved_macros(special_macros);
 	PPS.specifics = specifics;
+	PPS.errors = NEW_LINKED_LIST(preprocessor_error);
 	PPS.comment_character = comment_char;
 
 @ Conceptually, each loop runs a variable with a given name through a series
@@ -143,9 +149,18 @@ is the special comment character: often |#|, but not necessarily.
 				case '\\':
 					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
 					break;
+				case 'n':
+					Str::put_at(line, i, '\n');
+					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
+					break;
+				case 't':
+					Str::put_at(line, i, '\t');
+					Str::put_at(line, i+1, PROTECTED_BLANK_PPCHAR);
+					break;
 				case ' ': case '\t': case '\n': case '\r': case 0: break;
 				default:
-					Errors::in_text_file("backslash '\\' must be followed by '{', '}' or '\\'", tfp);
+					Preprocessor::error(PPS, tfp,
+						I"backslash '\\' must be followed by 'n', 't', '{', '}' or '\\'");
 					break;
 			}
 		}
@@ -161,32 +176,32 @@ is the special comment character: often |#|, but not necessarily.
 
 @<Begin a bare definition@> =
 	if (PPS->defining)
-		Errors::in_text_file("nested definitions are not allowed", tfp);
+		Preprocessor::error(PPS, tfp, I"nested definitions are not allowed");
 	text_stream *name = mr.exp[0];
 	text_stream *parameter_specification = Str::new();
-	PPS->defining = Preprocessor::new_macro(PPS->known_macros, name,
+	PPS->defining = Preprocessor::new_internal_macro(PPS, PPS->known_macros, name,
 		parameter_specification, Preprocessor::default_expander, tfp);
 	Regexp::dispose_of(&mr);
 	return;
 
 @<Begin a definition@> =
 	if (PPS->defining)
-		Errors::in_text_file("nested definitions are not allowed", tfp);
+		Preprocessor::error(PPS, tfp, I"nested definitions are not allowed");
 	text_stream *name = mr.exp[0];
 	text_stream *parameter_specification = mr.exp[1];
-	PPS->defining = Preprocessor::new_macro(PPS->known_macros, name,
+	PPS->defining = Preprocessor::new_internal_macro(PPS, PPS->known_macros, name,
 		parameter_specification, Preprocessor::default_expander, tfp);
 	Regexp::dispose_of(&mr);
 	return;
 
 @<Continue a definition@> =
-	Preprocessor::add_line_to_macro(PPS->defining, line, tfp);
+	Preprocessor::add_line_to_macro(PPS, PPS->defining, line, tfp);
 	Regexp::dispose_of(&mr);
 	return;
 
 @<End a definition@> =
 	if (PPS->defining == NULL)
-		Errors::in_text_file("{end-define} without {define: ...}", tfp);
+		Preprocessor::error(PPS, tfp, I"{end-define} without {define: ...}");
 	PPS->defining = NULL;
 	Regexp::dispose_of(&mr);
 	return;
@@ -231,12 +246,12 @@ void Preprocessor::expand(text_stream *text, text_file_position *tfp, preprocess
 			if (bl == 0) after_times = TRUE;
 			else PUT_TO(braced_matter, c);
 		} else {
-			if (bl < 0) Errors::in_text_file("too many '}'s", tfp);
+			if (bl < 0) Preprocessor::error(PPS, tfp, I"too many '}'s");
 			if (bl == 0) PUT_TO(before_matter, c);
 			else PUT_TO(braced_matter, c);
 		}
 	}
-	if (bl > 0) Errors::in_text_file("too many '{'s", tfp);
+	if (bl > 0) Preprocessor::error(PPS, tfp, I"too many '{'s");
 	if (after_times) {
 		@<Expand braced matter@>;
 	} else {
@@ -258,7 +273,10 @@ and the |after_matter| will be | ocean {BEHAVIOUR}|.
 		text_stream *identifier = braced_matter;
 		text_stream *parameter_settings = NULL;
 		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, identifier, U"(%C+) (%c*)")) {
+		if (Regexp::match(&mr, identifier, U"(%C+)(: %c*)")) {
+			identifier = mr.exp[0];
+			parameter_settings = mr.exp[1];
+		} else if (Regexp::match(&mr, identifier, U"(%C+) (%c*)")) {
 			identifier = mr.exp[0];
 			parameter_settings = mr.exp[1];
 		}
@@ -268,7 +286,7 @@ and the |after_matter| will be | ocean {BEHAVIOUR}|.
 		if (mm == NULL) {
 			TEMPORARY_TEXT(erm)
 			WRITE_TO(erm, "unknown macro '%S'", identifier);
-			Errors::in_text_file_S(erm, tfp);
+			Preprocessor::error(PPS, tfp, erm);
 			DISCARD_TEXT(erm)
 		} else {
 			@<Expand a macro@>;
@@ -365,7 +383,7 @@ to its value:
 	} else {
 		TEMPORARY_TEXT(erm)
 		WRITE_TO(erm, "unknown variable '%S'", braced_matter);
-		Errors::in_text_file_S(erm, tfp);
+		Preprocessor::error(PPS, tfp, erm);
 		DISCARD_TEXT(erm)
 	}
 
@@ -389,7 +407,7 @@ So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
 
 @<Parse the parameters supplied@> =
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, parameter_settings, U" *(%C+): *(%c*)")) {
+	while (Regexp::match(&mr, parameter_settings, U" *(%C*): *(%c*)")) {
 		text_stream *setting = mr.exp[0];
 		text_stream *value = mr.exp[1];
 		text_stream *remainder = NULL;
@@ -410,8 +428,8 @@ So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
 			}
 		if (found == FALSE) {
 			TEMPORARY_TEXT(erm)
-			WRITE_TO(erm, "unknown parameter '%S:'", setting);
-			Errors::in_text_file_S(erm, tfp);
+			WRITE_TO(erm, "unknown parameter '%S:' of '%S'", setting, mm->identifier);
+			Preprocessor::error(PPS, tfp, erm);
 			DISCARD_TEXT(erm)
 		}
 		Str::clear(parameter_settings);
@@ -420,15 +438,16 @@ So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
 	}
 	Regexp::dispose_of(&mr);
 	if (Str::is_whitespace(parameter_settings) == FALSE)
-		Errors::in_text_file("parameter list is malformed", tfp);
+		Preprocessor::error(PPS, tfp, I"parameter list is malformed");
 
 @<Check that all compulsory parameters have been supplied@> =
 	for (int i=0; i<mm->no_parameters; i++)
 		if (parameter_values[i] == NULL)
 			if (mm->parameters[i]->optional == FALSE) {
 				TEMPORARY_TEXT(erm)
-				WRITE_TO(erm, "compulsory parameter '%S:' not given", mm->parameters[i]->name);
-				Errors::in_text_file_S(erm, tfp);
+				WRITE_TO(erm, "compulsory parameter '%S:' of '%S' not given",
+					mm->parameters[i]->name, mm->identifier);
+				Preprocessor::error(PPS, tfp, erm);
 				DISCARD_TEXT(erm)
 			}
 
@@ -438,7 +457,7 @@ artefact of the current scanning algorithm, which might some day change.
 
 @<Initialise repetition data for the loop@> =
 	if (PPS->repeat_sp >= MAX_PREPROCESSOR_LOOP_DEPTH) {
-		Errors::in_text_file("repetition too deep", tfp);
+		Preprocessor::error(PPS, tfp, I"repetition too deep");
 	} else {
 		loop = &(PPS->repeat_data[PPS->repeat_sp++]);
 		PPS->shadow_sp = 1;
@@ -449,6 +468,26 @@ artefact of the current scanning algorithm, which might some day change.
 		loop->repeat_saved_dest = PPS->dest;
 		PPS->dest = Str::new();
 	}
+
+@h Errors.
+
+=
+typedef struct preprocessor_error {
+	struct text_stream *message;
+	struct text_file_position at;
+	CLASS_DEFINITION
+} preprocessor_error;
+
+void Preprocessor::error(preprocessor_state *PPS, text_file_position *tfp, text_stream *text) {
+	if (PPS) {
+		preprocessor_error *err = CREATE(preprocessor_error);
+		err->message = Str::duplicate(text);
+		err->at = *tfp;
+		ADD_TO_LINKED_LIST(err, preprocessor_error, PPS->errors);
+	} else {
+		Errors::in_text_file_S(text, tfp);
+	}
+}
 
 @h Variables.
 Names of variables should conform to:
@@ -548,7 +587,7 @@ For example, the first |repeat| loop here uses the macros |repeat-block| and
 |end-repeat-block|, and the second uses |repeat-span| and |end-repeat-span|.
 = (text)
 	{repeat with SEA in Black, Caspian}
-	Welcome to the SEA Sea.
+	Welcome to the {SEA} Sea.
 	{end-repeat}
 	...
 	Seas available:{repeat with SEA in Sargasso, Libyan} {SEA} Sea;{end-repeat}
@@ -605,9 +644,17 @@ fact we expect more like 10.
 preprocessor_macro *Preprocessor::new_macro(linked_list *L, text_stream *name,
 	text_stream *parameter_specification,
 	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *),
+	text_file_position *tfp) {
+	return Preprocessor::new_internal_macro(NULL, L, name, parameter_specification,
+		expander, tfp);
+}
+
+preprocessor_macro *Preprocessor::new_internal_macro(preprocessor_state *PPS,
+	linked_list *L, text_stream *name, text_stream *parameter_specification,
+	void (*expander)(preprocessor_macro *, preprocessor_state *, text_stream **, preprocessor_loop *, text_file_position *),
 	text_file_position *tfp) {	
 	if (Preprocessor::find_macro(L, name))
-		Errors::in_text_file("a macro with this name already exists", tfp);
+		Preprocessor::error(PPS, tfp, I"a macro with this name already exists");
 	preprocessor_macro *new_macro = CREATE(preprocessor_macro);
 	@<Initialise the macro@>;
 	@<Parse the parameter list@>;
@@ -632,20 +679,20 @@ preprocessor_macro *Preprocessor::new_macro(linked_list *L, text_stream *name,
 @<Parse the parameter list@> =
 	text_stream *spec = Str::duplicate(parameter_specification);
 	match_results mr = Regexp::create_mr();
-	while (Regexp::match(&mr, spec, U" *(%C+): *(%C+) *(%c*)")) {
+	while (Regexp::match(&mr, spec, U" *(%C*): *(%C+) *(%c*)")) {
 		text_stream *par_name = mr.exp[0];
 		text_stream *token_name = mr.exp[1];
 		Str::clear(spec);
 		Str::copy(spec, mr.exp[2]);
 		if (new_macro->no_parameters >= MAX_PP_MACRO_PARAMETERS) {
-			Errors::in_text_file("too many parameters in this definition", tfp);
+			Preprocessor::error(PPS, tfp, I"too many parameters in this definition");
 		} else {
 			@<Add parameter to macro@>;
 		}
 	}
 	Regexp::dispose_of(&mr);
 	if (Str::is_whitespace(spec) == FALSE)
-		Errors::in_text_file("parameter list for this definition is malformed", tfp);
+		Preprocessor::error(PPS, tfp, I"parameter list for this definition is malformed");
 
 @<Add parameter to macro@> =
 	preprocessor_macro_parameter *new_parameter = CREATE(preprocessor_macro_parameter);
@@ -662,10 +709,10 @@ preprocessor_macro *Preprocessor::new_macro(linked_list *L, text_stream *name,
 expander function is //Preprocessor::default_expander//).
 
 =
-void Preprocessor::add_line_to_macro(preprocessor_macro *mm, text_stream *line,
-	text_file_position *tfp) {
+void Preprocessor::add_line_to_macro(preprocessor_state *PPS, preprocessor_macro *mm,
+	text_stream *line, text_file_position *tfp) {
 	if (mm->no_lines >= MAX_PP_MACRO_LINES) {
-		Errors::in_text_file("too many lines in this definition", tfp);
+		Preprocessor::error(PPS, tfp, I"too many lines in this definition");
 	} else {
 		mm->lines[mm->no_lines++] = Str::duplicate(line);
 	}
@@ -775,7 +822,7 @@ void Preprocessor::set_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream *value = parameter_values[1];
 	
 	if (Preprocessor::acceptable_variable_name(name) == FALSE)
-		Errors::in_text_file("improper variable name", tfp);
+		Preprocessor::error(PPS, tfp, I"improper variable name");
 	
 	preprocessor_variable *var = Preprocessor::ensure_variable(name, PPS->stack_frame);
 	Preprocessor::write_variable(var, value);
@@ -816,7 +863,7 @@ each in turn, and expand the material.
 void Preprocessor::end_loop_expander(preprocessor_macro *mm, preprocessor_state *PPS,
 	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
 	PPS->shadow_sp = 0;
-	if (PPS->repeat_sp == 0) Errors::in_text_file("end without repeat", tfp);
+	if (PPS->repeat_sp == 0) Preprocessor::error(PPS, tfp, I"{end-repeat} without {repeat}");
 	else {
 		preprocessor_loop *loop = &(PPS->repeat_data[--(PPS->repeat_sp)]);
 		text_stream *matter = PPS->dest;

@@ -63,6 +63,8 @@ line, which has one of the three minors given below.
 @e DEFINE_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
 @e DEFAULT_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
 @e ENUMERATE_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
+@e FORMAT_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
+@e SILENTLY_FORMAT_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
 
 @ Definitions can continue onto multiple lines, and if so, all after the first
 have this major, and no minor:
@@ -74,6 +76,8 @@ of the code followed usually by an equals sign, with this major:
 
 @e HOLON_DECLARATION_MAJLC
 @e ADDENDUM_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
+@e FILE_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
+@e FILE_ADDENDUM_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
 
 @ An insertion marks to include a picture or similar in the woven web, and
 always has one of the following minors.
@@ -94,6 +98,14 @@ always has one of the following minors.
 form of commentary:
 
 @e QUOTATION_MAJLC
+
+@ This exists only very temporarily, to mark inclusion points for files:
+
+@e INCLUDE_FILE_MAJLC
+
+@ And this is a positional marker:
+
+@e DEFINITIONS_HERE_MAJLC
 
 @ The following conditions are useful for deciding what a line might be, on the
 basis of what the previous one was:
@@ -214,6 +226,7 @@ typedef struct ls_class_parsing {
 	struct text_stream *residue;
 	struct ls_class residue_cf;
 	struct text_stream *error; /* filled in only when a parsing error occurs */
+	struct linked_list *index_marks; /* or |NULL| if there are none */
 } ls_class_parsing;
 
 ls_class_parsing LineClassification::new_results(int major, int minor) {
@@ -225,6 +238,7 @@ ls_class_parsing LineClassification::new_results(int major, int minor) {
 	results.implies_extract = FALSE;
 	results.implies_extract_end = FALSE;
 	results.error = NULL;
+	results.index_marks = NULL;
 	return results;
 }
 
@@ -235,17 +249,27 @@ ls_class_parsing LineClassification::no_results(void) {
 ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *line,
 	ls_class *previously, int sff) {
 	ls_class_parsing results;
+	text_stream *error = NULL;
+	TEMPORARY_TEXT(indexed_text)
+	linked_list *L = WebIndexing::index_from_line(indexed_text, line, syntax, &error);
+
 	if (syntax->line_classifier) {
-		results = (*(syntax->line_classifier))(syntax, line, previously);
-		if (results.cf.major != UNCLASSIFIED_MAJLC) return results;
+		results = (*(syntax->line_classifier))(syntax, indexed_text, previously);
+		if (results.cf.major != UNCLASSIFIED_MAJLC) @<Exit with the results@>;
 	}
 
-	results = LineClassification::rules_based_classifier(syntax, line, previously, sff);
-	if (results.cf.major != UNCLASSIFIED_MAJLC) return results;
+	results = LineClassification::rules_based_classifier(syntax, indexed_text, previously, sff);
+	if (results.cf.major != UNCLASSIFIED_MAJLC) @<Exit with the results@>;
 
-	results = LineClassification::all_code_classifier(syntax, line, previously);
-	return results;
+	results = LineClassification::all_code_classifier(syntax, indexed_text, previously);
+	@<Exit with the results@>;
 }
+
+@<Exit with the results@> =
+	results.index_marks = L;
+	if (error) results.error = error;
+	DISCARD_TEXT(indexed_text)
+	return results;
 
 @ Two trivial examples are provided here. The first classifies the entire file
 as commentary, with no code in: in other words, regards the file as plain text.
@@ -476,6 +500,18 @@ match, we consider that line to be code.
 			res.cf.operand2 = Str::duplicate(second);
 			break;
 
+		case FORMATIDENTIFIER_WSRULEOUTCOME:
+			res = LineClassification::new_results(DEFINITION_MAJLC, FORMAT_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.operand2 = Str::duplicate(second);
+			break;
+
+		case SFORMATIDENTIFIER_WSRULEOUTCOME:
+			res = LineClassification::new_results(DEFINITION_MAJLC, SILENTLY_FORMAT_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.operand2 = Str::duplicate(second);
+			break;
+
 		case ENUMERATION_WSRULEOUTCOME:
 			res = LineClassification::new_results(DEFINITION_MAJLC, ENUMERATE_COMMAND_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
@@ -493,6 +529,23 @@ match, we consider that line to be code.
 			res.cf.operand1 = Str::duplicate(material);
 			if (follows_extract) res.implies_paragraph = TRUE;
 			break;
+
+		case MAKEDEFINITIONSHERE_WSRULEOUTCOME:
+			res = LineClassification::new_results(DEFINITIONS_HERE_MAJLC, NO_MINLC);
+			if (follows_extract) res.implies_paragraph = TRUE;
+			break;
+
+		case FILEHOLONDECLARATION_WSRULEOUTCOME:
+			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, FILE_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			if (follows_extract) res.implies_paragraph = TRUE;
+			break;
+
+		case FILEHOLONDECLARATIONADDENDUM_WSRULEOUTCOME:
+			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, FILE_ADDENDUM_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			if (follows_extract) res.implies_paragraph = TRUE;
+			break;
 		
 		case BEGINPARAGRAPH_WSRULEOUTCOME:
 			if (Str::len(material) > 0)
@@ -500,6 +553,61 @@ match, we consider that line to be code.
 			else
 				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 100;
+			break;
+		
+		case BEGINHEADINGPARAGRAPH_WSRULEOUTCOME:
+			if (Str::len(material) > 0)
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
+			else
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 99;
+			break;
+		
+		case HEADINGPARAGRAPH1_WSRULEOUTCOME:
+			if (Str::len(material) > 0)
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
+			else
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 101;
+			break;
+		
+		case HEADINGPARAGRAPH2_WSRULEOUTCOME:
+			if (Str::len(material) > 0)
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
+			else
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 102;
+			break;
+		
+		case HEADINGPARAGRAPH3_WSRULEOUTCOME:
+			if (Str::len(material) > 0)
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
+			else
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 103;
+			break;
+		
+		case HEADINGPARAGRAPH4_WSRULEOUTCOME:
+			if (Str::len(material) > 0)
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
+			else
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 104;
+			break;
+		
+		case HEADINGPARAGRAPH5_WSRULEOUTCOME:
+			if (Str::len(material) > 0)
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
+			else
+				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			res.cf.options_bitmap = 105;
 			break;
 
 		case TEXTEXTRACT_WSRULEOUTCOME:
@@ -520,6 +628,11 @@ match, we consider that line to be code.
 
 		case TEXTEXTRACTTO_WSRULEOUTCOME:
 			res = LineClassification::new_results(EXTRACT_START_MAJLC, TEXT_TO_MINLC);
+			res.cf.operand1 = Str::duplicate(material);
+			break;
+
+		case INCLUDEFILE_WSRULEOUTCOME:
+			res = LineClassification::new_results(INCLUDE_FILE_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
 

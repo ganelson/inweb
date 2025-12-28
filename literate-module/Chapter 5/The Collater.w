@@ -264,6 +264,8 @@ chapter as its value during the sole iteration.
 			ls_section *S = CONTENT_IN_ITEM(
 				Collater::heading_topmost_on_stack(cls, SECTION_LEVEL), ls_section);
 			if (Str::len(LiterateSource::unit_purpose(S->literate_source)) > 0) level = IF_TRUE_LEVEL;
+		} else if (Str::eq(condition, I"Navigation")) {
+			if (cls->nav_file) level = IF_TRUE_LEVEL;
 		} else {
 			Errors::at_position("don't recognise the condition",
 				cls->errors_at, lpos);
@@ -734,6 +736,7 @@ navigation purposes.
 
 @<Substitute a general Item@> =
 	TEMPORARY_TEXT(url)
+	@<Vet the link text@>;
 	Colonies::link_URL(url, cls->context, link_text, cls->into_file);
 	@<Substitute an item at this URL@>;
 	DISCARD_TEXT(url)
@@ -741,11 +744,28 @@ navigation purposes.
 @<Substitute a home Item@> =
 	WRITE_TO(substituted, "<h1>");
 	WRITE_TO(substituted, "<a href=\"");
-	Colonies::reference_URL(substituted, cls->context, link_text, cls->into_file);
+	@<Vet the link text@>;
+	Colonies::link_URL(substituted, cls->context, link_text, cls->into_file);
 	WRITE_TO(substituted, "\">");
 	@<Substitute icon and name@>;
 	WRITE_TO(substituted, "</a>");
 	WRITE_TO(substituted, "</h1>");
+
+@<Vet the link text@> =
+	int vaguely_URL_like = FALSE, slashed = FALSE;
+	for (int i=0; i<Str::len(link_text); i++) {
+		inchar32_t c = Str::get_at(link_text, i);
+		if ((c == '.') || (c == '/')) vaguely_URL_like = TRUE;
+	}
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, link_text, U" *//%c+// *")) slashed = TRUE;
+	Regexp::dispose_of(&mr);
+	if ((slashed == FALSE) && (vaguely_URL_like == FALSE)) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "the link '%S' is not in '//...//' slashes, and does not look like a URL",
+			link_text);
+		Errors::at_position_S(err, cls->errors_at, lpos);
+	}
 
 @<Substitute an item at this URL@> =
 	if (cls->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");

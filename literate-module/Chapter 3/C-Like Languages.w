@@ -326,7 +326,6 @@ void CLike::subcategorise_line(programming_language *self, ls_line *lst) {
 		for (int j = 0; ansi_libs[j]; j++)
 			if (Str::eq_wide_string(library_file, ansi_libs[j])) {
 				L->C_inclusion = TRUE;
-				lst->suppress_tangling = TRUE;
 			}
 	}
 	Regexp::dispose_of(&mr);
@@ -344,16 +343,20 @@ around the inclusions; which Inform (for instance) needs in order to make
 platform-specific details to handle directories without POSIX in Windows.
 
 =
-void CLike::additional_early_matter(programming_language *self, text_stream *OUT, ls_web *W, tangle_target *target, tangle_docket *docket) {
-	ls_chapter *C;
-	ls_section *S;
-	LOOP_WITHIN_CODE(C, S, target) {
-		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-		if (L->C_inclusion) {
-			IfdefTags::open_ifdefs(OUT, LiterateSource::par_of_line(lst));
-			Tangler::tangle_line(OUT, lst, docket);
-			WRITE("\n");
-			IfdefTags::close_ifdefs(OUT, LiterateSource::par_of_line(lst));
+void CLike::additional_early_matter(programming_language *self,
+	text_stream *OUT, ls_web *W, tangle_target *target, tangle_docket *docket) {
+	if (Conventions::get_int_from(docket->conventions, LIBRARY_INCLUDES_EARLY_LSCONVENTION)) {
+		ls_chapter *C;
+		ls_section *S;
+		LOOP_WITHIN_CODE(C, S, target) {
+			ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
+			if (L->C_inclusion) {
+				IfdefTags::open_ifdefs(OUT, LiterateSource::par_of_line(lst));
+				Tangler::tangle_line(OUT, lst, docket);
+				lst->suppress_tangling = TRUE;
+				WRITE("\n");
+				IfdefTags::close_ifdefs(OUT, LiterateSource::par_of_line(lst));
+			}
 		}
 	}
 }
@@ -365,10 +368,14 @@ in that order since the function types likely involve the typedef names for the
 structures.
 
 =
-void CLike::additional_predeclarations(programming_language *self, text_stream *OUT, ls_web *W) {
-	@<Predeclare the structures in a well-founded order@>;
-	@<Predeclare simple typedefs@>;
-	@<Predeclare the functions@>;
+void CLike::additional_predeclarations(programming_language *self, text_stream *OUT,
+	tangle_docket *docket, ls_web *W) {
+	if (Conventions::get_int_from(docket->conventions, TYPEDEF_STRUCTS_EARLY_LSCONVENTION))
+		@<Predeclare the structures in a well-founded order@>;
+	if (Conventions::get_int_from(docket->conventions, TYPEDEFS_EARLY_LSCONVENTION))
+		@<Predeclare simple typedefs@>;
+	if (Conventions::get_int_from(docket->conventions, FUNCTION_PREDECLARATIONS_LSCONVENTION))
+		@<Predeclare the functions@>;
 }
 
 @ A "simple typedef" here means one that is aliasing something other than
@@ -385,6 +392,7 @@ a structure: for example |typedef unsigned int uint;| would be a simple typedef.
 			LanguageMethods::tangle_line(OUT, WebStructure::web_language(W), line);
 			WRITE("\n");
 			IfdefTags::close_ifdefs(OUT, LiterateSource::par_of_line(lst));
+			lst->suppress_tangling = TRUE;
 		}
 	}
 

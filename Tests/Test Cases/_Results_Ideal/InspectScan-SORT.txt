@@ -1,0 +1,133 @@
+web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 16 paragraphs : 221 lines
+heading 'Quick Sort'
+Purpose 'An implementation of Tony Hoare's 1959 sorting algorithm.'
+S1 'Introduction'
+    C1: commentary
+        _______ A⏑divide-and-conquer⏑strategy⏑created⏑in⏑1959⏑by⏑[Tony⏑Hoare](https://en.wikipedia.org/wiki/Tony_Hoare),
+        _______ Quicksort⏑remains⏑divisive⏑even⏑today.⏑Unlike⏑//Counting⏑Sort//,⏑it⏑makes
+        _______ comparisons,⏑and⏑has⏑a⏑very⏑low⏑memory⏑overhead,⏑except⏑for⏑stack⏑usage
+        _______ when⏑recursing.⏑Invented⏑rather⏑surprisingly⏑on⏑a⏑visit⏑to⏑Moscow,⏑Hoare⏑having
+        _______ trained⏑as⏑a⏑classicist⏑and⏑then⏑learned⏑Russian⏑in⏑the⏑navy,⏑Quicksort⏑became
+        _______ almost⏑ubiquitous⏑in⏑the⏑1970s⏑when⏑it⏑was⏑adopted⏑by⏑the⏑standard⏑C⏑library⏑as
+        _______ `qsort`,⏑the⏑only⏑sorting⏑function⏑provided.⏑In⏑some⏑ways⏑Hoare's⏑most⏑important
+        _______ insight⏑was⏑that⏑recursion⏑could⏑be⏑important.⏑Many⏑early⏑compilers⏑did⏑not
+        _______ allow⏑a⏑function⏑to⏑call⏑itself,⏑directly⏑or⏑indirectly,⏑and⏑it⏑was⏑algorithms
+        _______ like⏑Quicksort⏑which⏑persuaded⏑programmers⏑to⏑change⏑all⏑of⏑that.
+S2 'Implementation'
+    C1: commentary
+        _______ Essentially⏑the⏑idea⏑is⏑to⏑divide⏑the⏑list⏑at⏑a⏑"pivot"⏑value,⏑making⏑swaps
+        _______ so⏑that⏑all⏑the⏑terms⏑lower⏑than⏑that⏑come⏑before⏑the⏑pivot,⏑and⏑all⏑the
+        _______ terms⏑higher⏑come⏑after⏑it.⏑If⏑sorting⏑a⏑great⏑pile⏑of⏑library⏑books,⏑you⏑might
+        _______ put⏑all⏑those⏑with⏑authors⏑A⏑to⏑L⏑on⏑one⏑table,⏑and⏑all⏑those⏑from⏑M⏑to⏑Z⏑on
+        _______ another:⏑that⏑would⏑be⏑a⏑pivot⏑on⏑L.⏑Each⏑table⏑would⏑still⏑have⏑a⏑unsorted
+        _______ mass⏑of⏑books⏑on⏑it,⏑but⏑you⏑would⏑have⏑reduced⏑one⏑big⏑sorting⏑problem⏑to
+        _______ two⏑smaller⏑ones.⏑Recursively,⏑you'd⏑then⏑sort⏑each⏑table,⏑for⏑example⏑dividing
+        _______ table⏑1⏑into⏑A⏑to⏑E⏑and⏑F⏑to⏑L,⏑and⏑so⏑on.
+    C2: holon (used sequentially)
+        0000029 def⏑quicksort(array,⏑low=0,⏑high=None):
+        0000030 ⇢   if⏑high⏑is⏑None:
+        0000031 ⇢   ⇢   high⏑=⏑len(array)⏑-⏑1
+        0000032 
+        0000033 ⇢   if⏑low⏑<⏑high:
+        0000034 ⇢   ⇢   pivot_index⏑=⏑partition(array,⏑low,⏑high)
+        0000035 ⇢   ⇢   quicksort(array,⏑low,⏑pivot_index-1)
+        0000036 ⇢   ⇢   quicksort(array,⏑pivot_index+1,⏑high)
+S3
+    C1: commentary
+        _______ The⏑function⏑`partition`⏑divides⏑the⏑given⏑segment⏑of⏑the⏑list⏑(i.e.,⏑`array[i]`
+        _______ with⏑`i`⏑running⏑from⏑`low`⏑to⏑`high`),⏑herding⏑lower⏑terms⏑before⏑the⏑pivot
+        _______ and⏑higher⏑ones⏑after;⏑it⏑returns⏑the⏑_index_⏑of⏑the⏑position⏑where⏑the⏑pivot
+        _______ ends⏑up,⏑not⏑the⏑value.⏑In⏑our⏑books⏑analogy,⏑the⏑pivot⏑value⏑might⏑be⏑a⏑book⏑by
+        _______ Lyons,⏑Zachary,⏑so⏑that⏑all⏑the⏑A⏑to⏑L⏑books⏑come⏑before⏑it,⏑and⏑all⏑the⏑M⏑to⏑Z
+        _______ books⏑after.⏑If⏑there⏑are⏑457⏑books⏑before⏑it,⏑then⏑the⏑pivot⏑book⏑would⏑be⏑at
+        _______ index⏑457⏑(counting⏑from⏑0),⏑and⏑this⏑is⏑where⏑it⏑will⏑appear⏑on⏑the⏑final
+        _______ shelf⏑when⏑the⏑sort⏑is⏑complete⏑-⏑so⏑each⏑partition⏑does⏑definitely⏑put⏑at⏑least
+        _______ one⏑book⏑in⏑the⏑correct⏑position,⏑after⏑which⏑it⏑never⏑moves⏑again.
+    C2: holon (used sequentially)
+        0000048 def⏑partition(array,⏑low,⏑high):
+        0000049 ⇢   
+          holon 'choose a pivot value' (defined in S3.1)
+        0000050 ⇢   
+          holon 'move lower elements to the front' (defined in S3.2)
+        0000051 ⇢   return⏑pivot_ends_at
+S3.1
+    C1: commentary
+        _______ In⏑principle⏑you⏑could⏑choose⏑any⏑value⏑as⏑the⏑pivot,⏑but⏑while⏑any⏑choice⏑would
+        _______ ultimately⏑lead⏑to⏑a⏑sorted⏑list,⏑they⏑do⏑not⏑all⏑get⏑there⏑equally⏑quickly.
+        _______ There⏑are⏑many⏑schemes⏑for⏑the⏑choice:⏑this⏑is⏑the⏑simplest,⏑attributed⏑to⏑Nico
+        _______ Lomuto,⏑which⏑simply⏑picks⏑the⏑last⏑element⏑in⏑the⏑(unsorted)⏑list.
+        _______ 
+        _______ For⏑example,⏑applied⏑to⏑`[2,⏑6,⏑15,⏑12,⏑12,⏑10,⏑14,⏑1,⏑7]`,⏑it⏑will
+        _______ choose⏑7⏑as⏑the⏑pivot⏑value,⏑in⏑position⏑8:
+    C2: holon 'choose a pivot value' (used in S3)
+        0000063 pivot_starts_at⏑=⏑high
+        0000064 pivot⏑=⏑array[pivot_starts_at]
+S3.2
+    C1: commentary
+        _______ We⏑now⏑run⏑through⏑the⏑array⏑looking⏑for⏑terms⏑`<=⏑pivot`,⏑and⏑make⏑swaps
+        _______ to⏑accumulate⏑them⏑in⏑the⏑range⏑`array[low]`⏑to⏑`array[leading_edge]`:
+        _______ we'll⏑call⏑these⏑the⏑"early⏑terms".⏑`leading_edge`⏑begins⏑at⏑`low-1`⏑because
+        _______ the⏑run⏑of⏑early⏑terms⏑is⏑initially⏑empty.
+        _______ 
+        _______ Note⏑that⏑the⏑Python⏑iteration⏑`for⏑j⏑in⏑range(low,⏑high)`⏑runs⏑`j`⏑from
+        _______ `low`⏑to⏑`high-1`,⏑and⏑therefore⏑never⏑reaches⏑`pivot_starts_at`.⏑Note⏑also
+        _______ that⏑sometimes⏑the⏑apparent⏑swaps⏑in⏑this⏑code⏑do⏑nothing:⏑if⏑`j`⏑and
+        _______ `leading_edge`⏑are⏑equal,⏑which⏑happens⏑if⏑there's⏑an⏑initial⏑run⏑of⏑values
+        _______ below⏑the⏑pivot,⏑for⏑example;⏑or⏑if⏑`pivot_ends_at`⏑comes⏑out⏑the⏑same
+        _______ as⏑`pivot_starts_at`,⏑which⏑happens⏑if⏑the⏑pivot⏑was⏑the⏑highest⏑value⏑all
+        _______ along.
+    C2: holon 'move lower elements to the front' (used in S3)
+        0000081 leading_edge⏑=⏑low⏑-⏑1
+        0000082 for⏑j⏑in⏑range(low,⏑high):
+        0000083 ⇢   if⏑array[j]⏑<=⏑pivot:
+        0000084 ⇢   ⇢   leading_edge⏑+=⏑1
+        0000085 ⇢   ⇢   array[leading_edge],⏑array[j]⏑=⏑array[j],⏑array[leading_edge]
+        0000086 pivot_ends_at⏑=⏑leading_edge⏑+⏑1
+        0000087 
+        0000088 array[pivot_ends_at],⏑array[pivot_starts_at]⏑=⏑array[pivot_starts_at],⏑array[pivot_ends_at]
+S4
+    C1: commentary
+        _______ On⏑the⏑list⏑`[2,⏑6,⏑15,⏑12,⏑12,⏑10,⏑14,⏑1,⏑7]`,⏑`j`⏑therefore⏑iterates
+        _______ from⏑0⏑to⏑7:
+        _______ 
+        _______ -⏑iteration⏑0⏑invisibly⏑swaps⏑2⏑and⏑2,⏑growing⏑the⏑early⏑terms⏑to⏑`[2]`;
+        _______ -⏑iteration⏑1⏑invisibly⏑swaps⏑6⏑and⏑6,⏑growing⏑the⏑early⏑terms⏑to⏑`[2,⏑6]`;
+        _______ -⏑iterations⏑2⏑to⏑6⏑do⏑nothing⏑because⏑those⏑entries⏑are⏑above⏑the⏑pivot⏑value;
+        _______ -⏑iteration⏑7⏑swaps⏑1⏑and⏑15,⏑changing⏑the⏑array⏑to⏑`[2,⏑6,⏑1,⏑12,⏑12,⏑10,⏑14,⏑15,⏑7]`,
+        _______ ⏑⏑and⏑growing⏑the⏑early⏑terms⏑to⏑`[2,⏑6,⏑1]`.
+        _______ 
+        _______ All⏑that⏑remains⏑is⏑one⏑final⏑swap⏑of⏑7⏑with⏑the⏑first⏑12⏑to⏑put⏑the⏑pivot⏑value
+        _______ at⏑the⏑end⏑of⏑the⏑early⏑terms,⏑giving⏑`[2,⏑6,⏑1,⏑7,⏑12,⏑10,⏑14,⏑15,⏑12]`,⏑and⏑to
+        _______ return⏑its⏑final⏑position,⏑which⏑is⏑3.⏑We⏑have⏑cut⏑the⏑array⏑into⏑`[2,⏑6,⏑1]`
+        _______ before⏑the⏑pivot,⏑all⏑less⏑than⏑or⏑equal⏑to⏑7,⏑and⏑`[12,⏑10,⏑14,⏑15,⏑12]`⏑after,
+        _______ all⏑greater.⏑Note⏑the⏑potential⏑for⏑_instability_⏑here:⏑the⏑two⏑12s⏑started⏑out
+        _______ adjacent⏑to⏑each⏑other,⏑but⏑have⏑now⏑split⏑up.⏑It's⏑anybody's⏑guess⏑which⏑way
+        _______ round⏑they⏑will⏑end⏑up.
+S5 'Testing'
+    C1: commentary
+        _______ And⏑this⏑code⏑tests⏑the⏑function:
+    C2: holon 'Tests' (unused) (used sequentially)
+        0000113 my_array⏑=⏑[2,⏑6,⏑15,⏑12,⏑12,⏑10,⏑14,⏑1,⏑7]
+        0000114 quicksort(my_array)
+        0000115 print("Unsorted:",⏑my_array)
+        0000116 print("Sorted⏑by⏑Quicksort:",⏑my_array)
+S6 'Verdict' <verdicts>
+    C1: commentary
+        _______ Clearly⏑what⏑we⏑_hope_⏑is⏑that⏑the⏑partition⏑will,⏑on⏑average,⏑roughly⏑halve
+        _______ the⏑size⏑of⏑the⏑list,⏑so⏑that⏑the⏑depth⏑of⏑recursion⏑is⏑about⏑$\log_2(n)$.
+        _______ For⏑example,⏑a⏑list⏑of⏑20⏑items⏑might⏑partition⏑first⏑to⏑leave⏑sublists⏑of
+        _______ size⏑9⏑(before⏑pivot)⏑and⏑10⏑(after).⏑The⏑list⏑of⏑9⏑obligingly⏑then⏑pivots
+        _______ as⏑4⏑before,⏑4⏑after;⏑the⏑list⏑of⏑10⏑as⏑4⏑and⏑5.⏑These⏑all⏑split⏑as⏑2⏑and⏑1
+        _______ or⏑2⏑and⏑2.⏑After⏑each⏑division⏑we⏑have⏑to⏑do⏑roughly⏑$n$⏑operations,⏑so
+        _______ we⏑then⏑get⏑a⏑running⏑time⏑of⏑$O(n\log_2⏑n)$.
+        _______ 
+        _______ Unfortunately⏑there's⏑nothing⏑to⏑stop⏑each⏑partition⏑from⏑dividing⏑the⏑list
+        _______ in⏑the⏑worst⏑possible⏑way,⏑e.g.,⏑partitioning⏑20⏑items⏑into⏑19⏑before⏑the
+        _______ pivot⏑and⏑0⏑after;⏑then⏑partitioning⏑the⏑19⏑into⏑18⏑and⏑0;⏑and⏑so⏑on.⏑And
+        _______ this⏑is⏑exactly⏑what⏑Lomuto's⏑scheme⏑does⏑if⏑the⏑list⏑is⏑already⏑sorted⏑in
+        _______ ascending⏑order,⏑resulting⏑in⏑$O(n^2)$⏑running⏑time.⏑On⏑randomised⏑data⏑that
+        _______ would⏑hardly⏑matter,⏑because⏑it⏑would⏑be⏑so⏑unlikely,⏑but⏑in⏑practical
+        _______ cases,⏑data⏑to⏑be⏑sorted⏑is⏑often⏑misaligned⏑only⏑slightly⏑or⏑not⏑at⏑all.
+        _______ Many⏑naive⏑implementations⏑of⏑Quicksort⏑have⏑therefore⏑followed⏑Lomuto⏑down
+        _______ the⏑road⏑to⏑perdition.⏑A⏑common⏑defensive⏑tactic⏑is⏑to⏑randomise⏑the⏑list
+        _______ before⏑sorting.

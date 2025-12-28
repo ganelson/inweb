@@ -1,8 +1,127 @@
--cases [Inweb] 'inweb/Tests/Test Cases'
+-cases [Blueprint] 'inweb/Tests/Test Cases'
+-cases [BlueprintError] 'inweb/Tests/Test Errors'
 -cases [Painter] 'inweb/Tests/Test Painter'
--cases [Tree] 'inweb/Tests/Test Weave Tree'
 
--recipe [Inweb]
+-recipe [Blueprint]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $INPRINT = intest/inprint/Tangled/inprint
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $ABP = $PATH/_Results_Actual/$CASE-BP.txt
+	set: $IBP = $PATH/_Results_Ideal/$CASE-BP.txt
+	
+	set: $SANDBOX = $WORK/sandbox
+	mkdir: $SANDBOX
+	step: rm -rf $SANDBOX
+	mkdir: $SANDBOX
+	
+	if: $CASE %c+-(%c+)
+		set: $BLUEPRINT = $SUBEXPRESSION1.blueprint
+	else
+		set: $BLUEPRINT = EMPTY.blueprint
+	endif
+	
+	set: $BP = $PATH/$CASE-BP.txt
+	step: $INPRINT build -silent $BLUEPRINT -in $SANDBOX -archives $PATH/../Blueprints
+	or: 'failed inprint'
+	set: $RELA = ../../../../$A
+	set: $RELINWEB = ../../../../$INWEB
+	step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] >$RELA 2>&1
+	or: 'failed inweb' $A
+	show: $A
+	match text: $A $I
+	or: 'produced the wrong console output'
+	step: $INPRINT draw $SANDBOX -to $ABP
+	or: 'failed inprint'
+	match text: $ABP $IBP
+	or: 'produced the wrong file tree'
+
+	pass: 'passed'
+
+-end
+
+-recipe [BlueprintError]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $INPRINT = intest/inprint/Tangled/inprint
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $ABP = $PATH/_Results_Actual/$CASE-BP.txt
+	set: $IBP = $PATH/_Results_Ideal/$CASE-BP.txt
+	
+	set: $SANDBOX = $WORK/sandbox
+	mkdir: $SANDBOX
+	step: rm -rf $SANDBOX
+	mkdir: $SANDBOX
+	
+	if: $CASE %c+-(%c+)
+		set: $BLUEPRINT = $SUBEXPRESSION1.blueprint
+	else
+		set: $BLUEPRINT = EMPTY.blueprint
+	endif
+	
+	set: $BP = $PATH/$CASE-BP.txt
+	step: $INPRINT build -silent $BLUEPRINT -in $SANDBOX -archives $PATH/../Blueprints
+	or: 'failed inprint'
+	set: $RELA = ../../../../$A
+	set: $RELINWEB = ../../../../$INWEB
+	fail step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] >$RELA 2>&1
+	or: 'inweb did not return error' $A
+	show: $A
+	match text: $A $I
+	or: 'produced the wrong console output'
+
+	pass: 'passed'
+
+-end
+
+-recipe [Painter]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $LANGUAGES = inweb/Dialects
+	set: $INTERNAL = Internal
+
+	set: $CANVAS = $PATH/$CASE.txt
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	mkdir: $PATH/_Results_Console
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	step: $INWEB test-language $LANGUAGES/$CASE.ildf -locale console=utf-8 -on $CANVAS >$A 2>&1
+	or: 'failed inweb' $A
+	show: $A
+	match text: $A $I
+	or: 'produced the wrong painting'
+
+	pass: 'passed'
+
+-end
+
+-recipe [NoLongerUsed]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $LANGUAGES = inweb/Dialects
+	set: $INTERNAL = Internal
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+	mkdir: $PATH/_Results_Console
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+	set: $C = $PATH/_Results_Console/$CASE.txt
+	step: $INWEB weave $PATH/variations -only $CASE -as TestingInweb -to $A >$C 2>&1
+	or: 'failed inweb' $C
+	show: console $C
+	show: $A
+	match text: $A $I
+	or: 'produced the wrong weave tree'
+
+	pass: 'passed'
+
+-end
+
+-recipe [NoLongerUsedEither]
 	set: $INWEB = inweb/Tangled/inweb
 	set: $INTERNAL = Internal
 
@@ -34,45 +153,4 @@
 
 -end
 
--recipe [Painter]
-	set: $INWEB = inweb/Tangled/inweb
-	set: $LANGUAGES = inweb/Dialects
-	set: $INTERNAL = Internal
 
-	set: $CANVAS = $PATH/$CASE.txt
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Results_Console
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	step: $INWEB test-language $LANGUAGES/$CASE.ildf -locale console=utf-8 -on $CANVAS >$A 2>&1
-	or: 'failed inweb' $A
-	show: $A
-	match text: $A $I
-	or: 'produced the wrong painting'
-
-	pass: 'passed'
-
--end
-
--recipe [Tree]
-	set: $INWEB = inweb/Tangled/inweb
-	set: $LANGUAGES = inweb/Dialects
-	set: $INTERNAL = Internal
-
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-	mkdir: $PATH/_Results_Console
-	set: $A = $PATH/_Results_Actual/$CASE.txt
-	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	set: $C = $PATH/_Results_Console/$CASE.txt
-	step: $INWEB weave $PATH/variations -only $CASE -as TestingInweb -to $A >$C 2>&1
-	or: 'failed inweb' $C
-	show: console $C
-	show: $A
-	match text: $A $I
-	or: 'produced the wrong weave tree'
-
-	pass: 'passed'
-
--end

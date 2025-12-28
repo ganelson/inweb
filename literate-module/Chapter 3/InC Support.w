@@ -374,7 +374,8 @@ all integers to zero and all pointers to |NULL|.
 We do something similar, but simpler, to declare text stream constants.
 
 =
-void InCSupport::additional_predeclarations(programming_language *self, text_stream *OUT, ls_web *W) {
+void InCSupport::additional_predeclarations(programming_language *self, text_stream *OUT,
+	tangle_docket *docket, ls_web *W) {
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {

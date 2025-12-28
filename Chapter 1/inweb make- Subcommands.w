@@ -90,22 +90,32 @@ void InwebMake::cli(void) {
 
 =
 typedef struct inweb_make_settings {
+	int make_to_stdout;
 	struct filename *make_to_setting; /* |-to X|: for the various make commands */
-	struct filename *prototype_setting; /* |-script X|: the pathname X, if supplied */
+	struct filename *script_setting; /* |-script X|: the pathname X, if supplied */
 	struct text_stream *platform_setting; /* |-platform X|: sets prevailing platform to X */
 } inweb_make_settings;
 
 void InwebMake::initialise(inweb_make_settings *ims) {
+	ims->make_to_stdout = FALSE;
 	ims->make_to_setting = NULL;
-	ims->prototype_setting = NULL;
+	ims->script_setting = NULL;
 	ims->platform_setting = NULL;
 }
 
 int InwebMake::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
 	inweb_make_settings *ims = &(ins->make_settings);
 	switch (id) {
-		case MAKE_TO_CLSW: ims->make_to_setting = Filenames::from_text(arg); return TRUE;
-		case SCRIPT_CLSW: ims->prototype_setting = Filenames::from_text(arg); return TRUE;
+		case MAKE_TO_CLSW:
+			if (Str::eq(arg, I"-")) {
+				ims->make_to_stdout = TRUE;
+				ims->make_to_setting = NULL;
+			} else {
+				ims->make_to_stdout = FALSE;
+				ims->make_to_setting = Filenames::from_text(arg);
+			}
+			return TRUE;
+		case SCRIPT_CLSW: ims->script_setting = Filenames::from_text(arg); return TRUE;
 		case PLATFORM_CLSW: ims->platform_setting = Str::duplicate(arg); return TRUE;
 	}
 	return FALSE;
@@ -116,6 +126,7 @@ int InwebMake::switch(inweb_instructions *ins, int id, int val, text_stream *arg
 =
 void InwebMake::run(inweb_instructions *ins) {
 	inweb_make_settings *ims = &(ins->make_settings);
+	if (ims->make_to_stdout) silent_mode = TRUE;
 	switch (ins->subcommand) {
 		case MAKE_README_CLSUB: @<Inweb make-readme command@>; break;
 		case MAKE_GITIGNORE_CLSUB: @<Inweb make-gitignore command@>; break;
@@ -129,9 +140,10 @@ void InwebMake::run(inweb_instructions *ins) {
 	text_stream *default_script_extension = I".rmscript";
 	text_stream *default_script_leafname = NULL;
 	filename *to_write = ims->make_to_setting;
-	filename *script = ims->prototype_setting;
+	filename *script = ims->script_setting;
 	@<Work out the script and destination@>;
-	Readme::write(script, to_write);
+	linked_list *errors = Readme::write(script, to_write, op.W, op.C, op.CM);
+	@<Report back@>;
 
 @<Inweb make-gitignore command@> =
 	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_ALLOWED, FALSE, FALSE);
@@ -139,9 +151,10 @@ void InwebMake::run(inweb_instructions *ins) {
 	text_stream *default_script_extension = I".giscript";
 	text_stream *default_script_leafname = I"default.giscript";
 	filename *to_write = ims->make_to_setting;
-	filename *script = ims->prototype_setting;
+	filename *script = ims->script_setting;
 	@<Work out the script and destination@>;
-	Git::write_gitignore(script, to_write);
+	linked_list *errors = Git::write_gitignore(script, to_write);
+	@<Report back@>;
 
 @<Inweb make-makefile command@> =
 	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_ALLOWED, FALSE, FALSE);
@@ -149,9 +162,22 @@ void InwebMake::run(inweb_instructions *ins) {
 	text_stream *default_script_extension = I".mkscript";
 	text_stream *default_script_leafname = I"default.mkscript";
 	filename *to_write = ims->make_to_setting;
-	filename *script = ims->prototype_setting;
+	filename *script = ims->script_setting;
 	@<Work out the script and destination@>;
-	Makefiles::write(op.W, script, to_write, ims->platform_setting);
+	linked_list *errors = Makefiles::write(op.W, script, to_write, ims->platform_setting);
+	@<Report back@>;
+
+@<Report back@> =
+	int N = LinkedLists::len(errors);
+	if (N > 0) {
+		WRITE_TO(STDERR, "%d error(s) occurred while working through %f:\n", N, script);
+		preprocessor_error *err;
+		LOOP_OVER_LINKED_LIST(err, preprocessor_error, errors)
+			Errors::in_text_file_S(err->message, &(err->at));
+		no_inweb_errors += N;
+	} else if (silent_mode == FALSE) {
+		PRINT("%f -> %f\n", script, to_write);
+	}
 
 @ These make-something subcommands share a common set of conventions about how
 to find the script, and so on:
@@ -163,7 +189,8 @@ to find the script, and so on:
 		P = op.W->path_to_web;
 		if (P == NULL) Errors::fatal("this command cannot be applied to a single-file web");
 	}
-	if (to_write == NULL) to_write = Filenames::in(P, default_write_leafname);
+	if ((to_write == NULL) && (ims->make_to_stdout == FALSE))
+		to_write = Filenames::in(P, default_write_leafname);
 	WRITE_TO(leafname, "%S", Pathnames::directory_name(P));
 	if ((Str::len(leafname) == 0) ||
 		(Str::eq(leafname, I".")) || (Str::eq(leafname, I".."))) {
@@ -181,4 +208,3 @@ to find the script, and so on:
 		}
 		script = F;
 	}
-	PRINT("%f -> %f\n", script, to_write);

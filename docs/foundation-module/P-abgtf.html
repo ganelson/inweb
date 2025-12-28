@@ -14,17 +14,22 @@
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
-	tex: {
-		inlineMath: '$', '$'], ['\\(', '\\)'
+    options: {
+    	skipHtmlTags: {'[-]': ['pre']},
+    	processHtmlClass: 'mathjax_process'
+    },
+	loader: {load: ['[tex]/texhtml']},
+  	tex: {
+		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+    	packages: {'[+]': ['texhtml']},
+    	allowTexHTML: true
 	},
 	svg: {
 		fontCache: 'global'
 	}
 };
 </script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -113,7 +118,7 @@ does Foundation: <code>TRUE</code>, <code>FALSE</code>, and a third state <code>
 memory-managed strings of Unicode text. These are unified with text files
 which are open for output, in a type called <a href="2-str.html#SP15" class="internal">text_stream</a>. It's expected
 that they may be very large indeed, and appending text to or finding the
-length of a text in memory runs in \(O(1)\) time.</p>
+length of a text in memory runs in \INWEBMATH(O(1)\INWEBMATH) time.</p>
 <p>A typical function writing to one of these might be:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

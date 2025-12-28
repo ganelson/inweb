@@ -1,0 +1,80 @@
+#!/usr/bin/python3
+
+#line 20 "smorgasbord/Counting Sort.md"
+def countingSort(unsorted):
+	sorted = []
+	if unsorted:
+		
+#line 34 "smorgasbord/Counting Sort.md"
+		max_val = max(unsorted)
+		counts = [0] * (max_val + 1)
+		
+		
+#line 23 "smorgasbord/Counting Sort.md"
+
+		
+#line 42 "smorgasbord/Counting Sort.md"
+		for value in unsorted:
+			counts[value] += 1
+		
+		
+#line 24 "smorgasbord/Counting Sort.md"
+
+		
+#line 55 "smorgasbord/Counting Sort.md"
+		for value, count in enumerate(counts):
+			sorted.extend([value] * count)
+		
+		
+#line 25 "smorgasbord/Counting Sort.md"
+
+	return sorted
+
+#line 29 "smorgasbord/Quick Sort.md"
+def quicksort(array, low=0, high=None):
+	if high is None:
+		high = len(array) - 1
+
+	if low < high:
+		pivot_index = partition(array, low, high)
+		quicksort(array, low, pivot_index-1)
+		quicksort(array, pivot_index+1, high)
+
+#line 48 "smorgasbord/Quick Sort.md"
+def partition(array, low, high):
+	
+#line 63 "smorgasbord/Quick Sort.md"
+	pivot_starts_at = high
+	pivot = array[pivot_starts_at]
+	
+	
+#line 49 "smorgasbord/Quick Sort.md"
+
+	
+#line 81 "smorgasbord/Quick Sort.md"
+	leading_edge = low - 1
+	for j in range(low, high):
+		if array[j] <= pivot:
+			leading_edge += 1
+			array[leading_edge], array[j] = array[j], array[leading_edge]
+	pivot_ends_at = leading_edge + 1
+	
+	array[pivot_ends_at], array[pivot_starts_at] = array[pivot_starts_at], array[pivot_ends_at]
+	
+	
+#line 50 "smorgasbord/Quick Sort.md"
+
+	return pivot_ends_at
+
+#line 64 "smorgasbord/Counting Sort.md"
+print("Let's see, then:");
+#line 70 "smorgasbord/Counting Sort.md"
+A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
+print("Unsorted:", A)
+print("Sorted by Counting Sort:", countingSort(A))
+#line 113 "smorgasbord/Quick Sort.md"
+my_array = [2, 6, 15, 12, 12, 10, 14, 1, 7]
+quicksort(my_array)
+print("Unsorted:", my_array)
+print("Sorted by Quicksort:", my_array)
+

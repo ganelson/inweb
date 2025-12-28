@@ -17,17 +17,22 @@
 <link href="../docs-assets/Downloads.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
-	tex: {
-		inlineMath: '$', '$'], ['\\(', '\\)'
+    options: {
+    	skipHtmlTags: {'[-]': ['pre']},
+    	processHtmlClass: 'mathjax_process'
+    },
+	loader: {load: ['[tex]/texhtml']},
+  	tex: {
+		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+    	packages: {'[+]': ['texhtml']},
+    	allowTexHTML: true
 	},
 	svg: {
 		fontCache: 'global'
 	}
 };
 </script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -928,12 +933,12 @@ this will only be viewable if the web is being woven to HTML.</p>
 unobvious pieces of mathematics or computer science, and which must therefore
 be explained carefully. Formulae or equations are a real convenience for that.</p>
 <p>For example, it's known that the average running time of Euclid's GCD
-algorithm on \(a\) and numbers coprime to \(a\) is:
+algorithm on \INWEBMATH(a\INWEBMATH) and numbers coprime to \INWEBMATH(a\INWEBMATH) is:
 $$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$
-where \(C\) is Porter's constant,
+where \INWEBMATH(C\INWEBMATH) is Porter's constant,
 $$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}}\left(4\gamma - {\frac {24}{\pi ^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$
-which involves evaluating Euler's constant \(\gamma\) and the first derivative
-of the Riemann zeta function \(\zeta'(z)\) at \(z=2\).</p>
+which involves evaluating Euler's constant \INWEBMATH(\gamma\INWEBMATH) and the first derivative
+of the Riemann zeta function \INWEBMATH(\zeta'(z)\INWEBMATH) at \INWEBMATH(z=2\INWEBMATH).</p>
 <p>That passage was achieved by typing this as the Inweb source:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

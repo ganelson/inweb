@@ -68,6 +68,13 @@ which use this module:
 @e colouring_rule_CLASS
 @e weave_copy_record_CLASS
 @e ls_conventions_CLASS
+@e notation_rewriter_CLASS
+@e notation_rewriting_machine_CLASS
+@e inweb_reference_data_CLASS
+@e tangle_external_file_CLASS
+@e ls_index_CLASS
+@e ls_index_mark_CLASS
+@e ls_index_lemma_CLASS
 
 @e weave_document_node_CLASS
 @e weave_head_node_CLASS
@@ -93,7 +100,7 @@ which use this module:
 @e weave_download_node_CLASS
 @e weave_video_node_CLASS
 @e weave_embed_node_CLASS
-@e weave_pmac_node_CLASS
+@e weave_holon_usage_node_CLASS
 @e weave_tangler_command_node_CLASS
 @e weave_vskip_node_CLASS
 @e weave_chapter_node_CLASS
@@ -108,6 +115,7 @@ which use this module:
 @e weave_holon_declaration_node_CLASS
 @e weave_defn_node_CLASS
 @e weave_source_code_node_CLASS
+@e weave_comment_in_holon_node_CLASS
 @e weave_url_node_CLASS
 @e weave_footnote_cue_node_CLASS
 @e weave_begin_footnote_text_node_CLASS
@@ -119,6 +127,7 @@ which use this module:
 @e weave_locale_node_CLASS
 @e weave_maths_node_CLASS
 @e weave_markdown_node_CLASS
+@e weave_index_marker_node_CLASS
 
 =
 DECLARE_CLASS(hash_table_entry)
@@ -170,6 +179,13 @@ DECLARE_CLASS(text_literal)
 DECLARE_CLASS(weave_copy_record)
 DECLARE_CLASS(ls_holon_namespace)
 DECLARE_CLASS(ls_conventions)
+DECLARE_CLASS(notation_rewriter)
+DECLARE_CLASS(notation_rewriting_machine)
+DECLARE_CLASS(inweb_reference_data)
+DECLARE_CLASS(tangle_external_file)
+DECLARE_CLASS(ls_index)
+DECLARE_CLASS(ls_index_mark)
+DECLARE_CLASS(ls_index_lemma)
 
 DECLARE_CLASS(weave_document_node)
 DECLARE_CLASS(weave_head_node)
@@ -195,7 +211,7 @@ DECLARE_CLASS(weave_audio_node)
 DECLARE_CLASS(weave_video_node)
 DECLARE_CLASS(weave_download_node)
 DECLARE_CLASS(weave_embed_node)
-DECLARE_CLASS(weave_pmac_node)
+DECLARE_CLASS(weave_holon_usage_node)
 DECLARE_CLASS(weave_tangler_command_node)
 DECLARE_CLASS(weave_vskip_node)
 DECLARE_CLASS(weave_chapter_node)
@@ -210,6 +226,7 @@ DECLARE_CLASS(weave_chapter_title_page_node)
 DECLARE_CLASS(weave_holon_declaration_node)
 DECLARE_CLASS(weave_defn_node)
 DECLARE_CLASS(weave_source_code_node)
+DECLARE_CLASS(weave_comment_in_holon_node)
 DECLARE_CLASS(weave_url_node)
 DECLARE_CLASS(weave_footnote_cue_node)
 DECLARE_CLASS(weave_begin_footnote_text_node)
@@ -221,6 +238,7 @@ DECLARE_CLASS(weave_locale_node)
 DECLARE_CLASS(weave_maths_node)
 DECLARE_CLASS(weave_markdown_node)
 DECLARE_CLASS(weave_function_defn_node)
+DECLARE_CLASS(weave_index_marker_node)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ls_line_analysis, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(holon_usage, 1000)

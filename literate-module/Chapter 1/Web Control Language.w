@@ -72,6 +72,7 @@ If a declaration is not nested in any other, its parental link is |NULL|.
 typedef struct wcl_declaration {
 	int declaration_type;
 	int modifier;
+	int inbuilt;
 	struct text_stream *name;
 	struct text_file_position declaration_position;
 	struct text_file_position body_position;
@@ -92,6 +93,7 @@ wcl_declaration *WCL::new(int type) {
 	wcl_declaration *D = CREATE(wcl_declaration);
 	D->declaration_type = type;
 	D->modifier = NO_WCLMODIFIER;
+	D->inbuilt = FALSE;
 	D->name = Str::new();
 	D->closure_column = 0;
 	D->declaration_position = TextFiles::nowhere();
@@ -106,6 +108,13 @@ wcl_declaration *WCL::new(int type) {
 	D->associated_file = NULL;
 	D->external_resources_loaded = FALSE;
 	return D;
+}
+
+void WCL::flag_as_inbuilt(wcl_declaration *C) {
+	C->inbuilt = TRUE;
+	wcl_declaration *X;
+	LOOP_OVER_LINKED_LIST(X, wcl_declaration, C->declarations)
+		WCL::flag_as_inbuilt(X);
 }
 
 @h Nesting.
@@ -577,7 +586,7 @@ wcl_declaration *WCL::global_resources(void) {
 	pathname *resources = Pathnames::path_to_LP_resources();
 	if ((resources) && (resources != last_known_resources)) {
 		last_known_resources = resources;
-		WCL::merge_resources_from_path(resources, WCL::global_resources_declaration());
+		WCL::merge_resources_from_path(resources, WCL::global_resources_declaration(), TRUE);
 	}
 	return WCL::global_resources_declaration();
 }
@@ -606,7 +615,7 @@ void WCL::make_resources_at_path_global(pathname *P) {
 
 =
 void WCL::make_resources_at_file_global(filename *F) {
-	wcl_declaration *D = WCL::read_presumption(F, MISCELLANY_WCLTYPE);
+	wcl_declaration *D = WCL::read_anything(F);
 	if (D) WCL::make_global(D);
 }
 
@@ -660,7 +669,7 @@ void WCL::resolve_resource_inner(wcl_declaration *D, int type, text_stream *name
 		@<Search subdeclarations of S@>;
 		if ((S) && (S->declaration_type == WEB_WCLTYPE) && (S->associated_path) &&
 			(S->external_resources_loaded == FALSE)) {
-			WCL::merge_resources_from_path(S->associated_path, S);
+			WCL::merge_resources_from_path(S->associated_path, S, FALSE);
 			S->external_resources_loaded = TRUE;
 			@<Search subdeclarations of S@>;
 		}
@@ -711,7 +720,9 @@ void WCL::write_sorted_list_of_declaration_resources(OUTPUT_STREAM, wcl_declarat
 			if (Str::len(D->name) == 0) WRITE_TO(TextualTables::next_cell(T), "(nameless)");
 			else WRITE_TO(TextualTables::next_cell(T), "%S", D->name);
 			WCL::write_type(TextualTables::next_cell(T), D->declaration_type);
-			if ((D->declaration_type == PATTERN_WCLTYPE) && (D->associated_file)) {
+			if (D->inbuilt) {
+				WRITE_TO(TextualTables::next_cell(T), "(built in)");
+			} else if ((D->declaration_type == PATTERN_WCLTYPE) && (D->associated_file)) {
 				WRITE_TO(TextualTables::next_cell(T), "%p", Pathnames::up(Filenames::up(D->associated_file)));
 			} else if (D->associated_file) {
 				WRITE_TO(TextualTables::next_cell(T), "%f", D->associated_file);
@@ -746,7 +757,7 @@ might be a web (in directory format), or might be a cache inside a tool
 like Inform or Inweb.
 
 =
-void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M) {
+void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) {
 	int presumption = MISCELLANY_WCLTYPE;
 	filename *F = Filenames::in(RP, I"resources.inweb");
 	if (TextFiles::exists(F)) @<Merge from F@>;
@@ -781,11 +792,17 @@ void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M) {
 
 @<Merge from patterns P@> =
 	wcl_declaration *PM = Patterns::parse_directory(P);
-	if (PM) WCL::merge_within(PM, M);
+	if (PM) {
+		if (flag) WCL::flag_as_inbuilt(PM);
+		WCL::merge_within(PM, M);
+	}
 
 @<Merge from F@> =
 	wcl_declaration *D = WCL::read_presumption(F, presumption);
-	if (D) WCL::merge_within(D, M);
+	if (D) {
+		if (flag) WCL::flag_as_inbuilt(D);
+		WCL::merge_within(D, M);
+	}
 
 @h End-to-end readers.
 As we've seen, parsing WCL from a file is a two-phase process, involving

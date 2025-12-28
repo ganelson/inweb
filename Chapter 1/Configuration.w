@@ -19,6 +19,7 @@ typedef struct inweb_instructions {
 	int verbose_switch; /* |-verbose|: print a narrative of what's happening */
 	int silent_switch; /* |-silent|: print nothing if all is well */
 
+	struct inweb_advance_build_settings advance_build_settings;
 	struct inweb_weave_settings weave_settings;
 	struct inweb_tangle_settings tangle_settings;
 	struct inweb_inspect_settings inspect_settings;
@@ -52,6 +53,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.verbose_switch = FALSE;
 	args.silent_switch = FALSE;
 
+	InwebAdvanceBuild::initialise(&(args.advance_build_settings));
 	InwebWeave::initialise(&(args.weave_settings));
 	InwebTangle::initialise(&(args.tangle_settings));
 	InwebInspect::initialise(&(args.inspect_settings));
@@ -115,6 +117,7 @@ provides automatically.
 =
 void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 	inweb_instructions *args = (inweb_instructions *) state;
+	if (InwebAdvanceBuild::switch(args, id, val, arg)) return;
 	if (InwebWeave::switch(args, id, val, arg)) return;
 	if (InwebTangle::switch(args, id, val, arg)) return;
 	if (InwebMake::switch(args, id, val, arg)) return;
@@ -212,9 +215,10 @@ operand, but otherwise use the same rules for all of them:
 
 @d NO_OPERAND_ALLOWED 0
 @d WEB_OPERAND_ALLOWED 1        /* i.e., a web, a path, or a file */
-@d COLONY_OPERAND_PREFERRED 2   /* ditto, but in ambiguous cases, choose a ls_colony */
-@d WEB_OPERAND_DISALLOWED 3     /* i.e., a path or a file only */
-@d WEB_OPERAND_COMPULSORY 4     /* i.e., a web only */
+@d WEB_OPERAND_PREFERRED 2      /* colony or web, but in ambiguous cases, a web */
+@d COLONY_OPERAND_PREFERRED 3   /* colony or web, but in ambiguous cases, a colony */
+@d WEB_OPERAND_DISALLOWED 4     /* i.e., a path or a file only */
+@d WEB_OPERAND_COMPULSORY 5     /* i.e., a web only */
 
 @ A further tweak is that we sometimes want the web to be read in a particular
 way (if a web is what is provided). If |enumerating| is set then values will be
@@ -305,6 +309,7 @@ the relevant path, we'll use that.
 
 	while ((colony_file == NULL) && (search)) {
 		search = Pathnames::up(search);
+		if (Str::eq_insensitive(Pathnames::directory_name(search), I"Workspace")) break;
 		@<Look for a colony file in the search directory@>;
 	}
 
@@ -364,6 +369,7 @@ Here's where we do the guessing.
 @<Read this file as WCL resources@> =
 	int presume = MISCELLANY_WCLTYPE; /* i.e., make no assumptions */
 	if ((requirement == WEB_OPERAND_COMPULSORY) ||
+		(requirement == WEB_OPERAND_PREFERRED) ||
 		(inferred_web_as_ls_colony_member)) presume = WEB_WCLTYPE;
 	else {
 		if (Str::eq_insensitive(Filenames::get_leafname(ins->temp_file_setting), I"colony.inweb"))
@@ -405,8 +411,14 @@ But it's probably not wise to rely too much on this.
 
 @<Tidy up our findings@> =	
 	if (op.W == NULL) {
-		op.F = ins->temp_file_setting;
-		op.P = ins->temp_path_setting;
+		if ((op.C) && (op.CM)) {
+			Colonies::fully_load_member(op.CM);
+			op.W = op.CM->loaded;
+			WebStructure::read_fully(op.C, op.W->declaration, enumerating, weaving, verbose_mode);
+		} else {
+			op.F = ins->temp_file_setting;
+			op.P = ins->temp_path_setting;
+		}
 	}
 	if ((op.C) && (op.W) && (op.CM == NULL)) {
 		TEMPORARY_TEXT(candidate)

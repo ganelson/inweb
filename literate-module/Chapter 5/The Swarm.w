@@ -346,24 +346,33 @@ void Swarm::weave(ls_colony *context, ls_colony_member *CM, ls_web *W, filename 
 	int verbose_mode, int silent_mode) {
 	weave_reporting R = Swarm::new_reportage(silent_mode?NULL:STDOUT, W, verbose_mode);
 	if (context) Colonies::fully_load(context);
-	W->conventions = Conventions::applicable(W, context);
+	Conventions::establish(W, context);
+	Swarm::redirect(W, CM, into);
+	int r = WeavingFormats::begin_weaving(W, pattern);
+	if (r != SWARM_OFF_SWM) swarm_mode = r;
+	if (Str::len(tag) > 0) swarm_mode = SWARM_OFF_SWM;
+	if ((W) && (CM == NULL)) CM = Colonies::find_ls_colony_member(W);
+	if (swarm_mode == SWARM_OFF_SWM) {
+		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, WeavingDetails::get_redirect_weaves_to(W), &R);
+	} else {
+		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern, to, WeavingDetails::get_redirect_weaves_to(W), &R);
+	}
+	WeavingFormats::end_weaving(W, pattern);
+	Swarm::end_report(&R);
+	Swarm::cancel_redirection(W);
+}
+
+void Swarm::redirect(ls_web *W, ls_colony_member *CM, pathname *into) {
 	if (into == NULL) {
 		if (CM) into = Colonies::weave_path(CM);
 		else if (W->single_file) into = Filenames::up(W->single_file);
 		else into = WebStructure::woven_folder(W, 6);
 	}
 	WeavingDetails::set_redirect_weaves_to(W, into);
-	int r = WeavingFormats::begin_weaving(W, pattern);
-	if (r != SWARM_OFF_SWM) swarm_mode = r;
-	if (Str::len(tag) > 0) swarm_mode = SWARM_OFF_SWM;
-	if ((W) && (CM == NULL)) CM = Colonies::find_ls_colony_member(W);
-	if (swarm_mode == SWARM_OFF_SWM) {
-		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, into, &R);
-	} else {
-		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern, to, into, &R);
-	}
-	WeavingFormats::end_weaving(W, pattern);
-	Swarm::end_report(&R);
+}
+
+void Swarm::cancel_redirection(ls_web *W) {
+	WeavingDetails::set_redirect_weaves_to(W, NULL);
 }
 
 @h Swarming.

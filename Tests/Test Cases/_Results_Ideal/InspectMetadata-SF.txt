@@ -1,0 +1,6 @@
+web "Counting Sort" (Python program in MarkdownCode notation): 6 paragraphs : 69 lines
+
+Title: Counting Sort
+Author: Harold H. Seward
+Language: Python
+Notation: MarkdownCode

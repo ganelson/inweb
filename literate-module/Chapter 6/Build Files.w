@@ -7,7 +7,7 @@ When we read a web, we look for a file in it (or alongside it) called |build.txt
 If no such file exists, we return |NULL|.
 
 =
-filename *BuildFiles::build_file_for_web(ls_web *WS) {
+filename *BuildFiles::build_file_for_web(ls_web *WS, int creating) {
 	pathname *P = WS->path_to_web;
 	if (WS->path_to_web) P = WS->path_to_web;
 	else if (WS->single_file) P = Filenames::up(WS->single_file);
@@ -15,6 +15,7 @@ filename *BuildFiles::build_file_for_web(ls_web *WS) {
 	else if (WS->declaration->associated_file) P = Filenames::up(WS->declaration->associated_file);
 	filename *F = Filenames::in(P, I"build.txt");
 	if (TextFiles::exists(F)) return F;
+	if (creating) { BuildFiles::new(F); return F; }
 	return NULL;
 }
 
@@ -27,14 +28,19 @@ typedef struct build_file_data {
 	struct text_stream *build_date;
 } build_file_data;
 
-@ Here's how to read in a build file:
-
-=
-build_file_data BuildFiles::read(filename *F) {
+build_file_data BuildFiles::new_data(void) {
 	build_file_data bfd;
 	bfd.prerelease_text = Str::new();
 	bfd.build_code = Str::new();
 	bfd.build_date = Str::new();
+	return bfd;
+}
+
+@ Here's how to read in a build file:
+
+=
+build_file_data BuildFiles::read(filename *F) {
+	build_file_data bfd = BuildFiles::new_data();
 	TextFiles::read(F, FALSE, "unable to read build file", TRUE,
 		&BuildFiles::build_file_helper, NULL, (void *) &bfd);
 	return bfd;
@@ -72,13 +78,23 @@ void BuildFiles::write(build_file_data bfd, filename *F) {
 	Streams::close(OUT);		
 }
 
+@ Which enables us to make a new one:
+
+=
+void BuildFiles::new(filename *F) {
+	build_file_data bfd = BuildFiles::new_data();
+	BuildFiles::today(bfd.build_date);
+	WRITE_TO(bfd.build_code, "1A01");
+	BuildFiles::write(bfd, F);
+}
+
 @h Bibliographic implications.
 Whenever a web is read in, its build file (if it has one) is looked at in order to
 set some bibliographic data.
 
 =
 void BuildFiles::set_bibliographic_data_for(ls_web *WS) {
-	filename *F = BuildFiles::build_file_for_web(WS);
+	filename *F = BuildFiles::build_file_for_web(WS, FALSE);
 	if (F) {
 		build_file_data bfd = BuildFiles::read(F);
 		if (Str::len(bfd.prerelease_text) > 0)
@@ -136,10 +152,14 @@ We update the build date to today and, if supplied, also increment the build
 number if we find that the date has changed.
 
 =
-void BuildFiles::advance_for_web(ls_web *WS) {
-	filename *F = BuildFiles::build_file_for_web(WS);
+void BuildFiles::advance_for_web(ls_web *WS, int creating) {
+	filename *F = BuildFiles::build_file_for_web(WS, FALSE);
 	if (F) BuildFiles::advance(F);
-	else Errors::fatal("web has no build file");
+	else if (creating) {
+		F = BuildFiles::build_file_for_web(WS, TRUE);
+		build_file_data bfd = BuildFiles::read(F);
+		PRINT("Build file begun at build %S on %S\n", bfd.build_code, bfd.build_date);
+	} else Errors::fatal("web has no build file");
 }
 
 void BuildFiles::advance(filename *F) {
@@ -147,12 +167,12 @@ void BuildFiles::advance(filename *F) {
 	TEMPORARY_TEXT(old_code)
 	WRITE_TO(old_code, "%S (set on %S)", bfd.build_code, bfd.build_date);
 	if (BuildFiles::dated_today(bfd.build_date)) {
-		PRINT("Build code remains %S since it is still %S\n",
+		PRINT("Build number remains %S since it is still %S\n",
 			bfd.build_code, bfd.build_date);
 	} else {
 		BuildFiles::increment(bfd.build_code);
 		BuildFiles::write(bfd, F);
-		PRINT("Build code advanced from %S to %S\n", old_code, bfd.build_code);
+		PRINT("Build number advanced from %S to %S\n", old_code, bfd.build_code);
 	}
 	DISCARD_TEXT(old_code)
 }
@@ -162,12 +182,16 @@ void BuildFiles::advance(filename *F) {
 rewrite |dateline| to today and return |FALSE|.
 
 =
-int BuildFiles::dated_today(text_stream *dateline) {
+void BuildFiles::today(OUTPUT_STREAM) {
 	char *monthname[12] = { "January", "February", "March", "April", "May", "June",
 		"July", "August", "September", "October", "November", "December" };
-	TEMPORARY_TEXT(today)
-	WRITE_TO(today, "%d %s %d",
+	WRITE("%d %s %d",
 		the_present->tm_mday, monthname[the_present->tm_mon], the_present->tm_year+1900);
+}
+
+int BuildFiles::dated_today(text_stream *dateline) {
+	TEMPORARY_TEXT(today)
+	BuildFiles::today(today);
 	int rv = TRUE;
 	if (Str::ne(dateline, today)) {
 		rv = FALSE;

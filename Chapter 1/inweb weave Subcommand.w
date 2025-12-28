@@ -11,6 +11,7 @@ The inweb weave subcommand weaves a web.
 @e WEAVING_SELECTION_CLSG
 @e ONLY_CLSW
 @e WEAVE_TAG_CLSW
+@e CREATING_CLSW
 
 =
 void InwebWeave::cli(void) {
@@ -40,6 +41,8 @@ void InwebWeave::cli(void) {
 		U"write the output to a new file X, or into a directory X");
 	CommandLine::declare_switch(WEAVE_AS_CLSW, U"as", 2,
 		U"set weave pattern to X (default is 'HTML')");
+	CommandLine::declare_boolean_switch(CREATING_CLSW, U"creating", 1,
+		U"create directories as needed to put the woven output into", FALSE);
 		
 	CommandLine::begin_group(WEAVING_SELECTION_CLSG,
 		I"for weaving only part of a web, not the whole thing");	
@@ -59,6 +62,7 @@ typedef struct inweb_weave_settings {
 	struct text_stream *to_setting;
 	struct text_stream *tag_setting;
 	struct text_stream *pattern_name;
+	int creating_setting;
 } inweb_weave_settings;
 
 void InwebWeave::initialise(inweb_weave_settings *iws) {
@@ -66,6 +70,7 @@ void InwebWeave::initialise(inweb_weave_settings *iws) {
 	iws->to_setting = NULL;
 	iws->tag_setting = Str::new();
 	iws->pattern_name = I"";
+	iws->creating_setting = FALSE;
 }
 
 int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
@@ -75,6 +80,7 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 		case WEAVE_AS_CLSW: iws->pattern_name = Str::duplicate(arg); return TRUE;
 		case ONLY_CLSW: Configuration::set_range(&(iws->subset), arg, TRUE); return TRUE;
 		case WEAVE_TAG_CLSW: iws->tag_setting = Str::duplicate(arg); return TRUE;
+		case CREATING_CLSW: iws->creating_setting = val; return TRUE;
 	}
 	return FALSE;
 }
@@ -84,7 +90,7 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 =
 void InwebWeave::run(inweb_instructions *ins) {
 	inweb_weave_settings *iws = &(ins->weave_settings);
-	inweb_operand op = Configuration::operand(ins, COLONY_OPERAND_PREFERRED, FALSE, TRUE);
+	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_PREFERRED, FALSE, TRUE);
 	if (no_inweb_errors > 0) return;
 	if (op.W) InwebWeave::run_on(iws, op.C, op.CM, op.W);
 	else if (op.C) InwebWeave::run_on_colony(iws, op.C);
@@ -100,12 +106,27 @@ void InwebWeave::run(inweb_instructions *ins) {
 }
 
 void InwebWeave::run_on_colony(inweb_weave_settings *iws, ls_colony *C) {
+	pathname *into = Colonies::home(C);
+	if (Str::len(iws->to_setting) > 0) {
+		pathname *P = Pathnames::from_text(iws->to_setting);
+		filename *F = Filenames::from_text(iws->to_setting);
+		if (Directories::exists(P)) {
+			into = P;
+		} else if (TextFiles::exists(F)) {
+			Errors::fatal_with_path("this is a file, not a directory", P);
+		} else {
+			into = P;
+		}
+	}
+	Colonies::set_redirect(C, into);
 	Colonies::fully_load(C);
 	int N = 0;
 	ls_colony_member *CM;
 	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
 		if (CM->external == FALSE)
 			N++;
+	linked_list *skeleton = Colonies::skeleton(C, into);
+	@<Ensure that the skeleton of directories needed does exist@>;
 	int M = 0;
 	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
 		if (CM->external == FALSE) {
@@ -116,8 +137,41 @@ void InwebWeave::run_on_colony(inweb_weave_settings *iws, ls_colony *C) {
 			inweb_weave_settings mutable_copy = *iws;
 			InwebWeave::run_on(&mutable_copy, C, CM, W);
 		}
+	if (M == 0) PRINT("(Nothing to do: no internal members in this colony)\n");
+	Colonies::set_redirect(C, NULL);
 }
 
+@<Ensure that the skeleton of directories needed does exist@> =
+	if ((verbose_mode) && (LinkedLists::len(skeleton) > 0)) {
+		PRINT("skeleton of directories needed for weave to work: ");
+		pathname *P;
+		LOOP_OVER_LINKED_LIST(P, pathname, skeleton)
+			PRINT("%p  ", P);
+		PRINT("\n");
+	}
+	linked_list *missing_bones = NEW_LINKED_LIST(pathname);
+	pathname *P;
+	LOOP_OVER_LINKED_LIST(P, pathname, skeleton)
+		if (Directories::exists(P) == FALSE) {
+			if (iws->creating_setting) {
+				if (Pathnames::create_in_file_system(P) == FALSE)
+					Errors::fatal_with_path("tried to create directory because of -creating, but file system refused", P);
+				if (silent_mode == FALSE) PRINT("(created directory '%p')\n", P);
+			} else {
+				ADD_TO_LINKED_LIST(P, pathname, missing_bones);
+			}
+		}
+	int mbc = LinkedLists::len(missing_bones);
+	if (mbc == 1) WRITE_TO(STDERR, "the weave would require this directory to exist:\n");
+	if (mbc > 1) WRITE_TO(STDERR, "the weave would require these %d directories to exist:\n", mbc);
+	LOOP_OVER_LINKED_LIST(P, pathname, missing_bones)
+		WRITE_TO(STDERR, "    %p\n", P);
+	if (mbc > 0) {
+		if (mbc == 1) Errors::fatal("giving up: either make it by hand, or run again with -creating set");
+		else Errors::fatal("giving up: either make them by hand, or run again with -creating set");
+	}	
+
+@ =
 void InwebWeave::run_on(inweb_weave_settings *iws, ls_colony *C, ls_colony_member *CM, ls_web *W) {
 	filename *weave_to_setting = NULL;
 	pathname *weave_into_setting = NULL;
@@ -144,14 +198,31 @@ void InwebWeave::run_on(inweb_weave_settings *iws, ls_colony *C, ls_colony_membe
 			weave_into_setting = P;
 		} else if (TextFiles::exists(F)) {
 			weave_to_setting = F;
-		} else if (W->is_page) {
-			weave_to_setting = F;
+		} else if (iws->creating_setting) {
+			weave_into_setting = P;
+			if (Pathnames::create_in_file_system_recursively(P) == FALSE)
+				Errors::fatal_with_path("unable to create directory", P);
 		} else {
-			Errors::fatal_with_path("this is neither an existing file nor directory", P);
+			Errors::fatal_with_path("directory does not exist: either make it by hand, or run again with -creating set", P);
 		}
 	}
+	if (weave_into_setting) {
+		if (C) Colonies::set_redirect(C, weave_into_setting);
+		else Swarm::redirect(W, NULL, weave_into_setting);
+	}
+	if (Patterns::html_based(W->declaration, pattern)) {
+		linked_list *skeleton = Colonies::web_skeleton(W, C, CM, weave_into_setting);
+		@<Ensure that the skeleton of directories needed does exist@>;
+	}
+	if (weave_into_setting) Swarm::cancel_redirection(W);
+
 	Swarm::weave(C, CM, W, weave_to_setting, weave_into_setting, pattern,
 		iws->subset.swarm_mode, iws->subset.range, iws->tag_setting, verbose_mode, silent_mode);
+
+	if (weave_into_setting) {
+		if (C) Colonies::set_redirect(C, NULL);
+		Swarm::cancel_redirection(W);
+	}
 }
 
 @ This is one of the few subcommands making use of the colony membership |op.CM|,

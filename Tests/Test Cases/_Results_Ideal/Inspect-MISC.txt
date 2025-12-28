@@ -1,0 +1,9 @@
+Colony at colony.inweb, line 1
+Declaration:
+    member: "twinprimes" at "twinprimes.c.w"
+    member: "perl" at "perl.pl.w"
+    member: "plain" at "plain.txt.w"
+    member: "hellow" at "hellow.c.w"
+    member: "exhaustive" at "exhaustive.c.w"
+    member: "empty" at "empty.c.w"
+    member: "conditional" at "conditional.c.w"

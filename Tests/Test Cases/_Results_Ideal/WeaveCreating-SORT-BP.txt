@@ -1,0 +1,638 @@
+begin
+directory: smorgasbord
+file: smorgasbord/Contents.inweb
+    Web {
+    	Title: Sorting Smorgasbord
+    	Author: Various Artists
+    	Notation: MarkdownCode
+    	Language: Python
+    	Purpose: Demonstrating great sorting algorithms of the 1950s.
+    	
+    	Sections
+    		Counting Sort
+    		Quick Sort
+    }
+
+file: smorgasbord/Counting Sort.md
+    # Counting Sort
+
+    _An implementation of Harold H. Seward's 1954 sorting algorithm._
+
+    ## Introduction
+
+    This algorithm was found in 1954 by [Harold H. Seward](https://en.wikipedia.org/wiki/Harold_H._Seward),
+    who also devised radix sort. They differ from most sorting techniques because they do
+    not make comparisons between items in the unsorted array. Indeed, there are no
+    comparisons in the following function, only iteration.
+
+    ## Implementation
+
+    This function takes an array of non-negative integers, sorts it, and returns
+    the result. The test `if unsorted` means "if the unsorted array is not empty",
+    and is needed because Python would otherwise handle this case badly: of course,
+    if `unsorted` does equal `[]`, then so should `sorted`, and so the right answer
+    is returned.
+
+    	def countingSort(unsorted):
+    		sorted = []
+    		if unsorted:
+    			{{initialise the incidence counts to zero}}
+    			{{tally how many times each value occurs in the unsorted array}}
+    			{{construct the sorted array with the right number of each value}}
+    		return sorted
+
+    For example, suppose the array is initially `[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]`.
+    Then the maximum value is 6. Python arrays index from 0, so we need an incidence
+    counts array of size 7, and we create it as `[0, 0, 0, 0, 0, 0, 0]`.
+
+    {{initialise the incidence counts to zero}} =
+
+    	max_val = max(unsorted)
+    	counts = [0] * (max_val + 1)
+
+    In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
+    following produces the counts `[0, 1, 3, 3, 1, 1, 2]`.
+
+    {{tally how many times each value occurs in the unsorted array}} =
+
+    	for value in unsorted:
+    		counts[value] += 1
+
+    Unusually for a sorting algorithm, an entirely new sorted array is created,
+    using only the incidence counts as a sort of program. We fill `sorted`
+    with no `0`s, one `1`, three `2`s, and so on, producing `[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]`.[1]
+
+    [1] The unsorted array is no longer needed, in fact, and so we could easily make this
+    algorithm "sort in place" by simply rewriting `unsorted`, rather than making
+    a new array.
+
+    {{construct the sorted array with the right number of each value}} =
+
+    	for value, count in enumerate(counts):
+    		sorted.extend([value] * count)	
+
+    ## Testing
+
+    We will use this holon for all of our unit tests on different sorting algorithms:
+
+    {{Tests}} (webwide and tangled late) =
+
+    	print("Let's see, then:");
+
+    So let's get started by testing this one:
+
+    {{Tests}} +=
+
+    	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
+    	print("Unsorted:", A)
+    	print("Sorted by Counting Sort:", countingSort(A))
+
+    ## Verdict ^"verdicts"
+
+    So how did we do? What makes count sort interesting is that it is not doomed
+    to run at $O(n\log n)$ or worse speed, where $n$ is the size of the data set:
+    counting sort runs at $O(n+k)$, where $k$ is the size of the largest value in
+    the data (called `max_val` above). With most data, $k$ is either enormous or
+    at least unpredictable, so that speed and memory usage both spike. But for just
+    a few applications, where $k$ is known to be within tight bounds, count sort
+    is still used today and is exceptionally fast.
+
+file: smorgasbord/Quick Sort.md
+    # Quick Sort
+
+    _An implementation of Tony Hoare's 1959 sorting algorithm._
+
+    ## Introduction
+
+    A divide-and-conquer strategy created in 1959 by [Tony Hoare](https://en.wikipedia.org/wiki/Tony_Hoare),
+    Quicksort remains divisive even today. Unlike //Counting Sort//, it makes
+    comparisons, and has a very low memory overhead, except for stack usage
+    when recursing. Invented rather surprisingly on a visit to Moscow, Hoare having
+    trained as a classicist and then learned Russian in the navy, Quicksort became
+    almost ubiquitous in the 1970s when it was adopted by the standard C library as
+    `qsort`, the only sorting function provided. In some ways Hoare's most important
+    insight was that recursion could be important. Many early compilers did not
+    allow a function to call itself, directly or indirectly, and it was algorithms
+    like Quicksort which persuaded programmers to change all of that. 
+
+    ## Implementation
+
+    Essentially the idea is to divide the list at a "pivot" value, making swaps
+    so that all the terms lower than that come before the pivot, and all the
+    terms higher come after it. If sorting a great pile of library books, you might
+    put all those with authors A to L on one table, and all those from M to Z on
+    another: that would be a pivot on L. Each table would still have a unsorted
+    mass of books on it, but you would have reduced one big sorting problem to
+    two smaller ones. Recursively, you'd then sort each table, for example dividing
+    table 1 into A to E and F to L, and so on.
+    	
+    	def quicksort(array, low=0, high=None):
+    		if high is None:
+    			high = len(array) - 1
+    	
+    		if low < high:
+    			pivot_index = partition(array, low, high)
+    			quicksort(array, low, pivot_index-1)
+    			quicksort(array, pivot_index+1, high)
+    	
+    The function `partition` divides the given segment of the list (i.e., `array[i]`
+    with `i` running from `low` to `high`), herding lower terms before the pivot
+    and higher ones after; it returns the _index_ of the position where the pivot
+    ends up, not the value. In our books analogy, the pivot value might be a book by
+    Lyons, Zachary, so that all the A to L books come before it, and all the M to Z
+    books after. If there are 457 books before it, then the pivot book would be at
+    index 457 (counting from 0), and this is where it will appear on the final
+    shelf when the sort is complete - so each partition does definitely put at least
+    one book in the correct position, after which it never moves again.
+
+    	def partition(array, low, high):
+    		{{choose a pivot value}}
+    		{{move lower elements to the front}}
+    		return pivot_ends_at
+
+    In principle you could choose any value as the pivot, but while any choice would
+    ultimately lead to a sorted list, they do not all get there equally quickly.
+    There are many schemes for the choice: this is the simplest, attributed to Nico
+    Lomuto, which simply picks the last element in the (unsorted) list.
+
+    For example, applied to `[2, 6, 15, 12, 12, 10, 14, 1, 7]`, it will
+    choose 7 as the pivot value, in position 8:
+
+    {{choose a pivot value}} =
+
+    	pivot_starts_at = high
+    	pivot = array[pivot_starts_at]
+
+    We now run through the array looking for terms `<= pivot`, and make swaps
+    to accumulate them in the range `array[low]` to `array[leading_edge]`:
+    we'll call these the "early terms". `leading_edge` begins at `low-1` because
+    the run of early terms is initially empty.
+
+    Note that the Python iteration `for j in range(low, high)` runs `j` from
+    `low` to `high-1`, and therefore never reaches `pivot_starts_at`. Note also
+    that sometimes the apparent swaps in this code do nothing: if `j` and
+    `leading_edge` are equal, which happens if there's an initial run of values
+    below the pivot, for example; or if `pivot_ends_at` comes out the same
+    as `pivot_starts_at`, which happens if the pivot was the highest value all
+    along.
+
+    {{move lower elements to the front}} =
+
+    	leading_edge = low - 1
+    	for j in range(low, high):
+    		if array[j] <= pivot:
+    			leading_edge += 1
+    			array[leading_edge], array[j] = array[j], array[leading_edge]
+    	pivot_ends_at = leading_edge + 1
+
+    	array[pivot_ends_at], array[pivot_starts_at] = array[pivot_starts_at], array[pivot_ends_at]
+
+    On the list `[2, 6, 15, 12, 12, 10, 14, 1, 7]`, `j` therefore iterates
+    from 0 to 7:
+
+    - iteration 0 invisibly swaps 2 and 2, growing the early terms to `[2]`;
+    - iteration 1 invisibly swaps 6 and 6, growing the early terms to `[2, 6]`;
+    - iterations 2 to 6 do nothing because those entries are above the pivot value;
+    - iteration 7 swaps 1 and 15, changing the array to `[2, 6, 1, 12, 12, 10, 14, 15, 7]`,
+      and growing the early terms to `[2, 6, 1]`.
+
+    All that remains is one final swap of 7 with the first 12 to put the pivot value
+    at the end of the early terms, giving `[2, 6, 1, 7, 12, 10, 14, 15, 12]`, and to
+    return its final position, which is 3. We have cut the array into `[2, 6, 1]`
+    before the pivot, all less than or equal to 7, and `[12, 10, 14, 15, 12]` after,
+    all greater. Note the potential for _instability_ here: the two 12s started out
+    adjacent to each other, but have now split up. It's anybody's guess which way
+    round they will end up.
+
+    ## Testing
+
+    And this code tests the function:
+
+    {{Tests}} +=
+
+    	my_array = [2, 6, 15, 12, 12, 10, 14, 1, 7]
+    	quicksort(my_array)
+    	print("Unsorted:", my_array)
+    	print("Sorted by Quicksort:", my_array)
+
+    ## Verdict ^"verdicts"
+
+    Clearly what we _hope_ is that the partition will, on average, roughly halve
+    the size of the list, so that the depth of recursion is about $\log_2(n)$.
+    For example, a list of 20 items might partition first to leave sublists of
+    size 9 (before pivot) and 10 (after). The list of 9 obligingly then pivots
+    as 4 before, 4 after; the list of 10 as 4 and 5. These all split as 2 and 1
+    or 2 and 2. After each division we have to do roughly $n$ operations, so
+    we then get a running time of $O(n\log_2 n)$.
+
+    Unfortunately there's nothing to stop each partition from dividing the list
+    in the worst possible way, e.g., partitioning 20 items into 19 before the
+    pivot and 0 after; then partitioning the 19 into 18 and 0; and so on. And
+    this is exactly what Lomuto's scheme does if the list is already sorted in
+    ascending order, resulting in $O(n^2)$ running time. On randomised data that
+    would hardly matter, because it would be so unlikely, but in practical
+    cases, data to be sorted is often misaligned only slightly or not at all.
+    Many naive implementations of Quicksort have therefore followed Lomuto down
+    the road to perdition. A common defensive tactic is to randomise the list
+    before sorting.
+
+directory: smorgasbord/Woven
+directory: smorgasbord/Woven/assets
+opaque file: smorgasbord/Woven/assets/Base.css
+opaque file: smorgasbord/Woven/assets/Bigfoot.css
+opaque file: smorgasbord/Woven/assets/Bigfoot.js
+opaque file: smorgasbord/Woven/assets/Breadcrumbs.css
+opaque file: smorgasbord/Woven/assets/Colours.css
+opaque file: smorgasbord/Woven/assets/Contents.css
+opaque file: smorgasbord/Woven/assets/crumbs.gif
+opaque file: smorgasbord/Woven/assets/Fonts.css
+opaque file: smorgasbord/Woven/assets/Navigation.css
+opaque file: smorgasbord/Woven/assets/Progress.css
+file: smorgasbord/Woven/cnsr.html
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+    <html>
+    	<head>
+    		<title>Counting Sort</title>
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
+
+    <link href="assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script>
+    MathJax = {
+        options: {
+        	skipHtmlTags: {'[-]': ['pre']},
+        	processHtmlClass: 'mathjax_process'
+        },
+    	loader: {load: ['[tex]/texhtml']},
+      	tex: {
+    		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+        	packages: {'[+]': ['texhtml']},
+        	allowTexHTML: true
+    	},
+    	svg: {
+    		fontCache: 'global'
+    	}
+    };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+    <script src="assets/Bigfoot.js"></script>
+    <link href="assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		
+    	</head>
+    	<body class="commentary-font">
+    <!-- Weave of 'Counting Sort' generated by inweb -->
+    <div class="breadcrumbs">
+        <ul class="crumbs"><li><a href="index.html">Sorting Smorgasbord</a></li><li><b>Counting Sort</b></li></ul></div>
+    <p class="purpose">An implementation of Harold H. Seward's 1954 sorting algorithm.</p>
+
+    <ul class="toc"><li><a href="cnsr.html#SP1">&#167;1. Introduction</a></li><li><a href="cnsr.html#SP2">&#167;2. Implementation</a></li><li><a href="cnsr.html#SP3">&#167;3. Testing</a></li><li><a href="cnsr.html#SP5">&#167;5. Verdict</a></li></ul><hr class="tocbar">
+
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  This algorithm was found in 1954 by <a href="https://en.wikipedia.org/wiki/Harold_H._Seward">Harold H. Seward</a>,
+    who also devised radix sort. They differ from most sorting techniques because they do
+    not make comparisons between items in the unsorted array. Indeed, there are no
+    comparisons in the following function, only iteration.</p>
+    </div>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Implementation.</b>  This function takes an array of non-negative integers, sorts it, and returns
+    the result. The test <code>if unsorted</code> means &quot;if the unsorted array is not empty&quot;,
+    and is needed because Python would otherwise handle this case badly: of course,
+    if <code>unsorted</code> does equal <code>[]</code>, then so should <code>sorted</code>, and so the right answer
+    is returned.</p>
+    </div>
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">def</span><span class="plain-syntax"> </span><span class="identifier-syntax">countingSort</span><span class="plain-syntax">(</span><span class="identifier-syntax">unsorted</span><span class="plain-syntax">):</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">sorted</span><span class="plain-syntax"> = []</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">unsorted</span><span class="plain-syntax">:</span>
+    <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="cnsr.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">initialise the incidence counts to zero</span></span><span class="named-paragraph-number">2.1</span></a></span>
+    <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="cnsr.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">tally how many times each value occurs in the unsorted array</span></span><span class="named-paragraph-number">2.2</span></a></span>
+    <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="cnsr.html#SP2_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">construct the sorted array with the right number of each value</span></span><span class="named-paragraph-number">2.3</span></a></span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sorted</span>
+    </pre>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b>  For example, suppose the array is initially <code>[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</code>.
+    Then the maximum value is 6. Python arrays index from 0, so we need an incidence
+    counts array of size 7, and we create it as <code>[0, 0, 0, 0, 0, 0, 0]</code>.</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">initialise the incidence counts to zero</span><span class="named-paragraph-number">2.1</span></span> =</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">max_val</span><span class="plain-syntax"> = </span><span class="identifier-syntax">max</span><span class="plain-syntax">(</span><span class="identifier-syntax">unsorted</span><span class="plain-syntax">)</span>
+    <span class="identifier-syntax">counts</span><span class="plain-syntax"> = [0] * (</span><span class="identifier-syntax">max_val</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is used in <a href="cnsr.html#SP2">&#167;2</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2. </b>  In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
+    following produces the counts <code>[0, 1, 3, 3, 1, 1, 2]</code>.</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">tally how many times each value occurs in the unsorted array</span><span class="named-paragraph-number">2.2</span></span> =</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">unsorted</span><span class="plain-syntax">:</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">counts</span><span class="plain-syntax">[</span><span class="identifier-syntax">value</span><span class="plain-syntax">] += </span><span class="constant-syntax">1</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is used in <a href="cnsr.html#SP2">&#167;2</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP2_3" class="paragraph-anchor"></a><b>&#167;2.3. </b>  Unusually for a sorting algorithm, an entirely new sorted array is created,
+    using only the incidence counts as a sort of program. We fill <code>sorted</code>
+    with no <code>0</code>s, one <code>1</code>, three <code>2</code>s, and so on, producing <code>[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</code>.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup></p>
+    <ul class="inwebfootnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+    The unsorted array is no longer needed, in fact, and so we could easily make this
+    algorithm &quot;sort in place&quot; by simply rewriting <code>unsorted</code>, rather than making
+    a new array.<a href="#fnref:1" title="return to text"> &#x21A9;</a></p>
+    </li></ul>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">construct the sorted array with the right number of each value</span><span class="named-paragraph-number">2.3</span></span> =</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">value</span><span class="plain-syntax">, </span><span class="identifier-syntax">count</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">enumerate</span><span class="plain-syntax">(</span><span class="identifier-syntax">counts</span><span class="plain-syntax">):</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">sorted</span><span class="plain-syntax">.</span><span class="identifier-syntax">extend</span><span class="plain-syntax">([</span><span class="identifier-syntax">value</span><span class="plain-syntax">] * </span><span class="identifier-syntax">count</span><span class="plain-syntax">)</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is used in <a href="cnsr.html#SP2">&#167;2</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Testing.</b>  We will use this holon for all of our unit tests on different sorting algorithms:</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Tests</span><span class="named-paragraph-number">3</span></span> =</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">print</span><span class="plain-syntax">(</span><span class="string-syntax">"Let's see, then:"</span><span class="plain-syntax">);</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is continued in <a href="cnsr.html#SP4">&#167;4</a> and <a href="qcsr.html#SP5">qcsr:&#167;5</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  So let's get started by testing this one:</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><a href="cnsr.html#SP3" class="named-paragraph-link"><span class="named-paragraph-defn">Tests</span><span class="named-paragraph-number">3</span></a></span> +=</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">A</span><span class="plain-syntax"> = [4, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">6</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">]</span>
+    <span class="identifier-syntax">print</span><span class="plain-syntax">(</span><span class="string-syntax">"Unsorted:"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">)</span>
+    <span class="identifier-syntax">print</span><span class="plain-syntax">(</span><span class="string-syntax">"Sorted by Counting Sort:"</span><span class="plain-syntax">, </span><span class="identifier-syntax">countingSort</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">))</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is a continuation of <a href="cnsr.html#SP3">&#167;3</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Verdict.</b>  So how did we do? What makes count sort interesting is that it is not doomed
+    to run at \INWEBMATH(O(n\log n)\INWEBMATH) or worse speed, where \INWEBMATH(n\INWEBMATH) is the size of the data set:
+    counting sort runs at \INWEBMATH(O(n+k)\INWEBMATH), where \INWEBMATH(k\INWEBMATH) is the size of the largest value in
+    the data (called <code>max_val</code> above). With most data, \INWEBMATH(k\INWEBMATH) is either enormous or
+    at least unpredictable, so that speed and memory usage both spike. But for just
+    a few applications, where \INWEBMATH(k\INWEBMATH) is known to be within tight bounds, count sort
+    is still used today and is exceptionally fast.</p>
+    </div>
+    <nav role="progress"><div class="progresscontainer">
+        <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrent">cnsr</li><li class="progresssection"><a href="qcsr.html">qcsr</a></li><li class="progressnext"><a href="qcsr.html">&#10095;</a></li></ul></div>
+    </nav><!-- End of weave -->
+
+    	</body>
+    </html>
+
+
+file: smorgasbord/Woven/index.html
+    <html>
+    	<head>
+    		<title>Sorting Smorgasbord 1</title>
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
+
+    <link href="assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		
+    	</head>
+    	<body class="commentary-font">
+    		<ul class="crumbs"><li><b>Sorting Smorgasbord</b></li></ul>
+    		<p class="purpose">Demonstrating great sorting algorithms of the 1950s. This is version 1.</p>
+    		<hr>
+    		<div class="contentspage">
+    			<ul class="chapterlist">
+    				<li>
+    					<p class="chapterentry"><a href="cnsr.html">
+    					<span class="sectiontitle">Counting Sort</span></a>
+    					- <span class="sectionpurpose">An implementation of Harold H. Seward's 1954 sorting algorithm.</span>
+    					</p>
+    				</li>
+    				<li>
+    					<p class="chapterentry"><a href="qcsr.html">
+    					<span class="sectiontitle">Quick Sort</span></a>
+    					- <span class="sectionpurpose">An implementation of Tony Hoare's 1959 sorting algorithm.</span>
+    					</p>
+    				</li>
+    			</ul>
+    		</div>
+    		<hr>
+    		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
+    	</body>
+    </html>
+
+
+file: smorgasbord/Woven/qcsr.html
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+    <html>
+    	<head>
+    		<title>Quick Sort</title>
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
+
+    <link href="assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script>
+    MathJax = {
+        options: {
+        	skipHtmlTags: {'[-]': ['pre']},
+        	processHtmlClass: 'mathjax_process'
+        },
+    	loader: {load: ['[tex]/texhtml']},
+      	tex: {
+    		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+        	packages: {'[+]': ['texhtml']},
+        	allowTexHTML: true
+    	},
+    	svg: {
+    		fontCache: 'global'
+    	}
+    };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+    <script src="assets/Bigfoot.js"></script>
+    <link href="assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		
+    	</head>
+    	<body class="commentary-font">
+    <!-- Weave of 'Quick Sort' generated by inweb -->
+    <div class="breadcrumbs">
+        <ul class="crumbs"><li><a href="index.html">Sorting Smorgasbord</a></li><li><b>Quick Sort</b></li></ul></div>
+    <p class="purpose">An implementation of Tony Hoare's 1959 sorting algorithm.</p>
+
+    <ul class="toc"><li><a href="qcsr.html#SP1">&#167;1. Introduction</a></li><li><a href="qcsr.html#SP2">&#167;2. Implementation</a></li><li><a href="qcsr.html#SP5">&#167;5. Testing</a></li><li><a href="qcsr.html#SP6">&#167;6. Verdict</a></li></ul><hr class="tocbar">
+
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction.</b>  A divide-and-conquer strategy created in 1959 by <a href="https://en.wikipedia.org/wiki/Tony_Hoare">Tony Hoare</a>,
+    Quicksort remains divisive even today. Unlike <a href="cnsr.html" class="internal">Counting Sort</a>, it makes
+    comparisons, and has a very low memory overhead, except for stack usage
+    when recursing. Invented rather surprisingly on a visit to Moscow, Hoare having
+    trained as a classicist and then learned Russian in the navy, Quicksort became
+    almost ubiquitous in the 1970s when it was adopted by the standard C library as
+    <code>qsort</code>, the only sorting function provided. In some ways Hoare's most important
+    insight was that recursion could be important. Many early compilers did not
+    allow a function to call itself, directly or indirectly, and it was algorithms
+    like Quicksort which persuaded programmers to change all of that.</p>
+    </div>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Implementation.</b>  Essentially the idea is to divide the list at a &quot;pivot&quot; value, making swaps
+    so that all the terms lower than that come before the pivot, and all the
+    terms higher come after it. If sorting a great pile of library books, you might
+    put all those with authors A to L on one table, and all those from M to Z on
+    another: that would be a pivot on L. Each table would still have a unsorted
+    mass of books on it, but you would have reduced one big sorting problem to
+    two smaller ones. Recursively, you'd then sort each table, for example dividing
+    table 1 into A to E and F to L, and so on.</p>
+    </div>
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">def</span><span class="plain-syntax"> </span><span class="identifier-syntax">quicksort</span><span class="plain-syntax">(</span><span class="identifier-syntax">array</span><span class="plain-syntax">, </span><span class="identifier-syntax">low</span><span class="plain-syntax">=0, </span><span class="identifier-syntax">high</span><span class="plain-syntax">=</span><span class="identifier-syntax">None</span><span class="plain-syntax">):</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">high</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">None</span><span class="plain-syntax">:</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">high</span><span class="plain-syntax"> = </span><span class="identifier-syntax">len</span><span class="plain-syntax">(</span><span class="identifier-syntax">array</span><span class="plain-syntax">) - </span><span class="constant-syntax">1</span>
+
+    <span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">low</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">high</span><span class="plain-syntax">:</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">pivot_index</span><span class="plain-syntax"> = </span><span class="identifier-syntax">partition</span><span class="plain-syntax">(</span><span class="identifier-syntax">array</span><span class="plain-syntax">, </span><span class="identifier-syntax">low</span><span class="plain-syntax">, </span><span class="identifier-syntax">high</span><span class="plain-syntax">)</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">quicksort</span><span class="plain-syntax">(</span><span class="identifier-syntax">array</span><span class="plain-syntax">, </span><span class="identifier-syntax">low</span><span class="plain-syntax">, </span><span class="identifier-syntax">pivot_index</span><span class="plain-syntax">-1)</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">quicksort</span><span class="plain-syntax">(</span><span class="identifier-syntax">array</span><span class="plain-syntax">, </span><span class="identifier-syntax">pivot_index</span><span class="plain-syntax">+1, </span><span class="identifier-syntax">high</span><span class="plain-syntax">)</span>
+    </pre>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  The function <code>partition</code> divides the given segment of the list (i.e., <code>array[i]</code>
+    with <code>i</code> running from <code>low</code> to <code>high</code>), herding lower terms before the pivot
+    and higher ones after; it returns the <em>index</em> of the position where the pivot
+    ends up, not the value. In our books analogy, the pivot value might be a book by
+    Lyons, Zachary, so that all the A to L books come before it, and all the M to Z
+    books after. If there are 457 books before it, then the pivot book would be at
+    index 457 (counting from 0), and this is where it will appear on the final
+    shelf when the sort is complete - so each partition does definitely put at least
+    one book in the correct position, after which it never moves again.</p>
+    </div>
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">def</span><span class="plain-syntax"> </span><span class="identifier-syntax">partition</span><span class="plain-syntax">(</span><span class="identifier-syntax">array</span><span class="plain-syntax">, </span><span class="identifier-syntax">low</span><span class="plain-syntax">, </span><span class="identifier-syntax">high</span><span class="plain-syntax">):</span>
+    <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="qcsr.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">choose a pivot value</span></span><span class="named-paragraph-number">3.1</span></a></span>
+    <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="qcsr.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">move lower elements to the front</span></span><span class="named-paragraph-number">3.2</span></a></span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">pivot_ends_at</span>
+    </pre>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1. </b>  In principle you could choose any value as the pivot, but while any choice would
+    ultimately lead to a sorted list, they do not all get there equally quickly.
+    There are many schemes for the choice: this is the simplest, attributed to Nico
+    Lomuto, which simply picks the last element in the (unsorted) list.</p>
+    <p>For example, applied to <code>[2, 6, 15, 12, 12, 10, 14, 1, 7]</code>, it will
+    choose 7 as the pivot value, in position 8:</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">choose a pivot value</span><span class="named-paragraph-number">3.1</span></span> =</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">pivot_starts_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">high</span>
+    <span class="identifier-syntax">pivot</span><span class="plain-syntax"> = </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">pivot_starts_at</span><span class="plain-syntax">]</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is used in <a href="qcsr.html#SP3">&#167;3</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2. </b>  We now run through the array looking for terms <code>&lt;= pivot</code>, and make swaps
+    to accumulate them in the range <code>array[low]</code> to <code>array[leading_edge]</code>:
+    we'll call these the &quot;early terms&quot;. <code>leading_edge</code> begins at <code>low-1</code> because
+    the run of early terms is initially empty.</p>
+    <p>Note that the Python iteration <code>for j in range(low, high)</code> runs <code>j</code> from
+    <code>low</code> to <code>high-1</code>, and therefore never reaches <code>pivot_starts_at</code>. Note also
+    that sometimes the apparent swaps in this code do nothing: if <code>j</code> and
+    <code>leading_edge</code> are equal, which happens if there's an initial run of values
+    below the pivot, for example; or if <code>pivot_ends_at</code> comes out the same
+    as <code>pivot_starts_at</code>, which happens if the pivot was the highest value all
+    along.</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">move lower elements to the front</span><span class="named-paragraph-number">3.2</span></span> =</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">leading_edge</span><span class="plain-syntax"> = </span><span class="identifier-syntax">low</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span>
+    <span class="identifier-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">j</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">range</span><span class="plain-syntax">(</span><span class="identifier-syntax">low</span><span class="plain-syntax">, </span><span class="identifier-syntax">high</span><span class="plain-syntax">):</span>
+    <span class="plain-syntax">    </span><span class="identifier-syntax">if</span><span class="plain-syntax"> </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">] &lt;= </span><span class="identifier-syntax">pivot</span><span class="plain-syntax">:</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">leading_edge</span><span class="plain-syntax"> += </span><span class="constant-syntax">1</span>
+    <span class="plain-syntax">        </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">leading_edge</span><span class="plain-syntax">], </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">] = </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">j</span><span class="plain-syntax">], </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">leading_edge</span><span class="plain-syntax">]</span>
+    <span class="identifier-syntax">pivot_ends_at</span><span class="plain-syntax"> = </span><span class="identifier-syntax">leading_edge</span><span class="plain-syntax"> + </span><span class="constant-syntax">1</span>
+
+    <span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">pivot_ends_at</span><span class="plain-syntax">], </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">pivot_starts_at</span><span class="plain-syntax">] = </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">pivot_starts_at</span><span class="plain-syntax">], </span><span class="identifier-syntax">array</span><span class="plain-syntax">[</span><span class="identifier-syntax">pivot_ends_at</span><span class="plain-syntax">]</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is used in <a href="qcsr.html#SP3">&#167;3</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  On the list <code>[2, 6, 15, 12, 12, 10, 14, 1, 7]</code>, <code>j</code> therefore iterates
+    from 0 to 7:</p>
+    <ul>
+    <li>iteration 0 invisibly swaps 2 and 2, growing the early terms to <code>[2]</code>;</li>
+    <li>iteration 1 invisibly swaps 6 and 6, growing the early terms to <code>[2, 6]</code>;</li>
+    <li>iterations 2 to 6 do nothing because those entries are above the pivot value;</li>
+    <li>iteration 7 swaps 1 and 15, changing the array to <code>[2, 6, 1, 12, 12, 10, 14, 15, 7]</code>,
+    and growing the early terms to <code>[2, 6, 1]</code>.</li>
+    </ul>
+    <p>All that remains is one final swap of 7 with the first 12 to put the pivot value
+    at the end of the early terms, giving <code>[2, 6, 1, 7, 12, 10, 14, 15, 12]</code>, and to
+    return its final position, which is 3. We have cut the array into <code>[2, 6, 1]</code>
+    before the pivot, all less than or equal to 7, and <code>[12, 10, 14, 15, 12]</code> after,
+    all greater. Note the potential for <em>instability</em> here: the two 12s started out
+    adjacent to each other, but have now split up. It's anybody's guess which way
+    round they will end up.</p>
+    </div>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Testing.</b>  And this code tests the function:</p>
+    </div>
+    <p class="commentary"><span class="named-paragraph-container code-font"><a href="cnsr.html#SP3" class="named-paragraph-link"><span class="named-paragraph-defn">Tests</span><span class="named-paragraph-number">3</span></a></span> +=</p>
+
+    <pre class="displayed-code all-displayed-code code-font">
+    <span class="identifier-syntax">my_array</span><span class="plain-syntax"> = [2, </span><span class="constant-syntax">6</span><span class="plain-syntax">, </span><span class="constant-syntax">15</span><span class="plain-syntax">, </span><span class="constant-syntax">12</span><span class="plain-syntax">, </span><span class="constant-syntax">12</span><span class="plain-syntax">, </span><span class="constant-syntax">10</span><span class="plain-syntax">, </span><span class="constant-syntax">14</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">]</span>
+    <span class="identifier-syntax">quicksort</span><span class="plain-syntax">(</span><span class="identifier-syntax">my_array</span><span class="plain-syntax">)</span>
+    <span class="identifier-syntax">print</span><span class="plain-syntax">(</span><span class="string-syntax">"Unsorted:"</span><span class="plain-syntax">, </span><span class="identifier-syntax">my_array</span><span class="plain-syntax">)</span>
+    <span class="identifier-syntax">print</span><span class="plain-syntax">(</span><span class="string-syntax">"Sorted by Quicksort:"</span><span class="plain-syntax">, </span><span class="identifier-syntax">my_array</span><span class="plain-syntax">)</span>
+    </pre>
+    <ul class="endnotetexts"><li>This code is a continuation of <a href="cnsr.html#SP3">cnsr:&#167;3</a>.</li></ul>
+    <div class="lsmarkdown">
+    <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Verdict.</b>  Clearly what we <em>hope</em> is that the partition will, on average, roughly halve
+    the size of the list, so that the depth of recursion is about \INWEBMATH(\log_2(n)\INWEBMATH).
+    For example, a list of 20 items might partition first to leave sublists of
+    size 9 (before pivot) and 10 (after). The list of 9 obligingly then pivots
+    as 4 before, 4 after; the list of 10 as 4 and 5. These all split as 2 and 1
+    or 2 and 2. After each division we have to do roughly \INWEBMATH(n\INWEBMATH) operations, so
+    we then get a running time of \INWEBMATH(O(n\log_2 n)\INWEBMATH).</p>
+    <p>Unfortunately there's nothing to stop each partition from dividing the list
+    in the worst possible way, e.g., partitioning 20 items into 19 before the
+    pivot and 0 after; then partitioning the 19 into 18 and 0; and so on. And
+    this is exactly what Lomuto's scheme does if the list is already sorted in
+    ascending order, resulting in \INWEBMATH(O(n^2)\INWEBMATH) running time. On randomised data that
+    would hardly matter, because it would be so unlikely, but in practical
+    cases, data to be sorted is often misaligned only slightly or not at all.
+    Many naive implementations of Quicksort have therefore followed Lomuto down
+    the road to perdition. A common defensive tactic is to randomise the list
+    before sorting.</p>
+    </div>
+    <nav role="progress"><div class="progresscontainer">
+        <ul class="progressbar"><li class="progressprev"><a href="cnsr.html">&#10094;</a></li><li class="progresssection"><a href="cnsr.html">cnsr</a></li><li class="progresscurrent">qcsr</li><li class="progressnextoff">&#10095;</li></ul></div>
+    </nav><!-- End of weave -->
+
+    	</body>
+    </html>
+
+
+end

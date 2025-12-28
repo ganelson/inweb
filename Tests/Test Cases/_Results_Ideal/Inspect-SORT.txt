@@ -1,0 +1,7 @@
+web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 16 paragraphs : 221 lines
+
+Contents:
+abbrev | section       | lines
+------ | ------------- | -----
+cnsr   | Counting Sort | 83   
+qcsr   | Quick Sort    | 138  

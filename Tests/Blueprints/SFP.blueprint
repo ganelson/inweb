@@ -1,0 +1,73 @@
+begin
+file: countsort2.py.md
+    # Counting Sort by Harold H. Seward
+
+    _An implementation of the 1954 sort algorithm._
+
+    This algorithm was found in 1954 by [Harold H. Seward](https://en.wikipedia.org/wiki/Harold_H._Seward),
+    who also devised radix sort. They differ from most sorting techniques because they do
+    not make comparisons between items in the unsorted array. Indeed, there are no
+    comparisons in the following function, only iteration.
+
+    This function takes an array of non-negative integers, sorts it, and returns
+    the result. The test `if unsorted` means "if the unsorted array is not empty",
+    and is needed because Python would otherwise handle this case badly: of course,
+    if `unsorted` does equal `[]`, then so should `sorted`, and so the right answer
+    is returned.
+
+    	def countingSort(unsorted):
+    		sorted = []
+    		if unsorted:
+    			{{initialise...}}
+    			{{tally how many times each value occurs in the unsorted array}}
+    			{{construct the sorted array with the right number of each value}}
+    		return sorted
+
+    For example, suppose the array is initially `[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]`.
+    Then the maximum value is 6. Python arrays index from 0, so we need an incidence
+    counts array of size 7, and we create it as `[0, 0, 0, 0, 0, 0, 0]`.
+
+    {{initialise the incidence counts to zero}} =
+
+    	max_val = max(unsorted)
+    	counts = [0] * (max_val + 1)
+
+    In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
+    following produces the counts `[0, 1, 3, 3, 1, 1, 2]`.
+
+    {{tally how many times each value occurs in the unsorted array}} =
+
+    	for value in unsorted:
+    		counts[value] += 1
+
+    Unusually for a sorting algorithm, an entirely new sorted array is created,
+    using only the incidence counts as a sort of program. We fill `sorted`
+    with no `0`s, one `1`, three `2`s, and so on, producing `[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]`.[1]
+
+    [1] The unsorted array is no longer needed, in fact, and so we could easily make this
+    algorithm "sort in place" by simply rewriting `unsorted`, rather than making
+    a new array.
+
+    {{construct the sorted array with the right number of each value}} =
+
+    	for value, count in enumerate(counts):
+    		sorted.extend([value] * count)	
+
+    And this code tests the function:
+
+    	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
+    	print("Unsorted:", A)
+    	print("Sorted:", countingSort(A))
+
+    ## Verdict ^"verdicts"
+
+    So how did we do? What makes count sort interesting is that it is not doomed
+    to run at $O(n\log n)$ or worse speed, where $n$ is the size of the data set:
+    counting sort runs at $O(n+k)$, where $k$ is the size of the largest value in
+    the data (called `max_val` above). With most data, $k$ is either enormous or
+    at least unpredictable, so that speed and memory usage both spike. But for just
+    a few applications, where $k$ is known to be within tight bounds, count sort
+    is still used today and is exceptionally fast.
+
+directory: countsort2-assets
+end

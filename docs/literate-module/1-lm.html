@@ -116,6 +116,13 @@ which use this module:</p>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">colouring_rule_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_copy_record_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">ls_conventions_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">notation_rewriter_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">notation_rewriting_machine_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">inweb_reference_data_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">tangle_external_file_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ls_index_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ls_index_mark_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ls_index_lemma_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_document_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_head_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_body_node_CLASS</span><span class="plain-syntax"> </span>
@@ -140,7 +147,7 @@ which use this module:</p>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_download_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_video_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_embed_node_CLASS</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_pmac_node_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_holon_usage_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_tangler_command_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_vskip_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_chapter_node_CLASS</span><span class="plain-syntax"> </span>
@@ -155,6 +162,7 @@ which use this module:</p>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_holon_declaration_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_defn_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_source_code_node_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_comment_in_holon_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_url_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_footnote_cue_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_begin_footnote_text_node_CLASS</span><span class="plain-syntax"> </span>
@@ -166,6 +174,7 @@ which use this module:</p>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_locale_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_maths_node_CLASS</span><span class="plain-syntax"> </span>
 <span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_markdown_node_CLASS</span><span class="plain-syntax"> </span>
+<span class="definition-keyword">enumerate</span> <span class="constant-syntax">weave_index_marker_node_CLASS</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hash_table_entry</span><span class="plain-syntax">)</span>
@@ -217,6 +226,13 @@ which use this module:</p>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_copy_record</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_holon_namespace</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_conventions</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">notation_rewriter</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">notation_rewriting_machine</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inweb_reference_data</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tangle_external_file</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_index</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_index_mark</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_index_lemma</span><span class="plain-syntax">)</span>
 
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_document_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_head_node</span><span class="plain-syntax">)</span>
@@ -242,7 +258,7 @@ which use this module:</p>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_video_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_download_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_embed_node</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_pmac_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_holon_usage_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_tangler_command_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_vskip_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_chapter_node</span><span class="plain-syntax">)</span>
@@ -257,6 +273,7 @@ which use this module:</p>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_holon_declaration_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_defn_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_source_code_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_comment_in_holon_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_url_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_footnote_cue_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_begin_footnote_text_node</span><span class="plain-syntax">)</span>
@@ -268,6 +285,7 @@ which use this module:</p>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_maths_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_markdown_node</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_function_defn_node</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">weave_index_marker_node</span><span class="plain-syntax">)</span>
 
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">ls_line_analysis</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">holon_usage</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>

@@ -44,6 +44,7 @@ language_type *Functions::new_struct(ls_web *W, text_stream *name, ls_section *S
 	ADD_TO_LINKED_LIST(str, language_type, CodeAnalysis::language_types_list(W));
 	ls_paragraph_analysis *P = CodeAnalysis::paragraph_details(lst);
 	ADD_TO_LINKED_LIST(str, language_type, P->structures);
+	WebIndexing::index_structure_at(str->structure_name, LiterateSource::par_of_line(lst));
 
 @<Insertion-sort this into the alphabetical list of all structures found@> =
 	str->next_cst_alphabetically = NULL;
@@ -184,6 +185,7 @@ leading to spurious extra text at the weaving stage.
 	L->function_defined = fn;
 	ls_web *W = S->owning_chapter->owning_web;
 	ADD_TO_LINKED_LIST(fn, language_function, CodeAnalysis::language_functions_list(W));
+	WebIndexing::index_function_at(fn->function_name, LiterateSource::par_of_line(lst));
 
 @<Check that the function has its namespace correctly declared@> =
 	text_stream *declared_namespace = NULL;

@@ -85,9 +85,16 @@ the user of the machine.
 
 @e NAME_START_FSMEVENT
 @e NAME_END_FSMEVENT
+@e FILE_NAME_START_FSMEVENT
+@e FILE_NAME_END_FSMEVENT
+@e VERBATIM_START_FSMEVENT
+@e VERBATIM_END_FSMEVENT
 
 @e COMMAND_START_FSMEVENT
 @e COMMAND_END_FSMEVENT
+
+@e COMMENT_START_FSMEVENT
+@e COMMENT_END_FSMEVENT
 
 @<Add literate syntax to finite state machine@> =
 	if (WebNotation::supports_named_holons(S)) {
@@ -99,18 +106,24 @@ the user of the machine.
 			WebNotation::notation(S, NAMED_HOLONS_WSF, 2),		
 			code_state, NO_FSMEVENT, NAME_END_FSMEVENT);
 	}
-/*	if (WebNotation::supports_metadata_in_strings(S)) {
-		fsm_state *command_name_state = FSM::new_state(I"tangle-command");
+	if (WebNotation::supports_file_named_holons(S)) {
+		fsm_state *file_holon_name_state = FSM::new_state(I"file-holon");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 1),
-			command_name_state, NO_FSMEVENT, COMMAND_START_FSMEVENT);
-		FSM::add_transition(command_name_state, '"', code_state);
-		FSM::add_transition(command_name_state, '\n', code_state);
-		FSM::add_transition_spelling_out_with_events(command_name_state,
-			WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2),
-			code_state, NO_FSMEVENT, COMMAND_END_FSMEVENT);
+			WebNotation::notation(S, FILE_NAMED_HOLONS_WSF, 1),
+			file_holon_name_state, NO_FSMEVENT, FILE_NAME_START_FSMEVENT);
+		FSM::add_transition_spelling_out_with_events(file_holon_name_state,
+			WebNotation::notation(S, FILE_NAMED_HOLONS_WSF, 2),		
+			code_state, NO_FSMEVENT, FILE_NAME_END_FSMEVENT);
 	}
-*/
+	if (WebNotation::supports_verbatim_material(S)) {
+		fsm_state *verbatim_state = FSM::new_state(I"verbatim");
+		FSM::add_transition_spelling_out_with_events(code_state,
+			WebNotation::notation(S, VERBATIM_CODE_WSF, 1),
+			verbatim_state, NO_FSMEVENT, VERBATIM_START_FSMEVENT);
+		FSM::add_transition_spelling_out_with_events(verbatim_state,
+			WebNotation::notation(S, VERBATIM_CODE_WSF, 2),		
+			code_state, NO_FSMEVENT, VERBATIM_END_FSMEVENT);
+	}
 
 @ These are mostly straightforward. For example, if you're scanning code and
 you see the notation to start a line comment, then transition to line-comment
@@ -129,13 +142,13 @@ notation must not occur inside double-quoted matter in a comment.
 @<Add multiline comment syntax to finite state machine@> =
 	if (Str::len(pl->multiline_comment_open) > 0) {
 		fsm_state *mlc_state = FSM::new_state(I"multi-line-comment");
-		FSM::add_transition_spelling_out(code_state, pl->multiline_comment_open, mlc_state);
+		FSM::add_transition_spelling_out_with_events(code_state, pl->multiline_comment_open, mlc_state, NO_FSMEVENT, COMMENT_START_FSMEVENT);
 		if (Str::eq(pl->language_name, I"Inform 7")) {
 			fsm_state *smlc_state = FSM::new_state(I"string-in-mlc");
 			FSM::add_transition_spelling_out(mlc_state, pl->string_literal, smlc_state);
 			FSM::add_transition_spelling_out(smlc_state, pl->string_literal, mlc_state);
 		}
-		FSM::add_transition_spelling_out(mlc_state, pl->multiline_comment_close, code_state);
+		FSM::add_transition_spelling_out_with_events(mlc_state, pl->multiline_comment_close, code_state, NO_FSMEVENT, COMMENT_END_FSMEVENT);
 	}
 
 @<Add whole line comment syntax to finite state machine@> =
@@ -145,8 +158,7 @@ notation must not occur inside double-quoted matter in a comment.
 		FSM::add_transition(wlc_state, '\n', code_state);
 	}
 
-@ Also annoyingly, InC and Inform 6 allow tangle commands to be used inside
-string literals. We forbid this for most other languages.
+@ Metadata can sometimes be written in square brackets inside a string:
 
 @<Add string literal syntax to finite state machine@> =
 	if (Str::len(pl->string_literal) > 0) {

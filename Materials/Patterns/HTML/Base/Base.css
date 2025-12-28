@@ -319,3 +319,6 @@ div.lsmarkdown th, div.lsmarkdown td {
 	padding: 8px;
 }
 
+div.lsmarkdown p {
+	width: 60em;
+}

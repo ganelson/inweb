@@ -52,7 +52,7 @@
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">textual_table</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rows</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |textual_table_row| */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rows</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( of |textual_table_row| )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">textual_table</span><span class="plain-syntax">;</span>
 
@@ -60,7 +60,7 @@
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">positioning</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sort_column</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">columns</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |text_stream| */</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">columns</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( of |text_stream| )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">textual_table_row</span><span class="plain-syntax">;</span>
 

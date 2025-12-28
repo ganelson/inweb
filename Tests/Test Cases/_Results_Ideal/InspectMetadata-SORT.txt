@@ -1,0 +1,7 @@
+web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 16 paragraphs : 221 lines
+
+Title: Sorting Smorgasbord
+Author: Various Artists
+Purpose: Demonstrating great sorting algorithms of the 1950s.
+Language: Python
+Notation: MarkdownCode

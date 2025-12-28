@@ -1,0 +1,46 @@
+inweb: a tool for literate programming
+
+Inweb is a system for literate programming. It deals with 'webs',
+programs written in conventional programming languages like C (which
+Inweb calls 'languages') marked up in human-readable ways to reveal
+their structure and explain their motivation. Inweb can handle multiple
+markup syntaxes (which it calls 'notations'). It can also group together
+multiple webs into connected masses, which it calls 'colonies'.
+
+Inweb is an all-in-one tool for LP which is divided up into subcommands,
+each able to perform a different task. 'inweb tangle' and 'inweb weave'
+are the two used constantly: tangling processes a web into a form
+which can be compiled, and weaving makes it into something human-readable.
+
+Usage: inweb COMMAND [DETAILS]
+
+where the DETAILS are different for each COMMAND.
+
+The following subcommands are available:
+
+    inweb weave
+    inweb tangle
+    inweb inspect
+    inweb make-readme
+    inweb make-gitignore
+    inweb make-makefile
+    inweb map
+    inweb advance-build
+    inweb test-language
+
+Use 'inweb help COMMAND' for more on each command.
+
+The following options are always available:
+
+-at X            specify that this tool is installed at X
+-colony X        if the newer 'colony::member' notation is problematic, use this and '-member'
+-crash           intentionally crash on internal errors, for backtracing (default is -no-crash)
+-fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help            print general help information
+-locale X        set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
+-log X           write the debugging log to include diagnostics on X
+-member X        if the newer 'colony::member' notation is problematic, use this and '-colony'
+-silent          print nothing unless errors occur (default is -no-silent)
+-using X         making Inweb resources in the file or path X available to all webs
+-verbose         explain what inweb is doing (default is -no-verbose)
+-version         print out version number

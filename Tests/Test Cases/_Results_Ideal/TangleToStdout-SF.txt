@@ -1,0 +1,37 @@
+#!/usr/bin/python3
+
+#line 16 "countsort2.py.md"
+def countingSort(unsorted):
+    sorted = []
+    if unsorted:
+        
+#line 30 "countsort2.py.md"
+        max_val = max(unsorted)
+        counts = [0] * (max_val + 1)
+        
+        
+#line 19 "countsort2.py.md"
+
+        
+#line 38 "countsort2.py.md"
+        for value in unsorted:
+            counts[value] += 1
+        
+        
+#line 20 "countsort2.py.md"
+
+        
+#line 51 "countsort2.py.md"
+        for value, count in enumerate(counts):
+            sorted.extend([value] * count)
+        
+        
+#line 21 "countsort2.py.md"
+
+    return sorted
+
+#line 56 "countsort2.py.md"
+A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
+print("Unsorted:", A)
+print("Sorted:", countingSort(A))
+

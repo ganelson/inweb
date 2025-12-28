@@ -26,7 +26,16 @@ typedef struct tangle_docket {
 	void *state;
 	struct text_file_position at;
 	struct tangle_target *target;
+	struct linked_list *conventions; /* of |ls_conventions| */
+	struct pathname *external_path;
+	struct linked_list *external_files; /* of |tangle_external_file| */
 } tangle_docket;
+
+typedef struct tangle_external_file {
+	struct filename *fn;
+	struct text_stream stream;
+	CLASS_DEFINITION
+} tangle_external_file;
 
 @ The idea here is that a docket contains optional callback functions to
 deal with situations arising during the tangle. In each case they can be
@@ -48,7 +57,36 @@ tangle_docket Tangler::new_docket(
 	docket.state = initial_state;
 	docket.at = TextFiles::nowhere();
 	docket.target = NULL;
+	docket.conventions = NEW_LINKED_LIST(ls_conventions);
+	ADD_TO_LINKED_LIST(Conventions::generic(), ls_conventions, docket.conventions);
+	docket.external_path = NULL;
+	docket.external_files = NEW_LINKED_LIST(tangle_external_file);
 	return docket;
+}
+
+text_stream *Tangler::obtain_side_stream(tangle_docket *docket, filename *F) {
+	text_stream *TO = NULL;
+	tangle_external_file *tef;
+	LOOP_OVER_LINKED_LIST(tef, tangle_external_file, docket->external_files)
+		if (Filenames::eq(F, tef->fn)) {
+			TO = &(tef->stream);
+			break;
+		}
+	if (TO == NULL) {
+		tef = CREATE(tangle_external_file);
+		tef->fn = F;
+		TO = &(tef->stream);
+		if (STREAM_OPEN_TO_FILE(TO, F, UTF8_ENC) == FALSE)
+			Errors::fatal_with_file("unable to write tangle file", F);
+		ADD_TO_LINKED_LIST(tef, tangle_external_file, docket->external_files);
+	}
+	return TO;
+}
+
+void Tangler::finish_with_docket(tangle_docket *docket) {
+	tangle_external_file *tef;
+	LOOP_OVER_LINKED_LIST(tef, tangle_external_file, docket->external_files)
+		STREAM_CLOSE(&(tef->stream));
 }
 
 @ This tangles just a small excerpt of code held as text in memory, i.e., not to
@@ -62,10 +100,12 @@ void Tangler::tangle_code_with_docket(OUTPUT_STREAM, tangle_docket *docket, text
 	text_file_position origin, programming_language *language) {
 	docket->target = TangleTargets::ad_hoc_target(language);
 	docket->at = origin;
-	ls_unit *lsu = LiterateSource::code_fragment_to_unit(WebNotation::default(), language,
+	ls_unit *lsu = LiterateSource::code_fragment_to_unit(WebNotation::default(FALSE), language,
 		text, docket->at);
 	Tangler::report_errors(docket, lsu);
+	docket->external_files = NEW_LINKED_LIST(tangle_external_file);
 	Tangler::tangle_holons_in_segment(OUT, lsu, docket, MAIN_TANGLE_SEGMENT);
+	Tangler::finish_with_docket(docket);
 }
 
 @ Otherwise, we'll be tangling an entire web.
@@ -81,6 +121,8 @@ void Tangler::tangle_web_directory_with_docket(OUTPUT_STREAM, tangle_docket *doc
 	WebStructure::set_language(W, language);
 	WebStructure::read_web_source(W, FALSE, FALSE);
 	docket->target = TangleTargets::primary_target(W);
+	Conventions::establish(W, NULL);
+	docket->conventions = W->conventions;
 	Tangler::tangle_web_inner(OUT, docket, W, NULL);
 }
 
@@ -91,6 +133,8 @@ void Tangler::tangle_web(OUTPUT_STREAM, ls_web *W, pathname *extracts_path,
 	tangle_target *target) {
 	tangle_docket docket = Tangler::new_docket(NULL, NULL, NULL, NULL, NULL);
 	docket.target = target;
+	docket.conventions = W->conventions;
+	docket.external_path = extracts_path;
 	Tangler::tangle_web_inner(OUT, &docket, W, extracts_path);
 }
 
@@ -153,8 +197,7 @@ void Tangler::tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W,
 	LOOP_OVER_TARGET_SECTIONS(C, S, target)
 		Tangler::tangle_holons_in_segment(OUT, S->literate_source, docket, VERY_EARLY_TANGLE_SEGMENT);
 
-	@<Tangle all the constant definitions in section order@>;
-	LanguageMethods::additional_predeclarations(OUT, language, W);
+	if (W->definitions_chunk == NULL) Tangler::tangle_constants(OUT, docket, W);
 
 	LOOP_OVER_TARGET_SECTIONS(C, S, target)
 		Tangler::tangle_holons_in_segment(OUT, S->literate_source, docket, EARLY_TANGLE_SEGMENT);
@@ -175,9 +218,15 @@ void Tangler::tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W,
 		@<Tangle any extract files not part of the target itself@>;
 	}
 	LanguageMethods::additional_tangling(language, W, target);
+	Tangler::finish_with_docket(docket);
 }
 
-@<Tangle all the constant definitions in section order@> =
+@
+
+=
+void Tangler::tangle_constants(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) {
+	tangle_target *target = docket->target;
+	programming_language *language = target->tangle_language;
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_OVER_TARGET_CHUNKS(C, S, target)
@@ -193,6 +242,8 @@ void Tangler::tangle_web_inner(OUTPUT_STREAM, tangle_docket *docket, ls_web *W,
 				LanguageMethods::close_ifdef(OUT, language, L_chunk->symbol_defined, FALSE);
 			}
 	Enumerations::define_extents(OUT, target, language, docket);
+	LanguageMethods::additional_predeclarations(OUT, language, docket, W);
+}
 
 @<Define the constant@> =
 	IfdefTags::open_ifdefs(OUT, L_par);
@@ -253,13 +304,24 @@ holons to be concatenated into the program, which is much simpler.
 void Tangler::tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu,
 	tangle_docket *docket, int segment) {
 	if (lsu == NULL) internal_error("no holon");
-	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
-		if ((par->holon) && (par->holon->top_level))
-			if (segment == Tangler::segment_of_par(par)) {
-				IfdefTags::open_ifdefs(OUT, par);
-				Tangler::tangle_holon(OUT, par->holon, docket, NULL);
-				IfdefTags::close_ifdefs(OUT, par);
+	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
+		if ((lsu->context) && (lsu->context->definitions_chunk) &&
+			(lsu->context->definitions_chunk->owner == par) && (segment == MAIN_TANGLE_SEGMENT))
+			Tangler::tangle_constants(OUT, docket, lsu->context); 
+		if ((par->holon) && (par->holon->top_level) && (par->holon->addendum_to == NULL)) {
+			text_stream *TO = OUT;
+			text_stream *N = Holons::external_filename(par->holon);
+			if (Str::len(N) > 0) {
+				filename *F = Filenames::from_text_relative(docket->external_path, N);
+				TO = Tangler::obtain_side_stream(docket, F);
 			}
+			if (segment == Tangler::segment_of_par(par)) {
+				IfdefTags::open_ifdefs(TO, par);
+				Tangler::tangle_holon(TO, par->holon, docket, NULL);
+				IfdefTags::close_ifdefs(TO, par);
+			}
+		}
+	}
 }
 
 @ Note that this function is recursive: that's how holons incorporate each
@@ -348,21 +410,22 @@ void Tangler::tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 @<Tangle this splice@> =
 	if (hs->expansion) @<Recursively tangle this named holon in@>
 	else if (Str::len(hs->command) > 0) @<Act on this tangler command@>
+	else if (Str::len(hs->verbatim) > 0) @<Act on this verbatim@>
 	else @<Tangle in this splice of raw content@>;
 
 @ Here's the recursion taking place:
 
 @<Recursively tangle this named holon in@> =
 	if (docket->target) 
-		LanguageMethods::before_holon_expansion(OUT,
-			docket->target->tangle_language, hs->expansion->corresponding_chunk->owner);
+		LanguageMethods::before_holon_expansion(OUT, 
+			docket->target->tangle_language, docket, hs->expansion->corresponding_chunk->owner);
 	text_stream *indentation = NULL;
 	if ((docket->target->tangle_language->indent_holon_expansion) &&
 		(Str::len(buffer) > 0) && (Str::is_whitespace(buffer))) indentation = buffer;
 	Tangler::tangle_holon(OUT, hs->expansion, docket, indentation);
 	if (docket->target) 
 		LanguageMethods::after_holon_expansion(OUT,
-			docket->target->tangle_language, hs->expansion->corresponding_chunk->owner);
+			docket->target->tangle_language, docket, hs->expansion->corresponding_chunk->owner);
 	Tangler::tangle_line_marker(OUT, hs->line, docket);
 
 @ This is a similar matter, except that it expands bibliographic data:
@@ -398,6 +461,11 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 			hs->command, WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2));
 	}
 
+@<Act on this verbatim@> =
+	Str::clear(buffer);
+	Str::copy(buffer, hs->verbatim);
+	Tangler::tangle_illiterate_code_fragment(OUT, buffer, docket);
+
 @<Tangle in this splice of raw content@> =
 	Str::clear(buffer);
 	text_stream *matter = Holons::splice_code(hs);
@@ -422,11 +490,6 @@ nevertheless, still contain some markup for named holons:
 void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	tangle_docket *docket, ls_line *lst) {
 	ls_unit *lsu = LiterateSource::unit_of_line(lst);
-	text_stream *hopen = NULL, *hclose = NULL;
-	if (WebNotation::supports_named_holons(lsu->syntax)) {
-		hopen = WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 1);
-		hclose = WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 2);
-	}
 	finite_state_machine *machine =
 		HolonSyntax::get(lsu->syntax, docket->target->tangle_language);
 	FSM::reset_machine(machine);
@@ -434,7 +497,7 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	TEMPORARY_TEXT(output)
 	for (int i=0; i<Str::len(code); i++) {
 		inchar32_t c = Str::get_at(code, i);
-		int event = FSM::cycle_machine(machine, c);
+		int event = FSM::cycle_machine(machine, c, NULL);
 		PUT_TO(name, c);
 		PUT_TO(output, c);
 		switch (event) {
@@ -443,17 +506,38 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 				break;
 			}
 			case NAME_END_FSMEVENT: {
-				int excess = Str::len(hclose);
-				Str::truncate(name, Str::len(name) - excess);
+				int ho_len = Str::len(WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 1));
+				int hc_len = Str::len(WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 2));
+				Str::truncate(name, Str::len(name) - hc_len);
 				ls_holon *holon = Holons::find_holon(name, lsu->local_holon_namespace, FALSE, NULL);
 				if (holon) {
-					int excess = Str::len(hopen) + Str::len(name) + Str::len(hclose);
+					int excess = ho_len + Str::len(name) + hc_len;
 					Str::truncate(output, Str::len(output) - excess);
 					LanguageMethods::before_holon_expansion(output,
-						docket->target->tangle_language, holon->corresponding_chunk->owner);
+						docket->target->tangle_language, docket, holon->corresponding_chunk->owner);
 					Tangler::tangle_holon(output, holon, docket, NULL);
 					LanguageMethods::after_holon_expansion(output,
-						docket->target->tangle_language, holon->corresponding_chunk->owner);
+						docket->target->tangle_language, docket, holon->corresponding_chunk->owner);
+				}
+				break;
+			}
+			case FILE_NAME_START_FSMEVENT: {
+				Str::clear(name);
+				break;
+			}
+			case FILE_NAME_END_FSMEVENT: {
+				int ho_len = Str::len(WebNotation::notation(lsu->syntax, FILE_NAMED_HOLONS_WSF, 1));
+				int hc_len = Str::len(WebNotation::notation(lsu->syntax, FILE_NAMED_HOLONS_WSF, 2));
+				Str::truncate(name, Str::len(name) - hc_len);
+				ls_holon *holon = Holons::find_holon(name, lsu->local_holon_namespace, FALSE, NULL);
+				if (holon) {
+					int excess = ho_len + Str::len(name) + hc_len;
+					Str::truncate(output, Str::len(output) - excess);
+					LanguageMethods::before_holon_expansion(output,
+						docket->target->tangle_language, docket, holon->corresponding_chunk->owner);
+					Tangler::tangle_holon(output, holon, docket, NULL);
+					LanguageMethods::after_holon_expansion(output,
+						docket->target->tangle_language, docket, holon->corresponding_chunk->owner);
 				}
 				break;
 			}

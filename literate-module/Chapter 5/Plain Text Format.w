@@ -62,7 +62,7 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_endnote_node_type) @<Render endnote@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
-	else if (N->type == weave_pmac_node_type) @<Render pmac@>
+	else if (N->type == weave_holon_usage_node_type) @<Render holon usage@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_section_node_type) @<Render section@>
 	else if (N->type == weave_code_line_node_type) @<Render code line@>
@@ -79,6 +79,7 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
 	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
+	else if (N->type == weave_index_marker_node_type) @<Render index@>
 
 	else internal_error("unable to render unknown node");
 	return TRUE;
@@ -131,7 +132,7 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	WRITE(".  ");
 
 @<Render endnote@> =
-	@<Recurse tne renderer through children nodes@>;
+	@<Recurse the renderer through children nodes@>;
 	WRITE("\n");
 	return FALSE;
 
@@ -151,11 +152,10 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	WRITE("<%S (%S)> =",
 		C->holon->holon_name, C->holon->corresponding_chunk->owner->paragraph_number);
 
-@<Render pmac@> =
-	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
-	WRITE("<%S (%S)>%s",
-		(C->pmac->holon)?(C->pmac->holon->holon_name):NULL, C->pmac->paragraph_number,
-		(C->defn)?" =":"");
+@<Render holon usage@> =
+	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
+	WRITE("<%S (%S)>",
+		(C->holon)?(C->holon->holon_name):NULL, C->holon->corresponding_chunk->owner->paragraph_number);
 
 @<Render vskip@> =
 	WRITE("\n");
@@ -229,6 +229,11 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
 	MDRenderer::render_extended(OUT, (void *) prs->wv, C->content, C->variation, 0);
 
-@<Recurse tne renderer through children nodes@> =
+@<Render index@> =
+	if ((prs->wv) && (prs->wv->weave_web)) {
+		WebIndexing::inspect_index(OUT, prs->wv->weave_web, I"0");
+	}
+
+@<Recurse the renderer through children nodes@> =
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees::traverse_from(M, &PlainTextWeaving::render_visit, (void *) prs, L+1);

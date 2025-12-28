@@ -1,9 +1,0 @@
-web "hellow" (C program): 1 section : 1 paragraph : 8 lines
-Purpose 'A minimal example of a C program written for inweb.'
-S1
-    C1: holon (used sequentially)
-        0000007 #include⏑<stdio.h>
-        0000008 
-        0000009 int⏑main(int⏑argc,⏑char⏑*argv[])⏑{
-        0000010 ⇢   printf("Hello⏑world!\n");
-        0000011 }

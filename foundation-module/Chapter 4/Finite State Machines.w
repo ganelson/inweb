@@ -22,6 +22,7 @@ typedef struct finite_state_machine {
 	struct fsm_state *current_state;
 	int cycles_at_current_state;
 	struct linked_list *states; /* of |fsm_state| */
+	struct general_pointer last_parameter;
 	CLASS_DEFINITION
 } finite_state_machine;
 
@@ -32,6 +33,7 @@ finite_state_machine *FSM::new_machine(fsm_state *start) {
 	fsm->current_state = start;
 	fsm->cycles_at_current_state = 0;
 	fsm->states = NEW_LINKED_LIST(fsm_state);
+	fsm->last_parameter = NULL_GENERAL_POINTER;
 	FSM::attach(start, fsm);
 	return fsm;
 }
@@ -149,6 +151,8 @@ typedef struct fsm_transition {
 	/* result of a match: */
 	int first;
 	int event;
+	int length;
+	struct general_pointer parameter;
 
 	struct fsm_transition *next_trans; /* within the list for a bank */
 	CLASS_DEFINITION
@@ -158,7 +162,8 @@ typedef struct fsm_transition {
 below.
 
 =
-void FSM::add_primitive(fsm_state *from, fsm_transitions *bank, inchar32_t c, fsm_state *to, int event, int first_cycle_only) {
+void FSM::add_primitive(fsm_state *from, fsm_transitions *bank, inchar32_t c,
+	fsm_state *to, int event, int first_cycle_only, general_pointer parameter, int len) {
 	@<Attach states to the machine@>;
 	@<Replace any existing transition with these criteria@>;
 
@@ -166,7 +171,9 @@ void FSM::add_primitive(fsm_state *from, fsm_transitions *bank, inchar32_t c, fs
 	nt->on = c;
 	nt->to = to;
 	nt->event = event;
+	nt->length = len;
 	nt->first = first_cycle_only;
+	nt->parameter = parameter;
 	nt->next_trans = NULL;
 
 	@<Place the new transition as late as it can be@>;
@@ -188,6 +195,7 @@ and then the other is automatically attached.
 		if ((trans->on == c) && (trans->first == first_cycle_only)) {
 			trans->event = event;
 			trans->to = to;
+			trans->parameter = parameter;
 			return;
 		}
 	}
@@ -229,23 +237,24 @@ machine.
 
 =
 void FSM::add_transition(fsm_state *from, inchar32_t c, fsm_state *to) {
-	FSM::add_primitive(from, &(from->exits), c, to, NO_FSMEVENT, FALSE);
+	FSM::add_primitive(from, &(from->exits), c, to, NO_FSMEVENT, FALSE, NULL_GENERAL_POINTER, 0);
 }
 
 void FSM::add_entry_transition(fsm_state *from, inchar32_t c, fsm_state *to) {
-	FSM::add_primitive(from, &(from->entries), c, to, NO_FSMEVENT, FALSE);
+	FSM::add_primitive(from, &(from->entries), c, to, NO_FSMEVENT, FALSE, NULL_GENERAL_POINTER, 0);
 }
 
 void FSM::add_entry_transition_with_event(fsm_state *from, inchar32_t c, fsm_state *to, int event) {
-	FSM::add_primitive(from, &(from->entries), c, to, event, FALSE);
+	FSM::add_primitive(from, &(from->entries), c, to, event, FALSE, NULL_GENERAL_POINTER, 0);
 }
 
 void FSM::add_transition_with_event(fsm_state *from, inchar32_t c, fsm_state *to, int event) {
-	FSM::add_primitive(from, &(from->exits), c, to, event, FALSE);
+	FSM::add_primitive(from, &(from->exits), c, to, event, FALSE, NULL_GENERAL_POINTER, 0);
 }
 
-void FSM::add_general_transition(fsm_state *from, inchar32_t c, fsm_state *to, int event, int first_cycle_only) {
-	FSM::add_primitive(from, &(from->exits), c, to, event, first_cycle_only);
+void FSM::add_general_transition(fsm_state *from, inchar32_t c, fsm_state *to,
+	int event, int first_cycle_only, general_pointer par, int len) {
+	FSM::add_primitive(from, &(from->exits), c, to, event, first_cycle_only, par, len);
 }
 
 @ More ambitiously, we can call the following functions to set up a compound
@@ -260,6 +269,11 @@ void FSM::add_transition_spelling_out(fsm_state *from, text_stream *text, fsm_st
 
 void FSM::add_transition_spelling_out_with_events(fsm_state *from, text_stream *text,
 	fsm_state *to, int fallback_event, int event) {
+	FSM::add_transition_spelling_out_with_events_and_parameter(from, text, to, fallback_event, event, NULL_GENERAL_POINTER);
+}
+
+void FSM::add_transition_spelling_out_with_events_and_parameter(fsm_state *from, text_stream *text,
+	fsm_state *to, int fallback_event, int event, general_pointer parameter) {
 	fsm_state *at = from;
 	for (int i=0; i<Str::len(text); i++) {
 		int first_cycle_only = (i==0)?FALSE:TRUE;
@@ -268,11 +282,14 @@ void FSM::add_transition_spelling_out_with_events(fsm_state *from, text_stream *
 			next = FSM::find_next(at, Str::get_at(text, i), first_cycle_only);
 			if (next == NULL) {
 				next = FSM::new_state_from(from);
-				FSM::add_general_transition(next, 0, from, fallback_event, first_cycle_only);
+				FSM::add_general_transition(next, 0, from, fallback_event,
+					first_cycle_only, NULL_GENERAL_POINTER, 0);
 			}
-			FSM::add_general_transition(at, Str::get_at(text, i), next, NO_FSMEVENT, first_cycle_only);
+			FSM::add_general_transition(at, Str::get_at(text, i), next, NO_FSMEVENT,
+				first_cycle_only, NULL_GENERAL_POINTER, 0);
 		} else {
-			FSM::add_general_transition(at, Str::get_at(text, i), next, event, first_cycle_only);
+			FSM::add_general_transition(at, Str::get_at(text, i), next, event,
+				first_cycle_only, parameter, Str::len(text));
 		}
 		at = next;
 	}
@@ -291,7 +308,7 @@ void FSM::reset_machine(finite_state_machine *fsm) {
 @ We then call this on each character in turn of the text to be scanned.
 
 =
-int FSM::cycle_machine(finite_state_machine *fsm, inchar32_t c) {
+int FSM::cycle_machine(finite_state_machine *fsm, inchar32_t c, int *len) {
 	Repeat: ;
 	// WRITE_TO(STDERR, "At state %S with c = %c\n", fsm->current_state->mnemonic, c);
 	fsm_transitions *bank = &(fsm->current_state->exits);
@@ -307,6 +324,7 @@ int FSM::cycle_machine(finite_state_machine *fsm, inchar32_t c) {
 
 @<Make this transition@> =
 	int event = trans->event;
+	int length = trans->length;
 	fsm_state *new_state = trans->to;
 	if (new_state == fsm->current_state) {
 		fsm->cycles_at_current_state++;
@@ -317,6 +335,8 @@ int FSM::cycle_machine(finite_state_machine *fsm, inchar32_t c) {
 		@<Consider entry transitions@>;
 	}
 	if (event == AGAIN_FSMEVENT) goto Repeat;
+	fsm->last_parameter = trans->parameter;
+	if (len) *len = length;
 	return event;
 
 @ When the machine transitions to a new state T, we immediately look at the
@@ -345,6 +365,14 @@ well-constructed FSM won't do this.
 			break;
 		}
 	}
+
+@ Some events come with a parameter, and this is where it can be extracted:
+
+=
+general_pointer FSM::get_last_parameter(finite_state_machine *fsm) {
+	if (fsm == NULL) return NULL_GENERAL_POINTER;
+	return fsm->last_parameter;
+}
 
 @h Logging.
 The following prints out a fairly human-readable form of the machine.

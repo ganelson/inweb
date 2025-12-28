@@ -24,6 +24,7 @@ typedef struct ls_colony {
 	struct wcl_declaration *declaration;
 	struct linked_list *members; /* of |ls_colony_member| */
 	struct text_stream *home; /* path of home repository */
+	struct pathname *redirect; /* temporarily, where we weave to */
 	struct text_stream *assets_path; /* where assets shared between weaves live */
 	struct pathname *patterns_path; /* where additional patterns live */
 	CLASS_DEFINITION
@@ -354,6 +355,7 @@ ls_colony *Colonies::parse_declaration(wcl_declaration *D) {
 	C->declaration = D;
 	C->members = NEW_LINKED_LIST(ls_colony_member);
 	C->home = Str::new();
+	C->redirect = NULL;
 	Colonies::expand_relative_path(C->home, I"docs", C);
 	C->assets_path = NULL;
 	C->patterns_path = NULL;
@@ -428,6 +430,13 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 		Colonies::member_features(CM, mr.exp[1], crs, tfp);
 	} else if (Regexp::match(&mr, line, U"default: *(%c*)")) {
 		Colonies::default_features(mr.exp[0], crs, tfp);
+	} else if (Regexp::match(&mr, line, U"using: *\"(%c*)\" *")) {
+		TEMPORARY_TEXT(path)
+		Colonies::expand_relative_path(path, mr.exp[0], C);
+		filename *F = Filenames::from_text(path);
+		wcl_declaration *D = WCL::read_anything(F);
+		if (D) WCL::merge_within(D, C->declaration);
+		DISCARD_TEXT(path)		
 	} else if (Regexp::match(&mr, line, U"patterns: *\"(%c*)\" *")) {
 		TEMPORARY_TEXT(path)
 		Colonies::expand_relative_path(path, mr.exp[0], C);
@@ -595,23 +604,34 @@ ls_module *Colonies::as_module(ls_colony_member *CM, ls_line *lst, ls_web *Wm) {
 
 =
 pathname *Colonies::home(ls_colony *C) {
-	if (C) return Pathnames::from_text(C->home);
+	if (C) {
+		if (C->redirect) return C->redirect;
+		return Pathnames::from_text(C->home);
+	}
 	return Pathnames::from_text(I"docs");
 }
 
-pathname *Colonies::assets_path(ls_colony *C, ls_web *W) {
+void Colonies::set_redirect(ls_colony *C, pathname *H) {
+	if (C) C->redirect = H;
+}
+
+pathname *Colonies::assets_path_wrt(ls_colony *C, ls_web *W, pathname *home) {
 	if (C) {
+		pathname *wrt = home;
 		TEMPORARY_TEXT(path)
-		Colonies::expand_relative_path_to(path, C->assets_path, C, Colonies::home(C));
+		Colonies::expand_relative_path_to(path, C->assets_path, C, wrt);
 		pathname *P = Pathnames::from_text(path);
 		DISCARD_TEXT(path)
 		return P;
 	}
 	if ((W) && (W->single_file)) {
+		pathname *wrt = Filenames::up(W->single_file);
+		if ((W) && (WeavingDetails::get_redirect_weaves_to(W)))
+			wrt = WeavingDetails::get_redirect_weaves_to(W);
 		TEMPORARY_TEXT(path)
 		Filenames::write_unextended_leafname(path, W->single_file);
 		WRITE_TO(path, "-assets");
-		pathname *P = Pathnames::down(Filenames::up(W->single_file), path);
+		pathname *P = Pathnames::down(wrt, path);
 		DISCARD_TEXT(path)
 		return P;
 	}
@@ -620,13 +640,70 @@ pathname *Colonies::assets_path(ls_colony *C, ls_web *W) {
 	return Pathnames::down(H, I"assets");
 }
 
-pathname *Colonies::weave_path(ls_colony_member *CM) {
+pathname *Colonies::assets_path(ls_colony *C, ls_web *W) {
+	return Colonies::assets_path_wrt(C, W, Colonies::home(C));
+}
+
+pathname *Colonies::weave_path_wrt(ls_colony_member *CM, pathname *home) {
 	ls_colony *C = CM->owner;
 	TEMPORARY_TEXT(path)
-	Colonies::expand_relative_path_to(path, CM->weave_path, C, Colonies::home(C));
+	Colonies::expand_relative_path_to(path, CM->weave_path, C, home);
 	pathname *P = Pathnames::from_text(path);
 	DISCARD_TEXT(path)
 	return P;
+}
+
+pathname *Colonies::weave_path(ls_colony_member *CM) {
+	return Colonies::weave_path_wrt(CM, Colonies::home(CM->owner));
+}
+
+@ This has a running time of $O(n^2)$ in the number $n$ of colony members, but
+never mind for now.
+
+=
+linked_list *Colonies::skeleton(ls_colony *C, pathname *at) {
+	linked_list *L = NEW_LINKED_LIST(pathname);
+	Colonies::join_to_skeleton(L, at);
+	pathname *P = Colonies::assets_path_wrt(C, NULL, at);
+	Colonies::join_to_skeleton(L, P);
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members) {
+		if (CM->external == FALSE) {
+			P = Colonies::weave_path_wrt(CM, at);
+			Colonies::join_to_skeleton(L, P);
+		}
+	}
+	return L;
+}
+
+linked_list *Colonies::web_skeleton(ls_web *W, ls_colony *C, ls_colony_member *CM, pathname *at) {
+	if ((at == NULL) && (C)) at = Colonies::home(C);
+	linked_list *L = NEW_LINKED_LIST(pathname);
+	ADD_TO_LINKED_LIST(at, pathname, L);
+	pathname *P = Colonies::assets_path_wrt(C, W, at);
+	Colonies::join_to_skeleton(L, P);
+	if ((CM) && (CM->external == FALSE)) {
+		P = Colonies::weave_path_wrt(CM, at);
+		Colonies::join_to_skeleton(L, P);
+	}
+	return L;
+}
+
+int Colonies::join_to_skeleton(linked_list *L, pathname *P) {
+	if (P) {
+		int found = FALSE;
+		pathname *X;
+		LOOP_OVER_LINKED_LIST(X, pathname, L)
+			if (Pathnames::resemble(X, P)) {
+				found = TRUE; break;
+			}
+		if (found == FALSE) {
+			Colonies::join_to_skeleton(L, Pathnames::up(P));
+			ADD_TO_LINKED_LIST(P, pathname, L);
+			return FALSE;
+		}
+	}
+	return TRUE;
 }
 
 @h Cross-references.
@@ -703,7 +780,7 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 		title, search_M, text, FALSE, sections_only);
 
 	if (N == 0) {
-		if (external == FALSE) {
+		if ((external == FALSE)  && (Wm)) {
 			@<Is it the name of a function in the current web?@>;
 			@<Is it the name of a type in the current web?@>;
 		}
@@ -923,6 +1000,7 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 	if (C == NULL) { WRITE("<no colony>\n"); return; }
 	WRITE("colony declared in the file: %f\nweave output to the directory: %S\n\n",
 		C->declaration->associated_file, C->home);
+
 	linked_list *L = C->members;
 	int N = LinkedLists::len(L);
 	if (N == 0) { WRITE("Colony has no members, and does not generate a website\n"); return; }
@@ -970,17 +1048,22 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 	WRITE("\n");
 
 @<Tabulate the details@> =
+	int include_modules = FALSE;
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, L) {
+		ls_web *W = CM->loaded;
+		if (WebModules::no_dependencies(W->main_module) > 1) include_modules = TRUE;
+	}
 	textual_table *T = TextualTables::new_table();
 	WRITE_TO(TextualTables::next_cell(T), "member");
 	WRITE_TO(TextualTables::next_cell(T), "notation");
 	WRITE_TO(TextualTables::next_cell(T), "language");
-	WRITE_TO(TextualTables::next_cell(T), "modules");
+	if (include_modules) WRITE_TO(TextualTables::next_cell(T), "modules");
 	WRITE_TO(TextualTables::next_cell(T), "chapters");
 	WRITE_TO(TextualTables::next_cell(T), "sections");
 	if (fully) WRITE_TO(TextualTables::next_cell(T), "paragraphs");
 	if (fully) WRITE_TO(TextualTables::next_cell(T), "lines");
 	int tcc = 0, tsc = 0, tpc = 0, tlc = 0, tm = 0;
-	ls_colony_member *CM;
 	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, L) {
 		tm++;
 		ls_web *W = CM->loaded;
@@ -988,7 +1071,11 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 		WRITE_TO(TextualTables::next_cell(T), "%s%S", (W->is_page)?"*":"", CM->name);
 		WRITE_TO(TextualTables::next_cell(T), "%S", W->web_syntax->name);
 		WRITE_TO(TextualTables::next_cell(T), "%S", W->web_language->language_name);
-		WRITE_TO(TextualTables::next_cell(T), "%d", WebModules::no_dependencies(W->main_module));
+		if (include_modules) {
+			int nt = WebModules::no_dependencies(W->main_module);
+			if (nt > 1) WRITE_TO(TextualTables::next_cell(T), "%d", nt - 1);
+			else WRITE_TO(TextualTables::next_cell(T), "--");
+		}
 		int cc = (W)?(WebStructure::chapter_count(W)):0;
 		int icc = (W)?(WebStructure::imported_chapter_count(W)):0;
 		if (icc == 0) WRITE_TO(TextualTables::next_cell(T), "%d", cc);
@@ -1016,7 +1103,7 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 	WRITE_TO(TextualTables::next_cell(T), "total: %d", tm);
 	WRITE_TO(TextualTables::next_cell(T), "--");
 	WRITE_TO(TextualTables::next_cell(T), "--");
-	WRITE_TO(TextualTables::next_cell(T), "--");
+	if (include_modules) WRITE_TO(TextualTables::next_cell(T), "--");
 	WRITE_TO(TextualTables::next_cell(T), "%d", tcc);
 	WRITE_TO(TextualTables::next_cell(T), "%d", tsc);
 	if (fully) WRITE_TO(TextualTables::next_cell(T), "%d", tpc);
@@ -1067,7 +1154,9 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 		}
 
 	TextualTables::begin_row(T);
-	WRITE_TO(TextualTables::next_cell(T), "%p/", Colonies::assets_path(C, NULL));
+	text_stream *N = TextualTables::next_cell(T);
+	pathname *H = Pathnames::from_text(C->home);
+	Pathnames::relative_URL(N, H, Colonies::assets_path(C, NULL));
 	WRITE_TO(TextualTables::next_cell(T), "--");
 	WRITE_TO(TextualTables::next_cell(T), "--");
 	WRITE_TO(TextualTables::next_cell(T), "--");
@@ -1110,5 +1199,8 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 		} else {
 			TextualTables::next_cell(T);
 		}
-		WRITE_TO(TextualTables::next_cell(T), "%S", CM->default_pattern_name);
+		if (Str::len(CM->default_pattern_name) > 0)
+			WRITE_TO(TextualTables::next_cell(T), "%S", CM->default_pattern_name);
+		else
+			WRITE_TO(TextualTables::next_cell(T), "HTML");
 	}

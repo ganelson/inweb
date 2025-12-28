@@ -1,0 +1,244 @@
+begin
+directory: smorgasbord
+file: smorgasbord/build.txt
+    Prerelease: private-beta
+    Build Date: 28 April 2016
+    Build Number: 3A01
+
+file: smorgasbord/Contents.inweb
+    Web {
+    	Title: Sorting Smorgasbord
+    	Author: Various Artists
+    	Notation: MarkdownCode
+    	Language: Python
+    	Purpose: Demonstrating great sorting algorithms of the 1950s.
+    	
+    	Sections
+    		Counting Sort
+    		Quick Sort
+    }
+
+file: smorgasbord/Counting Sort.md
+    # Counting Sort
+
+    _An implementation of Harold H. Seward's 1954 sorting algorithm._
+
+    ## Introduction
+
+    This algorithm was found in 1954 by [Harold H. Seward](https://en.wikipedia.org/wiki/Harold_H._Seward),
+    who also devised radix sort. They differ from most sorting techniques because they do
+    not make comparisons between items in the unsorted array. Indeed, there are no
+    comparisons in the following function, only iteration.
+
+    ## Implementation
+
+    This function takes an array of non-negative integers, sorts it, and returns
+    the result. The test `if unsorted` means "if the unsorted array is not empty",
+    and is needed because Python would otherwise handle this case badly: of course,
+    if `unsorted` does equal `[]`, then so should `sorted`, and so the right answer
+    is returned.
+
+    	def countingSort(unsorted):
+    		sorted = []
+    		if unsorted:
+    			{{initialise the incidence counts to zero}}
+    			{{tally how many times each value occurs in the unsorted array}}
+    			{{construct the sorted array with the right number of each value}}
+    		return sorted
+
+    For example, suppose the array is initially `[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]`.
+    Then the maximum value is 6. Python arrays index from 0, so we need an incidence
+    counts array of size 7, and we create it as `[0, 0, 0, 0, 0, 0, 0]`.
+
+    {{initialise the incidence counts to zero}} =
+
+    	max_val = max(unsorted)
+    	counts = [0] * (max_val + 1)
+
+    In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
+    following produces the counts `[0, 1, 3, 3, 1, 1, 2]`.
+
+    {{tally how many times each value occurs in the unsorted array}} =
+
+    	for value in unsorted:
+    		counts[value] += 1
+
+    Unusually for a sorting algorithm, an entirely new sorted array is created,
+    using only the incidence counts as a sort of program. We fill `sorted`
+    with no `0`s, one `1`, three `2`s, and so on, producing `[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]`.[1]
+
+    [1] The unsorted array is no longer needed, in fact, and so we could easily make this
+    algorithm "sort in place" by simply rewriting `unsorted`, rather than making
+    a new array.
+
+    {{construct the sorted array with the right number of each value}} =
+
+    	for value, count in enumerate(counts):
+    		sorted.extend([value] * count)	
+
+    ## Testing
+
+    We will use this holon for all of our unit tests on different sorting algorithms:
+
+    {{Tests}} (webwide and tangled late) =
+
+    	print("Let's see, then:");
+
+    So let's get started by testing this one:
+
+    {{Tests}} +=
+
+    	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
+    	print("Unsorted:", A)
+    	print("Sorted by Counting Sort:", countingSort(A))
+
+    ## Verdict ^"verdicts"
+
+    So how did we do? What makes count sort interesting is that it is not doomed
+    to run at $O(n\log n)$ or worse speed, where $n$ is the size of the data set:
+    counting sort runs at $O(n+k)$, where $k$ is the size of the largest value in
+    the data (called `max_val` above). With most data, $k$ is either enormous or
+    at least unpredictable, so that speed and memory usage both spike. But for just
+    a few applications, where $k$ is known to be within tight bounds, count sort
+    is still used today and is exceptionally fast.
+
+file: smorgasbord/Quick Sort.md
+    # Quick Sort
+
+    _An implementation of Tony Hoare's 1959 sorting algorithm._
+
+    ## Introduction
+
+    A divide-and-conquer strategy created in 1959 by [Tony Hoare](https://en.wikipedia.org/wiki/Tony_Hoare),
+    Quicksort remains divisive even today. Unlike //Counting Sort//, it makes
+    comparisons, and has a very low memory overhead, except for stack usage
+    when recursing. Invented rather surprisingly on a visit to Moscow, Hoare having
+    trained as a classicist and then learned Russian in the navy, Quicksort became
+    almost ubiquitous in the 1970s when it was adopted by the standard C library as
+    `qsort`, the only sorting function provided. In some ways Hoare's most important
+    insight was that recursion could be important. Many early compilers did not
+    allow a function to call itself, directly or indirectly, and it was algorithms
+    like Quicksort which persuaded programmers to change all of that. 
+
+    ## Implementation
+
+    Essentially the idea is to divide the list at a "pivot" value, making swaps
+    so that all the terms lower than that come before the pivot, and all the
+    terms higher come after it. If sorting a great pile of library books, you might
+    put all those with authors A to L on one table, and all those from M to Z on
+    another: that would be a pivot on L. Each table would still have a unsorted
+    mass of books on it, but you would have reduced one big sorting problem to
+    two smaller ones. Recursively, you'd then sort each table, for example dividing
+    table 1 into A to E and F to L, and so on.
+    	
+    	def quicksort(array, low=0, high=None):
+    		if high is None:
+    			high = len(array) - 1
+    	
+    		if low < high:
+    			pivot_index = partition(array, low, high)
+    			quicksort(array, low, pivot_index-1)
+    			quicksort(array, pivot_index+1, high)
+    	
+    The function `partition` divides the given segment of the list (i.e., `array[i]`
+    with `i` running from `low` to `high`), herding lower terms before the pivot
+    and higher ones after; it returns the _index_ of the position where the pivot
+    ends up, not the value. In our books analogy, the pivot value might be a book by
+    Lyons, Zachary, so that all the A to L books come before it, and all the M to Z
+    books after. If there are 457 books before it, then the pivot book would be at
+    index 457 (counting from 0), and this is where it will appear on the final
+    shelf when the sort is complete - so each partition does definitely put at least
+    one book in the correct position, after which it never moves again.
+
+    	def partition(array, low, high):
+    		{{choose a pivot value}}
+    		{{move lower elements to the front}}
+    		return pivot_ends_at
+
+    In principle you could choose any value as the pivot, but while any choice would
+    ultimately lead to a sorted list, they do not all get there equally quickly.
+    There are many schemes for the choice: this is the simplest, attributed to Nico
+    Lomuto, which simply picks the last element in the (unsorted) list.
+
+    For example, applied to `[2, 6, 15, 12, 12, 10, 14, 1, 7]`, it will
+    choose 7 as the pivot value, in position 8:
+
+    {{choose a pivot value}} =
+
+    	pivot_starts_at = high
+    	pivot = array[pivot_starts_at]
+
+    We now run through the array looking for terms `<= pivot`, and make swaps
+    to accumulate them in the range `array[low]` to `array[leading_edge]`:
+    we'll call these the "early terms". `leading_edge` begins at `low-1` because
+    the run of early terms is initially empty.
+
+    Note that the Python iteration `for j in range(low, high)` runs `j` from
+    `low` to `high-1`, and therefore never reaches `pivot_starts_at`. Note also
+    that sometimes the apparent swaps in this code do nothing: if `j` and
+    `leading_edge` are equal, which happens if there's an initial run of values
+    below the pivot, for example; or if `pivot_ends_at` comes out the same
+    as `pivot_starts_at`, which happens if the pivot was the highest value all
+    along.
+
+    {{move lower elements to the front}} =
+
+    	leading_edge = low - 1
+    	for j in range(low, high):
+    		if array[j] <= pivot:
+    			leading_edge += 1
+    			array[leading_edge], array[j] = array[j], array[leading_edge]
+    	pivot_ends_at = leading_edge + 1
+
+    	array[pivot_ends_at], array[pivot_starts_at] = array[pivot_starts_at], array[pivot_ends_at]
+
+    On the list `[2, 6, 15, 12, 12, 10, 14, 1, 7]`, `j` therefore iterates
+    from 0 to 7:
+
+    - iteration 0 invisibly swaps 2 and 2, growing the early terms to `[2]`;
+    - iteration 1 invisibly swaps 6 and 6, growing the early terms to `[2, 6]`;
+    - iterations 2 to 6 do nothing because those entries are above the pivot value;
+    - iteration 7 swaps 1 and 15, changing the array to `[2, 6, 1, 12, 12, 10, 14, 15, 7]`,
+      and growing the early terms to `[2, 6, 1]`.
+
+    All that remains is one final swap of 7 with the first 12 to put the pivot value
+    at the end of the early terms, giving `[2, 6, 1, 7, 12, 10, 14, 15, 12]`, and to
+    return its final position, which is 3. We have cut the array into `[2, 6, 1]`
+    before the pivot, all less than or equal to 7, and `[12, 10, 14, 15, 12]` after,
+    all greater. Note the potential for _instability_ here: the two 12s started out
+    adjacent to each other, but have now split up. It's anybody's guess which way
+    round they will end up.
+
+    ## Testing
+
+    And this code tests the function:
+
+    {{Tests}} +=
+
+    	my_array = [2, 6, 15, 12, 12, 10, 14, 1, 7]
+    	quicksort(my_array)
+    	print("Unsorted:", my_array)
+    	print("Sorted by Quicksort:", my_array)
+
+    ## Verdict ^"verdicts"
+
+    Clearly what we _hope_ is that the partition will, on average, roughly halve
+    the size of the list, so that the depth of recursion is about $\log_2(n)$.
+    For example, a list of 20 items might partition first to leave sublists of
+    size 9 (before pivot) and 10 (after). The list of 9 obligingly then pivots
+    as 4 before, 4 after; the list of 10 as 4 and 5. These all split as 2 and 1
+    or 2 and 2. After each division we have to do roughly $n$ operations, so
+    we then get a running time of $O(n\log_2 n)$.
+
+    Unfortunately there's nothing to stop each partition from dividing the list
+    in the worst possible way, e.g., partitioning 20 items into 19 before the
+    pivot and 0 after; then partitioning the 19 into 18 and 0; and so on. And
+    this is exactly what Lomuto's scheme does if the list is already sorted in
+    ascending order, resulting in $O(n^2)$ running time. On randomised data that
+    would hardly matter, because it would be so unlikely, but in practical
+    cases, data to be sorted is often misaligned only slightly or not at all.
+    Many naive implementations of Quicksort have therefore followed Lomuto down
+    the road to perdition. A common defensive tactic is to randomise the list
+    before sorting.
+
+end

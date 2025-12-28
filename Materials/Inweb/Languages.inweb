@@ -85,8 +85,6 @@ Language "C" {
 	Binary Literal Prefix: "0b"
 	Negative Literal Prefix: "-"
 	
-	Before Named Paragraph Expansion: "\n{\n"
-	After Named Paragraph Expansion: "}\n"
 	Start Ifdef: "#ifdef %S\n"
 	End Ifdef: "#endif /* %S */\n"
 	Start Ifndef: "#ifndef %S\n"
@@ -143,6 +141,14 @@ Language "C" {
 			}
 		}
 	}
+
+	Conventions {
+		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
+		standard library #includes are tangled early in the program
+		typedefs are tangled early in the program
+		typedef structs are tangled early and reordered logically
+		function predeclarations are tangled automatically
+	}
 }
 
 Language "C++" {
@@ -165,8 +171,6 @@ Language "C++" {
 	Binary Literal Prefix: "0b"
 	Negative Literal Prefix: "-"
 	
-	Before Named Paragraph Expansion: "\n{\n"
-	After Named Paragraph Expansion: "}\n"
 	Start Ifdef: "#ifdef %S\n"
 	End Ifdef: "#endif /* %S */\n"
 	Start Ifndef: "#ifndef %S\n"
@@ -222,6 +226,14 @@ Language "C++" {
 				}
 			}
 		}
+	}
+
+	Conventions {
+		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
+		standard library #includes are tangled early in the program
+		typedefs are tangled early in the program
+		typedef structs are tangled early and reordered logically
+		function predeclarations are tangled automatically
 	}
 }
 
@@ -373,8 +385,6 @@ Language "InC" {
 	// code" in a tangle may contain material conditional on whether it is defined.
 	
 	Shebang: "#ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n"
-	Before Named Paragraph Expansion: "\n{\n"
-	After Named Paragraph Expansion: "}\n"
 	Start Ifdef: "#ifdef %S\n"
 	End Ifdef: "#endif /* %S */\n"
 	Start Ifndef: "#ifndef %S\n"
@@ -437,6 +447,14 @@ Language "InC" {
 				=> !function
 			}
 		}
+	}
+
+	Conventions {
+		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
+		standard library #includes are tangled early in the program
+		typedefs are tangled early in the program
+		typedef structs are tangled early and reordered logically
+		function predeclarations are tangled automatically
 	}
 }
 
@@ -547,11 +565,6 @@ Language "Inform 7" {
 	Multiline Comment Open: "["
 	Multiline Comment Close: "]"
 	String Literal: "\""
-	
-	// This is here so that tangling the Standard Rules extension doesn't insert
-	// a spurious comment betraying Inweb's involvement in the process -
-	
-	Suppress Disclaimer: true
 }
 
 Language "Inter Pipeline" {
@@ -708,14 +721,16 @@ Language "Perl" {
 	Character Literal Escape: "\\"
 	
 	Shebang: "#!/usr/bin/perl\n\n"
-	Before Named Paragraph Expansion: "\n{\n"
-	After Named Paragraph Expansion: "}\n"
 	Start Definition: "%S ="
 	End Definition: "\n;\n"
 	
 	// In its usual zany way, Perl recognises the same #line syntax as C, thus in
 	// principle overloading its comment notation #:
 	Line Marker: "#line %d \"%f\"\n"
+
+	Conventions {
+		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
+	}
 }
 
 Language "Python" {
@@ -734,6 +749,10 @@ Language "Python" {
 	
 	// Just a comment in Python-world, but may help some people	
 	Line Marker: "#line %d \"%f\"\n"
+	
+	Conventions {
+		named holons are tangled between <SPACE> and <NEWLINE>
+	}
 }
 
 Language "Plain Text" {

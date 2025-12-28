@@ -332,6 +332,13 @@ int Pathnames::create_in_file_system(pathname *P) {
 	return P->known_to_exist;
 }
 
+int Pathnames::create_in_file_system_recursively(pathname *P) {
+	if ((P) && (P->pathname_of_parent))
+		if (Pathnames::create_in_file_system_recursively(P->pathname_of_parent) == FALSE)
+			return FALSE;
+	return Pathnames::create_in_file_system(P);
+}
+
 @h Directory synchronisation.
 Both pathnames here represent directories which do exist. The function makes
 the |dest| tree an exact copy of the |source| tree (and therefore deletes

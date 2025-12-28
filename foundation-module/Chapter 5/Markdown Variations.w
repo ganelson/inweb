@@ -24,6 +24,7 @@ markdown_variation *CommonMark_variation = NULL;
 markdown_variation *GitHub_flavored_Markdown_variation = NULL;
 markdown_variation *Inweb_flavoured_Markdown_variation = NULL;
 markdown_variation *simplified_Inweb_flavoured_Markdown_variation = NULL;
+markdown_variation *TeX_flavoured_Markdown_variation = NULL;
 
 markdown_variation *MarkdownVariations::CommonMark(void) {
 	return CommonMark_variation;
@@ -39,6 +40,10 @@ markdown_variation *MarkdownVariations::Inweb_flavoured_Markdown(void) {
 
 markdown_variation *MarkdownVariations::simplified_Inweb_flavoured_Markdown(void) {
 	return simplified_Inweb_flavoured_Markdown_variation;
+}
+
+markdown_variation *MarkdownVariations::TeX_flavoured_Markdown(void) {
+	return TeX_flavoured_Markdown_variation;
 }
 
 @ A variation is essentially a named collection of features, which may affect
@@ -246,18 +251,21 @@ void MarkdownVariations::make_GitHub_features_active(markdown_variation *variati
 We provide just a few of these, and they are intended to be used on top of GFM:
 
 @e TEX_MARKDOWNFEATURE
+@e ALT_TEX_MARKDOWNFEATURE
 @e INWEB_LINKS_MARKDOWNFEATURE
 @e FOOTNOTES_MARKDOWNFEATURE
 @e STROKED_CODE_MARKDOWNFEATURE
 
 =
 markdown_feature *TeX_Markdown_feature = NULL;
+markdown_feature *alt_TeX_Markdown_feature = NULL;
 markdown_feature *inweb_links_Markdown_feature = NULL;
 markdown_feature *footnotes_Markdown_feature = NULL;
 markdown_feature *stroked_code_Markdown_feature = NULL;
 
 void MarkdownVariations::define_IWFM(void) {
 	TeX_Markdown_feature =          MarkdownVariations::new_feature(I"TeX",             TEX_MARKDOWNFEATURE);
+	alt_TeX_Markdown_feature =      MarkdownVariations::new_feature(I"alt-TeX",         ALT_TEX_MARKDOWNFEATURE);
 	inweb_links_Markdown_feature =  MarkdownVariations::new_feature(I"inweb links",     INWEB_LINKS_MARKDOWNFEATURE);
 	footnotes_Markdown_feature =    MarkdownVariations::new_feature(I"inweb footnotes", FOOTNOTES_MARKDOWNFEATURE);
 	stroked_code_Markdown_feature = MarkdownVariations::new_feature(I"stroked code",    STROKED_CODE_MARKDOWNFEATURE);
@@ -268,6 +276,9 @@ void MarkdownVariations::define_IWFM(void) {
 
 	simplified_Inweb_flavoured_Markdown_variation = MarkdownVariations::new(I"Inweb-flavoured Markdown");
 	MarkdownVariations::make_simplified_Inweb_features_active(simplified_Inweb_flavoured_Markdown_variation);
+
+	TeX_flavoured_Markdown_variation = MarkdownVariations::new(I"TeX-flavoured Markdown");
+	MarkdownVariations::make_TeX_flavoured_Markdown_features_active(TeX_flavoured_Markdown_variation);
 }
 
 void MarkdownVariations::make_Inweb_features_active(markdown_variation *variation) {
@@ -299,6 +310,32 @@ void MarkdownVariations::make_simplified_Inweb_features_active(markdown_variatio
 	MarkdownVariations::add_feature(variation, INWEB_LINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, STROKED_CODE_MARKDOWNFEATURE);
+}
+
+void MarkdownVariations::make_TeX_flavoured_Markdown_features_active(markdown_variation *variation) {
+	MarkdownVariations::remove_feature(variation, BLOCK_QUOTES_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, ORDERED_LISTS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, UNORDERED_LISTS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, FENCED_CODE_BLOCKS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, HTML_BLOCKS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, THEMATIC_MARKERS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, ATX_HEADINGS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, SETEXT_HEADINGS_MARKDOWNFEATURE);
+
+	MarkdownVariations::remove_feature(variation, WEB_AUTOLINKS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, EMAIL_AUTOLINKS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, INLINE_HTML_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, BACKTICKED_CODE_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, LINKS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, IMAGES_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, ASTERISK_EMPHASIS_MARKDOWNFEATURE);
+	MarkdownVariations::remove_feature(variation, UNDERSCORE_EMPHASIS_MARKDOWNFEATURE);
+
+	MarkdownVariations::add_feature(variation, TEX_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, STROKED_CODE_MARKDOWNFEATURE);
+//	MarkdownVariations::add_feature(variation, INWEB_LINKS_MARKDOWNFEATURE);
+//	MarkdownVariations::add_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
 }
 
 @h Methods for features.

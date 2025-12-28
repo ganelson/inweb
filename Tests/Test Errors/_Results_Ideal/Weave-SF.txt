@@ -1,0 +1,4 @@
+the weave would require this directory to exist:
+    countsort2-assets
+weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML
+inweb: fatal error: giving up: either make it by hand, or run again with -creating set

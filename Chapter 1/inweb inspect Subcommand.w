@@ -10,6 +10,7 @@ The inweb inspect subcommand describes a web or other resource without changing 
 @e FULLER_CLSW
 @e SCAN_CLSW
 @e METADATA_CLSW
+@e INDEX_CLSW
 @e CONVENTIONS_CLSW
 @e TAGS_CLSW
 @e LINKS_CLSW
@@ -34,6 +35,8 @@ void InwebInspect::cli(void) {
 		U"inspect only the section or chapter whose abbreviation is X");
 	CommandLine::declare_switch(METADATA_CLSW, U"metadata", 1,
 		U"show the bibliographic metadata associated with this web");
+	CommandLine::declare_switch(INDEX_CLSW, U"index", 1,
+		U"show the index (if any) for this web");
 	CommandLine::declare_switch(CONVENTIONS_CLSW, U"conventions", 1,
 		U"show the conventions as they are applied to this web");
 	CommandLine::declare_switch(TAGS_CLSW, U"tags", 1,
@@ -54,6 +57,7 @@ typedef struct inweb_inspect_settings {
 	struct inweb_range_specifier subset;
 	int scan_switch;      /* |-scan|: simply show the syntactic scan of the source */
 	int metadata_switch;  /* |-metadata|: simply show the syntactic scan of the source */
+	int index_switch;  /* |-index|: show the web index in textual form */
 	int conventions_switch; /* |-conventions|: show what conventions apply */
 	int resources_switch; /* |-resources|: show WCL objects in scope */
 	int tags_switch; /* |-tags|: show paragraph tags used */
@@ -65,6 +69,7 @@ void InwebInspect::initialise(inweb_inspect_settings *iis) {
 	iis->subset = Configuration::new_range_specifier();
 	iis->scan_switch = FALSE;
 	iis->metadata_switch = FALSE;
+	iis->index_switch = FALSE;
 	iis->conventions_switch = FALSE;
 	iis->resources_switch = FALSE;
 	iis->tags_switch = FALSE;
@@ -78,6 +83,7 @@ int InwebInspect::switch(inweb_instructions *ins, int id, int val, text_stream *
 		case INSPECT_ONLY_CLSW: Configuration::set_range(&(iis->subset), arg, FALSE); return TRUE;
 		case SCAN_CLSW: iis->scan_switch = val; return TRUE;
 		case METADATA_CLSW: iis->metadata_switch = val; return TRUE;
+		case INDEX_CLSW: iis->index_switch = val; return TRUE;
 		case CONVENTIONS_CLSW: iis->conventions_switch = val; return TRUE;
 		case TAGS_CLSW: iis->tags_switch = val; return TRUE;
 		case LINKS_CLSW: iis->links_switch = val; return TRUE;
@@ -111,6 +117,8 @@ void InwebInspect::run(inweb_instructions *ins) {
 		@<Check that the range contains sections@>;
 		if (iis->scan_switch) {
 			WebStructure::write_web(STDOUT, op.W, iis->subset.range);
+		} else if (iis->index_switch) {
+			WebIndexing::inspect_index(STDOUT, op.W, iis->subset.range);
 		} else if (iis->tags_switch) {
 			WebStructure::parse_markdown(op.W);
 			PRINT("\n");

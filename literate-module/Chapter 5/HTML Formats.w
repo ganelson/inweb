@@ -118,7 +118,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_download_node_type) @<Render download@>
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
-	else if (N->type == weave_pmac_node_type) @<Render pmac@>
+	else if (N->type == weave_holon_usage_node_type) @<Render holon usage@>
 	else if (N->type == weave_tangler_command_node_type) @<Render tangler command@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_section_node_type) @<Render section@>
@@ -131,6 +131,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_defn_node_type) @<Render defn@>
 	else if (N->type == weave_source_code_node_type) @<Render source code@>
+	else if (N->type == weave_comment_in_holon_node_type) @<Render comment in holon@>
 	else if (N->type == weave_url_node_type) @<Render URL@>
 	else if (N->type == weave_footnote_cue_node_type) @<Render footnote cue@>
 	else if (N->type == weave_begin_footnote_text_node_type) @<Render footnote@>
@@ -142,6 +143,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_maths_node_type) @<Render maths@>
 	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
 	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
+	else if (N->type == weave_index_marker_node_type) @<Render index@>
 
 	else internal_error("unable to render unknown node");
 	return TRUE;
@@ -474,7 +476,6 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<If no para number yet, render a p just to hold this@> =
 	if (first_in_para) {
-		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLWeaving::paragraph_number(OUT, first_in_para);
 		HTML_CLOSE("p"); WRITE("\n");
 		first_in_para = NULL;
@@ -507,7 +508,6 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Render a run of interior matter@> =
 	if (first_in_para) {
-		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLWeaving::paragraph_number(OUT, first_in_para);
 		first_in_para = NULL;
 	} else {
@@ -560,7 +560,6 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Deal with a macro material node@> =
 	if (first_in_para) {
-		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLWeaving::paragraph_number(OUT, first_in_para);
 	} else {
 		HTML_OPEN_WITH("p", "class=\"commentary\"");
@@ -601,29 +600,29 @@ that service uses to identify the video/audio in question.
 		WRITE("\n");
 	}
 
-@<Render pmac@> =
-	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
+@<Render holon usage@> =
+	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
-	if (C->defn == FALSE) {
-		TEMPORARY_TEXT(url)
-		Colonies::paragraph_URL(url, C->pmac, hrs->wv->weave_to, hrs->wv->weave_colony);
-		HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
-		DISCARD_TEXT(url)
+	TEMPORARY_TEXT(url)
+	Colonies::paragraph_URL(url, C->holon->corresponding_chunk->owner, hrs->wv->weave_to, hrs->wv->weave_colony);
+	HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
+	DISCARD_TEXT(url)
+	HTML_OPEN_WITH("span", "class=\"named-paragraph\"");
+	ls_holon *holon = C->holon;
+	if (holon) {
+		if (holon->holon_name_as_markdown) {
+			HTML_OPEN_WITH("span", "class=\"mathjax_process\"");
+			MDRenderer::render_extended(OUT, (void *) hrs->wv, holon->holon_name_as_markdown, C->variation, 0);
+			HTML_CLOSE("span");
+		} else
+			HTMLWeaving::escape_text(OUT, holon->holon_name);
 	}
-	HTML_OPEN_WITH("span", "class=\"%s\"",
-		(C->defn)?"named-paragraph-defn":"named-paragraph");
-	HTMLWeaving::escape_text(OUT, (C->pmac->holon)?(C->pmac->holon->holon_name):NULL);
 	HTML_CLOSE("span");
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-number\"");
-	HTMLWeaving::escape_text(OUT, C->pmac->paragraph_number);
+	HTMLWeaving::escape_text(OUT, C->holon->corresponding_chunk->owner->paragraph_number);
 	HTML_CLOSE("span");
-	if (C->defn == FALSE) HTML::end_link(OUT);
+	HTML::end_link(OUT);
 	HTML_CLOSE("span");
-	if (C->defn) {
-		HTMLWeaving::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
-		WRITE(" =");
-		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
-	}
 
 @<Render tangler command@> =
 	weave_tangler_command_node *C = RETRIEVE_POINTER_weave_tangler_command_node(N->content);
@@ -764,10 +763,15 @@ that service uses to identify the video/audio in question.
 	Colonies::paragraph_URL(TEMP, C->para, hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
+	int depth = LiterateSource::par_depth(C->para);
+	if (depth == -1) HTML_OPEN("b");
+	if (depth > 0) HTML_OPEN("i");
 	WRITE("%s%S", (Str::get_first_char(LiterateSource::par_ornament(C->para)) == 'S')?"&#167;":"&para;",
 		C->para->paragraph_number);
 	WRITE(". ");
 	HTMLWeaving::escape_text(OUT, C->text2);
+	if (depth > 0) HTML_CLOSE("i");
+	if (depth == -1) HTML_CLOSE("b");
 	HTML::end_link(OUT);
 
 @<Render defn@> =
@@ -789,7 +793,11 @@ that service uses to identify the video/audio in question.
 		DISCARD_TEXT(url)
 	}
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-defn\"");
-	HTMLWeaving::escape_text(OUT, label_holon->holon_name);
+	if (label_holon->file_form) { PUT(0x2192); PUT(0x0020); }
+	if (label_holon->holon_name_as_markdown)
+		MDRenderer::render_extended(OUT, (void *) hrs->wv, label_holon->holon_name_as_markdown, C->variation, 0);
+	else
+		HTMLWeaving::escape_text(OUT, label_holon->holon_name);
 	HTML_CLOSE("span");
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-number\"");
 	HTMLWeaving::escape_text(OUT, label_holon->corresponding_chunk->owner->paragraph_number);
@@ -817,6 +825,17 @@ that service uses to identify the video/audio in question.
 		else WRITE("%c", Str::get_at(C->matter, i));
 	}
 	if (current_colour >= 0) HTMLWeaving::change_colour(OUT, -1, hrs->colours);
+
+@<Render comment in holon@> =
+	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
+	if (C->as_markdown) {
+		HTML_OPEN_WITH("span", "class=\"comment-syntax\"");
+		WRITE(" ");
+		MDRenderer::render_extended(OUT, (void *) hrs->wv, C->as_markdown, C->variation, 0);
+		WRITE(" ");
+		HTML_CLOSE("span");
+	} else
+		WRITE("NO-MARKDOWN-AVAILABLE");
 
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
@@ -944,7 +963,6 @@ that service uses to identify the video/audio in question.
 	int mode = 0;
 	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
 	if (first_in_para) {
-		HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 		HTMLWeaving::paragraph_number(OUT, first_in_para);
 		if ((C->content) && (C->content->down) && (C->content->down->type == PARAGRAPH_MIT)) {
 			mode = EXISTING_PAR_MDRMODE;
@@ -959,6 +977,40 @@ that service uses to identify the video/audio in question.
 
 @<Render linebreak@> =
 	WRITE("<br/>");
+
+@<Render index@> =
+	HTML_OPEN_WITH("div", "class=\"lsindex\"");
+	if ((hrs->wv) && (hrs->wv->weave_web)) {
+		ls_index *index = hrs->wv->weave_web->index;
+		if (index->lemmas_sorted == NULL) WebIndexing::sort(index, I"0");
+		if (index->lemmas_sorted)
+			for (int i=0; i<(int) (index->no_lemmas_sorted); i++) {
+				ls_index_lemma *lemma = index->lemmas_sorted[i];
+				int d = 0;
+				for (ls_index_lemma *l2 = lemma->parent; l2; l2 = l2->parent) d++;
+				text_stream *pclass = I"lsindexlemma";
+				if (d == 1) pclass = I"lsindexsublemma";
+				if (d == 2) pclass = I"lsindexsubsublemma";
+				if (d >= 3) pclass = I"lsindexsubsubsublemma";
+				HTML_OPEN_WITH("p", "class=\"%S\"", pclass);
+				switch (lemma->style) {
+					case 1: HTML_OPEN_WITH("span", "class=\"lsindextext\""); break;
+					case 2: HTML_OPEN_WITH("span", "class=\"lsindextexttt\""); break;
+					case 3: HTML_OPEN_WITH("span", "class=\"lsindextextns\""); break;
+				}
+				HTMLWeaving::escape_text(OUT, lemma->text);
+				HTML_CLOSE("span");
+				ls_index_mark *mark; int c = 0;
+				LOOP_OVER_LINKED_LIST(mark, ls_index_mark, lemma->marks) {
+					if (c++ > 0) WRITE(", "); else WRITE("&nbsp;&nbsp;");
+					if (mark->important) HTML_OPEN("b");
+					HTMLWeaving::escape_text(OUT, mark->at->paragraph_number);
+					if (mark->important) HTML_CLOSE("b");
+				}
+				HTML_CLOSE("p");
+			}
+	}
+	HTML_CLOSE("div");
 
 @<Render nothing@> =
 	;
@@ -994,9 +1046,28 @@ void HTMLWeaving::render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *cont
 		DISCARD_TEXT(R)
 	} else {
 		Swarm::ensure_plugin(wv, plugin_name);
-		if (displayed) WRITE("$$"); else WRITE("\\(");
-		HTMLWeaving::escape_text(OUT, content);
-		if (displayed) WRITE("$$"); else WRITE("\\)");
+		if (displayed) WRITE("$$"); else WRITE("\\INWEBMATH(");
+		TEMPORARY_TEXT(escaped)
+		HTMLWeaving::escape_text(escaped, content);
+		for (int i=0; i<Str::len(escaped); i++) {
+			if (Str::get_at(escaped, i) == '|') {
+				int found = FALSE;
+				for (int j=i+1; j<Str::len(escaped); j++) {
+					if (Str::get_at(escaped, j) == '|') {
+						WRITE("\\hbox{\\tt ");
+						for (int k=i+1; k<j; k++) PUT(Str::get_at(escaped, k));
+						WRITE("}");
+						i = j;
+						found = TRUE; break;
+					}
+				}
+				if (found == FALSE) PUT(Str::get_at(escaped, i));
+			} else {
+				PUT(Str::get_at(escaped, i));
+			}
+		}
+		DISCARD_TEXT(escaped)
+		if (displayed) WRITE("$$"); else WRITE("\\INWEBMATH)");
 	}
 }
 
@@ -1037,6 +1108,14 @@ void HTMLWeaving::go_to_depth(HTML_render_state *hrs, int from_depth, int to_dep
 
 @ =
 void HTMLWeaving::paragraph_number(text_stream *OUT, ls_paragraph *par) {
+	text_stream *title = LiterateSource::par_title(par);
+	int depth = LiterateSource::par_depth(par);
+	if (depth == -1) {
+		HTML_OPEN("h2");
+		HTMLWeaving::escape_text(OUT, title);
+		HTML_CLOSE("h2");
+	}
+	HTML_OPEN_WITH("p", "class=\"commentary firstcommentary\"");
 	TEMPORARY_TEXT(TEMP)
 	Colonies::paragraph_anchor(TEMP, par);
 	HTML::anchor_with_class(OUT, TEMP, I"paragraph-anchor");
@@ -1045,7 +1124,6 @@ void HTMLWeaving::paragraph_number(text_stream *OUT, ls_paragraph *par) {
 		HTML_OPEN("b");
 		WRITE("%s%S", (Str::get_first_char(LiterateSource::par_ornament(par)) == 'S')?"&#167;":"&para;",
 			par->paragraph_number);
-		text_stream *title = LiterateSource::par_title(par);
 		WRITE(". ");
 		HTMLWeaving::escape_text(OUT, title);
 		if (Str::len(title) > 0) WRITE(".");

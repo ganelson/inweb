@@ -1,36 +1,36 @@
 The following Inweb resources are available for any web or colony to use:
-name           | resource type | source                                                                       
--------------- | ------------- | -----------------------------------------------------------------------------
-ACME           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 4  
-Blurb          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 34 
-BoxArt         | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 46 
-C              | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 66 
-C++            | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 148
-ConsoleText    | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 228
-Delia          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 249
-Extracts       | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 273
-ILDF           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 278
-InC            | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 345
-Indoc          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 443
-Inform 6       | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 452
-Inform 7       | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 544
-Inter          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 576
-Inter Pipeline | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 557
-Inweb          | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 637
-None           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 675
-PainterOutput  | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 680
-Perl           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 701
-Plain Text     | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 739
-Preform        | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 748
-Python         | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 721
-REPL           | Language      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Languages.inweb, line 770
-Inweb          | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 1  
-Markdown       | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 182
-MarkdownCode   | Notation      | /Users/gnelson/Natural Inform/inweb/Materials/Inweb/Notations.inweb, line 126
-Ebook          | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
-GitHubPages    | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
-HTML           | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
-PDFTeX         | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
-Plain          | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
-TestingInweb   | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
-TeX            | Pattern       | /Users/gnelson/Natural Inform/inweb/Materials/Patterns                       
+name           | resource type | source    
+-------------- | ------------- | ----------
+ACME           | Language      | (built in)
+Blurb          | Language      | (built in)
+BoxArt         | Language      | (built in)
+C              | Language      | (built in)
+C++            | Language      | (built in)
+ConsoleText    | Language      | (built in)
+Delia          | Language      | (built in)
+Extracts       | Language      | (built in)
+ILDF           | Language      | (built in)
+InC            | Language      | (built in)
+Indoc          | Language      | (built in)
+Inform 6       | Language      | (built in)
+Inform 7       | Language      | (built in)
+Inter          | Language      | (built in)
+Inter Pipeline | Language      | (built in)
+Inweb          | Language      | (built in)
+None           | Language      | (built in)
+PainterOutput  | Language      | (built in)
+Perl           | Language      | (built in)
+Plain Text     | Language      | (built in)
+Preform        | Language      | (built in)
+Python         | Language      | (built in)
+REPL           | Language      | (built in)
+InwebClassic   | Notation      | (built in)
+Markdown       | Notation      | (built in)
+MarkdownCode   | Notation      | (built in)
+Ebook          | Pattern       | (built in)
+GitHubPages    | Pattern       | (built in)
+HTML           | Pattern       | (built in)
+PDFTeX         | Pattern       | (built in)
+Plain          | Pattern       | (built in)
+TestingInweb   | Pattern       | (built in)
+TeX            | Pattern       | (built in)

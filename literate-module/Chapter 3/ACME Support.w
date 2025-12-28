@@ -86,14 +86,20 @@ void ACMESupport::shebang(programming_language *pl, text_stream *OUT, ls_web *W,
 	ACMESupport::expand(OUT, pl->shebang, NULL, -1, NULL);
 }
 
-void ACMESupport::before_holon_expansion(programming_language *pl,
+void ACMESupport::before_holon_expansion(programming_language *pl, tangle_docket *docket, 
 	OUTPUT_STREAM, ls_paragraph *par) {
-	ACMESupport::expand(OUT, pl->before_holon_expansion, NULL, -1, NULL);
+	text_stream *prefix =
+		Conventions::get_textual_from(docket->conventions, TANGLED_BETWEEN_LSCONVENTION);
+	if (Str::len(prefix) > 0)
+		ACMESupport::expand(OUT, prefix, NULL, -1, NULL);
 }
 
-void ACMESupport::after_holon_expansion(programming_language *pl,
+void ACMESupport::after_holon_expansion(programming_language *pl, tangle_docket *docket, 
 	OUTPUT_STREAM, ls_paragraph *par) {
-	ACMESupport::expand(OUT, pl->after_holon_expansion, NULL, -1, NULL);
+	text_stream *suffix =
+		Conventions::get_textual2_from(docket->conventions, TANGLED_BETWEEN_LSCONVENTION);
+	if (Str::len(suffix) > 0)
+		ACMESupport::expand(OUT, suffix, NULL, -1, NULL);
 }
 
 int ACMESupport::start_definition(programming_language *pl, text_stream *OUT,

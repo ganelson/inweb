@@ -57,7 +57,7 @@ int DebuggingWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_material_node_type) @<Render material@>
 	else if (N->type == weave_embed_node_type) @<Render embed@>
 	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
-	else if (N->type == weave_pmac_node_type) @<Render pmac@>
+	else if (N->type == weave_holon_usage_node_type) @<Render holon usage@>
 	else if (N->type == weave_vskip_node_type) @<Render vskip@>
 	else if (N->type == weave_chapter_node_type) @<Render chapter@>
 	else if (N->type == weave_section_node_type) @<Render section@>
@@ -180,10 +180,9 @@ int DebuggingWeaving::render_visit(tree_node *N, void *state, int L) {
 	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
 	WRITE(" <%S> (definition)", C->holon->holon_name);
 
-@<Render pmac@> =
-	weave_pmac_node *C = RETRIEVE_POINTER_weave_pmac_node(N->content);
-	WRITE(" <%S>", (C->pmac->holon)?(C->pmac->holon->holon_name):NULL);
-	if (C->defn) WRITE(" (definition)");
+@<Render holon usage@> =
+	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
+	WRITE(" <%S>", (C->holon)?(C->holon->holon_name):NULL);
 
 @<Render vskip@> =
 	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);

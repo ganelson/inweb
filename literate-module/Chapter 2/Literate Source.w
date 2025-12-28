@@ -98,9 +98,9 @@ of source text to feed into it; then call |LiterateSource::complete_unit| to
 indicate that you're done.
 
 =
-void LiterateSource::feed_line(ls_unit *lsu, text_file_position *tfp, text_stream *text) {
+ls_line *LiterateSource::feed_line(ls_unit *lsu, text_file_position *tfp, text_stream *text) {
 	if (lsu) lsu->lines_read++;
-	LiterateSource::feed_line_segment(lsu, tfp, text, NO_MINLC, NO_MINLC);
+	return LiterateSource::feed_line_segment(lsu, tfp, text, NO_MINLC, NO_MINLC);
 }
 
 @ That function wasn't recursive: this one is. We need to remember here that a
@@ -120,6 +120,7 @@ ls_line *LiterateSource::feed_line_segment(ls_unit *lsu, text_file_position *tfp
 
 	ls_line *line = LiterateSource::new_line(tfp, text, res.cf);
 	if (Str::len(res.error) > 0) WebErrors::record_in_unit(res.error, line, lsu);
+	if (res.index_marks) line->index_marks = res.index_marks;
 
 	@<Then insert the explicit line@>;
 	@<And finally insert any residue left over@>;
@@ -186,7 +187,8 @@ provided by the previous line segment's classification.
 			if (Str::is_whitespace(text) == FALSE)
 				lsu->eligible_to_have_implicit_purpose = TRUE;
 		} else {
-			if ((res.cf.major != PARAGRAPH_START_MAJLC) || (res.cf.minor == HEADING_COMMAND_MINLC))
+			if ((res.cf.major != PARAGRAPH_START_MAJLC) ||
+				(res.cf.minor == HEADING_COMMAND_MINLC))
 				lsu->window_for_implicit_purpose_open = FALSE;
 		}
 	}
@@ -268,6 +270,7 @@ typedef struct ls_line {
 	struct ls_class classification;
 	struct ls_footnote *footnote_text; /* which fn this is the text of, if it is at all */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
+	struct linked_list *index_marks; /* or |NULL| if there are none */
 
 	/* how the line sits inside the wider source */
 	struct ls_chunk *owning_chunk; /* |NULL| until the unit has been divided up into chunks */
@@ -285,6 +288,7 @@ ls_line *LiterateSource::new_line(text_file_position *tfp, text_stream *text, ls
 	line->classification = cf;
 	line->footnote_text = NULL;
 	line->suppress_tangling = FALSE;
+	line->index_marks = NULL;
 	
 	line->owning_chunk = NULL;
 	line->prev_line = NULL;
@@ -317,6 +321,7 @@ void LiterateSource::complete_unit(ls_unit *lsu) {
 	int next_footnote = 1;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		@<Work out footnote numbering for this paragraph@>;
+	@<Index the unit@>;
 }
 
 @ To see the first (up to) N lines of the raw linked list of lines, before
@@ -473,9 +478,14 @@ altogether, so that nobody uses it by mistake.
 			case QUOTATION_MAJLC:            ct = QUOTATION_LSCT; break;
 			case HOLON_DECLARATION_MAJLC:
 				ct = HOLON_DECLARATION_LSCT;
-				if (line->classification.minor) ct = HOLON_ADDENDUM_LSCT;
+				switch (line->classification.minor) {
+					case ADDENDUM_MINLC:      ct = HOLON_ADDENDUM_LSCT; break;
+					case FILE_MINLC:          ct = HOLON_FILE_LSCT; break;
+					case FILE_ADDENDUM_MINLC: ct = HOLON_FILE_ADDENDUM_LSCT; break;
+				}
 				break;
 			case INSERTION_MAJLC:            ct = INSERTION_LSCT; break;
+			case DEFINITIONS_HERE_MAJLC:     ct = DEFINITIONS_HERE_LSCT; break;
 			default:                         ct = OTHER_LSCT; break;
 		}
 		if ((chunk == NULL) || (ct != chunk->chunk_type) ||
@@ -489,11 +499,13 @@ altogether, so that nobody uses it by mistake.
 		if (line->classification.major == INSERTION_MAJLC)
 			@<Tag the paragraph as containing a particular sort of insertion@>;
 	}
-	
+
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			chunk->first_line->prev_line = NULL;
 			chunk->last_line->next_line = NULL;
+			if (chunk->chunk_type == COMMENTARY_LSCT)
+				LiterateSource::process_chunk(chunk, lsu->syntax->processing_commentary);
 		}
 
 	lsu->temp_first_line = NULL; lsu->temp_last_line = NULL;
@@ -566,7 +578,10 @@ following:
 @e DEFINITION_LSCT
 @e HOLON_DECLARATION_LSCT
 @e HOLON_ADDENDUM_LSCT
+@e HOLON_FILE_LSCT
+@e HOLON_FILE_ADDENDUM_LSCT
 @e INSERTION_LSCT
+@e DEFINITIONS_HERE_LSCT
 @e OTHER_LSCT
 
 =
@@ -870,6 +885,7 @@ we sometimes read this as a purpose written in plain text, and remove the para.
 				}
 			}
 			DISCARD_TEXT(extracted)
+			if (par->first_chunk == NULL) LiterateSource::remove_par_from_unit(par, lsu);
 		}
 	}
 
@@ -917,22 +933,33 @@ between them, but that's another story: see //Holons::scan//.
 @<Assign holons to chunks containing fragments of the target code@> =
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		TEMPORARY_TEXT(holon_name)
-		int addendum_flag = FALSE, holon_bitmap = 0;
+		int addendum_flag = FALSE, file_holon_flag = FALSE, holon_bitmap = 0;
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			for (ls_line *line = chunk->first_line; line; line = line->next_line)
 				line->owning_chunk = chunk;
 			if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
-				(chunk->chunk_type == HOLON_ADDENDUM_LSCT)) {
+				(chunk->chunk_type == HOLON_FILE_LSCT) ||
+				(chunk->chunk_type == HOLON_ADDENDUM_LSCT) ||
+				(chunk->chunk_type == HOLON_FILE_ADDENDUM_LSCT)) {
 				if (Str::len(holon_name) > 0)
 					WebErrors::record_at(I"second fragment name declaration in one paragraph",
 						chunk->first_line);
 				Str::clear(holon_name);
 				WRITE_TO(holon_name, "%S", chunk->first_line->classification.operand1);
-				if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) &&
-					(Str::ends_with(holon_name, I"...")))
+				if (((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
+						(chunk->chunk_type == HOLON_FILE_LSCT)) &&
+					(Str::ends_with(holon_name, I"...")) &&
+					(Conventions::get_int(lsu->context, HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION)
+						!= EVEN_ABBREVCHOICE))
 					WebErrors::record_at(I"a holon name must not end '...'",
 						chunk->first_line);
-				if (chunk->chunk_type == HOLON_ADDENDUM_LSCT) addendum_flag = TRUE;
+				if ((chunk->chunk_type == HOLON_FILE_LSCT) ||
+					(chunk->chunk_type == HOLON_FILE_ADDENDUM_LSCT)) file_holon_flag = TRUE;
+				if ((chunk->chunk_type == HOLON_ADDENDUM_LSCT) ||
+					(chunk->chunk_type == HOLON_FILE_ADDENDUM_LSCT)) addendum_flag = TRUE;
+				if ((Conventions::get_int(lsu->context, HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION)
+						== EVEN_ABBREVCHOICE) && (addendum_flag == FALSE))
+					addendum_flag = NOT_APPLICABLE;
 				holon_bitmap = chunk->metadata.options_bitmap;
 			}
 			if (chunk->chunk_type == EXTRACT_LSCT) {
@@ -956,14 +983,16 @@ between them, but that's another story: see //Holons::scan//.
 		DISCARD_TEXT(holon_name)
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
 			if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
-				(chunk->chunk_type == HOLON_ADDENDUM_LSCT))
+				(chunk->chunk_type == HOLON_FILE_LSCT) ||
+				(chunk->chunk_type == HOLON_ADDENDUM_LSCT) ||
+				(chunk->chunk_type == HOLON_FILE_ADDENDUM_LSCT))
 				LiterateSource::remove_chunk_from_par(chunk, par);
 	}
 	Holons::scan(lsu->local_holon_namespace, lsu->syntax, lsu->language);
 
 @<Assign a holon to this chunk@> =
-	chunk->holon = Holons::new(chunk, holon_name, addendum_flag,
-		lsu->local_holon_namespace, holon_bitmap);
+	chunk->holon = Holons::new(chunk, holon_name, addendum_flag, file_holon_flag,
+		lsu->local_holon_namespace, holon_bitmap, lsu->syntax, lsu->language);
 	if (chunk->owner->holon)
 		WebErrors::record_at(I"two code fragments in the same paragraph",
 			chunk->first_line);
@@ -1005,7 +1034,7 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 		else MarkdownVariations::remove_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
 	}
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
-		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			if (chunk->chunk_type == COMMENTARY_LSCT) {
 				TEMPORARY_TEXT(concatenated)
 				for (ls_line *line = chunk->first_line; line; line = line->next_line)
@@ -1014,6 +1043,27 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 				ParagraphTags::autotag(NULL, par, chunk->as_markdown);
 				DISCARD_TEXT(concatenated)
 			}
+			if ((chunk->holon) && (Str::len(chunk->holon->holon_name) > 0) &&
+				(Conventions::get_int(lsu->context, HOLONS_STYLED_LSCONVENTION))) {
+				markdown_item *md = Markdown::parse_extended(chunk->holon->holon_name, variation);
+				if (md->type == DOCUMENT_MIT) md = md->down;
+				if (md->type == PARAGRAPH_MIT) md = md->down;
+				chunk->holon->holon_name_as_markdown = md;
+				ParagraphTags::autotag(NULL, par, md);
+			}
+			if ((chunk->holon) &&
+				(Conventions::get_int(lsu->context, COMMENTS_STYLED_LSCONVENTION))) {
+				holon_splice *hs;
+				LOOP_OVER_LINKED_LIST(hs, holon_splice, chunk->holon->splice_list)
+					if (hs->comment) {
+						markdown_item *md = Markdown::parse_extended(hs->comment, variation);
+						if (md->type == DOCUMENT_MIT) md = md->down;
+						if (md->type == PARAGRAPH_MIT) md = md->down;
+						hs->comment_as_markdown = md;
+						ParagraphTags::autotag(NULL, par, md);
+					}
+			}
+		}
 	int cumulative_C = 1, cumulative_N = 1;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		int next_C = 1, next_N = 1;
@@ -1188,6 +1238,12 @@ int LiterateSource::unit_has_errors(ls_unit *lsu) {
 =
 text_stream *LiterateSource::par_title(ls_paragraph *par) {
 	return par->titling.operand1;
+}
+
+int LiterateSource::par_depth(ls_paragraph *par) {
+	if (Str::len(par->titling.operand1) > 0)
+		return par->titling.options_bitmap - 100;
+	return 1000;
 }
 
 text_stream *LiterateSource::par_ornament(ls_paragraph *par) {
@@ -1391,6 +1447,38 @@ ls_footnote *LiterateSource::find_footnote_in_para(ls_paragraph *par, text_strea
 	return NULL;
 }
 
+@h Indexing.
+
+@<Index the unit@> =
+	if (lsu->context)
+		for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
+			for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+				for (ls_line *line = chunk->first_line; line; line = line->next_line)
+					if (line->index_marks) {
+						ls_index_mark *ie;
+						LOOP_OVER_LINKED_LIST(ie, ls_index_mark, line->index_marks)
+							WebIndexing::index_at(ie, par);
+					}
+
+@h Processing.
+
+=
+void LiterateSource::process_chunk(ls_chunk *chunk, notation_rewriting_machine *nrm) {
+	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
+		text_stream *before = line->classification.operand1;
+		text_stream *after = Str::new();
+		WebNotation::rewrite(after, before, nrm);
+		line->classification.operand1 = after;
+	}
+}
+
+int LiterateSource::chunk_is_whitespace(ls_chunk *chunk) {
+	for (ls_line *line = chunk->first_line; line; line = line->next_line)
+		if (Str::is_whitespace(line->classification.operand1) == FALSE)
+			return FALSE;
+	return TRUE;
+}
+
 @h Debugging.
 The following provides a textual summary of a unit after its completion:
 
@@ -1480,6 +1568,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 				LiterateSource::par_ornament(par),
 				par->paragraph_number);
 		} else if (Str::len(hs->command) > 0) WRITE("command '%S'", hs->command);
+		else if (Str::len(hs->comment) > 0) WRITE("command '%S'", hs->comment);
 		else {
 			LiterateSource::write_code(OUT, hs->line, Holons::splice_code(hs), hs->from, hs->to);
 		}
@@ -1530,14 +1619,19 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 				case DEFINE_COMMAND_MINLC: WRITE("define"); break;
 				case DEFAULT_COMMAND_MINLC: WRITE("default"); break;
 				case ENUMERATE_COMMAND_MINLC: WRITE("enumerate"); break;
+				case FORMAT_COMMAND_MINLC: WRITE("format"); break;
+				case SILENTLY_FORMAT_COMMAND_MINLC: WRITE("silently format"); break;
 				default: WRITE("? definition of some sort"); break;
 			}
 			WRITE(" '%S'", chunk->symbol_defined);
 			if (Str::len(chunk->symbol_value) > 0) WRITE(" = %S", chunk->symbol_value);
 			WRITE("\n");
 			break;
+		case DEFINITIONS_HERE_LSCT: WRITE("definitions marker\n"); break;
 		case HOLON_DECLARATION_LSCT: WRITE("holon definition\n"); break;
 		case HOLON_ADDENDUM_LSCT: WRITE("holon addendum\n"); break;
+		case HOLON_FILE_LSCT: WRITE("holon file\n"); break;
+		case HOLON_FILE_ADDENDUM_LSCT: WRITE("holon file addendum\n"); break;
 		case OTHER_LSCT: WRITE("other\n"); break;
 		default: WRITE("?\n"); break;
 	}
@@ -1552,17 +1646,23 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 					0, Str::len(line->classification.operand1)-1);
 				WRITE("\n"); break;
 			case HOLON_DECLARATION_MAJLC:
-				if (line->classification.minor == ADDENDUM_MINLC)
+				if ((line->classification.minor == FILE_MINLC) ||
+					(line->classification.minor == FILE_ADDENDUM_MINLC))
+					WRITE("file-");
+				if ((line->classification.minor == ADDENDUM_MINLC) ||
+					(line->classification.minor == FILE_ADDENDUM_MINLC))
 					WRITE("holon addendum '%S'\n", line->classification.operand1);
 				else
 					WRITE("holon declaration '%S'\n", line->classification.operand1);
 				break;
-			case DEFINITION_MAJLC: break;
 			case DEFINITION_CONTINUED_MAJLC:
 				LiterateSource::write_code(OUT, line, line->text, 0, Str::len(line->text)-1);
 				WRITE("\n");
 				break;
+			case DEFINITION_MAJLC:
 			case INSERTION_MAJLC:
+			case INCLUDE_FILE_MAJLC:
+			case DEFINITIONS_HERE_MAJLC:
 				break;
 			default:
 				WRITE("class %d/%d: %S / %S / %S\n",

@@ -1,0 +1,6 @@
+web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 16 paragraphs : 221 lines
+
+from   | external URL                                  
+------ | ----------------------------------------------
+cnsr:1 | https://en.wikipedia.org/wiki/Harold_H._Seward
+qcsr:1 | https://en.wikipedia.org/wiki/Tony_Hoare      

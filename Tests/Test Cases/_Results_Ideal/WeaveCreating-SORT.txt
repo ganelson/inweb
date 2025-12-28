@@ -1,0 +1,5 @@
+weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML
+(created directory 'smorgasbord/Woven/assets')
+    [smorgasbord/Woven/cnsr.html] [qcsr] 
+    [index] 
+    10 files copied to: smorgasbord/Woven/assets

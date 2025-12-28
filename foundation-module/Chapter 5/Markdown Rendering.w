@@ -456,10 +456,17 @@ been taken out at the parsing stage.)
 
 @<Render maths matter in TeX@> =
 	TEMPORARY_TEXT(TEX)
-	int m = RAW_MDRMODE;
-	for (markdown_item *c = md->down; c; c = c->next) {
-		MDRenderer::recurse(TEX, state, c, m, variation);
-		m = m & (~EXISTING_PAR_MDRMODE);
+	if (MarkdownVariations::supports(variation, ALT_TEX_MARKDOWNFEATURE)) {
+		int m = RAW_MDRMODE;
+		for (markdown_item *c = md->down; c; c = c->next) {
+			MDRenderer::recurse(TEX, state, c, m, variation);
+			m = m & (~EXISTING_PAR_MDRMODE);
+		}
+	} else {
+		for (int i=md->from; i<=md->to; i++) {
+			inchar32_t c = Markdown::get_at(md, i);
+			PUT_TO(TEX, c);
+		}
 	}
 	#ifdef LITERATE_MODULE
 	HTMLWeaving::render_maths(OUT, (weave_order *) state, TEX, FALSE,

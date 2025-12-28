@@ -1,13 +1,18 @@
 <script>
 MathJax = {
-	tex: {
-		inlineMath: [['$', '$'], ['\\(', '\\)']]
+    options: {
+    	skipHtmlTags: {'[-]': ['pre']},
+    	processHtmlClass: 'mathjax_process'
+    },
+	loader: {load: ['[tex]/texhtml']},
+  	tex: {
+		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+    	packages: {'[+]': ['texhtml']},
+    	allowTexHTML: true
 	},
 	svg: {
 		fontCache: 'global'
 	}
 };
 </script>
-<script type="text/javascript" id="MathJax-script" async
-	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
-</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>

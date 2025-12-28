@@ -79,7 +79,9 @@ int InwebTangle::switch(inweb_instructions *ins, int id, int val, text_stream *a
 			return TRUE;
 		case TANGLE_ONLY_CLSW: Configuration::set_range(&(its->subset), arg, FALSE); return TRUE;
 		case CTAGS_CLSW: its->ctags_switch = val; return TRUE;
-		case CTAGS_TO_CLSW: its->ctags_setting = Filenames::from_text(arg); return TRUE;
+		case CTAGS_TO_CLSW:
+			its->ctags_switch = TRUE;
+			its->ctags_setting = Filenames::from_text(arg); return TRUE;
 	}
 	return FALSE;
 }
@@ -89,14 +91,57 @@ int InwebTangle::switch(inweb_instructions *ins, int id, int val, text_stream *a
 =
 void InwebTangle::run(inweb_instructions *ins) {
 	inweb_tangle_settings *its = &(ins->tangle_settings);
-	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_COMPULSORY, TRUE, FALSE);
+	inweb_operand op = Configuration::operand(ins, WEB_OPERAND_PREFERRED, TRUE, FALSE);
 	if (no_inweb_errors > 0) return;
-	ls_web *W = op.W;
-	if (its->ctags_switch == NOT_APPLICABLE) {
-		if ((W->is_page == FALSE) && (Ctags::useful_tags_exist(W))) its->ctags_switch = TRUE;
-		else its->ctags_switch = FALSE;
-	}
-	@<Tangle the web@>;
+	if (op.W) InwebTangle::run_on_web(its, op.W);
+	else if (op.C) InwebTangle::run_on_colony(its, op.C);
+	else if ((op.D) && (op.D->declaration_type == COLONY_WCLTYPE)) {
+		WCL::parse_declarations_throwing_errors(op.D);
+		ls_colony *C = RETRIEVE_POINTER_ls_colony(op.D->object_declared);
+		InwebTangle::run_on_colony(its, C);
+	} else {
+		if (op.F) Errors::fatal_with_file("file does not appear to be either a web or a colony", op.F);
+		if (op.P) Errors::fatal_with_path("directory does not appear to be either a web or a colony", op.P);
+		Errors::fatal("inweb tangle has to apply to a web or a colony");
+	}	
+}
+
+@ So we always end up in one of these two functions:
+
+=
+void InwebTangle::run_on_colony(inweb_tangle_settings *its, ls_colony *C) {
+	Colonies::fully_load(C);
+	int N = 0;
+	ls_colony_member *CM;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
+		if (CM->external == FALSE)
+			N++;
+	int M = 0;
+	LOOP_OVER_LINKED_LIST(CM, ls_colony_member, C->members)
+		if (CM->external == FALSE) {
+			M++;
+			if (M > 1) PRINT("\n");
+			PRINT("(Tangle %d of %d: %S)\n", M, N, CM->name);
+			ls_web *W = WebStructure::read_fully(C, CM->loaded->declaration, FALSE, TRUE, verbose_mode);
+			inweb_tangle_settings mutable_copy = *its;
+			InwebTangle::run_on_web(&mutable_copy, W);
+		}
+	if (M == 0) PRINT("(Nothing to do: no internal members in this colony)\n");
+}
+
+@ ...and, it all comes down to this.
+
+=
+void InwebTangle::run_on_web(inweb_tangle_settings *its, ls_web *W) {
+	TEMPORARY_TEXT(tangle_leaf)
+	tangle_target *target = NULL;
+	if (Str::eq_wide_string(its->subset.range, U"0"))
+		@<Work out main tangle destination@>
+	else if (WebRanges::to_section(W, its->subset.range))
+		@<Work out an independent tangle destination, from one section of the web@>;
+	if (Str::len(tangle_leaf) == 0) Errors::fatal("no tangle destination known");
+	@<Tangle the web at this leafname@>;
+	DISCARD_TEXT(tangle_leaf)
 }
 
 @ We can tangle to any one of what might be several targets, numbered upwards
@@ -109,45 +154,7 @@ quite different language from the rest of the web, and tangles to a different
 output, but needs to be part of the web since it's essential to an understanding
 of the whole system.
 
-In this section we determine |tn|, the target number wanted, and |tangle_to|,
-the filename of the tangled code to write. This may have been set at the command
-line , but otherwise we impose a sensible choice based on the target.
-
-@<Tangle the web@> =
-	TEMPORARY_TEXT(tangle_leaf)
-	tangle_target *target = NULL;
-	if (Str::eq_wide_string(its->subset.range, U"0"))
-		@<Work out main tangle destination@>
-	else if (WebRanges::to_section(W, its->subset.range))
-		@<Work out an independent tangle destination, from one section of the web@>;
-	if (Str::len(tangle_leaf) == 0) Errors::fatal("no tangle destination known");
-
-	filename *tangle_to = its->tangle_setting;
-	if (its->tangle_to_STDOUT) silent_mode = TRUE;
-	else if (tangle_to == NULL) {
-		pathname *P;
-		if (W->single_file) P = Filenames::up(W->single_file);
-		else P = WebStructure::tangled_folder(W);
-		tangle_to = Filenames::in(P, tangle_leaf);
-	}
-	if (silent_mode == FALSE) {
-		PRINT("tangling "); WebStructure::print_web_identity(W);
-		PRINT(" to file '%f'\n", tangle_to);
-	}
-	text_stream *OUT = STDOUT;
-	text_stream TO_struct;
-	if (its->tangle_to_STDOUT == FALSE) {
-		OUT = &TO_struct;
-		if (STREAM_OPEN_TO_FILE(OUT, tangle_to, ISO_ENC) == FALSE)
-			Errors::fatal_with_file("unable to write tangled file", tangle_to);
-	}
-	Tangler::tangle_web(OUT, W, Filenames::up(tangle_to), TangleTargets::primary_target(W));
-	if (its->tangle_to_STDOUT == FALSE)
-		STREAM_CLOSE(OUT);
-	if (its->ctags_switch == TRUE) Ctags::write(W, its->ctags_setting);
-	DISCARD_TEXT(tangle_leaf)
-
-@ For the main tangle of a web (usually the only one), the destination leafname
+For the main tangle of a web (usually the only one), the destination leafname
 defaults to something like its program name with |.c| (or |.cpp|, |.swift|, ...,
 as appropriate) tacked on:
 
@@ -179,3 +186,32 @@ their sections:
 	if (target == NULL) Errors::fatal("section cannot be independently tangled");
 	Str::copy(tangle_leaf, Filenames::get_leafname(S->source_file_for_section));
 
+
+@<Tangle the web at this leafname@> =
+	if (its->ctags_switch == NOT_APPLICABLE) {
+		if ((W) && (W->is_page == FALSE) && (Ctags::useful_tags_exist(W))) its->ctags_switch = TRUE;
+		else its->ctags_switch = FALSE;
+	}
+	filename *tangle_to = its->tangle_setting;
+	if (its->tangle_to_STDOUT) silent_mode = TRUE;
+	else if (tangle_to == NULL) {
+		pathname *P;
+		if (W->single_file) P = Filenames::up(W->single_file);
+		else P = WebStructure::tangled_folder(W);
+		tangle_to = Filenames::in(P, tangle_leaf);
+	}
+	if (silent_mode == FALSE) {
+		PRINT("tangling "); WebStructure::print_web_identity(W);
+		PRINT(" to file '%f'\n", tangle_to);
+	}
+	text_stream *OUT = STDOUT;
+	text_stream TO_struct;
+	if (its->tangle_to_STDOUT == FALSE) {
+		OUT = &TO_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, tangle_to, ISO_ENC) == FALSE)
+			Errors::fatal_with_file("unable to write tangled file", tangle_to);
+	}
+	Tangler::tangle_web(OUT, W, Filenames::up(tangle_to), TangleTargets::primary_target(W));
+	if (its->tangle_to_STDOUT == FALSE)
+		STREAM_CLOSE(OUT);
+	if (its->ctags_switch == TRUE) Ctags::write(W, its->ctags_setting);

@@ -8,20 +8,31 @@ of different possible markup notations for LP. Each such notation is represented
 by an |ls_notation| object. These can even be created on the fly, so that a
 single-file web can contain instructions defining its own unique notation.
 
-Until 2025, only two fixed notations were supported: version 1 ("old-Inweb"),
-used until about 2020; and version 2 ("Inweb"), used since then. Version 1
-is gone and unmourned, so we won't complicate the code by supporting it.
+Until 2025, only two fixed notations were supported: version 1, used until
+about 2020; and version 2 (now called "InwebClassic"), used since then.
+Version 1 is gone and unmourned, so we won't complicate the code by supporting it.
 
 =
-ls_notation *WebNotation::default(void) {
-	static ls_notation *default_ls_notation = NULL;
-	if (default_ls_notation == NULL) {
-		wcl_declaration *D = WCL::resolve_resource(NULL, NOTATION_WCLTYPE, I"Inweb");
-		if (D) default_ls_notation = RETRIEVE_POINTER_ls_notation(D->object_declared);
-		if (default_ls_notation == NULL)
-			Errors::fatal("Unable to locate notation 'Inweb' for literate programs");
+ls_notation *WebNotation::default(int embedded) {
+	if (embedded) {
+		static ls_notation *default_embedded_notation = NULL;
+		if (default_embedded_notation == NULL) {
+			wcl_declaration *D = WCL::resolve_resource(NULL, NOTATION_WCLTYPE, I"MarkdownCode");
+			if (D) default_embedded_notation = RETRIEVE_POINTER_ls_notation(D->object_declared);
+			if (default_embedded_notation == NULL)
+				Errors::fatal("Unable to locate notation 'MarkdownCode' for literate programs");
+		}
+		return default_embedded_notation;
+	} else {
+		static ls_notation *default_ls_notation = NULL;
+		if (default_ls_notation == NULL) {
+			wcl_declaration *D = WCL::resolve_resource(NULL, NOTATION_WCLTYPE, I"InwebClassic");
+			if (D) default_ls_notation = RETRIEVE_POINTER_ls_notation(D->object_declared);
+			if (default_ls_notation == NULL)
+				Errors::fatal("Unable to locate notation 'InwebClassic' for literate programs");
+		}
+		return default_ls_notation;
 	}
-	return default_ls_notation;
 }
 
 @ Each syntax is represented by a |ls_notation| object:
@@ -32,7 +43,6 @@ typedef struct ls_notation {
 
 	/* for deciding what syntax we should use when reading a given web */
 	struct text_stream *name;
-	struct text_stream *legacy_name;
 	struct linked_list *recognised_filename_extensions; /* of |text_stream| */
 
 	/* what settings of the web this changes (if any) */
@@ -47,11 +57,18 @@ typedef struct ls_notation {
 	struct linked_list *rules; /* of |ls_notation_rule| */
 	struct linked_list *residue_rules[NO_DEFINED_WSRULEOUTCOME_VALUES]; /* ditto */
 	struct linked_list *options_rules[NO_DEFINED_WSRULEOUTCOME_VALUES]; /* ditto */
+
+	struct finite_state_machine *indexing_machine;
+
+	struct notation_rewriting_machine *processing_code;
+	struct notation_rewriting_machine *processing_commentary;
+
 	struct ls_class_parsing (*line_classifier)(struct ls_notation *,
 		struct text_stream *, struct ls_class *);
 
 	/* temporarily needed in parsing syntax files */
 	struct linked_list *stanza;
+	struct notation_rewriting_machine *p_stanza;
 	CLASS_DEFINITION
 } ls_notation;
 
@@ -62,7 +79,6 @@ ls_notation *WebNotation::new(text_stream *name) {
 	ls_notation *S = CREATE(ls_notation);
 	S->declaration = NULL;
 	S->name = Str::duplicate(name);
-	S->legacy_name = NULL;
 	S->recognised_filename_extensions = NEW_LINKED_LIST(text_stream);
 
 	S->bibliographic_settings = NEW_LINKED_LIST(text_stream);
@@ -79,8 +95,14 @@ ls_notation *WebNotation::new(text_stream *name) {
 		S->options_rules[i] = NEW_LINKED_LIST(ls_notation_rule);
 	}
 	S->line_classifier = NULL;
-	
+
+	S->indexing_machine = NULL;
+
+	S->processing_code = WebNotation::new_machine();
+	S->processing_commentary = WebNotation::new_machine();
+
 	S->stanza = NULL;
+	S->p_stanza = NULL;
 	return S;
 }
 
@@ -100,15 +122,9 @@ to "Inweb", for the default syntax. (As noted above, this was once version 2.)
 
 =
 ls_notation *WebNotation::syntax_by_name(ls_web *W, text_stream *name) {
+	if (Str::eq(name, I"2")) name = I"InwebClassic";
 	wcl_declaration *X = WCL::resolve_resource(W?(W->declaration):NULL, NOTATION_WCLTYPE, name);
 	if (X) return RETRIEVE_POINTER_ls_notation(X->object_declared);
-	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, NOTATION_WCLTYPE, NULL);
-	wcl_declaration *D;
-	LOOP_OVER_LINKED_LIST(D, wcl_declaration, L) {
-		ls_notation *T = RETRIEVE_POINTER_ls_notation(D->object_declared);
-		if (Str::eq_insensitive(name, T->legacy_name))
-			return T;
-	}
 	return NULL;
 }
 
@@ -177,14 +193,13 @@ web using its conventions:
 @e TRIMMED_HOLONS_BELOW_WSF         /* when tangling, trim final blank lines from a holon */
 @e FOOTNOTES_IN_COMMENTARY_WSF      /* commentary in paragraphs can have footnotes */
 @e NAMED_HOLONS_WSF                 /* notation for holon names */
+@e FILE_NAMED_HOLONS_WSF            /* notation for holon names */
+@e VERBATIM_CODE_WSF                /* notation for verbatim tangle matter */
 @e METADATA_IN_STRINGS_WSF          /* notation for metadata in strings */
 @e PARAGRAPH_TAGS_WSF               /* paragraphs can be tagged */
 
 =
 text_stream *WebNotation::feature_name(int n) {
-	switch (n) {
-		case KEY_VALUE_PAIRS_WSF:           return I"key-value pairs";
-	}
 	return NULL;
 }
 
@@ -200,8 +215,10 @@ int WebNotation::feature_by_name(text_stream *name) {
 =
 int WebNotation::feature_notations(int n) {
 	switch (n) {
+		case FILE_NAMED_HOLONS_WSF:         return 2;
 		case NAMED_HOLONS_WSF:              return 2;
-		case METADATA_IN_STRINGS_WSF:          return 2;
+		case METADATA_IN_STRINGS_WSF:       return 2;
+		case VERBATIM_CODE_WSF:      		return 2;
 		default: return 0;
 	}
 }
@@ -373,12 +390,24 @@ in grammar.
 to a particular rule list.
 
 @<Entering and exiting stanzas@> =
+	if (Regexp::match(&mr, cmd, U"process code {")) {
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->processing_code;
+		 @<Setting done@>;
+	}
+	if (Regexp::match(&mr, cmd, U"process commentary {")) {
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->processing_commentary;
+		 @<Setting done@>;
+	}
 	if (Regexp::match(&mr, cmd, U"classify {")) {
-		if (S->stanza) error = I"cannot nest { ... } blocks"; else S->stanza = S->rules;
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->stanza = S->rules;
 		 @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"residue of (%C+) {")) {
-		if (S->stanza) { error = I"cannot nest { ... } blocks"; @<Setting done@>; }
+		if ((S->stanza) || (S->p_stanza))
+			{ error = I"cannot nest { ... } blocks"; @<Setting done@>; }
 		int R = WebNotation::outcome_by_name(mr.exp[0]);
 		if (R == NO_WSRULEOUTCOME) {
 			error = Str::new();
@@ -389,7 +418,8 @@ to a particular rule list.
 		@<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"options of (%C+) {")) {
-		if (S->stanza) { error = I"cannot nest { ... } blocks"; @<Setting done@>; }
+		if ((S->stanza) || (S->p_stanza))
+			{ error = I"cannot nest { ... } blocks"; @<Setting done@>; }
 		int R = WebNotation::outcome_by_name(mr.exp[0]);
 		if (R == NO_WSRULEOUTCOME) {
 			error = Str::new();
@@ -400,7 +430,8 @@ to a particular rule list.
 		@<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"}")) {
-		if (S->stanza) S->stanza = NULL; else error = I"unexpected '}'";
+		if ((S->stanza) || (S->p_stanza)) { S->stanza = NULL; S->p_stanza = NULL; }
+		else error = I"unexpected '}'";
 		@<Setting done@>;
 	}		
 
@@ -418,13 +449,19 @@ to a particular rule list.
 		}
 		@<Setting done@>;
 	}
+	if (S->p_stanza) {
+		if (Regexp::match(&mr, cmd, U"(%c*?) ==> (%c*)")) {
+			error = WebNotation::parse_processing(S, S->p_stanza, mr.exp[0], mr.exp[1]);
+		} else {
+			error = Str::new();
+			WRITE_TO(error, "not a process line: '%S'", cmd);
+		}
+		@<Setting done@>;
+	}
 
 @<Miscellaneous settings@> =
 	if (Regexp::match(&mr, cmd, U"name \"(%C+)\"")) {
 		S->name = Str::duplicate(mr.exp[0]); @<Setting done@>;
-	}
-	if (Regexp::match(&mr, cmd, U"legacy name \"(%C+)\"")) {
-		S->legacy_name = Str::duplicate(mr.exp[0]); @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"recognise (.%C+)")) {
 		text_stream *ext = Str::duplicate(mr.exp[0]);
@@ -571,6 +608,14 @@ void WebNotation::prepare_for(ls_notation *S, ls_web *W) {
 		Str::duplicate(Conventions::get_textual_from(W->conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
 	S->feature_notation2[NAMED_HOLONS_WSF] =
 		Str::duplicate(Conventions::get_textual2_from(W->conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
+	S->feature_notation1[FILE_NAMED_HOLONS_WSF] =
+		Str::duplicate(Conventions::get_textual_from(W->conventions, FILE_HOLON_NAME_SYNTAX_LSCONVENTION));
+	S->feature_notation2[FILE_NAMED_HOLONS_WSF] =
+		Str::duplicate(Conventions::get_textual2_from(W->conventions, FILE_HOLON_NAME_SYNTAX_LSCONVENTION));
+	S->feature_notation1[VERBATIM_CODE_WSF] =
+		Str::duplicate(Conventions::get_textual_from(W->conventions, VERBATIM_LSCONVENTION));
+	S->feature_notation2[VERBATIM_CODE_WSF] =
+		Str::duplicate(Conventions::get_textual2_from(W->conventions, VERBATIM_LSCONVENTION));
 	S->feature_notation1[METADATA_IN_STRINGS_WSF] =
 		Str::duplicate(Conventions::get_textual_from(W->conventions, METADATA_IN_STRINGS_SYNTAX_LSCONVENTION));
 	S->feature_notation2[METADATA_IN_STRINGS_WSF] =
@@ -607,11 +652,26 @@ void WebNotation::prepare_for(ls_notation *S, ls_web *W) {
 					WebErrors::issue_at(error, NULL);
 			}
 	}
+
+	S->indexing_machine = WebIndexing::make_indexing_machine(W->conventions);
 }
 
+@ =
 int WebNotation::supports_named_holons(ls_notation *S) {
 	if ((Str::len(S->feature_notation1[NAMED_HOLONS_WSF]) > 0) &&
 		(Str::len(S->feature_notation2[NAMED_HOLONS_WSF]) > 0)) return TRUE;
+	return FALSE;
+}
+
+int WebNotation::supports_verbatim_material(ls_notation *S) {
+	if ((Str::len(S->feature_notation1[VERBATIM_CODE_WSF]) > 0) &&
+		(Str::len(S->feature_notation2[VERBATIM_CODE_WSF]) > 0)) return TRUE;
+	return FALSE;
+}
+
+int WebNotation::supports_file_named_holons(ls_notation *S) {
+	if ((Str::len(S->feature_notation1[FILE_NAMED_HOLONS_WSF]) > 0) &&
+		(Str::len(S->feature_notation2[FILE_NAMED_HOLONS_WSF]) > 0)) return TRUE;
 	return FALSE;
 }
 
@@ -634,9 +694,15 @@ int WebNotation::commentary_markup(ls_web *W) {
 
 markdown_variation *WebNotation::commentary_variation(ls_web *W) {
 	int markup = WebNotation::commentary_markup(W);
-	if (markup == SIMPLIFIED_COMMENTARY_MARKUPCHOICE)
-		return MarkdownVariations::simplified_Inweb_flavoured_Markdown();
-	return MarkdownVariations::Inweb_flavoured_Markdown();
+	switch (markup) {
+		case SIMPLIFIED_COMMENTARY_MARKUPCHOICE:
+			return MarkdownVariations::simplified_Inweb_flavoured_Markdown();
+		case MARKDOWN_COMMENTARY_MARKUPCHOICE:
+			return MarkdownVariations::Inweb_flavoured_Markdown();
+		case TEX_COMMENTARY_MARKUPCHOICE:
+			return MarkdownVariations::TeX_flavoured_Markdown();
+	}
+	internal_error("unsupported commentary variation");
 }
 
 @ So now we dig into the details of these grammar rules. The model for this is
@@ -726,6 +792,16 @@ text_stream *WebNotation::parse_pattern(ls_notation_rule *R, text_stream *patter
 			WRITE_TO(text, "%S",
 				Conventions::get_textual2_from(conventions, HOLON_NAME_SYNTAX_LSCONVENTION));
 			i += Str::len(I"<CLOSEHOLON>") - 1; continue;
+		}
+		if (Str::includes_at(pattern, i, I"<OPENFILEHOLON>")) {
+			WRITE_TO(text, "%S",
+				Conventions::get_textual_from(conventions, FILE_HOLON_NAME_SYNTAX_LSCONVENTION));
+			i += Str::len(I"<OPENFILEHOLON>") - 1; continue;
+		}
+		if (Str::includes_at(pattern, i, I"<CLOSEFILEHOLON>")) {
+			WRITE_TO(text, "%S",
+				Conventions::get_textual2_from(conventions, FILE_HOLON_NAME_SYNTAX_LSCONVENTION));
+			i += Str::len(I"<CLOSEFILEHOLON>") - 1; continue;
 		}
 		if (Str::includes_at(pattern, i, I"<OPENTAG>")) {
 			WRITE_TO(text, "%S",
@@ -843,6 +919,12 @@ used to mean "nothing matched".
 
 @e AUDIO_WSRULEOUTCOME
 @e BEGINPARAGRAPH_WSRULEOUTCOME
+@e BEGINHEADINGPARAGRAPH_WSRULEOUTCOME
+@e HEADINGPARAGRAPH1_WSRULEOUTCOME
+@e HEADINGPARAGRAPH2_WSRULEOUTCOME
+@e HEADINGPARAGRAPH3_WSRULEOUTCOME
+@e HEADINGPARAGRAPH4_WSRULEOUTCOME
+@e HEADINGPARAGRAPH5_WSRULEOUTCOME
 @e BREAK_WSRULEOUTCOME
 @e CAROUSELABOVE_WSRULEOUTCOME
 @e CAROUSELBELOW_WSRULEOUTCOME
@@ -862,9 +944,15 @@ used to mean "nothing matched".
 @e ENUMERATION_WSRULEOUTCOME
 @e EXTRACT_WSRULEOUTCOME
 @e FIGURE_WSRULEOUTCOME
+@e FILEHOLONDECLARATION_WSRULEOUTCOME
+@e FILEHOLONDECLARATIONADDENDUM_WSRULEOUTCOME
+@e FORMATIDENTIFIER_WSRULEOUTCOME
+@e SFORMATIDENTIFIER_WSRULEOUTCOME
 @e HEADING_WSRULEOUTCOME
 @e HTML_WSRULEOUTCOME
 @e HYPERLINKED_WSRULEOUTCOME
+@e INCLUDEFILE_WSRULEOUTCOME
+@e MAKEDEFINITIONSHERE_WSRULEOUTCOME
 @e NAMEDCODEFRAGMENT_WSRULEOUTCOME
 @e NAMEDCODEFRAGMENTADDENDUM_WSRULEOUTCOME
 @e PARAGRAPHTAG_WSRULEOUTCOME
@@ -891,6 +979,12 @@ used to mean "nothing matched".
 int WebNotation::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"audio"))                return AUDIO_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"beginparagraph"))       return BEGINPARAGRAPH_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"beginheadingparagraph")) return BEGINHEADINGPARAGRAPH_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"headingparagraph1"))    return HEADINGPARAGRAPH1_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"headingparagraph2"))    return HEADINGPARAGRAPH2_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"headingparagraph3"))    return HEADINGPARAGRAPH3_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"headingparagraph4"))    return HEADINGPARAGRAPH4_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"headingparagraph5"))    return HEADINGPARAGRAPH5_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"break"))                return BREAK_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"carouselaboveslide"))   return CAROUSELABOVE_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"carouselbelowslide"))   return CAROUSELBELOW_WSRULEOUTCOME;
@@ -909,11 +1003,17 @@ int WebNotation::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"enumeration"))          return ENUMERATION_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"extract"))              return EXTRACT_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"figure"))               return FIGURE_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"formatidentifier"))     return FORMATIDENTIFIER_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"silentlyformatidentifier")) return SFORMATIDENTIFIER_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"heading"))              return HEADING_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"html"))                 return HTML_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"hyperlinked"))          return HYPERLINKED_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"includefile"))          return INCLUDEFILE_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"namedcodefragment"))    return NAMEDCODEFRAGMENT_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"namedcodefragmentaddendum")) return NAMEDCODEFRAGMENTADDENDUM_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"fileholondeclaration"))    return FILEHOLONDECLARATION_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"fileholondeclarationaddendum")) return FILEHOLONDECLARATIONADDENDUM_WSRULEOUTCOME;
+	if (Str::eq(outcome, I"makedefinitionshere"))  return MAKEDEFINITIONSHERE_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"paragraphtag"))         return PARAGRAPHTAG_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"paragraphtitling"))     return PARAGRAPHTITLING_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"purpose"))              return PURPOSE_WSRULEOUTCOME;
@@ -935,6 +1035,78 @@ int WebNotation::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"lateholon"))            return LATEHOLON_WSRULEOUTCOME;
 	if (Str::eq(outcome, I"verylateholon"))        return VERYLATEHOLON_WSRULEOUTCOME;
 	return NO_WSRULEOUTCOME;
+}
+
+@h Processing.
+
+@e INWEB_REWRITE_FSMEVENT
+
+=
+typedef struct notation_rewriting_machine {
+	struct finite_state_machine *fsm;
+	struct fsm_state *base_state;
+	CLASS_DEFINITION
+} notation_rewriting_machine;
+
+notation_rewriting_machine *WebNotation::new_machine(void) {
+	notation_rewriting_machine *nrm = CREATE(notation_rewriting_machine);
+	nrm->base_state = FSM::new_state(I"base");
+	nrm->fsm = FSM::new_machine(nrm->base_state);
+	return nrm;
+}
+
+typedef struct notation_rewriter {
+	struct text_stream *from;
+	struct text_stream *to;
+	CLASS_DEFINITION
+} notation_rewriter;
+
+text_stream *WebNotation::parse_processing(ls_notation *S, notation_rewriting_machine *nrm,
+	text_stream *from, text_stream *to) {
+	if (nrm == NULL) internal_error("no fsm");
+	text_stream *error = NULL;
+	notation_rewriter *nr = CREATE(notation_rewriter);
+	nr->from = Str::duplicate(from);
+	nr->to = Str::new();
+	for (int i=0; i<Str::len(to); i++) {
+		if (Str::includes_at(to, i, I"<SPACE>")) {
+			PUT_TO(nr->to, ' ');
+			i += 6;
+		} else if (Str::includes_at(to, i, I"<NOTHING>")) {
+			i += 8;
+		} else if (Str::includes_at(to, i, I"<TAB>")) {
+			PUT_TO(nr->to, '\t');
+			i += 5;
+		} else if (Str::includes_at(to, i, I"<LEFTANGLE>")) {
+			PUT_TO(nr->to, '<');
+			i += 11;
+		} else if (Str::includes_at(to, i, I"<RIGHTANGLE>")) {
+			PUT_TO(nr->to, '>');
+			i += 12;
+		} else {
+			PUT_TO(nr->to, Str::get_at(to, i));
+		}
+	}
+	
+	FSM::add_transition_spelling_out_with_events_and_parameter(nrm->base_state, from,
+		nrm->base_state, NO_FSMEVENT, INWEB_REWRITE_FSMEVENT, STORE_POINTER_notation_rewriter(nr));
+	return error;
+}
+
+void WebNotation::rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) {
+	FSM::reset_machine(nrm->fsm);
+	for (int i=0; i<Str::len(text); i++) {
+		inchar32_t c = Str::get_at(text, i);
+		PUT(c);
+		int event = FSM::cycle_machine(nrm->fsm, c, NULL);
+		if (event == INWEB_REWRITE_FSMEVENT) {
+			general_pointer parameter = FSM::get_last_parameter(nrm->fsm);
+			notation_rewriter *nr = RETRIEVE_POINTER_notation_rewriter(parameter);
+			int backspace = Str::len(nr->from);
+			Str::truncate(OUT, Str::len(OUT) - backspace);
+			WRITE("%S", nr->to);
+		}
+	}
 }
 
 @h Matching text to grammar.

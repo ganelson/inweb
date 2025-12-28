@@ -48,7 +48,10 @@ advance, and the file didn't declare one explicitly, and didn't have a shebang.
 @<Try to deduce the syntax from the filename extension@> =
 	if (W->single_file)
 		RS.detected_syntax = WebNotation::guess_from_filename(W, W->single_file);
-	if (RS.detected_syntax == NULL) RS.detected_syntax = WebNotation::default();
+	if (RS.detected_syntax == NULL) {
+		if (W->declaration->scope) RS.detected_syntax = WebNotation::default(TRUE);
+		else RS.detected_syntax = WebNotation::default(FALSE);
+	}
 
 @ And similarly for languages, except that here it's acceptable to give up and
 leave the language |NULL| if there really is no indication:

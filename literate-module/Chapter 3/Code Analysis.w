@@ -149,6 +149,7 @@ void CodeAnalysis::analyse_code(ls_web *W) {
 	}
 
 	LanguageMethods::late_preweave_analysis(WebStructure::web_language(W), W);
+	@<Make identifier format changes@>;
 }
 
 @ First, we call any language-specific code, whose task is to identify what we
@@ -168,6 +169,40 @@ just as any other code would be.
 		ANY_USAGE, 0);
 	CodeAnalysis::analyse_as_code(W, lst, lst->classification.operand1,
 		PREFORM_IN_CODE_USAGE, PREFORM_IN_GRAMMAR_USAGE);
+
+@<Make identifier format changes@> =
+	ls_chapter *C;
+	ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+			for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par)
+				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+					if ((chunk->metadata.minor == FORMAT_COMMAND_MINLC) ||
+					 	(chunk->metadata.minor == SILENTLY_FORMAT_COMMAND_MINLC))
+					 		if (Str::ne(chunk->symbol_value, I"TeX"))
+					 			@<Make identifier format change@>;
+
+@<Make identifier format change@> =
+	hash_table *ht = &(TangleTargets::of_section(S)->symbols);
+	hash_table_entry *hte = ReservedWords::find_hash_entry(ht, chunk->symbol_value, FALSE);
+	if (hte) {
+		@<Change symbol to be like this hash table entry@>;
+	} else {
+		programming_language *pl = WebStructure::section_language(S);
+		hte = ReservedWords::find_hash_entry(&(pl->built_in_keywords), chunk->symbol_value, FALSE);
+		if (hte) {
+			@<Change symbol to be like this hash table entry@>;
+		} else {
+			text_stream *err = Str::new();
+			WRITE_TO(err, "'%S' has no special significance, and doesn't say how to format '%S'",
+				chunk->symbol_value, chunk->symbol_defined);
+			WebErrors::record_at(err, chunk->onset_line);
+		}
+	}
+
+@<Change symbol to be like this hash table entry@> =
+	hash_table_entry *shte = ReservedWords::find_hash_entry(ht, chunk->symbol_defined, TRUE);
+	shte->language_reserved_word = hte->language_reserved_word;
 
 @h Identifier searching.
 Here's what we actually do, then. We take the code fragment |text|, drawn

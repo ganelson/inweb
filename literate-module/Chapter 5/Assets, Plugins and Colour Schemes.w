@@ -312,13 +312,7 @@ pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	if ((AP) && (R->method != PRIVATE_COPY_ASSET_METHOD)) H = AP;
 	int creating = FALSE;
 	if ((H) && (Directories::exists(H) == FALSE)) {
-		if (context == NULL) {
-			creating = TRUE;
-			if (Pathnames::create_in_file_system(H) == FALSE)
-				Errors::fatal_with_path("unable to create directory to copy assets into", H);
-		} else {
-			Errors::fatal_with_path("directory to copy assets into does not exist", H);
-		}
+		Errors::fatal_with_path("directory to copy assets into does not exist", H);
 	}
 	if (Swarm::report_copy(WR, F, H, creating) == TRUE) {
 		if (Str::len(trans) > 0) {

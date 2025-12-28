@@ -1,0 +1,70 @@
+web "Counting Sort" (Python program in MarkdownCode notation): 6 paragraphs : 69 lines
+heading 'Counting Sort', namespace 'Harold H. Seward'
+Purpose 'An implementation of the 1954 sort algorithm.'
+S1
+    C1: commentary
+        _______ 
+        _______ This⏑algorithm⏑was⏑found⏑in⏑1954⏑by⏑[Harold⏑H.⏑Seward](https://en.wikipedia.org/wiki/Harold_H._Seward),
+        _______ who⏑also⏑devised⏑radix⏑sort.⏑They⏑differ⏑from⏑most⏑sorting⏑techniques⏑because⏑they⏑do
+        _______ not⏑make⏑comparisons⏑between⏑items⏑in⏑the⏑unsorted⏑array.⏑Indeed,⏑there⏑are⏑no
+        _______ comparisons⏑in⏑the⏑following⏑function,⏑only⏑iteration.
+        _______ 
+        _______ This⏑function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns
+        _______ the⏑result.⏑The⏑test⏑`if⏑unsorted`⏑means⏑"if⏑the⏑unsorted⏑array⏑is⏑not⏑empty",
+        _______ and⏑is⏑needed⏑because⏑Python⏑would⏑otherwise⏑handle⏑this⏑case⏑badly:⏑of⏑course,
+        _______ if⏑`unsorted`⏑does⏑equal⏑`[]`,⏑then⏑so⏑should⏑`sorted`,⏑and⏑so⏑the⏑right⏑answer
+        _______ is⏑returned.
+    C2: holon (used sequentially)
+        0000016 def⏑countingSort(unsorted):
+        0000017 ⏑⏑⏑⏑sorted⏑=⏑[]
+        0000018 ⏑⏑⏑⏑if⏑unsorted:
+        0000019 ⏑⏑⏑⏑⏑⏑⏑⏑
+          holon 'initialise the incidence counts to zero' (defined in S1.1)
+        0000020 ⏑⏑⏑⏑⏑⏑⏑⏑
+          holon 'tally how many times each value occurs in the unsorted array' (defined in S1.2)
+        0000021 ⏑⏑⏑⏑⏑⏑⏑⏑
+          holon 'construct the sorted array with the right number of each value' (defined in S1.3)
+        0000022 ⏑⏑⏑⏑return⏑sorted
+S1.1
+    C1: commentary
+        _______ For⏑example,⏑suppose⏑the⏑array⏑is⏑initially⏑`[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]`.
+        _______ Then⏑the⏑maximum⏑value⏑is⏑6.⏑Python⏑arrays⏑index⏑from⏑0,⏑so⏑we⏑need⏑an⏑incidence
+        _______ counts⏑array⏑of⏑size⏑7,⏑and⏑we⏑create⏑it⏑as⏑`[0,⏑0,⏑0,⏑0,⏑0,⏑0,⏑0]`.
+    C2: holon 'initialise the incidence counts to zero' (used in S1)
+        0000030 max_val⏑=⏑max(unsorted)
+        0000031 counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)
+S1.2
+    C1: commentary
+        _______ In⏑the⏑unsorted⏑array⏑we⏑will⏑observe⏑no⏑0s,⏑one⏑1,⏑three⏑2s,⏑and⏑so⏑on.⏑The
+        _______ following⏑produces⏑the⏑counts⏑`[0,⏑1,⏑3,⏑3,⏑1,⏑1,⏑2]`.
+    C2: holon 'tally how many times each value occurs in the unsorted array' (used in S1)
+        0000038 for⏑value⏑in⏑unsorted:
+        0000039 ⏑⏑⏑⏑counts[value]⏑+=⏑1
+S1.3
+    C1: commentary
+        _______ Unusually⏑for⏑a⏑sorting⏑algorithm,⏑an⏑entirely⏑new⏑sorted⏑array⏑is⏑created,
+        _______ using⏑only⏑the⏑incidence⏑counts⏑as⏑a⏑sort⏑of⏑program.⏑We⏑fill⏑`sorted`
+        _______ with⏑no⏑`0`s,⏑one⏑`1`,⏑three⏑`2`s,⏑and⏑so⏑on,⏑producing⏑`[1,⏑2,⏑2,⏑2,⏑3,⏑3,⏑3,⏑4,⏑5,⏑6,⏑6]`.[1]
+        _______ 
+        _______ [1]⏑The⏑unsorted⏑array⏑is⏑no⏑longer⏑needed,⏑in⏑fact,⏑and⏑so⏑we⏑could⏑easily⏑make⏑this
+        _______ algorithm⏑"sort⏑in⏑place"⏑by⏑simply⏑rewriting⏑`unsorted`,⏑rather⏑than⏑making
+        _______ a⏑new⏑array.
+    C2: holon 'construct the sorted array with the right number of each value' (used in S1)
+        0000051 for⏑value,⏑count⏑in⏑enumerate(counts):
+        0000052 ⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)
+S2
+    C1: commentary
+        _______ And⏑this⏑code⏑tests⏑the⏑function:
+    C2: holon (used sequentially)
+        0000056 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]
+        0000057 print("Unsorted:",⏑A)
+        0000058 print("Sorted:",⏑countingSort(A))
+S3 'Verdict' <verdicts>
+    C1: commentary
+        _______ So⏑how⏑did⏑we⏑do?⏑What⏑makes⏑count⏑sort⏑interesting⏑is⏑that⏑it⏑is⏑not⏑doomed
+        _______ to⏑run⏑at⏑$O(n\log⏑n)$⏑or⏑worse⏑speed,⏑where⏑$n$⏑is⏑the⏑size⏑of⏑the⏑data⏑set:
+        _______ counting⏑sort⏑runs⏑at⏑$O(n+k)$,⏑where⏑$k$⏑is⏑the⏑size⏑of⏑the⏑largest⏑value⏑in
+        _______ the⏑data⏑(called⏑`max_val`⏑above).⏑With⏑most⏑data,⏑$k$⏑is⏑either⏑enormous⏑or
+        _______ at⏑least⏑unpredictable,⏑so⏑that⏑speed⏑and⏑memory⏑usage⏑both⏑spike.⏑But⏑for⏑just
+        _______ a⏑few⏑applications,⏑where⏑$k$⏑is⏑known⏑to⏑be⏑within⏑tight⏑bounds,⏑count⏑sort
+        _______ is⏑still⏑used⏑today⏑and⏑is⏑exceptionally⏑fast.

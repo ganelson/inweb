@@ -65,6 +65,7 @@ here we are.
 @e command_line_subcommand_CLASS
 @e textual_table_CLASS
 @e textual_table_row_CLASS
+@e preprocessor_error_CLASS
 
 =
 DECLARE_CLASS(command_line_switch)
@@ -113,6 +114,7 @@ DECLARE_CLASS(fsm_transition)
 DECLARE_CLASS(command_line_subcommand)
 DECLARE_CLASS(textual_table)
 DECLARE_CLASS(textual_table_row)
+DECLARE_CLASS(preprocessor_error)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(dict_entry, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(HTML_tag, 1000)

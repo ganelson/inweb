@@ -155,6 +155,14 @@ void Patterns::parse_declaration(wcl_declaration *D) {
 	DISCARD_TEXT(name)
 
 @ =
+int Patterns::html_based(wcl_declaration *D, ls_pattern *wp) {
+	while (wp) {
+		if (Str::eq_insensitive(wp->pattern_name, I"HTML")) return TRUE;
+		wp = Patterns::basis(D, wp);
+	}
+	return FALSE;
+}
+
 void Patterns::resolve_declaration(wcl_declaration *D) {
 }
 

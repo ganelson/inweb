@@ -157,7 +157,9 @@ just that installation and use of Foundation-built tools is less convenient.)</p
 <pre class="displayed-code all-displayed-code code-font">
 <span class="comment-syntax">/* Check the first element of the command: if it has path separators in</span>
 <span class="comment-syntax">   it, we assume we are running one of our commands, otherwise it is a</span>
-<span class="comment-syntax">   Unix style command. */</span>
+<span class="comment-syntax">COMMENT( Check the first element of the command: if it has path separators in
+   it, we assume we are running one of our commands, otherwise it is a
+   Unix style command. )</span><span class="comment-syntax">*/</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::Win32_is_unix_cmd</span><span class="plain-syntax">(</span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax">* </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">stop</span><span class="plain-syntax"> = </span><span class="character-syntax">' '</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -178,10 +180,11 @@ just that installation and use of Foundation-built tools is less convenient.)</p
 <span class="plain-syntax">    </span><span class="reserved-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">cmd_line</span><span class="plain-syntax">[10*</span><span class="identifier-syntax">MAX_PATH</span><span class="plain-syntax">];</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* Check if the command should be executed with the Windows cmd interpreter</span>
-<span class="comment-syntax">       or a Unix-like shell. */</span>
+<span class="comment-syntax">COMMENT( Check if the command should be executed with the Windows cmd interpreter
+ </span><span class="plain-syntax"> </span><span class="comment-syntax">   or a Unix-like shell. )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unix</span><span class="plain-syntax"> = </span><a href="1-wp.html#SP6" class="function-link"><span class="function-syntax">Platform::Win32_is_unix_cmd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">unix</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">/* For a Unix shell command, escape any double quotes and backslashes. */</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( For a Unix shell command, escape any double quotes and backslashes. )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pcl</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">const</span><span class="plain-syntax"> </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">strcpy</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd_line</span><span class="plain-syntax">, </span><span class="string-syntax">"sh -c \""</span><span class="plain-syntax">);</span>
@@ -193,7 +196,7 @@ just that installation and use of Foundation-built tools is less convenient.)</p
 <span class="plain-syntax">        *(</span><span class="identifier-syntax">pcl</span><span class="plain-syntax">++) = </span><span class="character-syntax">'\"'</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        *(</span><span class="identifier-syntax">pcl</span><span class="plain-syntax">++) = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">/* Otherwise, run with the Windows command interpreter. */</span>
+<span class="plain-syntax">        </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( Otherwise, run with the Windows command interpreter. )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">strcpy</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd_line</span><span class="plain-syntax">, </span><span class="string-syntax">"cmd /s /c \""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">strcat</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd_line</span><span class="plain-syntax">, </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">strcat</span><span class="plain-syntax">(</span><span class="identifier-syntax">cmd_line</span><span class="plain-syntax">, </span><span class="string-syntax">"\""</span><span class="plain-syntax">);</span>
@@ -468,7 +471,7 @@ find this).</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">UINT</span><span class="plain-syntax"> </span><span class="identifier-syntax">newCP</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">loc</span><span class="plain-syntax"> = </span><a href="2-lcl.html#SP2" class="function-link"><span class="function-syntax">Locales::get</span></a><span class="plain-syntax">(</span><span class="constant-syntax">CONSOLE_LOCALE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">loc</span><span class="plain-syntax"> == </span><span class="constant-syntax">FILE_ENCODING_ISO_STRF</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">newCP</span><span class="plain-syntax"> = </span><span class="constant-syntax">28591</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ISO 8859-1 Latin */</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">newCP</span><span class="plain-syntax"> = </span><span class="constant-syntax">28591</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( ISO 8859-1 Latin )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">loc</span><span class="plain-syntax"> == </span><span class="constant-syntax">FILE_ENCODING_UTF8_STRF</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">newCP</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CP_UTF8</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">newCP</span><span class="plain-syntax"> != </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; </span><span class="identifier-syntax">SetConsoleOutputCP</span><span class="plain-syntax">(</span><span class="identifier-syntax">newCP</span><span class="plain-syntax">))</span>
@@ -542,7 +545,7 @@ to launch.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">GetSystemInfo</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">sysInfo</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">count</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">int</span><span class="plain-syntax">) </span><span class="identifier-syntax">sysInfo</span><span class="plain-syntax">.</span><span class="identifier-syntax">dwNumberOfProcessors</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/* Leave one core idle by default */</span>
+<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( Leave one core idle by default )</span><span class="comment-syntax">*/</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">count</span><span class="plain-syntax">--;</span>
 
