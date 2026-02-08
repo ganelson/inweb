@@ -103,10 +103,13 @@ void ACMESupport::after_holon_expansion(programming_language *pl, tangle_docket 
 }
 
 int ACMESupport::start_definition(programming_language *pl, text_stream *OUT,
-	text_stream *term, text_stream *start, ls_section *S, ls_line *lst, tangle_docket *docket) {
+	text_stream *term, ls_code_excerpt *body, ls_section *S, ls_line *lst, tangle_docket *docket) {
 	if (LanguageMethods::supports_definitions(pl)) {
-		ACMESupport::expand(OUT, pl->start_definition, term, -1, NULL);
-		Tangler::tangle_literate_code_fragment(OUT, start, docket, lst);
+		TEMPORARY_TEXT(header)
+		ACMESupport::expand(header, pl->start_definition, term, -1, NULL);
+		Tangler::tangle_code_excerpt(OUT, header, body, pl->end_definition, I"\\", docket, I"    ");
+		DISCARD_TEXT(header)
+		WRITE("\n");
 	}
 	return TRUE;
 }

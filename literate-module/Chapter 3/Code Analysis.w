@@ -341,31 +341,11 @@ void CodeAnalysis::analyse_definitions(ls_web *W, int tangling) {
 }
 
 @<Deal with a definition@> =
-	if (Str::len(chunk->symbol_value) > 0) {
-		TEMPORARY_TEXT(before)
-		TEMPORARY_TEXT(after)
-		if (LanguageMethods::parse_comment(WebStructure::section_language(S), chunk->symbol_value,
-			before, after)) {
-			Str::copy(chunk->symbol_value, before);
-			Str::trim_white_space(chunk->symbol_value);
-		}
-		DISCARD_TEXT(before)
-		DISCARD_TEXT(after)
-	} else {
-		TEMPORARY_TEXT(before)
-		TEMPORARY_TEXT(after)
-		if (LanguageMethods::parse_comment(WebStructure::section_language(S), chunk->symbol_defined,
-			before, after)) {
-			Str::copy(chunk->symbol_defined, before);
-			Str::trim_white_space(chunk->symbol_defined);
-		}
-		DISCARD_TEXT(before)
-		DISCARD_TEXT(after)
-	}
 	if ((lst->classification.minor == ENUMERATE_COMMAND_MINLC) && (tangling)) {
 		text_stream *from = chunk->symbol_value;
 		chunk->symbol_value = Str::new();
 		Enumerations::define(chunk->symbol_value, chunk->symbol_defined, from, lst, S);
+		chunk->code_excerpt = CodeExcerpts::from_illiterate_uncommented_code(chunk->symbol_value, lst);
 	}
 	CodeAnalysis::mark_reserved_word_at_line(lst, chunk->symbol_defined, CONSTANT_COLOUR);
 	Ctags::note_defined_constant(lst, chunk->symbol_defined, W);

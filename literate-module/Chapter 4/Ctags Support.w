@@ -83,7 +83,10 @@ suit.
 	WRITE("!_TAG_FILE_SORTED\t0\t/0=unsorted, 1=sorted, 2=foldcase/\n");
 	WRITE("!_TAG_PROGRAM_AUTHOR\tGraham Nelson\t/graham.nelson@mod-langs.ox.ac.uk/\n");
 	WRITE("!_TAG_PROGRAM_NAME\t[[Title]]\t//\n");
-	WRITE("!_TAG_PROGRAM_VERSION\t[[Semantic Version Number]]\t/built [[Build Date]]/\n");
+	if (Time::fixed())
+		WRITE("!_TAG_PROGRAM_VERSION\t[[Version Number]]\t/built [[28 March 2016]]/\n");
+	else
+		WRITE("!_TAG_PROGRAM_VERSION\t[[Version Number]]\t/built [[Build Date]]/\n");
 
 @ Having prudently opted to give the tags in an unsorted way, we're free to list
 them in any order convenient to us, and here goes.

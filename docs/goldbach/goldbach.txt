@@ -29,11 +29,11 @@ See: http:<a href="mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html." cla
 
 S2.  <p>Computer verification has been made up to around 10^{18}, but by rather
 better methods than the one we use here. We will only go up to:</p>
-define RANGE 100
+define 100
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-    for (int i=4; i<RANGE; i=i+2) /*COMMENT( stepping in twos to stay even )*/
+    for (int i=4; i<RANGE; i=i+2) COMMENT( stepping in twos to stay even )
         <Solve Goldbach's conjecture for i (2.1)>;
 }
 
@@ -75,8 +75,8 @@ int still_in_sieve[RANGE + 1];
 int sieve_performed = FALSE;
 
 S2 Primality.  <p>We provide this as a function which determines whether a number is prime:</p>
-define TRUE 1
-define FALSE 0
+define 1
+define 0
 int isprimeSumming Primes - S2.1(int n) {
     if (n <= 1) return FALSE;
     if (n > RANGE) { printf("Out of range!\n"); return FALSE; }

@@ -15,16 +15,28 @@ file: conditional.c
     #include <stdio.h>
 
     #ifdef PLATFORM_WINDOWS
-    #define PEACH 1
+    #line 15 "conditional.c.w"
+        #define PEACH 1
+
+        
     #endif /* PLATFORM_WINDOWS */
     #ifdef PLATFORM_WINDOWS
-    #define A_COM 1
+    #line 16 "conditional.c.w"
+        #define A_COM 1
+
+        
     #endif /* PLATFORM_WINDOWS */
     #ifdef PLATFORM_WINDOWS
-    #define B_COM 
+    #line 17 "conditional.c.w"
+        #define B_COM 
+
+        
     #endif /* PLATFORM_WINDOWS */
     #ifdef PLATFORM_WINDOWS
-    #define C_COM 
+    #line 18 "conditional.c.w"
+        #define C_COM 
+
+        
     #endif /* PLATFORM_WINDOWS */
     #ifdef PLATFORM_WINDOWS
     #line 23 "conditional.c.w"
@@ -137,21 +149,57 @@ file: exhaustive.c
     #line 41 "exhaustive.c.w"
     #include <stdio.h>
 
-    #define ALPHA 1
-    #define BETA_GAMMA 201
-    #define DELTA 200\
+    #line 20 "exhaustive.c.w"
+        #define ALPHA 1
+
+        
+    #line 21 "exhaustive.c.w"
+        #define BETA_GAMMA 201 
+
+        
+    #line 22 "exhaustive.c.w"
+        #define DELTA 200\
         	+ 300\
         	+ more_delta
-    #define EPSILON ALPHA
-    #define MU printf("mu");
-    #define X_FAM 1
-    #define Y_FAM 
-    #define Z_FAM 
-    #define X_ALT 100
-    #define Y_ALT 
-    #define RANGE 100
+
+        
+    #line 25 "exhaustive.c.w"
+        #define EPSILON ALPHA
+
+        
+    #line 28 "exhaustive.c.w"
+        #define MU printf("mu");
+
+        
+    #line 30 "exhaustive.c.w"
+        #define X_FAM 1
+
+        
+    #line 31 "exhaustive.c.w"
+        #define Y_FAM 
+
+        
+    #line 32 "exhaustive.c.w"
+        #define Z_FAM 
+
+        
+    #line 33 "exhaustive.c.w"
+        #define X_ALT 100
+
+        
+    #line 34 "exhaustive.c.w"
+        #define Y_ALT 
+
+        
+    #line 38 "exhaustive.c.w"
+        #define RANGE 100
+
+        
     #ifndef LAMBDA
-    #define LAMBDA 10
+    #line 26 "exhaustive.c.w"
+        #define LAMBDA 10
+
+        
     #endif /* LAMBDA */
     #line 43 "exhaustive.c.w"
     int  main(int argc, char *argv[]) ;
@@ -403,9 +451,18 @@ file: twinprimes.c
     #line 25 "twinprimes.c.w"
     #include <stdio.h>
 
-    #define RANGE 100
-    #define TRUE 1
-    #define FALSE 0
+    #line 22 "twinprimes.c.w"
+        #define RANGE 100 
+
+        
+    #line 44 "twinprimes.c.w"
+        #define TRUE 1
+
+        
+    #line 45 "twinprimes.c.w"
+        #define FALSE 0
+
+        
     #line 27 "twinprimes.c.w"
     int  main(int argc, char *argv[]) ;
     #line 48 "twinprimes.c.w"

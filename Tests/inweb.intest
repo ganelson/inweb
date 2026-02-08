@@ -28,7 +28,7 @@
 	or: 'failed inprint'
 	set: $RELA = ../../../../$A
 	set: $RELINWEB = ../../../../$INWEB
-	step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] >$RELA 2>&1
+	step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] -fixtime >$RELA 2>&1
 	or: 'failed inweb' $A
 	show: $A
 	match text: $A $I
@@ -68,7 +68,7 @@
 	or: 'failed inprint'
 	set: $RELA = ../../../../$A
 	set: $RELINWEB = ../../../../$INWEB
-	fail step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] >$RELA 2>&1
+	fail step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] -fixtime >$RELA 2>&1
 	or: 'inweb did not return error' $A
 	show: $A
 	match text: $A $I
@@ -89,7 +89,7 @@
 	mkdir: $PATH/_Results_Console
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	step: $INWEB test-language $LANGUAGES/$CASE.ildf -locale console=utf-8 -on $CANVAS >$A 2>&1
+	step: $INWEB test-language $LANGUAGES/$CASE.ildf -locale console=utf-8 -on $CANVAS -fixtime >$A 2>&1
 	or: 'failed inweb' $A
 	show: $A
 	match text: $A $I
@@ -110,7 +110,7 @@
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
 	set: $C = $PATH/_Results_Console/$CASE.txt
-	step: $INWEB weave $PATH/variations -only $CASE -as TestingInweb -to $A >$C 2>&1
+	step: $INWEB weave $PATH/variations -only $CASE -as TestingInweb -to $A -fixtime >$C 2>&1
 	or: 'failed inweb' $C
 	show: console $C
 	show: $A
@@ -143,7 +143,7 @@
 	set: $TA = $PATH/_Tangled_Actual/$CASE.txt
 	set: $TI = $PATH/_Tangled_Ideal/$CASE.txt
 	set: $TC = $PATH/_Tangled_Console/$CASE.txt
-	step: $INWEB tangle $WEB -no-ctags -to $TA >$TC 2>&1
+	step: $INWEB tangle $WEB -no-ctags -to $TA -fixtime >$TC 2>&1
 	or: 'failed inweb trying to tangle' $TC
 	show: $TA
 	match text: $TA $TI

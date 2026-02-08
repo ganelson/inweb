@@ -764,6 +764,66 @@ Language "Plain Text" {
 	}
 }
 
+Language "Pascal" {
+	Details: "The dialect of Pascal used by WEB"
+	Extension: ".pas"
+	String Literal: "\""
+	Character Literal: "'"
+	Multiline Comment Open: "{"
+	Multiline Comment Close: "}"
+
+	keyword "and"
+	keyword "array"
+	keyword "begin"
+	keyword "case"
+	keyword "const"
+	keyword "div"
+	keyword "do"
+	keyword "downto"
+	keyword "else"
+	keyword "end"
+	keyword "file"
+	keyword "for"
+	keyword "function"
+	keyword "goto"
+	keyword "if"
+	keyword "in"
+	keyword "label"
+	keyword "mod"
+	keyword "nil"
+	keyword "not"
+	keyword "of"
+	keyword "or"
+	keyword "packed"
+	keyword "procedure"
+	keyword "program"
+	keyword "record"
+	keyword "repeat"
+	keyword "set"
+	keyword "then"
+	keyword "to"
+	keyword "type"
+	keyword "until"
+	keyword "var"
+	keyword "while"
+	keyword "with"
+	keyword "xclause"
+	
+	colouring {
+		runs of unquoted {
+			runs of !identifier {
+				keyword of !reserved => !reserved
+				keyword of !function => !function
+				keyword of !constant => !constant
+				keyword of !element => {
+					optionally spaced prefix . => !element
+					optionally spaced prefix -> => !element
+				}
+			}
+		}
+	}
+}
+
 Language "Preform" {
 	Details: "The internal Inform syntax analysis grammar language"
 	Extension: ".preform"

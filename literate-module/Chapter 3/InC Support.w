@@ -32,11 +32,23 @@ preform_nonterminal *alphabetical_list_of_nonterminals = NULL;
 void InCSupport::further_parsing(programming_language *self, ls_web *W, int weaving) {
 	ls_chapter *C;
 	ls_section *S;
+	ls_chunk *chunk = NULL;
 	LOOP_WITHIN_CODE_AND_DEFINITIONS(C, S, TangleTargets::primary_target(W)) {
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-		text_stream *line = Holons::line_code(lst);
+		text_stream *line = CodeExcerpts::line_code(lst);
 		@<Detect and deal with Preform grammar@>;
-		@<Detect and deal with I-literals@>;
+		if (weaving == FALSE) {
+			if ((chunk == NULL) || (chunk != lst->owning_chunk)) {
+				chunk = lst->owning_chunk;
+				if (chunk->holon) {
+					holon_splice *hs;
+					LOOP_OVER_HOLON_DEFINITION(hs, lst->owning_chunk->holon)
+						if (hs->type == CODE_LSHST)
+							InCSupport::detect_I_literals(hs->texts[0]);
+				}
+			}
+			if (chunk->holon == NULL) InCSupport::detect_I_literals(line);
+		}
 	}
 }
 
@@ -292,16 +304,17 @@ A simpler but useful further addition to C is that we recognise a new form
 of string literal: |I"quartz"| makes a constant text stream with the content
 "quartz".
 
-@<Detect and deal with I-literals@> =
+=
+void InCSupport::detect_I_literals(text_stream *line) {
 	for (int i = 0, quoted = FALSE; i < Str::len(line); i++) {
 		if (Str::get_at(line, i) == '"')
 			if ((Str::get_at(line, i-1) != '\\') &&
 				((Str::get_at(line, i-1) != '\'') || (Str::get_at(line, i+1) != '\'')))
 					quoted = quoted?FALSE:TRUE;
-		if ((weaving == FALSE) && (quoted == FALSE) &&
-			(Str::get_at(line, i) == 'I') && (Str::get_at(line, i+1) == '"'))
+		if ((quoted == FALSE) && (Str::get_at(line, i) == 'I') && (Str::get_at(line, i+1) == '"'))
 			@<This looks like an I-literal@>;
 	}
+}
 
 @<This looks like an I-literal@> =
 	TEMPORARY_TEXT(lit)
@@ -344,16 +357,6 @@ weave run; we're actually amending the code of the web.)
 	Str::copy(before, line);
 	Str::truncate(before, i_was);
 	Str::copy_tail(after, line, i+1);
-
-	if (lst->owning_chunk->holon) {
-		int delta = (i+1 - i_was) - Str::len(tl->tl_identifier);
-		holon_splice *hs;
-		LOOP_OVER_LINKED_LIST(hs, holon_splice, lst->owning_chunk->holon->splice_list)
-			if (hs->line == lst) {
-				if (hs->from >= i_was) hs->from -= delta;
-				if (hs->to >= i_was) hs->to -= delta;
-			}
-	}
 
 	Str::clear(line);
 	WRITE_TO(line, "%S%S", before, tl->tl_identifier);

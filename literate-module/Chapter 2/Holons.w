@@ -28,7 +28,6 @@ typedef struct ls_holon {
 	struct markdown_item *holon_name_as_markdown; /* can be |NULL| */
 	struct linked_list *holon_usages; /* of |holon_usage| */
 	struct ls_chunk *corresponding_chunk;
-	struct linked_list *splice_list; /* of |holon_splice| */
 	int addendum;
 	struct ls_holon *addendum_to;
 	struct linked_list *addenda; /* of |ls_holon| */
@@ -38,6 +37,7 @@ typedef struct ls_holon {
 
 ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, int file_form,
 	ls_holon_namespace *ns, int bitmap, ls_notation *notation, programming_language *pl) {
+	if (chunk == NULL) internal_error("loose holon");
 	ls_holon *holon = CREATE(ls_holon);
 	holon->main_holon = FALSE;
 	holon->top_level = TRUE;
@@ -54,7 +54,7 @@ ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, in
 	holon->holon_name_as_markdown = NULL;
 	holon->holon_usages = NEW_LINKED_LIST(holon_usage);
 	holon->corresponding_chunk = chunk;
-	holon->splice_list = NEW_LINKED_LIST(holon_splice);
+	holon->corresponding_chunk->code_excerpt = CodeExcerpts::new();
 	holon->addendum = addendum;
 	holon->addendum_to = NULL;
 	holon->addenda = NEW_LINKED_LIST(ls_holon);
@@ -66,9 +66,11 @@ ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, in
 	if (bitmap & LATEHOLON_CHMOB)      { holon->placed_late = TRUE; holon->top_level = TRUE; }
 	if (bitmap & VERYLATEHOLON_CHMOB ) { holon->placed_very_late = TRUE; holon->top_level = TRUE; }
 
-	LiterateSource::process_chunk(chunk, notation->processing_code);
-	Holons::cut_into_splices(ns, holon, notation, pl);
+	LiterateSource::process_chunk(chunk, notation->code_preprocessor);
+	CodeExcerpts::parse(ns, holon->corresponding_chunk->code_excerpt,
+		holon->corresponding_chunk->first_line, NULL, notation, pl);
 	Holons::declare_in_namespace(holon, ns);
+	
 	return holon;
 }
 
@@ -193,6 +195,20 @@ int Holons::abbreviated(text_stream *name) {
 	return FALSE;
 }
 
+void Holons::sanitise_name(OUTPUT_STREAM, text_stream *name) {
+	int i = 0;
+	while ((i < Str::len(name)) && (Characters::is_whitespace(Str::get_at(name, i)))) i++;
+	while (i < Str::len(name)) {
+		if (Characters::is_whitespace(Str::get_at(name, i))) {
+			while ((i+1 < Str::len(name)) && (Characters::is_whitespace(Str::get_at(name, i+1)))) i++;
+			if (i+1 < Str::len(name)) PUT(' ');
+		} else {
+			PUT(Str::get_at(name, i));
+		}
+		i++;
+	}
+}
+
 void Holons::add_un_to_namespace(text_stream *name, ls_holon *from, ls_holon_namespace *ns) {
 	dict_entry *de = Dictionaries::find(ns->expansion_names, name);
 	if (de == NULL) {
@@ -285,65 +301,20 @@ typedef struct holon_usage {
 	CLASS_DEFINITION
 } holon_usage;
 
-@ Because of the notations for splicing one holon into another, the code
-lines in a holon may still contain literate-programming syntax, rather than
-literally being the target code. We parse those lines of code into a series
-of "splices", each containing a fragment of a line.
-
-=
-typedef struct holon_splice {
-	struct ls_holon *expansion;
-	struct text_stream *expansion_name;
-	struct text_stream *command;
-	struct text_stream *verbatim;
-	struct text_stream *comment;
-	struct markdown_item *comment_as_markdown;
-	struct ls_line *line;
-	int from;
-	int to;
-	int file_form;
-	CLASS_DEFINITION
-} holon_splice;
-
-holon_splice *Holons::new_splice(ls_holon *holon, ls_line *lst, int from, int to, int file_form) {
-	holon_splice *hs = CREATE(holon_splice);
-	hs->expansion = NULL;
-	hs->command = NULL;
-	hs->verbatim = NULL;
-	hs->comment = NULL;
-	hs->comment_as_markdown = NULL;
-	hs->expansion_name = NULL;
-	hs->line = lst;
-	hs->from = from;
-	hs->to = to;
-	hs->file_form = file_form;
-	ADD_TO_LINKED_LIST(hs, holon_splice, holon->splice_list);
-	return hs;
-}
-
-@ The code content of a splice must be extracted from the original line.
-
-=
-text_stream *Holons::line_code(ls_line *lst) {
-	return lst->classification.operand1;
-}
-
-text_stream *Holons::splice_code(holon_splice *hs) {
-	return Holons::line_code(hs->line);
-}
-
 void Holons::scan(ls_holon_namespace *ns, ls_notation *notation, programming_language *pl) {
 	linked_list *holon_list = ns->holons;
 	ls_holon *holon;
 	holon_splice *hs;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list)
-		LOOP_OVER_LINKED_LIST(hs, holon_splice, holon->splice_list)
-			if (hs->expansion_name)
+		LOOP_OVER_HOLON_DEFINITION(hs, holon)
+			if ((hs->type == EXPANSION_LSHST) ||
+				(hs->type == FILE_EXPANSION_LSHST))
 				@<Identify expansion name with holon@>;
 
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list)
-		LOOP_OVER_LINKED_LIST(hs, holon_splice, holon->splice_list)
-			if (hs->expansion) {
+		LOOP_OVER_HOLON_DEFINITION(hs, holon)
+			if ((hs->type == EXPANSION_LSHST) ||
+				(hs->type == FILE_EXPANSION_LSHST)) {
 				ls_holon *expansion = hs->expansion;
 				if ((expansion->placed_very_early) || (expansion->placed_early) ||
 					(expansion->placed_late) || (expansion->placed_very_late))
@@ -354,17 +325,22 @@ void Holons::scan(ls_holon_namespace *ns, ls_notation *notation, programming_lan
 
 @<Identify expansion name with holon@> =
 	TEMPORARY_TEXT(err)
-	ls_holon *expansion = Holons::find_holon(hs->expansion_name, ns, TRUE, err);
+	TEMPORARY_TEXT(sanitised)
+	Holons::sanitise_name(sanitised, hs->texts[0]);
+	Str::clear(hs->texts[0]); Str::copy(hs->texts[0], sanitised);
+	DISCARD_TEXT(sanitised)
+
+	ls_holon *expansion = Holons::find_holon(hs->texts[0], ns, TRUE, err);
 	if (expansion) {
-		if ((hs->file_form) && (expansion->file_form == FALSE)) {
+		if ((hs->type == FILE_EXPANSION_LSHST) && (expansion->file_form == FALSE)) {
 			text_stream *message = Str::new();
 			WRITE_TO(message, "you used the filename form of holon '%S', but it is not a file holon",
-				hs->expansion_name);
+				hs->texts[0]);
 			WebErrors::record_at(message, hs->line);
-		} else if ((hs->file_form == FALSE) && (expansion->file_form)) {
+		} else if ((hs->type != FILE_EXPANSION_LSHST) && (expansion->file_form)) {
 			text_stream *message = Str::new();
 			WRITE_TO(message, "you used the non-file way to refer to holon '%S', but it is a file holon",
-				hs->expansion_name);
+				hs->texts[0]);
 			WebErrors::record_at(message, hs->line);
 		} else {
 			hs->expansion = expansion;
@@ -374,11 +350,12 @@ void Holons::scan(ls_holon_namespace *ns, ls_notation *notation, programming_lan
 			WebErrors::record_at(err, hs->line);
 		} else {
 			text_stream *message = Str::new();
-			WRITE_TO(message, "no such holon as '%S'", hs->expansion_name);
+			WRITE_TO(message, "no such holon as '%S'", hs->texts[0]);
 			WebErrors::record_at(message, hs->line);
 		}
 	}
-	hs->expansion_name = NULL;
+	hs->texts[0] = NULL;
+	hs->type = EXPANSION_LSHST;
 	DISCARD_TEXT(err)
 
 @
@@ -391,139 +368,6 @@ void Holons::vet_usage(ls_unit *lsu) {
 	@<Check that holons are well-founded@>;
 	Holons::number_paragraphs(lsu);
 }
-
-@
-
-=
-void Holons::cut_into_splices(ls_holon_namespace *ns, ls_holon *holon, ls_notation *notation, programming_language *pl) {
-	TEMPORARY_TEXT(name)
-	TEMPORARY_TEXT(command)
-	TEMPORARY_TEXT(comment)
-	finite_state_machine *machine = HolonSyntax::get(notation, pl);
-	FSM::reset_machine(machine);
-	Str::clear(name); Str::clear(command);
-	int from = 0, to = -1;
-	text_stream *recording_to = NULL;
-	for (ls_line *lst = holon->corresponding_chunk->first_line; lst; lst = lst->next_line) {
-		from = 0, to = -1;
-		int i; inchar32_t c;
-		for (i=0; i<Str::len(Holons::line_code(lst)); i++) {
-			c = Str::get_at(Holons::line_code(lst), i); @<Run FSM@>;
-		}
-		c = '\n'; @<Run FSM@>;
-		to = Str::len(Holons::line_code(lst))-1;
-		if ((to >= from) || ((from == 0) && (to == -1) && (lst->next_line)))
-			Holons::new_splice(holon, lst, from, to, FALSE);
-	}
-	@<Check final state of machine@>;
-	DISCARD_TEXT(name)
-	DISCARD_TEXT(command)
-	DISCARD_TEXT(comment)
-}
-
-@<Run FSM@> =
-	int event = FSM::cycle_machine(machine, c, NULL);
-	if (recording_to) PUT_TO(recording_to, c);
-	switch (event) {
-		case NAME_START_FSMEVENT:
-			Str::clear(name); to = i-Str::len(WebNotation::notation(notation, NAMED_HOLONS_WSF, 2));
-			recording_to = name;
-			break;
-		case NAME_END_FSMEVENT: {
-			recording_to = NULL;
-			int excess = Str::len(WebNotation::notation(notation, NAMED_HOLONS_WSF, 2));
-			Str::truncate(name, Str::len(name) - excess);
-			@<Splice code@>;
-			to = i;
-			@<Splice holon@>;
-			break;
-		}
-		case FILE_NAME_START_FSMEVENT:
-			Str::clear(name); to = i-Str::len(WebNotation::notation(notation, FILE_NAMED_HOLONS_WSF, 2));
-			recording_to = name;
-			break;
-		case FILE_NAME_END_FSMEVENT: {
-			recording_to = NULL;
-			int excess = Str::len(WebNotation::notation(notation, FILE_NAMED_HOLONS_WSF, 2));
-			Str::truncate(name, Str::len(name) - excess);
-			@<Splice code@>;
-			to = i;
-			@<Splice file holon@>;
-			break;
-		}
-		case COMMAND_START_FSMEVENT:
-			Str::clear(command);
-			to = i-Str::len(WebNotation::notation(notation, METADATA_IN_STRINGS_WSF, 1));
-			recording_to = command;
-			break;
-		case COMMAND_END_FSMEVENT: {
-			recording_to = NULL;
-			@<Splice code@>;
-			int excess = Str::len(WebNotation::notation(notation, METADATA_IN_STRINGS_WSF, 2));
-			Str::truncate(command, Str::len(command) - excess);
-			to = i;
-			@<Splice command@>;
-			break;
-		}
-		case VERBATIM_START_FSMEVENT:
-			Str::clear(command);
-			to = i-Str::len(WebNotation::notation(notation, VERBATIM_CODE_WSF, 1));
-			recording_to = command;
-			break;
-		case VERBATIM_END_FSMEVENT: {
-			recording_to = NULL;
-			@<Splice code@>;
-			int excess = Str::len(WebNotation::notation(notation, VERBATIM_CODE_WSF, 2));
-			Str::truncate(command, Str::len(command) - excess);
-			to = i;
-			@<Splice verbatim@>;
-			break;
-		}
-		case COMMENT_START_FSMEVENT:
-			Str::clear(comment); to = i; recording_to = comment;
-			break;
-		case COMMENT_END_FSMEVENT: {
-			recording_to = NULL;
-			@<Splice code@>;
-			int excess = 2;
-			Str::truncate(comment, Str::len(comment) - excess);
-			to = i - excess;
-			@<Splice comment@>;
-			break;
-		}
-	}
-
-@<Splice code@> =
-	if (to >= from) Holons::new_splice(holon, lst, from, to, FALSE);
-	from = to + 1; to = -1;
-
-@<Splice holon@> =
-	if (to >= from) {
-		Holons::new_splice(holon, lst, from, to, FALSE)->expansion_name = Str::duplicate(name);
-		if (Holons::abbreviated(name) == FALSE)
-			Holons::add_un_to_namespace(name, NULL, ns);
-	}
-	from = to + 1; to = -1;
-
-@<Splice file holon@> =
-	if (to >= from) {
-		Holons::new_splice(holon, lst, from, to, TRUE)->expansion_name = Str::duplicate(name);
-		if (Holons::abbreviated(name) == FALSE)
-			Holons::add_un_to_namespace(name, NULL, ns);
-	}
-	from = to + 1; to = -1;
-
-@<Splice command@> =
-	if (to >= from) Holons::new_splice(holon, lst, from, to, FALSE)->command = Str::duplicate(command);
-	from = to + 1; to = -1;
-
-@<Splice verbatim@> =
-	if (to >= from) Holons::new_splice(holon, lst, from, to, FALSE)->verbatim = Str::duplicate(command);
-	from = to + 1; to = -1;
-
-@<Splice comment@> =
-	if (to >= from) Holons::new_splice(holon, lst, from, to, FALSE)->comment = Str::duplicate(comment);
-	from = to + 1; to = -1;
 
 @<Add a record that the holon is used in this paragraph@> =
 	holon_usage *hu;
@@ -539,16 +383,6 @@ void Holons::cut_into_splices(ls_holon_namespace *ns, ls_holon *holon, ls_notati
 		ADD_TO_LINKED_LIST(hu, holon_usage, expansion->holon_usages);
 	}
 	hu->multiplicity++;
-
-@<Check final state of machine@> =
-	fsm_state *final = FSM::last_nonintermediate_state(machine);
-	ls_line *L = holon->corresponding_chunk->last_line;
-	if (Str::eq(final->mnemonic, I"string"))
-		WebErrors::record_at(I"holon ends with string literal open", L);
-	if (Str::eq(final->mnemonic, I"character"))
-		WebErrors::record_at(I"holon ends with character literal open", L);
-	if (Str::eq(final->mnemonic, I"multi-line-comment"))
-		WebErrors::record_at(I"holon ends with comment open", L);
 
 @ Only a named holon can be unused, because nameless ones are concatenated into
 the top level of the program, and that means they are used.

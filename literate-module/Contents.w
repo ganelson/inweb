@@ -29,6 +29,7 @@ Chapter 2: Literate Code
 	Web Notations
 	Holons
 	Holon Syntax
+	Code Excerpts
 	Web Indexing
 
 Chapter 3: Programming

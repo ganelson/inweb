@@ -248,10 +248,10 @@ new link references dictionary, use plain CommonMark, perform both phases.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"======\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tree_supplied</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( i.e., the same tree we were given )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tree_supplied</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">i</span><span class="plain-syntax">.</span><span class="identifier-syntax">e</span><span class="plain-syntax">., </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">same</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">were</span><span class="plain-syntax"> </span><span class="identifier-syntax">given</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">phase_I</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">phase_II</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( i.e., just the |MATERIAL_MIT| subtree )</span><span class="comment-syntax">*/</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">;                    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( i.e., the whole tree we made )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">i</span><span class="plain-syntax">.</span><span class="identifier-syntax">e</span><span class="plain-syntax">., </span><span class="identifier-syntax">just</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> |</span><span class="constant-syntax">MATERIAL_MIT</span><span class="plain-syntax">| </span><span class="identifier-syntax">subtree</span><span class="plain-syntax"> )</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">;                    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">i</span><span class="plain-syntax">.</span><span class="identifier-syntax">e</span><span class="plain-syntax">., </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">whole</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">made</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
@@ -324,19 +324,25 @@ can add their own further types.</p>
 are used as a marker by extensions which break up documents into multiple
 files: they render to nothing in themselves.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">DOCUMENT_MIT</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VOLUME_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FILE_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">1</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Next we have the (other) &quot;container block&quot; items, which can contain either
 other containers (though not <code>DOCUMENT_MIT) or leaf blocks. An </code>ORDERED_LIST_MIT<code>can only contain</code>ORDERED_LIST_ITEM_MIT| blocks, and similarly for unordered lists.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">BLOCK_QUOTE_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">UNORDERED_LIST_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ORDERED_LIST_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">UNORDERED_LIST_ITEM_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">ORDERED_LIST_ITEM_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Now the &quot;leaf block&quot; items. <code>EMPTY_MIT</code> items are ignored: they are used
@@ -344,58 +350,82 @@ to represent that <code>PARAGRAPH_MIT</code> turned out to contain only link ref
 and was discarded. (Properly, we should simply remove such items from the tree,
 but it's more convenient not to have to do the necessary surgery.)</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PARAGRAPH_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">THEMATIC_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HEADING_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CODE_BLOCK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HTML_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMPTY_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  Each leaf block is either empty, or contains a <code>MATERIAL_MIT</code> item, which
 holds what CommonMark calls &quot;inline content&quot;. For example, the body text of a
 paragraph is inline content.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">MATERIAL_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  And a material item contains a list of the following.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PLAIN_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINE_BREAK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">SOFT_BREAK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMPHASIS_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">STRONG_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CODE_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">URI_AUTOLINK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMAIL_AUTOLINK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INLINE_HTML_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">IMAGE_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  And these are used only as child nodes of <code>LINK_MIT</code> or <code>IMAGE_MIT</code> items:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINK_DEST_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LINK_TITLE_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. </b>  Now for GitHub extensions:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLE_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLE_COLUMN_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TABLE_ROW_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">TICKBOX_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">STRIKETHROUGH_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">XMPP_AUTOLINK_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. </b>  And Inweb extensions:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">TEX_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">DISPLAYED_TEX_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INWEB_LINK_MIT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FOOTNOTE_BODY_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. </b>  Recapitulating all of that:</p>
@@ -563,32 +593,32 @@ or three items per line, so the memory overhead is harmless enough.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( one of the |*_MIT| types above )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> |*</span><span class="identifier-syntax">_MIT</span><span class="plain-syntax">| </span><span class="identifier-syntax">types</span><span class="plain-syntax"> </span><span class="identifier-syntax">above</span><span class="plain-syntax"> )</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( text storage for inline items )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">storage</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">inline</span><span class="plain-syntax"> </span><span class="identifier-syntax">items</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sliced_from</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT(inline nodes only )</span><span class="comment-syntax">*/</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT(inline nodes only )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inline</span><span class="plain-syntax"> </span><span class="identifier-syntax">nodes</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> )</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">(</span><span class="identifier-syntax">inline</span><span class="plain-syntax"> </span><span class="identifier-syntax">nodes</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> )</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( text storage for block items )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">text</span><span class="plain-syntax"> </span><span class="identifier-syntax">storage</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">items</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stashed</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( relevant for block nodes only )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">relevant</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">nodes</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">whitespace_follows</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">info_string</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">details</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">invisible</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">open</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( tree position of this item )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">position</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">down</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">copied_from</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">user_state</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( for users of this API to annotate the tree )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">user_state</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">users</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">API</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">annotate</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> )</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cycle_count</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( used only for tracing the tree when debugging )</span><span class="comment-syntax">*/</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;          </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( used only for tracing the tree when debugging )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cycle_count</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">used</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">tracing</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax"> )</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">;          </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">used</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">tracing</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">markdown_item</span><span class="plain-syntax">;</span>
 
@@ -1175,7 +1205,7 @@ destination <code>https://supervillain.com/secret-lair</code> and title <code>&q
 
 <span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::new_links_dictionary</span><button class="popup" onclick="togglePopup('usagePopup58')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup58">Usage of <span class="code-font"><span class="function-syntax">Markdown::new_links_dictionary</span></span>:<br/><a href="5-mrk.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">md_links_dictionary</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dict</span><span class="plain-syntax"> = </span><a href="2-dct.html#SP2" class="function-link"><span class="function-syntax">Dictionaries::new</span></a><span class="plain-syntax">(32, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( of |md_link_dictionary_entry| )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">dict</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dict</span><span class="plain-syntax"> = </span><a href="2-dct.html#SP2" class="function-link"><span class="function-syntax">Dictionaries::new</span></a><span class="plain-syntax">(32, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">of</span><span class="plain-syntax"> |</span><span class="reserved-syntax">md_link_dictionary_entry</span><span class="plain-syntax">| )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">dict</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

@@ -249,9 +249,11 @@ ls_class_parsing LineClassification::no_results(void) {
 ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *line,
 	ls_class *previously, int sff) {
 	ls_class_parsing results;
+	TEMPORARY_TEXT(processed)
+	WebNotation::rewrite(processed, line, syntax->preprocessor);
 	text_stream *error = NULL;
 	TEMPORARY_TEXT(indexed_text)
-	linked_list *L = WebIndexing::index_from_line(indexed_text, line, syntax, &error);
+	linked_list *L = WebIndexing::index_from_line(indexed_text, processed, syntax, &error);
 
 	if (syntax->line_classifier) {
 		results = (*(syntax->line_classifier))(syntax, indexed_text, previously);
@@ -268,8 +270,22 @@ ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *
 @<Exit with the results@> =
 	results.index_marks = L;
 	if (error) results.error = error;
+	LineClassification::postprocess(results.error, syntax);
 	DISCARD_TEXT(indexed_text)
+	DISCARD_TEXT(processed)
 	return results;
+
+@
+
+=
+void LineClassification::postprocess(text_stream *text, ls_notation *syntax) {
+	if (Str::len(text) == 0) return;
+	TEMPORARY_TEXT(processed)
+	WebNotation::rewrite(processed, text, syntax->postprocessor);
+	if (Str::ne(processed, text)) { Str::clear(text); Str::copy(text, processed); }
+	DISCARD_TEXT(processed)
+}
+
 
 @ Two trivial examples are provided here. The first classifies the entire file
 as commentary, with no code in: in other words, regards the file as plain text.

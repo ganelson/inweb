@@ -70,7 +70,7 @@ inside a multiline comment.</p>
 depending on these two sets of syntax. For efficiency, we don't want to construct
 a new FSM every time, so we cache the results.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">DO_NOT_TRACE_HOLON_FSMS</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">ls_holon_scanner</span><span class="plain-syntax"> {</span>
@@ -80,7 +80,7 @@ a new FSM every time, so we cache the results.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">ls_holon_scanner</span><span class="plain-syntax">;</span>
 
-<span class="identifier-syntax">finite_state_machine</span><span class="plain-syntax"> *</span><span class="function-syntax">HolonSyntax::get</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">HolonSyntax::get</span></span>:<br/>Holons - <a href="2-hln.html#SP9">&#167;9</a><br/>The Tangler - <a href="4-tt2.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ls_notation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">finite_state_machine</span><span class="plain-syntax"> *</span><span class="function-syntax">HolonSyntax::get</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">HolonSyntax::get</span></span>:<br/>Code Excerpts - <a href="2-ce.html#SP5">&#167;5</a><br/>The Tangler - <a href="4-tt2.html#SP15">&#167;15</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">ls_notation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">programming_language</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pl</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ls_holon_scanner</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_holon_scanner</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">syntax</span><span class="plain-syntax"> == </span><span class="identifier-syntax">S</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">pl</span><span class="plain-syntax"> == </span><span class="identifier-syntax">pl</span><span class="plain-syntax">))</span>
@@ -147,16 +147,25 @@ want to add this complexity if we have to.</p>
 contain newlines. That doesn't mean those are legal: they need to be rejected by
 the user of the machine.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">NAME_START_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">NAME_END_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FILE_NAME_START_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FILE_NAME_END_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VERBATIM_START_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VERBATIM_END_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">COMMAND_START_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">COMMAND_END_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">COMMENT_START_FSMEVENT</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">COMMENT_END_FSMEVENT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add literate syntax to finite state machine</span><span class="named-paragraph-number">1.1.2</span></span> =</p>
 
@@ -287,7 +296,7 @@ allow for this.</p>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-hs.html#SP1_1">&#167;1.1</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-hln.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtl.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-ls.html">ls</a></li><li class="progresssection"><a href="2-pt.html">pt</a></li><li class="progresssection"><a href="2-lc.html">lc</a></li><li class="progresssection"><a href="2-we.html">we</a></li><li class="progresssection"><a href="2-wn.html">wn</a></li><li class="progresssection"><a href="2-hln.html">hln</a></li><li class="progresscurrent">hs</li><li class="progresssection"><a href="2-wi.html">wi</a></li><li class="progresschapter"><a href="3-pl.html">3</a></li><li class="progresschapter"><a href="4-tt.html">4</a></li><li class="progresschapter"><a href="5-wd.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="2-wi.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-hln.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtl.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-ls.html">ls</a></li><li class="progresssection"><a href="2-pt.html">pt</a></li><li class="progresssection"><a href="2-lc.html">lc</a></li><li class="progresssection"><a href="2-we.html">we</a></li><li class="progresssection"><a href="2-wn.html">wn</a></li><li class="progresssection"><a href="2-hln.html">hln</a></li><li class="progresscurrent">hs</li><li class="progresssection"><a href="2-ce.html">ce</a></li><li class="progresssection"><a href="2-wi.html">wi</a></li><li class="progresschapter"><a href="3-pl.html">3</a></li><li class="progresschapter"><a href="4-tt.html">4</a></li><li class="progresschapter"><a href="5-wd.html">5</a></li><li class="progresschapter"><a href="6-mkf.html">6</a></li><li class="progressnext"><a href="2-ce.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

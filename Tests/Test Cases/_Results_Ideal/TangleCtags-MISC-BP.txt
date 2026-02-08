@@ -240,7 +240,7 @@ file: tags
     !_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
     !_TAG_PROGRAM_AUTHOR	Graham Nelson	/graham.nelson@mod-langs.ox.ac.uk/
     !_TAG_PROGRAM_NAME	inweb	//
-    !_TAG_PROGRAM_VERSION	9.0-beta+1B91	/built 8 December 2025/
+    !_TAG_PROGRAM_VERSION	9.0	/built [[28 March 2016]]/
     RANGE	twinprimes.c.w	/^@d RANGE 100 \/* the upper limit to the numbers we will consider *\/$/;"	d
     TRUE	twinprimes.c.w	/^@d TRUE 1$/;"	d
     FALSE	twinprimes.c.w	/^@d FALSE 0$/;"	d
@@ -251,9 +251,18 @@ file: twinprimes.c
     #line 25 "twinprimes.c.w"
     #include <stdio.h>
 
-    #define RANGE 100
-    #define TRUE 1
-    #define FALSE 0
+    #line 22 "twinprimes.c.w"
+        #define RANGE 100 
+
+        
+    #line 44 "twinprimes.c.w"
+        #define TRUE 1
+
+        
+    #line 45 "twinprimes.c.w"
+        #define FALSE 0
+
+        
     #line 27 "twinprimes.c.w"
     int  main(int argc, char *argv[]) ;
     #line 48 "twinprimes.c.w"

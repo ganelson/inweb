@@ -26,9 +26,10 @@ document weave order 0
           material definition
             code line
               defn <define>
-              source_code <RANGE 100>
-                          _nnnnnpnnn_
-              commentary < the upper limit to the numbers we will consider> (code)
+              source_code <100 >
+                          _nnnp_
+              source_code <COMMENT( the upper limit to the numbers we will consider )>
+                          _iiiiiiippiiipiiiiipiiiiipiipiiipiiiiiiipiipiiiipiiiiiiiipp_
           material code: C
             code line
               source_code <#include <stdio.h>>
@@ -76,12 +77,13 @@ document weave order 0
           material definition
             code line
               defn <define>
-              source_code <TRUE 1>
-                          _nnnnpn_
+              source_code <1>
+                          _n_
+          material definition
             code line
               defn <define>
-              source_code <FALSE 0>
-                          _nnnnnpn_
+              source_code <0>
+                          _n_
           material code: C
             code line
               source_code <int >

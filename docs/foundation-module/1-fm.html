@@ -94,20 +94,23 @@ what it needs in the way of memory allocation.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( Current destination of debugging text: kept |NULL| until opened )</span><span class="comment-syntax">*/</span>
+<span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">Current</span><span class="plain-syntax"> </span><span class="identifier-syntax">destination</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax"> </span><span class="identifier-syntax">text:</span><span class="plain-syntax"> </span><span class="identifier-syntax">kept</span><span class="plain-syntax"> |</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">| </span><span class="identifier-syntax">until</span><span class="plain-syntax"> </span><span class="identifier-syntax">opened</span><span class="plain-syntax"> )</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  We'll use three truth states, the third of which can also mean &quot;unknown&quot;.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">TRUE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">FALSE</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NOT_APPLICABLE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">1</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">0</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">2</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  And we recognise two different encodings for narrow (i.e., <code>char *</code>) C strings.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">UTF8_ENC</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="comment-syntax"> Write as UTF-8 without BOM</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">ISO_ENC</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="comment-syntax"> Write as ISO Latin-1 (i.e., no conversion needed)</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">Write</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">UTF</span><span class="plain-syntax">-8 </span><span class="identifier-syntax">without</span><span class="plain-syntax"> </span><span class="identifier-syntax">BOM</span><span class="plain-syntax"> )</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">Write</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">ISO</span><span class="plain-syntax"> </span><span class="identifier-syntax">Latin</span><span class="plain-syntax">-1 (</span><span class="identifier-syntax">i</span><span class="plain-syntax">.</span><span class="identifier-syntax">e</span><span class="plain-syntax">., </span><span class="identifier-syntax">no</span><span class="plain-syntax"> </span><span class="identifier-syntax">conversion</span><span class="plain-syntax"> </span><span class="identifier-syntax">needed</span><span class="plain-syntax">) )</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  It is assumed that our host filing system can manage at least 30-character
@@ -120,7 +123,7 @@ operating system fails to recognise them. Some Linux implementations raise the
 equivalent <code>PATH_MAX</code> limit as high as 4096. This seems a reasonable
 compromise in practice:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_FILENAME_LENGTH</span><span class="plain-syntax"> </span><span class="constant-syntax">1025</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">1025</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Very occasionally we'll store a pointer as data:</p>
@@ -205,13 +208,19 @@ some tool just because it contains today's date and not the date when the
 test was set up. <code>-crash</code> tells the tool to crash on a fatal error, rather
 than to exit cleanly, to make it easier to diagnose in a debugger.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">LOG_CLSW</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VERSION_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">CRASH_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HELP_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">FIXTIME_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">AT_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">LOCALE_CLSW</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">0</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register the default command line switches</span><span class="named-paragraph-number">8.4</span></span> =</p>
 

@@ -4,15 +4,30 @@ Gathering indexing marks for a web, and sorting them into a woven index.
 
 @
 
+@e LITERAL_CHARACTER_FSMEVENT
+
 =
 finite_state_machine *WebIndexing::make_indexing_machine(linked_list *conventions) {
 	fsm_state *base_state = FSM::new_state(I"unindexed");
 	finite_state_machine *machine = FSM::new_machine(base_state);
 	
-	text_stream *on = Conventions::get_textual_from(conventions, INDEX_LSCONVENTION);
-	text_stream *off = Conventions::get_textual2_from(conventions, INDEX_LSCONVENTION);
-	int on_event = INDEX_START_FSMEVENT, off_event = INDEX_END_FSMEVENT;
-	text_stream *mnemonic = I"index-entry";
+/*	text_stream *magic = Conventions::get_textual_from(conventions, LITERAL_CHARACTERS_LSCONVENTION);
+	text_stream *paraphrase = Conventions::get_textual2_from(conventions, LITERAL_CHARACTERS_LSCONVENTION);
+	if ((Str::len(magic) > 0) && (Str::len(paraphrase) > 0)) {
+		FSM::add_transition_spelling_out_with_events(base_state,
+			paraphrase, base_state, NO_FSMEVENT, LITERAL_CHARACTER_FSMEVENT);
+	}
+*/
+	text_stream *on = Conventions::get_textual_from(conventions, COMMENTS_LSCONVENTION);
+	text_stream *off = Conventions::get_textual2_from(conventions, COMMENTS_LSCONVENTION);
+	int on_event = WEB_COMMENT_START_FSMEVENT, off_event = WEB_COMMENT_END_FSMEVENT;
+	text_stream *mnemonic = I"web-comment";
+	@<Add indexing transition pair to fsm@>;
+
+	on = Conventions::get_textual_from(conventions, INDEX_LSCONVENTION);
+	off = Conventions::get_textual2_from(conventions, INDEX_LSCONVENTION);
+	on_event = INDEX_START_FSMEVENT; off_event = INDEX_END_FSMEVENT;
+	mnemonic = I"index-entry";
 	@<Add indexing transition pair to fsm@>;
 
 	on = Conventions::get_textual_from(conventions, IMPORTANT_INDEX_LSCONVENTION);
@@ -50,6 +65,8 @@ finite_state_machine *WebIndexing::make_indexing_machine(linked_list *convention
 
 @
 
+@e WEB_COMMENT_START_FSMEVENT
+@e WEB_COMMENT_END_FSMEVENT
 @e INDEX_START_FSMEVENT
 @e IMPORTANT_INDEX_START_FSMEVENT
 @e TT_INDEX_START_FSMEVENT
@@ -65,7 +82,7 @@ finite_state_machine *WebIndexing::make_indexing_machine(linked_list *convention
 
 @<Add indexing transition pair to fsm@> =
 	if ((Str::len(on) > 0) && (Str::len(off) > 0)) {
-		fsm_state *mid_state = FSM::new_state(I"mid-lemma");
+		fsm_state *mid_state = FSM::new_state(mnemonic);
 		FSM::add_transition_spelling_out_with_events(base_state,
 			on, mid_state, NO_FSMEVENT, on_event);
 		FSM::add_transition_spelling_out_with_events(mid_state,
@@ -116,6 +133,12 @@ linked_list *WebIndexing::index_from_line(OUTPUT_STREAM, text_stream *line, ls_n
 	int len = 0;
 	int event = FSM::cycle_machine(machine, c, &len);
 	switch (event) {
+		case LITERAL_CHARACTER_FSMEVENT:
+			Str::truncate(OUT, Str::len(OUT) - len);
+			WRITE("___inweb_protected___");
+			
+			break;			
+		case WEB_COMMENT_START_FSMEVENT:
 		case INDEX_START_FSMEVENT:
 		case IMPORTANT_INDEX_START_FSMEVENT:
 		case TT_INDEX_START_FSMEVENT:
@@ -142,9 +165,14 @@ linked_list *WebIndexing::index_from_line(OUTPUT_STREAM, text_stream *line, ls_n
 				case IMPORTANT_TT_INDEX_END_FSMEVENT: ie = WebIndexing::new_mark(control_text, 2, TRUE); break;
 				case NS_INDEX_END_FSMEVENT:           ie = WebIndexing::new_mark(control_text, 3, FALSE); break;
 				case IMPORTANT_NS_INDEX_END_FSMEVENT: ie = WebIndexing::new_mark(control_text, 3, TRUE); break;
+				default: internal_error("unknown index event");
 			}
 			if (L == NULL) L = NEW_LINKED_LIST(ls_index_mark);
 			ADD_TO_LINKED_LIST(ie, ls_index_mark, L);
+			to = OUT;
+			break;
+
+		case WEB_COMMENT_END_FSMEVENT:
 			to = OUT;
 			break;
 	}

@@ -830,9 +830,9 @@ that service uses to identify the video/audio in question.
 	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
 	if (C->as_markdown) {
 		HTML_OPEN_WITH("span", "class=\"comment-syntax\"");
-		WRITE(" ");
+		HTMLWeaving::escape_text(OUT, C->comment_open);
 		MDRenderer::render_extended(OUT, (void *) hrs->wv, C->as_markdown, C->variation, 0);
-		WRITE(" ");
+		HTMLWeaving::escape_text(OUT, C->comment_close);
 		HTML_CLOSE("span");
 	} else
 		WRITE("NO-MARKDOWN-AVAILABLE");

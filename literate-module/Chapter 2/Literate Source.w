@@ -321,7 +321,6 @@ void LiterateSource::complete_unit(ls_unit *lsu) {
 	int next_footnote = 1;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		@<Work out footnote numbering for this paragraph@>;
-	@<Index the unit@>;
 }
 
 @ To see the first (up to) N lines of the raw linked list of lines, before
@@ -463,9 +462,11 @@ altogether, so that nobody uses it by mistake.
 	for (ls_line *line = lsu->temp_first_line; line; line = line->next_line) {
 		if ((line->classification.major == PARAGRAPH_START_MAJLC) || (par == NULL)) {
 			@<Begin a new paragraph@>;
+			@<Index from the line@>;
 			chunk = NULL;
 			if (line->classification.major == PARAGRAPH_START_MAJLC) continue;
 		}
+		@<Index from the line@>;
 		
 		int ct;
 		switch (line->classification.major) {
@@ -505,10 +506,17 @@ altogether, so that nobody uses it by mistake.
 			chunk->first_line->prev_line = NULL;
 			chunk->last_line->next_line = NULL;
 			if (chunk->chunk_type == COMMENTARY_LSCT)
-				LiterateSource::process_chunk(chunk, lsu->syntax->processing_commentary);
+				LiterateSource::process_chunk(chunk, lsu->syntax->commentary_preprocessor);
 		}
 
 	lsu->temp_first_line = NULL; lsu->temp_last_line = NULL;
+
+@<Index from the line@> =
+	ls_index_mark *ie;
+	LOOP_OVER_LINKED_LIST(ie, ls_index_mark, line->index_marks) {
+		LineClassification::postprocess(ie->text, lsu->syntax);
+		WebIndexing::index_at(ie, par);
+	}
 
 @ So this is the |ls_paragraph| object:
 
@@ -602,6 +610,7 @@ typedef struct ls_chunk {
 	int hyperlinked;
 	struct text_stream *extract_to;
 	struct programming_language *extract_language;
+	struct ls_code_excerpt *code_excerpt;
 
 	/* meaningful for DEFINITION_LSCT chunks only */
 	struct text_stream *symbol_defined;
@@ -640,6 +649,7 @@ typedef struct ls_chunk {
 	chunk->hyperlinked = FALSE;
 	chunk->extract_to = NULL;
 	chunk->extract_language = NULL;
+	chunk->code_excerpt = NULL;
 
 	chunk->symbol_defined = NULL;
 	chunk->symbol_value = NULL;
@@ -820,13 +830,50 @@ for it.
 	chunk->last_line = last_dark;
 	chunk->last_line->next_line = NULL;
 	match_results mr = Regexp::create_mr();
-	chunk->symbol_defined = Str::duplicate(chunk->first_line->classification.operand1);
+	TEMPORARY_TEXT(defn)
+	WRITE_TO(defn, "%S", chunk->first_line->classification.operand1);
 	if ((chunk->first_line->classification.minor == ENUMERATE_COMMAND_MINLC) &&
 		(Regexp::match(&mr, chunk->first_line->classification.operand2, U"from (%c+)"))) {
-		chunk->symbol_value = Str::duplicate(mr.exp[0]);
+		WRITE_TO(defn, " %S", mr.exp[0]);
 	} else {
-		chunk->symbol_value = Str::duplicate(chunk->first_line->classification.operand2);
+		WRITE_TO(defn, " %S", chunk->first_line->classification.operand2);
 	}
+	chunk->code_excerpt = CodeExcerpts::new();
+	CodeExcerpts::parse(lsu->local_holon_namespace, chunk->code_excerpt, chunk->first_line, defn,
+		lsu->syntax, lsu->language);
+	TEMPORARY_TEXT(mini_tangle)
+	holon_splice *hs;
+	LOOP_OVER_CODE_EXCERPT(hs, chunk->code_excerpt) {
+		if ((hs->type == CODE_LSHST) ||
+			(hs->type == VERBATIM_LSHST))
+			WRITE_TO(mini_tangle, "%S", hs->texts[0]);
+		if ((hs->type == EXPANSION_LSHST) ||
+			(hs->type == FILE_EXPANSION_LSHST))
+			WebErrors::record_at(I"a definition cannot make use of a named holon",
+				chunk->first_line);
+	}
+	chunk->symbol_defined = Str::new();
+	chunk->symbol_value = Str::new();
+	int i=0;
+	while (Characters::is_whitespace(Str::get_at(mini_tangle, i))) i++;
+	while ((Str::get_at(mini_tangle, i)) &&
+			(Characters::is_whitespace(Str::get_at(mini_tangle, i)) == FALSE)) {
+		PUT_TO(chunk->symbol_defined, Str::get_at(mini_tangle, i));
+		i++;
+	}
+	while (Characters::is_whitespace(Str::get_at(mini_tangle, i))) i++;
+	hs = FIRST_IN_LINKED_LIST(holon_splice, chunk->code_excerpt->splice_list);
+	if ((hs == NULL) || (hs->type != CODE_LSHST))
+		WebErrors::record_at(I"this definition does not begin with an identifier",
+			chunk->first_line);
+	else Str::delete_n_characters(hs->texts[0], i);
+	while (Str::get_at(mini_tangle, i)) {
+		PUT_TO(chunk->symbol_value, Str::get_at(mini_tangle, i));
+		i++;
+	}
+	DISCARD_TEXT(mini_tangle)
+	DISCARD_TEXT(defn)
+	Str::trim_white_space(chunk->symbol_value);
 	Regexp::dispose_of(&mr);
 
 @<Tidy up insertion chunks@> =
@@ -991,8 +1038,11 @@ between them, but that's another story: see //Holons::scan//.
 	Holons::scan(lsu->local_holon_namespace, lsu->syntax, lsu->language);
 
 @<Assign a holon to this chunk@> =
-	chunk->holon = Holons::new(chunk, holon_name, addendum_flag, file_holon_flag,
+	TEMPORARY_TEXT(sanitised)
+	Holons::sanitise_name(sanitised, holon_name);
+	chunk->holon = Holons::new(chunk, sanitised, addendum_flag, file_holon_flag,
 		lsu->local_holon_namespace, holon_bitmap, lsu->syntax, lsu->language);
+	DISCARD_TEXT(sanitised)
 	if (chunk->owner->holon)
 		WebErrors::record_at(I"two code fragments in the same paragraph",
 			chunk->first_line);
@@ -1039,28 +1089,37 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 				TEMPORARY_TEXT(concatenated)
 				for (ls_line *line = chunk->first_line; line; line = line->next_line)
 					WRITE_TO(concatenated, "%S\n", line->classification.operand1);
+				LineClassification::postprocess(concatenated, lsu->syntax);
 				chunk->as_markdown = Markdown::parse_extended(concatenated, variation);
 				ParagraphTags::autotag(NULL, par, chunk->as_markdown);
 				DISCARD_TEXT(concatenated)
 			}
 			if ((chunk->holon) && (Str::len(chunk->holon->holon_name) > 0) &&
 				(Conventions::get_int(lsu->context, HOLONS_STYLED_LSCONVENTION))) {
-				markdown_item *md = Markdown::parse_extended(chunk->holon->holon_name, variation);
+				TEMPORARY_TEXT(pp)
+				Str::copy(pp, chunk->holon->holon_name);
+				LineClassification::postprocess(pp, lsu->syntax);
+				markdown_item *md = Markdown::parse_extended(pp, variation);
 				if (md->type == DOCUMENT_MIT) md = md->down;
 				if (md->type == PARAGRAPH_MIT) md = md->down;
 				chunk->holon->holon_name_as_markdown = md;
 				ParagraphTags::autotag(NULL, par, md);
+				DISCARD_TEXT(pp)
 			}
-			if ((chunk->holon) &&
+			if ((chunk->code_excerpt) &&
 				(Conventions::get_int(lsu->context, COMMENTS_STYLED_LSCONVENTION))) {
 				holon_splice *hs;
-				LOOP_OVER_LINKED_LIST(hs, holon_splice, chunk->holon->splice_list)
-					if (hs->comment) {
-						markdown_item *md = Markdown::parse_extended(hs->comment, variation);
+				LOOP_OVER_CODE_EXCERPT(hs, chunk->code_excerpt)
+					if (hs->type == COMMENT_LSHST) {
+						TEMPORARY_TEXT(pp)
+						Str::copy(pp, hs->texts[0]);
+						LineClassification::postprocess(pp, lsu->syntax);
+						markdown_item *md = Markdown::parse_extended(pp, variation);
 						if (md->type == DOCUMENT_MIT) md = md->down;
 						if (md->type == PARAGRAPH_MIT) md = md->down;
 						hs->comment_as_markdown = md;
 						ParagraphTags::autotag(NULL, par, md);
+						DISCARD_TEXT(pp)
 					}
 			}
 		}
@@ -1447,19 +1506,6 @@ ls_footnote *LiterateSource::find_footnote_in_para(ls_paragraph *par, text_strea
 	return NULL;
 }
 
-@h Indexing.
-
-@<Index the unit@> =
-	if (lsu->context)
-		for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
-			for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
-				for (ls_line *line = chunk->first_line; line; line = line->next_line)
-					if (line->index_marks) {
-						ls_index_mark *ie;
-						LOOP_OVER_LINKED_LIST(ie, ls_index_mark, line->index_marks)
-							WebIndexing::index_at(ie, par);
-					}
-
 @h Processing.
 
 =
@@ -1560,17 +1606,28 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	WRITE("\n");
 	INDENT
 	holon_splice *hs;
-	LOOP_OVER_LINKED_LIST(hs, holon_splice, holon->splice_list) {
-		if (hs->expansion) {
-			ls_paragraph *par = hs->expansion->corresponding_chunk->owner;
-			WRITE("  holon '%S' (defined in %S%S)",
-				hs->expansion->holon_name,
-				LiterateSource::par_ornament(par),
-				par->paragraph_number);
-		} else if (Str::len(hs->command) > 0) WRITE("command '%S'", hs->command);
-		else if (Str::len(hs->comment) > 0) WRITE("command '%S'", hs->comment);
-		else {
-			LiterateSource::write_code(OUT, hs->line, Holons::splice_code(hs), hs->from, hs->to);
+	LOOP_OVER_HOLON_DEFINITION(hs, holon) {
+		switch (hs->type) {
+			case CODE_LSHST:
+				LiterateSource::write_code(OUT, hs->line, hs->texts[0], 0, Str::len(hs->texts[0])-1);
+				break;
+			case EXPANSION_LSHST: {
+				ls_paragraph *par = hs->expansion->corresponding_chunk->owner;
+				WRITE("  holon '%S' (defined in %S%S)",
+					hs->expansion->holon_name,
+					LiterateSource::par_ornament(par),
+					par->paragraph_number);
+				break;
+			}
+			case COMMAND_LSHST:
+				WRITE("command '%S'", hs->texts[0]); break;
+			case VERBATIM_LSHST:
+				WRITE("command '%S'", hs->texts[0]); break;
+			case COMMENT_LSHST:
+				WRITE("comment '%S' %S %S", hs->texts[0], hs->texts[1], hs->texts[2]); break;
+			default:
+				WRITE("?unknown splice type %d", hs->type);
+				break;
 		}
 		WRITE("\n");
 	}

@@ -1,3 +1,5 @@
+No such command as '-fixtime'. General help:
+
 inweb: a tool for literate programming
 
 Inweb is a system for literate programming. It deals with 'webs',

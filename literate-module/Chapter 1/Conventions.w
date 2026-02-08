@@ -41,12 +41,14 @@ And the individual conventions are also enumerated:
 @e TYPEDEFS_EARLY_LSCONVENTION
 @e TYPEDEF_STRUCTS_EARLY_LSCONVENTION
 @e FUNCTION_PREDECLARATIONS_LSCONVENTION
+@e COMMENTS_LSCONVENTION
 @e INDEX_LSCONVENTION
 @e IMPORTANT_INDEX_LSCONVENTION
 @e TT_INDEX_LSCONVENTION
 @e IMPORTANT_TT_INDEX_LSCONVENTION
 @e NS_INDEX_LSCONVENTION
 @e IMPORTANT_NS_INDEX_LSCONVENTION
+@e LITERAL_CHARACTERS_LSCONVENTION
 
 @e INT_LSCONVENTIONTYPE from 1
 @e TEXTUAL_LSCONVENTIONTYPE
@@ -82,12 +84,14 @@ int Conventions::type(int conv) {
 		case TAGS_SYNTAX_LSCONVENTION:
 		case TANGLED_BETWEEN_LSCONVENTION:
 		case VERBATIM_LSCONVENTION:
+		case COMMENTS_LSCONVENTION:
 		case INDEX_LSCONVENTION:
 		case IMPORTANT_INDEX_LSCONVENTION:
 		case TT_INDEX_LSCONVENTION:
 		case IMPORTANT_TT_INDEX_LSCONVENTION:
 		case NS_INDEX_LSCONVENTION:
 		case IMPORTANT_NS_INDEX_LSCONVENTION:
+		case LITERAL_CHARACTERS_LSCONVENTION:
 			return TEXTUAL_PAIR_LSCONVENTIONTYPE;
 	}
 	internal_error("unimplemented convention");
@@ -176,6 +180,11 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 			else WRITE("verbatim tangle material is written between %S and %S",
 				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
 			break;
+		case COMMENTS_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no web comment syntax");
+			else WRITE("web comments are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
 		case INDEX_LSCONVENTION:
 			if (Str::len(tv) == 0) WRITE("there is no index entry syntax");
 			else WRITE("index entries are written between %S and %S",
@@ -204,6 +213,11 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 		case IMPORTANT_NS_INDEX_LSCONVENTION:
 			if (Str::len(tv) == 0) WRITE("there is no important nonstandard index entry syntax");
 			else WRITE("important nonstandard index entries are written between %S and %S",
+				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
+			break;
+		case LITERAL_CHARACTERS_LSCONVENTION:
+			if (Str::len(tv) == 0) WRITE("there is no literal character syntax");
+			else WRITE("literal %S is written %S",
 				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
 			break;
 		case HOLONS_STYLED_LSCONVENTION:
@@ -430,6 +444,10 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 		conv = VERBATIM_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *there is no verbatim tangle material syntax *")) {
 		conv = VERBATIM_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *web comments are written between (%c+) and (%c+) *")) {
+		conv = COMMENTS_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no web comment syntax *")) {
+		conv = COMMENTS_LSCONVENTION; tv = NULL; tv2 = NULL;
 	} else if (Regexp::match(&mr, line, U" *index entries are written between (%c+) and (%c+) *")) {
 		conv = INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *there is no index entry syntax *")) {
@@ -454,6 +472,10 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 		conv = IMPORTANT_NS_INDEX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *there is no important nonstandard index entry syntax *")) {
 		conv = IMPORTANT_NS_INDEX_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *literal (%c+) is written (%c+) *")) {
+		conv = LITERAL_CHARACTERS_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
+	} else if (Regexp::match(&mr, line, U" *there is no literal character syntax *")) {
+		conv = LITERAL_CHARACTERS_LSCONVENTION; tv = NULL; tv2 = NULL;
 	} else if (Regexp::match(&mr, line, U" *metadata in strings are written between (%c+) and (%c+) *")) {
 		conv = METADATA_IN_STRINGS_SYNTAX_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *metadata in strings are not recognised *")) {
@@ -622,12 +644,14 @@ ls_conventions *Conventions::generic(void) {
 		Conventions::set_textual(generic, TAGS_SYNTAX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, TANGLED_BETWEEN_LSCONVENTION, I"\n", I"\n");
 
+		Conventions::set_textual(generic, COMMENTS_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, INDEX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, IMPORTANT_INDEX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, TT_INDEX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, IMPORTANT_TT_INDEX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, NS_INDEX_LSCONVENTION, NULL, NULL);
 		Conventions::set_textual(generic, IMPORTANT_NS_INDEX_LSCONVENTION, NULL, NULL);
+		Conventions::set_textual(generic, LITERAL_CHARACTERS_LSCONVENTION, NULL, NULL);
 	}
 	return generic;
 }

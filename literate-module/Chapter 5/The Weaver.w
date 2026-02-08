@@ -212,39 +212,27 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 
 	ls_line *lst = chunk->first_line;
 	@<Change material if necessary@>;
-	holon_splice *hs;
-	ls_line *current_lst = NULL;
-	tree_node *CL = NULL;
-	LOOP_OVER_LINKED_LIST(hs, holon_splice, chunk->holon->splice_list) {
-		ls_line *lst = hs->line;
-		if (LanguageMethods::skip_in_weaving(WebStructure::section_language(S), wv, lst) == FALSE) {
-			if (current_lst != lst) {
-				current_lst = lst;
-				CL = WeaveTree::code_line(tree);
-				Trees::make_child(CL, state->ap);
-			}
-			wv->current_weave_line = lst;
-			ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-			@<Weave holonic matter in code style@>;
-		}
-	}
+	Weaver::weave_code_excerpt(tree, chunk->code_excerpt, NULL, W, C, S, chunk, NULL, state, wv, WebStructure::section_language(S));
 	Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
 
 @<Weave holonic matter in code style@> =
-	if (hs->expansion) @<Deal with a named holon usage@>
-	else if (Str::len(hs->command) > 0) @<Deal with a tangler command@>
-	else if (Str::len(hs->comment) > 0) @<Deal with a comment@>
-	else if (Str::len(hs->verbatim) > 0) @<Deal with a verbatim@>
-	else @<Deal with a splice of raw content@>;
+	switch (hs->type) {
+		case CODE_LSHST: @<Deal with a splice of raw content@>; break;
+		case EXPANSION_LSHST: @<Deal with a named holon usage@>; break;
+		case COMMAND_LSHST: @<Deal with a tangler command@>; break;
+		case VERBATIM_LSHST: @<Deal with a verbatim@>; break;
+		case COMMENT_LSHST: @<Deal with a comment@>; break;
+		default: internal_error("unimplemented holon splice type");
+	}
 
 @<Deal with a named holon usage@> =
 	Trees::make_child(WeaveTree::holon_usage(tree, hs->expansion, WebNotation::commentary_variation(wv->weave_web)), CL);
 
 @<Deal with a tangler command@> =
-	Trees::make_child(WeaveTree::tangler_command(tree, hs->command), CL);
+	Trees::make_child(WeaveTree::tangler_command(tree, hs->texts[0]), CL);
 
 @<Deal with a verbatim@> =
-	text_stream *matter = hs->verbatim;
+	text_stream *matter = hs->texts[0];
 	text_stream *concluding_comment = NULL;
 	int suppress = FALSE;
 	@<Offer the line to the language to weave@>;
@@ -259,8 +247,7 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 
 @<Deal with a splice of raw content@> =
 	TEMPORARY_TEXT(matter)
-	for (int i=hs->from; i<=hs->to; i++)
-		PUT_TO(matter, Str::get_at(Holons::splice_code(hs), i));
+	Str::copy(matter, hs->texts[0]);
 	Str::rectify_indentation(matter, 4);
 	text_stream *concluding_comment = NULL;
 	int suppress = FALSE;
@@ -278,10 +265,11 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 
 @<Deal with a comment@> =
 	if (hs->comment_as_markdown) {
-		Trees::make_child(WeaveTree::comment_in_holon(tree, hs->comment, hs->comment_as_markdown, WebNotation::commentary_variation(wv->weave_web)), CL);
+		Trees::make_child(WeaveTree::comment_in_holon(tree, hs->texts[0], hs->texts[1], hs->texts[2],
+			hs->comment_as_markdown, WebNotation::commentary_variation(wv->weave_web)), CL);
 	} else {
 		TEMPORARY_TEXT(matter)
-		WRITE_TO(matter, "COMMENT(%S)", hs->comment);
+		WRITE_TO(matter, "COMMENT(%S)", hs->texts[0]);
 		Str::rectify_indentation(matter, 4);
 		text_stream *concluding_comment = NULL;
 		int suppress = FALSE;
@@ -355,16 +343,39 @@ about breaking pages at chapters and sections fail to work. So:
 	state->last_extract_from = S;
 
 @<Weave this line@> =
-	TEMPORARY_TEXT(matter)
-	Str::copy(matter, LiterateSource::line_weaving_matter(lst));
-	if ((lst->classification.major == EXTRACT_MATTER_MAJLC) ||
-		(lst->classification.major == DEFINITION_MAJLC) ||
-		(lst->classification.major == DEFINITION_CONTINUED_MAJLC)) {
-		@<Change material if necessary@>;
-		@<Weave verbatim matter in code style@>
-	} else
-		@<Weave verbatim matter in commentary style@>;
-	DISCARD_TEXT(matter)
+	if (chunk->chunk_type == DEFINITION_LSCT) {
+		if (lst == chunk->first_line) {
+			@<Change material if necessary@>;
+			int suppress = FALSE;
+			text_stream *prefatory = NULL;
+			if (chunk->metadata.minor == DEFINE_COMMAND_MINLC) prefatory = I"define";
+			else if (chunk->metadata.minor == ENUMERATE_COMMAND_MINLC) prefatory = I"enumerate";
+			else if (chunk->metadata.minor == DEFAULT_COMMAND_MINLC) prefatory = I"default";
+			else if (chunk->metadata.minor == FORMAT_COMMAND_MINLC) prefatory = I"format";
+			else if (chunk->metadata.minor == SILENTLY_FORMAT_COMMAND_MINLC) suppress = TRUE;
+			if (state->line_break_pending) {
+				Trees::make_child(WeaveTree::vskip(tree, FALSE), state->ap);
+				state->line_break_pending = FALSE;
+			}
+			if (suppress == FALSE) {
+				tree_node *CL = WeaveTree::code_line(tree);
+				Trees::make_child(CL, state->ap);
+				if (Str::len(prefatory) > 0)
+					Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory), CL);
+				Weaver::weave_code_excerpt(tree, chunk->code_excerpt, CL, W, C, S, chunk, chunk->first_line, state, wv, WebStructure::section_language(S));
+				Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
+			}
+		}
+	} else {
+		TEMPORARY_TEXT(matter)
+		Str::copy(matter, LiterateSource::line_weaving_matter(lst));
+		if (lst->classification.major == EXTRACT_MATTER_MAJLC) {
+			@<Change material if necessary@>;
+			@<Weave verbatim matter in code style@>
+		} else
+			@<Weave verbatim matter in commentary style@>;
+		DISCARD_TEXT(matter)
+	}
 
 @ And lastly we ignore commands, or act on them if they happen to be aimed
 at us; but we don't weave them into the output, that's for sure.
@@ -419,6 +430,28 @@ at us; but we don't weave them into the output, that's for sure.
 @<Weave a carousel end@> =
 	state->ap = state->para_node;
 	state->carousel_node = NULL;
+
+@
+
+=
+void Weaver::weave_code_excerpt(heterogeneous_tree *tree, ls_code_excerpt *ex, tree_node *CL,
+	ls_web *W, ls_chapter *C, ls_section *S, ls_chunk *chunk, 
+	ls_line *current_lst, weaver_state *state, weave_order *wv, programming_language *pl) {
+	holon_splice *hs;
+	LOOP_OVER_CODE_EXCERPT(hs, ex) {
+		ls_line *lst = hs->line;
+		if (LanguageMethods::skip_in_weaving(pl, wv, lst) == FALSE) {
+			if (current_lst != lst) {
+				current_lst = lst;
+				CL = WeaveTree::code_line(tree);
+				Trees::make_child(CL, state->ap);
+			}
+			wv->current_weave_line = lst;
+			ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
+			@<Weave holonic matter in code style@>;
+		}
+	}
+}
 
 @h Parsing of dimensions.
 It's possible, optionally, to specify width and height for some visual matter.

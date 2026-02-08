@@ -60,8 +60,12 @@ typedef struct ls_notation {
 
 	struct finite_state_machine *indexing_machine;
 
-	struct notation_rewriting_machine *processing_code;
-	struct notation_rewriting_machine *processing_commentary;
+	struct notation_rewriting_machine *preprocessor;
+	struct notation_rewriting_machine *postprocessor;
+	struct notation_rewriting_machine *code_preprocessor;
+	struct notation_rewriting_machine *code_postprocessor;
+	struct notation_rewriting_machine *commentary_preprocessor;
+	struct notation_rewriting_machine *commentary_postprocessor;
 
 	struct ls_class_parsing (*line_classifier)(struct ls_notation *,
 		struct text_stream *, struct ls_class *);
@@ -98,8 +102,12 @@ ls_notation *WebNotation::new(text_stream *name) {
 
 	S->indexing_machine = NULL;
 
-	S->processing_code = WebNotation::new_machine();
-	S->processing_commentary = WebNotation::new_machine();
+	S->preprocessor = WebNotation::new_machine();
+	S->postprocessor = WebNotation::new_machine();
+	S->code_preprocessor = WebNotation::new_machine();
+	S->code_postprocessor = WebNotation::new_machine();
+	S->commentary_preprocessor = WebNotation::new_machine();
+	S->commentary_postprocessor = WebNotation::new_machine();
 
 	S->stanza = NULL;
 	S->p_stanza = NULL;
@@ -390,14 +398,34 @@ in grammar.
 to a particular rule list.
 
 @<Entering and exiting stanzas@> =
+	if (Regexp::match(&mr, cmd, U"preprocess {")) {
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->preprocessor;
+		 @<Setting done@>;
+	}
+	if (Regexp::match(&mr, cmd, U"postprocess {")) {
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->postprocessor;
+		 @<Setting done@>;
+	}
 	if (Regexp::match(&mr, cmd, U"process code {")) {
 		if ((S->stanza) || (S->p_stanza))
-			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->processing_code;
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->code_preprocessor;
+		 @<Setting done@>;
+	}
+	if (Regexp::match(&mr, cmd, U"postprocess code {")) {
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->code_postprocessor;
 		 @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"process commentary {")) {
 		if ((S->stanza) || (S->p_stanza))
-			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->processing_commentary;
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->commentary_preprocessor;
+		 @<Setting done@>;
+	}
+	if (Regexp::match(&mr, cmd, U"postprocess commentary {")) {
+		if ((S->stanza) || (S->p_stanza))
+			error = I"cannot nest { ... } blocks"; else S->p_stanza = S->commentary_postprocessor;
 		 @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"classify {")) {

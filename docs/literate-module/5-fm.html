@@ -136,8 +136,9 @@ can return a <code>*_SWM</code> code to change the swarm behaviour of the weave 
 this is helpful for EPUB weaving.</p>
 <p>More simply, <code>END_WEAVING_FOR_MTID</code> is called when all weaving is done.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">BEGIN_WEAVING_FOR_MTID</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">END_WEAVING_FOR_MTID</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">BEGIN_WEAVING_FOR_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_pattern</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pattern</span><span class="plain-syntax">)</span>
@@ -161,7 +162,7 @@ generated first, and the fore and aft matter second, so that the fore matter
 can include plugin links whose need was only realised when rendering the
 actual content.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">RENDER_FOR_MTID</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">RENDER_FOR_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">heterogeneous_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tree</span><span class="plain-syntax">)</span>
@@ -185,13 +186,13 @@ actual content.</p>
 document of Preform grammar, and this is the hook for it. Most formats
 should ignore it.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PREFORM_DOCUMENT_FOR_MTID</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">PREFORM_DOCUMENT_FOR_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lst</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">concluding_comment</span><span class="plain-syntax">)</span>
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">WeavingFormats::preform_document</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">WeavingFormats::preform_document</span></span>:<br/>InC Support - <a href="3-is.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">WeavingFormats::preform_document</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">WeavingFormats::preform_document</span></span>:<br/>InC Support - <a href="3-is.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">ls_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="reserved-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lst</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">matter</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">concluding_comment</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">wv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">format</span><span class="plain-syntax">;</span>
@@ -206,7 +207,7 @@ should ignore it.</p>
 than here, but we retain method calls to enable formats to do some idiosyncratic
 post-processing.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">POST_PROCESS_POS_MTID</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">POST_PROCESS_POS_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">open_afterwards</span><span class="plain-syntax">)</span>
@@ -219,7 +220,7 @@ post-processing.</p>
 done. Support for TeX console reporting is hard-wired here because it's
 handled by <a href="5-ptt.html#SP8" class="internal">Patterns::post_process</a> directly.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">POST_PROCESS_REPORT_POS_MTID</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">VOID_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">POST_PROCESS_REPORT_POS_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wv</span><span class="plain-syntax">)</span>
@@ -232,7 +233,7 @@ handled by <a href="5-ptt.html#SP8" class="internal">Patterns::post_process</a> 
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  For the sake of index files, we may want to substitute in values for
 placeholder text in the template file.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">POST_PROCESS_SUBSTITUTE_POS_MTID</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">INT_METHOD_TYPE</span><span class="plain-syntax">(</span><span class="constant-syntax">POST_PROCESS_SUBSTITUTE_POS_MTID</span><span class="plain-syntax">, </span><span class="reserved-syntax">weave_format</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wf</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">,</span>

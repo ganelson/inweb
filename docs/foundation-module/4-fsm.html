@@ -76,7 +76,7 @@ human-readability of the machines.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cycles_at_current_state</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">states</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( of |fsm_state| )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">states</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">of</span><span class="plain-syntax"> |</span><span class="reserved-syntax">fsm_state</span><span class="plain-syntax">| )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_parameter</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">finite_state_machine</span><span class="plain-syntax">;</span>
@@ -102,8 +102,9 @@ machine returns <code>NO_FSMEVENT</code> when no event has taken place.</p>
 the machine is going to cycle an extra time before returning. By definition,
 then, it can never be returned to the caller.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">NO_FSMEVENT</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">AGAIN_FSMEVENT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">0</span>
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Each possible state of the machine must be one of the following.</p>
@@ -182,7 +183,7 @@ the latter are rarely needed, so we'll ignore them for now.</p>
 <p>It's faster to use a fixed-size array of these, since in practice we don't
 need enormously sprouting machines.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">MAX_FSM_TRANSITIONS</span><span class="plain-syntax"> </span><span class="constant-syntax">32</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">32</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_transitions</span><span class="plain-syntax"> {</span>
@@ -206,16 +207,16 @@ in its current state.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_transition</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( match criteria: )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">match</span><span class="plain-syntax"> </span><span class="identifier-syntax">criteria:</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( result of a match: )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">result</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">match:</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">event</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">length</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameter</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_transition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_trans</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( within the list for a bank )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">fsm_transition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_trans</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">within</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">bank</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">fsm_transition</span><span class="plain-syntax">;</span>
 </pre>

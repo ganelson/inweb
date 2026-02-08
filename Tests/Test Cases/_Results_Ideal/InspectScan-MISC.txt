@@ -19,7 +19,7 @@ S4
         _______ Some⏑definitions:
     C2: define 'ALPHA' = 1
     C3: define 'BETA_GAMMA' = 201
-    C4: define 'DELTA' = 200
+    C4: define 'DELTA' = 200    + 300    + more_delta
         0000023 ⏑⏑⏑⏑+⏑300
         0000024 ⏑⏑⏑⏑+⏑more_delta
     C5: define 'EPSILON' = ALPHA

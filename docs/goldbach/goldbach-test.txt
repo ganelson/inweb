@@ -22,12 +22,13 @@ document weave order 1
           material definition
             code line
               defn <define>
-              source_code <TRUE 1>
-                          _nnnnpn_
+              source_code <1>
+                          _n_
+          material definition
             code line
               defn <define>
-              source_code <FALSE 0>
-                          _nnnnnpn_
+              source_code <0>
+                          _n_
           material code: C
             code line
               source_code <int >

@@ -227,6 +227,8 @@ typedef struct weave_source_code_node {
 
 typedef struct weave_comment_in_holon_node {
 	struct text_stream *raw;
+	struct text_stream *comment_open;
+	struct text_stream *comment_close;
 	struct markdown_item *as_markdown;
 	struct markdown_variation *variation;
 	CLASS_DEFINITION
@@ -793,9 +795,12 @@ tree_node *WeaveTree::source_code(heterogeneous_tree *tree,
 }
 
 tree_node *WeaveTree::comment_in_holon(heterogeneous_tree *tree, text_stream *raw,
-	markdown_item *as_markdown, markdown_variation *variation) {
+	text_stream *open, text_stream *close, markdown_item *as_markdown,
+	markdown_variation *variation) {
 	weave_comment_in_holon_node *C = CREATE(weave_comment_in_holon_node);
 	C->raw = Str::duplicate(raw);
+	C->comment_open = Str::duplicate(open);
+	C->comment_close = Str::duplicate(close);
 	C->as_markdown = as_markdown;
 	C->variation = variation;
 	return Trees::new_node(tree, weave_comment_in_holon_node_type, STORE_POINTER_weave_comment_in_holon_node(C));

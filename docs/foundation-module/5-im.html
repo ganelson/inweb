@@ -94,8 +94,9 @@ the main addition is a custom renderer.</p>
 <p class="commentary firstcommentary"><a id="SP1_1" class="paragraph-anchor"></a><b>&#167;1.1. Formatting errors.</b>  Traditionally, there are no errors in Markdown, but we want to be able to display
 cautionary boxes with error-like messages anyway.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">FORMATTING_ERRORS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INFORM_ERROR_MARKER_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the formatting errors feature</span><span class="named-paragraph-number">1.1</span></span> =</p>
 
@@ -143,7 +144,7 @@ cautionary boxes with error-like messages anyway.</p>
 both a chapter heading and a section heading, and thus needs to be expanded
 into two Markdown items, not one.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">OLD_INDOC_HEADINGS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the old Indoc headings feature</span><span class="named-paragraph-number">1.2</span></span> =</p>
 
@@ -198,7 +199,7 @@ into two Markdown items, not one.</p>
 space either side. We treat the Chapter headings as level 1, and Sections
 as level 2.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">DESCRIPTIVE_INFORM_HEADINGS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the descriptive headings feature</span><span class="named-paragraph-number">1.3</span></span> =</p>
 
@@ -381,8 +382,9 @@ the cut-off line in a single-file extension. In that context, an example has to
 be written out in full, and not left to a stand-alone file, as it is with
 directory-format extension documentation or Indoc manuals.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">EMBEDDED_EXAMPLES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INFORM_EXAMPLE_HEADING_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the embedded examples feature</span><span class="named-paragraph-number">1.4</span></span> =</p>
 
@@ -596,25 +598,25 @@ CSS is now much more reliable.</p>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( Left hand cell: the oval icon )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">Left</span><span class="plain-syntax"> </span><span class="identifier-syntax">hand</span><span class="plain-syntax"> </span><span class="identifier-syntax">cell:</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">oval</span><span class="plain-syntax"> </span><span class="identifier-syntax">icon</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">, </span><span class="string-syntax">"class=\"exampleleft\""</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">, </span><span class="string-syntax">"id=eg%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">insignia</span><span class="plain-syntax">); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( provide the anchor point )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">, </span><span class="string-syntax">"id=eg%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">insignia</span><span class="plain-syntax">); </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">provide</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">anchor</span><span class="plain-syntax"> </span><span class="identifier-syntax">point</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">linkl</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">linkl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-htm.html#SP26" class="function-link"><span class="function-syntax">HTML::begin_span</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"extensionexampleletter"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">insignia</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-htm.html#SP26" class="function-link"><span class="function-syntax">HTML::end_span</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">linkl</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( end the textual link )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">); </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">textual</span><span class="plain-syntax"> </span><span class="identifier-syntax">link</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( Middle cell: the asterisks and title, with rubric underneath )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">Middle</span><span class="plain-syntax"> </span><span class="identifier-syntax">cell:</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">asterisks</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">rubric</span><span class="plain-syntax"> </span><span class="identifier-syntax">underneath</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">, </span><span class="string-syntax">"class=\"examplemiddle\""</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">link</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="5-htm.html#SP26" class="function-link"><span class="function-syntax">HTML::begin_span</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"examplestars"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">asterisk</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="identifier-syntax">asterisk</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">star_count</span><span class="plain-syntax">; </span><span class="identifier-syntax">asterisk</span><span class="plain-syntax">++)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="constant-syntax">0x2605</span><span class="plain-syntax">); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( the Unicode for "black star" emoji )</span><span class="comment-syntax">*/</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( or 0x2B50 is the Unicode for "star" emoji )</span><span class="comment-syntax">*/</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( or again, could use the asterisk.png image in the app )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">PUT</span><span class="plain-syntax">(</span><span class="constant-syntax">0x2605</span><span class="plain-syntax">); </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Unicode</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="string-syntax">"black star"</span><span class="plain-syntax"> </span><span class="identifier-syntax">emoji</span><span class="plain-syntax"> )</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="constant-syntax">0x2B50</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Unicode</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="string-syntax">"star"</span><span class="plain-syntax"> </span><span class="identifier-syntax">emoji</span><span class="plain-syntax"> )</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">again</span><span class="plain-syntax">, </span><span class="identifier-syntax">could</span><span class="plain-syntax"> </span><span class="identifier-syntax">use</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">asterisk</span><span class="plain-syntax">.</span><span class="identifier-syntax">png</span><span class="plain-syntax"> </span><span class="identifier-syntax">image</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">app</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">    </span><a href="5-htm.html#SP26" class="function-link"><span class="function-syntax">HTML::end_span</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;nbsp; "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"b"</span><span class="plain-syntax">);</span>
@@ -633,15 +635,15 @@ CSS is now much more reliable.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">linkr</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( Right hand cell: the cross-reference )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">Right</span><span class="plain-syntax"> </span><span class="identifier-syntax">hand</span><span class="plain-syntax"> </span><span class="identifier-syntax">cell:</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">cross</span><span class="plain-syntax">-</span><span class="identifier-syntax">reference</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">, </span><span class="string-syntax">"class=\"exampleright\""</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">, </span><span class="string-syntax">"id=eg%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">insignia</span><span class="plain-syntax">); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( provide the anchor point )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">, </span><span class="string-syntax">"id=eg%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">insignia</span><span class="plain-syntax">); </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">provide</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">anchor</span><span class="plain-syntax"> </span><span class="identifier-syntax">point</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN_WITH</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">, </span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">linkr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="5-htm.html#SP26" class="function-link"><span class="function-syntax">HTML::begin_span</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"extensionexampleseealso"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">label</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><a href="5-htm.html#SP26" class="function-link"><span class="function-syntax">HTML::end_span</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="4-sm.html#SP8" class="function-link"><span class="function-syntax">Str::len</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">linkr</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"a"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">); </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( end the textual link )</span><span class="comment-syntax">*/</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"span"</span><span class="plain-syntax">); </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">end</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">textual</span><span class="plain-syntax"> </span><span class="identifier-syntax">link</span><span class="plain-syntax"> )</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_CLOSE</span><span class="plain-syntax">(</span><span class="string-syntax">"div"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
@@ -656,7 +658,7 @@ CSS is now much more reliable.</p>
 (though not vice versa) and even then only when the tool using it contains
 the Inform <code>html</code> module, so this isn't really of general application.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PASTE_BUTTONS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the paste icons feature</span><span class="named-paragraph-number">1.5</span></span> =</p>
 
@@ -719,8 +721,9 @@ the Inform <code>html</code> module, so this isn't really of general application
 </pre>
 <p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6. Phrase definition boxes.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PHRASE_DEFN_BOXES_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">PHRASE_HEADER_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the phrase defn boxes feature</span><span class="named-paragraph-number">1.6</span></span> =</p>
 
@@ -833,8 +836,9 @@ the Inform <code>html</code> module, so this isn't really of general application
 </pre>
 <p class="commentary firstcommentary"><a id="SP1_7" class="paragraph-anchor"></a><b>&#167;1.7. Indexing marks for longer documentation.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">INDEXING_MARKS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">INDEX_MARKER_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the indexing marks feature</span><span class="named-paragraph-number">1.7</span></span> =</p>
 
@@ -850,8 +854,9 @@ the Inform <code>html</code> module, so this isn't really of general application
 non-whitespace, non-brace characters in single braces, we extract that as
 metadata not passing through into rendering.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">HEADING_MARKERS_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">HEADING_MARKER_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the heading markers feature</span><span class="named-paragraph-number">1.8</span></span> =</p>
 
@@ -891,8 +896,9 @@ metadata not passing through into rendering.</p>
 <p class="commentary firstcommentary"><a id="SP1_9" class="paragraph-anchor"></a><b>&#167;1.9. Paragraph gating for multi-platform tweaks.</b>  Essentially, this allows paragraphs in the documentation to be rendered
 only on some platforms and not others: it's conditional compilation for text.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">PARAGRAPH_GATING_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">GATE_MIT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the paragraph gating feature</span><span class="named-paragraph-number">1.9</span></span> =</p>
 
@@ -972,7 +978,7 @@ only on some platforms and not others: it's conditional compilation for text.</p
 </pre>
 <p class="commentary firstcommentary"><a id="SP1_10" class="paragraph-anchor"></a><b>&#167;1.10. Syntax-colouring for the Inform family.</b> </p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">INFORM_SYNTAX_COLOURING_MARKDOWNFEATURE</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add the Inform syntax-colouring feature</span><span class="named-paragraph-number">1.10</span></span> =</p>
 

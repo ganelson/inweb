@@ -134,14 +134,14 @@ then subsequent lines are fed in order to |PROLONG_DEFN_TAN_MTID|. At the end,
 @e END_DEFN_TAN_MTID
 
 =
-INT_METHOD_TYPE(START_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *term, text_stream *start, ls_section *S, ls_line *lst, tangle_docket *docket)
+INT_METHOD_TYPE(START_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *term, ls_code_excerpt *body, ls_section *S, ls_line *lst, tangle_docket *docket)
 INT_METHOD_TYPE(PROLONG_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, text_stream *more, ls_section *S, ls_line *lst, tangle_docket *docket)
 INT_METHOD_TYPE(END_DEFN_TAN_MTID, programming_language *pl, text_stream *OUT, ls_section *S, ls_line *lst, tangle_docket *docket)
 
 void LanguageMethods::start_definition(OUTPUT_STREAM, programming_language *pl,
-	text_stream *term, text_stream *start, ls_section *S, ls_line *lst, tangle_docket *docket) {
+	text_stream *term, ls_code_excerpt *body, ls_section *S, ls_line *lst, tangle_docket *docket) {
 	int rv = FALSE;
-	INT_METHOD_CALL(rv, pl, START_DEFN_TAN_MTID, OUT, term, start, S, lst, docket);
+	INT_METHOD_CALL(rv, pl, START_DEFN_TAN_MTID, OUT, term, body, S, lst, docket);
 	if (rv == FALSE)
 		WebErrors::issue_at(I"this programming language does not support @d", lst);
 }

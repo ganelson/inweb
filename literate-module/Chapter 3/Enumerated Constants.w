@@ -104,9 +104,8 @@ void Enumerations::define_extents(OUTPUT_STREAM, tangle_target *target,
 		TEMPORARY_TEXT(value)
 		WRITE_TO(symbol, "NO_DEFINED_%S_VALUES", es->postfix);
 		WRITE_TO(value, "%d", es->next_free_value - es->first_value);
-		LanguageMethods::start_definition(OUT, lang, symbol, value,
-			es->last_observed_in, es->last_observed_at, docket);
-		LanguageMethods::end_definition(OUT, lang,
+		ls_code_excerpt *miniature = CodeExcerpts::from_illiterate_uncommented_code(value, es->last_observed_at);
+		LanguageMethods::start_definition(OUT, lang, symbol, miniature,
 			es->last_observed_in, es->last_observed_at, docket);
 		DISCARD_TEXT(symbol)
 		DISCARD_TEXT(value)

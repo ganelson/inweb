@@ -51,7 +51,7 @@
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Every program using <a href="../foundation-module/index.html" class="internal">foundation</a> must define this:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"inweb"</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="string-syntax">"inweb"</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  Almost all of the literate programming functionality which powers Inweb is
@@ -59,7 +59,7 @@ now library-ized into <a href="../foundation-module/index.html" class="internal"
 used inside Inweb itself, and those modifications come into effect when the
 following is defined:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">THIS_IS_INWEB</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> 
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  As we will see, reading the command line is not an entirely simple business,
@@ -104,7 +104,7 @@ the subcommands.</p>
 only be set after the command-line switches are read, since they can change it.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path_to_inweb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/*</span><span class="comment-syntax">COMMENT( where we are installed )</span><span class="comment-syntax">*/</span>
+<span class="reserved-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">path_to_inweb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="identifier-syntax">COMMENT</span><span class="plain-syntax">( </span><span class="identifier-syntax">where</span><span class="plain-syntax"> </span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">installed</span><span class="plain-syntax"> )</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_inweb_errors</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbose_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">silent_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">old_inweb_compatibility_mode</span><span class="plain-syntax"> = </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">;</span>

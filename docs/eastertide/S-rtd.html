@@ -64,7 +64,7 @@ of C programs wanting to use it. We will do everything in an unnecessarily
 fancy way, just to give the tires a kick.</p>
 <p>Any program using Foundation must define this constant:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">PROGRAM_NAME</span><span class="plain-syntax"> </span><span class="string-syntax">"eastertide"</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="string-syntax">"eastertide"</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The <code>main</code> routine must start and end Foundation, and is not allowed to
@@ -100,10 +100,13 @@ output, i.e., writing to it will print to the Terminal or similar console.</p>
 but we'll give it some command-line options anyway. Foundation will add also
 <code>-help</code> and a few others to the mix.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">CALENDAR_FILE_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">QUALIFYING_CLSG</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">VERBOSE_CLSW</span><span class="plain-syntax"> </span>
-<span class="definition-keyword">enumerate</span> <span class="constant-syntax">AMERICAN_CLSW</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+</pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Read the command line</span><span class="named-paragraph-number">2.2</span></span> =</p>
 
@@ -245,7 +248,7 @@ so we'll wrap each year supplied in an object. First, we have to define an
 ID constant for this new class of object, and use a macro which causes
 Foundation to generate the necessary handling functions:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">year_request_MT</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">ALLOCATE_INDIVIDUALLY</span><span class="plain-syntax">(</span><span class="reserved-syntax">year_request</span><span class="plain-syntax">)</span>
