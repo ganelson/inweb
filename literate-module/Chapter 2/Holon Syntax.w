@@ -20,21 +20,21 @@ a new FSM every time, so we cache the results.
 
 =
 typedef struct ls_holon_scanner {
-	struct ls_notation *syntax;
+	struct ls_notation *ntn;
 	struct programming_language *pl;
 	struct finite_state_machine *machine;
 	CLASS_DEFINITION
 } ls_holon_scanner;
 
-finite_state_machine *HolonSyntax::get(ls_notation *S, programming_language *pl) {
+finite_state_machine *HolonSyntax::get(ls_notation *ntn, programming_language *pl) {
 	ls_holon_scanner *sc;
 	LOOP_OVER(sc, ls_holon_scanner)
-		if ((sc->syntax == S) && (sc->pl == pl))
+		if ((sc->ntn == ntn) && (sc->pl == pl))
 			return sc->machine;
 	@<Create a new scanner@>;
 	#ifdef TRACE_HOLON_FSMS
 	WRITE_TO(STDERR, "Created scanner for language %S with %S\n",
-		(pl)?(pl->language_name):I"NONE", S->name);
+		(pl)?(pl->language_name):I"NONE", ntn->name);
 	FSM::write_fsm(STDERR, sc->machine);
 	#endif
 	return sc->machine;
@@ -45,7 +45,7 @@ that is, what isn't in some form of quotation marks or comment markers.
 
 @<Create a new scanner@> =
 	sc = CREATE(ls_holon_scanner);
-	sc->syntax = S;
+	sc->ntn = ntn;
 	sc->pl = pl;
 	fsm_state *code_state = FSM::new_state(I"code");
 	fsm_state *whitespace_at_line_start_state = NULL;
@@ -97,31 +97,31 @@ the user of the machine.
 @e COMMENT_END_FSMEVENT
 
 @<Add literate syntax to finite state machine@> =
-	if (WebNotation::supports_named_holons(S)) {
+	if (WebNotation::supports_named_holons(ntn)) {
 		fsm_state *holon_name_state = FSM::new_state(I"holon");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebNotation::notation(S, NAMED_HOLONS_WSF, 1),
+			WebNotation::left(ntn, NAMED_HOLONS_NTNMARKER),
 			holon_name_state, NO_FSMEVENT, NAME_START_FSMEVENT);
 		FSM::add_transition_spelling_out_with_events(holon_name_state,
-			WebNotation::notation(S, NAMED_HOLONS_WSF, 2),		
+			WebNotation::right(ntn, NAMED_HOLONS_NTNMARKER),		
 			code_state, NO_FSMEVENT, NAME_END_FSMEVENT);
 	}
-	if (WebNotation::supports_file_named_holons(S)) {
+	if (WebNotation::supports_file_named_holons(ntn)) {
 		fsm_state *file_holon_name_state = FSM::new_state(I"file-holon");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebNotation::notation(S, FILE_NAMED_HOLONS_WSF, 1),
+			WebNotation::left(ntn, FILE_NAMED_HOLONS_NTNMARKER),
 			file_holon_name_state, NO_FSMEVENT, FILE_NAME_START_FSMEVENT);
 		FSM::add_transition_spelling_out_with_events(file_holon_name_state,
-			WebNotation::notation(S, FILE_NAMED_HOLONS_WSF, 2),		
+			WebNotation::right(ntn, FILE_NAMED_HOLONS_NTNMARKER),		
 			code_state, NO_FSMEVENT, FILE_NAME_END_FSMEVENT);
 	}
-	if (WebNotation::supports_verbatim_material(S)) {
+	if (WebNotation::supports_verbatim_material(ntn)) {
 		fsm_state *verbatim_state = FSM::new_state(I"verbatim");
 		FSM::add_transition_spelling_out_with_events(code_state,
-			WebNotation::notation(S, VERBATIM_CODE_WSF, 1),
+			WebNotation::left(ntn, VERBATIM_CODE_NTNMARKER),
 			verbatim_state, NO_FSMEVENT, VERBATIM_START_FSMEVENT);
 		FSM::add_transition_spelling_out_with_events(verbatim_state,
-			WebNotation::notation(S, VERBATIM_CODE_WSF, 2),		
+			WebNotation::right(ntn, VERBATIM_CODE_NTNMARKER),		
 			code_state, NO_FSMEVENT, VERBATIM_END_FSMEVENT);
 	}
 
@@ -165,15 +165,15 @@ notation must not occur inside double-quoted matter in a comment.
 		fsm_state *string_state = FSM::new_state(I"string");
 		FSM::add_transition_spelling_out(code_state, pl->string_literal, string_state);
 		FSM::add_transition_spelling_out(string_state, pl->string_literal, code_state);
-		if (WebNotation::supports_metadata_in_strings(S)) {
+		if (WebNotation::supports_metadata_in_strings(ntn)) {
 			fsm_state *smlc_state = FSM::new_state(I"metadata-in-string");
 			FSM::add_transition_spelling_out_with_events(string_state,
-				WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 1),
+				WebNotation::left(ntn, METADATA_IN_STRINGS_NTNMARKER),
 				smlc_state, AGAIN_FSMEVENT, COMMAND_START_FSMEVENT);
 			FSM::add_transition(smlc_state, '"', code_state);
 			FSM::add_transition(smlc_state, '\n', code_state);
 			FSM::add_transition_spelling_out_with_events(smlc_state,
-				WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2),
+				WebNotation::right(ntn, METADATA_IN_STRINGS_NTNMARKER),
 				string_state, AGAIN_FSMEVENT, COMMAND_END_FSMEVENT);
 		}
 		if (Str::len(pl->string_literal_escape) > 0) {

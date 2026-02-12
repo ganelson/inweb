@@ -1,0 +1,7 @@
+web "MOS" (ACME program in Mossy notation): 2 sections : 9 paragraphs : 179 lines
+
+Contents:
+abbrev | section       | lines
+------ | ------------- | -----
+vd     | VDU           | 93   
+stcm   | Star commands | 86   

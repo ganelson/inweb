@@ -14,7 +14,7 @@ simply takes a preliminary look.
 void SingleFileWebs::reconnoiter(ls_web *W) {
 	sfw_reader_state RS;
 	@<Initialise the reader state@>;
-	if (W->web_syntax) WebNotation::declare_for_web(W, W->web_syntax);
+	if (W->web_notation) WebNotation::adopt_for_web(W, W->web_notation);
 	
 	wcl_declaration *D = W->declaration;
 	text_file_position tfp = D->body_position;
@@ -61,7 +61,7 @@ leave the language |NULL| if there really is no indication:
 		RS.detected_language = Languages::guess_from_filename(W, W->single_file);
 
 @<Apply any detected syntax and programming language to the web@> =
-	WebNotation::declare_for_web(W, RS.detected_syntax);
+	WebNotation::adopt_for_web(W, RS.detected_syntax);
 
 	if (RS.detected_language) WebStructure::set_language(W, RS.detected_language);
 
@@ -100,7 +100,7 @@ typedef struct sfw_reader_state {
 @<Initialise the reader state@> =
 	RS.W = W;
 
-	RS.detected_syntax = W->web_syntax; /* with |NULL| meaning not yet known */
+	RS.detected_syntax = W->web_notation; /* with |NULL| meaning not yet known */
 	RS.detected_language = NULL; /* i.e., unknown */
 	RS.skip_from = 0; /* meaning, skip nothing */
 	RS.skip_to = 0;
@@ -128,16 +128,16 @@ the first line which doesn't match, and is then trimmed away by being skipped.
 		(Bibliographic::parse_kvp(RS->W, line, TRUE, tfp, key, FALSE))) {
 		if (Str::eq(key, I"Web Syntax Version")) {
 			WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
-			ls_notation *S = WebNotation::syntax_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
-			if (S) RS->detected_syntax = S;
+			ls_notation *ntn = WebNotation::notation_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
+			if (ntn) RS->detected_syntax = ntn;
 		}
 		if (Str::eq(key, I"Notation")) {
-			ls_notation *S = WebNotation::syntax_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
-			if (S) RS->detected_syntax = S;
+			ls_notation *ntn = WebNotation::notation_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
+			if (ntn) RS->detected_syntax = ntn;
 		}
 		if (Str::eq(key, I"Language")) {
-			programming_language *L = Languages::find(RS->W, Bibliographic::get_datum(RS->W, key));
-			if (L) RS->detected_language = L;
+			programming_language *pl = Languages::find(RS->W, Bibliographic::get_datum(RS->W, key));
+			if (pl) RS->detected_language = pl;
 		}
 		RS->skip_from = 1; RS->skip_to = tfp->line_count;
 	} else {

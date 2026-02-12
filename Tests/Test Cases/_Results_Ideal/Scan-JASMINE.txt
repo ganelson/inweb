@@ -1,0 +1,28 @@
+web "Jasmine" (C program in SemiliterateC notation): 1 section : 3 paragraphs : 29 lines
+S1 'Getting started'
+    C1: holon (used sequentially)
+        0000003 #include<stdio.h>
+S2 'Numerical approximations'
+    C1: commentary
+        _______ The⏑actual⏑work⏑is⏑done⏑here,⏑and⏑relies⏑on⏑the⏑power⏑series⏑expansion:
+        _______ $$⏑e^x⏑=⏑\sum_{n=0}^\infty⏑{{x^n}\over{n!}}⏑$$
+        _______ so⏑that⏑we⏑can⏑at⏑least⏑hope⏑that
+        _______ $$⏑e⏑\approx⏑⏑\sum_{n=0}^{10}⏑{{1}\over{n!}}⏑$$
+    C2: holon (used sequentially)
+        0000012 double⏑compute_e(void)⏑{
+        0000013 ⇢   double⏑e⏑=⏑0.0,⏑factorial⏑=⏑1.0;
+        0000014 ⇢   for⏑(int⏑n=0;⏑n<=20;⏑n++)⏑{
+        0000015 ⇢   ⇢   if⏑(n⏑>⏑0)⏑factorial⏑*=⏑n;
+        0000016 ⇢   ⇢   e⏑+=⏑1.0/factorial;
+        0000017 ⇢   }
+        0000018 ⇢   return⏑e;
+        0000019 }
+S3 'Main'
+    C1: commentary
+        _______ And⏑we⏑wrap⏑that⏑in⏑the⏑usual⏑C⏑interface.
+    C2: holon (used sequentially)
+        0000025 int⏑main(int⏑argc,⏑char⏑*argv[])⏑{
+        0000026 ⇢   printf("e⏑=⏑%.10g\n",⏑compute_e());
+        0000027 ⇢   return⏑0;⏑⏑⏑⏑⏑⏑⏑
+        comment ' this is **very important** to ensure a clean exit ' /* */
+        0000028 }

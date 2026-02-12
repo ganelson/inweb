@@ -14,7 +14,7 @@ which is a list of |ls_chunk|, which is a list of |ls_line|.
 
 =
 typedef struct ls_unit {
-	struct ls_notation *syntax; /* what notation is this unit written with? */
+	struct ls_notation *unit_notation; /* what notation is this unit written with? */
 	struct programming_language *language; /* what language is the program in? */
 
 	struct ls_section *owning_section; /* can be NULL if not read from a web */
@@ -55,10 +55,10 @@ need to get that from somewhere, too. Either or both can be |NULL|, which
 means the current working directory.
 
 =
-ls_unit *LiterateSource::begin_unit(ls_section *S, ls_notation *syntax,
+ls_unit *LiterateSource::begin_unit(ls_section *S, ls_notation *ntn,
 	programming_language *language, pathname *extracts_path, ls_web *context) {
 	ls_unit *lsu = CREATE(ls_unit);
-	lsu->syntax = syntax;
+	lsu->unit_notation = ntn;
 	lsu->language = language;
 
 	lsu->owning_section = S;
@@ -142,7 +142,7 @@ provided by the previous line segment's classification.
 		else last_cf = lsu->temp_last_line->classification;
 		int sff = FALSE;
 		if ((lsu->context) && (lsu->context->single_file)) sff = TRUE;
-		res = LineClassification::classify(lsu->syntax, text, &last_cf, sff);
+		res = LineClassification::classify(lsu->unit_notation, text, &last_cf, sff);
 		if ((sff) && (res.cf.major == COMMENTARY_MAJLC) && (res.cf.minor == PURPOSE_MINLC)) {
 			Bibliographic::set_datum(lsu->context, I"Purpose", res.cf.operand1);
 		}
@@ -506,7 +506,7 @@ altogether, so that nobody uses it by mistake.
 			chunk->first_line->prev_line = NULL;
 			chunk->last_line->next_line = NULL;
 			if (chunk->chunk_type == COMMENTARY_LSCT)
-				LiterateSource::process_chunk(chunk, lsu->syntax->commentary_preprocessor);
+				LiterateSource::process_chunk(chunk, lsu->unit_notation->commentary_preprocessor);
 		}
 
 	lsu->temp_first_line = NULL; lsu->temp_last_line = NULL;
@@ -514,7 +514,7 @@ altogether, so that nobody uses it by mistake.
 @<Index from the line@> =
 	ls_index_mark *ie;
 	LOOP_OVER_LINKED_LIST(ie, ls_index_mark, line->index_marks) {
-		LineClassification::postprocess(ie->text, lsu->syntax);
+		WebNotation::postprocess(ie->text, lsu->unit_notation);
 		WebIndexing::index_at(ie, par);
 	}
 
@@ -659,6 +659,7 @@ typedef struct ls_chunk {
 	chunk->carousel_caption_position = 0;
 
 	chunk->first_line = line;
+	if (line) line->owning_chunk = chunk;
 	chunk->last_line = line;
 
 @<Add this line to the current chunk@> =
@@ -802,12 +803,13 @@ empty as a result.
 	}
 	if (chunk->first_line == NULL) LiterateSource::remove_chunk_from_par(chunk, par);
 	else {
-		if ((WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_ABOVE_WSF)) &&
-			(WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_BELOW_WSF)))
+		int trim_above = lsu->unit_notation->holons_trimmed_above,
+		    trim_below = lsu->unit_notation->holons_trimmed_below;
+		if ((trim_above) && (trim_below))
 			@<Trim whitespace lines from start or end of this chunk@>
-		else if (WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_ABOVE_WSF))
+		else if (trim_above)
 			@<Trim whitespace lines from start of this chunk@>
-		else if (WebNotation::supports(lsu->syntax, TRIMMED_HOLONS_BELOW_WSF))
+		else if (trim_below)
 			@<Trim whitespace lines from end of this chunk@>;
 	}
 
@@ -829,6 +831,7 @@ for it.
 	if (last_dark == NULL) internal_error("definition without header");
 	chunk->last_line = last_dark;
 	chunk->last_line->next_line = NULL;
+	chunk->last_line->owning_chunk = chunk;
 	match_results mr = Regexp::create_mr();
 	TEMPORARY_TEXT(defn)
 	WRITE_TO(defn, "%S", chunk->first_line->classification.operand1);
@@ -840,7 +843,7 @@ for it.
 	}
 	chunk->code_excerpt = CodeExcerpts::new();
 	CodeExcerpts::parse(lsu->local_holon_namespace, chunk->code_excerpt, chunk->first_line, defn,
-		lsu->syntax, lsu->language);
+		lsu->unit_notation, lsu->language);
 	TEMPORARY_TEXT(mini_tangle)
 	holon_splice *hs;
 	LOOP_OVER_CODE_EXCERPT(hs, chunk->code_excerpt) {
@@ -963,8 +966,8 @@ we sometimes read this as a purpose written in plain text, and remove the para.
 @ This is all a little clumsy, but it'll do:
 
 @<Parse out the optional undisplayed and hyperlinked keywords@> =
-	if (chunk->metadata.options_bitmap & HYPERLINKED_CHMOB) chunk->hyperlinked = TRUE;
-	if (chunk->metadata.options_bitmap & UNDISPLAYED_CHMOB) chunk->plainer = TRUE;
+	if (chunk->metadata.options_bitmap & HYPERLINKED_LSNROBIT) chunk->hyperlinked = TRUE;
+	if (chunk->metadata.options_bitmap & UNDISPLAYED_LSNROBIT) chunk->plainer = TRUE;
 
 @ So, each chunk which contains a fragment of the actual program code (rather
 than, say, a definition, or commentary, or an extract of other code not to be
@@ -972,7 +975,8 @@ compiled) must be paired to an |ls_holon| structure. If there's a holon
 declaration line (i.e., a name for it) anywhere in the paragraph prior to
 this chunk, we'll use that as the name; otherwise it will go nameless.
 
-This process removes all |EARLY_MINLC| or |VERY_EARLY_MINLC| lines.
+This process removes all |EARLY_MINLC|, |VERY_EARLY_MINLC| or corresponding late
+minors.
 
 We finish up by scanning the holons in detail, and resolving cross-references
 between them, but that's another story: see //Holons::scan//.
@@ -1021,6 +1025,14 @@ between them, but that's another story: see //Holons::scan//.
 						@<Assign a holon to this chunk@>;
 						chunk->holon->placed_very_early = TRUE;
 						chunk->metadata.minor = CODE_MINLC; break;
+					case LATE_MINLC:
+						@<Assign a holon to this chunk@>;
+						chunk->holon->placed_late = TRUE;
+						chunk->metadata.minor = CODE_MINLC; break;
+					case VERY_LATE_MINLC:
+						@<Assign a holon to this chunk@>;
+						chunk->holon->placed_very_late = TRUE;
+						chunk->metadata.minor = CODE_MINLC; break;
 				}
 			}
 		}
@@ -1035,13 +1047,13 @@ between them, but that's another story: see //Holons::scan//.
 				(chunk->chunk_type == HOLON_FILE_ADDENDUM_LSCT))
 				LiterateSource::remove_chunk_from_par(chunk, par);
 	}
-	Holons::scan(lsu->local_holon_namespace, lsu->syntax, lsu->language);
+	Holons::scan(lsu->local_holon_namespace);
 
 @<Assign a holon to this chunk@> =
 	TEMPORARY_TEXT(sanitised)
 	Holons::sanitise_name(sanitised, holon_name);
 	chunk->holon = Holons::new(chunk, sanitised, addendum_flag, file_holon_flag,
-		lsu->local_holon_namespace, holon_bitmap, lsu->syntax, lsu->language);
+		lsu->local_holon_namespace, holon_bitmap, lsu->unit_notation, lsu->language);
 	DISCARD_TEXT(sanitised)
 	if (chunk->owner->holon)
 		WebErrors::record_at(I"two code fragments in the same paragraph",
@@ -1089,7 +1101,7 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 				TEMPORARY_TEXT(concatenated)
 				for (ls_line *line = chunk->first_line; line; line = line->next_line)
 					WRITE_TO(concatenated, "%S\n", line->classification.operand1);
-				LineClassification::postprocess(concatenated, lsu->syntax);
+				WebNotation::postprocess(concatenated, lsu->unit_notation);
 				chunk->as_markdown = Markdown::parse_extended(concatenated, variation);
 				ParagraphTags::autotag(NULL, par, chunk->as_markdown);
 				DISCARD_TEXT(concatenated)
@@ -1098,7 +1110,7 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 				(Conventions::get_int(lsu->context, HOLONS_STYLED_LSCONVENTION))) {
 				TEMPORARY_TEXT(pp)
 				Str::copy(pp, chunk->holon->holon_name);
-				LineClassification::postprocess(pp, lsu->syntax);
+				WebNotation::postprocess(pp, lsu->unit_notation);
 				markdown_item *md = Markdown::parse_extended(pp, variation);
 				if (md->type == DOCUMENT_MIT) md = md->down;
 				if (md->type == PARAGRAPH_MIT) md = md->down;
@@ -1113,7 +1125,7 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 					if (hs->type == COMMENT_LSHST) {
 						TEMPORARY_TEXT(pp)
 						Str::copy(pp, hs->texts[0]);
-						LineClassification::postprocess(pp, lsu->syntax);
+						WebNotation::postprocess(pp, lsu->unit_notation);
 						markdown_item *md = Markdown::parse_extended(pp, variation);
 						if (md->type == DOCUMENT_MIT) md = md->down;
 						if (md->type == PARAGRAPH_MIT) md = md->down;
@@ -1244,9 +1256,9 @@ The result will be a unit of one paragraph, holding one chunk, corresponding
 to a single nameless holon.
 
 =
-ls_unit *LiterateSource::code_fragment_to_unit(ls_notation *syntax,
+ls_unit *LiterateSource::code_fragment_to_unit(ls_notation *ntn,
 	programming_language *language, text_stream *code, text_file_position tfp) {
-	ls_unit *lsu = LiterateSource::begin_unit(NULL, syntax, language, NULL, NULL);
+	ls_unit *lsu = LiterateSource::begin_unit(NULL, ntn, language, NULL, NULL);
 	LiterateSource::feed_paragraph_start(lsu, &tfp);
 	LiterateSource::feed_code_start(lsu, &tfp);
 	TEMPORARY_TEXT(buffer)
@@ -1273,7 +1285,7 @@ Units first:
 
 =
 text_stream *LiterateSource::unit_namespace(ls_unit *lsu) {
-	if ((lsu) && (lsu->heading.minor == SECTION_HEADING_MINLC)) return lsu->heading.operand2;
+	if ((lsu) && (lsu->heading.minor == SECTION_HEADING_MINLC)) return lsu->heading.operand4;
 	return NULL;
 }
 
@@ -1300,8 +1312,16 @@ text_stream *LiterateSource::par_title(ls_paragraph *par) {
 }
 
 int LiterateSource::par_depth(ls_paragraph *par) {
-	if (Str::len(par->titling.operand1) > 0)
-		return par->titling.options_bitmap - 100;
+	if (Str::len(par->titling.operand1) > 0) {
+		int B = par->titling.options_bitmap;
+		if (B & SUPERHEADING_LSNROBIT) return -1;
+		if (B & LEVEL1_LSNROBIT) return 1;
+		if (B & LEVEL2_LSNROBIT) return 2;
+		if (B & LEVEL3_LSNROBIT) return 3;
+		if (B & LEVEL4_LSNROBIT) return 4;
+		if (B & LEVEL5_LSNROBIT) return 5;
+		return 0;
+	}
 	return 1000;
 }
 
@@ -1414,7 +1434,7 @@ typedef struct ls_footnote {
 		if (chunk->chunk_type == COMMENTARY_LSCT)
 			for (ls_line *line = chunk->first_line; line; line = line->next_line) {
 				Str::clear(before); Str::clear(cue); Str::clear(after);
-				if (LiterateSource::detect_footnote(par->owning_unit->syntax, line->text, before, cue, after)) {
+				if (LiterateSource::detect_footnote(par->owning_unit->unit_notation, line->text, before, cue, after)) {
 					int this_is_a_cue = FALSE, w = 0;
 					LOOP_THROUGH_TEXT(pos, before) {
 						inchar32_t c = Str::get(pos);
@@ -1455,9 +1475,9 @@ typedef struct ls_footnote {
 @ Where:
 
 =
-int LiterateSource::detect_footnote(ls_notation *S,
+int LiterateSource::detect_footnote(ls_notation *ntn,
 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) {
-	if (WebNotation::supports(S, FOOTNOTES_IN_COMMENTARY_WSF)) {
+	if (ntn->footnotes_in_commentary) {
 		text_stream *on_notation = I"[";
 		text_stream *off_notation = I"]";
 		int N1 = Str::len(on_notation);
@@ -1537,7 +1557,11 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	if (lsu->heading.minor == SECTION_HEADING_MINLC) {
 		WRITE("heading '%S'", lsu->heading.operand1);
 		if (Str::len(lsu->heading.operand2) > 0)
-			WRITE(", namespace '%S'", lsu->heading.operand2);
+			WRITE(", author '%S'", lsu->heading.operand2);
+		if (Str::len(lsu->heading.operand3) > 0)
+			WRITE(", version '%S'", lsu->heading.operand3);
+		if (Str::len(lsu->heading.operand4) > 0)
+			WRITE(", namespace '%S'", lsu->heading.operand4);
 		WRITE("\n");
 	}
 	if (lsu->purpose.minor == PURPOSE_MINLC) {
@@ -1644,6 +1668,8 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 				case CODE_MINLC: WRITE("code "); break;
 				case EARLY_MINLC: WRITE("early code "); break;
 				case VERY_EARLY_MINLC: WRITE("very early code "); break;
+				case LATE_MINLC: WRITE("late code "); break;
+				case VERY_LATE_MINLC: WRITE("very late code "); break;
 				case TEXT_AS_MINLC: WRITE("code ");
 					if (Str::len(chunk->metadata.operand1) > 0)
 						WRITE("in %S ", chunk->metadata.operand1); break;
@@ -1722,12 +1748,13 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 			case DEFINITIONS_HERE_MAJLC:
 				break;
 			default:
-				WRITE("class %d/%d: %S / %S / %S\n",
+				WRITE("class %d/%d: %S / %S / %S / %S\n",
 					line->classification.major,
 					line->classification.minor,
 					line->classification.operand1,
 					line->classification.operand2,
-					line->classification.operand3);
+					line->classification.operand3,
+					line->classification.operand4);
 				break;
 		}
 	}

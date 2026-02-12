@@ -11,13 +11,6 @@ finite_state_machine *WebIndexing::make_indexing_machine(linked_list *convention
 	fsm_state *base_state = FSM::new_state(I"unindexed");
 	finite_state_machine *machine = FSM::new_machine(base_state);
 	
-/*	text_stream *magic = Conventions::get_textual_from(conventions, LITERAL_CHARACTERS_LSCONVENTION);
-	text_stream *paraphrase = Conventions::get_textual2_from(conventions, LITERAL_CHARACTERS_LSCONVENTION);
-	if ((Str::len(magic) > 0) && (Str::len(paraphrase) > 0)) {
-		FSM::add_transition_spelling_out_with_events(base_state,
-			paraphrase, base_state, NO_FSMEVENT, LITERAL_CHARACTER_FSMEVENT);
-	}
-*/
 	text_stream *on = Conventions::get_textual_from(conventions, COMMENTS_LSCONVENTION);
 	text_stream *off = Conventions::get_textual2_from(conventions, COMMENTS_LSCONVENTION);
 	int on_event = WEB_COMMENT_START_FSMEVENT, off_event = WEB_COMMENT_END_FSMEVENT;
@@ -109,10 +102,10 @@ ls_index_mark *WebIndexing::new_mark(text_stream *text, int style, int important
 	return ie;
 }
 
-linked_list *WebIndexing::index_from_line(OUTPUT_STREAM, text_stream *line, ls_notation *syntax, text_stream **error) {
+linked_list *WebIndexing::index_from_line(OUTPUT_STREAM, text_stream *line, ls_notation *ntn, text_stream **error) {
 	linked_list *L = NULL;
 	TEMPORARY_TEXT(control_text)
-	finite_state_machine *machine = syntax->indexing_machine;
+	finite_state_machine *machine = ntn->indexing_machine;
 	if (machine) {
 		FSM::reset_machine(machine);
 		text_stream *to = OUT;

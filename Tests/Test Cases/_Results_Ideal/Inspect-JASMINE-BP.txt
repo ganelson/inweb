@@ -1,0 +1,56 @@
+begin
+directory: jasmine
+file: jasmine/Contents.inweb
+    Title: Jasmine
+    Author: Graham Nelson
+    Notation: SemiliterateC
+    Language: C
+    Purpose: Exemplary.
+
+    Sections
+    	main.c
+
+    Notation "SemiliterateC" {
+    	classify
+    		/// # MATERIAL      ==> beginparagraph
+    		/// MATERIAL        ==> commentary
+    		///                 ==> commentary
+    		MATERIAL		    ==> code
+    	end
+    	
+    	Conventions {
+    		comments can contain styling
+    	}
+    }
+
+file: jasmine/main.c
+    /// # Getting started
+
+    #include<stdio.h>
+
+    /// # Numerical approximations
+    ///
+    /// The actual work is done here, and relies on the power series expansion:
+    /// $$ e^x = \sum_{n=0}^\infty {{x^n}\over{n!}} $$
+    /// so that we can at least hope that
+    /// $$ e \approx  \sum_{n=0}^{10} {{1}\over{n!}} $$
+
+    double compute_e(void) {
+    	double e = 0.0, factorial = 1.0;
+    	for (int n=0; n<=20; n++) {
+    		if (n > 0) factorial *= n;
+    		e += 1.0/factorial;
+    	}
+    	return e;
+    }
+
+    /// # Main
+    ///
+    /// And we wrap that in the usual C interface.
+
+    int main(int argc, char *argv[]) {
+    	printf("e = %.10g\n", compute_e());
+    	return 0;       /* this is **very important** to ensure a clean exit */
+    }
+
+end

@@ -456,7 +456,7 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 @<Act on this tangler command@> =
 	ls_chunk *chunk = hs->line->owning_chunk;
 	int handled = LanguageMethods::special_tangle_command(OUT, docket->target->tangle_language, hs->texts[0]);
-	ls_notation *S = chunk->owner->owning_unit->syntax;
+	ls_notation *ntn = chunk->owner->owning_unit->unit_notation;
 	if (handled == FALSE) {
 		ls_section *sect = LiterateSource::section_of_par(chunk->owner);
 		if (sect) {
@@ -468,8 +468,8 @@ passes straight through. So |[[water]]| becomes just |[[water]]|.
 		}
 	}
 	if (handled == FALSE) {
-		WRITE("%S%S%S", WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 1),
-			hs->texts[0], WebNotation::notation(S, METADATA_IN_STRINGS_WSF, 2));
+		WRITE("%S%S%S", WebNotation::left(ntn, METADATA_IN_STRINGS_NTNMARKER),
+			hs->texts[0], WebNotation::right(ntn, METADATA_IN_STRINGS_NTNMARKER));
 	}
 
 @<Act on this verbatim@> =
@@ -491,7 +491,7 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 	tangle_docket *docket, ls_line *lst) {
 	ls_unit *lsu = LiterateSource::unit_of_line(lst);
 	finite_state_machine *machine =
-		HolonSyntax::get(lsu->syntax, docket->target->tangle_language);
+		HolonSyntax::get(lsu->unit_notation, docket->target->tangle_language);
 	FSM::reset_machine(machine);
 	TEMPORARY_TEXT(name)
 	TEMPORARY_TEXT(output)
@@ -506,8 +506,8 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 				break;
 			}
 			case NAME_END_FSMEVENT: {
-				int ho_len = Str::len(WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 1));
-				int hc_len = Str::len(WebNotation::notation(lsu->syntax, NAMED_HOLONS_WSF, 2));
+				int ho_len = Str::len(WebNotation::left(lsu->unit_notation, NAMED_HOLONS_NTNMARKER));
+				int hc_len = Str::len(WebNotation::right(lsu->unit_notation, NAMED_HOLONS_NTNMARKER));
 				Str::truncate(name, Str::len(name) - hc_len);
 				ls_holon *holon = Holons::find_holon(name, lsu->local_holon_namespace, FALSE, NULL);
 				if (holon) {
@@ -526,8 +526,8 @@ void Tangler::tangle_literate_code_fragment(OUTPUT_STREAM, text_stream *code,
 				break;
 			}
 			case FILE_NAME_END_FSMEVENT: {
-				int ho_len = Str::len(WebNotation::notation(lsu->syntax, FILE_NAMED_HOLONS_WSF, 1));
-				int hc_len = Str::len(WebNotation::notation(lsu->syntax, FILE_NAMED_HOLONS_WSF, 2));
+				int ho_len = Str::len(WebNotation::left(lsu->unit_notation, FILE_NAMED_HOLONS_NTNMARKER));
+				int hc_len = Str::len(WebNotation::right(lsu->unit_notation, FILE_NAMED_HOLONS_NTNMARKER));
 				Str::truncate(name, Str::len(name) - hc_len);
 				ls_holon *holon = Holons::find_holon(name, lsu->local_holon_namespace, FALSE, NULL);
 				if (holon) {

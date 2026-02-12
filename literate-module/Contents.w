@@ -25,6 +25,7 @@ Chapter 2: Literate Code
 	Literate Source
 	Paragraph Tags
 	Line Classification
+	Line Classifiers
 	Web Errors
 	Web Notations
 	Holons

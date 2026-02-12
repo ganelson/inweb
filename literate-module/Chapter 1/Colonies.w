@@ -1069,7 +1069,7 @@ void Colonies::write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 		ls_web *W = CM->loaded;
 		TextualTables::begin_row(T);
 		WRITE_TO(TextualTables::next_cell(T), "%s%S", (W->is_page)?"*":"", CM->name);
-		WRITE_TO(TextualTables::next_cell(T), "%S", W->web_syntax->name);
+		WRITE_TO(TextualTables::next_cell(T), "%S", W->web_notation->name);
 		WRITE_TO(TextualTables::next_cell(T), "%S", W->web_language->language_name);
 		if (include_modules) {
 			int nt = WebModules::no_dependencies(W->main_module);

@@ -1,0 +1,3 @@
+# About Patterns
+
+To follow.

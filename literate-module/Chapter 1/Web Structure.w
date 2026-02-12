@@ -25,7 +25,7 @@ typedef struct ls_web {
 	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
 	struct linked_list *conventions; /* of |ls_conventions| */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
-	struct ls_notation *web_syntax; /* which version syntax the sections will have */
+	struct ls_notation *web_notation; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct ls_index *index;
 
@@ -67,11 +67,19 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 		W->contents_filename = D->associated_file;
 	} else {
 		W->path_to_web = Filenames::up(D->associated_file);
-		W->single_file = D->associated_file;
-		W->contents_filename = NULL;
+		TEMPORARY_TEXT(ext)
+		Filenames::write_extension(ext, D->associated_file);
+		if (Str::eq_insensitive(ext, I".inwebc")) {
+			W->single_file = NULL;
+			W->contents_filename = D->associated_file;
+		} else {
+			W->single_file = D->associated_file;
+			W->contents_filename = NULL;
+		}
+		DISCARD_TEXT(ext)
 	}
 	W->version_number = VersionNumbers::null();
-	W->web_syntax = NULL;
+	W->web_notation = NULL;
 	W->chaptered = FALSE;
 	W->index = WebIndexing::new_index();
 	W->chapters = NEW_LINKED_LIST(ls_chapter);
@@ -100,7 +108,7 @@ ls_web *WebStructure::read_fully(ls_colony *C, wcl_declaration *D,
 	int enumerating, int weaving, int verbosely) {
 	ls_web *W = WebStructure::from_declaration(D);
 	Conventions::establish(W, C);
-	WebNotation::prepare_for(W->web_syntax, W);
+	WebNotation::adapt_to_conventions(W->web_notation, W->conventions);
 	WebStructure::read_web_source(W, verbosely, weaving);
 	@<Write the Inweb Version bibliographic datum@>;
 	CodeAnalysis::initialise_analysis_details(W);
@@ -257,9 +265,9 @@ void WebStructure::print_web_identity(ls_web *W) {
 		PRINT(" (%S program", WebStructure::web_language(W)->language_name);
 		commented = TRUE;
 	}
-	if (W->web_syntax) {
+	if (W->web_notation) {
 		if (commented) PRINT(" in "); else PRINT(" (");
-		PRINT("%S notation", W->web_syntax->name);
+		PRINT("%S notation", W->web_notation->name);
 		commented = TRUE;
 	}
 	if (commented) PRINT(")");
@@ -476,6 +484,7 @@ The contents page for a large web is usually at a fixed leafname, so:
 int WebStructure::directory_looks_like_a_web(pathname *P) {
 	if (TextFiles::exists(Filenames::in(P, I"Contents.w"))) return TRUE;
 	if (TextFiles::exists(Filenames::in(P, I"Contents.inweb"))) return TRUE;
+	if (TextFiles::exists(Filenames::in(P, I"Contents.inwebc"))) return TRUE;
 	return FALSE;
 }
 
@@ -501,7 +510,7 @@ ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
 		SingleFileWebs::reconnoiter(W);
 	else
 		WebContents::read_contents_page(W, W->main_module, TRUE, NULL);
-	if (W->web_syntax == NULL) internal_error("no notation for web");
+	if (W->web_notation == NULL) internal_error("no notation for web");
 
 	Bibliographic::check_required_data(W);
 	BuildFiles::set_bibliographic_data_for(W);
@@ -550,7 +559,7 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	if ((M) && (M->module_location))
 		P = M->module_location; /* references are relative to module */
 
-	S->literate_source = LiterateSource::begin_unit(S, W->web_syntax, WebStructure::section_language(S), P, W);
+	S->literate_source = LiterateSource::begin_unit(S, W->web_notation, WebStructure::section_language(S), P, W);
 
 	if (W->is_page) @<Insert an implied purpose, for a single-file web@>;
 

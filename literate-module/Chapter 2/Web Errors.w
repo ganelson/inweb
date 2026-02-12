@@ -19,6 +19,8 @@ typedef struct ls_error {
 void WebErrors::record_at(text_stream *message, ls_line *lst) {
 	if (lst == NULL) {
 		internal_error("unlocated error");
+	} else if (lst->owning_chunk == NULL) {
+		internal_error("error at line without chunk");
 	} else {
 		ls_unit *lsu = lst->owning_chunk->owner->owning_unit;
 		WebErrors::record_in_unit(message, lst, lsu);

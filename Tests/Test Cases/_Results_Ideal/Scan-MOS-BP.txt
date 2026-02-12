@@ -1,0 +1,210 @@
+begin
+directory: mos
+file: mos/Contents.inweb
+    Title: MOS
+    Author: Acorn Computers
+    Notation: Mossy
+    Language: ACME
+    Purpose: The operating system used by the 1982 BBC Micro.
+    Version Number: 1.2
+
+    Sections
+    	"VDU" at "vdu.a"
+    	"Star commands" at "star.a"
+
+    Notation "Mossy" {
+    	recognise .mossy
+    	recognise .*.mossy
+
+    	classify
+    		; Chapter: MATERIAL ==> title
+    		; *************************************************************************************** ==> beginparagraph if in extract context
+    		; *************************************************************************************** ==> commentary
+    		; MATERIAL ==> commentary
+    		; ==> commentary
+    		MATERIAL									==> code
+    	end
+    }
+
+file: mos/star.a
+    ; ***************************************************************************************
+    ; ***************************************************************************************
+    ;
+    ; Chapter: Star commands
+    ;
+    ; ***************************************************************************************
+    ; ***************************************************************************************
+
+    ; ***************************************************************************************
+    ;
+    ; Clear four consecutive bytes in the OSFILE block
+    ;
+    ; The data required by the OSFILE call is stored at .osfileBlockStart, is 18 bytes long, and
+    ; is as follows:
+    ;
+    ;       byte      description
+    ;       0-1       address of filename
+    ;       2-5       load address
+    ;       6-9       execution address
+    ;       10-13     start address (or length)
+    ;       14-17     end address (or file attributes)
+    ;
+    ; This call clears one of these 4 byte addresses.
+    ;
+    ; On Entry:
+    ;       X is the start offset within the OSFILE block
+    ; On Exit:
+    ;       Preserves A,X,Y
+    ; ***************************************************************************************
+    .clearOSFILEAddress
+        PHA                                                 ; push A
+        LDA #0                                              ; A=0
+        STA .osfileBlockStart + 0,X                         ; clear osfile control block workspace
+        STA .osfileBlockStart + 1,X                         ;
+        STA .osfileBlockStart + 2,X                         ;
+        STA .osfileBlockStart + 3,X                         ;
+        PLA                                                 ; get back A
+        RTS                                                 ;
+
+    ; ***************************************************************************************
+    ;
+    ; Shift one hex digit into an OSFILE address
+    ;
+    ; Used as part of .readOSFILEAddress
+    ;
+    ; On Entry:
+    ;       A contains hex digit 0-15
+    ;       X contains the offset into the .osfileBlockStart for the address to be updated
+    ; On Exit:
+    ;       The four byte address at .osfileBlockStart+X is shifted four binary bits and the new
+    ;       digit is inserted at the least significant end.
+    ;       Preserves Y
+    ; ***************************************************************************************
+    .shiftDigitIntoAddress
+        STY .tempWorkspaceE6                                ; remember Y
+        ROL                                                 ; A=A*2
+        ROL                                                 ; *4
+        ROL                                                 ; *8
+        ROL                                                 ; *16
+        LDY #4                                              ; Y=loop counter
+    -
+        ROL                                                 ; A=A*32
+        ROL .osfileBlockStart + 0,X                         ; shift bit 7 of A into shift register
+        ROL .osfileBlockStart + 1,X                         ; and
+        ROL .osfileBlockStart + 2,X                         ; shift
+        ROL .osfileBlockStart + 3,X                         ; along
+        BCS .brkBadAddress                                  ; if (carry set on exit, i.e. register has overflowed) then branch ('Bad address' error)
+        DEY                                                 ; decrement Y
+        BNE -                                               ; if (Y > 0) then branch (do another shift)
+
+        LDY .tempWorkspaceE6                                ; recall original Y
+        RTS                                                 ;
+
+
+    ; ***************************************************************************************
+    ;
+    ;   *LOAD
+    ;
+    ; On Entry:
+    ;       XY = address of rest of command line
+    ;
+    ; ***************************************************************************************
+    .starLoad
+        LDA #$FF                                            ; signal that load is being performed
+
+
+file: mos/vdu.a
+    ; ***************************************************************************************
+    ; ***************************************************************************************
+    ;
+    ; Chapter: VDU
+    ;
+    ; ***************************************************************************************
+    ; ***************************************************************************************
+
+    ; ***************************************************************************************
+    ;
+    ;   VDU 1       Send next byte to printer only
+    ;
+    ; ***************************************************************************************
+    .vdu1EntryPoint
+        TAX                                                 ; remember A
+        LDA .vduStatusByte                                  ; get VDU status byte
+        LSR                                                 ; get bit 0 into carry (printer enabled bit)
+        BCC .exit                                           ; if (printer not enabled) then branch (exit)
+        TXA                                                 ; restore A
+        JMP .sendValidByteToPrinter                         ; send byte in A (next byte) to printer
+
+    ; ***************************************************************************************
+    .explicitAddressNoParameters
+        STA .vduJumpVectorHigh                              ; upper byte of link address
+        TYA                                                 ; restore A (the VDU number)
+
+        ; set carry if VDU number is within range 8-13 (cursor movement)
+        CMP #8                                              ;
+        BCC +                                               ; if (VDU number < 8) then branch (carry clear)
+        EOR #$FF                                            ; invert value
+        CMP #$F2                                            ; if (VDU number > 13) then clear carry
+        EOR #$FF                                            ; re-invert value back again
+
+    +
+        BIT .vduStatusByte                                  ; test VDU status byte
+        BMI .checkForVDUReenable                            ; if (VDU disabled) then branch
+        PHP                                                 ; push flags
+        JSR .executeRequiredVDUFunction                     ; execute required function
+        PLP                                                 ; pull flags back
+        BCC +                                               ; if (not VDU 8-13 cursor movement) then branch (skip 'printer enabled' check)
+        ; fall through...
+
+    ; ***************************************************************************************
+    .exitVDUCHR
+        LDA .vduStatusByte                                  ; read VDU status byte
+        LSR                                                 ; carry is set if printer is enabled
+    +
+        BIT .vduStatusByte                                  ; test VDU status byte
+        BVC .exit                                           ; if (no cursor editing mode) then branch
+        ; fall through...
+
+    ; ***************************************************************************************
+    .reswapCursorsBack
+        JSR .restoreWriteCursor                             ; restore normal write cursor
+
+    .exchangeTextCursorAndInputCursorValues
+        PHP                                                 ; save flags
+        PHA                                                 ; save A
+        LDX #.vduTextCursorXPosition        - .vduVariablesStart    ; offset within VDU variables for text cursor position
+        LDY #.vduTextInputCursorXCoordinate - .vduVariablesStart    ; offset within VDU variables for text input cursor position
+        JSR .exchangeTwoVDUBytes                            ; exchange current text cursor coordinates with text input cursor coordinates
+        JSR .setTextCursorScreenAddresses                   ; set cursor screen addresses
+        JSR .setHardwareCursorAddress                       ; set cursor position
+        LDA .vduStatusByte                                  ; get VDU status byte
+        EOR #%00000010                                      ; invert bit 1 to allow or inhibit scrolling
+        STA .vduStatusByte                                  ; store VDU status byte
+        PLA                                                 ; restore flags
+        PLP                                                 ; restore A
+        RTS                                                 ;
+
+    ; ***************************************************************************************
+    .checkForVDUReenable
+        EOR #6                                              ; check for VDU 6 (to reenable output to the display)
+        BNE .exit1                                          ; if (not VDU 6) then branch (exit)
+        LDA #%01111111                                      ; set A to clear the top bit of the VDU status byte
+        BCC .clearVDUStatusByteFlags                        ; ALWAYS branch, clearing the top bit (enabling output to the display again)
+
+    ; ***************************************************************************************
+    ;
+    ; Check whether the text or graphics cursor is active
+    ;
+    ; On Exit:
+    ;    A = 0   if text cursor is active           (Z flag set)
+    ;    A = $20 otherwise (graphics cursor active) (Z flag clear)
+    ;
+    ; ***************************************************************************************
+    .isTextCursorActive
+        LDA .vduStatusByte                                  ; VDU status byte
+        AND #%00100000                                      ; test bit 5 of status byte
+    .exit1
+        RTS                                                 ;
+
+
+end

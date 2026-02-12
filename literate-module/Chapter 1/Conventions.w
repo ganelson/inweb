@@ -321,6 +321,8 @@ text_stream *Conventions::convert_from_angled(text_stream *text) {
 				i += 8;
 			} else if (Str::includes_at(text, i, I"<SPACE>")) {
 				PUT('\n'); i += 6;
+			} else if (Str::includes_at(text, i, I"<TAB>")) {
+				PUT('\t'); i += 4;
 			} else if (Str::includes_at(text, i, I"<LEFTANGLE>")) {
 				PUT('<'); i += 10;
 			} else if (Str::includes_at(text, i, I"<RIGHTANGLE>")) {
@@ -630,7 +632,7 @@ ls_conventions *Conventions::generic(void) {
 		Conventions::set_int(generic, TEX_NOTATION_LSCONVENTION, TRUE);
 		Conventions::set_int(generic, FOOTNOTES_LSCONVENTION, TRUE);
 		Conventions::set_int(generic, HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION, YES_ABBREVCHOICE);
-		Conventions::set_int(generic, COMMENTARY_MARKUP_LSCONVENTION, SIMPLIFIED_COMMENTARY_MARKUPCHOICE);
+		Conventions::set_int(generic, COMMENTARY_MARKUP_LSCONVENTION, MARKDOWN_COMMENTARY_MARKUPCHOICE);
 		Conventions::set_int(generic, SUMMARY_UNDER_TITLE_LSCONVENTION, NO_SUMMARYCHOICE);
 		Conventions::set_int(generic, LIBRARY_INCLUDES_EARLY_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, TYPEDEFS_EARLY_LSCONVENTION, FALSE);
@@ -656,6 +658,13 @@ ls_conventions *Conventions::generic(void) {
 	return generic;
 }
 
+linked_list *Conventions::generic_set(void) {
+	linked_list *conventions = NEW_LINKED_LIST(ls_conventions);
+	ls_conventions *generic = Conventions::generic();
+	ADD_TO_LINKED_LIST(generic, ls_conventions, conventions);
+	return conventions;
+}
+
 linked_list *Conventions::applicable(ls_web *W, ls_colony *C) {
 	ls_conventions *generic = Conventions::generic();
 	linked_list *L = NEW_LINKED_LIST(ls_conventions);
@@ -663,8 +672,8 @@ linked_list *Conventions::applicable(ls_web *W, ls_colony *C) {
 	if (W) {
 		programming_language *pl = W->web_language;
 		if (pl) Conventions::apply(L, pl->declaration);
-		ls_notation *N = W->web_syntax;
-		if (N) Conventions::apply(L, N->declaration);
+		ls_notation *ntn = W->web_notation;
+		if (ntn) Conventions::apply(L, ntn->declaration);
 	}
 	Conventions::set_level(WCL::global_resources_declaration(), PERSONAL_LSCONVENTIONLEVEL);
 	Conventions::apply(L, WCL::global_resources_declaration());

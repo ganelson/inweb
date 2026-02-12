@@ -340,7 +340,7 @@ void WCL::read_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	@<Divide line up as initial white space and a tail@>;
 
 	TEMPORARY_TEXT(trimmed)
-	if (Str::begins_with(tail, I"//")) skip_line = TRUE;
+	if (Str::begins_with(line, I"//")) skip_line = TRUE;
 	else if (Str::len(tail) > 0) @<Trim the line according to the correct indentation@>;
 
 	if (spaces == scanner->margin) {
@@ -913,6 +913,8 @@ wcl_declaration *WCL::read_web(pathname *P, filename *F) {
 		WCL_file = Filenames::in(P, I"Contents.w");
 		if (TextFiles::exists(WCL_file) == FALSE)
 			WCL_file = Filenames::in(P, I"Contents.inweb");
+		if (TextFiles::exists(WCL_file) == FALSE)
+			WCL_file = Filenames::in(P, I"Contents.inwebc");
 	} else internal_error("no location for web");
 
 	wcl_declaration *D = NULL;

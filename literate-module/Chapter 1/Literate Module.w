@@ -76,6 +76,7 @@ which use this module:
 @e ls_index_mark_CLASS
 @e ls_index_lemma_CLASS
 @e ls_code_excerpt_CLASS
+@e ls_classifier_CLASS
 
 @e weave_document_node_CLASS
 @e weave_head_node_CLASS
@@ -188,6 +189,7 @@ DECLARE_CLASS(ls_index)
 DECLARE_CLASS(ls_index_mark)
 DECLARE_CLASS(ls_index_lemma)
 DECLARE_CLASS(ls_code_excerpt)
+DECLARE_CLASS(ls_classifier)
 
 DECLARE_CLASS(weave_document_node)
 DECLARE_CLASS(weave_head_node)

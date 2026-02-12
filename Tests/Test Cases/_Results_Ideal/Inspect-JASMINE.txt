@@ -1,0 +1,6 @@
+web "Jasmine" (C program in SemiliterateC notation): 1 section : 3 paragraphs : 29 lines
+
+Contents:
+abbrev | section | lines
+------ | ------- | -----
+mn     | main    | 29   

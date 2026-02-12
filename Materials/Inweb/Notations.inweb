@@ -2,28 +2,28 @@ Notation "InwebClassic" {
 	recognise .w
 	recognise .*.w
 	
-	classify {
-		[SECOND] MATERIAL.                          ==> sectiontitle if on first line
-		MATERIAL.                                   ==> sectiontitle if on first line
+	classify
+		[FOURTH] MATERIAL.                          ==> title if on first line
+		MATERIAL.                                   ==> title if on first line
 	
 		@d MATERIAL(NONWHITESPACE) SECOND           ==> definition
 		@d MATERIAL                                 ==> definition
 		@define MATERIAL(NONWHITESPACE) SECOND      ==> definition
-		@default MATERIAL(NONWHITESPACE) SECOND     ==> defaultdefinition
-		@default MATERIAL                           ==> defaultdefinition
+		@default MATERIAL(NONWHITESPACE) SECOND     ==> definition with defaultoption
+		@default MATERIAL                           ==> definition with defaultoption
 		@e MATERIAL(NONWHITESPACE) from SECOND      ==> enumeration
 		@enum MATERIAL(NONWHITESPACE) from SECOND   ==> enumeration
 		@e MATERIAL                                 ==> enumeration
 		@enum MATERIAL                              ==> enumeration
 	
-		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedcodefragment
-		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedcodefragment
-		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedcodefragmentaddendum
-		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedcodefragmentaddendum
+		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
 	
 		@                                           ==> beginparagraph
-		@=                                          ==> codeextract in new paragraph
-		@ =                                         ==> codeextract in new paragraph
+		@=                                          ==> namelessholon in new paragraph
+		@ =                                         ==> namelessholon in new paragraph
 		@ RESIDUE                                   ==> beginparagraph
 		@h MATERIAL.                                ==> beginparagraph
 		@heading MATERIAL.                          ==> beginparagraph
@@ -33,19 +33,21 @@ Notation "InwebClassic" {
 		@heading MATERIAL                           ==> error "no full stop after heading text"
 	
 		>> MATERIAL                                 ==> quotation if not in extract context
-	}
+	end
 	
-	residue of beginparagraph {
-		RESIDUE <OPENTAG>MATERIAL<CLOSETAG>         ==> paragraphtag
-		<OPENTAG>MATERIAL<CLOSETAG>                 ==> paragraphtag
-	}
+	residue of beginparagraph
+		RESIDUE <OPENTAG>MATERIAL<CLOSETAG>         ==> paragraphtag if paragraph tags supported
+		<OPENTAG>MATERIAL<CLOSETAG>                 ==> paragraphtag if paragraph tags supported
+	end
 	
-	classify {
+	classify
 		=                                           ==> endextract if in extract context
-		=                                           ==> codeextract if not in extract context
-		= (code)                                    ==> codeextract
-		= (early code)                              ==> earlycodeextract
-		= (very early code)                         ==> veryearlycodeextract
+		=                                           ==> namelessholon if not in extract context
+		= (code)                                    ==> namelessholon
+		= (early code)                              ==> namelessholon with earlyholonoption
+		= (very early code)                         ==> namelessholon with veryearlyholonoption
+		= (late code)                               ==> namelessholon with lateholonoption
+		= (very late code)                          ==> namelessholon with verylateholonoption
 		= (audio MATERIAL)                          ==> audio
 		= (video MATERIAL)                          ==> video
 		= (figure MATERIAL "SECOND")                ==> figure
@@ -59,8 +61,8 @@ Notation "InwebClassic" {
 		= (carousel)                                ==> carouselslide
 		= (carousel "")                             ==> carouselslide
 		= (carousel "MATERIAL")                     ==> carouselslide
-		= (carousel "MATERIAL" above)               ==> carouselaboveslide
-		= (carousel "MATERIAL" below)               ==> carouselbelowslide
+		= (carousel "MATERIAL" above)               ==> carouselslide with captionaboveoption
+		= (carousel "MATERIAL" below)               ==> carouselslide with captionbelowoption
 		= (carousel end)                            ==> carouselend
 	
 		= (text)                                    ==> textextract
@@ -79,37 +81,37 @@ Notation "InwebClassic" {
 		= (OPTIONS text to MATERIAL)                ==> textextractto
 	
 		= (MATERIAL)                                ==> error "unknown extract or insertion"
-	}
+	end
 	
-	options of textextract {
-		hyperlinked                                 ==> hyperlinked
-		undisplayed                                 ==> undisplayed
-		hyperlinked OPTIONS                         ==> hyperlinked
-		undisplayed OPTIONS                         ==> undisplayed
+	options of textextract
+		hyperlinked                                 ==> hyperlinkedoption
+		undisplayed                                 ==> undisplayedoption
+		hyperlinked OPTIONS                         ==> hyperlinkedoption
+		undisplayed OPTIONS                         ==> undisplayedoption
 		MATERIAL                                    ==> error "unknown text option(s)"
-	}
+	end
 	
-	options of textascodeextract {
-		hyperlinked                                 ==> hyperlinked
-		undisplayed                                 ==> undisplayed
-		hyperlinked OPTIONS                         ==> hyperlinked
-		undisplayed OPTIONS                         ==> undisplayed
+	options of textascodeextract
+		hyperlinked                                 ==> hyperlinkedoption
+		undisplayed                                 ==> undisplayedoption
+		hyperlinked OPTIONS                         ==> hyperlinkedoption
+		undisplayed OPTIONS                         ==> undisplayedoption
 		MATERIAL                                    ==> error "unknown text option(s)"
-	}
+	end
 	
-	options of textextractto {
-		hyperlinked                                 ==> hyperlinked
-		undisplayed                                 ==> undisplayed
-		hyperlinked OPTIONS                         ==> hyperlinked
-		undisplayed OPTIONS                         ==> undisplayed
+	options of textextractto
+		hyperlinked                                 ==> hyperlinkedoption
+		undisplayed                                 ==> undisplayedoption
+		hyperlinked OPTIONS                         ==> hyperlinkedoption
+		undisplayed OPTIONS                         ==> undisplayedoption
 		MATERIAL                                    ==> error "unknown text option(s)"
-	}
+	end
 	
-	classify {
+	classify
 		MATERIAL                                    ==> extract if in extract context
 		MATERIAL                                    ==> definitioncontinued if in definition context
 		MATERIAL                                    ==> commentary
-	}
+	end
 	
 	Conventions {
 		commentary uses simplified markup
@@ -122,53 +124,52 @@ Notation "InwebClassic" {
 
 Notation "MarkdownCode" {
 	recognise .*.md
-	classify {
-		# "MATERIAL" by SECOND (vTHIRD)				==> titleandauthor if on first line of only file
-		# MATERIAL by SECOND (vTHIRD)				==> titleandauthor if on first line of only file
+	classify
+		# "MATERIAL" by SECOND (vTHIRD)				==> title if on first line of only file
+		# MATERIAL by SECOND (vTHIRD)				==> title if on first line of only file
 		# MATERIAL (vTHIRD)							==> title if on first line of only file
-		# "MATERIAL" by SECOND						==> titleandauthor if on first line of only file
+		# "MATERIAL" by SECOND						==> title if on first line of only file
 		# "MATERIAL"								==> title if on first line
-		# MATERIAL by SECOND						==> titleandauthor if on first line of only file
+		# MATERIAL by SECOND						==> title if on first line of only file
 		# MATERIAL									==> title if on first line
 		## RESIDUE                                  ==> beginparagraph
 		## MATERIAL                                 ==> beginparagraph
-		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedcodefragment
-		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedcodefragment
-		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS) = ==> namedcodefragment
-		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS)=  ==> namedcodefragment
-		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedcodefragmentaddendum
-		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedcodefragmentaddendum
-		MATERIAL 	                                ==> code if in indented context
+		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS) = ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS)=  ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
+		<INDENT>MATERIAL 	                        ==> code if in indented context
 		MATERIAL									==> commentary
-	}
+	end
 	
-	residue of beginparagraph {
-		RESIDUE <OPENTAG>MATERIAL<CLOSETAG>         ==> paragraphtag
-		<OPENTAG>MATERIAL<CLOSETAG>                 ==> paragraphtag
+	residue of beginparagraph
+		RESIDUE <OPENTAG>MATERIAL<CLOSETAG>         ==> paragraphtag if paragraph tags supported
+		<OPENTAG>MATERIAL<CLOSETAG>                 ==> paragraphtag if paragraph tags supported
 		MATERIAL									==> paragraphtitling
-	}
+	end
 	
-	options of namedcodefragment {
-		webwide                                     ==> webwideholon
-		tangled very early                          ==> veryearlyholon
-		tangled early                               ==> earlyholon
-		tangled late                                ==> lateholon
-		tangled very late                           ==> verylateholon
-		webwide, OPTIONS                            ==> webwideholon
-		tangled very early, OPTIONS                 ==> veryearlyholon
-		tangled early, OPTIONS                      ==> earlyholon
-		tangled late, OPTIONS                       ==> lateholon
-		tangled very late, OPTIONS                  ==> verylateholon
-		webwide and OPTIONS                         ==> webwideholon
-		tangled very early and OPTIONS              ==> veryearlyholon
-		tangled early and OPTIONS                   ==> earlyholon
-		tangled late and OPTIONS                    ==> lateholon
-		tangled very late and OPTIONS               ==> verylateholon
+	options of namedholon
+		webwide                                     ==> webwideholonoption
+		tangled very early                          ==> veryearlyholonoption
+		tangled early                               ==> earlyholonoption
+		tangled late                                ==> lateholonoption
+		tangled very late                           ==> verylateholonoption
+		webwide, OPTIONS                            ==> webwideholonoption
+		tangled very early, OPTIONS                 ==> veryearlyholonoption
+		tangled early, OPTIONS                      ==> earlyholonoption
+		tangled late, OPTIONS                       ==> lateholonoption
+		tangled very late, OPTIONS                  ==> verylateholonoption
+		webwide and OPTIONS                         ==> webwideholonoption
+		tangled very early and OPTIONS              ==> veryearlyholonoption
+		tangled early and OPTIONS                   ==> earlyholonoption
+		tangled late and OPTIONS                    ==> lateholonoption
+		tangled very late and OPTIONS               ==> verylateholonoption
 		MATERIAL                                    ==> error "unknown holon option(s)"
-	}
+	end
 	
 	Conventions {
-		commentary uses Markdown markup
 		an italicised summary under the title is read as the purpose
 		holon names are written between {{ and }}
 		metadata in strings are written between [[ and ]]
@@ -178,14 +179,315 @@ Notation "MarkdownCode" {
 
 Notation "Markdown" {
 	recognise .md
-	classify {
-		# MATERIAL									==> titleandpurpose if on first line
+	classify
+		# MATERIAL									==> title with withpurposeoption if on first line
 		MATERIAL									==> commentary
-	}
+	end
 	
 	Conventions {
-		commentary uses Markdown markup
 		an italicised summary under the title is read as the purpose
 		paragraph numbers are invisible
+	}
+}
+
+Notation "CWEB" {
+	recognise .cweb
+	recognise .*.cweb
+	
+	process code
+		@@  ==> @
+		@+  ==> <SPACE>
+		@;  ==> <SPACE>
+		@,  ==> <SPACE>
+		@/  ==> <SPACE>
+		@|  ==> <SPACE>
+		@#  ==> <SPACE>
+		@[  ==> <SPACE>
+		@]  ==> <SPACE>
+		@&  ==> <NOTHING>
+	end
+
+	process commentary
+		`` ==> "
+		'' ==> "
+		` ==> '
+		~ ==> <SPACE>
+		\dots ==> ...
+		@@  ==> @
+		@&  ==> <NOTHING>
+	end
+
+	classify
+		@d MATERIAL(NONWHITESPACE) SECOND           ==> definition
+		@d MATERIAL                                 ==> definition
+	
+		@f MATERIAL(NONWHITESPACE) SECOND(NONWHITESPACE) ==> formatidentifier
+		@s MATERIAL(NONWHITESPACE) SECOND(NONWHITESPACE) ==> formatidentifier with silentoption
+	
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>=          ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> =         ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>+=         ==> namedholon with continuationoption
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> +=        ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON>=    ==> fileholon
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON> =   ==> fileholon
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON>+=   ==> fileholon with continuationoption
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON> +=  ==> fileholon with continuationoption
+	
+		@                                           ==> beginparagraph
+		@=                                          ==> namelessholon in new paragraph
+		@ =                                         ==> namelessholon in new paragraph
+		@ RESIDUE                                   ==> beginparagraph
+
+		@** MATERIAL.                               ==> beginparagraph with superheadingoption
+		@**MATERIAL.                                ==> beginparagraph with superheadingoption
+		@** MATERIAL. RESIDUE                       ==> beginparagraph with superheadingoption
+		@**MATERIAL. RESIDUE                        ==> beginparagraph with superheadingoption
+		@** MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*1 MATERIAL.                               ==> beginparagraph with subheading1option
+		@*1MATERIAL.                                ==> beginparagraph with subheading1option
+		@*1 MATERIAL. RESIDUE                       ==> beginparagraph with subheading1option
+		@*1MATERIAL. RESIDUE                        ==> beginparagraph with subheading1option
+		@*1 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*2 MATERIAL.                               ==> beginparagraph with subheading2option
+		@*2MATERIAL.                                ==> beginparagraph with subheading2option
+		@*2 MATERIAL. RESIDUE                       ==> beginparagraph with subheading2option
+		@*2MATERIAL. RESIDUE                        ==> beginparagraph with subheading2option
+		@*2 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*3 MATERIAL.                               ==> beginparagraph with subheading3option
+		@*3MATERIAL.                                ==> beginparagraph with subheading3option
+		@*3 MATERIAL. RESIDUE                       ==> beginparagraph with subheading3option
+		@*3MATERIAL. RESIDUE                        ==> beginparagraph with subheading3option
+		@*3 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*4 MATERIAL.                               ==> beginparagraph with subheading4option
+		@*4MATERIAL.                                ==> beginparagraph with subheading4option
+		@*4 MATERIAL. RESIDUE                       ==> beginparagraph with subheading4option
+		@*4MATERIAL. RESIDUE                        ==> beginparagraph with subheading4option
+		@*4 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*5 MATERIAL.                               ==> beginparagraph with subheading5option
+		@*5MATERIAL.                                ==> beginparagraph with subheading5option
+		@*5 MATERIAL. RESIDUE                       ==> beginparagraph with subheading5option
+		@*5MATERIAL. RESIDUE                        ==> beginparagraph with subheading5option
+		@*5 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@* MATERIAL.                                ==> beginparagraph
+		@*MATERIAL.                                 ==> beginparagraph
+		@* MATERIAL. RESIDUE                        ==> beginparagraph
+		@*MATERIAL. RESIDUE                         ==> beginparagraph
+		@* MATERIAL                                 ==> error "no full stop after heading text"
+
+		@c                                          ==> namelessholon
+
+		@h											==> makedefinitionshere
+		@i MATERIAL									==> includefile
+
+		@x                                          ==> error "CWEB change files and @x are unsupported"
+		@y                                          ==> error "CWEB change files and @y are unsupported"
+		@z                                          ==> error "CWEB change files and @z are unsupported"
+		@l MATERIAL(NONWHITESPACE) SECOND(NONWHITESPACE) ==> error "@l for character set hacking is unsupported"
+
+		MATERIAL                                    ==> extract if in extract context
+		MATERIAL                                    ==> commentary
+	end
+	
+	Conventions {
+		commentary uses TeX markup
+		paragraphs are numbered sequentially
+		holon names are written between @< and @>
+		holon names to be extracted to files are written between @( and @>
+		verbatim tangle material is written between @= and @>
+		index entries are written between @^ and @>
+		typewritten index entries are written between @. and @>
+		nonstandard index entries are written between @: and @>
+		important index entries are written between @!@^ and @>
+		important typewritten index entries are written between @!@. and @>
+		important nonstandard index entries are written between @!@: and @>
+		holon names can be abbreviated even at declarations
+		holon names can contain styling
+		named holons are tangled between <NEWLINE> and <NEWLINE>
+		comments can contain styling
+		standard library #includes are treated like any other code
+		typedefs are treated like any other code
+		typedef structs are treated like any other code
+		functions are treated like any other code
+	}
+}
+
+Notation "WEB" {
+	recognise .web
+	recognise .*.web
+	
+	preprocess
+		@@  ==> §
+		@+  ==> <SPACE>
+		@;  ==> <SPACE>
+		@,  ==> <SPACE>
+		@/  ==> <SPACE>
+		@|  ==> <SPACE>
+		@#  ==> <SPACE>
+		@[  ==> <SPACE>
+		@]  ==> <SPACE>
+		@&  ==> <NOTHING>		
+		@{  ==> {
+		@}  ==> }
+		@'  ==> 0
+		@"  ==> 0x
+		@t@> ==> <NOTHING>
+	end
+
+	classify
+		@d MATERIAL(NONWHITESPACE)=SECOND           ==> definition
+		@d MATERIAL(NONWHITESPACE) = SECOND         ==> definition
+		@d MATERIAL(NONWHITESPACE)==SECOND          ==> definition
+		@d MATERIAL(NONWHITESPACE) == SECOND        ==> definition
+		@d MATERIAL=SECOND                          ==> definition
+		@d MATERIAL = SECOND                        ==> definition
+	
+		@f MATERIAL(NONWHITESPACE)==SECOND(NONWHITESPACE) ==> formatidentifier
+		@s MATERIAL(NONWHITESPACE)==SECOND(NONWHITESPACE) ==> formatidentifier with silentoption
+		@f MATERIAL(NONWHITESPACE) == SECOND(NONWHITESPACE) ==> formatidentifier
+		@s MATERIAL(NONWHITESPACE) == SECOND(NONWHITESPACE) ==> formatidentifier with silentoption
+	
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>= RESIDUE  ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> = RESIDUE ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>+= RESIDUE ==> namedholon with continuationoption
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> += RESIDUE ==> namedholon with continuationoption
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>=RESIDUE  ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> =RESIDUE ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>+=RESIDUE ==> namedholon with continuationoption
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> +=RESIDUE ==> namedholon with continuationoption
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>=          ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> =         ==> namedholon
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON>+=         ==> namedholon with continuationoption
+		@ <OPENHOLON>MATERIAL<CLOSEHOLON> +=        ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON>= RESIDUE           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> = RESIDUE          ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+= RESIDUE          ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> += RESIDUE         ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON>=RESIDUE           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> =RESIDUE          ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+=RESIDUE          ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> +=RESIDUE         ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON>=    ==> fileholon
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON> =   ==> fileholon
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON>+=   ==> fileholon with continuationoption
+		<OPENFILEHOLON>MATERIAL<CLOSEFILEHOLON> +=  ==> fileholon with continuationoption
+	
+		@                                           ==> beginparagraph
+		@=                                          ==> namelessholon in new paragraph
+		@ =                                         ==> namelessholon in new paragraph
+		@ RESIDUE                                   ==> beginparagraph
+
+		@** MATERIAL.                               ==> beginparagraph with superheadingoption
+		@**MATERIAL.                                ==> beginparagraph with superheadingoption
+		@** MATERIAL. RESIDUE                       ==> beginparagraph with superheadingoption
+		@**MATERIAL. RESIDUE                        ==> beginparagraph with superheadingoption
+		@** MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*1 MATERIAL.                               ==> beginparagraph with subheading1option
+		@*1MATERIAL.                                ==> beginparagraph with subheading1option
+		@*1 MATERIAL. RESIDUE                       ==> beginparagraph with subheading1option
+		@*1MATERIAL. RESIDUE                        ==> beginparagraph with subheading1option
+		@*1 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*2 MATERIAL.                               ==> beginparagraph with subheading2option
+		@*2MATERIAL.                                ==> beginparagraph with subheading2option
+		@*2 MATERIAL. RESIDUE                       ==> beginparagraph with subheading2option
+		@*2MATERIAL. RESIDUE                        ==> beginparagraph with subheading2option
+		@*2 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*3 MATERIAL.                               ==> beginparagraph with subheading3option
+		@*3MATERIAL.                                ==> beginparagraph with subheading3option
+		@*3 MATERIAL. RESIDUE                       ==> beginparagraph with subheading3option
+		@*3MATERIAL. RESIDUE                        ==> beginparagraph with subheading3option
+		@*3 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*4 MATERIAL.                               ==> beginparagraph with subheading4option
+		@*4MATERIAL.                                ==> beginparagraph with subheading4option
+		@*4 MATERIAL. RESIDUE                       ==> beginparagraph with subheading4option
+		@*4MATERIAL. RESIDUE                        ==> beginparagraph with subheading4option
+		@*4 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@*5 MATERIAL.                               ==> beginparagraph with subheading5option
+		@*5MATERIAL.                                ==> beginparagraph with subheading5option
+		@*5 MATERIAL. RESIDUE                       ==> beginparagraph with subheading5option
+		@*5MATERIAL. RESIDUE                        ==> beginparagraph with subheading5option
+		@*5 MATERIAL                                ==> error "no full stop after heading text"
+		
+		@* MATERIAL.                                ==> beginparagraph
+		@*MATERIAL.                                 ==> beginparagraph
+		@* MATERIAL. RESIDUE                        ==> beginparagraph
+		@*MATERIAL. RESIDUE                         ==> beginparagraph
+		@* MATERIAL                                 ==> error "no full stop after heading text"
+
+		@c                                          ==> namelessholon
+		@p RESIDUE                                  ==> namelessholon
+		@pRESIDUE                                   ==> namelessholon
+		@p                                          ==> namelessholon
+
+		@h											==> makedefinitionshere
+		@i MATERIAL									==> includefile
+
+		@x                                          ==> error "CWEB change files and @x are unsupported"
+		@y                                          ==> error "CWEB change files and @y are unsupported"
+		@z                                          ==> error "CWEB change files and @z are unsupported"
+		@l MATERIAL(NONWHITESPACE) SECOND(NONWHITESPACE) ==> error "@l for character set hacking is unsupported"
+
+		MATERIAL                                    ==> extract if in extract context
+		MATERIAL                                    ==> definitioncontinued if in definition context
+		MATERIAL                                    ==> commentary
+	end
+	
+	postprocess
+		§ ==> @
+		@! ==> <NOTHING>
+		\AT! ==> @
+	end
+	
+	process code
+	end
+
+	process commentary
+		`` ==> "
+		'' ==> "
+		` ==> '
+		~ ==> <SPACE>
+		\dots ==> ...
+	end
+	
+	Conventions {
+		commentary uses TeX markup
+		footnotes are not recognised
+		paragraphs are numbered sequentially
+		web comments are written between @q and @>
+		holon names are written between @< and @>
+		holon names to be extracted to files are written between @( and @>
+		verbatim tangle material is written between @= and @>
+		index entries are written between @^ and @>
+		typewritten index entries are written between @. and @>
+		nonstandard index entries are written between @: and @>
+		important index entries are written between @!@^ and @>
+		important typewritten index entries are written between @!@. and @>
+		important nonstandard index entries are written between @!@: and @>
+		holon names can be abbreviated even at declarations
+		holon names can contain styling
+		named holons are tangled between <NEWLINE> and <NEWLINE>
+		comments can contain styling
+		standard library #includes are treated like any other code
+		typedefs are treated like any other code
+		typedef structs are treated like any other code
+		functions are treated like any other code
 	}
 }

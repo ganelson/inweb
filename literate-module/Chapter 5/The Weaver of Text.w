@@ -128,7 +128,7 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 	TEMPORARY_TEXT(cue)
 	TEMPORARY_TEXT(after)
 	int allow = FALSE;
-	if (LiterateSource::detect_footnote(wv->weave_web->web_syntax,
+	if (LiterateSource::detect_footnote(wv->weave_web->web_notation,
 			matter, before, cue, after)) {
 		ls_footnote *F = LiterateSource::find_footnote_in_para(
 			LiterateSource::par_of_line(wv->current_weave_line), cue);

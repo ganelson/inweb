@@ -28,8 +28,8 @@ void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
 	}
 	web_contents_state RS;
 	@<Initialise the reader state@>;
-	if (W->web_syntax == NULL)
-		WebNotation::declare_for_web(W, WebNotation::default(FALSE));
+	if (W->web_notation == NULL)
+		WebNotation::adopt_for_web(W, WebNotation::default(FALSE));
 	else
 		RS.syntax_externally_set = TRUE;
 
@@ -160,14 +160,14 @@ want to react to an open declaration of that syntax immediately.
 	match_results mr = Regexp::create_mr();
 	if ((RS->allow_kvps) &&
 		(Regexp::match(&mr, line, U"Notation: (%c+) *"))) {
-		ls_notation *S = WebNotation::syntax_by_name(RS->W, mr.exp[0]);
-		if (S) WebNotation::declare_for_web(RS->W, S);
+		ls_notation *ntn = WebNotation::notation_by_name(RS->W, mr.exp[0]);
+		if (ntn) WebNotation::adopt_for_web(RS->W, ntn);
 	}
 	if ((RS->allow_kvps) &&
 		(Regexp::match(&mr, line, U"Web Syntax Version: (%c+) *"))) {
 		WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
-		ls_notation *S = WebNotation::syntax_by_name(RS->W, mr.exp[0]);
-		if (S) WebNotation::declare_for_web(RS->W, S);
+		ls_notation *ntn = WebNotation::notation_by_name(RS->W, mr.exp[0]);
+		if (ntn) WebNotation::adopt_for_web(RS->W, ntn);
 	}
 	Regexp::dispose_of(&mr);
 
@@ -270,10 +270,10 @@ we like a spoonful of syntactic sugar on our porridge, that's why.
 			DISCARD_TEXT(err)
 		} else {
 			if (RS->including_modules) {
-				ls_notation *save_syntax = RS->W->web_syntax;
+				ls_notation *save_ntn = RS->W->web_notation;
 				WebContents::read_contents_page(RS->W, imported,
 					RS->including_modules, imported->module_location);
-				WebNotation::declare_for_web(RS->W, save_syntax);
+				WebNotation::adopt_for_web(RS->W, save_ntn);
 			}
 		}
 		this_is_a_chapter = FALSE;

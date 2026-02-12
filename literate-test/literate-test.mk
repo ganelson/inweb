@@ -18,8 +18,8 @@ MANYWARNINGS = -Weverything -Wno-unknown-warning-option -Wno-pointer-arith -Wno-
 
 FEWERWARNINGS = -Wno-implicit-int -Wno-dangling-else -Wno-pointer-sign -Wno-format-extra-args -Wno-tautological-compare -Wno-deprecated-declarations -Wno-logical-op-parentheses -Wno-format -Wno-extra-semi-stmt -Wno-c11-extensions -Wno-unreachable-code-return -Wno-unused-but-set-variable
 
-INWEB = /Users/grahamnelson/git/snapshot/inweb/Tangled/inweb
-INTEST = /Users/grahamnelson/git/snapshot/intest/Tangled/intest
+INWEB = /Users/gnelson/Natural\ Inform/inweb/Tangled/inweb
+INTEST = /Users/gnelson/Natural\ Inform/intest/Tangled/intest
 MYNAME = literate-test
 ME = inweb/literate-test
 

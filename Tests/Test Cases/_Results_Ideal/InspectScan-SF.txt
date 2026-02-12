@@ -1,5 +1,5 @@
 web "Counting Sort" (Python program in MarkdownCode notation): 6 paragraphs : 69 lines
-heading 'Counting Sort', namespace 'Harold H. Seward'
+heading 'Counting Sort', author 'Harold H. Seward'
 Purpose 'An implementation of the 1954 sort algorithm.'
 S1
     C1: commentary

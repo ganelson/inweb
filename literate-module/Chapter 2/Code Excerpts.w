@@ -85,11 +85,15 @@ ls_code_excerpt *CodeExcerpts::from_illiterate_uncommented_code(text_stream *raw
 }
 
 void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
-	ls_line *lst, text_stream *from_text, ls_notation *notation, programming_language *pl) {
+	ls_line *lst, text_stream *from_text, ls_notation *ntn, programming_language *pl) {
 	TEMPORARY_TEXT(name)
 	TEMPORARY_TEXT(command)
 	TEMPORARY_TEXT(comment)
-	finite_state_machine *machine = HolonSyntax::get(notation, pl);
+	TEMPORARY_TEXT(pre_comment_code)
+	ls_line *pre_comment_lst = NULL;
+	int pre_comment_from = 0, pre_comment_to = -1;
+
+	finite_state_machine *machine = HolonSyntax::get(ntn, pl);
 	FSM::reset_machine(machine);
 	Str::clear(name); Str::clear(command);
 	int from = 0, to = -1;
@@ -102,6 +106,7 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 			last_line = lst;
 		}
 	} else if (lst) {
+		first_line = lst;
 		for (; lst; lst = lst->next_line) {
 			if (lst != first_line) from_text = CodeExcerpts::line_code(lst);
 			@<Scan content@>;
@@ -114,10 +119,11 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 	DISCARD_TEXT(name)
 	DISCARD_TEXT(command)
 	DISCARD_TEXT(comment)
+	DISCARD_TEXT(pre_comment_code)
 	holon_splice *hs;
 	LOOP_OVER_CODE_EXCERPT(hs, ex)
 		if (hs->type == CODE_LSHST)
-			LineClassification::postprocess(hs->texts[0], notation);
+			WebNotation::postprocess(hs->texts[0], ntn);
 }
 
 @<Scan content@> =
@@ -141,12 +147,12 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 	if (recording_to) PUT_TO(recording_to, c);
 	switch (event) {
 		case NAME_START_FSMEVENT:
-			Str::clear(name); to = i-Str::len(WebNotation::notation(notation, NAMED_HOLONS_WSF, 2));
+			Str::clear(name); to = i-Str::len(WebNotation::left(ntn, NAMED_HOLONS_NTNMARKER));
 			recording_to = name;
 			break;
 		case NAME_END_FSMEVENT: {
 			recording_to = NULL;
-			int excess = Str::len(WebNotation::notation(notation, NAMED_HOLONS_WSF, 2));
+			int excess = Str::len(WebNotation::right(ntn, NAMED_HOLONS_NTNMARKER));
 			Str::truncate(name, Str::len(name) - excess);
 			@<Splice code@>;
 			to = i;
@@ -154,12 +160,12 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 			break;
 		}
 		case FILE_NAME_START_FSMEVENT:
-			Str::clear(name); to = i-Str::len(WebNotation::notation(notation, FILE_NAMED_HOLONS_WSF, 2));
+			Str::clear(name); to = i-Str::len(WebNotation::left(ntn, FILE_NAMED_HOLONS_NTNMARKER));
 			recording_to = name;
 			break;
 		case FILE_NAME_END_FSMEVENT: {
 			recording_to = NULL;
-			int excess = Str::len(WebNotation::notation(notation, FILE_NAMED_HOLONS_WSF, 2));
+			int excess = Str::len(WebNotation::right(ntn, FILE_NAMED_HOLONS_NTNMARKER));
 			Str::truncate(name, Str::len(name) - excess);
 			@<Splice code@>;
 			to = i;
@@ -168,13 +174,13 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 		}
 		case COMMAND_START_FSMEVENT:
 			Str::clear(command);
-			to = i-Str::len(WebNotation::notation(notation, METADATA_IN_STRINGS_WSF, 1));
+			to = i-Str::len(WebNotation::left(ntn, METADATA_IN_STRINGS_NTNMARKER));
 			recording_to = command;
 			break;
 		case COMMAND_END_FSMEVENT: {
 			recording_to = NULL;
 			@<Splice code@>;
-			int excess = Str::len(WebNotation::notation(notation, METADATA_IN_STRINGS_WSF, 2));
+			int excess = Str::len(WebNotation::right(ntn, METADATA_IN_STRINGS_NTNMARKER));
 			Str::truncate(command, Str::len(command) - excess);
 			to = i;
 			@<Splice command@>;
@@ -182,13 +188,13 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 		}
 		case VERBATIM_START_FSMEVENT:
 			Str::clear(command);
-			to = i-Str::len(WebNotation::notation(notation, VERBATIM_CODE_WSF, 1));
+			to = i-Str::len(WebNotation::left(ntn, VERBATIM_CODE_NTNMARKER));
 			recording_to = command;
 			break;
 		case VERBATIM_END_FSMEVENT: {
 			recording_to = NULL;
 			@<Splice code@>;
-			int excess = Str::len(WebNotation::notation(notation, VERBATIM_CODE_WSF, 2));
+			int excess = Str::len(WebNotation::right(ntn, VERBATIM_CODE_NTNMARKER));
 			Str::truncate(command, Str::len(command) - excess);
 			to = i;
 			@<Splice verbatim@>;
@@ -196,12 +202,19 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 		}
 		case COMMENT_START_FSMEVENT:
 			Str::clear(comment); to = i-N; recording_to = comment;
+			Str::clear(pre_comment_code);
+			WRITE_TO(pre_comment_code, "%S", from_text);
+			pre_comment_lst = lst;
+			pre_comment_from = from;
+			pre_comment_to = to;
 			comment_open = Str::new();
 			for (int j=to+1; j<=i; j++) PUT_TO(comment_open, Str::get_at(from_text, j));
 			break;
 		case COMMENT_END_FSMEVENT: {
 			recording_to = NULL;
-			@<Splice code@>;
+			if (pre_comment_to >= pre_comment_from)
+				CodeExcerpts::new_code_splice(ex, pre_comment_lst, pre_comment_code, pre_comment_from, pre_comment_to);
+			from = to + 1; to = -1;
 			comment_close = Str::new();
 			for (int j=Str::len(comment)-N; j<Str::len(comment); j++)
 				PUT_TO(comment_close, Str::get_at(comment, j));

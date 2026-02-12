@@ -36,7 +36,7 @@ typedef struct ls_holon {
 } ls_holon;
 
 ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, int file_form,
-	ls_holon_namespace *ns, int bitmap, ls_notation *notation, programming_language *pl) {
+	ls_holon_namespace *ns, int bitmap, ls_notation *ntn, programming_language *pl) {
 	if (chunk == NULL) internal_error("loose holon");
 	ls_holon *holon = CREATE(ls_holon);
 	holon->main_holon = FALSE;
@@ -60,15 +60,15 @@ ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, in
 	holon->addenda = NEW_LINKED_LIST(ls_holon);
 	holon->file_form = file_form;
 
-	if (bitmap & WEBWIDEHOLON_CHMOB)   { holon->webwide = TRUE; }
-	if (bitmap & VERYEARLYHOLON_CHMOB) { holon->placed_very_early = TRUE; holon->top_level = TRUE; }
-	if (bitmap & EARLYHOLON_CHMOB)     { holon->placed_early = TRUE; holon->top_level = TRUE; }
-	if (bitmap & LATEHOLON_CHMOB)      { holon->placed_late = TRUE; holon->top_level = TRUE; }
-	if (bitmap & VERYLATEHOLON_CHMOB ) { holon->placed_very_late = TRUE; holon->top_level = TRUE; }
+	if (bitmap & WEBWIDEHOLON_LSNROBIT)   { holon->webwide = TRUE; }
+	if (bitmap & VERYEARLYHOLON_LSNROBIT) { holon->placed_very_early = TRUE; holon->top_level = TRUE; }
+	if (bitmap & EARLYHOLON_LSNROBIT)     { holon->placed_early = TRUE; holon->top_level = TRUE; }
+	if (bitmap & LATEHOLON_LSNROBIT)      { holon->placed_late = TRUE; holon->top_level = TRUE; }
+	if (bitmap & VERYLATEHOLON_LSNROBIT ) { holon->placed_very_late = TRUE; holon->top_level = TRUE; }
 
-	LiterateSource::process_chunk(chunk, notation->code_preprocessor);
+	LiterateSource::process_chunk(chunk, ntn->code_preprocessor);
 	CodeExcerpts::parse(ns, holon->corresponding_chunk->code_excerpt,
-		holon->corresponding_chunk->first_line, NULL, notation, pl);
+		holon->corresponding_chunk->first_line, NULL, ntn, pl);
 	Holons::declare_in_namespace(holon, ns);
 	
 	return holon;
@@ -301,7 +301,7 @@ typedef struct holon_usage {
 	CLASS_DEFINITION
 } holon_usage;
 
-void Holons::scan(ls_holon_namespace *ns, ls_notation *notation, programming_language *pl) {
+void Holons::scan(ls_holon_namespace *ns) {
 	linked_list *holon_list = ns->holons;
 	ls_holon *holon;
 	holon_splice *hs;
@@ -316,10 +316,12 @@ void Holons::scan(ls_holon_namespace *ns, ls_notation *notation, programming_lan
 			if ((hs->type == EXPANSION_LSHST) ||
 				(hs->type == FILE_EXPANSION_LSHST)) {
 				ls_holon *expansion = hs->expansion;
-				if ((expansion->placed_very_early) || (expansion->placed_early) ||
-					(expansion->placed_late) || (expansion->placed_very_late))
-					WebErrors::record_at(I"this line would incorporate a holon marked as early or late", hs->line);
-				@<Add a record that the holon is used in this paragraph@>;
+				if (expansion) {
+					if ((expansion->placed_very_early) || (expansion->placed_early) ||
+						(expansion->placed_late) || (expansion->placed_very_late))
+						WebErrors::record_at(I"this line would incorporate a holon marked as early or late", hs->line);
+					@<Add a record that the holon is used in this paragraph@>;
+				}
 			}
 }
 

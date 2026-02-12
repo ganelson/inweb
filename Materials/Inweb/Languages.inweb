@@ -20,7 +20,7 @@ Language "ACME" {
 			runs of !identifier {
 				=> !reserved
 				keyword of !function => !function
-	//			prefix "." => !identifier on both
+//				prefix "." => !identifier on both
 				prefix "!" => !element on both
 			}
 			characters {
@@ -75,11 +75,11 @@ Language "C" {
 	Character Literal Escape: "\\"
 	C-Like: true
 	
-	// C does in fact support octal literals, marking them as starting with an
-	// unnecessary initial zero. This is practically obsolete now, and in any case
-	// makes no difference to syntax-colouring. Binary literals were in theory
-	// rejected by the C standards body as useless, but are so useful that gcc
-	// and clang support them anyway.
+// C does in fact support octal literals, marking them as starting with an
+// unnecessary initial zero. This is practically obsolete now, and in any case
+// makes no difference to syntax-colouring. Binary literals were in theory
+// rejected by the C standards body as useless, but are so useful that gcc
+// and clang support them anyway.
 	
 	Hexadecimal Literal Prefix: "0x"
 	Binary Literal Prefix: "0b"
@@ -163,9 +163,9 @@ Language "C++" {
 	Character Literal Escape: "\\"
 	C-Like: true
 	
-	// C++ does in fact support octal literals, marking them as starting with an
-	// unnecessary initial zero. This is practically obsolete now, and in any case
-	// makes no difference to syntax-colouring.
+// C++ does in fact support octal literals, marking them as starting with an
+// unnecessary initial zero. This is practically obsolete now, and in any case
+// makes no difference to syntax-colouring.
 	
 	Hexadecimal Literal Prefix: "0x"
 	Binary Literal Prefix: "0b"
@@ -295,7 +295,7 @@ Language "ILDF" {
 	String Literal: "\""
 	String Literal Escape: "\\"
 	
-	// Regular expressions are handled here as if character literals
+// Regular expressions are handled here as if character literals
 	Character Literal: "/"
 	Character Literal Escape: "\\"
 	
@@ -340,15 +340,15 @@ Language "ILDF" {
 			}
 		}
 		characters {
-			// Anything left of these colours will be unquoted strings, so...
+// Anything left of these colours will be unquoted strings, so...
 			coloured !constant => !string
 			coloured !identifier => !string
-			// Regular expressions, now coloured !character, are more like functions
+// Regular expressions, now coloured !character, are more like functions
 			coloured !character => !function
 		}
-		// Detect Property: Value lines, not being fooled by a colon inside quotes
+// Detect Property: Value lines, not being fooled by a colon inside quotes
 		brackets in /\s*([A-Z][^"]*):.*/ {
-			// Uncolour only the bracketed part, i.e., the Property part
+// Uncolour only the bracketed part, i.e., the Property part
 			=> !plain
 		}
 	}
@@ -367,22 +367,22 @@ Language "InC" {
 	Character Literal Escape: "\\"
 	C-Like: true
 	
-	// C does in fact support octal literals, marking them as starting with an
-	// unnecessary initial zero. This is practically obsolete now, and in any case
-	// makes no difference to syntax-colouring. Binary literals were in theory
-	// rejected by the C standards body as useless, but are so useful that gcc
-	// and clang support them anyway.
+// C does in fact support octal literals, marking them as starting with an
+// unnecessary initial zero. This is practically obsolete now, and in any case
+// makes no difference to syntax-colouring. Binary literals were in theory
+// rejected by the C standards body as useless, but are so useful that gcc
+// and clang support them anyway.
 	
 	Hexadecimal Literal Prefix: "0x"
 	Binary Literal Prefix: "0b"
 	Negative Literal Prefix: "-"
 	
-	// The "shebang" routine for a language is called to add anything it wants to
-	// at the very top of the tangled code. (For a scripting language such as
-	// Perl or Python, that might be a shebang: "hence the name.)"
-	// But we will use it to defime the constant PLATFORM_POSIX everywhere except
-	// Windows. This needs to happen right at the top, because the "very early
-	// code" in a tangle may contain material conditional on whether it is defined.
+// The "shebang" routine for a language is called to add anything it wants to
+// at the very top of the tangled code. (For a scripting language such as
+// Perl or Python, that might be a shebang: "hence the name.)"
+// But we will use it to defime the constant PLATFORM_POSIX everywhere except
+// Windows. This needs to happen right at the top, because the "very early
+// code" in a tangle may contain material conditional on whether it is defined.
 	
 	Shebang: "#ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n"
 	Start Ifdef: "#ifdef %S\n"
@@ -394,8 +394,8 @@ Language "InC" {
 	Prolong Definition: "\\\n\s\s\s\s"
 	End Definition: "\n"
 	
-	// FILE gets in even though it's not technically reserved but only a type
-	// name, defined in the standard C library.
+// FILE gets in even though it's not technically reserved but only a type
+// name, defined in the standard C library.
 	
 	keyword FILE
 	
@@ -485,7 +485,7 @@ Language "Inform 6" {
 	Start Ifndef: "#ifndef %S;\n"
 	End Ifndef: "#endif; ! %S\n"
 	
-	// Reserved words:
+// Reserved words:
 	
 	keyword "Constant"
 	keyword "Array"
@@ -653,7 +653,7 @@ Language "Inweb" {
 	
 	colouring {
 		=> !plain
-		// Detect Property: Value lines, not being fooled by a colon inside quotes
+// Detect Property: Value lines, not being fooled by a colon inside quotes
 		brackets in /\s*([A-Za-z][^"]*):(.*)/ {
 			number 1 => !element
 			number 2 => !string
@@ -724,8 +724,8 @@ Language "Perl" {
 	Start Definition: "%S ="
 	End Definition: "\n;\n"
 	
-	// In its usual zany way, Perl recognises the same #line syntax as C, thus in
-	// principle overloading its comment notation #:
+// In its usual zany way, Perl recognises the same #line syntax as C, thus in
+// principle overloading its comment notation #:
 	Line Marker: "#line %d \"%f\"\n"
 
 	Conventions {
@@ -747,7 +747,7 @@ Language "Python" {
 	End Definition: "\n\n"
 	Indent Named Paragraph Expansion: true
 	
-	// Just a comment in Python-world, but may help some people	
+// Just a comment in Python-world, but may help some people	
 	Line Marker: "#line %d \"%f\"\n"
 	
 	Conventions {
@@ -852,7 +852,7 @@ Language "REPL" {
 	
 	colouring {
 		=> !plain
-		// Detect expression-value lines, not being fooled by a colon inside quotes
+// Detect expression-value lines, not being fooled by a colon inside quotes
 		brackets in /\s*'(.*?)':(.*)/ {
 			number 1 => !element
 			number 2 => !string

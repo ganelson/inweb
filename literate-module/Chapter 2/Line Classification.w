@@ -35,12 +35,15 @@ line, though this can sometimes be implicit (in which case its minor is always
 |CODE_MINLC|): if not, it signals what sort of extract follows.
 
 Compiled code, then, lives in extracts with minors |CODE_MINLC|, |EARLY_MINLC|,
-or |VERY_EARLY_MINLC|. The other extract minors are for displayed text.
+|VERY_EARLY_MINLC|, |LATE_MINLC|, |VERY_LATE_MINLC|. The other extract
+minors are for displayed text.
 
 @e EXTRACT_START_MAJLC
 @e CODE_MINLC /* minor of |EXTRACT_START_MAJLC| */
 @e EARLY_MINLC /* minor of |EXTRACT_START_MAJLC| */
 @e VERY_EARLY_MINLC /* minor of |EXTRACT_START_MAJLC| */
+@e LATE_MINLC /* minor of |EXTRACT_START_MAJLC| */
+@e VERY_LATE_MINLC /* minor of |EXTRACT_START_MAJLC| */
 @e TEXT_AS_MINLC /* minor of |EXTRACT_START_MAJLC| */
 @e TEXT_FROM_AS_MINLC /* minor of |EXTRACT_START_MAJLC| */
 @e TEXT_FROM_MINLC /* minor of |EXTRACT_START_MAJLC| */
@@ -148,6 +151,7 @@ typedef struct ls_class {
 	struct text_stream *operand1;
 	struct text_stream *operand2;
 	struct text_stream *operand3;
+	struct text_stream *operand4;
 	struct linked_list *tag_list; /* of |text_stream| */
 } ls_class;
 
@@ -161,6 +165,7 @@ ls_class LineClassification::new(int major, int minor) {
 	cf.operand1 = NULL;
 	cf.operand2 = NULL;
 	cf.operand3 = NULL;
+	cf.operand4 = NULL;
 	cf.tag_list = NULL;
 	return cf;
 }
@@ -181,17 +186,17 @@ of indentation (or one tab) at the start, or failing that, plain black.
 =
 int LineClassification::shade(text_stream *line) {
 	int wsc = 0;
-	int whitespace_nature = WHITE_LINESHADE;
+	int shade = WHITE_LINESHADE;
 	for (int i=0; i<Str::len(line); i++) {
 		switch (Str::get_at(line, i)) {
 			case ' ': wsc++; break;
 			case '\t': wsc = (wsc/4)*4 + 4; break;
-			default: whitespace_nature = INDENTED_BLACK_LINESHADE; i = Str::len(line); break;
+			default: shade = INDENTED_BLACK_LINESHADE; i = Str::len(line); break;
 		}
 	}
-	if ((wsc < 4) && (whitespace_nature == INDENTED_BLACK_LINESHADE))
-		whitespace_nature = BLACK_LINESHADE;
-	return whitespace_nature;
+	if ((wsc < 4) && (shade == INDENTED_BLACK_LINESHADE))
+		shade = BLACK_LINESHADE;
+	return shade;
 }
 
 @h Classifier functions.
@@ -246,84 +251,52 @@ ls_class_parsing LineClassification::no_results(void) {
 	return LineClassification::new_results(UNCLASSIFIED_MAJLC, NO_MINLC);
 }
 
-ls_class_parsing LineClassification::classify(ls_notation *syntax, text_stream *line,
+ls_class_parsing LineClassification::classify(ls_notation *ntn, text_stream *line,
 	ls_class *previously, int sff) {
 	ls_class_parsing results;
-	TEMPORARY_TEXT(processed)
-	WebNotation::rewrite(processed, line, syntax->preprocessor);
 	text_stream *error = NULL;
+
+	TEMPORARY_TEXT(processed)
+	WebNotation::rewrite(processed, line, ntn->preprocessor);
+
 	TEMPORARY_TEXT(indexed_text)
-	linked_list *L = WebIndexing::index_from_line(indexed_text, processed, syntax, &error);
+	linked_list *L = WebIndexing::index_from_line(indexed_text, processed, ntn, &error);
 
-	if (syntax->line_classifier) {
-		results = (*(syntax->line_classifier))(syntax, indexed_text, previously);
-		if (results.cf.major != UNCLASSIFIED_MAJLC) @<Exit with the results@>;
-	}
-
-	results = LineClassification::rules_based_classifier(syntax, indexed_text, previously, sff);
+	results = LineClassification::pass_through_classifier(ntn, indexed_text, previously, sff);
 	if (results.cf.major != UNCLASSIFIED_MAJLC) @<Exit with the results@>;
 
-	results = LineClassification::all_code_classifier(syntax, indexed_text, previously);
+	results = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
+	results.cf.operand1 = Str::duplicate(indexed_text);
+	if (previously->major == UNCLASSIFIED_MAJLC) {
+		results.implies_paragraph = TRUE;
+		results.implies_extract = TRUE;
+	}
+
 	@<Exit with the results@>;
 }
 
 @<Exit with the results@> =
 	results.index_marks = L;
 	if (error) results.error = error;
-	LineClassification::postprocess(results.error, syntax);
+	WebNotation::postprocess(results.error, ntn);
 	DISCARD_TEXT(indexed_text)
 	DISCARD_TEXT(processed)
 	return results;
 
-@
+@ This, more ambitiously, parses using the grammar for a notation:
 
 =
-void LineClassification::postprocess(text_stream *text, ls_notation *syntax) {
-	if (Str::len(text) == 0) return;
-	TEMPORARY_TEXT(processed)
-	WebNotation::rewrite(processed, text, syntax->postprocessor);
-	if (Str::ne(processed, text)) { Str::clear(text); Str::copy(text, processed); }
-	DISCARD_TEXT(processed)
-}
-
-
-@ Two trivial examples are provided here. The first classifies the entire file
-as commentary, with no code in: in other words, regards the file as plain text.
-
-=
-ls_class_parsing LineClassification::all_commentary_classifier(ls_notation *syntax,
-	text_stream *line, ls_class *previously) {
-	ls_class_parsing res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
-	if (previously->major == UNCLASSIFIED_MAJLC) {
-		res.implies_paragraph = TRUE;
-	}
-	return res;
-}
-
-@ And the second regards it as purely code, with no commentary:
-
-=
-ls_class_parsing LineClassification::all_code_classifier(ls_notation *syntax,
-	text_stream *line, ls_class *previously) {
-	ls_class_parsing res = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
-	res.cf.operand1 = Str::duplicate(line);
-	if (previously->major == UNCLASSIFIED_MAJLC) {
-		res.implies_paragraph = TRUE;
-		res.implies_extract = TRUE;
-	}
-	return res;
-}
-
-@ This, more ambitiously, parses using the grammar for a syntax:
-
-=
-ls_class_parsing LineClassification::rules_based_classifier(ls_notation *syntax,
+ls_class_parsing LineClassification::pass_through_classifier(ls_notation *ntn,
 	text_stream *line, ls_class *previously, int sff) {
+	ls_classifier_context context;
+	context.previously = previously;
+	context.ntn = ntn;
+	context.single_file = sff;
 	int follows_extract = LineClassification::extract_lines_can_follow(
 		previously->major, previously->minor);
 	int first_line = (previously->major == UNCLASSIFIED_MAJLC)?TRUE:FALSE;
-	int whitespace_nature = LineClassification::shade(line);
-	if (whitespace_nature == WHITE_LINESHADE) @<Handle whitespace lines@>
+	context.whitespace_nature = LineClassification::shade(line);
+	if (context.whitespace_nature == WHITE_LINESHADE) @<Handle whitespace lines@>
 	else @<Handle nonwhitespace lines@>;
 }
 
@@ -338,11 +311,11 @@ fragments would break up at blank lines.
 	if ((follows_extract) && (previously->major != HOLON_DECLARATION_MAJLC))
 		res = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
 	else res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
-	res.cf.whitespace_nature = whitespace_nature;
+	res.cf.whitespace_nature = context.whitespace_nature;
 	res.cf.follows_title = previously->follows_title;
 	return res;
 
-@ Otherwise, we consult the main grammar for our web syntax. If well-designed,
+@ Otherwise, we consult the main classifier for our web notation. If well-designed,
 it will always match all nonempty lines of text. But if it should fail to
 match, we consider that line to be code.
 
@@ -351,6 +324,7 @@ match, we consider that line to be code.
 	TEMPORARY_TEXT(material)
 	TEMPORARY_TEXT(second)
 	TEMPORARY_TEXT(third)
+	TEMPORARY_TEXT(fourth)
 	TEMPORARY_TEXT(options)
 	TEMPORARY_TEXT(residue)
 	text_stream *wildcards[NO_DEFINED_LSWILDCARD_VALUES];
@@ -358,20 +332,24 @@ match, we consider that line to be code.
 	wildcards[MATERIAL_LSWILDCARD] = material;
 	wildcards[SECOND_LSWILDCARD] = second;
 	wildcards[THIRD_LSWILDCARD] = third;
+	wildcards[FOURTH_LSWILDCARD] = fourth;
 	wildcards[OPTIONS_LSWILDCARD] = options;
 	wildcards[RESIDUE_LSWILDCARD] = residue;
 	
-	ls_notation_rule *OR = WebNotation::match(syntax->rules, line, whitespace_nature, wildcards, previously, sff, syntax);
+	ls_notation_rule *OR = LineClassifiers::match(ntn->main_classifier, line, &context, wildcards);
 	if (OR) {
+		int bitmap = OR->outcome.options_applied;
 		@<Translate the outcome and variables into a line classification@>;
-		if (OR->new_paragraph) res.implies_paragraph = TRUE;
+		if (OR->outcome.new_paragraph) res.implies_paragraph = TRUE;
 		if (Str::len(residue) > 0) @<Deal with the RESIDUE variable, if anything is in it@>;
 		if (Str::len(options) > 0) @<Deal with the OPTIONS variable, if anything is in it@>;
-		if (Str::len(OR->error) > 0) res.error = OR->error;
+		if (Str::len(OR->outcome.error) > 0) res.error = OR->outcome.error;
+		if (bitmap) @<Act on the options set in the bitmap@>;
 	}
 	DISCARD_TEXT(material)
 	DISCARD_TEXT(second)
 	DISCARD_TEXT(third)
+	DISCARD_TEXT(fourth)
 	DISCARD_TEXT(options)
 	DISCARD_TEXT(residue)
 	return res;
@@ -380,253 +358,137 @@ match, we consider that line to be code.
 
 @<Translate the outcome and variables into a line classification@> =
 	res.cf.follows_title = FALSE;
-	switch (OR->outcome) {
-		case COMMENTARY_WSRULEOUTCOME:
+	switch (OR->outcome.outcome_ID) {
+		case COMMENTARY_LSNROID:
 			res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if ((first_line) || (follows_extract)) res.implies_paragraph = TRUE;
 			break;
-		case PURPOSE_WSRULEOUTCOME:
+		case PURPOSE_LSNROID:
 			res = LineClassification::new_results(COMMENTARY_MAJLC, PURPOSE_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if ((first_line) || (follows_extract)) res.implies_paragraph = TRUE;
 			break;
-		case DEFINITION_CONTINUED_WSRULEOUTCOME:
+		case DEFINITIONCONTINUED_LSNROID:
 			res = LineClassification::new_results(DEFINITION_CONTINUED_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
-		case QUOTATION_WSRULEOUTCOME:
+		case QUOTATION_LSNROID:
 			res = LineClassification::new_results(QUOTATION_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
-		case SECTIONTITLE_WSRULEOUTCOME:
-			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, SECTION_HEADING_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			if (Str::len(second) > 0) res.cf.operand2 = Str::duplicate(second);
-			break;
-		case HEADING_WSRULEOUTCOME:
-			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			break;
-		case CODE_WSRULEOUTCOME:
+		case CODE_LSNROID:
 			res = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if (follows_extract == FALSE) res.implies_extract = TRUE;
 			break;
-		case BREAK_WSRULEOUTCOME:
-			res = LineClassification::new_results(COMMENTARY_MAJLC, NO_MINLC);
-			res.cf.operand1 = Str::new();
-			if ((first_line) || (follows_extract)) res.implies_paragraph = TRUE;
-			break;
-		case TITLE_WSRULEOUTCOME:
-			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, SECTION_HEADING_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			if (Str::len(third) > 0) res.cf.operand3 = Str::duplicate(third);
-			res.cf.follows_title = TRUE;
-			break;
-		case TITLEANDAUTHOR_WSRULEOUTCOME:
+		case TITLE_LSNROID:
 			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, SECTION_HEADING_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			res.cf.operand2 = Str::duplicate(second);
 			if (Str::len(third) > 0) res.cf.operand3 = Str::duplicate(third);
+			if (Str::len(fourth) > 0) res.cf.operand4 = Str::duplicate(fourth);
 			res.cf.follows_title = TRUE;
+			if (OR->outcome.options_applied & WITHPURPOSE_LSNROBIT) {
+				match_results mr = Regexp::create_mr();
+				if (Regexp::match(&mr, res.cf.operand1, U"(%c+): *(%c+)")) {
+					res.cf.operand1 = Str::duplicate(mr.exp[0]);
+					res.residue = Str::duplicate(mr.exp[1]);
+					res.residue_cf = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
+				}
+				Regexp::dispose_of(&mr);		
+			}
 			break;
-		case CODEEXTRACT_WSRULEOUTCOME:
+		case NAMELESSHOLON_LSNROID:
 			res = LineClassification::new_results(EXTRACT_START_MAJLC, CODE_MINLC);
 			break;
-		case EARLYCODEEXTRACT_WSRULEOUTCOME:
-			res = LineClassification::new_results(EXTRACT_START_MAJLC, EARLY_MINLC);
-			break;
-		case VERYEARLYCODEEXTRACT_WSRULEOUTCOME:
-			res = LineClassification::new_results(EXTRACT_START_MAJLC, VERY_EARLY_MINLC);
-			break;
-		case ENDEXTRACT_WSRULEOUTCOME:
+		case ENDEXTRACT_LSNROID:
 			res = LineClassification::new_results(EXTRACT_END_MAJLC, NO_MINLC);
 			break;
-		case COMBINED_WSRULEOUTCOME: {
-			res = LineClassification::new_results(PARAGRAPH_START_MAJLC, SECTION_HEADING_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			match_results mr = Regexp::create_mr();
-			if (Regexp::match(&mr, res.cf.operand1, U"(%c+): *(%c+)")) {
-				res.cf.operand1 = Str::duplicate(mr.exp[0]);
-				res.residue = Str::duplicate(mr.exp[1]);
-				res.residue_cf = LineClassification::new(COMMENTARY_MAJLC, PURPOSE_MINLC);
-			}
-			Regexp::dispose_of(&mr);		
-			res.cf.follows_title = TRUE;
-			break;
-		}
-		case EXTRACT_WSRULEOUTCOME:
+		case EXTRACT_LSNROID:
 			res = LineClassification::new_results(EXTRACT_MATTER_MAJLC, TEXT_MINLC);
 			res.cf.operand1 = Str::duplicate(line);
 			if (follows_extract == FALSE) res.implies_extract = TRUE;
 			break;
-		case AUDIO_WSRULEOUTCOME:
+		case AUDIO_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, AUDIO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
-		case VIDEO_WSRULEOUTCOME:
+		case VIDEO_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, VIDEO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
-		case FIGURE_WSRULEOUTCOME:
+		case FIGURE_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, FIGURE_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if (Str::len(second) > 0) res.cf.operand2 = Str::duplicate(second);
 			break;
-		case HTML_WSRULEOUTCOME:
+		case HTML_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, HTML_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
-		case DOWNLOAD_WSRULEOUTCOME:
+		case DOWNLOAD_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, DOWNLOAD_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if (Str::len(second) > 0) res.cf.operand2 = Str::duplicate(second);
 			break;
-		case EMBEDDEDVIDEO_WSRULEOUTCOME:
+		case EMBEDDEDVIDEO_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, EMBEDDED_AV_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			res.cf.operand2 = Str::duplicate(second);
 			break;
-		case CAROUSELSLIDE_WSRULEOUTCOME:
+		case CAROUSELSLIDE_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, CAROUSEL_SLIDE_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
-		case CAROUSELABOVE_WSRULEOUTCOME:
-			res = LineClassification::new_results(INSERTION_MAJLC, CAROUSEL_ABOVE_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			break;
-		case CAROUSELBELOW_WSRULEOUTCOME:
-			res = LineClassification::new_results(INSERTION_MAJLC, CAROUSEL_BELOW_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			break;
-		case CAROUSELEND_WSRULEOUTCOME:
+		case CAROUSELEND_LSNROID:
 			res = LineClassification::new_results(INSERTION_MAJLC, CAROUSEL_END_MINLC);
 			break;
 
-		case DEFINITION_WSRULEOUTCOME:
+		case DEFINITION_LSNROID:
 			res = LineClassification::new_results(DEFINITION_MAJLC, DEFINE_COMMAND_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			res.cf.operand2 = Str::duplicate(second);
 			break;
 
-		case DEFAULT_DEFINITION_WSRULEOUTCOME:
-			res = LineClassification::new_results(DEFINITION_MAJLC, DEFAULT_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.operand2 = Str::duplicate(second);
-			break;
-
-		case FORMATIDENTIFIER_WSRULEOUTCOME:
+		case FORMATIDENTIFIER_LSNROID:
 			res = LineClassification::new_results(DEFINITION_MAJLC, FORMAT_COMMAND_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			res.cf.operand2 = Str::duplicate(second);
 			break;
 
-		case SFORMATIDENTIFIER_WSRULEOUTCOME:
-			res = LineClassification::new_results(DEFINITION_MAJLC, SILENTLY_FORMAT_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.operand2 = Str::duplicate(second);
-			break;
-
-		case ENUMERATION_WSRULEOUTCOME:
+		case ENUMERATION_LSNROID:
 			res = LineClassification::new_results(DEFINITION_MAJLC, ENUMERATE_COMMAND_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			res.cf.operand2 = Str::duplicate(second);
 			break;
 
-		case NAMEDCODEFRAGMENT_WSRULEOUTCOME:
+		case NAMEDHOLON_LSNROID:
 			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if (follows_extract) res.implies_paragraph = TRUE;
 			break;
 
-		case NAMEDCODEFRAGMENTADDENDUM_WSRULEOUTCOME:
-			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, ADDENDUM_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			if (follows_extract) res.implies_paragraph = TRUE;
-			break;
-
-		case MAKEDEFINITIONSHERE_WSRULEOUTCOME:
+		case MAKEDEFINITIONSHERE_LSNROID:
 			res = LineClassification::new_results(DEFINITIONS_HERE_MAJLC, NO_MINLC);
 			if (follows_extract) res.implies_paragraph = TRUE;
 			break;
 
-		case FILEHOLONDECLARATION_WSRULEOUTCOME:
+		case FILEHOLON_LSNROID:
 			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, FILE_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			if (follows_extract) res.implies_paragraph = TRUE;
 			break;
 
-		case FILEHOLONDECLARATIONADDENDUM_WSRULEOUTCOME:
-			res = LineClassification::new_results(HOLON_DECLARATION_MAJLC, FILE_ADDENDUM_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			if (follows_extract) res.implies_paragraph = TRUE;
-			break;
-		
-		case BEGINPARAGRAPH_WSRULEOUTCOME:
+		case BEGINPARAGRAPH_LSNROID:
 			if (Str::len(material) > 0)
 				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
 			else
 				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 100;
-			break;
-		
-		case BEGINHEADINGPARAGRAPH_WSRULEOUTCOME:
-			if (Str::len(material) > 0)
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			else
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 99;
-			break;
-		
-		case HEADINGPARAGRAPH1_WSRULEOUTCOME:
-			if (Str::len(material) > 0)
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			else
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 101;
-			break;
-		
-		case HEADINGPARAGRAPH2_WSRULEOUTCOME:
-			if (Str::len(material) > 0)
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			else
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 102;
-			break;
-		
-		case HEADINGPARAGRAPH3_WSRULEOUTCOME:
-			if (Str::len(material) > 0)
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			else
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 103;
-			break;
-		
-		case HEADINGPARAGRAPH4_WSRULEOUTCOME:
-			if (Str::len(material) > 0)
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			else
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 104;
-			break;
-		
-		case HEADINGPARAGRAPH5_WSRULEOUTCOME:
-			if (Str::len(material) > 0)
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, NO_MINLC);
-			else
-				res = LineClassification::new_results(PARAGRAPH_START_MAJLC, HEADING_COMMAND_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			res.cf.options_bitmap = 105;
 			break;
 
-		case TEXTEXTRACT_WSRULEOUTCOME:
+		case TEXTEXTRACT_LSNROID:
 			res = LineClassification::new_results(EXTRACT_START_MAJLC, TEXT_MINLC);
 			if (Str::len(material) > 0) res.cf.minor = TEXT_AS_MINLC;
 			if (Str::len(second) > 0) res.cf.minor = TEXT_FROM_MINLC;
@@ -635,26 +497,27 @@ match, we consider that line to be code.
 			res.cf.operand2 = Str::duplicate(second);
 			break;
 
-		case TEXTASCODEEXTRACT_WSRULEOUTCOME:
+		case TEXTASCODEEXTRACT_LSNROID:
 			res = LineClassification::new_results(EXTRACT_START_MAJLC, TEXT_AS_MINLC);
 			res.cf.operand1 = NULL;
 			if (Str::len(second) > 0) res.cf.minor = TEXT_FROM_AS_MINLC;
 			res.cf.operand2 = Str::duplicate(second);
 			break;
 
-		case TEXTEXTRACTTO_WSRULEOUTCOME:
+		case TEXTEXTRACTTO_LSNROID:
 			res = LineClassification::new_results(EXTRACT_START_MAJLC, TEXT_TO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
 
-		case INCLUDEFILE_WSRULEOUTCOME:
+		case INCLUDEFILE_LSNROID:
 			res = LineClassification::new_results(INCLUDE_FILE_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
 
 		default: internal_error("unimplemented rule outcome");
 	}
-	res.cf.whitespace_nature = whitespace_nature;
+	res.cf.options_bitmap = OR->outcome.options_applied;
+	res.cf.whitespace_nature = context.whitespace_nature;
 
 @ Anything in the RESIDUE variable is passed back to become another "line" of
 the source code, but first it is run through a special grammar depending on
@@ -668,13 +531,16 @@ towel after what are clearly too many iterations.
 @<Deal with the RESIDUE variable, if anything is in it@> =
 	res.residue = Str::duplicate(residue);
 	ls_class never = LineClassification::unclassified();
+	ls_classifier_context residue_context = context;
+	residue_context.whitespace_nature = BLACK_LINESHADE;
+	residue_context.previously = &never;
 	int ni = 0;
 	while ((Str::len(res.residue) > 0) && (ni++ < MAX_RESIDUE_OR_OPTIONS_ITERATIONS)) {
-		ls_notation_rule *RR = WebNotation::match(syntax->residue_rules[OR->outcome],
-			res.residue, 2, wildcards, &never, sff, syntax);
+		ls_notation_rule *RR = LineClassifiers::match(ntn->residue_classifier[OR->outcome.outcome_ID],
+			res.residue, &residue_context, wildcards);
 		if (RR == NULL) break;
 		@<Deal with a RESIDUE grammar match@>;
-		if (RR->outcome == PARAGRAPHTAG_WSRULEOUTCOME) {
+		if (RR->outcome.outcome_ID == PARAGRAPHTAG_LSNROID) {
 			text_stream *tag = Str::duplicate(material);
 			if (res.cf.tag_list == NULL) res.cf.tag_list = NEW_LINKED_LIST(text_stream);
 			ADD_TO_LINKED_LIST(tag, text_stream, res.cf.tag_list);
@@ -686,14 +552,14 @@ towel after what are clearly too many iterations.
 and at present that's the only thing a residue grammar can usefully match:
 
 @<Deal with a RESIDUE grammar match@> =
-	switch (RR->outcome) {
-		case PARAGRAPHTAG_WSRULEOUTCOME: {
+	switch (RR->outcome.outcome_ID) {
+		case PARAGRAPHTAG_LSNROID: {
 			text_stream *tag = Str::duplicate(material);
 			if (res.cf.tag_list == NULL) res.cf.tag_list = NEW_LINKED_LIST(text_stream);
 			ADD_TO_LINKED_LIST(tag, text_stream, res.cf.tag_list);
 			break;
 		}
-		case PARAGRAPHTITLING_WSRULEOUTCOME: {
+		case PARAGRAPHTITLING_LSNROID: {
 			res.cf.operand1 = Str::duplicate(material);
 			break;
 		}
@@ -702,26 +568,19 @@ and at present that's the only thing a residue grammar can usefully match:
 @ The OPTIONS variable is handled similarly, but here the grammar needs to
 exhaust the content completely, or there's an error.
 
-@d HYPERLINKED_CHMOB     1
-@d UNDISPLAYED_CHMOB     2
-
-@d WEBWIDEHOLON_CHMOB    4
-@d VERYEARLYHOLON_CHMOB  8
-@d EARLYHOLON_CHMOB      16
-@d LATEHOLON_CHMOB       32
-@d VERYLATEHOLON_CHMOB   64
-
-
 @<Deal with the OPTIONS variable, if anything is in it@> =
 	TEMPORARY_TEXT(opts)
 	WRITE_TO(opts, "%S", options);
 	ls_class never = LineClassification::unclassified();
+	ls_classifier_context options_context = context;
+	options_context.whitespace_nature = BLACK_LINESHADE;
+	options_context.previously = &never;
 	int ni = 0;
 	while ((Str::len(opts) > 0) && (ni++ < MAX_RESIDUE_OR_OPTIONS_ITERATIONS)) {
-		ls_notation_rule *OPR = WebNotation::match(syntax->options_rules[OR->outcome],
-			opts, 2, wildcards, &never, sff, syntax);
+		ls_notation_rule *OPR = LineClassifiers::match(ntn->options_classifier[OR->outcome.outcome_ID],
+			opts, &options_context, wildcards);
 		if (OPR == NULL) break;
-		if (Str::len(OPR->error) > 0) res.error = OPR->error;
+		if (Str::len(OPR->outcome.error) > 0) res.error = OPR->outcome.error;
 		else @<Deal with an OPTIONS grammar match@>;
 		Str::clear(opts);
 		Str::copy(opts, options);
@@ -733,13 +592,35 @@ exhaust the content completely, or there's an error.
 	DISCARD_TEXT(opts)
 
 @<Deal with an OPTIONS grammar match@> =
-	switch (OPR->outcome) {
-		case HYPERLINKED_WSRULEOUTCOME: res.cf.options_bitmap |= HYPERLINKED_CHMOB; break;
-		case UNDISPLAYED_WSRULEOUTCOME: res.cf.options_bitmap |= UNDISPLAYED_CHMOB; break;
+	int B = LineClassifiers::option_bit(OPR->outcome.outcome_ID);
+	if (B == -1) {
+		res.error = Str::new();
+		WRITE_TO(res.error, "outcome which is not an option: '%S'", opts);
+	} else {
+		bitmap |= B;
+	}
 
-		case WEBWIDEHOLON_WSRULEOUTCOME:  res.cf.options_bitmap |= WEBWIDEHOLON_CHMOB; break;
-		case VERYEARLYHOLON_WSRULEOUTCOME: res.cf.options_bitmap |= VERYEARLYHOLON_CHMOB; break;
-		case EARLYHOLON_WSRULEOUTCOME:    res.cf.options_bitmap |= EARLYHOLON_CHMOB; break;
-		case LATEHOLON_WSRULEOUTCOME:     res.cf.options_bitmap |= LATEHOLON_CHMOB; break;
-		case VERYLATEHOLON_WSRULEOUTCOME: res.cf.options_bitmap |= VERYLATEHOLON_CHMOB; break;
+@<Act on the options set in the bitmap@> =
+	res.cf.options_bitmap = bitmap;
+	if (OR->outcome.outcome_ID == NAMELESSHOLON_LSNROID) {
+		if (bitmap & EARLYHOLON_LSNROBIT)     res.cf.minor = EARLY_MINLC;
+		if (bitmap & VERYEARLYHOLON_LSNROBIT) res.cf.minor = VERY_EARLY_MINLC;
+		if (bitmap & LATEHOLON_LSNROBIT)      res.cf.minor = LATE_MINLC;
+		if (bitmap & VERYLATEHOLON_LSNROBIT)  res.cf.minor = VERY_LATE_MINLC;
+	}
+	if (OR->outcome.outcome_ID == NAMEDHOLON_LSNROID) {
+		if (bitmap & CONTINUATION_LSNROBIT)   res.cf.minor = ADDENDUM_MINLC;
+	}
+	if (OR->outcome.outcome_ID == FILEHOLON_LSNROID) {
+		if (bitmap & CONTINUATION_LSNROBIT)   res.cf.minor = FILE_ADDENDUM_MINLC;
+	}
+	if (OR->outcome.outcome_ID == FORMATIDENTIFIER_LSNROID) {
+		if (bitmap & SILENT_LSNROBIT)         res.cf.minor = SILENTLY_FORMAT_COMMAND_MINLC;
+	}
+	if (OR->outcome.outcome_ID == CAROUSELSLIDE_LSNROID) {
+		if (bitmap & CAPTIONABOVE_LSNROBIT)   res.cf.minor = CAROUSEL_ABOVE_MINLC;
+		if (bitmap & CAPTIONBELOW_LSNROBIT)   res.cf.minor = CAROUSEL_BELOW_MINLC;
+	}
+	if (OR->outcome.outcome_ID == DEFINITION_LSNROID) {
+		if (bitmap & DEFAULT_LSNROBIT)         res.cf.minor = DEFAULT_COMMAND_MINLC;
 	}
