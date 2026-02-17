@@ -67,7 +67,7 @@ avoided altogether.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Each section of an InC web can, optionally, begin:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">[Namespace::]</span><span class="plain-syntax"> The Title of This Section.</span>
+<span class="plain-syntax">    [Namespace::] The Title of This Section.</span>
 </pre>
 <div class="lsmarkdown">
 <p>rather than, as normal,</p>
@@ -80,7 +80,7 @@ avoided altogether.</p>
 begins with <code>Namespace::</code>. For example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Namespace::initialise</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Namespace::initialise</span><span class="plain-syntax">(</span><span class="identifier-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        ....</span>
 <span class="plain-syntax">    }</span>
 </pre>
@@ -95,7 +95,7 @@ the <code>::</code> to <code>__</code>, so in a debugger, the above function wou
 <p>Namespaces can be &quot;nested&quot;, in the sense that, for example, we could have:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">[Errors::Fatal::]</span><span class="plain-syntax"> Handling fatal errors.</span>
+<span class="plain-syntax">    [Errors::Fatal::] Handling fatal errors.</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  The <code>foundation</code> module contains a suite of utility functions for handling
@@ -120,7 +120,7 @@ notation means, but for example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">&lt;declaration&gt;</span><span class="plain-syntax"> ::=</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">declare</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;dominion&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">independent</span><span class="plain-syntax">  ==&gt; { </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1], - }</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">declare</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;dominion&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">independent</span><span class="plain-syntax">  ==&gt; { </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1], </span><span class="constant-syntax">-</span><span class="plain-syntax"> }</span>
 
 <span class="plain-syntax">    </span><span class="function-syntax">&lt;dominion&gt;</span><span class="plain-syntax"> ::=</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">canada</span><span class="plain-syntax"> |</span>

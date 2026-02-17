@@ -277,81 +277,42 @@ the language definition for C includes the convention
 the CWEB-compatibility notation takes it away again, since this was not a
 feature of CWEB, and it will cause some CWEB programs to fail to compile.</p>
 <p>This convention is a device to enable holons to behave like code blocks in
-C (and similar languages): see <a href="5-wikal.html" class="internal">What Inweb Knows about Languages</a>.</p>
+C (and similar languages): see <a href="5-hacb.html" class="internal">Holons as Code Blocks</a>.</p>
 </li>
 </ul>
 <h2>Conventions affecting tangling of C and related languages</h2>
+<p>See <a href="5-scf.html" class="internal">Special C Features</a> for a proper explanation of these. Note that these
+conventions take effect only for languages declared as being &quot;C-like&quot;; using
+them on, say, a Python web would do nothing.</p>
 <ul>
 <li>
 <p><code>standard library #includes are tangled early in the program</code> or
-<code>standard library #includes are treated like any other code</code>. Pulls forward
-lines like <code>#include &lt;stdio.h&gt;</code> (written with angle brackets) for the C standard
-library files only, so that they're tangled early.</p>
-<p>Generically, <code>standard library #includes are treated like any other code</code>, but
-language definitions for C and similar usually say otherwise.</p>
+<code>standard library #includes are treated like any other code</code>.
+Generically, <code>standard library #includes are treated like any other code</code>, but
+language definitions for C and variants of C usually say otherwise.</p>
 </li>
 <li>
 <p><code>typedefs are tangled early in the program</code> or
-<code>typedefs are treated like any other code</code>: Relevant only to dialects of C
-which support <code>typedef</code>, and affecting only &quot;simple&quot; declarations where the
-type is not a <code>struct</code>: e.g., <code>typedef big unsigned long long</code>.</p>
-<p>Generically, <code>typedefs are treated like any other code</code>, but language definitions for
-C and similar usually say otherwise.</p>
+<code>typedefs are treated like any other code</code>.
+Generically, <code>typedefs are treated like any other code</code>, but language definitions for
+C and variants of C usually say otherwise.</p>
 </li>
 <li>
 <p><code>typedef structs are tangled early and reordered logically</code> or
-<code>typedef structs are treated like any other code</code>: Relevant only to dialects of C
-which support <code>typedef struct</code>. For example, suppose the program contains:</p>
-<pre><code>cake birthday_cake;
-...
-typedef struct cake {
-    struct filling f;
-} cake;
-...
-typedef struct filling {
-    int jam;
-}
-</code></pre>
-<p>This will fail to compile for two reasons: <code>cake</code> is unknown at the time
-<code>cake birthday_cake</code> is read, because the compiler has not yet reached
-the typedef of <code>cake</code>; and <code>struct filling</code> needs to be fully declared
-<em>before</em> <code>struct cake</code> is declared (since it is incorporated, rather
-than simply pointed to). If <code>typedef structs are tangled early and reordered logically</code>,
-both these problems are solved automatically, as Inweb tangles the code
-into the right order to avoid them.</p>
-<p>Generically, <code>typedef structs are treated like any other code</code>, but language
-definitions for C and similar usually say otherwise.</p>
+<code>typedef structs are treated like any other code</code>.
+Generically, <code>typedef structs are treated like any other code</code>, but language
+definitions for C and variants of C usually say otherwise.</p>
 </li>
 <li>
 <p><code>function predeclarations are tangled automatically</code> or
-<code>functions are treated like any other code</code>: Relevant only to dialects of C in
-which a function must be predeclared before use. For example, suppose the program contains:</p>
-<pre><code>void first(void) {
-    second();
-}
-void second(void) {
-    printf(&quot;Hello, conventioners.\n&quot;);
-}
-</code></pre>
-<p>This will fail to compile because <code>second</code> is unknown when <code>first</code> is compiled.
-Often by means of header files, C programmers overcome this with predeclarations:</p>
-<pre><code>void second(void); /* predeclaration */
-void first(void) {
-    second();
-}
-void second(void) {
-    printf(&quot;Hello, conventioners.\n&quot;);
-}
-</code></pre>
-<p>This is a nuisance, and if <code>function predeclarations are tangled automatically</code> then
-Inweb will automatically tangle predeclarations of all functions.</p>
-<p>Generically, <code>functions are treated like any other code</code>,
-but language definitions for C and similar usually say otherwise.</p>
+<code>functions are treated like any other code</code>.
+Generically, <code>functions are treated like any other code</code>,
+but language definitions for C and variants of C usually say otherwise.</p>
 </li>
 </ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-tgs.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cp.html">cp</a></li><li class="progresssection"><a href="2-mdl.html">mdl</a></li><li class="progresssection"><a href="2-tgs.html">tgs</a></li><li class="progresscurrent">cnv</li><li class="progresssection"><a href="2-rad.html">rad</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresschapter"><a href="4-an.html">4</a></li><li class="progresschapter"><a href="5-wikal.html">5</a></li><li class="progresschapter"><a href="6-ap.html">6</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="2-rad.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-tgs.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-cp.html">cp</a></li><li class="progresssection"><a href="2-mdl.html">mdl</a></li><li class="progresssection"><a href="2-tgs.html">tgs</a></li><li class="progresscurrent">cnv</li><li class="progresssection"><a href="2-rad.html">rad</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresschapter"><a href="4-an.html">4</a></li><li class="progresschapter"><a href="5-al.html">5</a></li><li class="progresschapter"><a href="6-ap.html">6</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="2-rad.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

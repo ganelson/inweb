@@ -122,8 +122,8 @@ web to the weave of another, even when they are independent programs. For
 example, a section of code in <code>beth</code> could say:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Handling</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">system</span><span class="plain-syntax"> </span><span class="identifier-syntax">problems</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">job</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="comment-syntax">aleph// than</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">us</span><span class="plain-syntax">, </span><span class="identifier-syntax">so</span><span class="plain-syntax"> </span><span class="identifier-syntax">we</span><span class="character-syntax">'ll just proceed. (See </span><span class="comment-syntax">aleph: Error Recovery//.)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Handling</span><span class="plain-syntax"> </span><span class="identifier-syntax">file</span><span class="plain-syntax"> </span><span class="identifier-syntax">system</span><span class="plain-syntax"> </span><span class="identifier-syntax">problems</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">job</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="comment-syntax">//aleph// than</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">us</span><span class="plain-syntax">, </span><span class="identifier-syntax">so</span><span class="plain-syntax"> </span><span class="identifier-syntax">we</span><span class="character-syntax">'ll just proceed. (See //aleph: Error Recovery//.)</span>
 </pre>
 <div class="lsmarkdown">
 <p>and these links would both work. Without the use of a colony file, neither
@@ -132,7 +132,7 @@ To demonstrate that right here, see <a href="../goldbach/tsoe.html" class="inter
 That last sentence was typed as:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">demonstrate</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">right</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">, </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="comment-syntax">goldbach: The Sieve of Eratosthenes//.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">demonstrate</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">right</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">, </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="comment-syntax">//goldbach: The Sieve of Eratosthenes//.</span>
 </pre>
 <div class="lsmarkdown">
 <p>Cross-references to other webs or modules in the same colony can be to chapters
@@ -205,7 +205,7 @@ Inweb <code>docs</code> site:</p>
 <span class="string-syntax">[[Item "</span><span class="identifier-syntax">twinprimes</span><span class="string-syntax">"]]</span>
 <span class="string-syntax">[[Item "</span><span class="identifier-syntax">eastertide</span><span class="string-syntax">"]]</span>
 <span class="string-syntax">[[Menu "</span><span class="identifier-syntax">Repository</span><span class="string-syntax">"]]</span>
-<span class="string-syntax">[[Item "</span><span class="function-syntax">&lt;github.png&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">github</span><span class="string-syntax">" -&gt; https:</span><span class="comment-syntax">github.com/ganelson/inweb]]</span>
+<span class="string-syntax">[[Item "</span><span class="function-syntax">&lt;github.png&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">github</span><span class="string-syntax">" -&gt; https://github.com/ganelson/inweb]]</span>
 <span class="string-syntax">[[Menu "</span><span class="identifier-syntax">Related</span><span class="plain-syntax"> </span><span class="identifier-syntax">Projects</span><span class="string-syntax">"]]</span>
 <span class="string-syntax">[[Item "</span><span class="identifier-syntax">inform</span><span class="string-syntax">"]]</span>
 <span class="string-syntax">[[Item "</span><span class="identifier-syntax">intest</span><span class="string-syntax">"]]</span>
@@ -222,7 +222,7 @@ more general, and makes the text <code>Y</code> point to either an external web 
 recognised by beginning with <code>http</code>, or else a web cross-reference. Thus:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [[</span><span class="identifier-syntax">Item</span><span class="plain-syntax"> </span><span class="string-syntax">"innards"</span><span class="plain-syntax"> -&gt; </span><span class="comment-syntax">inweb: Programming Languages//]]</span>
+<span class="plain-syntax">    [[</span><span class="identifier-syntax">Item</span><span class="plain-syntax"> </span><span class="string-syntax">"innards"</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="comment-syntax">//inweb: Programming Languages//]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>would make a menu item called &quot;innards&quot; leading to a section in Chapter 4
@@ -231,7 +231,7 @@ of the Inweb source.</p>
 example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [[</span><span class="identifier-syntax">Item</span><span class="plain-syntax"> </span><span class="string-syntax">"&lt;github.png&gt; github"</span><span class="plain-syntax"> -&gt; </span><span class="identifier-syntax">https:</span><span class="comment-syntax">github.com/ganelson/intest]]</span>
+<span class="plain-syntax">    [[</span><span class="identifier-syntax">Item</span><span class="plain-syntax"> </span><span class="string-syntax">"&lt;github.png&gt; github"</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">https:</span><span class="comment-syntax">//github.com/ganelson/intest]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>This icon should be in the <code>docs</code> home of the repository. Note that the
@@ -270,7 +270,7 @@ file, as</p>
 <p>The links after the colon can also be Inweb cross-references, so, for example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">breadcrumbs:</span><span class="plain-syntax"> </span><span class="string-syntax">"Overview: </span><span class="comment-syntax">overview//"</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">breadcrumbs:</span><span class="plain-syntax"> </span><span class="string-syntax">"Overview: //overview//"</span>
 </pre>
 <div class="lsmarkdown">
 <p>makes a link to the web/module called <code>overview</code> in the colony file.</p>

@@ -97,7 +97,7 @@ as is any file whose first character is <code>#</code>.</p>
 and say what if anything it is based on. For example, this might be:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> Tapestry based on HTML</span>
+<span class="plain-syntax">    name: Tapestry based on HTML</span>
 </pre>
 <div class="lsmarkdown">
 <p>That is the only compulsory content; with that one line in one file, the
@@ -108,7 +108,7 @@ to HTML in every respect, so it's not very useful yet.)</p>
 part. Thus, for example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> HTML</span>
+<span class="plain-syntax">    name: HTML</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  There are then a handful of other, optional, settings. The following are
@@ -116,22 +116,22 @@ all inherited automatically from the pattern we are based on, unless we
 set them ourselves.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">format</span><span class="plain-syntax">:</span><span class="string-syntax"> F</span>
+<span class="plain-syntax">    format: F</span>
 </pre>
 <div class="lsmarkdown">
 <p>sets the format. At present, this must be <code>HTML</code>, <code>plain</code> (plain text),
 <code>ePub</code>, <code>TeX</code>, or <code>TestingInweb</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">number sections</span><span class="plain-syntax">:</span><span class="string-syntax"> yes</span>
-<span class="plain-syntax">    </span><span class="element-syntax">number sections</span><span class="plain-syntax">:</span><span class="string-syntax"> no</span>
+<span class="plain-syntax">    number sections: yes</span>
+<span class="plain-syntax">    number sections: no</span>
 </pre>
 <div class="lsmarkdown">
 <p>causes the weaver to apply numbers to section headings: the first included will
 be number 1, and so on. Default is <code>no</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">default range</span><span class="plain-syntax">:</span><span class="string-syntax"> R</span>
+<span class="plain-syntax">    default range: R</span>
 </pre>
 <div class="lsmarkdown">
 <p>tells the weaver to assume the range <code>R</code>, if the user tries to weave a
@@ -145,14 +145,14 @@ inherited.</p>
 pattern, and is not inherited from any patterns it is based on.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">bibliographic data</span><span class="plain-syntax">:</span><span class="string-syntax"> K = V</span>
+<span class="plain-syntax">    bibliographic data: K = V</span>
 </pre>
 <div class="lsmarkdown">
 <p>tells the weaver to override the bibliographic data on any web it weaves, setting
 the key <code>K</code> to the value <code>V</code>. For example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">bibliographic data</span><span class="plain-syntax">:</span><span class="string-syntax"> Booklet Title = A formal grammar for Inform 7</span>
+<span class="plain-syntax">    bibliographic data: Booklet Title = A formal grammar for Inform 7</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  It can be useful to do some post-processing after each woven file is made.
@@ -161,11 +161,11 @@ to make a TeX file, and then runs it through the <code>pdftex</code> command-lin
 This is done by giving the necessary commands in the pattern file:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> PDFTeX based on TeX</span>
-<span class="plain-syntax">    </span><span class="element-syntax">initial extension</span><span class="plain-syntax">:</span><span class="string-syntax"> .tex</span>
-<span class="plain-syntax">    </span><span class="element-syntax">command</span><span class="plain-syntax">:</span><span class="string-syntax"> pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex</span>
-<span class="plain-syntax">    </span><span class="element-syntax">command</span><span class="plain-syntax">:</span><span class="string-syntax"> rm WOVEN.tex</span>
-<span class="plain-syntax">    </span><span class="element-syntax">command</span><span class="plain-syntax">:</span><span class="string-syntax"> rm WOVEN.log</span>
+<span class="plain-syntax">    name: PDFTeX based on TeX</span>
+<span class="plain-syntax">    initial extension: .tex</span>
+<span class="plain-syntax">    command: pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex</span>
+<span class="plain-syntax">    command: rm WOVEN.tex</span>
+<span class="plain-syntax">    command: rm WOVEN.log</span>
 </pre>
 <div class="lsmarkdown">
 <p>Here <code>WOVEN</code> expands to the filename of the file which has just been woven,
@@ -187,7 +187,7 @@ but there's no reason they shouldn't also be useful for other formats.</p>
 be a single alphanumeric word. For example, the HTML pattern file says</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">plugin</span><span class="plain-syntax">:</span><span class="string-syntax"> Base</span>
+<span class="plain-syntax">    plugin: Base</span>
 </pre>
 <div class="lsmarkdown">
 <p>and this ensures that every file woven by this pattern, or any pattern based
@@ -210,8 +210,8 @@ mathematics and footnoting, provide lines like these in your pattern file,
 but with your preferred plugin names:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">mathematics plugin</span><span class="plain-syntax">:</span><span class="string-syntax"> MathJax3</span>
-<span class="plain-syntax">    </span><span class="element-syntax">footnotes plugin</span><span class="plain-syntax">:</span><span class="string-syntax"> Bigfoot</span>
+<span class="plain-syntax">    mathematics plugin: MathJax3</span>
+<span class="plain-syntax">    footnotes plugin: Bigfoot</span>
 </pre>
 <div class="lsmarkdown">
 <p><code>Bigfoot</code> may eventually need to be simplified and rewritten: its big feet
@@ -241,7 +241,7 @@ which uses monospaced fonts throughout, for commentary as well as code. The
 pattern file can just be:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> MonoGitHub based on GitHubPages</span>
+<span class="plain-syntax">    name: MonoGitHub based on GitHubPages</span>
 </pre>
 <div class="lsmarkdown">
 <p>Then create just one subdirectory of <code>MonoGitHub</code>, called <code>Base</code>, and create
@@ -290,11 +290,11 @@ asset file should be put into the woven file. For example, an HTML pattern
 might say this:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js copy</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js prefix = &lt;script src="URL"&gt;&lt;/script&gt;</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css copy</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css prefix = &lt;link href="URL" rel="stylesheet" rev="stylesheet" type="text/css"&gt;</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css transform names</span>
+<span class="plain-syntax">    assets: .js copy</span>
+<span class="plain-syntax">    assets: .js prefix = &lt;script src="URL"&gt;&lt;/script&gt;</span>
+<span class="plain-syntax">    assets: .css copy</span>
+<span class="plain-syntax">    assets: .css prefix = &lt;link href="URL" rel="stylesheet" rev="stylesheet" type="text/css"&gt;</span>
+<span class="plain-syntax">    assets: .css transform names</span>
 </pre>
 <div class="lsmarkdown">
 <p>With that done, any Javascript or CSS files in its plugins will be copied over,
@@ -307,13 +307,13 @@ enables the colour-scheme renaming business described below.</p>
 a stand-alone HTML file. This could be achieved by:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js embed</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js prefix = &lt;script&gt;</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .js suffix = &lt;/script&gt;</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css embed</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css prefix = &lt;style type="text/css"&gt;</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css suffix = &lt;/style&gt;</span>
-<span class="plain-syntax">    </span><span class="element-syntax">assets</span><span class="plain-syntax">:</span><span class="string-syntax"> .css transform names</span>
+<span class="plain-syntax">    assets: .js embed</span>
+<span class="plain-syntax">    assets: .js prefix = &lt;script&gt;</span>
+<span class="plain-syntax">    assets: .js suffix = &lt;/script&gt;</span>
+<span class="plain-syntax">    assets: .css embed</span>
+<span class="plain-syntax">    assets: .css prefix = &lt;style type="text/css"&gt;</span>
+<span class="plain-syntax">    assets: .css suffix = &lt;/style&gt;</span>
+<span class="plain-syntax">    assets: .css transform names</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Embeddings.</b>  Patterns with the HTML format may also want to provide &quot;embeddings&quot;. These
@@ -348,7 +348,7 @@ then you need only write two files: <code>SnakeSkin/pattern.txt</code>, consisti
 the single line</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">name</span><span class="plain-syntax">:</span><span class="string-syntax"> SnakeSkin based on HTML</span>
+<span class="plain-syntax">    name: SnakeSkin based on HTML</span>
 </pre>
 <div class="lsmarkdown">
 <p>(or perhaps based on <code>GitHubPages</code>, if you want to host there); and then
@@ -387,11 +387,11 @@ she can write her own <code>template-body.html</code> and/or <code>template-inde
 <span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;</span>
 <span class="plain-syntax">&lt;html&gt;</span>
 <span class="plain-syntax">    &lt;head&gt;</span>
-<span class="plain-syntax">        &lt;title&gt;</span><span class="function-syntax">[[Booklet Title]]</span><span class="plain-syntax">&lt;/title&gt;</span>
-<span class="plain-syntax">        </span><span class="function-syntax">[[Plugins]]</span>
+<span class="plain-syntax">        &lt;title&gt;[[Booklet Title]]&lt;/title&gt;</span>
+<span class="plain-syntax">        [[Plugins]]</span>
 <span class="plain-syntax">    &lt;/head&gt;</span>
 <span class="plain-syntax">    &lt;body&gt;</span>
-<span class="function-syntax">[[Weave Content]]</span>
+<span class="plain-syntax">[[Weave Content]]</span>
 <span class="plain-syntax">    &lt;/body&gt;</span>
 <span class="plain-syntax">&lt;/html&gt;</span>
 </pre>
@@ -426,14 +426,14 @@ enabling it to generate contents pages:</p>
 <p>(a) One of the following details about the entire-web PDF (see below):</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">[[Complete Leafname]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Complete PDF Size]]</span>
+<span class="plain-syntax">    [[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>(b) One of the following details about the &quot;current chapter&quot; (again, see below):</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Leafname]]</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[Chapter Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Chapter Errors]]</span>
+<span class="plain-syntax">    [[Chapter Title]]  [[Chapter Purpose]]  [[Chapter Leafname]]</span>
+<span class="plain-syntax">    [[Chapter Extent]]  [[Chapter PDF Size]]  [[Chapter Errors]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>(...) The leafname is that of the typeset PDF; the extent is a page count;
@@ -441,10 +441,10 @@ the errors result is a usually blank report.</p>
 <p>(c) One of the following details about the &quot;current section&quot; (again, see below):</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Leafname]]</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[Section Extent]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section PDF Size]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Errors]]</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Paragraphs]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Section Mean]]</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[Section Source]]</span>
+<span class="plain-syntax">    [[Section Title]]  [[Section Purpose]]  [[Section Leafname]]</span>
+<span class="plain-syntax">    [[Section Extent]]  [[Section PDF Size]]  [[Section Errors]]</span>
+<span class="plain-syntax">    [[Section Lines]]  [[Section Paragraphs]]  [[Section Mean]]</span>
+<span class="plain-syntax">    [[Section Source]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>(...) Lines and Paragraphs are counts of the number of each; the Source
@@ -463,7 +463,7 @@ modules of the current web. (The main module, containing the actual material
 of the current web, does not count.) Within such a loop,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">[[Module Title]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Module Purpose]]</span><span class="plain-syntax">  </span><span class="function-syntax">[[Module Page]]</span>
+<span class="plain-syntax">    [[Module Title]]  [[Module Purpose]]  [[Module Page]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>can all be used to refer to the current module. <code>[[Module Page]]</code> expands
@@ -475,17 +475,17 @@ a repetition, but happens just once, for the named chapter or section.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    To take chapter 3 as an example, for instance, we find -</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[Select 3]]</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[Repeat Section]]</span>
-<span class="plain-syntax">        Section </span><span class="function-syntax">[[Section Title]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Code]]</span><span class="plain-syntax">, </span><span class="function-syntax">[[Section Lines]]</span><span class="plain-syntax"> lines.</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[End Repeat]]</span>
-<span class="plain-syntax">    </span><span class="function-syntax">[[End Select]]</span>
+<span class="plain-syntax">    [[Select 3]]</span>
+<span class="plain-syntax">    [[Repeat Section]]</span>
+<span class="plain-syntax">        Section [[Section Title]], [[Section Code]], [[Section Lines]] lines.</span>
+<span class="plain-syntax">    [[End Repeat]]</span>
+<span class="plain-syntax">    [[End Select]]</span>
 </pre>
 <div class="lsmarkdown">
 <p>weaves a report somewhat like this:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">take</span><span class="plain-syntax"> </span><span class="identifier-syntax">chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax">, </span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">find</span><span class="plain-syntax"> -</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">take</span><span class="plain-syntax"> </span><span class="identifier-syntax">chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">example</span><span class="plain-syntax">, </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax">, </span><span class="identifier-syntax">we</span><span class="plain-syntax"> </span><span class="identifier-syntax">find</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="identifier-syntax">Lexer</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">/</span><span class="identifier-syntax">lex</span><span class="plain-syntax">, </span><span class="constant-syntax">1011</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines</span><span class="plain-syntax">.</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="identifier-syntax">Read</span><span class="plain-syntax"> </span><span class="identifier-syntax">Source</span><span class="plain-syntax"> </span><span class="identifier-syntax">Text</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">/</span><span class="identifier-syntax">read</span><span class="plain-syntax">, </span><span class="constant-syntax">394</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines</span><span class="plain-syntax">.</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Section</span><span class="plain-syntax"> </span><span class="identifier-syntax">Lexical</span><span class="plain-syntax"> </span><span class="identifier-syntax">Writing</span><span class="plain-syntax"> </span><span class="identifier-syntax">Back</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">/</span><span class="identifier-syntax">lwb</span><span class="plain-syntax">, </span><span class="constant-syntax">376</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines</span><span class="plain-syntax">.</span>

@@ -69,6 +69,26 @@ that achieves a paragraph break by more regular means.
 
 Note that comments are not allowed in a classifier: too much risk of misunderstanding.
 
+### Patterns
+
+The _pattern_ part is read as literal text, by default: in other words, it has
+to match exactly. However, certain "wildcards" are allowed which break this rule:
+
+- The wildcards `MATERIAL`, `SECOND`, `THIRD` and `FOURTH` can absorb any non-empty
+text. The text put into them is then used for different purposes depending on the
+outcome.
+
+- Wildcards can be qualified by being immediately followed with `(NONWHITESPACE)`.
+Thus `MATERIAL(NONWHITESPACE)` would not match any text containing spaces or tabs.
+At the other extreme, `MATERIAL(WHITESPACE)` would only match a run of spaces and tabs.
+`MATERIAL(DIGITS)` requires it to contain only decimal digits.
+
+- The special wildcards `RESIDUE` and `OPTIONS` behave exactly like the other four,
+except that content in them is put through further classification after a successful
+match. See //Creating Notations// for more.
+
+### Conditions
+
 The valid conditions are:
 
 condition                    | holds provided
@@ -76,8 +96,10 @@ condition                    | holds provided
 `on first line`              | at the top of any file in the literate source
 `on first line of only file` | at the top of a single-file web (and never in a multi-file web)
 `following title`            | in lines following `title`
-`in definition context`      | previous line was code, or a text extract, or a named holon declaration, or a nameless holon marker
-`in extract context`         | previous line was `definition` or `defaultdefinition` or `definitioncontinued`
+`in extract context`         | previous line was code, or a text extract, or a named holon declaration, or a nameless holon marker
+`in holon context`           | `in extract context` where the extract is a holon
+`in textextract context`     | `in extract context` where the extract is not a holon
+`in definition context`      | previous line was `definition` or `defaultdefinition` or `definitioncontinued`
 `in indented context`        | line occurs in a separated block of indented lines
 
 The valid outcomes are a longer trawl, so they'll be grouped loosely by function.

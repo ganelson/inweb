@@ -1,0 +1,9 @@
+Language "VowelsExample" {
+	colour !vowel like !function
+	colouring
+		=> !plain
+		characters in "AEIOUaeiou" {
+			=> !vowel
+		}
+	end
+}

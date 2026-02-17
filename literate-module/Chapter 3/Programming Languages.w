@@ -3,47 +3,102 @@
 Defining the programming languages supported by our LP system, loading in their
 definitions from files.
 
-@h Global definitions.
-These calls rather crudely put any languages whose definitions they find into
-the global resources we're holding, thus making them available to anything that
-wants them. Inweb uses these only in response to direct command-line requests.
-
-We can read every language in a directory, all at once:
+@ Each different programming language is represented by an instance of
+|programming_language|. Some webs specify their language by name, and others
+imply it with filename extensions.
 
 =
-void Languages::read_definitions(pathname *P) {
-	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories::next(D, leafname)) {
-		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
-			filename *F = Filenames::in(P, leafname);
-			Languages::read_definition(F);
-		}
-	}
-	DISCARD_TEXT(leafname)
-	Directories::close(D);
+typedef struct programming_language {
+	struct wcl_declaration *declaration;
+	text_stream *language_name; /* identifies it */
+	text_stream *language_details; /* brief explanation of what language is */
+	
+	linked_list *recognised_filename_extensions; /* of |text_stream| */
+
+	int supports_namespaces;
+	text_stream *line_comment;
+	text_stream *whole_line_comment;
+	text_stream *multiline_comment_open;
+	text_stream *multiline_comment_close;
+	text_stream *string_literal;
+	text_stream *string_literal_escape;
+	text_stream *character_literal;
+	text_stream *character_literal_escape;
+	text_stream *binary_literal_prefix;
+	text_stream *octal_literal_prefix;
+	text_stream *hexadecimal_literal_prefix;
+	text_stream *negative_literal_prefix;
+	text_stream *decimal_point_infix;
+	text_stream *exponent_infix;
+	text_stream *shebang;
+	text_stream *line_marker;
+	int indent_holon_expansion;
+	text_stream *start_definition;
+	text_stream *prolong_definition;
+	text_stream *end_definition;
+	text_stream *start_ifdef;
+	text_stream *end_ifdef;
+	text_stream *start_ifndef;
+	text_stream *end_ifndef;
+
+	struct pl_regexp_set *type_notation;
+	struct pl_regexp_set *function_notation;
+
+	int C_like; /* languages with this set have access to extra features */
+
+	struct linked_list *reserved_words; /* of |reserved_word| */
+	struct hash_table built_in_keywords;
+	struct colouring_language_block *program; /* algorithm for syntax colouring */
+	struct linked_list *custom_colours; /* of |custom_colour| */
+	struct method_set *methods;
+	CLASS_DEFINITION
+} programming_language;
+
+programming_language *Languages::new(void) {
+	programming_language *pl = CREATE(programming_language);
+	pl->declaration = NULL;
+	pl->language_name = NULL;
+	pl->language_details = NULL;
+
+	pl->recognised_filename_extensions = NEW_LINKED_LIST(text_stream);
+	pl->supports_namespaces = FALSE;
+	pl->line_comment = NULL;
+	pl->whole_line_comment = NULL;
+	pl->multiline_comment_open = NULL;
+	pl->multiline_comment_close = NULL;
+	pl->string_literal = NULL;
+	pl->string_literal_escape = NULL;
+	pl->character_literal = NULL;
+	pl->character_literal_escape = NULL;
+	pl->binary_literal_prefix = NULL;
+	pl->octal_literal_prefix = NULL;
+	pl->hexadecimal_literal_prefix = NULL;
+	pl->negative_literal_prefix = NULL;
+	pl->decimal_point_infix = NULL;
+	pl->exponent_infix = NULL;
+	pl->shebang = NULL;
+	pl->line_marker = NULL;
+	pl->indent_holon_expansion = FALSE;
+	pl->start_definition = NULL;
+	pl->prolong_definition = NULL;
+	pl->end_definition = NULL;
+	pl->start_ifdef = NULL;
+	pl->end_ifdef = NULL;
+	pl->start_ifndef = NULL;
+	pl->end_ifndef = NULL;
+	pl->C_like = FALSE;
+	pl->type_notation = Languages::new_regexp_set();
+	pl->function_notation = Languages::new_regexp_set();
+
+	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
+	ReservedWords::initialise_hash_table(&(pl->built_in_keywords));
+	pl->custom_colours = NEW_LINKED_LIST(custom_colour);
+	pl->program = NULL;
+	pl->methods = Methods::new_set();
+	return pl;
 }
 
-@ Or just a single file:
-
-=
-programming_language *Languages::read_definition(filename *F) {
-	wcl_declaration *D = WCL::read_just_one(F, LANGUAGE_WCLTYPE);
-	if (D == NULL) return NULL;
-	WCL::make_global(D);
-	return RETRIEVE_POINTER_programming_language(D->object_declared);
-}
-
-@ Similarly crudely, this writes out what we have in memory, sorted alphabetically
-for tidiness:
-
-=
-void Languages::show(OUTPUT_STREAM, ls_web *W) {
-	WRITE("I can see the following programming language definitions:\n\n");
-	WCL::write_sorted_list_of_resources(OUT, W, LANGUAGE_WCLTYPE);
-}
-
-@h Finding as resources.
+@h Identification.
 Programming languages are WCL resources of type |LANGUAGE_WCLTYPE|, so we
 find them by looking for a suitable resource.
 
@@ -83,6 +138,15 @@ programming_language *Languages::find_or_fail(ls_web *W, text_stream *language_n
 	return pl;
 }
 
+@ A little crudely, this writes out what we have in memory, sorted alphabetically
+for tidiness:
+
+=
+void Languages::show(OUTPUT_STREAM, ls_web *W) {
+	WRITE("I can see the following programming language definitions:\n\n");
+	WCL::write_sorted_list_of_resources(OUT, W, LANGUAGE_WCLTYPE);
+}
+
 @ Here we take a guess from a filename in the form |leaf.language.notation|:
 
 =
@@ -119,87 +183,43 @@ text_stream *Languages::canonical_file_extension(programming_language *pl) {
 	return NULL;
 }
 
-@ Once initially read in, language declarations are parsed into the following
-structure (one per language):
+@h Reading language definitions.
+We can read in a whole directory of these...
 
 =
-typedef struct programming_language {
-	struct wcl_declaration *declaration;
-	text_stream *language_name; /* identifies it: see above */
-	
-	/* then a great many fields set directly in the definition file: */
-	linked_list *recognised_filename_extensions; /* of |text_stream| */
-	text_stream *language_details; /* brief explanation of what language is */
-	int supports_namespaces;
-	text_stream *line_comment;
-	text_stream *whole_line_comment;
-	text_stream *multiline_comment_open;
-	text_stream *multiline_comment_close;
-	text_stream *string_literal;
-	text_stream *string_literal_escape;
-	text_stream *character_literal;
-	text_stream *character_literal_escape;
-	text_stream *binary_literal_prefix;
-	text_stream *octal_literal_prefix;
-	text_stream *hexadecimal_literal_prefix;
-	text_stream *negative_literal_prefix;
-	text_stream *shebang;
-	text_stream *line_marker;
-	int indent_holon_expansion;
-	text_stream *start_definition;
-	text_stream *prolong_definition;
-	text_stream *end_definition;
-	text_stream *start_ifdef;
-	text_stream *end_ifdef;
-	text_stream *start_ifndef;
-	text_stream *end_ifndef;
-	inchar32_t type_notation[MAX_ILDF_REGEXP_LENGTH];
-	inchar32_t function_notation[MAX_ILDF_REGEXP_LENGTH];
-
-	int C_like; /* languages with this set have access to extra features */
-
-	struct linked_list *reserved_words; /* of |reserved_word| */
-	struct hash_table built_in_keywords;
-	struct colouring_language_block *program; /* algorithm for syntax colouring */
-	struct method_set *methods;
-	CLASS_DEFINITION
-} programming_language;
-
-@ This is a simple one-pass compiler. The |language_reader_state| provides
-the only state preserved as we work through line by line, except of course
-that we are also working on the programming language it is |defining|. The
-|current_block| is the braced block of colouring instructions we are
-currently inside.
-
-=
-typedef struct language_reader_state {
-	struct wcl_declaration *D;
-	struct programming_language *defining;
-	struct colouring_language_block *current_block;
-} language_reader_state;
-
-
-void Languages::error(language_reader_state *state, text_stream *msg, text_file_position *tfp) {
-	WCL::error(state->D, tfp, msg);
+void Languages::read_definitions(pathname *P) {
+	scan_directory *D = Directories::open(P);
+	TEMPORARY_TEXT(leafname)
+	while (Directories::next(D, leafname)) {
+		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames::in(P, leafname);
+			Languages::read_definition(F);
+		}
+	}
+	DISCARD_TEXT(leafname)
+	Directories::close(D);
 }
 
+@ ...or just a single file:
+
+=
+programming_language *Languages::read_definition(filename *F) {
+	wcl_declaration *D = WCL::read_just_one(F, LANGUAGE_WCLTYPE);
+	if (D == NULL) return NULL;
+	WCL::make_global(D);
+	return RETRIEVE_POINTER_programming_language(D->object_declared);
+}
+
+@ And languages can also arise as resources nested inside other WCL resources,
+such as webs or colonies. In all these cases, though, we end up having to
+parse the lines of a WCL declaration, as follows.
+
+=
 programming_language *Languages::parse_declaration(wcl_declaration *D) {
-	programming_language *pl = CREATE(programming_language);
-	@<Initialise the language to a plain-text state@>;
-	language_reader_state lrs;
-	lrs.D = D;
-	lrs.defining = pl;
-	lrs.current_block = NULL;
-	text_file_position tfp = D->body_position;
-	text_stream *L;
-	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
-		TEMPORARY_TEXT(line)
-		Str::copy(line, L);
-		Languages::read_definition_line(line, &tfp, (void *) &lrs);
-		DISCARD_TEXT(line);
-		tfp.line_count++;
-	}
+	programming_language *pl = Languages::new();
+	pl->declaration = D;
 	D->object_declared = STORE_POINTER_programming_language(pl);
+	@<Parse the declaration@>;
 	if (Str::len(pl->language_name) == 0)
 		pl->language_name = Str::duplicate(D->name);
 	else if (WCL::check_name(D, pl->language_name) == FALSE) {
@@ -214,46 +234,6 @@ programming_language *Languages::parse_declaration(wcl_declaration *D) {
 	return pl;
 }
 
-void Languages::resolve_declaration(wcl_declaration *D) {
-	Conventions::set_level(D, LANGUAGE_LSCONVENTIONLEVEL);
-}
-
-@<Initialise the language to a plain-text state@> =
-	pl->declaration = D;
-	pl->language_name = NULL;
-	pl->recognised_filename_extensions = NEW_LINKED_LIST(text_stream);
-	pl->supports_namespaces = FALSE;
-	pl->line_comment = NULL;
-	pl->whole_line_comment = NULL;
-	pl->multiline_comment_open = NULL;
-	pl->multiline_comment_close = NULL;
-	pl->string_literal = NULL;
-	pl->string_literal_escape = NULL;
-	pl->character_literal = NULL;
-	pl->character_literal_escape = NULL;
-	pl->binary_literal_prefix = NULL;
-	pl->octal_literal_prefix = NULL;
-	pl->hexadecimal_literal_prefix = NULL;
-	pl->negative_literal_prefix = NULL;
-	pl->shebang = NULL;
-	pl->line_marker = NULL;
-	pl->indent_holon_expansion = FALSE;
-	pl->start_definition = NULL;
-	pl->prolong_definition = NULL;
-	pl->end_definition = NULL;
-	pl->start_ifdef = NULL;
-	pl->end_ifdef = NULL;
-	pl->start_ifndef = NULL;
-	pl->end_ifndef = NULL;
-	pl->C_like = FALSE;
-	pl->type_notation[0] = 0;
-	pl->function_notation[0] = 0;
-
-	pl->reserved_words = NEW_LINKED_LIST(reserved_word);
-	ReservedWords::initialise_hash_table(&(pl->built_in_keywords));
-	pl->program = NULL;
-	pl->methods = Methods::new_set();
-
 @ Note that there are two levels of extra privilege: any language calling
 itself C-like has functionality for function and structure definitions;
 the language whose name is InC gets even more, without having to ask.
@@ -267,6 +247,47 @@ adds generic method calls to give effect to the settings in the definition.
 	if (Str::eq(pl->language_name, I"InC")) InCSupport::add_features(pl);
 	ACMESupport::add_fallbacks(pl);
 
+@ This is a simple one-pass compiler. The |language_reader_state| provides
+the only state preserved as we work through line by line, except of course
+that we are also working on the programming language it is |defining|. The
+|current_block| is the braced block of colouring instructions we are
+currently inside.
+
+=
+typedef struct language_reader_state {
+	struct programming_language *defining;
+	struct colouring_language_block *current_block;
+	inchar32_t keywords_block_colour;
+	int properties_block;
+} language_reader_state;
+
+void Languages::error(language_reader_state *state, text_stream *msg,
+	text_file_position *tfp) {
+	WCL::error(state->defining->declaration, tfp, msg);
+}
+
+@<Parse the declaration@> =
+	language_reader_state lrs;
+	lrs.defining = pl;
+	lrs.current_block = NULL;
+	lrs.keywords_block_colour = NOT_A_COLOUR;
+	lrs.properties_block = FALSE;
+	text_file_position tfp = D->body_position;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		Languages::read_definition_line(line, &tfp, (void *) &lrs);
+		DISCARD_TEXT(line);
+		tfp.line_count++;
+	}
+	if (lrs.keywords_block_colour != NOT_A_COLOUR)
+		Languages::error(&lrs, I"language definition ended in keywords list: 'end' line forgotten?", &tfp);
+	if (lrs.current_block)
+		Languages::error(&lrs, I"language definition ended in colouring: 'end' line forgotten?", &tfp);
+	if (lrs.properties_block)
+		Languages::error(&lrs, I"language definition ended in properties: 'end' line forgotten?", &tfp);
+
 @ So, then, the above reads the file and feeds it line by line to this:
 
 =
@@ -276,100 +297,137 @@ void Languages::read_definition_line(text_stream *line, text_file_position *tfp,
 
 	Str::trim_white_space(line); /* ignore trailing space */
 	if (Str::len(line) == 0) return; /* ignore blank lines */
-	if (Str::get_first_char(line) == '#') return; /* lines opening with |#| are comments */
 
 	match_results mr = Regexp::create_mr();
-	if (state->current_block) @<Syntax inside a colouring program@>
-	else @<Syntax outside a colouring program@>;
+	if (state->properties_block) @<Syntax in a properties block@>
+	else if (state->keywords_block_colour != NOT_A_COLOUR) @<Syntax in a keywords block@>
+	else if (state->current_block) @<Syntax in a colouring program@>
+	else @<Top-level syntax@>;
 	Regexp::dispose_of(&mr);
 }
 
 @ Outside a colouring program, you can do three things: start a program,
 declare a reserved keyword, or set a key to a value.
 
-@<Syntax outside a colouring program@> =
-	if (Regexp::match(&mr, line, U"colouring {")) {
+@<Top-level syntax@> =
+	if ((Str::eq(line, I"colouring")) || (Str::eq(line, I"coloring"))) {
 		if (pl->program) Languages::error(state, I"duplicate colouring program", tfp);
 		pl->program = Languages::new_block(NULL, WHOLE_LINE_CRULE_RUN);
 		state->current_block = pl->program;
+	} else if (Regexp::match(&mr, line, U"recognise (%C+)")) {
+		text_stream *ext = Languages::text(state, mr.exp[0], tfp, TRUE);
+		ADD_TO_LINKED_LIST(ext, text_stream, pl->recognised_filename_extensions);
+	} else if (Regexp::match(&mr, line, U"colour (%C+) like (%C+)")) {
+		if (Str::get_first_char(mr.exp[0]) != '!') {
+			Languages::error(state, I"colour names must begin with !", tfp);
+		} else {
+			inchar32_t nc = Painter::colour(pl->custom_colours, mr.exp[0]);
+			if (nc != NOT_A_COLOUR) {
+				Languages::error(state, I"colour already exists", tfp);
+			} else {
+				inchar32_t oc = Languages::colour(state, mr.exp[1], tfp);
+				custom_colour *cc = Painter::custom(mr.exp[0], oc, pl->custom_colours);
+				if (cc->value == NOT_A_COLOUR)
+					Languages::error(state, I"too many colours", tfp);
+			}
+		}
+	} else if (Regexp::match(&mr, line, U"keywords")) {
+		state->keywords_block_colour = RESERVED_COLOUR;
+	} else if (Regexp::match(&mr, line, U"keywords of (%C+)")) {
+		state->keywords_block_colour = Languages::colour(state, mr.exp[0], tfp);
+	} else if (Str::eq(line, I"properties")) {
+		state->properties_block = TRUE;
 	} else if (Regexp::match(&mr, line, U"keyword (%C+) of (%c+?)")) {
-		Languages::reserved(state, pl, Languages::text(state, mr.exp[0], tfp, FALSE), Languages::colour(state, mr.exp[1], tfp), tfp);
+		Languages::reserved(state, pl, Languages::text(state, mr.exp[0], tfp, FALSE),
+			Languages::colour(state, mr.exp[1], tfp), tfp);
 	} else if (Regexp::match(&mr, line, U"keyword (%C+)")) {
 		Languages::reserved(state, pl, Languages::text(state, mr.exp[0], tfp, FALSE), RESERVED_COLOUR, tfp);
-	} else if (Regexp::match(&mr, line, U"(%c+) *: *(%c+?)")) {
-		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
-		if (Str::eq(key, I"Name")) pl->language_name = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Details"))
-			pl->language_details = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Extension")) {
-			text_stream *ext = Languages::text(state, value, tfp, TRUE);
-			ADD_TO_LINKED_LIST(ext, text_stream, pl->recognised_filename_extensions);
-		}
-		else if (Str::eq(key, I"Line Comment"))
-			pl->line_comment = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Whole Line Comment"))
-			pl->whole_line_comment = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Multiline Comment Open"))
-			pl->multiline_comment_open = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Multiline Comment Close"))
-			pl->multiline_comment_close = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"String Literal"))
-			pl->string_literal = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"String Literal Escape"))
-			pl->string_literal_escape = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Character Literal"))
-			pl->character_literal = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Character Literal Escape"))
-			pl->character_literal_escape = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Binary Literal Prefix"))
-			pl->binary_literal_prefix = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Octal Literal Prefix"))
-			pl->octal_literal_prefix = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Hexadecimal Literal Prefix"))
-			pl->hexadecimal_literal_prefix = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Negative Literal Prefix"))
-			pl->negative_literal_prefix = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Shebang"))
-			pl->shebang = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Line Marker"))
-			pl->line_marker = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Indent Named Paragraph Expansion"))
-			pl->indent_holon_expansion = Languages::boolean(state, value, tfp);
-		else if (Str::eq(key, I"Start Definition"))
-			pl->start_definition = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Prolong Definition"))
-			pl->prolong_definition = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"End Definition"))
-			pl->end_definition = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Start Ifdef"))
-			pl->start_ifdef = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"Start Ifndef"))
-			pl->start_ifndef = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"End Ifdef"))
-			pl->end_ifdef = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"End Ifndef"))
-			pl->end_ifndef = Languages::text(state, value, tfp, TRUE);
-		else if (Str::eq(key, I"C-Like"))
-			pl->C_like = Languages::boolean(state, value, tfp);
-		else if (Str::eq(key, I"Supports Namespaces"))
-			pl->supports_namespaces = Languages::boolean(state, value, tfp);
-		else if (Str::eq(key, I"Function Declaration Notation"))
-			Languages::regexp(state, pl->function_notation, value, tfp);
-		else if (Str::eq(key, I"Type Declaration Notation"))
-			Languages::regexp(state, pl->type_notation, value, tfp);
-		else {
-			Languages::error(state, I"unknown property name before ':'", tfp);
-		}
 	} else {
 		Languages::error(state, I"line in language definition illegible", tfp);
+	}
+
+@<Syntax in a properties block@> =
+	if (Str::eq(line, I"end")) {
+		state->properties_block = FALSE;
+	} else if (Regexp::match(&mr, line, U"(%c+) *: *(%c+?)")) {
+		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
+		@<Set property@>;
+	} else {
+		Languages::error(state, I"lines in a properties block should have the form 'property: value'", tfp);
+	}
+
+@<Set property@> =
+	if (Str::eq(key, I"Name")) pl->language_name = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Details"))
+		pl->language_details = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Line Comment"))
+		pl->line_comment = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Whole Line Comment"))
+		pl->whole_line_comment = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Multiline Comment Open"))
+		pl->multiline_comment_open = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Multiline Comment Close"))
+		pl->multiline_comment_close = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"String Literal"))
+		pl->string_literal = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"String Literal Escape"))
+		pl->string_literal_escape = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Character Literal"))
+		pl->character_literal = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Character Literal Escape"))
+		pl->character_literal_escape = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Binary Literal Prefix"))
+		pl->binary_literal_prefix = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Octal Literal Prefix"))
+		pl->octal_literal_prefix = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Hexadecimal Literal Prefix"))
+		pl->hexadecimal_literal_prefix = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Negative Literal Prefix"))
+		pl->negative_literal_prefix = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Decimal Point Infix"))
+		pl->decimal_point_infix = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Exponent Infix"))
+		pl->exponent_infix = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Shebang"))
+		pl->shebang = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Line Marker"))
+		pl->line_marker = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Indent Named Holon Expansion"))
+		pl->indent_holon_expansion = Languages::boolean(state, value, tfp);
+	else if (Str::eq(key, I"Start Definition"))
+		pl->start_definition = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Prolong Definition"))
+		pl->prolong_definition = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"End Definition"))
+		pl->end_definition = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Start Ifdef"))
+		pl->start_ifdef = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"Start Ifndef"))
+		pl->start_ifndef = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"End Ifdef"))
+		pl->end_ifdef = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"End Ifndef"))
+		pl->end_ifndef = Languages::text_oq(state, value, tfp);
+	else if (Str::eq(key, I"C-Like"))
+		pl->C_like = Languages::boolean(state, value, tfp);
+	else if (Str::eq(key, I"Supports Namespaces"))
+		pl->supports_namespaces = Languages::boolean(state, value, tfp);
+	else if (Str::eq(key, I"Function Declaration"))
+		Languages::regexp_to(state, pl->function_notation, value, tfp);
+	else if (Str::eq(key, I"Type Declaration"))
+		Languages::regexp_to(state, pl->type_notation, value, tfp);
+	else {
+		Languages::error(state, I"unknown property name before ':'", tfp);
 	}
 
 @ Inside a colouring program, you can close the current block (which may be
 the entire program), open a new block to apply to each character or to
 runs of a given colour, or give an if-X-then-Y rule:
 
-@<Syntax inside a colouring program@> =
-	if (Str::eq(line, I"}")) {
+@<Syntax in a colouring program@> =
+	if (Str::eq(line, I"end")) {
+		state->current_block = state->current_block->parent;
+	} else if (Str::eq(line, I"}")) {
 		state->current_block = state->current_block->parent;
 	} else if (Regexp::match(&mr, line, U"characters {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
@@ -396,12 +454,12 @@ runs of a given colour, or give an if-X-then-Y rule:
 	} else if (Regexp::match(&mr, line, U"matches of (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block = Languages::new_block(state->current_block, MATCHES_CRULE_RUN);
-		Languages::regexp(state, rule->execute_block->match_regexp_text, mr.exp[0], tfp);
+		Languages::regexp_to(state, rule->execute_block->match_regexp_text, mr.exp[0], tfp);
 		state->current_block = rule->execute_block;
 	} else if (Regexp::match(&mr, line, U"brackets in (%c+) {")) {
 		colouring_rule *rule = Languages::new_rule(state->current_block);
 		rule->execute_block = Languages::new_block(state->current_block, BRACKETS_CRULE_RUN);
-		Languages::regexp(state, rule->execute_block->match_regexp_text, mr.exp[0], tfp);
+		Languages::regexp_to(state, rule->execute_block->match_regexp_text, mr.exp[0], tfp);
 		state->current_block = rule->execute_block;
 	} else {
 		int at = -1, quoted = FALSE;
@@ -424,6 +482,29 @@ runs of a given colour, or give an if-X-then-Y rule:
 		}
 	}
 
+@<Syntax in a keywords block@> =
+	if (Str::eq(line, I"end")) {
+		state->keywords_block_colour = NOT_A_COLOUR;
+	} else {
+		TEMPORARY_TEXT(keywords)
+		Str::copy(keywords, line);
+		while (Regexp::match(&mr, keywords, U" *(%C+) *(%c*)")) {
+			Str::clear(keywords);
+			Str::copy(keywords, mr.exp[1]);
+			Languages::reserved(state, pl, Languages::text(state, mr.exp[0], tfp, FALSE), 
+				state->keywords_block_colour, tfp);
+		}
+	}
+
+@ All WCL declarations are first parsed and then "resolved". There's actually
+nothing to do at the resolution stage except to tell the conventions system
+how important our choices are (relative to notations, webs, etc.):
+
+=
+void Languages::resolve_declaration(wcl_declaration *D) {
+	Conventions::set_level(D, LANGUAGE_LSCONVENTIONLEVEL);
+}
+
 @h Blocks.
 These are code blocks of colouring instructions. A block whose |parent| is |NULL|
 represents a complete program.
@@ -442,7 +523,7 @@ typedef struct colouring_language_block {
 	int run; /* one of the |*_CRULE_RUN| values, or else a colour */
 	struct text_stream *run_instance; /* used only for |INSTANCES_CRULE_RUN| */
 	struct text_stream *char_set; /* used only for |CHARACTERS_IN_CRULE_RUN| */
-	inchar32_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH]; /* used for |MATCHES_CRULE_RUN|, |BRACKETS_CRULE_RUN| */
+	struct pl_regexp_set *match_regexp_text; /* used for |MATCHES_CRULE_RUN|, |BRACKETS_CRULE_RUN| */
 	
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
@@ -457,7 +538,7 @@ colouring_language_block *Languages::new_block(colouring_language_block *within,
 	block->run = r;
 	block->run_instance = NULL;
 	block->char_set = NULL;
-	block->match_regexp_text[0] = 0;
+	block->match_regexp_text = Languages::new_regexp_set();
 	block->mr = Regexp::create_mr();
 	return block;
 }
@@ -477,8 +558,6 @@ Note that rules can be unconditional, in that the premiss always passes.
 @d SPACED_RULE_SUFFIX 6 /* for |spaced suffix P| */
 @d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for |optionally spaced suffix P| */
 
-@d MAX_ILDF_REGEXP_LENGTH 64
-
 =
 typedef struct colouring_rule {
 	/* the premiss: */
@@ -487,7 +566,7 @@ typedef struct colouring_rule {
 	inchar32_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
 	struct text_stream *match_text; /* or length 0 to mean "anything" */
 	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
-	inchar32_t match_regexp_text[MAX_ILDF_REGEXP_LENGTH];
+	struct pl_regexp_set *match_regexp_text;
 	int number; /* for |number N| rules; 0 for others */
 	int number_of; /* for |number N of M| rules; 0 for others */
 
@@ -513,7 +592,7 @@ colouring_rule *Languages::new_rule(colouring_language_block *within) {
 	rule->match_text = NULL;
 	rule->match_prefix = NOT_A_RULE_PREFIX;
 	rule->match_keyword_of_colour = NOT_A_COLOUR;
-	rule->match_regexp_text[0] = 0;
+	rule->match_regexp_text = Languages::new_regexp_set();
 	rule->number = 0;
 	rule->number_of = 0;
 
@@ -556,7 +635,7 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 		rule->match_prefix = UNSPACED_RULE_PREFIX;
 		rule->match_text = Languages::text(state, mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, U"matching (%c+)")) {
-		Languages::regexp(state, rule->match_regexp_text, mr.exp[0], tfp);
+		Languages::regexp_to(state, rule->match_regexp_text, mr.exp[0], tfp);
 	} else if (Regexp::match(&mr, premiss, U"spaced prefix (%c+)")) {
 		rule->match_prefix = SPACED_RULE_PREFIX;
 		rule->match_text = Languages::text(state, mr.exp[0], tfp, FALSE);
@@ -573,6 +652,8 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 		rule->match_prefix = OPTIONALLY_SPACED_RULE_SUFFIX;
 		rule->match_text = Languages::text(state, mr.exp[0], tfp, FALSE);
 	} else if (Regexp::match(&mr, premiss, U"coloured (%c+)")) {
+		rule->match_colour = Languages::colour(state, mr.exp[0], tfp);
+	} else if (Regexp::match(&mr, premiss, U"colored (%c+)")) {
 		rule->match_colour = Languages::colour(state, mr.exp[0], tfp);
 	} else if (Str::len(premiss) > 0) {
 		rule->match_text = Languages::text(state, premiss, tfp, FALSE);
@@ -599,7 +680,7 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 	}
 
 @h Reserved words.
-Note that these can come in any colour, though usually it's |!reserved|.
+Note that these can come in any colour, though usually it's |RESERVED_COLOUR|.
 
 =
 typedef struct reserved_word {
@@ -624,69 +705,21 @@ reserved_word *Languages::reserved(language_reader_state *state,
 	return rw;
 }
 
-@h Expressions.
-Language definition files have three types of data: colours, booleans, and
-text. Colours first. Note that there are two pseudo-colours used above,
-but which are not expressible in the syntax of this file.
-
-@d DEFINITION_COLOUR 	'd'
-@d FUNCTION_COLOUR		'f'
-@d RESERVED_COLOUR		'r'
-@d ELEMENT_COLOUR		'e'
-@d IDENTIFIER_COLOUR	'i'
-@d CHARACTER_COLOUR     'c'
-@d CONSTANT_COLOUR		'n'
-@d STRING_COLOUR		's'
-@d PLAIN_COLOUR			'p'
-@d EXTRACT_COLOUR		'x'
-@d HEADING_COLOUR		'h'
-@d COMMENT_COLOUR		'!'
-@d NEWLINE_COLOUR		'\n'
-
-@d NOT_A_COLOUR ' '
-@d UNQUOTED_COLOUR '_'
+@h Literal values in language declarations.
+We will use have three types of data: colours, booleans, and text. Colour names
+like |!constant| are those used by the Painter:
 
 =
 inchar32_t Languages::colour(language_reader_state *state, text_stream *T, text_file_position *tfp) {
-	if (Str::get_first_char(T) != '!') {
-		Languages::error(state, I"colour names must begin with !", tfp);
-		return PLAIN_COLOUR;
+	inchar32_t C = Painter::colour(state->defining->custom_colours, T);
+	if (C == NOT_A_COLOUR) {
+		if (Str::get_first_char(T) != '!')
+			Languages::error(state, I"colour names must begin with !", tfp);
+		else
+			Languages::error(state, I"no such !colour", tfp);
+		C = PLAIN_COLOUR;
 	}
-	if (Str::eq(T, I"!string")) return STRING_COLOUR;
-	else if (Str::eq(T, I"!function")) return FUNCTION_COLOUR;
-	else if (Str::eq(T, I"!definition")) return DEFINITION_COLOUR;
-	else if (Str::eq(T, I"!reserved")) return RESERVED_COLOUR;
-	else if (Str::eq(T, I"!element")) return ELEMENT_COLOUR;
-	else if (Str::eq(T, I"!identifier")) return IDENTIFIER_COLOUR;
-	else if (Str::eq(T, I"!character")) return CHARACTER_COLOUR;
-	else if (Str::eq(T, I"!constant")) return CONSTANT_COLOUR;
-	else if (Str::eq(T, I"!plain")) return PLAIN_COLOUR;
-	else if (Str::eq(T, I"!extract")) return EXTRACT_COLOUR;
-	else if (Str::eq(T, I"!heading")) return HEADING_COLOUR;
-	else if (Str::eq(T, I"!comment")) return COMMENT_COLOUR;
-	else {
-		Languages::error(state, I"no such !colour", tfp);
-		return PLAIN_COLOUR;
-	}
-}
-
-text_stream *Languages::colour_classname(inchar32_t col) {
-	text_stream *span_class = NULL;
-	switch (col) {
-		case DEFINITION_COLOUR: span_class = I"syntaxdefinition"; break;
-		case FUNCTION_COLOUR:   span_class = I"syntaxfunction"; break;
-		case RESERVED_COLOUR:   span_class = I"syntaxreserved"; break;
-		case ELEMENT_COLOUR:    span_class = I"syntaxelement"; break;
-		case IDENTIFIER_COLOUR: span_class = I"syntaxidentifier"; break;
-		case HEADING_COLOUR:    span_class = I"syntaxheading"; break;
-		case CHARACTER_COLOUR:  span_class = I"syntaxcharacter"; break;
-		case CONSTANT_COLOUR:   span_class = I"syntaxconstant"; break;
-		case STRING_COLOUR:     span_class = I"syntaxstring"; break;
-		case PLAIN_COLOUR:      span_class = I"syntaxplain"; break;
-		case EXTRACT_COLOUR:    span_class = I"syntaxextract"; break;
-		case COMMENT_COLOUR:    span_class = I"syntaxcomment"; break;
-	}
-	return span_class;
+	return C;
 }
 
 @ A boolean must be written as |true| or |false|.
@@ -706,6 +739,12 @@ can be given in the ordinary way inside a text in any case. |\\| is a
 literal backslash.
 
 =
+text_stream *Languages::text_oq(language_reader_state *state, text_stream *T, text_file_position *tfp) {
+	if ((Str::len(T) > 1) && (Str::get_first_char(T) == '"') && (Str::get_last_char(T) == '"'))
+		return Languages::text(state, T, tfp, TRUE);
+	return Str::duplicate(T);
+}
+
 text_stream *Languages::text(language_reader_state *state, text_stream *T, text_file_position *tfp, int allow) {
 	text_stream *V = Str::new();
 	if (Str::len(T) > 0) {
@@ -754,45 +793,71 @@ text_stream *Languages::text(language_reader_state *state, text_stream *T, text_
 			Errors::in_text_file_S(err, tfp);
 			DISCARD_TEXT(err)			
 		}
-		if (bareword) {
-			int rw = FALSE;
-			if (Str::eq(V, I"both")) rw = TRUE;
-			if (Str::eq(V, I"brackets")) rw = TRUE;
-			if (Str::eq(V, I"characters")) rw = TRUE;
-			if (Str::eq(V, I"coloured")) rw = TRUE;
-			if (Str::eq(V, I"colouring")) rw = TRUE;
-			if (Str::eq(V, I"debug")) rw = TRUE;
-			if (Str::eq(V, I"false")) rw = TRUE;
-			if (Str::eq(V, I"in")) rw = TRUE;
-			if (Str::eq(V, I"instances")) rw = TRUE;
-			if (Str::eq(V, I"keyword")) rw = TRUE;
-			if (Str::eq(V, I"matches")) rw = TRUE;
-			if (Str::eq(V, I"matching")) rw = TRUE;
-			if (Str::eq(V, I"not")) rw = TRUE;
-			if (Str::eq(V, I"of")) rw = TRUE;
-			if (Str::eq(V, I"on")) rw = TRUE;
-			if (Str::eq(V, I"optionally")) rw = TRUE;
-			if (Str::eq(V, I"prefix")) rw = TRUE;
-			if (Str::eq(V, I"runs")) rw = TRUE;
-			if (Str::eq(V, I"spaced")) rw = TRUE;
-			if (Str::eq(V, I"suffix")) rw = TRUE;
-			if (Str::eq(V, I"true")) rw = TRUE;
-			if (Str::eq(V, I"unquoted")) rw = TRUE;
-
-			if (rw) {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "'%S' is a reserved word, so you should put it in double-quotation marks", V);
-				Errors::in_text_file_S(err, tfp);
-				DISCARD_TEXT(err)			
-			}
-		}
 	}
 	return V;
 }
 
 @ And regular expressions.
 
+@d MAX_ILDF_REGEXP_LENGTH 64
+
 =
+typedef struct pl_regexp_set {
+	inchar32_t expression[MAX_ILDF_REGEXP_LENGTH + 1];
+	struct pl_regexp_set *alternate;
+	CLASS_DEFINITION
+} pl_regexp_set;
+
+pl_regexp_set *Languages::new_regexp_set(void) {
+	pl_regexp_set *rs = CREATE(pl_regexp_set);
+	rs->expression[0] = 0;
+	rs->alternate = NULL;
+	return rs;
+}
+
+int Languages::match_regexp_set(match_results *mr, text_stream *text, pl_regexp_set *rs) {
+	while (rs) {
+		if ((rs->expression[0]) && (Regexp::match(mr, text, rs->expression))) {
+			return TRUE;
+		}
+		rs = rs->alternate;
+	}
+	return FALSE;
+}
+
+int Languages::match_regexp_set_from(match_results *mr, text_stream *text, pl_regexp_set *rs, int i) {
+	while (rs) {
+		if (rs->expression[0]) {
+			int rv = Regexp::match_from(mr, text, rs->expression, i, TRUE);
+			if (rv > 0) return rv;
+		}
+		rs = rs->alternate;
+	}
+	return 0;
+}
+
+int Languages::nonempty_regexp_set(pl_regexp_set *rs) {
+	if ((rs) && (rs->expression[0])) return TRUE;
+	return FALSE;
+}
+
+void Languages::add_to_regexp_set(pl_regexp_set *rs, inchar32_t expression[]) {
+	while ((rs->expression[0]) && (rs->alternate)) rs = rs->alternate;
+	if (rs->expression[0]) {
+		rs->alternate = Languages::new_regexp_set(); rs = rs->alternate;
+	}
+	for (int i=0; ((expression[i]) && (i<MAX_ILDF_REGEXP_LENGTH)); i++) {
+		rs->expression[i] = expression[i];
+		rs->expression[i+1] = 0;
+	}
+}
+
+void Languages::regexp_to(language_reader_state *state, pl_regexp_set *rs, text_stream *T, text_file_position *tfp) {
+	inchar32_t write_to[MAX_ILDF_REGEXP_LENGTH];
+	Languages::regexp(state, write_to, T, tfp);
+	Languages::add_to_regexp_set(rs, write_to);
+}
+
 void Languages::regexp(language_reader_state *state, inchar32_t *write_to, text_stream *T, text_file_position *tfp) {
 	if (write_to == NULL) internal_error("no buffer");
 	write_to[0] = 0;
@@ -843,9 +908,12 @@ void Languages::regexp(language_reader_state *state, inchar32_t *write_to, text_
 			Languages::error(state,
 				I"the expression to match must be in slashes '/'", tfp);
 		}
-		if (x >= MAX_ILDF_REGEXP_LENGTH)
+		if (x >= MAX_ILDF_REGEXP_LENGTH) {
 			Languages::error(state,
 				I"the expression to match is too long", tfp);
+			x = MAX_ILDF_REGEXP_LENGTH - 1;
+		}
+		write_to[x] = 0;
 	}
 }
 

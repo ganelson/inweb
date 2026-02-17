@@ -269,7 +269,7 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 			hs->comment_as_markdown, WebNotation::commentary_variation(wv->weave_web)), CL);
 	} else {
 		TEMPORARY_TEXT(matter)
-		WRITE_TO(matter, "COMMENT(%S)", hs->texts[0]);
+		WRITE_TO(matter, "%S%S%S", hs->texts[1], hs->texts[0], hs->texts[2]);
 		Str::rectify_indentation(matter, 4);
 		text_stream *concluding_comment = NULL;
 		int suppress = FALSE;
@@ -598,7 +598,7 @@ usage is rendered differently.
 
 		TEMPORARY_TEXT(prefatory)
 		TEMPORARY_TEXT(concluding_comment)
-		@<Extract any comment matter ending the line to be set in italic@>;
+		if (FALSE) @<Extract any comment matter ending the line to be set in italic@>;
 		@<Give constant definition lines slightly fancier openings@>;
 
 		tree_node *CL = WeaveTree::code_line(tree);
@@ -659,7 +659,7 @@ a node of its own, a vskip:
 	}
 
 @ Comments which run to the end of a line can be set in italic type, for
-example, or flush left.
+example, or flush left. (This is currently inactive; it had down sides.)
 
 @<Extract any comment matter ending the line to be set in italic@> =
 	TEMPORARY_TEXT(part_before_comment)

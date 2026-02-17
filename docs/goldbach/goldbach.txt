@@ -33,7 +33,7 @@ define 100
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
-    for (int i=4; i<RANGE; i=i+2) COMMENT( stepping in twos to stay even )
+    for (int i=4; i<RANGE; i=i+2) /* stepping in twos to stay even */
         <Solve Goldbach's conjecture for i (2.1)>;
 }
 

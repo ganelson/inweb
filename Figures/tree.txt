@@ -28,8 +28,8 @@ document weave order 0
               defn <define>
               source_code <100 >
                           _nnnp_
-              source_code <COMMENT( the upper limit to the numbers we will consider )>
-                          _iiiiiiippiiipiiiiipiiiiipiipiiipiiiiiiipiipiiiipiiiiiiiipp_
+              source_code </* the upper limit to the numbers we will consider */>
+                          _!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!_
           material code: C
             code line
               source_code <#include <stdio.h>>
@@ -37,10 +37,10 @@ document weave order 0
             code line
             code line
               source_code <int main(int argc, char *argv[]) {>
-                          _rrrpffffprrrpiiiipprrrrppiiiippppp_
+                          _iiipffffpiiipiiiippiiiippiiiippppp_
             code line
               source_code <    for (int i=1; i<RANGE; i++)>
-                          _pppprrrpprrrpippppipnnnnnppippp_
+                          _pppprrrppiiipippppipnnnnnppippp_
             code line
               source_code <        >
                           _pppppppp_
@@ -87,17 +87,17 @@ document weave order 0
           material code: C
             code line
               source_code <int >
-                          _rrrp_
+                          _iiip_
               function defn <isprime>
                 locale P1.1
               source_code <(int n) {>
-                          _prrrpippp_
+                          _piiipippp_
             code line
               source_code <    if (n <= 1) return FALSE;>
                           _pppprrppippppnpprrrrrrpnnnnnp_
             code line
               source_code <    for (int m = 2; m*m <= n; m++)>
-                          _pppprrrpprrrpipppnppipippppippippp_
+                          _pppprrrppiiipipppnppipippppippippp_
             code line
               source_code <        if (n % m == 0)>
                           _pppppppprrppipppippppnp_

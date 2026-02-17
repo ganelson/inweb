@@ -5,68 +5,112 @@ S1
         _______ ⏑⏑VDU⏑1⏑⏑⏑⏑⏑⏑⏑Send⏑next⏑byte⏑to⏑printer⏑only
     C2: holon (used sequentially)
         0000014 .vdu1EntryPoint
-        0000015 ⏑⏑⏑⏑TAX⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑remember⏑A
-        0000016 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑get⏑VDU⏑status⏑byte
-        0000017 ⏑⏑⏑⏑LSR⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑get⏑bit⏑0⏑into⏑carry⏑(printer⏑enabled⏑bit)
-        0000018 ⏑⏑⏑⏑BCC⏑.exit⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(printer⏑not⏑enabled)⏑then⏑branch⏑(exit)
-        0000019 ⏑⏑⏑⏑TXA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑restore⏑A
-        0000020 ⏑⏑⏑⏑JMP⏑.sendValidByteToPrinter⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑send⏑byte⏑in⏑A⏑(next⏑byte)⏑to⏑printer
+        0000015 ⏑⏑⏑⏑TAX⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' remember A' ; 
+        0000016 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' get VDU status byte' ; 
+        0000017 ⏑⏑⏑⏑LSR⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' get bit 0 into carry (printer enabled bit)' ; 
+        0000018 ⏑⏑⏑⏑BCC⏑.exit⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (printer not enabled) then branch (exit)' ; 
+        0000019 ⏑⏑⏑⏑TXA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' restore A' ; 
+        0000020 ⏑⏑⏑⏑JMP⏑.sendValidByteToPrinter⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' send byte in A (next byte) to printer' ; 
 S2
     C1: holon (used sequentially)
         0000023 .explicitAddressNoParameters
-        0000024 ⏑⏑⏑⏑STA⏑.vduJumpVectorHigh⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑upper⏑byte⏑of⏑link⏑address
-        0000025 ⏑⏑⏑⏑TYA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑restore⏑A⏑(the⏑VDU⏑number)
+        0000024 ⏑⏑⏑⏑STA⏑.vduJumpVectorHigh⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' upper byte of link address' ; 
+        0000025 ⏑⏑⏑⏑TYA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' restore A (the VDU number)' ; 
         0000026 
-        0000027 ⏑⏑⏑⏑;⏑set⏑carry⏑if⏑VDU⏑number⏑is⏑within⏑range⏑8-13⏑(cursor⏑movement)
-        0000028 ⏑⏑⏑⏑CMP⏑#8⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
-        0000029 ⏑⏑⏑⏑BCC⏑+⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(VDU⏑number⏑<⏑8)⏑then⏑branch⏑(carry⏑clear)
-        0000030 ⏑⏑⏑⏑EOR⏑#$FF⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑invert⏑value
-        0000031 ⏑⏑⏑⏑CMP⏑#$F2⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(VDU⏑number⏑>⏑13)⏑then⏑clear⏑carry
-        0000032 ⏑⏑⏑⏑EOR⏑#$FF⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑re-invert⏑value⏑back⏑again
+        0000027 ⏑⏑⏑⏑
+        comment ' set carry if VDU number is within range 8-13 (cursor movement)' ; 
+        0000028 ⏑⏑⏑⏑CMP⏑#8⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
+        0000029 ⏑⏑⏑⏑BCC⏑+⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (VDU number < 8) then branch (carry clear)' ; 
+        0000030 ⏑⏑⏑⏑EOR⏑#$FF⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' invert value' ; 
+        0000031 ⏑⏑⏑⏑CMP⏑#$F2⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (VDU number > 13) then clear carry' ; 
+        0000032 ⏑⏑⏑⏑EOR⏑#$FF⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' re-invert value back again' ; 
         0000033 
         0000034 +
-        0000035 ⏑⏑⏑⏑BIT⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑test⏑VDU⏑status⏑byte
-        0000036 ⏑⏑⏑⏑BMI⏑.checkForVDUReenable⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(VDU⏑disabled)⏑then⏑branch
-        0000037 ⏑⏑⏑⏑PHP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑push⏑flags
-        0000038 ⏑⏑⏑⏑JSR⏑.executeRequiredVDUFunction⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑execute⏑required⏑function
-        0000039 ⏑⏑⏑⏑PLP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑pull⏑flags⏑back
-        0000040 ⏑⏑⏑⏑BCC⏑+⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(not⏑VDU⏑8-13⏑cursor⏑movement)⏑then⏑branch⏑(skip⏑'printer⏑enabled'⏑check)
-        0000041 ⏑⏑⏑⏑;⏑fall⏑through...
+        0000035 ⏑⏑⏑⏑BIT⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' test VDU status byte' ; 
+        0000036 ⏑⏑⏑⏑BMI⏑.checkForVDUReenable⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (VDU disabled) then branch' ; 
+        0000037 ⏑⏑⏑⏑PHP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' push flags' ; 
+        0000038 ⏑⏑⏑⏑JSR⏑.executeRequiredVDUFunction⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' execute required function' ; 
+        0000039 ⏑⏑⏑⏑PLP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' pull flags back' ; 
+        0000040 ⏑⏑⏑⏑BCC⏑+⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (not VDU 8-13 cursor movement) then branch (skip 'printer enabled' check)' ; 
+        0000041 ⏑⏑⏑⏑
+        comment ' fall through...' ; 
 S3
     C1: holon (used sequentially)
         0000044 .exitVDUCHR
-        0000045 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑read⏑VDU⏑status⏑byte
-        0000046 ⏑⏑⏑⏑LSR⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑carry⏑is⏑set⏑if⏑printer⏑is⏑enabled
+        0000045 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' read VDU status byte' ; 
+        0000046 ⏑⏑⏑⏑LSR⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' carry is set if printer is enabled' ; 
         0000047 +
-        0000048 ⏑⏑⏑⏑BIT⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑test⏑VDU⏑status⏑byte
-        0000049 ⏑⏑⏑⏑BVC⏑.exit⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(no⏑cursor⏑editing⏑mode)⏑then⏑branch
-        0000050 ⏑⏑⏑⏑;⏑fall⏑through...
+        0000048 ⏑⏑⏑⏑BIT⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' test VDU status byte' ; 
+        0000049 ⏑⏑⏑⏑BVC⏑.exit⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (no cursor editing mode) then branch' ; 
+        0000050 ⏑⏑⏑⏑
+        comment ' fall through...' ; 
 S4
     C1: holon (used sequentially)
         0000053 .reswapCursorsBack
-        0000054 ⏑⏑⏑⏑JSR⏑.restoreWriteCursor⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑restore⏑normal⏑write⏑cursor
+        0000054 ⏑⏑⏑⏑JSR⏑.restoreWriteCursor⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' restore normal write cursor' ; 
         0000055 
         0000056 .exchangeTextCursorAndInputCursorValues
-        0000057 ⏑⏑⏑⏑PHP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑save⏑flags
-        0000058 ⏑⏑⏑⏑PHA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑save⏑A
-        0000059 ⏑⏑⏑⏑LDX⏑#.vduTextCursorXPosition⏑⏑⏑⏑⏑⏑⏑⏑-⏑.vduVariablesStart⏑⏑⏑⏑;⏑offset⏑within⏑VDU⏑variables⏑for⏑text⏑cursor⏑position
-        0000060 ⏑⏑⏑⏑LDY⏑#.vduTextInputCursorXCoordinate⏑-⏑.vduVariablesStart⏑⏑⏑⏑;⏑offset⏑within⏑VDU⏑variables⏑for⏑text⏑input⏑cursor⏑position
-        0000061 ⏑⏑⏑⏑JSR⏑.exchangeTwoVDUBytes⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑exchange⏑current⏑text⏑cursor⏑coordinates⏑with⏑text⏑input⏑cursor⏑coordinates
-        0000062 ⏑⏑⏑⏑JSR⏑.setTextCursorScreenAddresses⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑set⏑cursor⏑screen⏑addresses
-        0000063 ⏑⏑⏑⏑JSR⏑.setHardwareCursorAddress⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑set⏑cursor⏑position
-        0000064 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑get⏑VDU⏑status⏑byte
-        0000065 ⏑⏑⏑⏑EOR⏑#%00000010⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑invert⏑bit⏑1⏑to⏑allow⏑or⏑inhibit⏑scrolling
-        0000066 ⏑⏑⏑⏑STA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑store⏑VDU⏑status⏑byte
-        0000067 ⏑⏑⏑⏑PLA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑restore⏑flags
-        0000068 ⏑⏑⏑⏑PLP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑restore⏑A
-        0000069 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
+        0000057 ⏑⏑⏑⏑PHP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' save flags' ; 
+        0000058 ⏑⏑⏑⏑PHA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' save A' ; 
+        0000059 ⏑⏑⏑⏑LDX⏑#.vduTextCursorXPosition⏑⏑⏑⏑⏑⏑⏑⏑-⏑.vduVariablesStart⏑⏑⏑⏑
+        comment ' offset within VDU variables for text cursor position' ; 
+        0000060 ⏑⏑⏑⏑LDY⏑#.vduTextInputCursorXCoordinate⏑-⏑.vduVariablesStart⏑⏑⏑⏑
+        comment ' offset within VDU variables for text input cursor position' ; 
+        0000061 ⏑⏑⏑⏑JSR⏑.exchangeTwoVDUBytes⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' exchange current text cursor coordinates with text input cursor coordinates' ; 
+        0000062 ⏑⏑⏑⏑JSR⏑.setTextCursorScreenAddresses⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' set cursor screen addresses' ; 
+        0000063 ⏑⏑⏑⏑JSR⏑.setHardwareCursorAddress⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' set cursor position' ; 
+        0000064 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' get VDU status byte' ; 
+        0000065 ⏑⏑⏑⏑EOR⏑#%00000010⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' invert bit 1 to allow or inhibit scrolling' ; 
+        0000066 ⏑⏑⏑⏑STA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' store VDU status byte' ; 
+        0000067 ⏑⏑⏑⏑PLA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' restore flags' ; 
+        0000068 ⏑⏑⏑⏑PLP⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' restore A' ; 
+        0000069 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
 S5
     C1: holon (used sequentially)
         0000072 .checkForVDUReenable
-        0000073 ⏑⏑⏑⏑EOR⏑#6⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑check⏑for⏑VDU⏑6⏑(to⏑reenable⏑output⏑to⏑the⏑display)
-        0000074 ⏑⏑⏑⏑BNE⏑.exit1⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(not⏑VDU⏑6)⏑then⏑branch⏑(exit)
-        0000075 ⏑⏑⏑⏑LDA⏑#%01111111⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑set⏑A⏑to⏑clear⏑the⏑top⏑bit⏑of⏑the⏑VDU⏑status⏑byte
-        0000076 ⏑⏑⏑⏑BCC⏑.clearVDUStatusByteFlags⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑ALWAYS⏑branch,⏑clearing⏑the⏑top⏑bit⏑(enabling⏑output⏑to⏑the⏑display⏑again)
+        0000073 ⏑⏑⏑⏑EOR⏑#6⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' check for VDU 6 (to reenable output to the display)' ; 
+        0000074 ⏑⏑⏑⏑BNE⏑.exit1⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (not VDU 6) then branch (exit)' ; 
+        0000075 ⏑⏑⏑⏑LDA⏑#%01111111⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' set A to clear the top bit of the VDU status byte' ; 
+        0000076 ⏑⏑⏑⏑BCC⏑.clearVDUStatusByteFlags⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' ALWAYS branch, clearing the top bit (enabling output to the display again)' ; 
 S6
     C1: commentary
         _______ Check⏑whether⏑the⏑text⏑or⏑graphics⏑cursor⏑is⏑active
@@ -76,10 +120,13 @@ S6
         _______ ⏑⏑⏑A⏑=⏑$20⏑otherwise⏑(graphics⏑cursor⏑active)⏑(Z⏑flag⏑clear)
     C2: holon (used sequentially)
         0000087 .isTextCursorActive
-        0000088 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑VDU⏑status⏑byte
-        0000089 ⏑⏑⏑⏑AND⏑#%00100000⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑test⏑bit⏑5⏑of⏑status⏑byte
+        0000088 ⏑⏑⏑⏑LDA⏑.vduStatusByte⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' VDU status byte' ; 
+        0000089 ⏑⏑⏑⏑AND⏑#%00100000⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' test bit 5 of status byte' ; 
         0000090 .exit1
-        0000091 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
+        0000091 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
         0000092 
 heading 'Star commands'
 S1
@@ -104,14 +151,22 @@ S1
         _______ ⏑⏑⏑⏑⏑⏑Preserves⏑A,X,Y
     C2: holon (used sequentially)
         0000030 .clearOSFILEAddress
-        0000031 ⏑⏑⏑⏑PHA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑push⏑A
-        0000032 ⏑⏑⏑⏑LDA⏑#0⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑A=0
-        0000033 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑0,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑clear⏑osfile⏑control⏑block⏑workspace
-        0000034 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑1,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
-        0000035 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑2,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
-        0000036 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑3,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
-        0000037 ⏑⏑⏑⏑PLA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑get⏑back⏑A
-        0000038 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
+        0000031 ⏑⏑⏑⏑PHA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' push A' ; 
+        0000032 ⏑⏑⏑⏑LDA⏑#0⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' A=0' ; 
+        0000033 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑0,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' clear osfile control block workspace' ; 
+        0000034 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑1,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
+        0000035 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑2,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
+        0000036 ⏑⏑⏑⏑STA⏑.osfileBlockStart⏑+⏑3,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
+        0000037 ⏑⏑⏑⏑PLA⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' get back A' ; 
+        0000038 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
 S2
     C1: commentary
         _______ Shift⏑one⏑hex⏑digit⏑into⏑an⏑OSFILE⏑address
@@ -127,24 +182,40 @@ S2
         _______ ⏑⏑⏑⏑⏑⏑Preserves⏑Y
     C2: holon (used sequentially)
         0000054 .shiftDigitIntoAddress
-        0000055 ⏑⏑⏑⏑STY⏑.tempWorkspaceE6⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑remember⏑Y
-        0000056 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑A=A*2
-        0000057 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑*4
-        0000058 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑*8
-        0000059 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑*16
-        0000060 ⏑⏑⏑⏑LDY⏑#4⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑Y=loop⏑counter
+        0000055 ⏑⏑⏑⏑STY⏑.tempWorkspaceE6⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' remember Y' ; 
+        0000056 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' A=A*2' ; 
+        0000057 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' *4' ; 
+        0000058 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' *8' ; 
+        0000059 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' *16' ; 
+        0000060 ⏑⏑⏑⏑LDY⏑#4⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' Y=loop counter' ; 
         0000061 -
-        0000062 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑A=A*32
-        0000063 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑0,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑shift⏑bit⏑7⏑of⏑A⏑into⏑shift⏑register
-        0000064 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑1,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑and
-        0000065 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑2,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑shift
-        0000066 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑3,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑along
-        0000067 ⏑⏑⏑⏑BCS⏑.brkBadAddress⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(carry⏑set⏑on⏑exit,⏑i.e.⏑register⏑has⏑overflowed)⏑then⏑branch⏑('Bad⏑address'⏑error)
-        0000068 ⏑⏑⏑⏑DEY⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑decrement⏑Y
-        0000069 ⏑⏑⏑⏑BNE⏑-⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑if⏑(Y⏑>⏑0)⏑then⏑branch⏑(do⏑another⏑shift)
+        0000062 ⏑⏑⏑⏑ROL⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' A=A*32' ; 
+        0000063 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑0,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' shift bit 7 of A into shift register' ; 
+        0000064 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑1,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' and' ; 
+        0000065 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑2,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' shift' ; 
+        0000066 ⏑⏑⏑⏑ROL⏑.osfileBlockStart⏑+⏑3,X⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' along' ; 
+        0000067 ⏑⏑⏑⏑BCS⏑.brkBadAddress⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (carry set on exit, i.e. register has overflowed) then branch ('Bad address' error)' ; 
+        0000068 ⏑⏑⏑⏑DEY⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' decrement Y' ; 
+        0000069 ⏑⏑⏑⏑BNE⏑-⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' if (Y > 0) then branch (do another shift)' ; 
         0000070 
-        0000071 ⏑⏑⏑⏑LDY⏑.tempWorkspaceE6⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑recall⏑original⏑Y
-        0000072 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;
+        0000071 ⏑⏑⏑⏑LDY⏑.tempWorkspaceE6⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' recall original Y' ; 
+        0000072 ⏑⏑⏑⏑RTS⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment '' ; 
         0000073 
 S3
     C1: commentary
@@ -154,5 +225,6 @@ S3
         _______ ⏑⏑⏑⏑⏑⏑XY⏑=⏑address⏑of⏑rest⏑of⏑command⏑line
     C2: holon (used sequentially)
         0000083 .starLoad
-        0000084 ⏑⏑⏑⏑LDA⏑#$FF⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑;⏑signal⏑that⏑load⏑is⏑being⏑performed
+        0000084 ⏑⏑⏑⏑LDA⏑#$FF⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑
+        comment ' signal that load is being performed' ; 
         0000085 

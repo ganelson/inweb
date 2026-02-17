@@ -1,0 +1,11 @@
+Language "RunningExample" {
+	colouring
+		=> !plain
+		characters in "0123456789" {
+			=> !function
+		}
+		runs of !plain {
+			"-" => !function
+		}
+	end
+}

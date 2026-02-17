@@ -1,134 +1,130 @@
 // This is a miscellany of language definitions, presented jointly rather than
-// in a single file to reduce the number of file accesses made by inweb.
+// in a single file to reduce the number of file accesses made by Inweb.
+
+// In ACME assembly, +, -, ++, -- and so on are all valid labels (used for
+// short-distance branch destinations).
 
 Language "ACME" {
-	Details: "The ACME assembly language for 6502 and related CPUs"
-	Extension: ".a"
-	Line Comment: ";"
-	String Literal: "\""
-	String Literal Escape: "\\"
-	Character Literal: "'"
-	Character Literal Escape: "\\"
-	Binary Literal Prefix: "%"
-	Hexadecimal Literal Prefix: "$"
-	Negative Literal Prefix: "-"
+	recognise .a
 	
-	Function Declaration Notation: /([A-Za-z_][A-Za-z0-9_]*).*/
+	properties
+		Details: The ACME assembly language for 6502 and related CPUs
+		Line Comment: 					;
+		String Literal: 				"
+		String Literal Escape: 			\
+		Character Literal: 				'
+		Character Literal Escape:		\
+		Binary Literal Prefix: 			%
+		Hexadecimal Literal Prefix: 	$
+		Negative Literal Prefix: 		-
+		Function Declaration:			/([A-Za-z_][A-Za-z0-9_]*).*/
+	end
+
+	colour !label like !identifier
 	
-	colouring {
+	colouring
 		runs of unquoted {
 			runs of !identifier {
 				=> !reserved
 				keyword of !function => !function
-//				prefix "." => !identifier on both
+				prefix "." => !label on both
 				prefix "!" => !element on both
 			}
 			characters {
-				+ => !identifier
-				- => !identifier
+				+ => !label
+				- => !label
 			}
 		}
-	}
+	end
 }
 
 Language "Blurb" {
-	Details: "The Blorb packaging specification language"
-	Extension: ".blurb"
+	recognise .blurb
+
+	properties
+		Details: The Blorb packaging specification language
+		String Literal: 				"
+		String Literal Escape: 			\
+	end
 	
-	String Literal: "\""
-	String Literal Escape: "\\"
-	
-	colouring {
+	colouring
 		=> !plain
-	}
+	end
 }
+
+// In this ASCII-art world, diagrams are made up of lines using - | + / \ and
+// are labelled, together with labels and BIG LABELS. The slightly odd handling
+// of labels like "whatever-module" is an Inform documentation convention, and
+// seems unlikely to do any harm.
 
 Language "BoxArt" {
-	Details: "For styling ASCII-art diagrams with boxes and lines"
-	Extension: ".txt"
-	
-	colouring {
+	properties
+		Details: For styling ASCII-art diagrams with boxes and lines
+	end
+
+	colour !line like !plain
+	colour !label like !element
+	colour !biglabel like !function
+	colour !modulelabel like !reserved
+
+	colouring
 		characters {
-			"-" => !plain
-			"|" => !plain
-			"+" => !plain
-			"/" => !plain
-			"\\" => !plain
+			"-" => !line
+			"|" => !line
+			"+" => !line
+			"/" => !line
+			"\\" => !line
 		}
 		runs of !identifier {
-			=> !element
-			suffix "-module" => !reserved on both
-			matching /[A-Z][A-Z0-9_]+/ => !function
+			=> !label
+			suffix "-module" => !modulelabel on both
+			matching /[A-Z][A-Z0-9_]+/ => !biglabel
 		}
-	}
+	end
 }
+
+// Technically C, unlike C++, does not support binary literals, but gcc and
+// clang both support 0b. C does support octal, but in a little-used syntax
+// preceded by a zero digit (e.g. 040 means 32) which we won't recognise here:
+// since they syntax-colour correctly anyway, this is no loss.
 
 Language "C" {
-	Details: "The C programming language"
-	Extension: ".c"
-	Multiline Comment Open: "/*"
-	Multiline Comment Close: "*/"
-	Line Comment: "//"
-	String Literal: "\""
-	String Literal Escape: "\\"
-	Character Literal: "'"
-	Character Literal Escape: "\\"
-	C-Like: true
+	recognise .c
+
+	properties
+		Details: The C programming language
+		Multiline Comment Open: 		/*
+		Multiline Comment Close: 		*/
+		Line Comment: 					//
+		String Literal: 				"
+		String Literal Escape: 			\
+		Character Literal: 				'
+		Character Literal Escape: 		\
+		C-Like: 						true
+		Hexadecimal Literal Prefix: 	0x
+		Binary Literal Prefix: 			0b
+		Negative Literal Prefix: 		-
+		Start Ifdef: 					"#ifdef %S\n"
+		End Ifdef: 						"#endif /* %S */\n"
+		Start Ifndef: 					"#ifndef %S\n"
+		End Ifndef: 					"#endif /* %S */\n"
+		Line Marker: 					"#line %d \"%f\"\n"
+		Start Definition: 				"#define %S "
+		Prolong Definition: 			"\\\n    "
+		End Definition: 				"\n"
+	end
+
+	keywords
+		break case continue default do else extern for goto if register
+		return sizeof static switch typedef volatile while _Packed
+	end
 	
-// C does in fact support octal literals, marking them as starting with an
-// unnecessary initial zero. This is practically obsolete now, and in any case
-// makes no difference to syntax-colouring. Binary literals were in theory
-// rejected by the C standards body as useless, but are so useful that gcc
-// and clang support them anyway.
+	keywords of !type
+		auto char const double enum float int long short signed struct union
+		unsigned void
+	end
 	
-	Hexadecimal Literal Prefix: "0x"
-	Binary Literal Prefix: "0b"
-	Negative Literal Prefix: "-"
-	
-	Start Ifdef: "#ifdef %S\n"
-	End Ifdef: "#endif /* %S */\n"
-	Start Ifndef: "#ifndef %S\n"
-	End Ifndef: "#endif /* %S */\n"
-	Line Marker: "#line %d \"%f\"\n"
-	
-	Start Definition: "#define %S\s"
-	Prolong Definition: "\\\n\s\s\s\s"
-	End Definition: "\n"
-	
-	keyword auto
-	keyword break
-	keyword case
-	keyword char
-	keyword const
-	keyword continue
-	keyword default
-	keyword do
-	keyword double
-	keyword else
-	keyword enum
-	keyword extern
-	keyword float
-	keyword for
-	keyword goto
-	keyword if
-	keyword int
-	keyword long
-	keyword register
-	keyword return
-	keyword short
-	keyword signed
-	keyword sizeof
-	keyword static
-	keyword struct
-	keyword switch
-	keyword typedef
-	keyword union
-	keyword unsigned
-	keyword void
-	keyword volatile
-	keyword while
-	
-	colouring {
+	colouring
 		runs of unquoted {
 			runs of !identifier {
 				keyword of !reserved => !reserved
@@ -140,7 +136,7 @@ Language "C" {
 				}
 			}
 		}
-	}
+	end
 
 	Conventions {
 		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
@@ -150,71 +146,53 @@ Language "C" {
 		function predeclarations are tangled automatically
 	}
 }
+
+// At the superficial syntax level needed by Inweb, C++ is barely different
+// from C, and it gets an almost identical definition, except for its
+// elephantine collection of reserved words.
 
 Language "C++" {
-	Details: "The C++ programming language"
-	Extension: ".cpp"
-	Multiline Comment Open: "/*"
-	Multiline Comment Close: "*/"
-	Line Comment: "//"
-	String Literal: "\""
-	String Literal Escape: "\\"
-	Character Literal: "'"
-	Character Literal Escape: "\\"
-	C-Like: true
+	recognise .cpp
+
+	properties
+		Details: The C++ programming language
+		Multiline Comment Open:			/*
+		Multiline Comment Close:		*/
+		Line Comment: 					//
+		String Literal: 				"
+		String Literal Escape: 			\
+		Character Literal: 				'
+		Character Literal Escape: 		\
+		C-Like: 						true
+		Hexadecimal Literal Prefix:		0x
+		Binary Literal Prefix: 			0b
+		Negative Literal Prefix: 		-		
+		Start Ifdef: 					"#ifdef %S\n"
+		End Ifdef: 						"#endif /* %S */\n"
+		Start Ifndef: 					"#ifndef %S\n"
+		End Ifndef: 					"#endif /* %S */\n"
+		Line Marker: 					"#line %d \"%f\"\n"		
+		Start Definition: 				"#define %S "
+		Prolong Definition: 			"\\\n    "
+		End Definition: 				"\n"
+	end
 	
-// C++ does in fact support octal literals, marking them as starting with an
-// unnecessary initial zero. This is practically obsolete now, and in any case
-// makes no difference to syntax-colouring.
+	keywords
+		_Pragma alignas alignof and and_eq asm atomic_cancel atomic_commit
+		atomic_noexcept auto bitand bitor bool break case catch char char16_t char32_t
+		char8_t class co_await co_return co_yield compl concept const const_cast
+		consteval constexpr constinit continue contract_assert decltype default delete
+		do double dynamic_cast else enum explicit export extern false final float for
+		friend goto if import inline int long module mutable namespace new noexcept not
+		not_eq nullptr operator or or_eq override post pre private protected public
+		reflexpr register reinterpret_cast replaceable_if_eligible requires return short
+		signed sizeof static static_assert static_cast struct switch synchronized
+		template this thread_local throw transaction_safe transaction_safe_dynamic
+		trivially_relocatable_if_eligible true try typedef typeid typename union
+		unsigned using virtual void volatile wchar_t while xor xor_eq
+	end
 	
-	Hexadecimal Literal Prefix: "0x"
-	Binary Literal Prefix: "0b"
-	Negative Literal Prefix: "-"
-	
-	Start Ifdef: "#ifdef %S\n"
-	End Ifdef: "#endif /* %S */\n"
-	Start Ifndef: "#ifndef %S\n"
-	End Ifndef: "#endif /* %S */\n"
-	Line Marker: "#line %d \"%f\"\n"
-	
-	Start Definition: "#define %S\s"
-	Prolong Definition: "\\\n\s\s\s\s"
-	End Definition: "\n"
-	
-	keyword auto
-	keyword break
-	keyword case
-	keyword char
-	keyword const
-	keyword continue
-	keyword default
-	keyword do
-	keyword double
-	keyword else
-	keyword enum
-	keyword extern
-	keyword float
-	keyword for
-	keyword goto
-	keyword if
-	keyword int
-	keyword long
-	keyword register
-	keyword return
-	keyword short
-	keyword signed
-	keyword sizeof
-	keyword static
-	keyword struct
-	keyword switch
-	keyword typedef
-	keyword union
-	keyword unsigned
-	keyword void
-	keyword volatile
-	keyword while
-	
-	colouring {
+	colouring
 		runs of unquoted {
 			runs of !identifier {
 				keyword of !reserved => !reserved
@@ -226,7 +204,7 @@ Language "C++" {
 				}
 			}
 		}
-	}
+	end
 
 	Conventions {
 		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
@@ -237,202 +215,128 @@ Language "C++" {
 	}
 }
 
+// This is useful for syntax-colouring documentation of command-line tools.
+// It reads lines like "$ inweb weave -using swift.inweb" differently from
+// other lines: the idea is that these are commands typed by the user, and
+// all other lines are the output from those commands.
+
 Language "ConsoleText" {
-	Details: "For styling command line text in documentation"
-	Extension: ".txt"
+	properties
+		Details: For styling command line text in documentation
+	end
 	
-	colouring {
+	colour !prompt like !element
+	colour !program like !function
+	colour !switch like !identifier
+	
+	colouring
 		=> !plain
 		brackets in /\s*(\$) (.*)/ {
-			number 1 => !element
+			number 1 => !prompt
 			number 2 => {
 				=> !plain
 				matches of / -[A-Za-z0-9-]+/ {
-					=> !identifier
+					=> !switch
 				}
 				matches of /\S+/ {
-					number 1 => !function
+					number 1 => !program
 				}
 			}
 		}
-	}
+	end
 }
 
+// Delia is here because Inweb, Intest and Inform all use it.
+
 Language "Delia" {
-	Details: "For defining test recipes in Intest"
-	Extension: ".intest"
+	recognise .intest
+
+	properties
+		Details: For defining test recipes in Intest
+	end
 	
-	colouring {
+	colour !command like !identifier
+	colour !step like !reserved
+	colour !variable like !function
+	
+	colouring
 		=> !plain
 		brackets in /(.*?):.*/ {
-			=> !reserved
+			=> !step
 		}
 		brackets in /(-\S+).*/ {
-			=> !identifier
+			=> !command
 		}
 		matches of /\$[A-Z]+[A-Z0-9]*/ {
-			=> !function
+			=> !variable
 		}
 		matches of /\s*else\s*/ {
-			=> !reserved
+			=> !step
 		}
 		matches of /\s*endif\s*/ {
-			=> !reserved
+			=> !step
 		}
-	}
+	end
 }
 
 Language "Extracts" {
-	Details: "For code extracts to be written to a configuration file"
-	Extension: ".txt"
 }
 
-Language "ILDF" {
-	Details: "The Inweb Language Definition File format"
-	Extension: ".ildf"
-	Whole Line Comment: "#"
+// InC is the souped-up version of C in which Inweb, Inform and Intest are
+// written, along with some of their surrounding tools.
+
+// The filename extension ".c" is not in fact recognised as referring to InC
+// because the C language has already been defined (see above) and has taken it.
 	
-	String Literal: "\""
-	String Literal Escape: "\\"
-	
-// Regular expressions are handled here as if character literals
-	Character Literal: "/"
-	Character Literal Escape: "\\"
-	
-	keyword "both"
-	keyword "brackets"
-	keyword "characters"
-	keyword "coloured"
-	keyword "colouring"
-	keyword "debug"
-	keyword "false"
-	keyword "in"
-	keyword "instances"
-	keyword "keyword"
-	keyword "matches"
-	keyword "matching"
-	keyword "not"
-	keyword "of"
-	keyword "on"
-	keyword "optionally"
-	keyword "prefix"
-	keyword "runs"
-	keyword "spaced"
-	keyword "suffix"
-	keyword "true"
-	keyword "unquoted" of !element
-	
-	colouring {
-		runs of !identifier {
-			prefix "!" => !element on both
-			keyword of !element => !element
-			keyword of !reserved => !reserved
-		}
-		runs of unquoted {
-			instances of "=>" {
-				=> !reserved
-			}
-			instances of "{" {
-				=> !reserved
-			}
-			instances of "}" {
-				=> !reserved
-			}
-		}
-		characters {
-// Anything left of these colours will be unquoted strings, so...
-			coloured !constant => !string
-			coloured !identifier => !string
-// Regular expressions, now coloured !character, are more like functions
-			coloured !character => !function
-		}
-// Detect Property: Value lines, not being fooled by a colon inside quotes
-		brackets in /\s*([A-Z][^"]*):.*/ {
-// Uncolour only the bracketed part, i.e., the Property part
-			=> !plain
-		}
-	}
-}
+// The "shebang" here is not a shebang in the conventional Unix sense. Instead
+// it defines the constant PLATFORM_POSIX everywhere except Windows. This needs
+// to happen right at the top, because even the "very early code" in a tangle
+// may contain material conditional on whether it is defined.
+
+// We throw in a few standard types as keywords here: size_t and time_t are
+// both in the C standard library, but inchar32_t is from our own foundation
 
 Language "InC" {
-	Details: "The Inform-tools extension to the C programming language"
-	Extension: ".c"
-	Supports Namespaces: true
-	Multiline Comment Open: "/*"
-	Multiline Comment Close: "*/"
-	Line Comment: "//"
-	String Literal: "\""
-	String Literal Escape: "\\"
-	Character Literal: "'"
-	Character Literal Escape: "\\"
-	C-Like: true
+	recognise .c
+
+	properties
+		Details: The Inform-tools extension to the C programming language
+		Supports Namespaces: 			true
+		Multiline Comment Open: 		/*
+		Multiline Comment Close: 		*/
+		Line Comment: 					//
+		String Literal: 				"
+		String Literal Escape: 			\
+		Character Literal: 				'
+		Character Literal Escape: 		\
+		C-Like: 						true
+		Hexadecimal Literal Prefix: 	0x
+		Binary Literal Prefix: 			0b
+		Negative Literal Prefix: 		-	
+		Shebang: 						"#ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n"
+		Start Ifdef: 					"#ifdef %S\n"
+		End Ifdef: 						"#endif /* %S */\n"
+		Start Ifndef: 					"#ifndef %S\n"
+		End Ifndef: 					"#endif /* %S */\n"
+		Line Marker: 					"#line %d \"%f\"\n"
+		Start Definition: 				"#define %S "
+		Prolong Definition: 			"\\\n    "
+		End Definition: 				"\n"
+	end
+
+	keywords
+		break case continue default do else extern for goto if register
+		return sizeof static switch typedef volatile while _Packed
+	end
 	
-// C does in fact support octal literals, marking them as starting with an
-// unnecessary initial zero. This is practically obsolete now, and in any case
-// makes no difference to syntax-colouring. Binary literals were in theory
-// rejected by the C standards body as useless, but are so useful that gcc
-// and clang support them anyway.
+	keywords of !type
+		auto char const double enum float int long short signed struct union
+		unsigned void FILE size_t time_t inchar32_t
+	end
 	
-	Hexadecimal Literal Prefix: "0x"
-	Binary Literal Prefix: "0b"
-	Negative Literal Prefix: "-"
+	colour !preformproduction like !function
 	
-// The "shebang" routine for a language is called to add anything it wants to
-// at the very top of the tangled code. (For a scripting language such as
-// Perl or Python, that might be a shebang: "hence the name.)"
-// But we will use it to defime the constant PLATFORM_POSIX everywhere except
-// Windows. This needs to happen right at the top, because the "very early
-// code" in a tangle may contain material conditional on whether it is defined.
-	
-	Shebang: "#ifndef PLATFORM_WINDOWS\n#define PLATFORM_POSIX\n#endif\n"
-	Start Ifdef: "#ifdef %S\n"
-	End Ifdef: "#endif /* %S */\n"
-	Start Ifndef: "#ifndef %S\n"
-	End Ifndef: "#endif /* %S */\n"
-	Line Marker: "#line %d \"%f\"\n"
-	Start Definition: "#define %S\s"
-	Prolong Definition: "\\\n\s\s\s\s"
-	End Definition: "\n"
-	
-// FILE gets in even though it's not technically reserved but only a type
-// name, defined in the standard C library.
-	
-	keyword FILE
-	
-	keyword auto
-	keyword break
-	keyword case
-	keyword char
-	keyword const
-	keyword continue
-	keyword default
-	keyword do
-	keyword double
-	keyword else
-	keyword enum
-	keyword extern
-	keyword float
-	keyword for
-	keyword goto
-	keyword if
-	keyword int
-	keyword long
-	keyword register
-	keyword return
-	keyword short
-	keyword signed
-	keyword sizeof
-	keyword static
-	keyword struct
-	keyword switch
-	keyword typedef
-	keyword union
-	keyword unsigned
-	keyword void
-	keyword volatile
-	keyword while
-	
-	colouring {
+	colouring
 		runs of unquoted {
 			runs of !identifier {
 				keyword of !reserved => !reserved
@@ -444,10 +348,10 @@ Language "InC" {
 				}
 			}
 			matches of /<\S+>/ {
-				=> !function
+				=> !preformproduction
 			}
 		}
-	}
+	end
 
 	Conventions {
 		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
@@ -458,93 +362,36 @@ Language "InC" {
 	}
 }
 
-Language "Indoc" {
-	Details: "The markup syntax for the Indoc documentation tool"
-	Extension: ".indoc"
-	
-	colouring {
-		=> !plain
-	}
-}
-
 Language "Inform 6" {
-	Details: "The C-like interactive fiction language Inform 6"
-	Extension: ".i6"
-	Line Comment: "!"
-	String Literal: "\""
-	Character Literal: "'"
-	Binary Literal Prefix: "$$"
-	Hexadecimal Literal Prefix: "$"
-	Negative Literal Prefix: "-"
+	recognise .i6
+
+	properties
+		Details: 						The C-like interactive fiction language Inform 6
+		Line Comment: 					!
+		String Literal: 				"
+		Character Literal: 				'
+		Binary Literal Prefix: 			$$
+		Hexadecimal Literal Prefix:		$
+		Negative Literal Prefix: 		-
+		Start Definition: 				"Constant %S = "
+		End Definition: 				";\n"
+		Start Ifdef: 					"#ifdef %S;\n"
+		End Ifdef: 						"#endif; ! %S\n"
+		Start Ifndef: 					"#ifndef %S;\n"
+		End Ifndef: 					"#endif; ! %S\n"
+	end
 	
-	Start Definition: "Constant %S =\s"
-	End Definition: ";\n"
-	
-	Start Ifdef: "#ifdef %S;\n"
-	End Ifdef: "#endif; ! %S\n"
-	Start Ifndef: "#ifndef %S;\n"
-	End Ifndef: "#endif; ! %S\n"
-	
-// Reserved words:
-	
-	keyword "Constant"
-	keyword "Array"
-	
-	keyword "box"
-	keyword "break"
-	keyword "child"
-	keyword "children"
-	keyword "continue"
-	keyword "default"
-	keyword "do"
-	keyword "elder"
-	keyword "eldest"
-	keyword "else"
-	keyword "false"
-	keyword "font"
-	keyword "for"
-	keyword "give"
-	keyword "has"
-	keyword "hasnt"
-	keyword "if"
-	keyword "in"
-	keyword "indirect"
-	keyword "inversion"
-	keyword "jump"
-	keyword "metaclass"
-	keyword "move"
-	keyword "new_line"
-	keyword "nothing"
-	keyword "notin"
-	keyword "objectloop"
-	keyword "ofclass"
-	keyword "or"
-	keyword "parent"
-	keyword "print"
-	keyword "print_ret"
-	keyword "provides"
-	keyword "quit"
-	keyword "random"
-	keyword "read"
-	keyword "remove"
-	keyword "restore"
-	keyword "return"
-	keyword "rfalse"
-	keyword "rtrue"
-	keyword "save"
-	keyword "sibling"
-	keyword "spaces"
-	keyword "string"
-	keyword "style"
-	keyword "switch"
-	keyword "to"
-	keyword "true"
-	keyword "until"
-	keyword "while"
-	keyword "younger"
-	keyword "youngest"
-	
-	colouring {
+	keywords
+		"Array" "box" "break" "child" "children" "Class" "Constant" "continue" "default" "do"
+		"elder" "eldest" "else" "false" "font" "for" "give" "has" "hasnt" "if" "in"
+		"indirect" "inversion" "jump" "metaclass" "move" "new_line" "nothing" "notin"
+		"objectloop" "ofclass" "or" "parent" "print" "print_ret" "provides" "quit"
+		"random" "read" "remove" "restore" "return" "rfalse" "rtrue" "save" "sibling"
+		"spaces" "string" "String" "style" "switch" "to" "true" "until" "while" "younger"
+		"youngest"
+	end
+
+	colouring
 		runs of unquoted {
 			runs of !identifier {
 				keyword of !reserved => !reserved
@@ -556,142 +403,137 @@ Language "Inform 6" {
 				}
 			}
 		}
-	}
+	end
 }
 
 Language "Inform 7" {
-	Details: "The natural-language based language Inform 7"
-	Extension: ".i7x"
-	Multiline Comment Open: "["
-	Multiline Comment Close: "]"
-	String Literal: "\""
+	recognise .i7
+	recognise .i7x
+
+	properties
+		Details: The natural-language based language Inform 7
+		Multiline Comment Open: 		[
+		Multiline Comment Close:		]
+		String Literal: 				"
+	end
 }
 
 Language "Inter Pipeline" {
-	Details: "For pipelines of Inform code-generation stages"
-	Extension: ".interpipeline"
-	Line Comment: "!"
+	recognise .interpipeline
+
+	properties
+		Details: For pipelines of Inform code-generation stages
+		Line Comment: 					!
+	end
 	
-	colouring {
+	colour !direction like !reserved
+	colour !variable like !identifier
+	
+	colouring
 		instances of "->" {
-			=> !reserved
+			=> !direction
 		}
 		instances of "<-" {
-			=> !reserved
+			=> !direction
 		}
 		runs of !identifier {
 			=> !plain
-			prefix "*" => !identifier on both
+			prefix "*" => !variable on both
 		}
-	}
+	end
 }
+
+// Conventionally, identifiers in Inter look like "K_number", where an initial
+// letter gives some sort of type indication, and then there's an underscore,
+// followed by the actual name.
 
 Language "Inter" {
-	Details: "The textual form of intermediate Inform code"
-	Extension: ".intert"
+	recognise .intert
+
+	properties
+		Details: The textual form of intermediate Inform code		
+		String Literal: 				"
+		String Literal Escape: 			\
+	end
 	
-	String Literal: "\""
-	String Literal Escape: "\\"
+	keywords
+		"append" "cast" "code" "constant" "defaultvalue" "enum" "evaluation"
+		"external" "instance" "int32" "inv" "kind" "lab" "link" "list" "local"
+		"metadata" "misc" "of" "package" "packagetype" "permission" "pragma"
+		"primitive" "private" "property" "propertyvalue" "public" "ref" "reference"
+		"response" "splat" "symbol" "text" "undef" "val" "variable" "version" "void"
+	end
 	
-	keyword "append"
-	keyword "cast"
-	keyword "code"
-	keyword "constant"
-	keyword "defaultvalue"
-	keyword "enum"
-	keyword "evaluation"
-	keyword "external"
-	keyword "instance"
-	keyword "int32"
-	keyword "inv"
-	keyword "kind"
-	keyword "lab"
-	keyword "link"
-	keyword "list"
-	keyword "local"
-	keyword "metadata"
-	keyword "misc"
-	keyword "of"
-	keyword "package"
-	keyword "packagetype"
-	keyword "permission"
-	keyword "pragma"
-	keyword "primitive"
-	keyword "private"
-	keyword "property"
-	keyword "propertyvalue"
-	keyword "public"
-	keyword "ref"
-	keyword "reference"
-	keyword "response"
-	keyword "splat"
-	keyword "symbol"
-	keyword "text"
-	keyword "undef"
-	keyword "val"
-	keyword "variable"
-	keyword "version"
-	keyword "void"
+	colour !instruction like !reserved
+	colour !primitive like !function
+	colour !annotation like !element
 	
-	colouring {
+	colouring
 		runs of !identifier {
 			=> !plain
-			keyword of !reserved => !reserved
+			keyword of !reserved => !instruction
 			matching /._.*/ => !identifier
-			prefix "`" => !element on both
-			prefix "!" => !function on both
+			prefix "__" => !annotation on both
+			prefix "!" => !primitive on both
 		}
-		instances of "-->" {
-			=> !reserved
+		instances of "->" {
+			=> !instruction
 		}
-	}
+	end
 }
+
+// The web control language used by Inweb declarations: it's a bit too miscellaneous
+// to syntax-colour thoroughly, though.
 
 Language "Inweb" {
-	Details: "The markup language for the Inweb literate programming system"
-	Extension: ".w"
+	recognise .inweb
+
+	properties
+		Details: Resource declaration files for the Inweb literate programming system
+	end
 	
-	colouring {
+	colour !resource like !function
+	colour !name like !string
+	
+	keywords of !resource
+		Language Notation Conventions Colony Web Page Navigation Pattern
+	end
+	
+	colouring
 		=> !plain
-// Detect Property: Value lines, not being fooled by a colon inside quotes
-		brackets in /\s*([A-Za-z][^"]*):(.*)/ {
-			number 1 => !element
-			number 2 => !string
+		brackets in /\s*(\S+)\s+{\s*/ {
+			keyword of !resource => !resource
 		}
-		brackets in /\s*(@\S*)(.*)/ {
-			number 1 => !function
-			number 2 => !plain
+		brackets in /\s*(\S+)\s+"(.*?)"\s+{\s*/ {
+			number 1 => {
+				keyword of !resource => !resource
+			}
+			number 2 => !name
 		}
-		brackets in /\s*(@\s*=)(.*)/ {
-			number 1 => !function
-			number 2 => !plain
-		}
-		matching /=.*/ => {
-			=> !function
-		}
-		brackets in /\s*(@<.*?@>\s*=)(.*)/ {
-			number 1 => !function
-			number 2 => !plain
-		}
-		matches of /@<.*?@>/ {
-			=> !function
-		}
-		brackets in /\s*(\[[A-Za-z0-9:]+\])(.*)/ {
-			number 1 => !identifier
-		}
-		matches of /\[\[.*?\]\]/ {
-			=> !function
-		}
-	}
+	end
 }
 
+// The pseudo-language "None" recognises the filename extension .txt so that if
+// a plain text file is given to Inweb, it considers the language to be None.
+
 Language "None" {
-	Details: "For programs in languages not yet supported by Inweb"
-	Extension: ".txt"
+	recognise .txt
+
+	properties
+		Details: For plain text or programs in languages not (yet) supported by Inweb
+	end
+	
+	colouring
+		=> !plain
+	end
 }
 
 Language "PainterOutput" {
-	colouring {
+	properties
+		Details: For syntax-colouring the output of 'inweb test-language'
+	end
+
+	colouring
 		number 1 of 2 => !plain
 		number 2 of 2 => {
 			characters {
@@ -711,151 +553,137 @@ Language "PainterOutput" {
 	}
 }
 
-Language "Perl" {
-	Details: "The scripting language Perl 5"
-	Extension: ".pl"
-	Line Comment: "#"
-	String Literal: "\""
-	String Literal Escape: "\\"
-	Character Literal: "'"
-	Character Literal Escape: "\\"
-	
-	Shebang: "#!/usr/bin/perl\n\n"
-	Start Definition: "%S ="
-	End Definition: "\n;\n"
-	
 // In its usual zany way, Perl recognises the same #line syntax as C, thus in
-// principle overloading its comment notation #:
-	Line Marker: "#line %d \"%f\"\n"
+// principle overloading its comment notation #.
+
+Language "Perl" {
+	recognise .pl
+
+	properties
+		Details: The scripting language Perl 5
+		Line Comment:					#
+		String Literal: 				"
+		String Literal Escape: 			\
+		Character Literal: 				'
+		Character Literal Escape: 		\
+		Shebang: 						"#!/usr/bin/perl\n\n"
+		Start Definition: 				"%S ="
+		End Definition: 				"\n;\n"
+		Line Marker: 					"#line %d \"%f\"\n"
+	end
 
 	Conventions {
 		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
 	}
 }
 
+// "#line" is just a comment in Python, alas: Python has no syntax equivalent
+// to C's #line
+
 Language "Python" {
-	Details: "The interpreted language Python"
-	Extension: ".py"
-	Line Comment: "#"
-	String Literal: "\""
-	String Literal Escape: "\\"
-	Character Literal: "'"
-	Character Literal Escape: "\\"
-	
-	Shebang: "#!/usr/bin/python3\n\n"
-	Start Definition: "%S ="
-	End Definition: "\n\n"
-	Indent Named Paragraph Expansion: true
-	
-// Just a comment in Python-world, but may help some people	
-	Line Marker: "#line %d \"%f\"\n"
-	
+	recognise .py
+
+	properties
+		Details: The interpreted language Python
+		Line Comment: 					#
+		String Literal: 				"
+		String Literal Escape: 			\
+		Character Literal: 				'
+		Character Literal Escape: 		\Indent Named Holon Expansion
+		Shebang:						"#!/usr/bin/python3\n\n"
+		Start Definition: 				"%S ="
+		End Definition:					"\n\n"
+		Indent Named Holon Expansion:   true
+		Line Marker: 					"#line %d \"%f\"\n"
+	end
+
+	keywords
+		and as assert async await break case class continue def del elif else except
+		False finally for from global if import in is lambda match None nonlocal not or
+		pass raise return True try while with yield
+	end
+
 	Conventions {
 		named holons are tangled between <SPACE> and <NEWLINE>
 	}
 }
 
-Language "Plain Text" {
-	Details: "For text files which are not programs"
-	Extension: ".txt"
-	
-	colouring {
-		=> !plain
-	}
-}
+// Pascal is essentially obsolete now, but in hopes that Inweb may some day be
+// able to read the TeX and Metafont webs, we have a modest definition for it
 
 Language "Pascal" {
-	Details: "The dialect of Pascal used by WEB"
-	Extension: ".pas"
-	String Literal: "\""
-	Character Literal: "'"
-	Multiline Comment Open: "{"
-	Multiline Comment Close: "}"
+	recognise .pas
 
-	keyword "and"
-	keyword "array"
-	keyword "begin"
-	keyword "case"
-	keyword "const"
-	keyword "div"
-	keyword "do"
-	keyword "downto"
-	keyword "else"
-	keyword "end"
-	keyword "file"
-	keyword "for"
-	keyword "function"
-	keyword "goto"
-	keyword "if"
-	keyword "in"
-	keyword "label"
-	keyword "mod"
-	keyword "nil"
-	keyword "not"
-	keyword "of"
-	keyword "or"
-	keyword "packed"
-	keyword "procedure"
-	keyword "program"
-	keyword "record"
-	keyword "repeat"
-	keyword "set"
-	keyword "then"
-	keyword "to"
-	keyword "type"
-	keyword "until"
-	keyword "var"
-	keyword "while"
-	keyword "with"
-	keyword "xclause"
+	properties
+		Details: The dialect of Pascal used by WEB
+		String Literal: 				"
+		Character Literal: 				'
+		Multiline Comment Open: 		{
+		Multiline Comment Close: 		}
+	end
+
+	keywords
+		"and" "array" "begin" "case" "const" "div" "do" "downto" "else" "end" "file"
+		"for" "function" "goto" "if" "in" "label" "mod" "nil" "not" "of" "or" "packed"
+		"procedure" "program" "record" "repeat" "set" "then" "to" "type" "until" "var"
+		"while" "with" "xclause"
+	end
 	
-	colouring {
+	colouring
 		runs of unquoted {
 			runs of !identifier {
 				keyword of !reserved => !reserved
-				keyword of !function => !function
-				keyword of !constant => !constant
-				keyword of !element => {
-					optionally spaced prefix . => !element
-					optionally spaced prefix -> => !element
-				}
 			}
 		}
-	}
+	end
 }
 
 Language "Preform" {
-	Details: "The internal Inform syntax analysis grammar language"
-	Extension: ".preform"
+	recognise .preform
+
+	properties
+		Details: The internal Inform syntax analysis grammar language
+	end
 	
-	colouring {
+	colour !production like !function
+	colour !grammar like !constant
+	colour !operator like !reserved
+
+	colouring
 		matches of /\S+/ {
-			=> !constant
-			"::=" => !reserved
-			"|" => !reserved
-			"==>" => !reserved
-			"(" => !reserved
-			")" => !reserved
-			"..." => !reserved
-			"......" => !reserved
-			matching /<\S+>/ => !function
+			=> !grammar
+			"::=" => !operator
+			"|" => !operator
+			"==>" => !operator
+			"(" => !operator
+			")" => !operator
+			"..." => !operator
+			"......" => !operator
+			matching /<\S+>/ => !production
 		}
 		brackets in /.*?==>(.*)/ {
 			=> !plain
 		}
-	}
+	end
 }
 
+// REPL lines are just key-value pairs, with the keys in single quotes
+
 Language "REPL" {
-	Details: "REPL output in the form expression, colon, value"
-	Extension: ".repl"
+	recognise .repl
+
+	properties
+		Details: REPL output in the form expression, colon, value
+	end
 	
-	colouring {
+	colour !key like !element
+	colour !value like !string	
+
+	colouring
 		=> !plain
-// Detect expression-value lines, not being fooled by a colon inside quotes
 		brackets in /\s*'(.*?)':(.*)/ {
-			number 1 => !element
-			number 2 => !string
+			number 1 => !key
+			number 2 => !value
 		}
-	}
+	end
 }

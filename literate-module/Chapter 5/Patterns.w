@@ -77,11 +77,20 @@ wcl_declaration *Patterns::parse_directory(pathname *P) {
 				WRITE_TO(name, "%S", leafname);
 				Str::delete_last_character(name);
 				pathname *Q = Pathnames::down(P, name);
-				filename *pattern_file = Filenames::in(Q, I"pattern.inweb");
-				if (TextFiles::exists(pattern_file) == FALSE) {
-					pattern_file = Filenames::in(Q, I"pattern.txt");
-					if (TextFiles::exists(pattern_file) == FALSE)
+				TEMPORARY_TEXT(inner)
+				WRITE_TO(inner, "%S", leafname);
+				Str::delete_last_character(inner);
+				WRITE_TO(inner, ".inweb");
+				filename *pattern_file = Filenames::in(Q, inner);
+				if (TextFiles::exists(pattern_file) == FALSE) {				
+					filename *pattern_file = Filenames::in(Q, I"pattern.inweb");
+					if (TextFiles::exists(pattern_file) == FALSE) {
+						pattern_file = Filenames::in(Q, I"pattern.txt");
+						if (TextFiles::exists(pattern_file))
+							WRITE_TO(STDERR,
+								"Warning: pattern at %p out of date: still has a pattern.txt file\n", Q);
 						continue;
+					}
 				}
 				wcl_declaration *D = WCL::read_just_one(pattern_file, PATTERN_WCLTYPE);
 				if (D) WCL::place_within(D, M);

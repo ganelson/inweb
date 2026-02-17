@@ -1,0 +1,4 @@
+weaving web "Traces of Corrosion" (Rust program in MarkdownCode notation) as HTML
+(created directory 'rusty/sample-assets')
+    generated: rusty/sample.html
+    10 files copied to: rusty/sample-assets

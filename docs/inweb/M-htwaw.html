@@ -40,7 +40,6 @@ MathJax = {
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Extracts-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -108,7 +107,7 @@ example:</p>
 that magic character in the first column of the line:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> This is some comment at the start of a new paragraph, which...</span>
+<span class="plain-syntax">    @ This is some comment at the start of a new paragraph, which...</span>
 </pre>
 <div class="lsmarkdown">
 <p>A fancier paragraph with a subheading attached is introduced using the
@@ -117,7 +116,7 @@ of the same command.) The text of the subheading then follows, up to the
 first full stop.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@heading</span><span class="plain-syntax"> Reflections on the method.</span>
+<span class="plain-syntax">    @heading Reflections on the method.</span>
 </pre>
 <div class="lsmarkdown">
 <p>Paragraphs can contain three ingredients, all optional, but if given then
@@ -125,12 +124,12 @@ given in this order: comment, definitions, and code. The following
 example shows all three being used:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@h</span><span class="plain-syntax"> Primality.</span>
+<span class="plain-syntax">    @h Primality.</span>
 <span class="plain-syntax">    We provide this as a function which determines whether a number</span>
-<span class="plain-syntax">    </span><span class="element-syntax">is prime</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    is prime:</span>
 
-<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> TRUE 1</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> FALSE 0</span>
+<span class="plain-syntax">    @d TRUE 1</span>
+<span class="plain-syntax">    @d FALSE 0</span>
 
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    int isprime(int n) {</span>
@@ -149,15 +148,15 @@ the equivalent of a <code>#define</code> directive in C. <code>@define</code> is
 For example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> ENIGMATIC_NUMBER 90125</span>
+<span class="plain-syntax">    @define ENIGMATIC_NUMBER 90125</span>
 </pre>
 <div class="lsmarkdown">
 <p>sets <code>ENIGMATIC_NUMBER</code> to 90125. Unlike in the C preprocessor, multi-line
 definitions are automatically handled, so for example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> The following macro defines a function:</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> EAT_FRUIT(variety)</span>
+<span class="plain-syntax">    @ The following macro defines a function:</span>
+<span class="plain-syntax">    @d EAT_FRUIT(variety)</span>
 <span class="plain-syntax">        int consume_by_##variety(variety *frp) {</span>
 <span class="plain-syntax">            return frp-&gt;eat_by_date;</span>
 <span class="plain-syntax">        }</span>
@@ -176,17 +175,17 @@ first.</p>
 For example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@enum</span><span class="plain-syntax"> JANUARY_MNTH from 0</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@enum</span><span class="plain-syntax"> FEBRUARY_MNTH</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@enum</span><span class="plain-syntax"> MARCH_MNTH</span>
+<span class="plain-syntax">    @enum JANUARY_MNTH from 0</span>
+<span class="plain-syntax">    @enum FEBRUARY_MNTH</span>
+<span class="plain-syntax">    @enum MARCH_MNTH</span>
 </pre>
 <div class="lsmarkdown">
 <p>and so on, is equivalent to</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> JANUARY_MNTH 0</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> FEBRUARY_MNTH 1</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@define</span><span class="plain-syntax"> MARCH_MNTH 2</span>
+<span class="plain-syntax">    @define JANUARY_MNTH 0</span>
+<span class="plain-syntax">    @define FEBRUARY_MNTH 1</span>
+<span class="plain-syntax">    @define MARCH_MNTH 2</span>
 </pre>
 <div class="lsmarkdown">
 <p>What happens is that <code>@enum</code> looks at the tail of the name, from the last
@@ -203,21 +202,21 @@ of <code>@d</code> or <code>@e</code> in the web has not already defined it. For
 web contains:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@default</span><span class="plain-syntax"> MAX_HEADROOM 100</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> MAX_HEADROOM 99</span>
+<span class="plain-syntax">    @default MAX_HEADROOM 100</span>
+<span class="plain-syntax">    @d MAX_HEADROOM 99</span>
 </pre>
 <div class="lsmarkdown">
 <p>or</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> MAX_HEADROOM 99</span>
-<span class="plain-syntax">    </span><span class="function-syntax">@default</span><span class="plain-syntax"> MAX_HEADROOM 100</span>
+<span class="plain-syntax">    @d MAX_HEADROOM 99</span>
+<span class="plain-syntax">    @default MAX_HEADROOM 100</span>
 </pre>
 <div class="lsmarkdown">
 <p>then the value is 99, but if only</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@default</span><span class="plain-syntax"> MAX_HEADROOM 100</span>
+<span class="plain-syntax">    @default MAX_HEADROOM 100</span>
 </pre>
 <div class="lsmarkdown">
 <p>then the value is 100.</p>
@@ -236,13 +235,13 @@ Ordinarily, this must appear in column 1, but a special abbreviation is
 allowed for paragraphs with no comment and no definitions:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@ =</span>
+<span class="plain-syntax">    @ =</span>
 </pre>
 <div class="lsmarkdown">
 <p>This is exactly equivalent to:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@</span>
+<span class="plain-syntax">    @</span>
 
 <span class="plain-syntax">    =</span>
 </pre>
@@ -266,7 +265,7 @@ given names, in angle brackets. If so, then the paragraph is the definition
 of that extract. For example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@&lt;Dramatic finale@&gt; =</span>
+<span class="plain-syntax">    @&lt;Dramatic finale@&gt; =</span>
 <span class="plain-syntax">        printf("I'm ruined! Ruined, I say!\n");</span>
 <span class="plain-syntax">        exit(1);</span>
 </pre>
@@ -285,11 +284,11 @@ subdivide the program on conceptual lines, even within single functions.
 For example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@&lt;Perform the sieve@&gt; =</span>
-<span class="plain-syntax">        </span><span class="function-syntax">@&lt;Start with all numbers from 2 upwards in the sieve@&gt;</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @&lt;Perform the sieve@&gt; =</span>
+<span class="plain-syntax">        @&lt;Start with all numbers from 2 upwards in the sieve@&gt;;</span>
 <span class="plain-syntax">        for (int n=2; n*n &lt;= RANGE; n++)</span>
 <span class="plain-syntax">            if (still_in_sieve[n])</span>
-<span class="plain-syntax">                </span><span class="function-syntax">@&lt;Shake out multiples of n@&gt;</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                @&lt;Shake out multiples of n@&gt;;</span>
 <span class="plain-syntax">        sieve_performed = TRUE;</span>
 </pre>
 <div class="lsmarkdown">
@@ -303,7 +302,7 @@ named paragraph has, as its scope, just that paragraph. And this:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">            if (still_in_sieve[n])</span>
-<span class="plain-syntax">                </span><span class="function-syntax">@&lt;Shake out multiples of n@&gt;</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                @&lt;Shake out multiples of n@&gt;;</span>
 </pre>
 <div class="lsmarkdown">
 <p>works safely because <code>@&lt;Shake out multiples of n@&gt;</code> is, thanks to being a
@@ -313,15 +312,15 @@ the paragraph then it's not necessary to type the initial <code>@</code>. That i
 this:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@</span>
+<span class="plain-syntax">    @</span>
 
-<span class="plain-syntax">    </span><span class="function-syntax">@&lt;Prepare to exit@&gt; =</span>
+<span class="plain-syntax">    @&lt;Prepare to exit@&gt; =</span>
 </pre>
 <div class="lsmarkdown">
 <p>...is not necessary, and it's sufficient to type just:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@&lt;Prepare to exit@&gt; =</span>
+<span class="plain-syntax">    @&lt;Prepare to exit@&gt; =</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Conditional compilation.</b>  In some languages, especially C, it's very hard to write a program which will
@@ -333,9 +332,9 @@ be tangled in such a way that it takes effect only if <code>SYMBOL</code> is def
 For example, in a C-language web with the paragraph:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@h</span><span class="plain-syntax"> Windows stuff. ^"ifdef-PLATFORM_WINDOWS"</span>
+<span class="plain-syntax">    @h Windows stuff. ^"ifdef-PLATFORM_WINDOWS"</span>
 
-<span class="plain-syntax">    </span><span class="function-syntax">@d</span><span class="plain-syntax"> THREADS_AVAILABLE 12</span>
+<span class="plain-syntax">    @d THREADS_AVAILABLE 12</span>
 <span class="plain-syntax">    =</span>
 <span class="plain-syntax">    void start_threads(int n) {</span>
 <span class="plain-syntax">        ...</span>
@@ -402,8 +401,8 @@ and everything smells good... and there are gooseberries. (Anton Chekhov)</p>
 style font, <code>thus</code>. This paragraph appears in the web you are reading thus:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Text placed between vertical strokes will be set in a fixed-space, code</span>
-<span class="plain-syntax">    </span><span class="element-syntax">style font, |thus|. This paragraph appears in the web you are reading thus</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    @ Text placed between vertical strokes will be set in a fixed-space, code</span>
+<span class="plain-syntax">    style font, |thus|. This paragraph appears in the web you are reading thus:</span>
 </pre>
 <div class="lsmarkdown">
 <p>This notation may be inconvenient if you need the vertical stroke character
@@ -412,16 +411,16 @@ and in paragraph commentary. But both notations can be configured in the
 Contents page of a web, thus:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">Code In Code Comments Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> Off</span>
-<span class="element-syntax">Code In Commentary Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> %%</span>
+<span class="plain-syntax">Code In Code Comments Notation: Off</span>
+<span class="plain-syntax">Code In Commentary Notation: %%</span>
 </pre>
 <div class="lsmarkdown">
 <p>This example would turn off the feature in code comments, but allow it in
 paragraph commentary; we would then need to write...</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="function-syntax">@</span><span class="plain-syntax"> Text placed between vertical strokes will be set in a fixed-space, code</span>
-<span class="plain-syntax">    </span><span class="element-syntax">style font, %%thus%%. This paragraph appears in the web you are reading thus</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    @ Text placed between vertical strokes will be set in a fixed-space, code</span>
+<span class="plain-syntax">    style font, %%thus%%. This paragraph appears in the web you are reading thus:</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  A line written thus:</p>
@@ -515,9 +514,9 @@ body of a web, as what are called &quot;extracts&quot;. For example:</p>
 <div class="lsmarkdown">
 <p>The result weaves like so:</p>
 </div>
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">top</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">hat</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">capacity</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">6</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">rabbits</span>
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">cabinet</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">trapdoor</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">closed</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">top</span><span class="plain-syntax">-</span><span class="identifier-syntax">hat</span><span class="plain-syntax">-</span><span class="identifier-syntax">capacity</span><span class="plain-syntax"> = </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="identifier-syntax">rabbits</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">cabinet</span><span class="plain-syntax">-</span><span class="identifier-syntax">trapdoor</span><span class="plain-syntax"> = </span><span class="identifier-syntax">closed</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file magic-settings.txt.</li></ul>
 <div class="lsmarkdown">
@@ -535,8 +534,8 @@ extracts naming the same file -- for example, if we also have:</p>
 <div class="lsmarkdown">
 <p>which weaves like so:</p>
 </div>
-<pre class="Extracts-displayed-code all-displayed-code code-font">
-<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">marked</span><span class="Extracts-plain-syntax">-</span><span class="Extracts-identifier-syntax">card</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">6</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">of</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">clubs</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">marked</span><span class="plain-syntax">-</span><span class="identifier-syntax">card</span><span class="plain-syntax"> = </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">clubs</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file magic-settings.txt.</li></ul>
 <div class="lsmarkdown">
@@ -553,7 +552,7 @@ example extracts above, after tangling, would be a single file which reads:</p>
 make them into links. For example:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">For</span><span class="plain-syntax"> </span><span class="identifier-syntax">further</span><span class="plain-syntax"> </span><span class="identifier-syntax">reading</span><span class="plain-syntax">, </span><span class="identifier-syntax">see:</span><span class="plain-syntax"> </span><span class="identifier-syntax">https:</span><span class="comment-syntax">en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">For</span><span class="plain-syntax"> </span><span class="identifier-syntax">further</span><span class="plain-syntax"> </span><span class="identifier-syntax">reading</span><span class="plain-syntax">, </span><span class="identifier-syntax">see:</span><span class="plain-syntax"> </span><span class="identifier-syntax">https:</span><span class="comment-syntax">//en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships.</span>
 </pre>
 <div class="lsmarkdown">
 <p>For further reading, see: https://en.wikipedia.org/wiki/How_to_Avoid_Huge_Ships.</p>
@@ -565,13 +564,13 @@ with a full stop and yet the full stop wasn't part of the reference URL.)</p>
 For example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Compare:</span><span class="plain-syntax"> </span><span class="identifier-syntax">https:</span><span class="comment-syntax">en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Compare:</span><span class="plain-syntax"> </span><span class="identifier-syntax">https:</span><span class="comment-syntax">//en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!</span>
 </pre>
 <div class="lsmarkdown">
 <p>produces:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Compare:</span><span class="plain-syntax"> </span><span class="identifier-syntax">https:</span><span class="comment-syntax">en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Compare:</span><span class="plain-syntax"> </span><a href="https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!" class="external">https://en.wikipedia.org/wiki/Crocheting_Adventures_with_Hyperbolic_Planes!</a>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Cross-references.</b>  These are like links, but are internal. These are normally written within <code>//</code>
@@ -579,9 +578,9 @@ signs and are only available in the commentary of a web. They allow us to
 place cross-references like so:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="identifier-syntax">how</span><span class="plain-syntax"> </span><span class="identifier-syntax">cross</span><span class="plain-syntax">-</span><span class="identifier-syntax">references</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">implemented</span><span class="plain-syntax">, </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="comment-syntax">Format Methods//,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">generally</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">whole</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="comment-syntax">Weaving//; to decipher the text,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Inweb</span><span class="plain-syntax"> </span><span class="identifier-syntax">uses</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="comment-syntax">literate// at </span><a href="../literate-module/1-wm.html" class="internal">Web Modules (in literate)</a><span class="comment-syntax">.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="identifier-syntax">how</span><span class="plain-syntax"> </span><span class="identifier-syntax">cross</span><span class="plain-syntax">-</span><span class="identifier-syntax">references</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">implemented</span><span class="plain-syntax">, </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="comment-syntax">//Format Methods//,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">generally</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">whole</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="comment-syntax">//Weaving//; to decipher the text,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Inweb</span><span class="plain-syntax"> </span><span class="identifier-syntax">uses</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="comment-syntax">//literate// at //literate: Web Modules//.</span>
 </pre>
 <div class="lsmarkdown">
 <p>To see how cross-references are implemented, see <a href="../literate-module/5-fm.html" class="internal">Format Methods (in literate)</a>,
@@ -602,7 +601,7 @@ case sensitive.</p>
 This is simple: for example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">First</span><span class="plain-syntax"> </span><span class="comment-syntax">the program has to configure itself -&gt; Configuration//, then...</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">First</span><span class="plain-syntax"> </span><span class="comment-syntax">//the program has to configure itself -&gt; Configuration//, then...</span>
 </pre>
 <div class="lsmarkdown">
 <p>produces: &quot;First <a href="1-cnf.html" class="internal">the program has to configure itself</a>,
@@ -611,7 +610,7 @@ This is especially useful if the destination is given as an explicit URL, which
 is also allowed:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">See</span><span class="plain-syntax"> </span><span class="comment-syntax">this biographical note -&gt; </span><a href="http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html//" class="external">http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html//</a><span class="comment-syntax">.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">See</span><span class="plain-syntax"> </span><span class="comment-syntax">//this biographical note -&gt; http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html//.</span>
 </pre>
 <div class="lsmarkdown">
 <p>See <a href="http://mathshistory.st-andrews.ac.uk/Biographies/Gauss.html" class="external">this biographical note</a>.</p>
@@ -622,8 +621,8 @@ the language definition supports these (see <a href="M-spl.html" class="internal
 this is certainly the case for C-like languages. For example,</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Individual</span><span class="plain-syntax"> </span><span class="identifier-syntax">sections</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">web</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">stored</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="comment-syntax">ls_section// structures,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">mostly</span><span class="plain-syntax"> </span><span class="identifier-syntax">created</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="comment-syntax">WebStructure::new_ls_section//.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Individual</span><span class="plain-syntax"> </span><span class="identifier-syntax">sections</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">web</span><span class="plain-syntax"> </span><span class="identifier-syntax">are</span><span class="plain-syntax"> </span><span class="identifier-syntax">stored</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="comment-syntax">//ls_section// structures,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">mostly</span><span class="plain-syntax"> </span><span class="identifier-syntax">created</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="comment-syntax">//WebStructure::new_ls_section//.</span>
 </pre>
 <div class="lsmarkdown">
 <p>produces: Individual lines of a web are stored in <a href="../literate-module/1-ws.html#SP8" class="internal">ls_section</a> structures,
@@ -645,7 +644,7 @@ See <a href="M-mwiw.html" class="internal">Making Weaves into Websites</a>.</p>
 <p>produces:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">See</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="comment-syntax">Manual// for more on this.</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">See</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="comment-syntax">//Manual// for more on this.</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. </b>  Cross-references must begin after white space, or a punctuation mark (other
@@ -656,13 +655,13 @@ other reason. All the same, you might want a different notation, so this
 can be configured in the Contents page of a web, say like so:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">Cross-References Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> &amp;&amp;&amp;</span>
+<span class="plain-syntax">Cross-References Notation: &amp;&amp;&amp;</span>
 </pre>
 <div class="lsmarkdown">
 <p>It's also possible to disable cross-referencing entirely with:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="element-syntax">Cross-References Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> Off</span>
+<span class="plain-syntax">Cross-References Notation: Off</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Figures.</b>  Images to be included in weaves of a web are called &quot;Figures&quot;, as they
@@ -943,7 +942,7 @@ of the Riemann zeta function \INWEBMATH(\zeta'(z)\INWEBMATH) at \INWEBMATH(z=2\I
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    For example, it's known that the average running time of Euclid's GCD</span>
-<span class="plain-syntax">    </span><span class="element-syntax">algorithm on $a$ and numbers coprime to $a$ is</span><span class="plain-syntax">:</span>
+<span class="plain-syntax">    algorithm on $a$ and numbers coprime to $a$ is:</span>
 <span class="plain-syntax">    $$ \tau (a)={\frac {12}{\pi ^{2}}}\ln 2\ln a+C+O(a^{-1/6-\varepsilon }) $$</span>
 <span class="plain-syntax">    where $C$ is Porter's constant,</span>
 <span class="plain-syntax">    $$ C=-{\frac {1}{2}}+{\frac {6\ln 2}{\pi ^{2}}} \left(4\gamma - {\frac {24}{\pi^{2}}}\zeta'(2)+3\ln 2-2\right)\approx 1.467 $$</span>
@@ -956,8 +955,8 @@ as usual for TeX formulae. If those notations are inconvenient, they can be
 changed. The defaults are:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">TeX Mathematics Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> $</span>
-<span class="plain-syntax">    </span><span class="element-syntax">TeX Mathematics Displayed Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> $$</span>
+<span class="plain-syntax">    TeX Mathematics Notation: $</span>
+<span class="plain-syntax">    TeX Mathematics Displayed Notation: $$</span>
 </pre>
 <div class="lsmarkdown">
 <p>Changing these to <code>None</code> causes Inweb to disregard mathematics entirely, and
@@ -982,9 +981,9 @@ Computers &amp; Mathematics with Applications, 2, 137-39 (1976).<a href="#fnref:
 <span class="plain-syntax">    Not everyone likes footnotes,[1] but sometimes they're a tidy way to make</span>
 <span class="plain-syntax">    references.[2]</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">[1]</span><span class="plain-syntax"> But see Anthony Grafton, "The Footnote: A Curious History" (Harvard</span>
+<span class="plain-syntax">    [1] But see Anthony Grafton, "The Footnote: A Curious History" (Harvard</span>
 <span class="plain-syntax">    University Press, 1999).</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">[2]</span><span class="plain-syntax"> For example, to cite Donald Knuth, "Evaluation of Porter's constant",</span>
+<span class="plain-syntax">    [2] For example, to cite Donald Knuth, "Evaluation of Porter's constant",</span>
 <span class="plain-syntax">    Computers &amp; Mathematics with Applications, 2, 137-39 (1976).</span>
 </pre>
 <div class="lsmarkdown">
@@ -998,15 +997,15 @@ off, there's a more conventionally textual presentation.</p>
 we have:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">Footnote Begins Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> [</span>
-<span class="plain-syntax">    </span><span class="element-syntax">Footnote Ends Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> ]</span>
+<span class="plain-syntax">    Footnote Begins Notation: [</span>
+<span class="plain-syntax">    Footnote Ends Notation: ]</span>
 </pre>
 <div class="lsmarkdown">
 <p>but if you need squares for something else in your commentary, then perhaps:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="element-syntax">Footnote Begins Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> [fn</span>
-<span class="plain-syntax">    </span><span class="element-syntax">Footnote Ends Notation</span><span class="plain-syntax">:</span><span class="string-syntax"> ]</span>
+<span class="plain-syntax">    Footnote Begins Notation: [fn</span>
+<span class="plain-syntax">    Footnote Ends Notation: ]</span>
 </pre>
 <div class="lsmarkdown">
 <p>would be sensible. The &quot;cue&quot; between these notations is required to be a

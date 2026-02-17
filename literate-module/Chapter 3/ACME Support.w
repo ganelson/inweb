@@ -168,15 +168,15 @@ void ACMESupport::comment(programming_language *pl,
 
 =
 void ACMESupport::parse_types(programming_language *self, ls_web *W) {
-	if (WebStructure::web_language(W)->type_notation[0]) {
+	if (Languages::nonempty_regexp_set(WebStructure::web_language(W)->type_notation)) {
 		ls_chapter *C;
 		ls_section *S;
 		LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {
 			if (WebStructure::section_language(S) == WebStructure::web_language(W)) {
 				text_stream *line = lst->classification.operand1;
 				match_results mr = Regexp::create_mr();
-				if (Regexp::match(&mr, line, WebStructure::web_language(W)->type_notation)) {
-					Functions::new_function(mr.exp[0], lst, S);
+				if (Languages::match_regexp_set(&mr, line, WebStructure::web_language(W)->type_notation)) {
+					CodeAnalysis::mark_reserved_word_at_line(lst, mr.exp[0], TYPE_COLOUR);
 				}
 				Regexp::dispose_of(&mr);
 			}
@@ -188,14 +188,14 @@ void ACMESupport::parse_types(programming_language *self, ls_web *W) {
 
 =
 void ACMESupport::parse_functions(programming_language *self, ls_web *W) {
-	if (WebStructure::web_language(W)->function_notation[0]) {
+	if (Languages::nonempty_regexp_set(WebStructure::web_language(W)->function_notation)) {
 		ls_chapter *C;
 		ls_section *S;
 		LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {
 			if (WebStructure::section_language(S) == WebStructure::web_language(W)) {
 				text_stream *line = lst->classification.operand1;
 				match_results mr = Regexp::create_mr();
-				if (Regexp::match(&mr, line, WebStructure::web_language(W)->function_notation))
+				if (Languages::match_regexp_set(&mr, line, WebStructure::web_language(W)->function_notation))
 					Functions::new_function(mr.exp[0], lst, S);
 				Regexp::dispose_of(&mr);
 			}
@@ -280,5 +280,5 @@ int ACMESupport::syntax_colour(programming_language *pl,
 	ls_section *S = LiterateSource::section_of_line(lst);
 	hash_table *ht = &(TangleTargets::of_section(S)->symbols);
 	if (pl != WebStructure::section_language(S)) ht = &(pl->built_in_keywords);
-	return Painter::syntax_colour(pl, ht, matter, colouring, FALSE);
+	return Painter::syntax_colour(pl, ht, matter, colouring, FALSE, TRUE);
 }

@@ -64,7 +64,7 @@ markdown_item *MDInlineParser::inline(markdown_variation *variation,
 		mask += TILDE_STRIKETHROUGH_BIT;
 	if (MarkdownVariations::supports(variation, ALT_TEX_MARKDOWNFEATURE))
 		mask += DOLLAR_TEX_BIT;
-	if (MarkdownVariations::supports(variation, INWEB_LINKS_MARKDOWNFEATURE))
+	if (MarkdownVariations::supports(variation, ALT_INWEB_LINKS_MARKDOWNFEATURE))
 		mask += SLASHSLASH_LINK_BIT;
 	if (mask) MDInlineParser::emphasis(variation, owner, mask);
 	return owner;
@@ -83,6 +83,7 @@ markdown_item *MDInlineParser::make_inline_chain(markdown_variation *variation,
 			if (escaped == FALSE) {
 				@<Does a backtick begin here?@>;
 				@<Does TeX mathematics begin here?@>;
+				@<Does an Inweb link begin here?@>;
 				@<Does an index mark begin here?@>;
 				@<Does an autolink begin here?@>;
 				@<Does a raw HTML tag begin here?@>;
@@ -171,7 +172,7 @@ worked well in some ways, but had poor running time on really messy TeX code
 because there were too many potential matches, and also meant that e.g.
 |now read~$N$| would fail to work because the non-breaking space |~| would
 prevent |$| from being recognised as a TeX opening. It seems cleaner to regard
-TeX as on a part with backticked code in precedence, so that's what we now do,
+TeX as on a par with backticked code in precedence, so that's what we now do,
 and this removes both problems.
 
 The code for the old way remains, though, as the |ALT_TEX_MARKDOWNFEATURE|.
@@ -202,6 +203,38 @@ They should not both be used.
 	int start = i+count, end = j-1;
 	markdown_item *md =
 		Markdown::new_slice((count == 1)?TEX_MIT:DISPLAYED_TEX_MIT, Str::duplicate(text), start, end);
+	Markdown::add_to(md, owner);
+
+@ As with TeX, so with Inweb links:
+
+@<Does an Inweb link begin here?@> =
+	if (MarkdownVariations::supports(variation, INWEB_LINKS_MARKDOWNFEATURE)) {
+		inchar32_t pc = 0;
+		if (i > 0) pc = Str::get_at(text, i-1);
+		if ((pc != '/') && (pc != ':') &&
+			(Str::get_at(text, i) == '/') && (Str::get_at(text, i+1) == '/')) {
+			int j = i+2;
+			for (; j<Str::len(text); j++) {
+				if ((Str::get_at(text, j-1) != ':') &&
+					(Str::get_at(text, j) == '/') && (Str::get_at(text, j+1) == '/')) {
+					if (i-1 >= from) {
+						markdown_item *md = Markdown::new_slice(PLAIN_MIT, text, from, i-1);
+						Markdown::add_to(md, owner);
+					}
+					@<Insert an Inweb link item@>;
+					i = j+2; from = j+2;
+					goto ContinueOuter;
+				}
+			}
+			
+		}
+	}
+
+@<Insert an Inweb link item@> =
+	int start = i+2, end = j-1;
+	markdown_item *md = Markdown::new_item(INWEB_LINK_MIT);
+	markdown_item *address_md = Markdown::new_slice(PLAIN_MIT, Str::duplicate(text), start, end);
+	Markdown::add_to(address_md, md);
 	Markdown::add_to(md, owner);
 
 @ This provides an extension borrowed from traditional TeX manual-indexing

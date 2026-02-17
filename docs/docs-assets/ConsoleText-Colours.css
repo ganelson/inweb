@@ -7,6 +7,7 @@ span.ConsoleText-element-syntax     { color: #ADFF2F; }
 span.ConsoleText-reserved-syntax    { color: #600000; }
 span.ConsoleText-string-syntax      { color: #408040; }
 span.ConsoleText-character-syntax   { color: #204020; }
+span.ConsoleText-type-syntax        { color: #208020; }
 span.ConsoleText-constant-syntax    { color: #204020; }
 span.ConsoleText-plain-syntax       { color: #ffffff; }
 span.ConsoleText-extract-syntax     { color: #444444; }

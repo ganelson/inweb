@@ -1,0 +1,9 @@
+Language "ThirdExample" {
+	colour !emphasised like !function
+	colouring
+		=> !plain
+		matches of /\S+/ {
+			number 3 => !emphasised
+		}
+	end
+}

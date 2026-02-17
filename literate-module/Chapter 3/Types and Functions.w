@@ -24,7 +24,7 @@ language_type *Functions::new_struct(ls_web *W, text_stream *name, ls_section *S
 	ls_paragraph *par, ls_line *lst) {
 	language_type *str = CREATE(language_type);
 	@<Initialise the language type structure@>;
-	CodeAnalysis::mark_reserved_word_at_line(lst, str->structure_name, RESERVED_COLOUR);
+	CodeAnalysis::mark_reserved_word_at_line(lst, str->structure_name, TYPE_COLOUR);
 	@<Add this to the lists for its web and its paragraph@>;
 	@<Insertion-sort this into the alphabetical list of all structures found@>;
 	return str;

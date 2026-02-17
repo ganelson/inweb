@@ -1,6 +1,0 @@
-Name: "AssemblageExample"
-colouring {
-	matches of /\.[A-Za-z_][A-Za-z_0-9]*/ {
-		=> !function
-	}
-}

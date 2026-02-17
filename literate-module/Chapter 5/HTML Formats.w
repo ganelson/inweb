@@ -811,7 +811,7 @@ that service uses to identify the video/audio in question.
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	int starts = FALSE;
 	if (N == N->parent->child) starts = TRUE;
-		int current_colour = -1, colour_wanted = PLAIN_COLOUR;
+	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(C->matter); i++) {
 		colour_wanted = (int) Str::get_at(C->colouring, i);
 		if (colour_wanted != current_colour) {
@@ -1137,22 +1137,12 @@ void HTMLWeaving::change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	if (col == -1) {
 		HTML_CLOSE("span");
 	} else {
-		char *cl = "plain";
-		switch (col) {
-			case DEFINITION_COLOUR: 	cl = "definition-syntax"; break;
-			case FUNCTION_COLOUR: 		cl = "function-syntax"; break;
-			case IDENTIFIER_COLOUR: 	cl = "identifier-syntax"; break;
-			case ELEMENT_COLOUR:		cl = "element-syntax"; break;
-			case RESERVED_COLOUR: 		cl = "reserved-syntax"; break;
-			case STRING_COLOUR: 		cl = "string-syntax"; break;
-			case CHARACTER_COLOUR:      cl = "character-syntax"; break;
-			case CONSTANT_COLOUR: 		cl = "constant-syntax"; break;
-			case PLAIN_COLOUR: 			cl = "plain-syntax"; break;
-			case EXTRACT_COLOUR: 		cl = "extract-syntax"; break;
-			case COMMENT_COLOUR: 		cl = "comment-syntax"; break;
-			default: PRINT("col: %d\n", col); internal_error("bad colour"); break;
+		text_stream *cl = Painter::colour_classname(NULL, (inchar32_t) col);
+		if (Str::len(cl) == 0) {
+			PRINT("col: %d\n", col); internal_error("bad colour");
+		} else {
+			HTML_OPEN_WITH("span", "class=\"%S%S\"", cs->prefix, cl);
 		}
-		HTML_OPEN_WITH("span", "class=\"%S%s\"", cs->prefix, cl);
 	}
 }
 

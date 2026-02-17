@@ -230,75 +230,30 @@ In practice, this is useful only for the pseudo-language InC. Generically,
   feature of CWEB, and it will cause some CWEB programs to fail to compile.
   
   This convention is a device to enable holons to behave like code blocks in
-  C (and similar languages): see //What Inweb Knows about Languages//.
+  C (and similar languages): see //Holons as Code Blocks//.
 
 ## Conventions affecting tangling of C and related languages
 
+See //Special C Features// for a proper explanation of these. Note that these
+conventions take effect only for languages declared as being "C-like"; using
+them on, say, a Python web would do nothing.
+
 * `standard library #includes are tangled early in the program` or
-  `standard library #includes are treated like any other code`. Pulls forward
-  lines like `#include <stdio.h>` (written with angle brackets) for the C standard
-  library files only, so that they're tangled early.
-  
+  `standard library #includes are treated like any other code`.
   Generically, `standard library #includes are treated like any other code`, but
-  language definitions for C and similar usually say otherwise.
+  language definitions for C and variants of C usually say otherwise.
 
 * `typedefs are tangled early in the program` or
-  `typedefs are treated like any other code`: Relevant only to dialects of C
-  which support `typedef`, and affecting only "simple" declarations where the
-  type is not a `struct`: e.g., `typedef big unsigned long long`.
-  
+  `typedefs are treated like any other code`.
   Generically, `typedefs are treated like any other code`, but language definitions for
-  C and similar usually say otherwise.
+  C and variants of C usually say otherwise.
 
 * `typedef structs are tangled early and reordered logically` or
-  `typedef structs are treated like any other code`: Relevant only to dialects of C
-  which support `typedef struct`. For example, suppose the program contains:
-  
-      cake birthday_cake;
-      ...
-      typedef struct cake {
-          struct filling f;
-      } cake;
-      ...
-      typedef struct filling {
-          int jam;
-      }
-
-  This will fail to compile for two reasons: `cake` is unknown at the time
-  `cake birthday_cake` is read, because the compiler has not yet reached
-  the typedef of `cake`; and `struct filling` needs to be fully declared
-  _before_ `struct cake` is declared (since it is incorporated, rather
-  than simply pointed to). If `typedef structs are tangled early and reordered logically`,
-  both these problems are solved automatically, as Inweb tangles the code
-  into the right order to avoid them.
-
+  `typedef structs are treated like any other code`.
   Generically, `typedef structs are treated like any other code`, but language
-  definitions for C and similar usually say otherwise.
+  definitions for C and variants of C usually say otherwise.
 
 * `function predeclarations are tangled automatically` or
-  `functions are treated like any other code`: Relevant only to dialects of C in
-  which a function must be predeclared before use. For example, suppose the program contains:
-  
-      void first(void) {
-          second();
-      }
-      void second(void) {
-          printf("Hello, conventioners.\n");
-      }
-
-  This will fail to compile because `second` is unknown when `first` is compiled.
-  Often by means of header files, C programmers overcome this with predeclarations:
-  
-      void second(void); /* predeclaration */
-      void first(void) {
-          second();
-      }
-      void second(void) {
-          printf("Hello, conventioners.\n");
-      }
-
-  This is a nuisance, and if `function predeclarations are tangled automatically` then
-  Inweb will automatically tangle predeclarations of all functions.
-  
+  `functions are treated like any other code`.
   Generically, `functions are treated like any other code`,
-  but language definitions for C and similar usually say otherwise.
+  but language definitions for C and variants of C usually say otherwise.

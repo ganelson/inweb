@@ -11,17 +11,17 @@ exhaustive  | page | exhaustive.c.w
 empty       | page | empty.c.w      
 conditional | page | conditional.c.w
 
-member       | notation     | language   | chapters | sections
------------- | ------------ | ---------- | -------- | --------
-*twinprimes  | InwebClassic | C          | 1        | 1       
-*perl        | InwebClassic | Perl       | 1        | 1       
-*plain       | InwebClassic | Plain Text | 1        | 1       
-*hellow      | InwebClassic | C          | 1        | 1       
-*exhaustive  | InwebClassic | C          | 1        | 1       
-*empty       | InwebClassic | C          | 1        | 1       
-*conditional | InwebClassic | C          | 1        | 1       
------------- | ------------ | ---------- | -------- | --------
-total: 7     | --           | --         | 7        | 7       
+member       | notation     | language | chapters | sections
+------------ | ------------ | -------- | -------- | --------
+*twinprimes  | InwebClassic | C        | 1        | 1       
+*perl        | InwebClassic | Perl     | 1        | 1       
+*plain       | InwebClassic | None     | 1        | 1       
+*hellow      | InwebClassic | C        | 1        | 1       
+*exhaustive  | InwebClassic | C        | 1        | 1       
+*empty       | InwebClassic | C        | 1        | 1       
+*conditional | InwebClassic | C        | 1        | 1       
+------------ | ------------ | -------- | -------- | --------
+total: 7     | --           | --       | 7        | 7       
 
 path         | leaf             | link-name   | nav | crumbs | pattern
 ------------ | ---------------- | ----------- | --- | ------ | -------

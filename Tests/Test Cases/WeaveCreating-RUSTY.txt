@@ -1,0 +1,1 @@
+weave -creating rusty/sample.rust.md -using rusty/rust.inweb

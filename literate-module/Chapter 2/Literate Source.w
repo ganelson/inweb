@@ -950,7 +950,6 @@ we sometimes read this as a purpose written in plain text, and remove the para.
 					break;
 				case TEXT_TO_MINLC:
 					@<Parse out the optional undisplayed and hyperlinked keywords@>;
-					language_name = I"Extracts";
 					chunk->extract_to = chunk->metadata.operand1;
 					break;
 				case TEXT_MINLC:

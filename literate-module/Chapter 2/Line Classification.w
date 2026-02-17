@@ -50,7 +50,8 @@ minors are for displayed text.
 @e TEXT_TO_MINLC /* minor of |EXTRACT_START_MAJLC| */
 @e TEXT_MINLC /* minor of |EXTRACT_START_MAJLC| */
 
-@ Each individual code line has this major, and no minor:
+@ Each individual code line has this major, and either no minor (for code in
+a holon) or |TEXT_MINLC| (for code in an extract which isn't a holon):
 
 @e EXTRACT_MATTER_MAJLC
 
@@ -121,6 +122,14 @@ int LineClassification::extract_lines_can_follow(int major, int minor) {
 		case EXTRACT_START_MAJLC:
 			if ((minor == TEXT_FROM_MINLC) || (minor == TEXT_FROM_AS_MINLC)) return FALSE;
 			return TRUE;
+	}
+	return FALSE;
+}
+
+int LineClassification::code_lines_can_follow(int major, int minor) {
+	switch (major) {
+		case HOLON_DECLARATION_MAJLC: return TRUE;
+		case EXTRACT_MATTER_MAJLC: if (minor == TEXT_MINLC) return FALSE; return TRUE;
 	}
 	return FALSE;
 }

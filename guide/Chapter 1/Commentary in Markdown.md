@@ -130,6 +130,18 @@ int strangiato(int villa) {
 }
 ```
 
+As in regular Markdown, a programming language can be specified, telling Inweb
+how to syntax-colour the result:
+
+``` C
+int strangiato(int villa) {
+    return 0;
+}
+```
+
+The language has to be one which Inweb knows about, but Inweb can easily be
+taught about new languages as needed: see //About Languages//.
+
 **Links**. Links in the web-page sense are written with square and then round
 brackets in Markdown: 
 

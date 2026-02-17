@@ -1,0 +1,8 @@
+Language "EquationsExample" {
+	colouring
+		=> !plain
+		brackets in /.*?([A-Z])\s*=\s*(\d+).*/ {
+			=> !function
+		}
+	end
+}

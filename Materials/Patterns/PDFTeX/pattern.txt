@@ -1,6 +1,0 @@
-name: PDFTeX based on TeX
-initial extension: .tex
-command: pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >WOVEN.console
-command: PROCESS WOVEN.log
-command: rm WOVEN.log
-command: rm WOVEN.console

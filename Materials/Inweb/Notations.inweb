@@ -140,7 +140,11 @@ Notation "MarkdownCode" {
 		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS)=  ==> namedholon
 		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
 		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
+		``` MATERIAL(NONWHITESPACE)                 ==> textextract
+		```                                         ==> textextract if not in extract context
+		```                                         ==> endextract if in extract context
 		<INDENT>MATERIAL 	                        ==> code if in indented context
+		MATERIAL                                    ==> extract if in textextract context
 		MATERIAL									==> commentary
 	end
 	
@@ -181,6 +185,10 @@ Notation "Markdown" {
 	recognise .md
 	classify
 		# MATERIAL									==> title with withpurposeoption if on first line
+		``` MATERIAL(NONWHITESPACE)                 ==> textextract
+		```                                         ==> textextract if not in extract context
+		```                                         ==> endextract if in extract context
+		MATERIAL                                    ==> extract if in extract context
 		MATERIAL									==> commentary
 	end
 	

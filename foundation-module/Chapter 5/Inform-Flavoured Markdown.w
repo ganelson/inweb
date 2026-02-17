@@ -984,7 +984,7 @@ use "transcript" instead.
 	programming_language *pl = default_language;
 	if (pl) {
 		Painter::reset_syntax_colouring(pl);
-		Painter::syntax_colour(pl, NULL, md->stashed, colouring, FALSE);
+		Painter::syntax_colour(pl, NULL, md->stashed, colouring, FALSE, TRUE);
 		if (Str::eq(pl->language_name, I"Inform")) {
 			int ts = FALSE;
 			for (int i=0; i<Str::len(colouring); i++) {
@@ -1065,7 +1065,7 @@ use "transcript" instead.
 		else if (Str::get_at(line, z) == '\t') { indentation++; spaces = 0; }
 		else break;
 	for (int n=0; n<indentation; n++) WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
-	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
+	InformFlavouredMarkdown::syntax_coloured_code(OUT, pl, line, line_colouring,
 		z, Str::len(line), mode);
 
 @ Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
@@ -1077,13 +1077,13 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::begin_plain_html_table(OUT);
 
 @<End table cell for I7 table in extension documentation@> =
-	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
+	InformFlavouredMarkdown::syntax_coloured_code(OUT, pl, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML::end_span(OUT);
 	HTML::next_html_column(OUT, 0);
 
 @<End last table cell for I7 table in extension documentation@> =
-	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
+	InformFlavouredMarkdown::syntax_coloured_code(OUT, pl, line, line_colouring,
 		cell_from, cell_to, mode);
 	HTML::end_span(OUT);
 	HTML::end_html_row(OUT);
@@ -1149,15 +1149,17 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	}
 
 @<Render line as code@> =
-	if (pl) Painter::syntax_colour(pl, NULL, line, line_colouring, FALSE);
-	InformFlavouredMarkdown::syntax_coloured_code(OUT, line, line_colouring,
+	if (pl) Painter::syntax_colour(pl, NULL, line, line_colouring, FALSE, TRUE);
+	InformFlavouredMarkdown::syntax_coloured_code(OUT, pl, line, line_colouring,
 		0, Str::len(line), mode);
 	if (mode & TAGS_MDRMODE) WRITE("<br>"); else WRITE(" ");
 
 
 @ =
-void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, text_stream *text,
-	text_stream *colouring, int from, int to, int mode) {
+#ifdef LITERATE_MODULE
+void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, 
+	programming_language *pl, text_stream *text, text_stream *colouring,
+	int from, int to, int mode) {
 	inchar32_t current_col = 0;
 	for (int i=from; i<to; i++) {
 		inchar32_t c = Str::get_at(text, i);
@@ -1166,7 +1168,7 @@ void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 			if (current_col) HTML_CLOSE("span");
 			text_stream *span_class = NULL;
 			#ifdef LITERATE_MODULE
-			span_class = Languages::colour_classname(col);
+			span_class = Painter::colour_classname(pl, col);
 			#endif
 			HTML_OPEN_WITH("span", "class=\"%S\"", span_class);
 			current_col = col;
@@ -1175,6 +1177,7 @@ void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM, text_stream *t
 	}
 	if (current_col) HTML_CLOSE("span");
 }
+#endif
 
 @h Small inline texts.
 This utility function parses and renders short inline content only:

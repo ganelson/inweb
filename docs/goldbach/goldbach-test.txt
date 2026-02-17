@@ -13,10 +13,10 @@ document weave order 1
           material code: C
             code line
               source_code <int still_in_sieve[RANGE + 1];>
-                          _rrrpiiiiiiiiiiiiiipnnnnnpppnpp_
+                          _iiipiiiiiiiiiiiiiipnnnnnpppnpp_
             code line
               source_code <int sieve_performed = FALSE;>
-                          _rrrpiiiiiiiiiiiiiiipppnnnnnp_
+                          _iiipiiiiiiiiiiiiiiipppnnnnnp_
         paragraph P2'Primality'
           markdownUnknown node
           material definition
@@ -32,13 +32,13 @@ document weave order 1
           material code: C
             code line
               source_code <int >
-                          _rrrp_
+                          _iiip_
               function defn <isprime>
                 commentary <Summing Primes>
                 commentary < - >
                 locale P2.1
               source_code <(int n) {>
-                          _prrrpippp_
+                          _piiipippp_
             code line
               source_code <    if (n <= 1) return FALSE;>
                           _pppprrppippppnpprrrrrrpnnnnnp_
@@ -70,7 +70,7 @@ document weave order 1
                           _p_
             code line
               source_code <    for (int n=2; n*n <= RANGE; n++)>
-                          _pppprrrpprrrpippppipippppnnnnnppippp_
+                          _pppprrrppiiipippppipippppnnnnnppippp_
             code line
               source_code <        if (still_in_sieve[n])>
                           _pppppppprrppiiiiiiiiiiiiiipipp_
@@ -98,7 +98,7 @@ document weave order 1
                           _ppppiiiiiiiiiiiiiippppppnnnnnp_
             code line
               source_code <    for (int n=2; n <= RANGE; n++) still_in_sieve[n] = TRUE;>
-                          _pppprrrpprrrpippppippppnnnnnppippppiiiiiiiiiiiiiipippppnnnnp_
+                          _pppprrrppiiipippppippppnnnnnppippppiiiiiiiiiiiiiipippppnnnnp_
           material endnotes
             endnote
               commentary <This code is >
@@ -111,7 +111,7 @@ document weave order 1
           material code: C
             code line
               source_code <    for (int m= n+n; m <= RANGE; m += n) still_in_sieve[m] = FALSE;>
-                          _pppprrrpprrrpippipippippppnnnnnppippppippiiiiiiiiiiiiiipippppnnnnnp_
+                          _pppprrrppiiipippipippippppnnnnnppippppippiiiiiiiiiiiiiipippppnnnnnp_
           material endnotes
             endnote
               commentary <This code is >

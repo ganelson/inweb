@@ -1,0 +1,4 @@
+Pattern "Plain" {
+	name: Plain
+	format: plain
+}

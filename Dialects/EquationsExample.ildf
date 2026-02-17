@@ -1,7 +1,0 @@
-Name: "EquationsExample"
-colouring {
-	=> !plain
-	brackets in /.*?([A-Z])\s*=\s*(\d+).*/ {
-		=> !function
-	}
-}

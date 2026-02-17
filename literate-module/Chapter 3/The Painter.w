@@ -32,12 +32,152 @@ with every character having |PLAIN_COLOUR|, but end up with:
 	int x = 55;
 	rrrpipppnnp
 =
-We get to that by using a language's rules on literals, and then executing
+
+@ So we begin by defining some colours. Note that there are two pseudo-colours
+here as well (|UNQUOTED_COLOUR| and |NOT_A_COLOUR|), but the rest might all be
+colurs in our painted output. These values are all legible ASCII characters
+for convenient debugging, as in examples like |rrrpipppnnp| above.
+
+@d DEFINITION_COLOUR 	'd'
+@d FUNCTION_COLOUR		'f'
+@d RESERVED_COLOUR		'r'
+@d ELEMENT_COLOUR		'e'
+@d IDENTIFIER_COLOUR	'i'
+@d CHARACTER_COLOUR     'c'
+@d CONSTANT_COLOUR		'n'
+@d STRING_COLOUR		's'
+@d PLAIN_COLOUR			'p'
+@d EXTRACT_COLOUR		'x'
+@d TYPE_COLOUR			't'
+@d COMMENT_COLOUR		'!'
+@d NEWLINE_COLOUR		'\n'
+@d UNQUOTED_COLOUR      '_'
+
+@d NOT_A_COLOUR         ' '
+
+=
+typedef struct custom_colour {
+	struct text_stream *name;
+	inchar32_t value;
+	inchar32_t like_this;
+	CLASS_DEFINITION
+} custom_colour;
+
+custom_colour *Painter::custom(text_stream *T, inchar32_t like, linked_list *L) {
+	custom_colour *cc = CREATE(custom_colour);
+	cc->name = Str::duplicate(T);
+	cc->like_this = like;
+	cc->value = 0;
+	for (int i=0; i<Str::len(T); i++) {
+		if (cc->value == 0) {
+			inchar32_t candidate = Str::get_at(T, i);
+			@<Try this candidate value@>;
+		}
+	}
+	for (inchar32_t candidate = '1'; candidate <= '9'; candidate++)
+		if (cc->value == 0)
+			@<Try this candidate value@>;
+	for (inchar32_t candidate = 'A'; candidate <= 'Z'; candidate++)
+		if (cc->value == 0)
+			@<Try this candidate value@>;
+	if (cc->value == 0) cc->value = NOT_A_COLOUR;
+	ADD_TO_LINKED_LIST(cc, custom_colour, L);
+	return cc;
+}
+
+@<Try this candidate value@> =
+	TEMPORARY_TEXT(ct)
+	PUT_TO(ct, candidate);
+	if (Str::includes(I"dfreicnspxh!_ ", ct) == FALSE) {
+		int found = FALSE;
+		custom_colour *ecc;
+		LOOP_OVER_LINKED_LIST(ecc, custom_colour, L)
+			if (candidate == ecc->value)
+				found = TRUE;
+		if (found == FALSE) cc->value = candidate;
+	}
+	DISCARD_TEXT(ct)
+
+@
+
+=
+inchar32_t Painter::colour(linked_list *L, text_stream *T) {
+	if (Str::eq(T, I"!string")) return STRING_COLOUR;
+	if (Str::eq(T, I"!function")) return FUNCTION_COLOUR;
+	if (Str::eq(T, I"!definition")) return DEFINITION_COLOUR;
+	if (Str::eq(T, I"!reserved")) return RESERVED_COLOUR;
+	if (Str::eq(T, I"!element")) return ELEMENT_COLOUR;
+	if (Str::eq(T, I"!identifier")) return IDENTIFIER_COLOUR;
+	if (Str::eq(T, I"!character")) return CHARACTER_COLOUR;
+	if (Str::eq(T, I"!constant")) return CONSTANT_COLOUR;
+	if (Str::eq(T, I"!plain")) return PLAIN_COLOUR;
+	if (Str::eq(T, I"!extract")) return EXTRACT_COLOUR;
+	if (Str::eq(T, I"!type")) return TYPE_COLOUR;
+	if (Str::eq(T, I"!comment")) return COMMENT_COLOUR;
+	custom_colour *ecc;
+	LOOP_OVER_LINKED_LIST(ecc, custom_colour, L)
+		if (Str::eq(T, ecc->name))
+			return ecc->value;
+	return NOT_A_COLOUR;
+}
+
+text_stream *Painter::colour_classname(programming_language *pl, inchar32_t col) {
+	switch (col) {
+		case DEFINITION_COLOUR: return I"definition-syntax";
+		case FUNCTION_COLOUR:   return I"function-syntax";
+		case RESERVED_COLOUR:   return I"reserved-syntax";
+		case ELEMENT_COLOUR:    return I"element-syntax";
+		case IDENTIFIER_COLOUR: return I"identifier-syntax";
+		case TYPE_COLOUR:       return I"type-syntax";
+		case CHARACTER_COLOUR:  return I"character-syntax";
+		case CONSTANT_COLOUR:   return I"constant-syntax";
+		case STRING_COLOUR:     return I"string-syntax";
+		case PLAIN_COLOUR:      return I"plain-syntax";
+		case EXTRACT_COLOUR:    return I"extract-syntax";
+		case COMMENT_COLOUR:    return I"comment-syntax";
+	}
+	if (pl) {
+		custom_colour *ecc;
+		LOOP_OVER_LINKED_LIST(ecc, custom_colour, pl->custom_colours)
+			if (col == ecc->value)
+				return Painter::colour_classname(pl, ecc->like_this);
+	}
+	return NULL;
+}
+
+inchar32_t Painter::flatten(programming_language *pl, inchar32_t col) {
+	switch (col) {
+		case DEFINITION_COLOUR:
+		case FUNCTION_COLOUR:
+		case RESERVED_COLOUR:
+		case ELEMENT_COLOUR:
+		case IDENTIFIER_COLOUR:
+		case CHARACTER_COLOUR:
+		case CONSTANT_COLOUR:
+		case STRING_COLOUR:
+		case PLAIN_COLOUR:
+		case EXTRACT_COLOUR:
+		case COMMENT_COLOUR:
+		case NEWLINE_COLOUR:
+		case UNQUOTED_COLOUR:
+		case TYPE_COLOUR:
+		case NOT_A_COLOUR:
+			return col;
+	}
+	custom_colour *ecc;
+	LOOP_OVER_LINKED_LIST(ecc, custom_colour, pl->custom_colours)
+		if (col == ecc->value)
+			return Painter::flatten(pl, ecc->like_this);
+	return NOT_A_COLOUR;
+}
+
+@ We get to that by using a language's rules on literals, and then executing
 its colouring program.
 
 =
 int Painter::syntax_colour(programming_language *pl,
-	hash_table *HT, text_stream *matter, text_stream *colouring, int with_comments) {
+	hash_table *HT, text_stream *matter, text_stream *colouring, int with_comments,
+	int flatten) {
 	int from = 0, to = Str::len(matter) - 1;
 	if (with_comments) {
 		TEMPORARY_TEXT(part_before_comment)
@@ -55,6 +195,9 @@ int Painter::syntax_colour(programming_language *pl,
 		DISCARD_TEXT(part_within_comment)
 	}
 	Painter::syntax_colour_inner(pl, HT, matter, colouring, from, to);
+	if (flatten)
+		for (int i=0; i<Str::len(colouring); i++)
+			Str::put_at(colouring, i, Painter::flatten(pl, Str::get_at(colouring, i)));
 	return FALSE;
 }
 
@@ -126,7 +269,7 @@ void Painter::syntax_colour_inner(programming_language *pl,
 	}
 
 @<Spot literal numerical constants@> =
-	int base = -1, dec_possible = TRUE;
+	int base = -1, dec_possible = TRUE, contiguous = 0, past_exp = FALSE, minus_allowed = TRUE;
 	for (int i=from; i <= to; i++) {
 		if ((Str::get_at(colouring, i) == PLAIN_COLOUR) ||
 			(Str::get_at(colouring, i) == IDENTIFIER_COLOUR)) {
@@ -135,25 +278,51 @@ void Painter::syntax_colour_inner(programming_language *pl,
 				base = 2;
 				for (int j=0; j<Str::len(pl->binary_literal_prefix); j++)
 					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
-				dec_possible = TRUE;
+				dec_possible = TRUE; contiguous++;
+				i += Str::len(pl->binary_literal_prefix) - 1;
 				continue;
-			} else if (Str::includes_at(matter, i, pl->octal_literal_prefix)) {
+			}
+			if (Str::includes_at(matter, i, pl->octal_literal_prefix)) {
 				base = 8;
 				for (int j=0; j<Str::len(pl->octal_literal_prefix); j++)
 					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
-				dec_possible = TRUE;
+				dec_possible = TRUE; contiguous++;
+				i += Str::len(pl->octal_literal_prefix) - 1;
 				continue;
-			} else if (Str::includes_at(matter, i, pl->hexadecimal_literal_prefix)) {
+			}
+			if (Str::includes_at(matter, i, pl->hexadecimal_literal_prefix)) {
 				base = 16;
 				for (int j=0; j<Str::len(pl->hexadecimal_literal_prefix); j++)
 					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
-				dec_possible = TRUE;
+				dec_possible = TRUE; contiguous++;
+				i += Str::len(pl->hexadecimal_literal_prefix) - 1;
 				continue;
 			} 
 			if ((Str::includes_at(matter, i, pl->negative_literal_prefix)) &&
-				(dec_possible) && (base == 0)) {
-				base = 10;
-				Str::put_at(colouring, i, (char) CONSTANT_COLOUR);
+				(((base == -1) && (dec_possible)) ||
+				 ((past_exp) && (minus_allowed)))) {
+				base = 10; contiguous++;
+				for (int j=0; j<Str::len(pl->negative_literal_prefix); j++)
+					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
+				i += Str::len(pl->negative_literal_prefix) - 1;
+				minus_allowed = FALSE;
+				continue;
+			}
+			if ((Str::includes_at(matter, i, pl->decimal_point_infix)) &&
+				(base == 10) && (contiguous > 0)) {
+				contiguous++;
+				for (int j=0; j<Str::len(pl->decimal_point_infix); j++)
+					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
+				i += Str::len(pl->decimal_point_infix) - 1;
+				continue;
+			}
+			if ((Str::includes_at(matter, i, pl->exponent_infix)) &&
+				(base == 10) && (contiguous > 0) && (past_exp == FALSE)) {
+				contiguous++;
+				for (int j=0; j<Str::len(pl->exponent_infix); j++)
+					Str::put_at(colouring, i+j, (char) CONSTANT_COLOUR);
+				i += Str::len(pl->exponent_infix) - 1;
+				past_exp = TRUE; minus_allowed = TRUE;
 				continue;
 			}
 			int pass = FALSE;
@@ -164,6 +333,8 @@ void Painter::syntax_colour_inner(programming_language *pl,
 					}
 					break;
 				case 2: if ((c == '0') || (c == '1')) pass = TRUE; break;
+				case 8: if ((Characters::isdigit(c)) &&
+							(c != '8') && (c != '9')) pass = TRUE; break;
 				case 10: if (Characters::isdigit(c)) pass = TRUE; break;
 				case 16: if (Characters::isdigit(c)) pass = TRUE;
 					inchar32_t d = Characters::tolower(c);
@@ -173,10 +344,11 @@ void Painter::syntax_colour_inner(programming_language *pl,
 			}
 			if (pass) {
 				Str::put_at(colouring, i, (char) CONSTANT_COLOUR);
+				contiguous++;
 			} else {
 				if (Characters::is_whitespace(c)) dec_possible = TRUE;
 				else dec_possible = FALSE;
-				base = -1;
+				base = -1; contiguous = 0; past_exp = FALSE; minus_allowed = TRUE;
 			}
 		}
 	}
@@ -256,7 +428,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 			}
 			case MATCHES_CRULE_RUN:
 				for (int count=1, i=from; i<=to; i++) {
-					int L = Regexp::match_from(&(block->mr), matter, block->match_regexp_text, i, TRUE);
+					int L = Languages::match_regexp_set_from(&(block->mr), matter, block->match_regexp_text, i);
 					if (L > 0) {
 						Painter::execute_rule(HT, rule, matter, colouring, i, i+L-1, count++);
 						i += L-1;
@@ -267,7 +439,7 @@ void Painter::execute(hash_table *HT, colouring_language_block *block, text_stre
 				for (int i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++)
 					if (block->mr.exp[i])
 						Str::clear(block->mr.exp[i]);
-				if (Regexp::match(&(block->mr), matter, block->match_regexp_text))
+				if (Languages::match_regexp_set(&(block->mr), matter, block->match_regexp_text))
 					for (int count=1, i=0; i<MAX_BRACKETED_SUBEXPRESSIONS; i++)
 						if (block->mr.exp_at[i] >= 0)
 							Painter::execute_rule(HT, rule, matter, colouring,
@@ -325,10 +497,10 @@ int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 		} else {
 			if (rule->number != N) return FALSE;
 		}
-	} else if (rule->match_regexp_text[0]) {
+	} else if (Languages::nonempty_regexp_set(rule->match_regexp_text)) {
 		TEMPORARY_TEXT(T)
 		for (int j=from; j<=to; j++) PUT_TO(T, Str::get_at(matter, j));
-		int rv = Regexp::match(&(rule->mr), T, rule->match_regexp_text);
+		int rv = Languages::match_regexp_set(&(rule->mr), T, rule->match_regexp_text);
 		DISCARD_TEXT(T)
 		if (rv == FALSE) return FALSE;
 	} else if (Str::len(rule->match_text) > 0) {
@@ -451,7 +623,7 @@ void Painter::colour_file(programming_language *pl, filename *F, text_stream *to
 			else
 				PUT_TO(ST, Str::get(pos));
 		if (pl) {
-			Painter::syntax_colour(pl, (pl)?(&(pl->built_in_keywords)):NULL, ST, SC, TRUE);
+			Painter::syntax_colour(pl, (pl)?(&(pl->built_in_keywords)):NULL, ST, SC, TRUE, FALSE);
 		} else {
 			LOOP_THROUGH_TEXT(pos, ST)
 				PUT_TO(SC, PLAIN_COLOUR);

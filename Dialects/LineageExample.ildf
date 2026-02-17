@@ -1,7 +1,0 @@
-Name: "LineageExample"
-colouring {
-	=> !plain
-	instances of "son" {
-		=> !function
-	}
-}

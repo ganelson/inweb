@@ -1,3 +1,0 @@
-name: TestingInweb
-format: TestingInweb
-default range: sections

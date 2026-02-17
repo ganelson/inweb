@@ -155,6 +155,8 @@ ls_notation_rule_condition LineClassifiers::truth_condition(void) {
 @e FOLLOWING_TITLE_LSNRCAC
 @e DEFINITION_LSNRCAC
 @e EXTRACT_LSNRCAC
+@e HOLON_LSNRCAC
+@e TEXTEXTRACT_LSNRCAC
 @e INDENTED_LSNRCAC
 @e PTAG_SUPPORTED_LSNRCAC
 
@@ -173,6 +175,8 @@ ls_notation_rule_condition LineClassifiers::parse_condition(text_stream *ct, tex
 		if (Str::eq(ct, I"following title"))              AC = FOLLOWING_TITLE_LSNRCAC;
 		if (Str::eq(ct, I"in definition context"))        AC = DEFINITION_LSNRCAC;
 		if (Str::eq(ct, I"in extract context"))           AC = EXTRACT_LSNRCAC;
+		if (Str::eq(ct, I"in textextract context"))       AC = TEXTEXTRACT_LSNRCAC;
+		if (Str::eq(ct, I"in holon context"))             AC = HOLON_LSNRCAC;
 		if (Str::eq(ct, I"in indented context"))          AC = INDENTED_LSNRCAC;
 		if (Str::eq(ct, I"paragraph tags supported"))     AC = PTAG_SUPPORTED_LSNRCAC;
 		if (condition.atomic_condition < 0) {
@@ -215,6 +219,16 @@ int LineClassifiers::condition_met(ls_notation_rule_condition *condition, ls_cla
 			break;
 		case EXTRACT_LSNRCAC:
 			if (LineClassification::extract_lines_can_follow(
+				context->previously->major, context->previously->minor)) applies = TRUE;
+			break;
+		case TEXTEXTRACT_LSNRCAC:
+			if ((LineClassification::extract_lines_can_follow(
+				context->previously->major, context->previously->minor)) &&
+				(LineClassification::code_lines_can_follow(
+				context->previously->major, context->previously->minor) == FALSE)) applies = TRUE;
+			break;
+		case HOLON_LSNRCAC:
+			if (LineClassification::code_lines_can_follow(
 				context->previously->major, context->previously->minor)) applies = TRUE;
 			break;
 		case PTAG_SUPPORTED_LSNRCAC:
@@ -260,6 +274,7 @@ typedef struct ls_srtoken {
 	int wildcard;
 	int whitespace;
 	int nonwhitespace;
+	int digital;
 } ls_srtoken;
 
 ls_srtoken LineClassifiers::fixed_token(text_stream *text, int from, int to) {
@@ -269,6 +284,7 @@ ls_srtoken LineClassifiers::fixed_token(text_stream *text, int from, int to) {
 	tok.wildcard = -1;
 	tok.whitespace = FALSE;
 	tok.nonwhitespace = FALSE;
+	tok.digital = FALSE;
 	return tok;
 }
 
@@ -280,6 +296,7 @@ ls_srtoken LineClassifiers::wildcard_token(int n) {
 	tok.wildcard = n;
 	tok.whitespace = FALSE;
 	tok.nonwhitespace = FALSE;
+	tok.digital = FALSE;
 	return tok;
 }
 
@@ -397,6 +414,15 @@ ls_notation_rule_pattern LineClassifiers::parse_pattern(text_stream *pt,
 			from = i + Str::len(I"(NONWHITESPACE)");
 			i = from - 1; continue;
 		}
+		if (Str::includes_at(text, i, I"(DIGITS)")) {
+			if ((pattern.no_tokens == 0) || (pattern.tokens[pattern.no_tokens-1].wildcard < 0) || (i != from)) {
+				*error = I"(DIGITS) can be used only immediately after a wildcard";
+				return pattern;
+			}
+			pattern.tokens[pattern.no_tokens-1].digital = TRUE;
+			from = i + Str::len(I"(DIGITS)");
+			i = from - 1; continue;
+		}
 	}
 	if ((from < Str::len(text)) && (pattern.no_tokens < MAX_LSSRTOKENS))
 		pattern.tokens[pattern.no_tokens++] = LineClassifiers::fixed_token(text, from, Str::len(text)-1);
@@ -501,6 +527,13 @@ a whitespace line leads to the empty text here.
 			break;
 		if ((pattern->tokens[match_from].whitespace) && (Str::is_whitespace(WT) == FALSE))
 			break;
+		if (pattern->tokens[match_from].digital) {
+			int not_digital = FALSE;
+			for (int i=0; i<Str::len(WT); i++)
+				if (Characters::isdigit(Str::get_at(WT, i)) == FALSE)
+					not_digital = TRUE;
+			if (not_digital) break;
+		}
 		p_from = p_to + 1;
 		match_from++;
 		continue;

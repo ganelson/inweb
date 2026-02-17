@@ -95,6 +95,7 @@ the user of the machine.
 
 @e COMMENT_START_FSMEVENT
 @e COMMENT_END_FSMEVENT
+@e LINE_COMMENT_END_FSMEVENT
 
 @<Add literate syntax to finite state machine@> =
 	if (WebNotation::supports_named_holons(ntn)) {
@@ -132,8 +133,8 @@ state; and stay there until you see a newline, and then revert to code state.
 @<Add line comment syntax to finite state machine@> =
 	if (Str::len(pl->line_comment) > 0) {
 		fsm_state *lc_state = FSM::new_state(I"line-comment");
-		FSM::add_transition_spelling_out(code_state, pl->line_comment, lc_state);
-		FSM::add_transition(lc_state, '\n', code_state);
+		FSM::add_transition_spelling_out_with_events(code_state, pl->line_comment, lc_state, NO_FSMEVENT, COMMENT_START_FSMEVENT);
+		FSM::add_transition_with_event(lc_state, '\n', code_state, LINE_COMMENT_END_FSMEVENT);
 	}
 
 @ Almost uniquely, Inform 7 comments respect string literals, so the closing
@@ -154,8 +155,8 @@ notation must not occur inside double-quoted matter in a comment.
 @<Add whole line comment syntax to finite state machine@> =
 	if (Str::len(pl->whole_line_comment) > 0) {
 		fsm_state *wlc_state = FSM::new_state(I"whole-line-comment");
-		FSM::add_transition_spelling_out(whitespace_at_line_start_state, pl->whole_line_comment, wlc_state);
-		FSM::add_transition(wlc_state, '\n', code_state);
+		FSM::add_transition_spelling_out_with_events(code_state, pl->whole_line_comment, wlc_state, NO_FSMEVENT, COMMENT_START_FSMEVENT);
+		FSM::add_transition_with_event(wlc_state, '\n', code_state, LINE_COMMENT_END_FSMEVENT);
 	}
 
 @ Metadata can sometimes be written in square brackets inside a string:

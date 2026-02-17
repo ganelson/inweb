@@ -1,0 +1,34 @@
+web "Traces of Corrosion" (Rust program in MarkdownCode notation): 1 paragraph : 28 lines
+heading 'Traces of Corrosion'
+S1
+    C1: holon (used sequentially)
+        0000003 fn⏑main()⏑{
+        0000004 ⏑⏑⏑⏑
+        comment ' Iterate over all integers from 1 to 10' // 
+        0000005 ⏑⏑⏑⏑let⏑mut⏑n⏑=⏑1;
+        0000006 ⏑⏑⏑⏑while⏑n⏑<=⏑10⏑{
+        0000007 ⏑⏑⏑⏑⏑⏑⏑⏑⏑println!("n⏑=⏑{n}⏑of⏑10");⏑
+        comment ' using a macro ' /* */
+        0000008 ⏑⏑⏑⏑⏑⏑⏑⏑⏑n⏑+=⏑1;
+        0000009 ⏑⏑⏑⏑}
+        0000010 ⏑⏑⏑⏑println!("1e4⏑is⏑{},⏑-2.5e-3⏑is⏑{}",⏑1e4,⏑-2.5e-3);
+        0000011 ⏑⏑⏑⏑println!("true⏑is⏑{},⏑false⏑is⏑{}",⏑true,⏑false);
+        0000012 ⏑⏑⏑⏑println!("4.5_f64⏑is⏑{},⏑0x3ef5u128⏑is⏑{}",⏑4.5_f64,⏑0x3ef5u128);
+        0000013 }
+        0000014 
+        0000015 enum⏑WebEvent⏑{
+        0000016 ⏑⏑⏑⏑
+        comment ' An `enum` variant may either be `unit-like`,' // 
+        0000017 ⏑⏑⏑⏑PageLoad,
+        0000018 ⏑⏑⏑⏑PageUnload,
+        0000019 ⏑⏑⏑⏑
+        comment ' like tuple structs,' // 
+        0000020 ⏑⏑⏑⏑KeyPress(char),
+        0000021 ⏑⏑⏑⏑Paste(String),
+        0000022 ⏑⏑⏑⏑
+        comment ' or c-like structures.' // 
+        0000023 ⏑⏑⏑⏑Click⏑{⏑x:⏑i64,⏑y:⏑i64⏑},
+        0000024 }
+        0000025 
+        0000026 type⏑Operations⏑=⏑VeryVerboseEnumOfThingsToDoWithNumbers;
+        0000027 

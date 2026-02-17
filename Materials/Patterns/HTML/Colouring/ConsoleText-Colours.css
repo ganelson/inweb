@@ -7,6 +7,7 @@ span.element-syntax     { color: #ADFF2F; }
 span.reserved-syntax    { color: #600000; }
 span.string-syntax      { color: #408040; }
 span.character-syntax   { color: #204020; }
+span.type-syntax        { color: #208020; }
 span.constant-syntax    { color: #204020; }
 span.plain-syntax       { color: #ffffff; }
 span.extract-syntax     { color: #444444; }

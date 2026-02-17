@@ -210,14 +210,19 @@ void CodeExcerpts::parse(ls_holon_namespace *ns, ls_code_excerpt *ex,
 			comment_open = Str::new();
 			for (int j=to+1; j<=i; j++) PUT_TO(comment_open, Str::get_at(from_text, j));
 			break;
-		case COMMENT_END_FSMEVENT: {
+		case COMMENT_END_FSMEVENT:
+		case LINE_COMMENT_END_FSMEVENT: {
 			recording_to = NULL;
 			if (pre_comment_to >= pre_comment_from)
 				CodeExcerpts::new_code_splice(ex, pre_comment_lst, pre_comment_code, pre_comment_from, pre_comment_to);
 			from = to + 1; to = -1;
 			comment_close = Str::new();
-			for (int j=Str::len(comment)-N; j<Str::len(comment); j++)
-				PUT_TO(comment_close, Str::get_at(comment, j));
+			if (event == COMMENT_END_FSMEVENT) {
+				for (int j=Str::len(comment)-N; j<Str::len(comment); j++)
+					PUT_TO(comment_close, Str::get_at(comment, j));
+			} else {
+				N = 1; /* to remove the newline character ending a line comment */
+			}
 			Str::truncate(comment, Str::len(comment) - N);
 			to = i;
 			@<Splice comment@>;

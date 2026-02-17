@@ -89,7 +89,7 @@
 	mkdir: $PATH/_Results_Console
 	set: $A = $PATH/_Results_Actual/$CASE.txt
 	set: $I = $PATH/_Results_Ideal/$CASE.txt
-	step: $INWEB test-language $LANGUAGES/$CASE.ildf -locale console=utf-8 -on $CANVAS -fixtime >$A 2>&1
+	step: $INWEB test-language $LANGUAGES/$CASE.inweb -locale console=utf-8 -on $CANVAS -fixtime >$A 2>&1
 	or: 'failed inweb' $A
 	show: $A
 	match text: $A $I

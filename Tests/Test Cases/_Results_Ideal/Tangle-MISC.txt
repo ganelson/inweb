@@ -5,7 +5,7 @@ tangling web "The Twin Primes Conjecture" (C program in InwebClassic notation) t
 tangling web "perl" (Perl program in InwebClassic notation) to file 'perl.pl'
 
 (Tangle 3 of 7: plain)
-tangling web "plain" (Plain Text program in InwebClassic notation) to file 'plain.txt'
+tangling web "plain" (InwebClassic notation) to file 'plain.txt'
 
 (Tangle 4 of 7: hellow)
 tangling web "hellow" (C program in InwebClassic notation) to file 'hellow.c'

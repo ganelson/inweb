@@ -1,0 +1,62 @@
+Language "Rust" {
+	recognise .rust
+
+	properties
+		Details: A language for memory-safe coding.
+		Line Comment:               //
+		Multiline Comment Open:     /*
+		Multiline Comment Close:    */
+		String Literal:             "
+		String Literal Escape:      \
+		Character Literal:          '
+		Character Literal Escape:   \
+		Hexadecimal Literal Prefix: 0x
+		Octal Literal Prefix:       0o
+		Binary Literal Prefix:      0b
+		Negative Literal Prefix:    -
+		Decimal Point Infix:        .
+		Exponent Infix:             e
+	end
+	
+	keywords
+		_ abstract as async await become box break const continue crate do dyn
+		else enum extern final fn for gen if impl in let loop macro macro_rules
+		match mod move mut override priv pub raw ref return safe self Self static struct
+		super trait try type typeof union unsafe unsized use virtual where while
+		yield
+	end
+
+	keywords of !constant
+		false true
+	end
+
+	colouring
+		runs of unquoted {
+			runs of !identifier {
+				keyword of !reserved => !reserved
+				keyword of !constant => !constant
+				suffix "!" => !element on both
+			}
+			runs of !constant {
+				suffix "i8" => !constant on both
+				suffix "i16" => !constant on both
+				suffix "i32" => !constant on both
+				suffix "i64" => !constant on both
+				suffix "i128" => !constant on both
+				suffix "u8" => !constant on both
+				suffix "u16" => !constant on both
+				suffix "u32" => !constant on both
+				suffix "u64" => !constant on both
+				suffix "u128" => !constant on both
+				suffix "_f16" => !constant on both
+				suffix "_f32" => !constant on both
+				suffix "_f64" => !constant on both
+				suffix "_f128" => !constant on both
+			}
+		}
+	end
+
+	Conventions {
+		named holons are tangled between <NEWLINE>{<NEWLINE> and }<NEWLINE>
+	}
+}

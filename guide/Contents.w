@@ -29,7 +29,13 @@ Chapter 4: Notations
 	Summary of Notations
 
 Chapter 5: Languages
-	What Inweb Knows about Languages
+	About Languages
+	Creating Languages
+	Holons as Code Blocks
+	Syntax Colouring Programs
+	Recognising Functions and Types
+	Special C Features
+	Summary of Languages
 
 Chapter 6: Patterns
 	About Patterns

@@ -253,6 +253,7 @@ We provide just a few of these, and they are intended to be used on top of GFM:
 @e TEX_MARKDOWNFEATURE
 @e ALT_TEX_MARKDOWNFEATURE
 @e INWEB_LINKS_MARKDOWNFEATURE
+@e ALT_INWEB_LINKS_MARKDOWNFEATURE
 @e FOOTNOTES_MARKDOWNFEATURE
 @e STROKED_CODE_MARKDOWNFEATURE
 
@@ -260,15 +261,17 @@ We provide just a few of these, and they are intended to be used on top of GFM:
 markdown_feature *TeX_Markdown_feature = NULL;
 markdown_feature *alt_TeX_Markdown_feature = NULL;
 markdown_feature *inweb_links_Markdown_feature = NULL;
+markdown_feature *alt_inweb_links_Markdown_feature = NULL;
 markdown_feature *footnotes_Markdown_feature = NULL;
 markdown_feature *stroked_code_Markdown_feature = NULL;
 
 void MarkdownVariations::define_IWFM(void) {
-	TeX_Markdown_feature =          MarkdownVariations::new_feature(I"TeX",             TEX_MARKDOWNFEATURE);
-	alt_TeX_Markdown_feature =      MarkdownVariations::new_feature(I"alt-TeX",         ALT_TEX_MARKDOWNFEATURE);
-	inweb_links_Markdown_feature =  MarkdownVariations::new_feature(I"inweb links",     INWEB_LINKS_MARKDOWNFEATURE);
-	footnotes_Markdown_feature =    MarkdownVariations::new_feature(I"inweb footnotes", FOOTNOTES_MARKDOWNFEATURE);
-	stroked_code_Markdown_feature = MarkdownVariations::new_feature(I"stroked code",    STROKED_CODE_MARKDOWNFEATURE);
+	TeX_Markdown_feature =             MarkdownVariations::new_feature(I"TeX",             TEX_MARKDOWNFEATURE);
+	alt_TeX_Markdown_feature =         MarkdownVariations::new_feature(I"alt-TeX",         ALT_TEX_MARKDOWNFEATURE);
+	inweb_links_Markdown_feature =     MarkdownVariations::new_feature(I"inweb links",     INWEB_LINKS_MARKDOWNFEATURE);
+	alt_inweb_links_Markdown_feature = MarkdownVariations::new_feature(I"alt-inweb links", ALT_INWEB_LINKS_MARKDOWNFEATURE);
+	footnotes_Markdown_feature =       MarkdownVariations::new_feature(I"inweb footnotes", FOOTNOTES_MARKDOWNFEATURE);
+	stroked_code_Markdown_feature =    MarkdownVariations::new_feature(I"stroked code",    STROKED_CODE_MARKDOWNFEATURE);
 
 	Inweb_flavoured_Markdown_variation = MarkdownVariations::new(I"Inweb-flavoured Markdown");
 	MarkdownVariations::make_GitHub_features_active(Inweb_flavoured_Markdown_variation);

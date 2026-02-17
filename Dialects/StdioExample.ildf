@@ -1,7 +1,0 @@
-Name: "StdioExample"
-colouring {
-	runs of !identifier {
-		printf => !function
-		sscanf => !function
-	}
-}

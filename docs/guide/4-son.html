@@ -123,6 +123,28 @@ immediately prior to this line, so that the line forms the first thing in it.
 main outcome <code>beginparagraph</code> should not be given the <code>in new paragraph</code> note:
 that achieves a paragraph break by more regular means.</p>
 <p>Note that comments are not allowed in a classifier: too much risk of misunderstanding.</p>
+<h3>Patterns</h3>
+<p>The <em>pattern</em> part is read as literal text, by default: in other words, it has
+to match exactly. However, certain &quot;wildcards&quot; are allowed which break this rule:</p>
+<ul>
+<li>
+<p>The wildcards <code>MATERIAL</code>, <code>SECOND</code>, <code>THIRD</code> and <code>FOURTH</code> can absorb any non-empty
+text. The text put into them is then used for different purposes depending on the
+outcome.</p>
+</li>
+<li>
+<p>Wildcards can be qualified by being immediately followed with <code>(NONWHITESPACE)</code>.
+Thus <code>MATERIAL(NONWHITESPACE)</code> would not match any text containing spaces or tabs.
+At the other extreme, <code>MATERIAL(WHITESPACE)</code> would only match a run of spaces and tabs.
+<code>MATERIAL(DIGITS)</code> requires it to contain only decimal digits.</p>
+</li>
+<li>
+<p>The special wildcards <code>RESIDUE</code> and <code>OPTIONS</code> behave exactly like the other four,
+except that content in them is put through further classification after a successful
+match. See <a href="4-cn.html" class="internal">Creating Notations</a> for more.</p>
+</li>
+</ul>
+<h3>Conditions</h3>
 <p>The valid conditions are:</p>
 <table>
 <thead>
@@ -145,11 +167,19 @@ that achieves a paragraph break by more regular means.</p>
 <td>in lines following <code>title</code></td>
 </tr>
 <tr>
-<td><code>in definition context</code></td>
+<td><code>in extract context</code></td>
 <td>previous line was code, or a text extract, or a named holon declaration, or a nameless holon marker</td>
 </tr>
 <tr>
-<td><code>in extract context</code></td>
+<td><code>in holon context</code></td>
+<td><code>in extract context</code> where the extract is a holon</td>
+</tr>
+<tr>
+<td><code>in textextract context</code></td>
+<td><code>in extract context</code> where the extract is not a holon</td>
+</tr>
+<tr>
+<td><code>in definition context</code></td>
 <td>previous line was <code>definition</code> or <code>defaultdefinition</code> or <code>definitioncontinued</code></td>
 </tr>
 <tr>
@@ -376,7 +406,7 @@ end
 supported here.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="4-sip.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresschapter"><a href="2-cp.html">2</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-an.html">an</a></li><li class="progresssection"><a href="4-in.html">in</a></li><li class="progresssection"><a href="4-wac.html">wac</a></li><li class="progresssection"><a href="4-cn.html">cn</a></li><li class="progresssection"><a href="4-sip.html">sip</a></li><li class="progresscurrent">son</li><li class="progresschapter"><a href="5-wikal.html">5</a></li><li class="progresschapter"><a href="6-ap.html">6</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="5-wikal.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="4-sip.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresschapter"><a href="2-cp.html">2</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-an.html">an</a></li><li class="progresssection"><a href="4-in.html">in</a></li><li class="progresssection"><a href="4-wac.html">wac</a></li><li class="progresssection"><a href="4-cn.html">cn</a></li><li class="progresssection"><a href="4-sip.html">sip</a></li><li class="progresscurrent">son</li><li class="progresschapter"><a href="5-al.html">5</a></li><li class="progresschapter"><a href="6-ap.html">6</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="5-al.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

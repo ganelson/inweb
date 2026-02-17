@@ -1,0 +1,8 @@
+Language "LineageExample" {
+	colouring
+		=> !plain
+		instances of "son" {
+			=> !function
+		}
+	end
+}
