@@ -341,6 +341,7 @@ Language "InC" {
 			runs of !identifier {
 				keyword of !reserved => !reserved
 				keyword of !function => !function
+				keyword of !type => !type
 				keyword of !constant => !constant
 				keyword of !element => {
 					optionally spaced prefix . => !element

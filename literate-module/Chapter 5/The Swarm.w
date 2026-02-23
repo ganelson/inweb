@@ -5,14 +5,15 @@ weaver results, and update indexes or contents pages.
 
 @h How weaves are performed.
 Weaves are highly comfigurable, so they depend on several factors:
-(a) Which format is used, as represented by a //weave_format// object. For
+
+- Which format is used, as represented by a //weave_format// object. For
 example, HTML, ePub and PDF are all formats.
-(b) Which pattern is used, as represented by a //ls_pattern// object. A
+- Which pattern is used, as represented by a //ls_pattern// object. A
 pattern is a choice of format together with some naming conventions and
 auxiliary files. For example, |GitHubPages| is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
-(c) Whether a filter to particular tags is used.
-(d) What subset of the web the user wants to weave -- by default the whole
+- Whether a filter to particular tags is used.
+- What subset of the web the user wants to weave -- by default the whole
 thing, but sometimes just one chapter, or just one section, and sometimes
 a special setting for "do all chapters one at a time" or "do all sections
 one at a time", a procedure called a "swarm".
@@ -86,13 +87,14 @@ format: for example, there's not much that plain text can do to render an
 image carousel.
 
 Inweb currently contains four renderers:
-(a) //Debugging Format// renders the weave tree as a plain text display, and
+
+- //Debugging Format// renders the weave tree as a plain text display, and
 is solely for testing.
-(b) //TeX Format// renders the weave tree as TeX markup code -- in the early
+- //TeX Format// renders the weave tree as TeX markup code -- in the early
 days of literate programming, this was the sole weave format used; now it
 has been eclipsed by...
-(c) ...//HTML Formats//, which renders to HTML and also handles ePub ebooks.
-(d) There is also //Plain Text Format//, a comically minimal approach.
+- ...//HTML Formats//, which renders to HTML and also handles ePub ebooks.
+- There is also //Plain Text Format//, a comically minimal approach.
 
 Renderers should make requests for weave plugins or colour schemes if, and
 only if, the need arises: for example, the HTML renderer requests the plugin

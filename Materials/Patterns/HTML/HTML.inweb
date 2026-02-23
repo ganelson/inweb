@@ -1,14 +1,19 @@
 Pattern "HTML" {
-	name: HTML
 	format: HTML
 	default range: sections
 	plugin: Base
 	mathematics plugin: MathJax3
 	footnotes plugin: Bigfoot
-	assets: .html collate
-	assets: .js copy
-	assets: .js prefix = <script src="URL"></script>
-	assets: .css copy
-	assets: .css prefix = <link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
-	assets: .css transform names
+	assets
+		collate .html files
+		copy .js files
+		for each .js file embed {
+			<script src="URL"></script>
+		}
+		copy .css files
+		for each .css file embed {
+			<link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
+		}
+		transform names in .css files
+	end
 }

@@ -23,16 +23,17 @@ If |CIFilingSystem::fopen()| succeeds, it returns a |FILE *|
 (passed back to it from the underlying |fopen()|). If
 |CIFilingSystem::fopen()| fails, it returns |NULL|, and
 |errno| is set accordingly:
-(a) If no suitable file was found, |errno| is set to |ENOENT|.
-(b) If more than one possibility was found, but none of them exactly match
+
+- If no suitable file was found, |errno| is set to |ENOENT|.
+- If more than one possibility was found, but none of them exactly match
 the supplied case, |errno| is set to |EBADF|.
-(c) Note that if multiple directories which match case-insensitively are
+- Note that if multiple directories which match case-insensitively are
 found, but none is an exact match, |EBADF| will be set regardless of the
 contents of the directories.
-(d) If |CIFilingSystem::fopen()| fails during its allocation of
+- If |CIFilingSystem::fopen()| fails during its allocation of
 space to hold its intermediate strings for comparison, or for its various
 data structures, |errno| is set to |ENOMEM|.
-(e) If an unambiguous filename is found but the |fopen()| fails, |errno| is
+- If an unambiguous filename is found but the |fopen()| fails, |errno| is
 left at whatever value the underlying |fopen()| set it to.
 
 @h The routine. ^"ifdef-PLATFORM_POSIX"
@@ -165,9 +166,10 @@ We use six strings to hold full or partial pathnames.
 	/Users/bobama/Library/Inform/Extensions/Hillary Clinton/Health Care.i7x
 =
 into three components:
-(a) |topdirpath| is |/Users/bobama/Library/Inform/Extensions|, and its casing is correct.
-(b) |ciextdirpath| is |Hillary Clinton|, but its casing may not be correct.
-(c) |ciextname| is |Health Care.i7x|, but its casing may not be correct.
+
+- |topdirpath| is |/Users/bobama/Library/Inform/Extensions|, and its casing is correct.
+- |ciextdirpath| is |Hillary Clinton|, but its casing may not be correct.
+- |ciextname| is |Health Care.i7x|, but its casing may not be correct.
 
 The contents of |workstring| are not significant afterwards.
 

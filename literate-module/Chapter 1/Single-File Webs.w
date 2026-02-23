@@ -72,13 +72,13 @@ source and should be skipped when the section is read in.
 The bulk of the file will, of course, be the literate source for the section.
 However, it can optionally have exactly one of the following:
 
-(a) A shebang line at the top, indicating the syntax and perhaps also the
+- A shebang line at the top, indicating the syntax and perhaps also the
 title and author, but which is part of the web and is not skipped; or
 
-(b) An opening run of key-value pairs, followed by a blank line, in
+- An opening run of key-value pairs, followed by a blank line, in
 which case these are used to set bibliographic data, and are skipped; or
 
-(c) A contiguous run of lines, anywhere in the file, which actually
+- A contiguous run of lines, anywhere in the file, which actually
 specifies an ad-hoc syntax to apply to just that file, in which case the
 lines containing those syntax definitions are skipped.
 

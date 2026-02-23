@@ -9,19 +9,6 @@ Version Number: 9.0
 Import: foundation
 Import: literate
 
-Manual
-	Introduction to Inweb
-	Webs, Tangling and Weaving
-	How to Write a Web
-	Making Weaves into Websites
-	Advanced Weaving with Patterns
-	Supporting Programming Languages
-	The InC Dialect
-	Reference Card
-
-Preliminaries
-	How This Program Works
-
 Chapter 1: Top Level
 	Program Control
 	Configuration

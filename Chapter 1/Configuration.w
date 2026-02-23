@@ -129,12 +129,14 @@ void Configuration::switch(int id, int val, text_stream *arg, void *state) {
 		case VERBOSE_CLSW: args->verbose_switch = val; break;
 		case SILENT_CLSW: args->silent_switch = val; break;
 		case USING_CLSW: {
-			filename *F = Filenames::from_text(arg);
-			if (TextFiles::exists(F)) {
-				WCL::make_resources_at_file_global(F);
+			pathname *P = Pathnames::from_text(arg);
+			if (Directories::exists(P)) {
+				WCL::make_resources_at_path_global(P);
 			} else {
-				pathname *P = Pathnames::from_text(arg);
-				if (Directories::exists(P)) WCL::make_resources_at_path_global(P);
+				filename *F = Filenames::from_text(arg);
+				if (TextFiles::exists(F)) {
+					WCL::make_resources_at_file_global(F);
+				} else Errors::fatal("no such -using file or directory");
 			}
 			break;
 		}

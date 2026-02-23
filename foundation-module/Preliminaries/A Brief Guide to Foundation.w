@@ -80,8 +80,8 @@ All of these capitalised macros are defined in //Streams//.
 |PRINT("...")| is an abbreviation for |WRITE_TO(STDOUT, "...")|, and
 |LOG("...")| similarly writes to the log file. (See //Debugging Log//.)
 
-@ If you're using //inweb: The InC Dialect//, the slight extension to C made
-by Inweb, there's a simple notation for constants of this type:
+@ If you're using InC, the slight extension to C made by Inweb, there's a
+simple notation for constants of this type:
 = (text as InC)
 	text_stream *error_message = I"quadro-triticale stocks depleted";
 =
@@ -385,12 +385,17 @@ interchange format.
 
 @h Miscellaneous other features.
 What else? Well:
-(a) //Time// for the time of day and the date of Easter (no, really), and
+
+- //Time// for the time of day and the date of Easter (no, really), and
 for timing internal program activity using //Time::start_stopwatch// and
 //Time::stop_stopwatch//;
-(b) //Shell// for issuing shell commands via the C library's |system| function,
+
+- //Shell// for issuing shell commands via the C library's |system| function,
 or its equivalent;
-(c) //HTML// and //Epub Ebooks// for generating web pages and ebooks;
-(d) //Image Dimensions// and //Sound Durations// for handling videos and music;
-(e) //Version Numbers// and //Version Number Ranges// for managing version
+
+- //HTML// and //Epub Ebooks// for generating web pages and ebooks;
+
+- //Image Dimensions// and //Sound Durations// for handling videos and music;
+
+- //Version Numbers// and //Version Number Ranges// for managing version
 numbers of software according to the Semantic Versioning standard.

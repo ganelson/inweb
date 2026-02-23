@@ -898,11 +898,11 @@ void HTML::write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 
 @ And now to HTML. This would be very similar, except:
 
-(a) if the |words| and |html| modules are both present, we recognise
+- if the |words| and |html| modules are both present, we recognise
 |*source text*Source/story.ni*14*| as something which should expand to a
 source code link -- except that the much less commonly occurring
 |SOURCE_REF_CHAR| character code is used in place of the asterisk;
-(b) if the |problems| module is present, we recognise |FORCE_NEW_PARA_CHAR|
+- if the |problems| module is present, we recognise |FORCE_NEW_PARA_CHAR|
 as a paragraph break.
 
 These two special case characters are lower and upper case Icelandic eth,

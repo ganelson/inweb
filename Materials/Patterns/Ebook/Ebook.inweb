@@ -1,13 +1,23 @@
 Pattern "Ebook" {
-	name: Ebook based on HTML
+	based on: HTML
 	format: ePub
 	footnotes plugin: None
 	mathematics plugin: None
-	assets: .js embed
-	assets: .js prefix = <script>
-	assets: .js suffix = </script>
-	assets: .css embed
-	assets: .css prefix = <style type="text/css">
-	assets: .css suffix = </style>
-	assets: .css transform names
+	assets
+		embed .js files
+		for each .js file prefix {
+			<script>
+		}
+		for each .js file suffix {
+			</script>
+		}
+		embed .css files
+		for each .css file prefix {
+			<style type="text/css">
+		}
+		for each .css file suffix {
+			</style>
+		}
+		transform names in .css files
+	end
 }

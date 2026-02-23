@@ -41,10 +41,10 @@ tex_results *TeXUtilities::new_results(weave_order *wv, filename *CF) {
 the special |PROCESS| command:
 
 =
-void TeXUtilities::post_process_weave(weave_order *wv, filename *CF) {
+void TeXUtilities::scan_TeX_log(weave_order *wv, filename *CF) {
 	wv->post_processing_results = TeXUtilities::new_results(wv, CF);
 	TextFiles::read(CF, FALSE,
-		"can't open console file", TRUE, TeXUtilities::scan_console_line, NULL,
+		"can't open TeX log file", TRUE, TeXUtilities::scan_console_line, NULL,
 		(void *) wv->post_processing_results);
 }
 

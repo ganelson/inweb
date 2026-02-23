@@ -972,12 +972,13 @@ It's convenient to be able to read and write these requirements to textual
 form, exactly as we do with JSON itself, and here goes.
 
 This is an example of the syntax we parse. It's JSON except that
-(a) the type names |number|, |double|, |string|, |boolean| and |null| are
+
+- the type names |number|, |double|, |string|, |boolean| and |null| are
 used in place of their respective values;
-(b) a question mark |?| before the name of a key means that it is optional;
-(c) if an array has one entry followed by an asterisk |*|, it means
+- a question mark |?| before the name of a key means that it is optional;
+- if an array has one entry followed by an asterisk |*|, it means
 "any number of entries, each of which must match this";
-(d) |<name>| refers to a requirement recorded in the |known_names| dictionary.
+- |<name>| refers to a requirement recorded in the |known_names| dictionary.
 
 For example:
 

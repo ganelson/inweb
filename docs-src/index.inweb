@@ -6,13 +6,17 @@ examples for the literate programming system Inweb. It's hosted on the Github
 Docs area of the Inweb repository, at: https://github.com/ganelson/inweb
 Download and build instructions are there, not here.
 
-To get a sense of Inweb and what it does, see //inweb: Manual//. The simple
+To get a sense of Inweb and what it does, see the //guide//. The simple
 example //twinprimes// and //goldbach// may also help.
 
-But if you're here to look under the hood, or you want to fix a bug or
-add a feature, a good place to begin is //inweb: How This Program Works//.
+Architecturally, Inweb consists of a front end which looks after commands
+typed at the command line — this is the content of the //inweb// web itself —
+and a back end consisting of two substantial libraries of C programs, each
+of which is a web in its own right:
 
-@ Inweb is built on top of a library of C functions called //foundation//,
-supplied in the same repository. See //foundation: A Brief Guide to Foundation//.
-There's also a small tool for unit-testing it, //foundation-test//, but this
-is not an interesting read.
+- //foundation//, a suite of general-purpose services for command-line C tools; and
+- //literate//, a literate-programming engine.
+
+See //foundation: A Brief Guide to Foundation// for more on that. Supplied
+also in this repository is a small tool for unit-testing the it, //foundation-test//:
+this also is a web, but not a very interesting read.

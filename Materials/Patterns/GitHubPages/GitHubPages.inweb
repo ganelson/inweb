@@ -1,7 +1,5 @@
 Pattern "GitHubPages" {
-	name: GitHubPages based on HTML
-	format: HTML
-	default range: sections
+	based on: HTML
 	plugin: GitHub
 	plugin: Breadcrumbs
 }

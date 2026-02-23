@@ -595,28 +595,62 @@ wcl_declaration *WCL::global_resources(void) {
 
 =
 void WCL::make_resources_at_path_global(pathname *P) {
+	if (WCL::make_potential_pattern_global(P)) return;
 	scan_directory *D = Directories::open(P);
 	TEMPORARY_TEXT(leafname)
 	while (Directories::next(D, leafname)) {
 		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames::in(P, leafname);
 			WCL::make_resources_at_file_global(F);
-		}
-		if (Str::eq_insensitive(leafname, I"Patterns")) {
-			wcl_declaration *M = Patterns::parse_directory(Pathnames::down(P, leafname));
-			if (M) WCL::make_global(M);
+		} else {
+			TEMPORARY_TEXT(subdir)
+			Str::copy(subdir, leafname);
+			Str::delete_last_character(subdir);
+			pathname *Q = Pathnames::down(P, subdir);
+			WCL::make_potential_pattern_global(Q);
 		}
 	}
 	DISCARD_TEXT(leafname)
 	Directories::close(D);
 }
 
+int WCL::make_potential_pattern_global(pathname *P) {
+	text_stream *dirname = Pathnames::directory_name(P);
+	if (Str::eq_insensitive(dirname, I"Patterns")) {
+		int n = 0;
+		scan_directory *D = Directories::open(P);
+		TEMPORARY_TEXT(leafname)
+		while (Directories::next(D, leafname)) {
+			if (Platform::is_folder_separator(Str::get_last_char(leafname))) {
+				TEMPORARY_TEXT(subdir)
+				Str::copy(subdir, leafname);
+				Str::delete_last_character(subdir);
+				pathname *Q = Pathnames::down(P, subdir);
+				if (WCL::make_potential_pattern_global(Q)) n++;
+			}
+		}
+		DISCARD_TEXT(leafname)
+		Directories::close(D);
+		if (n > 0) return TRUE;
+	}
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%S.inweb", dirname);
+	filename *F = Filenames::in(P, name);
+	DISCARD_TEXT(name)
+	if (TextFiles::exists(F)) {
+		wcl_declaration *M = WCL::make_resources_at_file_global(F);
+		if (M->declaration_type == PATTERN_WCLTYPE) return TRUE;
+	}
+	return FALSE;
+}
+
 @ Or just a single file:
 
 =
-void WCL::make_resources_at_file_global(filename *F) {
+wcl_declaration *WCL::make_resources_at_file_global(filename *F) {
 	wcl_declaration *D = WCL::read_anything(F);
 	if (D) WCL::make_global(D);
+	return D;
 }
 
 @ In general the |scope| pointer for a declaration points to the outer

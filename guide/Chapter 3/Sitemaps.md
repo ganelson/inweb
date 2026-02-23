@@ -433,3 +433,4 @@ It may not be obvious why all of those rather heavy `[[` and `]]` markers
 were used. The answer is that `Navigation` content can in fact use any HTML
 content of our choosing, and that `[[` and `]]` tell Inweb to make substitutions
 into that content, exactly as it does when weaving a web page from a pattern.
+(See //Collation//.)

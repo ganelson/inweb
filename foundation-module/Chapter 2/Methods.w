@@ -97,10 +97,10 @@ int Methods::provided(method_set *S, int ID) {
 @h Calling methods.
 Method calls are also done with a macro, but it has to come in four variants:
 
-(a) |INT_METHOD_CALL| for a method taking arguments and returning an |int|,
-(b) |INT_METHOD_CALL_WITHOUT_ARGUMENTS| for a method without arguments which returns an |int|,
-(c) |VOID_METHOD_CALL| for a method taking arguments and returning nothing,
-(d) |VOID_METHOD_CALL_WITHOUT_ARGUMENTS| for a method without arguments which returns nothing.
+- |INT_METHOD_CALL| for a method taking arguments and returning an |int|,
+- |INT_METHOD_CALL_WITHOUT_ARGUMENTS| for a method without arguments which returns an |int|,
+- |VOID_METHOD_CALL| for a method taking arguments and returning nothing,
+- |VOID_METHOD_CALL_WITHOUT_ARGUMENTS| for a method without arguments which returns nothing.
 
 For example:
 = (text as code)

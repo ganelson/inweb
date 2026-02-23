@@ -316,16 +316,16 @@ to implement numeric repetition counts, which we won't need:
 @ So then: most characters in the pattern are taken literally (if the pattern
 says |q|, the only match is with a lower-case letter "q"), except that:
 
-(a) a space means "one or more characters of white space";
-(b) |%d| means any decimal digit;
-(c) |%c| means any character at all;
-(d) |%C| means any character which isn't white space;
-(e) |%i| means any character from the identifier class (see above);
-(f) |%p| means any character which can be used in the name of a Preform
+- a space means "one or more characters of white space";
+- |%d| means any decimal digit;
+- |%c| means any character at all;
+- |%C| means any character which isn't white space;
+- |%i| means any character from the identifier class (see above);
+- |%p| means any character which can be used in the name of a Preform
 nonterminal, which is to say, an identifier character or a hyphen;
-(g) |%P| means the same or else a colon;
-(h) |%t| means a tab;
-(i) |%q| means a double-quote.
+- |%P| means the same or else a colon;
+- |%t| means a tab;
+- |%q| means a double-quote.
 
 |%| otherwise makes a literal escape; a space means any whitespace character;
 square brackets enclose literal alternatives, and note as usual with grep

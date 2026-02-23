@@ -30,11 +30,12 @@ typedef struct ls_pattern {
 	int show_abbrevs; /* show section range abbreviations in the weave? */
 	int number_sections; /* insert section numbers into the weave? */
 	struct text_stream *default_range; /* for example, |sections| */
-
-	struct linked_list *bibliographic_settings; /* of |ls_pattern_pair| */
 	
-	int commands;
-	int name_command_given;
+	int assets_mode;
+	int commands_mode;
+	struct text_stream *pending;
+	struct text_stream *pending_command;
+	int pending_lines;
 	CLASS_DEFINITION
 } ls_pattern;
 
@@ -49,17 +50,16 @@ typedef struct ls_pattern_pair {
 =
 ls_pattern *Patterns::find(wcl_declaration *D, text_stream *name) {
 	wcl_declaration *R = WCL::resolve_resource(D, PATTERN_WCLTYPE, name);
-	if (R == NULL) Errors::fatal_with_text("could not find weave pattern '%S'", name);
+	if (R == NULL) {
+		WRITE_TO(STDOUT, "\n");
+		Errors::fatal_with_text("could not find weave pattern '%S'", name);
+	}
 	return RETRIEVE_POINTER_ls_pattern(R->object_declared);
 }
 
 void Patterns::impose(ls_web *W, ls_pattern *wp) {
 	ls_pattern *basis = Patterns::basis(W->declaration, wp);
 	if (basis) Patterns::impose(W, basis);
-	ls_pattern_pair *pair;
-	LOOP_OVER_LINKED_LIST(pair, ls_pattern_pair, wp->bibliographic_settings) {
-		Bibliographic::set_datum(W, pair->key, pair->value);
-	}
 }
 
 @
@@ -127,9 +127,11 @@ void Patterns::parse_declaration(wcl_declaration *D) {
 	wp->initial_extension = NULL;
 	wp->post_commands = NEW_LINKED_LIST(text_stream);
 	wp->blocked_templates = NEW_LINKED_LIST(text_stream);
-	wp->bibliographic_settings = NEW_LINKED_LIST(ls_pattern_pair);
-	wp->commands = 0;
-	wp->name_command_given = FALSE;
+	wp->assets_mode = FALSE;
+	wp->commands_mode = FALSE;
+	wp->pending = NULL;
+	wp->pending_command = NULL;
+	wp->pending_lines = 0;
 
 @<Read in the pattern file@> =
 	text_file_position tfp = D->body_position;
@@ -141,17 +143,13 @@ void Patterns::parse_declaration(wcl_declaration *D) {
 		DISCARD_TEXT(line);
 		tfp.line_count++;
 	}
+	if (wp->assets_mode) WCL::error(D, &(D->declaration_position),
+		I"pattern definition ended with 'assets' open: missing 'end'?");
+	if (wp->commands_mode) WCL::error(D, &(D->declaration_position),
+		I"pattern definition ended with 'commands' open: missing 'end'?");
 	D->object_declared = STORE_POINTER_ls_pattern(wp);
-	if (wp->name_command_given == FALSE)
-		Errors::fatal("pattern did not name itself at the top");
 	wp->pattern_location = Filenames::up(D->associated_file);
-	if (WCL::check_name(D, wp->pattern_name) == FALSE) {
-		TEMPORARY_TEXT(msg)
-		WRITE_TO(msg, "pattern has two different names, '%S' and '%S'",
-			D->name, wp->pattern_name);
-		WCL::error(D, &(D->declaration_position), msg);
-		DISCARD_TEXT(msg)
-	}
+	wp->pattern_name = Str::duplicate(D->name);
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%S", Pathnames::directory_name(wp->pattern_location));
 	if (Str::ne_insensitive(name, wp->pattern_name)) {
@@ -226,68 +224,81 @@ following routine:
 void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, void *X) {
 	ls_pattern *wp = (ls_pattern *) X;
 
-	Str::trim_white_space(line); /* ignore trailing space */
-	if (Str::len(line) == 0) return; /* ignore blank lines */
-	if (Str::get_first_char(line) == '#') return; /* lines opening with |#| are comments */
+	Str::trim_white_space(line); /* ignore leading and trailing space */
+	if (Str::len(line) == 0) return; /* and thus ignore whitespace lines */
 
-	wp->commands++;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, U"(%c+) *: *(%c+?)")) {
-		text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
-		if ((Str::eq_insensitive(key, I"name")) && (wp->commands == 1)) {
+	if (wp->pending_command) {
+		if (Str::eq_insensitive(line, I"}")) {
+			Assets::add_asset_rule(wp->asset_rules, wp->pending, wp->pending_command, tfp);
+			wp->pending_command = NULL;
+		} else {
+			if (wp->pending_lines++ > 0) WRITE_TO(wp->pending_command, "\n");
+			WRITE_TO(wp->pending_command, "%S", line);
+		}
+	} else if (wp->assets_mode) {		
+		if (Str::eq_insensitive(line, I"end")) {
+			wp->assets_mode = FALSE;
+		} else {
 			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, value, U"(%c+?) based on (%c+)")) {
-				wp->pattern_name = Str::duplicate(mr2.exp[0]);
-				wp->based_on_name = Str::duplicate(mr2.exp[1]);
+			if (Regexp::match(&mr2, line, U"(%c+) (.%C+?) files")) {
+				Assets::add_asset_rule(wp->asset_rules, mr2.exp[1], mr2.exp[0], tfp);
+			} else if (Regexp::match(&mr2, line, U"for each (.%C+?) file (%c+) {")) {
+				wp->pending = Str::duplicate(mr2.exp[0]);
+				wp->pending_command = Str::new();
+				if (Str::eq_insensitive(mr2.exp[1], I"prefix")) 
+					WRITE_TO(wp->pending_command, "prefix = ");
+				if (Str::eq_insensitive(mr2.exp[1], I"suffix")) 
+					WRITE_TO(wp->pending_command, "suffix = ");
+				if (Str::eq_insensitive(mr2.exp[1], I"embed")) 
+					WRITE_TO(wp->pending_command, "prefix = ");
+				if (Str::len(wp->pending_command) == 0)
+					Errors::in_text_file("action must be 'prefix', 'suffix' or 'embed'", tfp);
+				wp->pending_lines = 0;
 			} else {
-				wp->pattern_name = Str::duplicate(value);
+				Errors::in_text_file("line in assets block not recognised", tfp);
 			}
 			Regexp::dispose_of(&mr2);
-			wp->name_command_given = TRUE;
-		} else if (Str::eq_insensitive(key, I"plugin")) {
-			text_stream *name = Patterns::plugin_name(value, tfp);
-			if (Str::len(name) > 0) {
-				weave_plugin *plugin = Assets::new(name);
-				ADD_TO_LINKED_LIST(plugin, weave_plugin, wp->plugins);
-			}
-		} else if (Str::eq_insensitive(key, I"format")) {
-			wp->pattern_format = WeavingFormats::find_by_name(value);
-		} else if (Str::eq_insensitive(key, I"default range")) {
-			wp->default_range = Str::duplicate(value);
-		} else if (Str::eq_insensitive(key, I"initial extension")) {
-			wp->initial_extension = Str::duplicate(value);
-		} else if (Str::eq_insensitive(key, I"mathematics plugin")) {
-			wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
-		} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
-			wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
-		} else if (Str::eq_insensitive(key, I"block template")) {
-			ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->blocked_templates);
-		} else if (Str::eq_insensitive(key, I"command")) {
-			ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->post_commands);
-		} else if (Str::eq_insensitive(key, I"bibliographic data")) {
-			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, value, U"(%c+?) = (%c+)")) {
-				ls_pattern_pair *pair = CREATE(ls_pattern_pair);
-				pair->key = Str::duplicate(mr2.exp[0]);
-				pair->value = Str::duplicate(mr2.exp[1]);
-				ADD_TO_LINKED_LIST(pair, ls_pattern_pair, wp->bibliographic_settings);
+		}
+	} else if (wp->commands_mode) {		
+		if (Str::eq_insensitive(line, I"end")) {
+			wp->commands_mode = FALSE;
+		} else {
+			ADD_TO_LINKED_LIST(Str::duplicate(line), text_stream, wp->post_commands);
+		}
+	} else {
+		if (Str::eq_insensitive(line, I"assets")) {
+			wp->assets_mode = TRUE;
+		} else if (Str::eq_insensitive(line, I"commands")) {
+			wp->commands_mode = TRUE;
+		} else if (Regexp::match(&mr, line, U"(%c+) *: *(%c+?)")) {
+			text_stream *key = mr.exp[0], *value = Str::duplicate(mr.exp[1]);
+			if (Str::eq_insensitive(key, I"based on")) {
+				wp->based_on_name = Str::duplicate(value);
+			} else if (Str::eq_insensitive(key, I"plugin")) {
+				text_stream *name = Patterns::plugin_name(value, tfp);
+				if (Str::len(name) > 0) {
+					weave_plugin *plugin = Assets::new(name);
+					ADD_TO_LINKED_LIST(plugin, weave_plugin, wp->plugins);
+				}
+			} else if (Str::eq_insensitive(key, I"format")) {
+				wp->pattern_format = WeavingFormats::find_by_name(value);
+			} else if (Str::eq_insensitive(key, I"default range")) {
+				wp->default_range = Str::duplicate(value);
+			} else if (Str::eq_insensitive(key, I"initial extension")) {
+				wp->initial_extension = Str::duplicate(value);
+			} else if (Str::eq_insensitive(key, I"mathematics plugin")) {
+				wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
+			} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
+				wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
+			} else if (Str::eq_insensitive(key, I"block template")) {
+				ADD_TO_LINKED_LIST(Str::duplicate(value), text_stream, wp->blocked_templates);
 			} else {
-				Errors::in_text_file("syntax is 'bibliographic data: X = Y'", tfp);
+				Errors::in_text_file("unrecognised pattern command", tfp);
 			}
-			Regexp::dispose_of(&mr2);
-		} else if (Str::eq_insensitive(key, I"assets")) {
-			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, value, U"(.%C+?) (%c+)")) {
-				Assets::add_asset_rule(wp->asset_rules, mr2.exp[0], mr2.exp[1], tfp);
-			} else {
-				Errors::in_text_file("syntax is 'assets: .EXT COMMAND'", tfp);
-			}
-			Regexp::dispose_of(&mr2);
 		} else {
 			Errors::in_text_file("unrecognised pattern command", tfp);
 		}
-	} else {
-		Errors::in_text_file("unrecognised pattern command", tfp);
 	}
 	Regexp::dispose_of(&mr);
 }
@@ -343,8 +354,9 @@ void Patterns::post_process(ls_pattern *pattern, weave_order *wv) {
 			} else PUT_TO(cmd, Str::get_at(T, i));
 		}
 		if ((Str::includes_at(cmd, 0, I"PROCESS ")) && (last_F)) {
-			TeXUtilities::post_process_weave(wv, last_F);
+			TeXUtilities::scan_TeX_log(wv, last_F);
 		} else {
+			Str::trim_white_space(cmd);
 			if (wv->reportage) PRINT("(%S)\n", cmd);
 			int rv = Shell::run(cmd);
 			if (rv != 0) WRITE_TO(STDERR, "warning: post-processing command failed\n");

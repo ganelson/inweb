@@ -89,28 +89,28 @@ what it needs in the way of memory allocation.</p>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;time.h&gt;</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">include</span><span class="plain-syntax"> </span><span class="function-syntax">&lt;math.h&gt;</span>
 
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">inchar32_t</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="identifier-syntax">uint32_t</span><span class="plain-syntax"> </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Current destination of debugging text: kept |NULL| until opened */</span>
+<span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">DL</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax">/* Current destination of debugging text: kept |NULL| until opened */</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  We'll use three truth states, the third of which can also mean &quot;unknown&quot;.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">1</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TRUE</span> <span class="constant-syntax">1</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">0</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">FALSE</span> <span class="constant-syntax">0</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">2</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">NOT_APPLICABLE</span> <span class="constant-syntax">2</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  And we recognise two different encodings for narrow (i.e., <code>char *</code>) C strings.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Write as UTF-8 without BOM */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">UTF8_ENC</span> <span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Write as UTF-8 without BOM */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Write as ISO Latin-1 (i.e., no conversion needed) */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ISO_ENC</span> <span class="constant-syntax">2</span><span class="plain-syntax"> </span><span class="comment-syntax">/* Write as ISO Latin-1 (i.e., no conversion needed) */</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  It is assumed that our host filing system can manage at least 30-character
@@ -123,7 +123,7 @@ operating system fails to recognise them. Some Linux implementations raise the
 equivalent <code>PATH_MAX</code> limit as high as 4096. This seems a reasonable
 compromise in practice:</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">1025</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_FILENAME_LENGTH</span> <span class="constant-syntax">1025</span>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Very occasionally we'll store a pointer as data:</p>
@@ -141,7 +141,7 @@ an InC program. It inserts declarations of I-literals, that is, literal
 anywhere but here.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::start</span><span class="plain-syntax">(</span><span class="identifier-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::start</span><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="type-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="3-cla.html#SP8" class="function-link"><span class="function-syntax">CommandLine::set_locale</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="1-wp.html#SP14" class="function-link"><span class="function-syntax">Platform::configure_terminal</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP5" class="function-link"><span class="function-syntax">Memory::start</span></a><span class="plain-syntax">();</span>
@@ -208,19 +208,19 @@ some tool just because it contains today's date and not the date when the
 test was set up. <code>-crash</code> tells the tool to crash on a fatal error, rather
 than to exit cleanly, to make it easier to diagnose in a debugger.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="constant-syntax">0</span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOG_CLSW</span> <span class="constant-syntax">0</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">VERSION_CLSW</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CRASH_CLSW</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">HELP_CLSW</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">FIXTIME_CLSW</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">AT_CLSW</span> 
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> 
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">LOCALE_CLSW</span> 
 </pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register the default command line switches</span><span class="named-paragraph-number">8.4</span></span> =</p>
 
@@ -250,7 +250,7 @@ an early termination due to a fatal error, as this may lead to thread
 safety problems.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Foundation::end</span><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-dl.html#SP7" class="function-link"><span class="function-syntax">Log::aspect_switched_on</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MEMORY_USAGE_DA</span><span class="plain-syntax">)) </span><a href="2-mmr.html#SP27" class="function-link"><span class="function-syntax">Memory::log_statistics</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-dl.html#SP5" class="function-link"><span class="function-syntax">Log::close</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP12" class="function-link"><span class="function-syntax">Memory::free</span></a><span class="plain-syntax">();</span>

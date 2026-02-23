@@ -216,19 +216,19 @@ classification.
 Actually, though, it also returns some other ephemera, so it actually returns
 a larger structure, |ls_class_parsing|, which additionally contains:
 
-(a) |implies_paragraph|, |implies_extract|, |implies_extract_end| are flags
+- |implies_paragraph|, |implies_extract|, |implies_extract_end| are flags
 which are set to indicate that a |PARAGRAPH_START_MAJLC|, |EXTRACT_START_MAJLC|
 or |EXTRACT_END_MAJLC| line should be considered to have been placed immediately
 before the line just parsed (i.e., between the previous line and this one).
 Note that it's possible to more than one such implication to arise for the
 same line.
 
-(b) The most notable field here is |residue|. Literate source is usually very
+- The most notable field here is |residue|. Literate source is usually very
 line-oriented, but not always, and sometimes a syntactic feature occupies
 only the initial part of the line, with some left over: this, if it exists,
 is put into the |residue|.
 
-(c) If a syntax error is turned up on the line, it should be filled in as
+- If a syntax error is turned up on the line, it should be filled in as
 text and placed in |error|.
 
 =

@@ -53,7 +53,7 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
-	hrs.copy_rule = Assets::new_rule(NULL, I"", I"private copy", NULL);
+	hrs.copy_rule = Assets::new_rule(NULL, I"", I"privately copy", NULL);
 
 	Swarm::ensure_plugin(wv, I"Base");
 	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
@@ -780,6 +780,12 @@ that service uses to identify the video/audio in question.
 	WRITE("%S", C->keyword);
 	HTML_CLOSE("span");
 	WRITE(" ");
+	if (Str::len(C->symbol) > 0) {
+		HTML_OPEN_WITH("span", "class=\"identifier-syntax\"");
+		WRITE("%S", C->symbol);
+		HTML_CLOSE("span");
+		WRITE(" ");
+	}
 
 @<Render holon declaration@> =
 	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
@@ -1028,7 +1034,7 @@ void HTMLWeaving::notify_image(weave_order *wv, text_stream *image) {
 	filename *F = Filenames::in(
 		Pathnames::down(wv->weave_web->path_to_web, I"Figures"),
 		image);
-	Assets::include_asset(NULL, Assets::new_rule(NULL, I"", I"private copy", NULL),
+	Assets::include_asset(NULL, Assets::new_rule(NULL, I"", I"privately copy", NULL),
 		wv->weave_web, F, NULL,
 		wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
 }

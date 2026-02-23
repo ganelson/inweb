@@ -49,7 +49,7 @@ fn main() {
 Inweb supports the following "colours". How they correspond to actual colours
 or styles visible to the eventual reader is not something that a language
 definition can control: that's done with, say, CSS files in weave patterns
-(see //About Patterns//). So rather than "green" or "blue", Inweb colours
+(see //Creating Patterns//). So rather than "green" or "blue", Inweb colours
 are named semantically, from the following palette of possibilities:
 
 Inweb colour  | Letter | CSS class name      | Suggested use

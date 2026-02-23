@@ -12,12 +12,14 @@ A tool can import //literate// only if it also imports //foundation//.
 We'll use the term "parent" to mean the tool which is importing //literate//,
 that is, which will include its code and be able to use it. As with any
 imported module,
-(*) The contents page of the parent's web must identify and locate the
+
+* The contents page of the parent's web must identify and locate the
 module:
 = (text as Inweb)
 Import: literate
 =
-(*) The parent must call |LiterateModule::start()| just after it starts up, and
+
+* The parent must call |LiterateModule::start()| just after it starts up, and
 |LiterateModule::end()| just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
 
@@ -105,15 +107,15 @@ chunk must have at least one line. The empty program would be stored as:
 
 @ The fundamental things we can do with a web, then, are:
 
-(a) Parsing. Literate source has highly customisable markup syntax: see
+- Parsing. Literate source has highly customisable markup syntax: see
 //Web Notations//.
 
-(b) Tangling. See //The Tangler// for how this is done. Note that tangling
+- Tangling. See //The Tangler// for how this is done. Note that tangling
 can be performed entirely in memory, so that tools such as Inform can read
 literate source and tangle it internally, avoiding the need for secondary
 LP tools or intermediate files stored on disc.
 
-(c) Weaving. See //The Swarm// for an overview of how complex weaves are
+- Weaving. See //The Swarm// for an overview of how complex weaves are
 divided into a "swarm" of simple ones, each of which generates a "weave tree"
 of rendering instructions. See //Format Methods// and its subsidiaries,
 such as //HTML Formats//, for the actual process of rendering weave output

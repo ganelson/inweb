@@ -13,10 +13,10 @@ therefore formally incorrect to have a version 2, or a version 2.3. We will
 not be so strict on the textual form, which we will allow to be abbreviated.
 Thus:
 
-(a) The text |6.4.7| is understood to mean 6.4.7 and printed back as |6.4.7|
-(b) The text |6| is understood to mean 6.0.0 and printed back as |6|
-(c) The text |6.1| is understood to mean 6.1.0 and printed back as |6.1|
-(d) The text |6.1.0| is understood to mean 6.1.0 and printed back as |6.1.0|
+- The text |6.4.7| is understood to mean 6.4.7 and printed back as |6.4.7|
+- The text |6| is understood to mean 6.0.0 and printed back as |6|
+- The text |6.1| is understood to mean 6.1.0 and printed back as |6.1|
+- The text |6.1.0| is understood to mean 6.1.0 and printed back as |6.1.0|
 
 Similarly, the absence of a version number (called "null" below) will be
 understood to mean 0.0.0, but will be distinguished from the explicit choice

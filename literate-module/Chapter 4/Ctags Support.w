@@ -140,10 +140,10 @@ int Ctags::useful_tags_exist(ls_web *W) {
 @ So, then, here we write the |filename| and |find| fields for a given
 source line |lst| in our web. Note that:
 
-(a) The filename must be given relative to the directory containing the tags
+- The filename must be given relative to the directory containing the tags
 file, so for us that will be the home directory of the web. 
 
-(b) The |find| field looks like a regular expression but is not one, despite
+- The |find| field looks like a regular expression but is not one, despite
 the suggestive positional markers |^| and |$|. Note in particular that round
 brackets and asterisk characters are not escaped, as they would be in a regex.
 The Ctags documentation is vague here but does note that |^| and |$| should

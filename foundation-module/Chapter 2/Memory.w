@@ -93,12 +93,12 @@ The memory manager is built in three levels, with its interface to the user
 being entirely at level 3 (except that when it shuts down it calls a level 1
 routine to free everything). Each level uses the one below it.
 
-(3) Managing linked lists of large objects, within which objects can be
+- (3) Managing linked lists of large objects, within which objects can be
 created at any point, and from which objects can be deleted; and providing
 a way to create new small objects of any given type.
-(2) Allocating some thousands of memory frames, each holding one large object
+- (2) Allocating some thousands of memory frames, each holding one large object
 or an array of small objects.
-(1) Allocating and freeing a few dozen large blocks of contiguous memory.
+- (1) Allocating and freeing a few dozen large blocks of contiguous memory.
 
 @h Level 1: memory blocks.
 Memory is allocated in blocks within which objects are allocated as
@@ -727,9 +727,9 @@ a structure of the type we think it should.
 The structure |general_pointer| holds a |void *| pointer to any one of the
 following:
 
-(a) |NULL|, to which we assign ID number $-1$;
-(b) |char|, to which we assign ID number 1000;
-(c) any individually allocated structure of the types listed above, to
+- |NULL|, to which we assign ID number $-1$;
+- |char|, to which we assign ID number 1000;
+- any individually allocated structure of the types listed above, to
 which we assign the ID numbers used above: for instance, |figures_data_CLASS|
 is the ID number for a |general_pointer| which points to a |figures_data|
 structure.

@@ -51,14 +51,19 @@
 examples for the literate programming system Inweb. It's hosted on the Github
 Docs area of the Inweb repository, at: https://github.com/ganelson/inweb
 Download and build instructions are there, not here.</p>
-<p>To get a sense of Inweb and what it does, see <a href="inweb/M-iti.html" class="internal">Manual (in inweb)</a>. The simple
+<p>To get a sense of Inweb and what it does, see the <a href="guide/index.html" class="internal">guide</a>. The simple
 example <a href="twinprimes/twinprimes.html" class="internal">twinprimes</a> and <a href="goldbach/index.html" class="internal">goldbach</a> may also help.</p>
-<p>But if you're here to look under the hood, or you want to fix a bug or
-add a feature, a good place to begin is <a href="inweb/P-htpw.html" class="internal">How This Program Works (in inweb)</a>.</p>
-<p>@ Inweb is built on top of a library of C functions called <a href="foundation-module/index.html" class="internal">foundation</a>,
-supplied in the same repository. See <a href="foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
-There's also a small tool for unit-testing it, <a href="foundation-test/index.html" class="internal">foundation-test</a>, but this
-is not an interesting read.</p>
+<p>Architecturally, Inweb consists of a front end which looks after commands
+typed at the command line — this is the content of the <a href="inweb/index.html" class="internal">inweb</a> web itself —
+and a back end consisting of two substantial libraries of C programs, each
+of which is a web in its own right:</p>
+<ul>
+<li><a href="foundation-module/index.html" class="internal">foundation</a>, a suite of general-purpose services for command-line C tools; and</li>
+<li><a href="literate-module/index.html" class="internal">literate</a>, a literate-programming engine.</li>
+</ul>
+<p>See <a href="foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a> for more on that. Supplied
+also in this repository is a small tool for unit-testing the it, <a href="foundation-test/index.html" class="internal">foundation-test</a>:
+this also is a web, but not a very interesting read.</p>
 </div>
 <!-- End of weave -->
 

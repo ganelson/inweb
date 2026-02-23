@@ -39,6 +39,11 @@ Chapter 5: Languages
 
 Chapter 6: Patterns
 	About Patterns
+	Creating Patterns
+	Collation
+	Asset Management
+	The Post-Weave
+	Summary of Patterns
 
 Chapter 7: Other Services
 	Build Numbering

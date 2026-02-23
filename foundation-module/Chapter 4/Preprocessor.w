@@ -8,8 +8,6 @@ Writing a general-purpose preprocessor really is coding like it's 1974, but
 it turns out to be useful for multiple applications in the Inform project, and
 saves us having to have dependencies on behemoths like the mighty |m4|.
 
-For documentation on the markup notation, see //inweb: Webs, Tangling and Weaving//.
-
 To use the preprocessor, call:
 = (text as InC)
 Preprocessor::preprocess(from, to, header, special_macros, specifics, encoding)
@@ -221,9 +219,8 @@ is the special comment character: often |#|, but not necessarily.
 
 @ The expander works on material fed to it which:
 
-(i) Does not contain any newlines;
-
-(ii) Contains braces |{ ... }| used in nested pairs (unless there is a syntax
+1. Does not contain any newlines;
+2. Contains braces |{ ... }| used in nested pairs (unless there is a syntax
 error in the prototype, in which case we must complain).
 
 The idea is to pass everything straight through except any braced matter,

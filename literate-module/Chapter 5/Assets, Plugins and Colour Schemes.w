@@ -230,7 +230,7 @@ asset_rule *Assets::new_rule(linked_list *L, text_stream *ext, text_stream *line
 	}
 	if (Str::eq(cmd, I"copy")) {
 		@<Set R to defaults@>; R->method = COPY_ASSET_METHOD;
-	} else if (Str::eq(cmd, I"private copy")) {
+	} else if (Str::eq(cmd, I"privately copy")) {
 		@<Set R to defaults@>; R->method = PRIVATE_COPY_ASSET_METHOD;
 	} else if (Str::eq(cmd, I"embed")) {
 		@<Set R to defaults@>; R->method = EMBED_ASSET_METHOD;
@@ -240,9 +240,12 @@ asset_rule *Assets::new_rule(linked_list *L, text_stream *ext, text_stream *line
 		R->pre = Str::duplicate(detail);
 	} else if (Str::eq(cmd, I"suffix")) {
 		R->post = Str::duplicate(detail);
-	} else if (Str::eq(cmd, I"transform names")) {
+	} else if (Str::eq(cmd, I"transform names in")) {
 		R->transform_names = TRUE;
-	} else Errors::in_text_file("no such asset command", tfp);
+	} else {
+		Errors::in_text_file("no such asset command", tfp);
+		WRITE_TO(STDERR, "command: %S\n", cmd);
+	}
 	Regexp::dispose_of(&mr);
 
 @ Given a filename |F| for some asset, which rule applies to it? The answer

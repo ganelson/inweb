@@ -205,6 +205,7 @@ typedef struct weave_chapter_title_page_node {
 
 typedef struct weave_defn_node {
 	struct text_stream *keyword;
+	struct text_stream *symbol;
 	CLASS_DEFINITION
 } weave_defn_node;
 
@@ -737,9 +738,11 @@ tree_node *WeaveTree::weave_chapter_title_page_node(heterogeneous_tree *tree) {
 	return Trees::new_node(tree, weave_chapter_title_page_node_type, STORE_POINTER_weave_chapter_title_page_node(C));
 }
 
-tree_node *WeaveTree::weave_defn_node(heterogeneous_tree *tree, text_stream *keyword) {
+tree_node *WeaveTree::weave_defn_node(heterogeneous_tree *tree, text_stream *keyword,
+	text_stream *symbol) {
 	weave_defn_node *C = CREATE(weave_defn_node);
 	C->keyword = Str::duplicate(keyword);
+	C->symbol = Str::duplicate(symbol);
 	return Trees::new_node(tree, weave_defn_node_type, STORE_POINTER_weave_defn_node(C));
 }
 
@@ -852,12 +855,6 @@ of list. |depth| can be 1 or 2: you can have lists in lists, but not lists in
 lists in lists. |label| is the marker text, e.g., |a|, |b|, |c|, ...; it can
 also be empty, in which case the method should move to the matching level of
 indentation but not weave any bracketed marker.
-
-(a) This was produced by |depth| equal to 1, |label| equal to |a|.
-(-i) This was produced by |depth| equal to 2, |label| equal to |i|.
-(-ii) This was produced by |depth| equal to 2, |label| equal to |ii|.
-(...) This was produced by |depth| equal to 1, |label| empty.
-(b) This was produced by |depth| equal to 1, |label| equal to |b|.
 
 =
 tree_node *WeaveTree::weave_item_node(heterogeneous_tree *tree, int depth, text_stream *label) {

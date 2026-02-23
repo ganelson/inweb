@@ -78,9 +78,11 @@ RAT-Pascal. Pascal was poorly standardised, and its design was not ideal for
 system-software tools of the kind Knuth wanted to write. But it needed only a
 little work: and since Knuth was, after all, using a preprocessor anyway, in
 order to tangle code, why not throw in some new Pascal features along the way?</p>
-<p>The result is that WEB did not so much serve Pascal programs as it did a sort of
-&quot;rat-Pascal&quot;. This makes it quite difficult to emulate today, and is one reason
-why Inweb is not fully able to read WEB files.</p>
+<p>The answer to that &quot;why not&quot; question is: because it will tie the program too
+closely to the preprocessor, and make it difficult to port. It is far from
+easy to compile Knuth's great programs TeX and Metafont nowadays, because the
+original Pascal dialect is obsolete. Even converting a web from WEB to CWEB,
+say, porting the Pascal code to C, is a very non-trivial business.</p>
 <h2>Supposed improvements</h2>
 <p>&quot;Improving&quot; languages is a trap for authors of literate programming tools. Inweb
 would arguably be a cleaner design if it did not fall into that trap: but in
@@ -161,7 +163,7 @@ typedef struct cake {
 ...
 typedef struct filling {
     int jam;
-}
+} filling;
 </code></pre>
 <p>This will fail to compile for two reasons: <code>cake</code> is unknown at the time
 <code>cake birthday_cake</code> is read, because the compiler has not yet reached

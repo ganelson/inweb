@@ -293,8 +293,8 @@ void MarkdownVariations::make_Inweb_features_active(markdown_variation *variatio
 
 void MarkdownVariations::make_simplified_Inweb_features_active(markdown_variation *variation) {
 	MarkdownVariations::remove_feature(variation, BLOCK_QUOTES_MARKDOWNFEATURE);
-	MarkdownVariations::remove_feature(variation, ORDERED_LISTS_MARKDOWNFEATURE);
-	MarkdownVariations::remove_feature(variation, UNORDERED_LISTS_MARKDOWNFEATURE);
+//	MarkdownVariations::remove_feature(variation, ORDERED_LISTS_MARKDOWNFEATURE);
+//	MarkdownVariations::remove_feature(variation, UNORDERED_LISTS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(variation, FENCED_CODE_BLOCKS_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(variation, HTML_BLOCKS_MARKDOWNFEATURE);

@@ -47,10 +47,52 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#6">Chapter 6: Patterns</a></li><li><b>About Patterns</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> To follow.</p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Every weave is makes use of a <em>pattern</em>. The same web can look very different
+when woven with two different patterns; and a pattern can, in principle, be
+used with many different webs.</p>
+<p>Like languages and notations, patterns are resources identified by their names.
+The default pattern is called <code>HTML</code>:</p>
+<pre><code>$ inweb weave pyramid.c.w
+weaving web &quot;Hilbert's Pyramid&quot; (C program in MarkdownCode notation) as HTML
+</code></pre>
+<p>Note the <code>as HTML</code> at the end of that line. Whereas:</p>
+<pre><code>$ inweb weave pyramid.c.w -as GitHubPages
+weaving web &quot;Hilbert's Pyramid&quot; (C program in MarkdownCode notation) as GitHubPages
+</code></pre>
+<p>That's to say, running the <code>inweb weave</code> command with the switch <code>-as NAME</code>
+tells Inweb to use the pattern called <code>NAME</code>.</p>
+<p>Creating a whole new pattern is not as major an undertaking as it may first
+seem. Patterns can also be <em>based on</em> other patterns: for example, <code>GitHubPages</code>
+is based on <code>HTML</code>. It changes a few things, it adds a few things, but it
+doesn't need to sort out the many little details of making a web page.
+Anyone wanting to weave to web pages, but to pages which look different from
+Inweb's usual output, is almost certainly best advised to make a new pattern
+based on <code>HTML</code> (a generic sort of page-builder), and go from there.</p>
+<h2>Where patterns are declared</h2>
+<p>As mentioned above, a pattern is an Inweb resource, so it must have a declaration.
+But unlike (say) languages, this can't be declared inside of another declaration:
+it has to be in its own file, which contains nothing else. That's because a
+pattern is seldom just the declaration: it almost always comes with a suite
+of other files — holding HTML, Javascript code, CSS styles, TeX macros,
+images, or whatever else might be needed. So in practice</p>
+<ul>
+<li>a pattern called <code>NAME</code> should occupy a directory also called <code>NAME</code>, in which</li>
+<li>the actual declaration is in a text file called <code>NAME.inweb</code>.</li>
+</ul>
+<p>As with other Inweb resources, patterns can only be used if Inweb can see them.
+Inweb has a handful of patterns built in, such as <code>HTML</code> and <code>GitHubPages</code>.
+Otherwise:</p>
+<ul>
+<li><code>-using DIRECTORY</code> will tell Inweb it can use the pattern in that directory; or</li>
+<li>if a web is a multi-file web stored in a directory, and that directory has a
+subdirectory called <code>Patterns</code>, then Inweb will be able to see all patterns
+in that directory when weaving the web; or</li>
+<li>if a colony declaration includes <code>patterns: DIRECTORY</code>, then Inweb will be
+able to see all patterns in that directory when weaving any web from the colony.</li>
+</ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="5-sol.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresschapter"><a href="2-cp.html">2</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresschapter"><a href="4-an.html">4</a></li><li class="progresschapter"><a href="5-al.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresscurrent">ap</li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="7-bn.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="5-sol.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresschapter"><a href="2-cp.html">2</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresschapter"><a href="4-an.html">4</a></li><li class="progresschapter"><a href="5-al.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresscurrent">ap</li><li class="progresssection"><a href="6-cp.html">cp</a></li><li class="progresssection"><a href="6-cll.html">cll</a></li><li class="progresssection"><a href="6-am.html">am</a></li><li class="progresssection"><a href="6-tp.html">tp</a></li><li class="progresssection"><a href="6-sop.html">sop</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="6-cp.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

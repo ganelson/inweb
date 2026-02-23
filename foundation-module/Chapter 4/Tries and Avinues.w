@@ -11,11 +11,11 @@ comparisons when sorting through possible outcomes based on a text.
 
 The trie is a tree with three kinds of node:
 
-(a) "Heads". Every trie has exactly one such node, and it's always the root.
+- "Heads". Every trie has exactly one such node, and it's always the root.
 There are two versions of this: a start head represents matching from the
 front of a text, whereas an end head represents matching from the back.
 
-(b) "Choices". A choice node has a given match character, say an "f", and
+- "Choices". A choice node has a given match character, say an "f", and
 represents which node to go to next if this is the current character in the
 text. It must either be a valid Unicode character or |TRIE_ANYTHING|, which
 is a wildcard representing "any text of any length here". Since a choice
@@ -23,7 +23,7 @@ must always lead somewhere, |on_success| must point to another node.
 There can be any number of choices at a given position, so choice nodes
 are always organised in linked lists joined by |next|.
 
-(c) "Terminals", always leaves, which have match character set to the
+- "Terminals", always leaves, which have match character set to the
 impossible value |TRIE_STOP|, and for which |match_outcome| is non-null; thus,
 different terminal nodes can result in different outcomes if they are ever
 reached at the end of a successful scan. A terminal node is always the only item

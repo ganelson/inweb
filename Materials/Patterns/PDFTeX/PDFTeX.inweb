@@ -1,8 +1,10 @@
 Pattern "PDFTeX" {
-	name: PDFTeX based on TeX
+	based on: TeX
 	initial extension: .tex
-	command: pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >WOVEN.console
-	command: PROCESS WOVEN.log
-	command: rm WOVEN.log
-	command: rm WOVEN.console
+	commands
+		pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >WOVEN.console
+		PROCESS WOVEN.log
+		rm WOVEN.log
+		rm WOVEN.console
+	end
 }

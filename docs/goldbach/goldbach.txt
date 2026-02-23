@@ -24,7 +24,8 @@ Goldbach, almost exactly a contemporary of Voltaire, was a good citizen
 of the great age of Enlightenment letter-writing. He and Euler exchanged
 scholarly letters for over thirty years, not something Euler would have
 kept up with a duffer. Goldbach was also not, as is sometimes said, a lawyer.
-See: http:<a href="mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html." class="external">mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html.</a>correspondence/letters/OO0765.pdf<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
+See: http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html.
+An edited transcription of the letter is at: http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
 </li></ul>
 
 S2.  <p>Computer verification has been made up to around 10^{18}, but by rather

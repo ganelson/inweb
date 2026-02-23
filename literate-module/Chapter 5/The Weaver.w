@@ -361,7 +361,7 @@ about breaking pages at chapters and sections fail to work. So:
 				tree_node *CL = WeaveTree::code_line(tree);
 				Trees::make_child(CL, state->ap);
 				if (Str::len(prefatory) > 0)
-					Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory), CL);
+					Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory, chunk->symbol_defined), CL);
 				Weaver::weave_code_excerpt(tree, chunk->code_excerpt, CL, W, C, S, chunk, chunk->first_line, state, wv, WebStructure::section_language(S));
 				Weaver::change_material(tree, state, COMMENTARY_MATERIAL, FALSE, NULL, NULL);
 			}
@@ -604,7 +604,7 @@ usage is rendered differently.
 		tree_node *CL = WeaveTree::code_line(tree);
 		Trees::make_child(CL, state->ap);
 		if (Str::len(prefatory) > 0)
-			Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory), CL);
+			Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory, NULL), CL);
 		Str::clear(prefatory);
 
 		@<Offer the line to the language to weave@>;
