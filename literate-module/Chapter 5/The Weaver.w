@@ -198,7 +198,7 @@ won't parse it further, but simply encapsulate it as a blob of Markdown content.
 @<Deal with a Markdown commentary chunk@> =
 	tree_node *C = WeaveTree::markdown_chunk(tree, chunk->as_markdown,
 		WebNotation::commentary_variation(wv->weave_web));
-	Trees::make_child(C, state->para_node);
+	Trees::make_child(C, state->ap);
 
 @<Deal with a holon@> =
 	state->line_break_pending = FALSE;

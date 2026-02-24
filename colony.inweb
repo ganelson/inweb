@@ -13,7 +13,7 @@ Colony {
 	member: "guide"           at "guide"
 	
 	Page "overview" {
-		Title: Welcome to the Inweb source
+		# Welcome to the Inweb Source
 
 		This is the home page for documentation, human-readable source code and
 		examples for the literate programming system Inweb. It's hosted on the Github

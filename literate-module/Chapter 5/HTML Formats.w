@@ -36,6 +36,7 @@ typedef struct HTML_render_state {
 	int carousel_number;
 	int slide_number;
 	int slide_of;
+	struct ls_paragraph *para_to_open;
 	struct asset_rule *copy_rule;
 } HTML_render_state;
 
@@ -53,6 +54,7 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
+	hrs.para_to_open = NULL;
 	hrs.copy_rule = Assets::new_rule(NULL, I"", I"privately copy", NULL);
 
 	Swarm::ensure_plugin(wv, I"Base");
@@ -507,18 +509,25 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	}
 
 @<Render a run of interior matter@> =
-	if (first_in_para) {
-		HTMLWeaving::paragraph_number(OUT, first_in_para);
-		first_in_para = NULL;
+	int closure_needed = TRUE;
+	if (M->type != weave_markdown_node_type) {
+		if (first_in_para) {
+			HTMLWeaving::paragraph_number(OUT, first_in_para);
+			first_in_para = NULL;
+		} else {
+			if (item_depth == 0) HTML_OPEN_WITH("p", "class=\"commentary\"");
+		}
 	} else {
-		if (item_depth == 0) HTML_OPEN_WITH("p", "class=\"commentary\"");
+		hrs->para_to_open = first_in_para;
+		first_in_para = NULL; closure_needed = FALSE;
 	}
 	while (M) {
 		Trees::traverse_from(M, &HTMLWeaving::render_visit, (void *) hrs, L+1);
+		if (M->type != weave_markdown_node_type) closure_needed = TRUE;
 		if ((M->next == NULL) || (HTMLWeaving::interior_material(M->next) == FALSE)) break;
 		M = M->next;
 	}
-	if (item_depth == 0) { HTML_CLOSE("p"); WRITE("\n"); }
+	if ((item_depth == 0) && (closure_needed)) { HTML_CLOSE("p"); WRITE("\n"); }
 	continue;
 
 @<Deal with a code material node@> =
@@ -968,8 +977,10 @@ that service uses to identify the video/audio in question.
 	OUTDENT;
 	int mode = 0;
 	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
-	if (first_in_para) {
-		HTMLWeaving::paragraph_number(OUT, first_in_para);
+	if ((first_in_para) || (hrs->para_to_open)) {
+		if (hrs->para_to_open) HTMLWeaving::paragraph_number(OUT, hrs->para_to_open);
+		else HTMLWeaving::paragraph_number(OUT, first_in_para);
+		hrs->para_to_open = NULL;
 		if ((C->content) && (C->content->down) && (C->content->down->type == PARAGRAPH_MIT)) {
 			mode = EXISTING_PAR_MDRMODE;
 			WRITE(" ");
@@ -1083,6 +1094,7 @@ amalgamate into a single HTML paragraph:
 =
 int HTMLWeaving::interior_material(tree_node *N) {
 	if (N->type == weave_commentary_node_type) return TRUE;
+	if (N->type == weave_markdown_node_type) return TRUE;
 	if (N->type == weave_url_node_type) return TRUE;
 	if (N->type == weave_inline_node_type) return TRUE;
 	if (N->type == weave_locale_node_type) return TRUE;

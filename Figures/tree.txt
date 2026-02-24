@@ -9,7 +9,8 @@ document weave order 0
           toc line - <S1, The conjecture> P1'The conjecture'
           toc line - <S2, Primality> P2'Primality'
         paragraph P1'The conjecture'
-          markdownUnknown node
+          material discussion
+            markdown (no details available)
           material code: C
             code line
               source_code <    3 and 5>
@@ -73,7 +74,8 @@ document weave order 0
               locale P1'The conjecture'
               commentary <.>
         paragraph P2'Primality'
-          markdownUnknown node
+          material discussion
+            markdown (no details available)
           material definition
             code line
               defn <define>

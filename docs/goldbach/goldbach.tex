@@ -245,13 +245,12 @@
 \weavesectionss{}{Summing Primes}{Summing Primes\quad$\P$}{\P}{}%
 \smallskip\par\noindent{\it Here we verify the conjecture for small numbers.}\smallskip\noindent
 \weavesection{1}{}{\quad$\S$1}{\S}{smpr}%
-\pdfximage height 10 cm{inweb/Examples/goldbach/Figures/Letter.jpg}
-\smallskip\noindent\hbox to\hsize{\hfill\pdfrefximage \pdflastximage\hfill}\smallskip
-
 <p>On 7 June 1742, Christian Goldbach wrote a letter from Moscow to Leonhard
 Euler in Berlin making &quot;eine conjecture hazardiren&quot; that every even number
 greater than 2 can be written as a sum of two primes.<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> Euler did not
 know if this was true, and nor does anyone else.</p>
+\pdfximage height 10 cm{inweb/Examples/goldbach/Figures/Letter.jpg}
+\smallskip\noindent\hbox to\hsize{\hfill\pdfrefximage \pdflastximage\hfill}\smallskip
 <p>Goldbach, a professor at St Petersburg and tutor to Tsar Peter II, wrote in
 several languages in an elegant cursive script, and was much valued as a
 letter-writer, though his reputation stands less high today.<sup id="fnred:2"><a href="#fn:2" rel="footnote">2</a></sup> All the same,
@@ -272,9 +271,11 @@ kept up with a duffer. Goldbach was also not, as is sometimes said, a lawyer.
 See: http://mathshistory.st-andrews.ac.uk/Biographies/Goldbach.html.
 An edited transcription of the letter is at: http://eulerarchive.maa.org//correspondence/letters/OO0765.pdf<a href="#fnref:2" title="return to text"> &#x21A9;</a></p>
 </li></ul>
+
 \weavesection{2}{}{\quad$\S$2}{\S}{smpr}%
 <p>Computer verification has been made up to around 10^{18}, but by rather
 better methods than the one we use here. We will only go up to:</p>
+
 \beginlines
 \smallskip\par\noindent ||{\ninebf define} |100|\special{PDF:0 g}||
 \endlines
@@ -288,6 +289,7 @@ better methods than the one we use here. We will only go up to:</p>
 \endlines
 \weavesection{2.1}{}{\quad$\S$2.1}{\S}{smpr}%
 <p>This ought to print:</p>
+
 \beginlines
 \smallskip\par\noindent |    $|\special{PDF:0 g}| |\pdfliteral direct{0 1 1 0 k}|goldbach/Tangled/goldbach|\special{PDF:0 g}||
 \smallskip\par\noindent |    4 = 2+2|
@@ -301,6 +303,7 @@ better methods than the one we use here. We will only go up to:</p>
 <p>We'll print each different pair of primes adding up to i. We
 only check in the range 2 &lt;= j &lt;= i/2 to avoid counting pairs
 twice over (thus 8 = 3+5 = 5+3, but that's hardly two different ways).</p>
+
 |\pdfdest num 100 fit $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Solve Goldbach's conjecture for i {\sevenss 2.1}}\special{PDF:0 g}$\rangle$ $\equiv$|
 \beginlines
 \smallskip\par\noindent |    printf|\special{PDF:0 g}|("%d"|\special{PDF:0 g}|, i|\special{PDF:0 g}|);|
@@ -324,12 +327,14 @@ is left, must be prime.</p>
 below), but (a) uses storage to hold the sieve, and (b) has to start right
 back at 2 - so it can't efficiently test just, say, the eight-digit numbers
 for primality.</p>
+
 \beginlines
 \smallskip\par\noindent |int|\special{PDF:0 g}| still_in_sieve|\special{PDF:0 g}|[RANGE|\special{PDF:0 g}| + 1|\special{PDF:0 g}|];|
 \smallskip\par\noindent |int|\special{PDF:0 g}| sieve_performed|\special{PDF:0 g}| = FALSE|\special{PDF:0 g}|;|
 \endlines
 \weavesection{2}{}{\quad$\S$2}{\S}{tsoe}%
 <p>We provide this as a function which determines whether a number is prime:</p>
+
 \beginlines
 \smallskip\par\noindent ||{\ninebf define} |1|\special{PDF:0 g}||
 \endlines
@@ -349,6 +354,7 @@ for primality.</p>
 then one of its factors must be smaller than the square root of <code>RANGE</code>. Thus,
 in a sieve of size 10000, one only needs to remove multiples of 2 up to 100,
 for example.</p>
+
 |\pdfdest num 100 fit $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Perform the sieve {\sevenss 2.1}}\special{PDF:0 g}$\rangle$ $\equiv$|
 \beginlines
 \smallskip\par\noindent |    |\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num 100 $\langle${\xreffont\pdfliteral direct{1 1 0 0 k}Start with all numbers from 2 upwards in the sieve {\sevenss 2.1.1}}\special{PDF:0 g}$\rangle$ \pdfendlink|;|

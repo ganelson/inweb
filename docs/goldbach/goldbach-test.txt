@@ -9,7 +9,8 @@ document weave order 1
           toc line - <S1, Storage> P1'Storage'
           toc line - <S2, Primality> P2'Primality'
         paragraph P1'Storage'
-          markdownUnknown node
+          material discussion
+            markdown (no details available)
           material code: C
             code line
               source_code <int still_in_sieve[RANGE + 1];>
@@ -18,7 +19,8 @@ document weave order 1
               source_code <int sieve_performed = FALSE;>
                           _iiipiiiiiiiiiiiiiiipppnnnnnp_
         paragraph P2'Primality'
-          markdownUnknown node
+          material discussion
+            markdown (no details available)
           material definition
             code line
               defn <define>
@@ -58,7 +60,8 @@ document weave order 1
               source_code <}>
                           _p_
         paragraph P2.1
-          markdownUnknown node
+          material discussion
+            markdown (no details available)
           material paragraph macro
             holon declaration <Perform the sieve> (definition)
           material code: C

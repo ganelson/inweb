@@ -80,7 +80,8 @@ int DebuggingWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_inline_node_type) @<Render inline@>
 	else if (N->type == weave_locale_node_type) @<Render locale@>
 	else if (N->type == weave_maths_node_type) @<Render maths@>
-	else WRITE("Unknown node");
+	else if (N->type == weave_extract_node_type) @<Render extract@>
+	else WRITE(" (no details available)");
 	WRITE("\n");
 	return TRUE;
 }
@@ -259,6 +260,10 @@ int DebuggingWeaving::render_visit(tree_node *N, void *state, int L) {
 @<Render item@> =
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
 	WRITE(" depth %d label <%S>", C->depth, C->label);
+
+@<Render extract@> =
+	weave_extract_node *C = RETRIEVE_POINTER_weave_extract_node(N->content);
+	WRITE(" <%S>", C->extract);
 
 @<Render grammar index@> =
 	;
