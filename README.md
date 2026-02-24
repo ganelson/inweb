@@ -1,6 +1,6 @@
 # Inweb 9.0
 
-[Version](notes/versioning.md): 9.0-beta+1B96 'Invasion' (23 February 2026)
+[Version](notes/versioning.md): 9.0-beta+1B97 'Invasion' (24 February 2026)
 
 ## About Inweb
 
@@ -16,7 +16,9 @@ Literate programming is a methodology created by Donald Knuth in the late
 be readable by humans as well as by other programs. Inweb is itself written as
 a web, and its human-readable form is a [companion website to this one](https://ganelson.github.io/inweb/index.html).
 
-For the Inweb manual, see [&#9733;&nbsp;inweb/Preliminaries](https://ganelson.github.io/inweb/inweb/M-iti).
+Inweb was considerably reconstructed in 2025, with new concepts such as notations
+introduced, and a new command-line interface. The documentation has entirely changed
+as a result: see [The Inweb Guide](https://ganelson.github.io/inweb/guide/index.html).
 
 ## Licence and copyright
 
