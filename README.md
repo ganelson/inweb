@@ -1,6 +1,6 @@
 # Inweb 9.0
 
-[Version](notes/versioning.md): 9.0-beta+1B97 'Invasion' (24 February 2026)
+[Version](notes/versioning.md): 9.0-beta+1B98 'Invasion' (25 February 2026)
 
 ## About Inweb
 
@@ -59,7 +59,7 @@ Make a directory in which to work: let's call this `work`. Then:
 	* `bash inweb/scripts/first.sh macosuniv`
 	* `bash inweb/scripts/first.sh unix`
 	* `bash inweb/scripts/first.sh windows`
-* Test that all is well: `inweb/Tangled/inweb -help`
+* Test that all is well: `inweb/Tangled/inweb help`
 
 Some notes on which platform to choose:
 * For Intel Macs running MacOS 10.13 ("High Sierra") or earlier, use `macos32`.
