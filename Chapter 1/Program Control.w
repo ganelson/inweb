@@ -7,7 +7,7 @@ The top level, which is little more than a demarcation between subcommands.
 @d PROGRAM_NAME "inweb"
 
 @ Almost all of the literate programming functionality which powers Inweb is
-now library-ized into //foundation//, but it is very slightly modified when
+now library-ized into //literate//, but it is very slightly modified when
 used inside Inweb itself, and those modifications come into effect when the
 following is defined:
 

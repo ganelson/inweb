@@ -6,9 +6,9 @@ To write rendering instructions for commentary or source code text.
 This section deals with commentary which is not written in Markdown format,
 but in Inweb's older format.
 
-The following takes text, divides it up at stroke-mark boundaries --
-that is, |this is inside|, this is outside -- and sends contiguous pieces
-of it either to |TextWeaver::inline_code_fragment| or |TextWeaver::commentary_fragment|
+The following takes text, divides it up at stroke-mark boundaries —
+that is, `this is inside`, this is outside — and sends contiguous pieces
+of it either to `TextWeaver::inline_code_fragment` or `TextWeaver::commentary_fragment`
 as appropriate.
 
 =
@@ -194,8 +194,8 @@ void TextWeaver::commentary_r(heterogeneous_tree *tree, tree_node *ap, text_stre
 @ This tests whether a cross-reference is allowed to begin or end: it must
 begin after and finish before a "boundary character".
 
-Note the one-sided treatment of |:|, which is a boundary after but not before,
-so that |http://| won't trigger a cross-reference with the standard |//|
+Note the one-sided treatment of `:`, which is a boundary after but not before,
+so that `http://` won't trigger a cross-reference with the standard `//`
 xref notation.
 
 =

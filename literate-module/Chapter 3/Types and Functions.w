@@ -2,17 +2,17 @@
 
 Basic support for languages to recognise structure and function declarations.
 
-@ For each |typedef struct| we find, we will make one of these:
+@ For each `typedef struct` we find, we will make one of these:
 
 =
 typedef struct language_type {
 	struct text_stream *structure_name;
 	int tangled; /* whether the structure definition has been tangled out */
 	struct ls_section *structure_header_in;
-	struct ls_line *structure_header_at; /* opening line of |typedef| */
-	struct ls_line *typedef_ends; /* closing line, where |}| appears */
-	struct linked_list *incorporates; /* of |language_type| */
-	struct linked_list *elements; /* of |structure_element| */
+	struct ls_line *structure_header_at; /* opening line of `typedef` */
+	struct ls_line *typedef_ends; /* closing line, where `}` appears */
+	struct linked_list *incorporates; /* of `language_type` */
+	struct linked_list *elements; /* of `structure_element` */
 	struct language_type *next_cst_alphabetically;
 	CLASS_DEFINITION
 } language_type;
@@ -70,12 +70,12 @@ language_type *Functions::new_struct(ls_web *W, text_stream *name, ls_section *S
 		if (placed == FALSE) last->next_cst_alphabetically = str;
 	}
 
-@ A language can also create an instance of |structure_element| to record the
-existence of the element |val|, and add it to the linked list of elements of
+@ A language can also create an instance of `structure_element` to record the
+existence of the element `val`, and add it to the linked list of elements of
 the structure being defined.
 
 In InC, only, certain element names used often in Inform's source code are
-given mildly special treatment. This doesn't amount to much. |allow_sharing|
+given mildly special treatment. This doesn't amount to much. `allow_sharing`
 has no effect on tangling, so it doesn't change the program. It simply
 affects the reports in the woven code about where structures are used.
 
@@ -115,9 +115,9 @@ Each function definition found results in one of these structures being made:
 
 =
 typedef struct language_function {
-	struct text_stream *function_name; /* e.g., |"cultivate"| */
-	struct text_stream *function_type; /* e.g., |"tree *"| */
-	struct text_stream *function_arguments; /* e.g., |"int rainfall)"|: note |)| */
+	struct text_stream *function_name; /* e.g., `"cultivate"` */
+	struct text_stream *function_type; /* e.g., `"tree *"` */
+	struct text_stream *function_arguments; /* e.g., `"int rainfall)"`: note `)` */
 	struct ls_section *function_section; /* which section it's defined in */
 	struct ls_line *function_header_at; /* where the first line of the header begins */
 	int within_namespace; /* written using InC namespace dividers */
@@ -168,8 +168,8 @@ functions defined in the same paragraph, but for now the overhead of creating
 a dictionary with hash-lookup seems greater than the plausible saving of time.
 The point of this check is to handle situations where the code in the web is
 offering alternative definitions of the same function, within some form of
-conditional compilation preprocessing -- if this, define |f| as this; otherwise,
-define |f| as that -- which can otherwise be read as two declarations of |f|,
+conditional compilation preprocessing — if this, define `f` as this; otherwise,
+define `f` as that — which can otherwise be read as two declarations of `f`,
 leading to spurious extra text at the weaving stage.
 
 @<Check the function is not a duplicate definition within the same paragraph@> =
@@ -243,7 +243,7 @@ int Functions::used_elsewhere(language_function *fn) {
 }
 
 @h Cataloguing.
-This implements the additional information in the |-structures| and |-functions|
+This implements the additional information in the `-structures` and `-functions`
 forms of section catalogue.
 
 =

@@ -68,7 +68,7 @@ pattern is a choice of format together with some naming conventions and
 auxiliary files. For example, <code>GitHubPages</code> is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.</li>
 <li>Whether a filter to particular tags is used.</li>
-<li>What subset of the web the user wants to weave -- by default the whole
+<li>What subset of the web the user wants to weave — by default the whole
 thing, but sometimes just one chapter, or just one section, and sometimes
 a special setting for &quot;do all chapters one at a time&quot; or &quot;do all sections
 one at a time&quot;, a procedure called a &quot;swarm&quot;.</li>
@@ -146,7 +146,7 @@ image carousel.</p>
 <ul>
 <li><a href="5-df.html" class="internal">Debugging Format</a> renders the weave tree as a plain text display, and
 is solely for testing.</li>
-<li><a href="5-tf.html" class="internal">TeX Format</a> renders the weave tree as TeX markup code -- in the early
+<li><a href="5-tf.html" class="internal">TeX Format</a> renders the weave tree as TeX markup code — in the early
 days of literate programming, this was the sole weave format used; now it
 has been eclipsed by...</li>
 <li>...<a href="5-hf.html" class="internal">HTML Formats</a>, which renders to HTML and also handles ePub ebooks.</li>
@@ -177,8 +177,8 @@ context and explanation to understand what is being linked to.<a href="#fnref:4"
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Finally on weaving, special mention should go to <a href="5-tc.html" class="internal">The Collater</a>, a
 subsystem which amounts to a stream editor. Its role is to work through a
-&quot;template&quot; and substitute in material from outside -- from the weave rendering,
-from the bibliographic data for a web, and so on -- to produce a final file.
+&quot;template&quot; and substitute in material from outside — from the weave rendering,
+from the bibliographic data for a web, and so on — to produce a final file.
 For example, a simple use of the collater is to work through the template:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -216,8 +216,8 @@ the right amount of output here. Small webs and large webs have different needs.
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbose</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_reported_weave_path</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">file_weaving_reports_made</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">files_copied</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |weave_copy_record| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">plugins_copied</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |weave_plugin| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">files_copied</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>weave_copy_record</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">plugins_copied</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>weave_plugin</code> */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">weave_reporting</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">weave_copy_record</span><span class="plain-syntax"> {</span>
@@ -437,8 +437,8 @@ as necessary.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Swarming.</b>  A &quot;weave&quot; occurs when we take a portion of a literate web -- one section, one
-chapter, or the whole thing -- and write it out in a human-readable form (or
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Swarming.</b>  A &quot;weave&quot; occurs when we take a portion of a literate web — one section, one
+chapter, or the whole thing — and write it out in a human-readable form (or
 in some intermediate state which can be made into one, like a TeX file).
 There can be many weaves in a single run, in which case we call the resulting
 flurry a &quot;swarm&quot;, like the glittering cloud of locusts in the title of Chapter
@@ -544,9 +544,9 @@ the call comes from Program Control).</p>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">post_processing_results</span><span class="plain-syntax">; </span><span class="comment-syntax">/* optional typesetting diagnostics after running through */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">self_contained</span><span class="plain-syntax">; </span><span class="comment-syntax">/* make a self-contained file if possible */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">breadcrumbs</span><span class="plain-syntax">; </span><span class="comment-syntax">/* non-standard breadcrumb trail, if any */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">navigation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* navigation links, or |NULL| if not supplied */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">plugins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |weave_plugin|: these are for HTML extensions */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour_schemes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |colour_scheme|: these are for HTML */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">navigation</span><span class="plain-syntax">; </span><span class="comment-syntax">/* navigation links, or <code>NULL</code> if not supplied */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">plugins</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>weave_plugin</code>: these are for HTML extensions */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">colour_schemes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>colour_scheme</code>: these are for HTML */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">weave_reporting</span><span class="plain-syntax"> *</span><span class="identifier-syntax">reportage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* how to report what has been done */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">paragraphs_woven</span><span class="plain-syntax">;</span>
 

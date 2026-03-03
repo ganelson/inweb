@@ -16,7 +16,7 @@ void Time::begin(void) {
 	fix_time_mode = FALSE;
 }
 
-@ The command line option |-fixtime| causes any tool compiled with Foundation
+@ The command line option `-fixtime` causes any tool compiled with Foundation
 to fix the date as 11 a.m. on 28 March 2016, which is Inform's birthday. This
 makes it easier to automate testing, since we can compare output generated
 in one session with output generated another, even though that was on two
@@ -55,10 +55,10 @@ method of calculation even though the same answer was required. We'll
 instead follow the algorithm of J.-M. Oudin, first published in the
 Bulletin astronomique in 1940, as adapted by the US Naval Observatory.
 Oudin corrected a small mistake in the calculation by Gauss (1800) of the
-Allgemeiner Reichskalender (1776) which reconciled Lutheran Easter with
+_Allgemeiner Reichskalender_ (1776) which reconciled Lutheran Easter with
 Gregorian, which in turn followed the reforms of Clavius et al. (1582),
-which in turn... and so on. See Leofranc Holford-Strevens, "The History of
-Time" (Oxford, 2005).
+which in turn... and so on. See Leofranc Holford-Strevens, _The History of
+Time_ (Oxford, 2005).
 
 In principle we calculate the first Sunday after the first ecclesiastical
 moon that occurs on or after March 21. An "ecclesiastical moon" is one as
@@ -122,7 +122,7 @@ int Time::feast(void) {
 The following provides a sort of hierarchical stopwatch. In principle it
 could time anything (though not very accurately), but it's mainly intended
 for monitoring how long programs internally work, since it reads time from
-the |clock()| (i.e., how much CPU time the current process has taken) rather
+the `clock()` (i.e., how much CPU time the current process has taken) rather
 than from the actual time of day.
 
 =
@@ -132,14 +132,14 @@ typedef struct stopwatch_timer {
 	clock_t start_time;
 	clock_t end_time;
 	int time_taken; /* measured in centiseconds of CPU time */
-	linked_list *stages_chronological; /* of |stopwatch_timer| */
-	linked_list *stages_sorted; /* of |stopwatch_timer| */
+	linked_list *stages_chronological; /* of `stopwatch_timer` */
+	linked_list *stages_sorted; /* of `stopwatch_timer` */
 	CLASS_DEFINITION
 } stopwatch_timer;
 
-@ If |within| is not null, it must be another stopwatch which is also running;
+@ If `within` is not null, it must be another stopwatch which is also running;
 the idea is that the new stopwatch is to time a sub-task of the main task which
-|within| is timing.
+`within` is timing.
 
 =
 stopwatch_timer *Time::start_stopwatch(stopwatch_timer *within, text_stream *name) {
@@ -213,7 +213,7 @@ void Time::resume_stopwatch(stopwatch_timer *st) {
 }
 
 @ All of which enables a neat hierarchical printout. The task is timed to
-an accuracy of 1/1000th of the |total| supplied, and sub-tasks taking less
+an accuracy of 1/1000th of the `total` supplied, and sub-tasks taking less
 than that are omitted from the log.
 
 =

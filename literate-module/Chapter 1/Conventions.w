@@ -97,19 +97,19 @@ int Conventions::type(int conv) {
 	internal_error("unimplemented convention");
 }
 
-@ In particular, |COMMENTARY_MARKUP_LSCONVENTION| has to be one of these:
+@ In particular, `COMMENTARY_MARKUP_LSCONVENTION` has to be one of these:
 
 @e MARKDOWN_COMMENTARY_MARKUPCHOICE from 1
 @e SIMPLIFIED_COMMENTARY_MARKUPCHOICE
 @e TEX_COMMENTARY_MARKUPCHOICE
 
-@ And |SUMMARY_UNDER_TITLE_LSCONVENTION| must be one of:
+@ And `SUMMARY_UNDER_TITLE_LSCONVENTION` must be one of:
 
 @e PURPOSE_SUMMARYCHOICE from 1
 @e PURPOSE_IF_ITALIC_SUMMARYCHOICE
 @e NO_SUMMARYCHOICE
 
-@ And |HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION| must be one of:
+@ And `HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION` must be one of:
 
 @e NO_ABBREVCHOICE from 1
 @e YES_ABBREVCHOICE
@@ -282,8 +282,8 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 
 =
 typedef struct ls_conventions {
-	int level; /* one of the |*_LSCONVENTIONLEVEL| values above */
-	int setting_made[NO_DEFINED_LSCONVENTION_VALUES]; /* |TRUE| only if an explicit choice made */
+	int level; /* one of the `*_LSCONVENTIONLEVEL` values above */
+	int setting_made[NO_DEFINED_LSCONVENTION_VALUES]; /* `TRUE` only if an explicit choice made */
 	int integer_value[NO_DEFINED_LSCONVENTION_VALUES];
 	struct text_stream *textual_value[NO_DEFINED_LSCONVENTION_VALUES];
 	struct text_stream *textual_value2[NO_DEFINED_LSCONVENTION_VALUES];

@@ -18,19 +18,19 @@ int SoundFiles::get_AIFF_duration(FILE *pFile, unsigned int *pDuration,
     unsigned int sampleSize;
 
     if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
-    if (sig != 0x464F524D) return FALSE; /* |"FORM"| indicating an IFF file */
+    if (sig != 0x464F524D) return FALSE; /* `"FORM"` indicating an IFF file */
 
     if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
 
     if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
-    if (sig != 0x41494646) return FALSE; /* |"AIFF"| indicating an AIFF file */
+    if (sig != 0x41494646) return FALSE; /* `"AIFF"` indicating an AIFF file */
 
     /* Read chunks, skipping over those we are not interested in */
     while (TRUE) {
         if (!BinaryFiles::read_int32(pFile, &chunkID)) return FALSE;
         if (!BinaryFiles::read_int32(pFile, &chunkLength)) return FALSE;
 
-        if (chunkID == 0x434F4D4D) { /* |"COMM"| indicates common AIFF data */
+        if (chunkID == 0x434F4D4D) { /* `"COMM"` indicates common AIFF data */
             if (chunkLength < 18) return FALSE; /* Check we have enough data to read */
 
             if (!BinaryFiles::read_int16(pFile, pChannels))          return FALSE;
@@ -70,7 +70,7 @@ int SoundFiles::get_OggVorbis_duration(FILE *pFile, unsigned int *pDuration,
     unsigned char buffer[256];
 
     if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
-    if (sig != 0x4F676753) return FALSE; /* |"OggS"| indicating an OGG file */
+    if (sig != 0x4F676753) return FALSE; /* `"OggS"` indicating an OGG file */
 
     /* Check OGG version is zero */
     if (!BinaryFiles::read_int8(pFile, &version)) return FALSE;
@@ -90,10 +90,10 @@ int SoundFiles::get_OggVorbis_duration(FILE *pFile, unsigned int *pDuration,
     if (packetType != 1) return FALSE;
 
     if (!BinaryFiles::read_int32(pFile, &vorbisSig1)) return FALSE;
-    if (vorbisSig1 != 0x766F7262) return FALSE;   /* |"VORB"| */
+    if (vorbisSig1 != 0x766F7262) return FALSE;   /* `"VORB"` */
 
     if (!BinaryFiles::read_int16(pFile, &vorbisSig2)) return FALSE;
-    if (vorbisSig2 != 0x6973) return FALSE;   /* |"IS"| */
+    if (vorbisSig2 != 0x6973) return FALSE;   /* `"IS"` */
 
     /* Check Vorbis version is zero */
     if (!BinaryFiles::read_int32(pFile, &version)) return FALSE;
@@ -117,7 +117,7 @@ int SoundFiles::get_OggVorbis_duration(FILE *pFile, unsigned int *pDuration,
     if (pBitsPerSecond == 0) return FALSE;
 
     /* Search for the final Ogg page (near the end of the file) to read duration, */
-    /* i.e., read the last 4K of the file and look for the final |"OggS"| sig */
+    /* i.e., read the last 4K of the file and look for the final `"OggS"` sig */
     if (fseek(pFile, 0, SEEK_END) != 0) return FALSE;
     fileLength = (unsigned int) ftell(pFile);
     if (fileLength < 4096) seekPos = 0;
@@ -148,7 +148,7 @@ int SoundFiles::get_OggVorbis_duration(FILE *pFile, unsigned int *pDuration,
 
     if (fseek(pFile, (long) lastSig, SEEK_SET) != 0) return FALSE;
     if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
-    if (sig != 0x4F676753) return FALSE; /* |"OggS"| indicating an OGG file */
+    if (sig != 0x4F676753) return FALSE; /* `"OggS"` indicating an OGG file */
 
     /* Check OGG version is zero */
     if (!BinaryFiles::read_int8(pFile, &version)) return FALSE;
@@ -196,7 +196,7 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
 
     if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
 
-    /* |"RIFF"| indicating a RIFF file */
+    /* `"RIFF"` indicating a RIFF file */
     if (sig == 0x52494646) {
         /* Skip the filesize and typeID */
         if (fseek(pFile, 8, SEEK_CUR) != 0) return FALSE;
@@ -205,7 +205,7 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
         if (!BinaryFiles::read_int32(pFile, &sig)) return FALSE;
     }
 
-    /* |"MThd"| indicating a MIDI file */
+    /* `"MThd"` indicating a MIDI file */
     if (sig != 0x4D546864) return FALSE;
 
     /* Read length of chunk */
@@ -246,7 +246,7 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
     /* Skip any remaining bytes in the MThd chunk */
     if (fseek(pFile, (long) (length - 6), SEEK_CUR) != 0) return FALSE;
 
-    /* Keep reading chunks, looking for |"MTrk"| */
+    /* Keep reading chunks, looking for `"MTrk"` */
     do {
         /* Read chunk signature and length */
         if (!BinaryFiles::read_int32(pFile, &sig)) {
@@ -257,7 +257,7 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
 
         start_of_chunk_data = (unsigned int) ftell(pFile);
 
-        if (sig == 0x4D54726B) { /* |"MTrk"| */
+        if (sig == 0x4D54726B) { /* `"MTrk"` */
             /* Read each event, looking for information before the real tune starts, e.g., tempo */
             do {
                 /* Read the number of clocks since the previous event */

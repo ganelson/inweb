@@ -13,14 +13,14 @@ or preference files.
 This section provides encoding and decoding facilities. It is intended to comply
 with //ECMA-404 -> https://www.ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf//,
 except that (i) it disallows repetition the same key in the same object, and (ii)
-text can only be used in the Basic Multilingual Plane of Unicode points |0x0000|
-to |0xffff|.
+text can only be used in the Basic Multilingual Plane of Unicode points `0x0000`
+to `0xffff`.
 
 There are no size maxima or limitations. Still, this code was written at typing speed,
 and no effort has gone into reducing memory usage or running time in the face of
 large (or malicious) JSON content. Error reporting is also limited in fulsomeness.
 
-See the |foundation-test| test case |json| for many exercises of the code below;
+See the `foundation-test` test case `json` for many exercises of the code below;
 do not change this section without checking that it continues to pass.
 
 @h Data model.
@@ -31,7 +31,7 @@ and then only certain elements are meaningful depending on type.
 
 These are exactly the JSON types except that numbers are split between integer
 and floating-point versions (the conflation of the two is where the Javascript
-origins of JSON show through), and that the type |ERROR_JSONTYPE| represents
+origins of JSON show through), and that the type `ERROR_JSONTYPE` represents
 invalid data resulting from attempting to decode erroneous JSON.
 
 @e NUMBER_JSONTYPE from 1
@@ -67,9 +67,9 @@ typedef struct JSON_value {
 	double if_double;
 	struct text_stream *if_string;
 	int if_boolean;
-	struct linked_list *if_list; /* of |JSON_value| */
-	struct dictionary *dictionary_if_object; /* to |JSON_value| */
-	struct linked_list *list_if_object; /* of |text_stream| */
+	struct linked_list *if_list; /* of `JSON_value` */
+	struct dictionary *dictionary_if_object; /* to `JSON_value` */
+	struct linked_list *list_if_object; /* of `text_stream` */
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_value;
@@ -120,7 +120,7 @@ JSON_value *JSON::new_string(text_stream *S) {
 	return value;
 }
 
-@ JSON arrays -- lists, in effect -- should be created in an empty state, and
+@ JSON arrays — lists, in effect — should be created in an empty state, and
 then have entries added sequentially:
 
 =
@@ -141,7 +141,7 @@ JSON_value *JSON::add_to_array(JSON_value *array, JSON_value *new_entry) {
 	return array;
 }
 
-@ Similarly, JSON objects -- dictionaries of key-value pairs, in effect --
+@ Similarly, JSON objects — dictionaries of key-value pairs, in effect —
 should be created in an empty state, and then have key-value pairs added as needed:
 
 =
@@ -166,7 +166,7 @@ JSON_value *JSON::add_to_object(JSON_value *obj, text_stream *key, JSON_value *v
 	return obj;
 }
 
-@ The following looks up a key in an object, returning |NULL| if and only if
+@ The following looks up a key in an object, returning `NULL` if and only if
 it is not present:
 
 =
@@ -224,9 +224,9 @@ int JSON::eq(JSON_value *val1, JSON_value *val2) {
 We do no actual file-handling in this section, but the following decoder can
 be pointed to the contents of UTF-8 text file as needed.
 
-The decoder returns a non-|NULL| pointer in all cases. If the text contains
+The decoder returns a non-`NULL` pointer in all cases. If the text contains
 any malformed JSON anywhere inside it, this pointer will be to a value of type
-|ERROR_JSONTYPE|. Such a value should be thrown away as soon as the error
+`ERROR_JSONTYPE`. Such a value should be thrown away as soon as the error
 message is made use of.
 
 =
@@ -260,13 +260,13 @@ JSON_value *JSON::decode_error_q(text_stream *err, text_file_position *tfp,
 	return value;
 }
 
-@ This decodes the text in the character position range |[from, to)| as a
+@ This decodes the text in the character position range `[from, to)` as a
 JSON value.
 
-The possibilities here are |[ ... ]| for an array, |{ ... }| for an object,
-|"..."| for a string, a token beginning with a digit or a minus sign for a
-number (note that |+| and |.| are not allowed to open a number according to
-the JSON standard), and the special cases |true|, |false| and |null|.
+The possibilities here are `[ ... ]` for an array, `{ ... }` for an object,
+`"..."` for a string, a token beginning with a digit or a minus sign for a
+number (note that `+` and `.` are not allowed to open a number according to
+the JSON standard), and the special cases `true`, `false` and `null`.
 
 =
 JSON_value *JSON::decode_range(text_stream *T, int from, int to, text_file_position *tfp) {
@@ -311,9 +311,9 @@ JSON_value *JSON::decode_range(text_stream *T, int from, int to, text_file_posit
 	last_c = Str::get_at(T, last_nws);
 
 @ So now we have individual decoder functions for each type. First, arrays, where
-now the range |[from, to)| represents what is inside the square brackets: this
+now the range `[from, to)` represents what is inside the square brackets: this
 needs to be a comma-separated list. We follow ECMA strictly in disallowing a final
-comma before the |]|, unlike some JSON-like parsers.
+comma before the `]`, unlike some JSON-like parsers.
 
 =
 JSON_value *JSON::decode_array(JSON_value *array, text_stream *T, int from, int to,
@@ -384,7 +384,7 @@ JSON_value *JSON::decode_object(JSON_value *obj, text_stream *T, int from, int t
 }
 
 @ Note that we allow key names to include all kinds of unconscionable garbage,
-as ECMA requires. |\u0003\"\t\t\t| is a valid JSON key name; so is the empty string.
+as ECMA requires. `\u0003\"\t\t\t` is a valid JSON key name; so is the empty string.
 
 We are however slightly stricter than ECMA in that we disallow duplicate keys
 in the same object. ECMA says this is a "semantic consideration that may be defined
@@ -426,7 +426,7 @@ JSON_value *JSON::decode_object_entry(JSON_value *obj, text_stream *T, int from,
 @ Numbers are annoying to decode since they can be given either in a restricted
 floating-point syntax, or in decimal. ECMA is slippery on the question of exactly
 what floating-point numbers can be represented, but it's common to consider
-them as being |double|, so we'll follow suit.
+them as being `double`, so we'll follow suit.
 
 =
 JSON_value *JSON::decode_number(text_stream *T, int from, int to, text_file_position *tfp) {
@@ -473,7 +473,8 @@ JSON_value *JSON::decode_string(text_stream *T, int from, int to, text_file_posi
 		if (c == '\\') {
 			i++;
 			c = Str::get_at(T, i);
-			if (Characters::iscntrl(c)) return JSON::decode_error(I"unescaped control character", tfp);
+			if (Characters::iscntrl(c))
+				return JSON::decode_error(I"unescaped control character", tfp);
 			switch (c) {
 				case 'b': c = 8; break;
 				case 't': c = 9; break;
@@ -498,7 +499,7 @@ JSON_value *JSON::decode_string(text_stream *T, int from, int to, text_file_posi
 
 @ We don't quite fully implement ECMA here: the following is fine for code points
 in the Basic Multilingual Plane, but we don't handle the curious UTF-16 surrogate pair
-rule for code points between |0x10000| and |0x10fff|.
+rule for code points between `0x10000` and `0x10fff`.
 
 @<Decode a hexadecimal Unicode escape@> =
 	if (i+4 >= to) return JSON::decode_error(I"incomplete '\\u' escape", tfp);
@@ -607,7 +608,7 @@ good alternative specifications. Note that the empty list is not allowed.
 
 =
 typedef struct JSON_requirement {
-	struct linked_list *alternatives; /* of |JSON_single_requirement| */
+	struct linked_list *alternatives; /* of `JSON_single_requirement` */
 	CLASS_DEFINITION
 } JSON_requirement;
 
@@ -637,8 +638,8 @@ typedef struct JSON_single_requirement {
 	CLASS_DEFINITION
 } JSON_single_requirement;
 
-@ Exactly one of |this_requirement|, |this_value| and |this_type| should be
-non-|NULL|, so we have one constructor function for each case:
+@ Exactly one of `this_requirement`, `this_value` and `this_type` should be
+non-`NULL`, so we have one constructor function for each case:
 
 =
 JSON_single_requirement *JSON::require_requirement(JSON_requirement *req) {
@@ -671,11 +672,11 @@ JSON_single_requirement *JSON::require_type(int t) {
 typedef struct JSON_type {
 	int JSON_type;
 
-	struct linked_list *if_list; /* of |JSON_requirement| */
+	struct linked_list *if_list; /* of `JSON_requirement` */
 	struct JSON_requirement *all_if_list;
 
-	struct dictionary *dictionary_if_object; /* to |JSON_pair_requirement| */
-	struct linked_list *list_if_object; /* of |text_stream| */
+	struct dictionary *dictionary_if_object; /* to `JSON_pair_requirement` */
+	struct linked_list *list_if_object; /* of `text_stream` */
 
 	struct text_stream *if_error;
 	CLASS_DEFINITION
@@ -712,7 +713,7 @@ JSON_type *JSON::new_type_requirement(int t) {
 }
 
 @ A convenience for "the value must be an array of any number of entries, each
-of which meets the requirement |E_req|":
+of which meets the requirement `E_req`":
 
 =
 JSON_single_requirement *JSON::require_array_of(JSON_requirement *E_req) {
@@ -722,7 +723,7 @@ JSON_single_requirement *JSON::require_array_of(JSON_requirement *E_req) {
 }
 
 @ If an array wants to be a tuple with a fixed number of entries, each with
-its own requirement, then instead call |JSON::require_type(ARRAY_JSONTYPE)| and
+its own requirement, then instead call `JSON::require_type(ARRAY_JSONTYPE)` and
 then make a number of calls to the following in sequence:
 
 =
@@ -734,7 +735,7 @@ void JSON::require_entry(JSON_single_requirement *array_sr, JSON_requirement *en
 	ADD_TO_LINKED_LIST(entry_sr, JSON_requirement, array_sr->this_type->if_list);
 }
 
-@ Similarly, create an object requirement with |JSON::require_type(OBJECT_JSONTYPE)|
+@ Similarly, create an object requirement with `JSON::require_type(OBJECT_JSONTYPE)`
 and then either require or allow key-value pairs with:
 
 =
@@ -761,7 +762,7 @@ void JSON::require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key,
 	if (de) de->value = pr;
 }
 
-@ This then extracts the requirement on a given key, or returns |NULL| is if
+@ This then extracts the requirement on a given key, or returns `NULL` is if
 is not permitted:
 
 =
@@ -787,13 +788,12 @@ JSON_single_requirement *JSON::error_sr(text_stream *msg) {
 @h Validation.
 To "validate" a JSON value is to determine that it meets some //JSON_requirement//.
 
-The following returns |TRUE| if the value meets the requirement in full;
-if not, |FALSE|, and then if |errs| is not null, a list of error messages is
-appended to the linked list |errs|.
+The following returns `TRUE` if the value meets the requirement in full;
+if not, `FALSE`, and then if `errs` is not null, a list of error messages is
+appended to the linked list `errs`.
 
 The stack here is used to give better error messages by locating where the
-problem was: e.g. |"object.coordinates[1]"| is the result of the stack
-holding |"object" > ".cooordinates" > "[1]"|.
+problem was.
 
 =
 int JSON::validate(JSON_value *val, JSON_requirement *req, linked_list *errs) {
@@ -973,12 +973,12 @@ form, exactly as we do with JSON itself, and here goes.
 
 This is an example of the syntax we parse. It's JSON except that
 
-- the type names |number|, |double|, |string|, |boolean| and |null| are
+- the type names `number`, `double`, `string`, `boolean` and `null` are
 used in place of their respective values;
-- a question mark |?| before the name of a key means that it is optional;
-- if an array has one entry followed by an asterisk |*|, it means
+- a question mark `?` before the name of a key means that it is optional;
+- if an array has one entry followed by an asterisk `*`, it means
 "any number of entries, each of which must match this";
-- |<name>| refers to a requirement recorded in the |known_names| dictionary.
+- `<name>` refers to a requirement recorded in the `known_names` dictionary.
 
 For example:
 
@@ -996,7 +996,7 @@ For example:
 This function is essentially the same as //JSON::decode//, but returning a
 requirement rather than a value.
 
-Note that |known_names| can be |NULL| to have it not recognise any such names;
+Note that `known_names` can be `NULL` to have it not recognise any such names;
 there's no need to create an empty dictionary if this feature is unwanted.
 
 =
@@ -1004,7 +1004,7 @@ JSON_requirement *JSON::decode_req(text_stream *T, dictionary *known_names) {
 	return JSON::decode_req_range(T, 0, Str::len(T), known_names);
 }
 
-@ This decodes the text in the character position range |[from, to)| as a
+@ This decodes the text in the character position range `[from, to)` as a
 JSON requirement.
 
 =
@@ -1047,9 +1047,9 @@ JSON_requirement *JSON::decode_req_alternative(JSON_requirement *req, text_strea
 	return JSON::add_alternative(req, sing);
 }
 
-@ Note that the keyword |null| is ambiguous in the grammar for JSON requirements:
-does it mean "the value |null|", or does it mean "any value of the type |null|"?
-This makes no difference because the type |null| admits only the value |null|, but
+@ Note that the keyword `null` is ambiguous in the grammar for JSON requirements:
+does it mean "the value `null`", or does it mean "any value of the type `null`"?
+This makes no difference because the type `null` admits only the value `null`, but
 for what it's worth, we opt for the value.
 
 =
@@ -1255,7 +1255,7 @@ so that they are not well-founded. For example:
 	set->all_if_list = JSON::single_choice(set);
 =
 
-This is not useless: it matches, say, |[]|, |[ [] ]| and |[ [], [ [] ] ]|
+This is not useless: it matches, say, `[]`, `[ [] ]` and `[ [], [ [] ] ]`
 and other constructions giving amusement to set theorists. But it would cause
 the following to hang. Note that requirements read in from files (see below)
 are always well-founded, and so do not have this issue.
@@ -1330,7 +1330,7 @@ void JSON::encode_type(OUTPUT_STREAM, JSON_type *type) {
 
 @h Reading requirements files.
 This convenient function reads in a set of requirements from a text file. Each
-requirement should begin |<name> ::=|, and then continues until the next such
+requirement should begin `<name> ::=`, and then continues until the next such
 header, or the end of the file. So for example:
 = (text)
 	! My scheme for JSON files describing geographical locations
@@ -1343,15 +1343,15 @@ header, or the end of the file. So for example:
 		"longitude": double,
 	}
 =
-is a valid file declaring two requirements. Forward references are not allowed --
-e.g., <position> can refer to <optional-letter> but not vice versa -- and
+is a valid file declaring two requirements. Forward references are not allowed —
+e.g., <position> can refer to <optional-letter> but not vice versa — and
 therefore the requirements read in will always be well-founded. Comments are
-lines beginning with |!|; other than comments, only white space is permitted
+lines beginning with `!`; other than comments, only white space is permitted
 before the first requirement begins.
 
 Note that the function //JSON::read_requirements_file// returns a dictionary
 of the requirements it has read, by name (but without their angle-brackets):
-here, it would have two keys, |optional-letter| and |position|.
+here, it would have two keys, `optional-letter` and `position`.
 
 =
 typedef struct JSON_rrf_state {

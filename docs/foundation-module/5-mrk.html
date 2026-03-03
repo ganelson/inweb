@@ -260,7 +260,7 @@ new link references dictionary, use plain CommonMark, perform both phases.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax">) </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"======\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tree_supplied</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">; </span><span class="comment-syntax">/* i.e., the same tree we were given */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">phase_I</span><span class="plain-syntax"> == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">phase_II</span><span class="plain-syntax"> == </span><span class="constant-syntax">TRUE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;    </span><span class="comment-syntax">/* i.e., just the |MATERIAL_MIT| subtree */</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">down</span><span class="plain-syntax">;    </span><span class="comment-syntax">/* i.e., just the <code>MATERIAL_MIT</code> subtree */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax">;                    </span><span class="comment-syntax">/* i.e., the whole tree we made */</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -342,7 +342,8 @@ files: they render to nothing in themselves.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Next we have the (other) &quot;container block&quot; items, which can contain either
-other containers (though not <code>DOCUMENT_MIT) or leaf blocks. An </code>ORDERED_LIST_MIT<code>can only contain</code>ORDERED_LIST_ITEM_MIT| blocks, and similarly for unordered lists.</p>
+other containers (though not <code>DOCUMENT_MIT</code>) or leaf blocks. An <code>ORDERED_LIST_MIT</code>
+can only contain <code>ORDERED_LIST_ITEM_MIT</code> blocks, and similarly for unordered lists.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">BLOCK_QUOTE_MIT</span> 
 </pre>
@@ -603,7 +604,7 @@ or three items per line, so the memory overhead is harmless enough.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">markdown_item</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the |*_MIT| types above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the <code>*_MIT</code> types above */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* text storage for inline items */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sliced_from</span><span class="plain-syntax">;</span>
@@ -1215,7 +1216,7 @@ destination <code>https://supervillain.com/secret-lair</code> and title <code>&q
 
 <span class="type-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="function-syntax">Markdown::new_links_dictionary</span><button class="popup" onclick="togglePopup('usagePopup58')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup58">Usage of <span class="code-font"><span class="function-syntax">Markdown::new_links_dictionary</span></span>:<br/><a href="5-mrk.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">md_links_dictionary</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dict</span><span class="plain-syntax"> = </span><a href="2-dct.html#SP2" class="function-link"><span class="function-syntax">Dictionaries::new</span></a><span class="plain-syntax">(32, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="comment-syntax">/* of |md_link_dictionary_entry| */</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">dict</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dict</span><span class="plain-syntax"> = </span><a href="2-dct.html#SP2" class="function-link"><span class="function-syntax">Dictionaries::new</span></a><span class="plain-syntax">(32, </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">); </span><span class="comment-syntax">/* of <code>md_link_dictionary_entry</code> */</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">dict</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

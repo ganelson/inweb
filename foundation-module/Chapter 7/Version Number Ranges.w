@@ -4,15 +4,15 @@ Ranges of acceptable version numbers.
 
 @h Ranges.
 We often want to check if a semver lies in a given precedence range, which we
-store as an "interval" in the mathematical sense. For example, the range |[2,6)|
+store as an "interval" in the mathematical sense. For example, the range `[2,6)`
 means all versions from 2.0.0 (inclusve) up to, but not equal to, 6.0.0. The
 lower end is called "closed" because it includes the end-value 2.0.0, and the
 upper end "open" because it does not. An infinite end means that there
 os no restriction in that direction; an empty end means that, in fact, the
 interval is the empty set, that is, that no version number can ever satisfy it.
 
-The |end_value| element is meaningful only for |CLOSED_RANGE_END| and |OPEN_RANGE_END|
-ends. If one end is marked |EMPTY_RANGE_END|, so must the other be: it makes
+The `end_value` element is meaningful only for `CLOSED_RANGE_END` and `OPEN_RANGE_END`
+ends. If one end is marked `EMPTY_RANGE_END`, so must the other be: it makes
 no sense for an interval to be empty seen from one end but not the other.
 
 @e CLOSED_RANGE_END from 1
@@ -32,8 +32,8 @@ typedef struct semver_range {
 	CLASS_DEFINITION
 } semver_range;
 
-@ As hinted above, the notation |[| and |]| is used for closed ends, and |(|
-and |)| for open ones.
+@ As hinted above, the notation `[` and `]` is used for closed ends, and `(`
+and `)` for open ones.
 
 =
 void VersionNumberRanges::write_range(OUTPUT_STREAM, semver_range *R) {
@@ -72,14 +72,14 @@ int VersionNumberRanges::is_any_range(semver_range *R) {
 }
 
 @ The "compatibility" range for a given version lies at the heart of semver:
-to be compatible with version |V|, version |W| must be of equal or greater
+to be compatible with version `V`, version `W` must be of equal or greater
 precedence, and must have the same major version number. For example,
-for |2.1.7| the range will be |[2.1.7, 3-A)|, all versions at least 2.1.7 but
+for `2.1.7` the range will be `[2.1.7, 3-A)`, all versions at least 2.1.7 but
 not as high as 3.0.0-A.
 
-Note that |3.0.0-A| is the least precendent version allowed by semver with
-major version 3. The |-| gives it lower precedence than all release versions of
-3.0.0; the fact that upper case |A| is alphabetically the earliest non-empty
+Note that `3.0.0-A` is the least precendent version allowed by semver with
+major version 3. The `-` gives it lower precedence than all release versions of
+3.0.0; the fact that upper case `A` is alphabetically the earliest non-empty
 alphanumeric string gives it lower precendence than all other prerelease
 versions.
 
@@ -163,15 +163,15 @@ int VersionNumberRanges::in_range(semantic_version_number V, semver_range *R) {
 }
 
 @ The following decides which end restriction is stricter: it returns 1
-of |E1| is, -1 if |E2| is, and 0 if they are equally onerous.
+of `E1` is, -1 if `E2` is, and 0 if they are equally onerous.
 
 The empty set is as strict as it gets: nothing qualifies.
 
 Similarly, infinite ends are as relaxed as can be: everything qualifies.
 
 And otherwise, we need to know which end we're looking at in order to decide:
-a lower end of |[4, ...]| is stricter than a lower end of |[3, ...]|, but an
-upper end of |[..., 4]| is not as strict as an upper end of |[..., 3]|. Where
+a lower end of `[4, ...]` is stricter than a lower end of `[3, ...]`, but an
+upper end of `[..., 4]` is not as strict as an upper end of `[..., 3]`. Where
 the boundary value is the same, open ends are stricter than closed ends.
 
 =
@@ -192,8 +192,8 @@ int VersionNumberRanges::stricter(range_end E1, range_end E2, int lower) {
 }
 
 @ And so we finally arrive at the following, which intersects two ranges:
-that is, it changes |R1| to the range of versions which lie inside both the
-original |R1| and also |R2|. (This is used by Inbuild when an extension is
+that is, it changes `R1` to the range of versions which lie inside both the
+original `R1` and also `R2`. (This is used by Inbuild when an extension is
 included in two different places in the source text, but with possibly
 different version needs.) The return value is true if an actual change took
 place, and false otherwise.

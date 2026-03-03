@@ -8,20 +8,20 @@ just spotting declarations and uses of functions and the like, and even that
 we do with simplistic methods.
 
 This needs some annotation of the web structure, provided by the following
-structures. Each |ls_web| has an |ls_web_analysis| attached, and so on.
+structures. Each `ls_web` has an `ls_web_analysis` attached, and so on.
 
 =
 typedef struct ls_web_analysis {
 	int analysed; /* has this been scanned for function usage and such? */
-	struct linked_list *language_types; /* of |language_type|: used only for C-like languages */
-	struct linked_list *defined_constants;  /* of |defined_constant| */
-	struct linked_list *language_functions; /* of |language_function| */
+	struct linked_list *language_types; /* of `language_type`: used only for C-like languages */
+	struct linked_list *defined_constants;  /* of `defined_constant` */
+	struct linked_list *language_functions; /* of `language_function` */
 	CLASS_DEFINITION
 } ls_web_analysis;
 
 typedef struct ls_paragraph_analysis {
-	struct linked_list *functions; /* of |function|: those defined in this para */
-	struct linked_list *structures; /* of |language_type|: similarly */
+	struct linked_list *functions; /* of `function`: those defined in this para */
+	struct linked_list *structures; /* of `language_type`: similarly */
 	CLASS_DEFINITION
 } ls_paragraph_analysis;
 
@@ -99,7 +99,7 @@ ls_paragraph_analysis *CodeAnalysis::paragraph_details(ls_line *lst) {
 }
 
 @h Analysing code.
-We can't pretend to a full-scale static analysis of the code -- for one thing,
+We can't pretend to a full-scale static analysis of the code — for one thing,
 that would mean knowing more about the syntax of the web's language than we
 actually do. So the following provides only a toolkit which other code can
 use when looking for certain syntactic patterns: something which looks like
@@ -118,8 +118,8 @@ void CodeAnalysis::analyse_web(ls_web *W, int tangling, int weaving) {
 with punctuation around them. Usage codes are used to define a set of allowed
 contexts in which to spot these identifiers.
 
-@d ELEMENT_ACCESS_USAGE     0x00000001 /* C-like languages: access via |->| or |.| operators to structure element */
-@d FCALL_USAGE              0x00000002 /* C-like languages: function call made using brackets, |name(args)| */
+@d ELEMENT_ACCESS_USAGE     0x00000001 /* C-like languages: access via `->` or `.` operators to structure element */
+@d FCALL_USAGE              0x00000002 /* C-like languages: function call made using brackets, `name(args)` */
 @d PREFORM_IN_CODE_USAGE    0x00000004 /* InC only: use of a Preform nonterminal as a C "constant" */
 @d PREFORM_IN_GRAMMAR_USAGE 0x00000008 /* InC only: ditto, but within Preform production rather than C code */
 @d MISC_USAGE               0x00000010 /* any other appearance as an identifier */
@@ -127,7 +127,7 @@ contexts in which to spot these identifiers.
 
 @ The main analysis routine goes through a web as follows. Note that we only
 perform the search here, we don't comment on the results; any action to be
-taken must be handled by |LanguageMethods::late_preweave_analysis| when we're done.
+taken must be handled by `LanguageMethods::late_preweave_analysis` when we're done.
 
 =
 void CodeAnalysis::analyse_code(ls_web *W) {
@@ -160,7 +160,7 @@ below) to look for names of particular functions it knows about.
 	LanguageMethods::early_preweave_analysis(WebStructure::web_language(W), W);
 
 @ Lines in a Preform grammar generally take the form of some BNF grammar, where
-we want only to identify any nonterminals mentioned, then a |==>| divider,
+we want only to identify any nonterminals mentioned, then a `==>` divider,
 and then some C code to deal with a match. The code is subjected to analysis
 just as any other code would be.
 
@@ -205,16 +205,16 @@ just as any other code would be.
 	shte->language_reserved_word = hte->language_reserved_word;
 
 @h Identifier searching.
-Here's what we actually do, then. We take the code fragment |text|, drawn
-from part or all of source line |L| from web |W|, and look for any identifier
-names used in one of the contexts in the bitmap |mask|. Any that we find are
-passed to |CodeAnalysis::analyse_find|, along with the context they were found in (or, if
-|transf| is nonzero, with |transf| as their context).
+Here's what we actually do, then. We take the code fragment `text`, drawn
+from part or all of source line `L` from web `W`, and look for any identifier
+names used in one of the contexts in the bitmap `mask`. Any that we find are
+passed to `CodeAnalysis::analyse_find`, along with the context they were found in (or, if
+`transf` is nonzero, with `transf` as their context).
 
 What we do is to look for instances of an identifier, defined as a maximal
-string of |%i| characters or hyphens not followed by |>| characters. (Thus
-|fish-or-chips| counts, but |fish-| is not an identifier when it occurs in
-|fish->bone|.)
+string of `%i` characters or hyphens not followed by `>` characters. (Thus
+`fish-or-chips` counts, but `fish-` is not an identifier when it occurs in
+`fish->bone`.)
 
 =
 void CodeAnalysis::analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, int mask, int transf) {
@@ -299,7 +299,7 @@ same paragraph of code.
 =
 typedef struct hash_table_entry_usage {
 	struct ls_paragraph *usage_recorded_at;
-	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
+	int form_of_usage; /* bitmap of the `*_USAGE` constants defined above */
 	CLASS_DEFINITION
 } hash_table_entry_usage;
 

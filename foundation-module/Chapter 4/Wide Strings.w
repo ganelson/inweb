@@ -2,8 +2,8 @@
 
 A minimal library for handling wide C strings.
 
-@ By "wide string", we mean an array of |inchar32_t|. A pointer to this type
-is what is returned by a U-literal in ANSI C, such as |U"look, I'm wide"|.
+@ By "wide string", we mean an array of `inchar32_t`. A pointer to this type
+is what is returned by a U-literal in ANSI C, such as `U"look, I'm wide"`.
 A wide string is essentially a C string but with characters stored in full
 words instead of bytes. The character values should be Unicode code points.
 

@@ -4,8 +4,8 @@ Convenient routines for manipulating strings of text.
 
 @h Strings are streams.
 Although Foundation provides limited facilities for handling standard or
-wide C-style strings -- that is, null-terminated arrays of |char| or
-|inchar32_t| -- these are not encouraged.
+wide C-style strings — that is, null-terminated arrays of `char` or
+`inchar32_t` — these are not encouraged.
 
 Instead, a standard string for a program using Foundation is nothing more than
 a text stream (see Chapter 2). These are unbounded in size, with memory
@@ -27,7 +27,7 @@ Sometimes we want to make a new string in the sense of allocating more
 memory to hold it. These objects won't automatically be destroyed, so we
 shouldn't call these routines too casually. If we need a string just for
 some space to play with for a short while, it's better to create one
-with |TEMPORARY_TEXT| and then get rid of it with |DISCARD_TEXT|, macros
+with `TEMPORARY_TEXT` and then get rid of it with `DISCARD_TEXT`, macros
 defined in Chapter 2.
 
 The capacity of these strings is unlimited in principle, and the number
@@ -50,8 +50,8 @@ void Str::dispose_of(text_stream *text) {
 }
 
 @ Duplication of an existing string is complicated only by the issue that
-we want the duplicate always to be writeable, so that |NULL| can't be
-duplicated as |NULL|.
+we want the duplicate always to be writeable, so that `NULL` can't be
+duplicated as `NULL`.
 
 =
 text_stream *Str::duplicate(text_stream *E) {
@@ -142,7 +142,7 @@ int Str::atoi(text_stream *S, int index) {
 }
 
 @h Length.
-A puritan would return a |size_t| here, but I am not a puritan.
+A puritan would return a `size_t` here, but I am not a puritan.
 
 =
 int Str::len(text_stream *S) {
@@ -373,7 +373,7 @@ int Str::ne_insensitive(text_stream *S1, text_stream *S2) {
 }
 
 @ These two routines produce a numerical string difference suitable for
-alphabetic sorting, like |strlen| in the C standard library.
+alphabetic sorting, like `strlen` in the C standard library.
 
 This would be a more elegant implementation:
 = (text as InC)
@@ -410,11 +410,11 @@ int Str::cmp_insensitive(text_stream *S1, text_stream *S2) {
 }
 
 @ It's sometimes useful to see whether two strings agree on their last
-|N| characters, or their first |N|. For example,
+`N` characters, or their first `N`. For example,
 = (text as code)
 	Str::suffix_eq(I"wayzgoose", I"snow goose", N)
 =
-will return |TRUE| for |N| equal to 0 to 5, and |FALSE| thereafter.
+will return `TRUE` for `N` equal to 0 to 5, and `FALSE` thereafter.
 
 (The Oxford English Dictionary defines a "wayzgoose" as a holiday outing
 for the staff of a publishing house.)
@@ -692,8 +692,8 @@ int Str::includes_at(text_stream *line, int i, text_stream *pattern) {
 
 @h Shim for literal storage.
 This is where all of those I-literals created in tangling are stored at run-time.
-Note that every instance of, say, |I"fish"| would return the same string,
-that is, the same |text_stream *| value. To prevent nasty accidents, this
+Note that every instance of, say, `I"fish"` would return the same string,
+that is, the same `text_stream *` value. To prevent nasty accidents, this
 is marked so that the stream value, "fish", cannot be modified at run-time.
 
 The dictionary look-up here would not be thread-safe, so it's protected by

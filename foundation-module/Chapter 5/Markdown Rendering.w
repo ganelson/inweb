@@ -9,7 +9,7 @@ Do not call functions in this section directly: use the API in //Markdown//.
 This is blessedly simple by comparison with parsing, but there are some
 pitfalls to look out for just the same.
 
-We preserve a piece of state called the |mode| as we recurse downwards
+We preserve a piece of state called the `mode` as we recurse downwards
 through the tree: it's a bitmap composed of the following.
 
 @d TAGS_MDRMODE     0x0001     /* Render HTML tags? */
@@ -17,8 +17,8 @@ through the tree: it's a bitmap composed of the following.
 @d URI_MDRMODE      0x0004     /* Encode characters as they need to appear in a URI */
 @d RAW_MDRMODE      0x0008     /* Treat all characters literally */
 @d LOOSE_MDRMODE    0x0010     /* Wrap list items in paragraph tags */
-@d ENTITIES_MDRMODE 0x0020     /* Convert |&entity;| to whatever it ought to represent */
-@d FILTERED_MDRMODE 0x0040     /* Make first |<| character safe as |&lt;| */
+@d ENTITIES_MDRMODE 0x0020     /* Convert `&entity;` to whatever it ought to represent */
+@d FILTERED_MDRMODE 0x0040     /* Make first `<` character safe as `&lt;` */
 @d TOLOWER_MDRMODE  0x0080     /* Force letters to lower case */
 @d EXAMPLE_BODIES_MDRMODE  0x0100  /* Render interiors of examples */
 @d EXISTING_PAR_MDRMODE 0x200  /* Render onto an existing paragraph */
@@ -203,7 +203,7 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 code block is the "language", and give it a CSS class accordingly. A piquant
 part of CommonMark is that the language does respect entities, but that the
 body of the code block does not. (It also respects backslash escapes, but we
-do not render the language in |ESCAPES_MDRMODE| mode because those have already
+do not render the language in `ESCAPES_MDRMODE` mode because those have already
 been taken out at the parsing stage.)
 
 @<Render a code block@> =
@@ -526,11 +526,11 @@ been taken out at the parsing stage.)
 	}
 
 @ Down at the lower level now: how to render the slice of text in a single
-inline item. In |ESCAPES_MDRMODE|, backslash followed by ASCII (but not
-Unicode) punctuation produces a literal of that character. In |ENTITIES_MDRMODE|,
+inline item. In `ESCAPES_MDRMODE`, backslash followed by ASCII (but not
+Unicode) punctuation produces a literal of that character. In `ENTITIES_MDRMODE`,
 we convert any valid entity ending in a semicolon to its Unicode code point(s).
 Note that CommonMark requires us not to respect HTML5 entities which do not
-end in a semicolon, such as |&copy| rather than |&copy;|.
+end in a semicolon, such as `&copy` rather than `&copy;`.
 
 =
 void MDRenderer::slice(OUTPUT_STREAM, markdown_item *md, int mode) {

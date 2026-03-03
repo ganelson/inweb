@@ -192,7 +192,7 @@ format (HTML, etc.) it will be woven to.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">MACRO_MATERIAL</span> <span class="comment-syntax">/* when a macro is being defined... */</span><span class="plain-syntax"> </span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">DEFINITION_MATERIAL</span> <span class="comment-syntax">/* ...versus when an |@d| definition is being made */</span><span class="plain-syntax"> </span>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">DEFINITION_MATERIAL</span> <span class="comment-syntax">/* ...versus when an <code>@d</code> definition is being made */</span><span class="plain-syntax"> </span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">CODE_MATERIAL</span> <span class="comment-syntax">/* verbatim code */</span><span class="plain-syntax"> </span>
 </pre>
@@ -202,7 +202,7 @@ format (HTML, etc.) it will be woven to.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">weaver_state</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_of_material</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the enumerated |*_MATERIAL| constants above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">kind_of_material</span><span class="plain-syntax">; </span><span class="comment-syntax">/* one of the enumerated <code>*_MATERIAL</code> constants above */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">line_break_pending</span><span class="plain-syntax">; </span><span class="comment-syntax">/* insert a line break before the next woven line? */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_heading_without_vertical_skip</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_extract_from</span><span class="plain-syntax">;</span>

@@ -15,9 +15,9 @@ providing a common set of conventions for parsing the most common settings.
 
 =
 typedef struct inweb_instructions {
-	int subcommand; /* our main mode of operation: one of the |*_CLSUB| constants */
-	int verbose_switch; /* |-verbose|: print a narrative of what's happening */
-	int silent_switch; /* |-silent|: print nothing if all is well */
+	int subcommand; /* our main mode of operation: one of the `*_CLSUB` constants */
+	int verbose_switch; /* `-verbose`: print a narrative of what's happening */
+	int silent_switch; /* `-silent`: print nothing if all is well */
 
 	struct inweb_advance_build_settings advance_build_settings;
 	struct inweb_weave_settings weave_settings;
@@ -27,8 +27,8 @@ typedef struct inweb_instructions {
 	struct inweb_map_settings map_settings;
 	struct inweb_test_language_settings test_language_settings;
 
-	struct text_stream *temp_colony_setting; /* |-colony X|: file or path, if supplied */
-	struct text_stream *temp_member_setting; /* |-member X|: sets web to member X of ls_colony */
+	struct text_stream *temp_colony_setting; /* `-colony X`: file or path, if supplied */
+	struct text_stream *temp_member_setting; /* `-member X`: sets web to member X of ls_colony */
 	struct pathname *temp_path_setting; /* project folder relative to cwd */
 	struct filename *temp_file_setting; /* or, single file relative to cwd */
 } inweb_instructions;
@@ -67,7 +67,7 @@ inweb_instructions Configuration::read(int argc, char **argv) {
 	args.temp_file_setting = NULL;
 
 @ The CommandLine section of Foundation needs to be told what command-line
-switches we want, other than the standard set (such as |-help|) which it
+switches we want, other than the standard set (such as `-help`) which it
 provides automatically.
 
 @e VERBOSE_CLSW
@@ -112,7 +112,7 @@ provides automatically.
 	InwebAdvanceBuild::cli();
 	InwebTestLanguage::cli();
 
-@ Foundation calls this on any |-switch| argument read:
+@ Foundation calls this on any `-switch` argument read:
 
 =
 void Configuration::switch(int id, int val, text_stream *arg, void *state) {
@@ -223,11 +223,11 @@ operand, but otherwise use the same rules for all of them:
 @d WEB_OPERAND_COMPULSORY 5     /* i.e., a web only */
 
 @ A further tweak is that we sometimes want the web to be read in a particular
-way (if a web is what is provided). If |enumerating| is set then values will be
+way (if a web is what is provided). If `enumerating` is set then values will be
 assigned to enumerated constants found in the web -- this is unnecessary most
 of the time, and will be meaningless or impossible if only a subset of the web
-is being considered. If |weaving| is set, then certain sorts of code rewriting
-are not performed (for example, the I-string constants like |I"this"| used in
+is being considered. If `weaving` is set, then certain sorts of code rewriting
+are not performed (for example, the I-string constants like `I"this"` used in
 the InC language are not rewritten as their regular C implementations).
 
 @ The conventions below are very carefully arranged, which is always a warning
@@ -277,10 +277,10 @@ inweb_operand Configuration::operand(inweb_instructions *ins, int requirement,
 		if (op.C == NULL) Errors::fatal_with_file("not a valid colony file", colony_file);
 	}
 
-@ So this looks at the text |C| from |-colony C| or else from |C::M|, if either
-of those syntaxes was used. If we are here, |C| is non-empty. It should either
+@ So this looks at the text `C` from `-colony C` or else from `C::M`, if either
+of those syntaxes was used. If we are here, `C` is non-empty. It should either
 be a valid filename, or a valid directory name for a directory containing either
-a |colony.inweb| or |colony.txt| file.
+a `colony.inweb` or `colony.txt` file.
 
 @<Locate the colony file from its setting@> =
 	colony_file = Filenames::from_text(ins->temp_colony_setting);
@@ -321,9 +321,9 @@ the relevant path, we'll use that.
 		CF = Filenames::in(search, I"colony.txt");
 	if (TextFiles::exists(CF)) colony_file = CF;
 
-@ This looks at the text |M| from |-member M| or else from |C::M|, if either
+@ This looks at the text `M` from `-member M` or else from `C::M`, if either
 of those syntaxes was used. Note that it's absolutely necessary for a colony
-file to exist and be valid, on order for this to make sense, and moreover |M|
+file to exist and be valid, on order for this to make sense, and moreover `M`
 has to be one of its member names; lastly, there must actually be a web in
 the place that the colony file says it will be.
 
@@ -408,7 +408,7 @@ contents section.
 @ The most notable thing here is that we make an attempt (no more than that) to
 reconcile things in the case where the user has not specified a colony or member,
 only a web, but where there is a colony file nearby which we have auto-detected.
-Is the web a member of that colony or not? If it seems to be, we'll fill in |op.CM|.
+Is the web a member of that colony or not? If it seems to be, we'll fill in `op.CM`.
 But it's probably not wise to rely too much on this.
 
 @<Tidy up our findings@> =	
@@ -438,21 +438,21 @@ But it's probably not wise to rely too much on this.
 	if (op.W) Conventions::establish(op.W, op.C);
 
 @h Range operand.
-Some subcommands take a further operand called a "range", usually after a |-only|
+Some subcommands take a further operand called a "range", usually after a `-only`
 setting. These are in addition to a main operand, not instead of it, and indeed
 make sense only in the context of the main operand specifying a web.
 
 Subsets of a web are represented by short pieces of text called "ranges". This
-can be a section range like |2/pine|, a chapter number like |12|, an appendix
-letter |A| or the preliminaries block |P|, the special chapter |S| for the
-"Sections" chapter of an unchaptered web, or the special value |0| to mean the
+can be a section range like `2/pine`, a chapter number like `12`, an appendix
+letter `A` or the preliminaries block `P`, the special chapter `S` for the
+"Sections" chapter of an unchaptered web, or the special value `0` to mean the
 entire web (which is the default).
 
 =
 typedef struct inweb_range_specifier {
 	struct text_stream *range; /* which subset of this web we apply to (often, all of it) */
 	int chosen_range_actually_chosen; /* rather than being a default choice */
-	int swarm_mode; /* relevant to weaving only: one of the |*_SWARM| constants */
+	int swarm_mode; /* relevant to weaving only: one of the `*_SWARM` constants */
 } inweb_range_specifier;
 
 inweb_range_specifier Configuration::new_range_specifier(void) {

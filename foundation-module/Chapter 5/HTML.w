@@ -30,8 +30,8 @@ void HTML::footer(OUTPUT_STREAM) {
 Though the code below does nothing at all interesting, to put it mildly,
 it's written a little defensively, to increase the chances that the client
 is producing valid HTML with it. In particular, the client won't be
-allowed to open a |p| tag, then open a |b| tag, then close the |p|, then
-close the |b|: that would be wrongly nested. We want to throw errors like
+allowed to open a `p` tag, then open a `b` tag, then close the `p`, then
+close the `b`: that would be wrongly nested. We want to throw errors like
 that into the debugging log, so:
 
 @d tag_error(x) {
@@ -47,13 +47,13 @@ that into the debugging log, so:
 }
 
 @ Any text stream can be declared as being HTML, and therefore subject to
-this auditing. To do that, we atach an |HTML_file_state| object to the
+this auditing. To do that, we atach an `HTML_file_state` object to the
 text stream.
 
 =
 typedef struct HTML_file_state {
 	int XHTML_flag; /* writing strict XHTML for use in epubs */
-	struct lifo_stack *tag_stack; /* of |HTML_tag|: those currently open */
+	struct lifo_stack *tag_stack; /* of `HTML_tag`: those currently open */
 	int CSS_included;
 	int JS_included;
 	CLASS_DEFINITION
@@ -898,11 +898,11 @@ void HTML::write_xml_safe_text(OUTPUT_STREAM, text_stream *txt) {
 
 @ And now to HTML. This would be very similar, except:
 
-- if the |words| and |html| modules are both present, we recognise
-|*source text*Source/story.ni*14*| as something which should expand to a
-source code link -- except that the much less commonly occurring
-|SOURCE_REF_CHAR| character code is used in place of the asterisk;
-- if the |problems| module is present, we recognise |FORCE_NEW_PARA_CHAR|
+- if the `words` and `html` modules are both present, we recognise
+`*source text*Source/story.ni*14*` as something which should expand to a
+source code link — except that the much less commonly occurring
+`SOURCE_REF_CHAR` character code is used in place of the asterisk;
+- if the `problems` module is present, we recognise `FORCE_NEW_PARA_CHAR`
 as a paragraph break.
 
 These two special case characters are lower and upper case Icelandic eth,

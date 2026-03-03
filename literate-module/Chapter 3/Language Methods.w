@@ -8,7 +8,7 @@ The conventions for writing, weaving and tangling a web are really quite
 independent of the programming language being written, woven or tangled;
 Knuth began literate programming with Pascal, but now uses C, and the original
 Pascal webs were mechanically translated into C ones with remarkably little
-fuss or bother. Modern LP tools, such as |noweb|, aim to be language-agnostic.
+fuss or bother. Modern LP tools, such as `noweb`, aim to be language-agnostic.
 But of course if you act the same on all languages, you give up the benefits
 which might follow from knowing something about the languages you actually
 write in.
@@ -23,7 +23,7 @@ We begin with parsing extensions. When these are used, we have already read
 the web into chapters, sections and paragraphs, but for some languages we will
 need a more detailed picture.
 
-|PARSE_TYPES_PAR_MTID| gives a language to look for type declarations.
+`PARSE_TYPES_PAR_MTID` gives a language to look for type declarations.
 
 @e PARSE_TYPES_PAR_MTID
 
@@ -33,7 +33,7 @@ void LanguageMethods::parse_types(ls_web *W, programming_language *pl) {
 	VOID_METHOD_CALL(pl, PARSE_TYPES_PAR_MTID, W);
 }
 
-@ |PARSE_FUNCTIONS_PAR_MTID| is, similarly, for function declarations.
+@ `PARSE_FUNCTIONS_PAR_MTID` is, similarly, for function declarations.
 
 @e PARSE_FUNCTIONS_PAR_MTID
 
@@ -43,7 +43,7 @@ void LanguageMethods::parse_functions(ls_web *W, programming_language *pl) {
 	VOID_METHOD_CALL(pl, PARSE_FUNCTIONS_PAR_MTID, W);
 }
 
-@ |FURTHER_PARSING_PAR_MTID| is "further" in that it is called when the main
+@ `FURTHER_PARSING_PAR_MTID` is "further" in that it is called when the main
 parser has finished work; it typically looks over the whole web for something
 of interest.
 
@@ -55,7 +55,7 @@ void LanguageMethods::further_parsing(ls_web *W, programming_language *pl, int w
 	VOID_METHOD_CALL(pl, FURTHER_PARSING_PAR_MTID, W, weaving);
 }
 
-@ |SUBCATEGORISE_LINE_PAR_MTID| looks at a single line, after the main parser
+@ `SUBCATEGORISE_LINE_PAR_MTID` looks at a single line, after the main parser
 has given it a category. The idea is not so much to second-guess the parser
 (although we can) but to change to a more exotic category which it would
 otherwise never produce.
@@ -81,7 +81,7 @@ void LanguageMethods::subcategorise_lines(ls_web *W) {
 }
 
 @ Comments have different syntax in different languages. The method here is
-expected to look for a comment on the |line|, and if so to return |TRUE|,
+expected to look for a comment on the `line`, and if so to return `TRUE`,
 but not before splicing the non-comment parts of the line before and
 within the comment into the supplied strings.
 
@@ -102,8 +102,8 @@ We take these roughly in order of their effects on the tangled output, from
 the top to the bottom of the file.
 
 The top of the tangled file is a header called the "shebang". By default,
-there's nothing there, but |SHEBANG_TAN_MTID| allows the language to add one.
-For example, Perl prints |#!/usr/bin/perl| here.
+there's nothing there, but `SHEBANG_TAN_MTID` allows the language to add one.
+For example, Perl prints `#!/usr/bin/perl` here.
 
 @e SHEBANG_TAN_MTID
 
@@ -124,10 +124,10 @@ void LanguageMethods::additional_early_matter(text_stream *OUT, programming_lang
 }
 
 @ A tangled file then normally declares "definitions". The following write a
-definition of the constant named |term| as the value given. If the value spans
-multiple lines, the first-line part is supplied to |START_DEFN_TAN_MTID| and
-then subsequent lines are fed in order to |PROLONG_DEFN_TAN_MTID|. At the end,
-|END_DEFN_TAN_MTID| is called.
+definition of the constant named `term` as the value given. If the value spans
+multiple lines, the first-line part is supplied to `START_DEFN_TAN_MTID` and
+then subsequent lines are fed in order to `PROLONG_DEFN_TAN_MTID`. At the end,
+`END_DEFN_TAN_MTID` is called.
 
 @e START_DEFN_TAN_MTID
 @e PROLONG_DEFN_TAN_MTID
@@ -177,7 +177,7 @@ void LanguageMethods::additional_predeclarations(OUTPUT_STREAM, programming_lang
 the more routine matter, tangling ordinary paragraphs into code.
 
 Tangle commands can be handled by attaching methods as follows, which return
-|TRUE| if they recognised and acted on the command.
+`TRUE` if they recognised and acted on the command.
 
 @e TANGLE_COMMAND_TAN_MTID
 
@@ -203,7 +203,7 @@ void LanguageMethods::insert_in_tangle(OUTPUT_STREAM, int *did, programming_lang
 
 @ In order for C compilers to report C syntax errors on the correct line,
 despite rearranging by automatic tools, C conventionally recognises the
-preprocessor directive |#line| to tell it that a contiguous extract follows
+preprocessor directive `#line` to tell it that a contiguous extract follows
 from the given file; we generate this automatically.
 
 @e INSERT_LINE_MARKER_TAN_MTID
@@ -216,7 +216,7 @@ void LanguageMethods::insert_line_marker(OUTPUT_STREAM, programming_language *pl
 
 @ The following hooks are provided so that we can top and/or tail the expansion
 of paragraph macros in the code. For example, C-like languages, use this to
-splice |{| and |}| around the expanded matter.
+splice `{` and `}` around the expanded matter.
 
 @e BEFORE_HOLON_EXPANSION_TAN_MTID
 @e AFTER_HOLON_EXPANSION_TAN_MTID
@@ -233,7 +233,7 @@ void LanguageMethods::after_holon_expansion(OUTPUT_STREAM, programming_language 
 
 @ It's a sad necessity, but sometimes we have to unconditionally tangle code
 for a preprocessor to conditionally read: that is, to tangle code which contains
-|#ifdef| or similar preprocessor directive.
+`#ifdef` or similar preprocessor directive.
 
 @e OPEN_IFDEF_TAN_MTID
 @e CLOSE_IFDEF_TAN_MTID
@@ -260,7 +260,7 @@ void LanguageMethods::comment(OUTPUT_STREAM, programming_language *pl, text_stre
 
 @ The inner code tangler now acts on all code known not to contain CWEB
 macros or double-square substitutions. In almost every language this simply
-passes the code straight through, printing |original| to |OUT|.
+passes the code straight through, printing `original` to `OUT`.
 
 @e TANGLE_LINE_UNUSUALLY_TAN_MTID
 
@@ -357,7 +357,7 @@ int LanguageMethods::syntax_colour(programming_language *pl,
 	return rv;
 }
 
-@ This method is called for each code line to be woven. If it returns |FALSE|, the
+@ This method is called for each code line to be woven. If it returns `FALSE`, the
 weaver carries on in the normal way. If not, it does nothing, assuming that the
 method has already woven something more attractive.
 

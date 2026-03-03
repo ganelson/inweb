@@ -157,7 +157,7 @@ they are re-verified by the <code>verify_children</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">tree_node_type</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text such as |I"INVOCATION"| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">node_type_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* text such as <code>I&quot;INVOCATION&quot;</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">required_CLASS</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if any; or negative for no restriction */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">verify_children</span><span class="plain-syntax">)(</span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">tree_node</span><span class="plain-syntax"> *); </span><span class="comment-syntax">/* function to vet the children */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
@@ -244,7 +244,7 @@ verified.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Removing a node from a tree does not change its ownership -- it still belongs
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Removing a node from a tree does not change its ownership — it still belongs
 to that tree.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">

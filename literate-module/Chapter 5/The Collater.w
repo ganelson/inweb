@@ -8,7 +8,7 @@ placeholders in it, and writing the result.
 
 The collater needs to operate as a little processor interpreting a
 meta-language all of its very own, with a stack for holding nested repeat
-loops, and a program counter and -- well, and nothing else to speak of, in
+loops, and a program counter and — well, and nothing else to speak of, in
 fact, except for the slightly unusual way that loop variables provide context
 by changing the subject of what is discussed rather than by being accessed
 directly.
@@ -66,7 +66,7 @@ typedef struct collater_state {
 	struct filename *errors_at;
 	struct weave_order *wv;
 	struct filename *into_file;
-	struct linked_list *modules; /* of |ls_module| */
+	struct linked_list *modules; /* of `ls_module` */
 	struct weave_reporting *reportage;
 } collater_state;
 
@@ -439,7 +439,7 @@ chapter as its value during the sole iteration.
 			goto CYCLE;
 
 @ If called with the non-conditional levels, the following function returns
-the topmost item. It's never called for |IF_TRUE_LEVEL| or |IF_FALSE_LEVEL|.
+the topmost item. It's never called for `IF_TRUE_LEVEL` or `IF_FALSE_LEVEL`.
 
 =
 linked_list_item *Collater::heading_topmost_on_stack(collater_state *cls, int level) {
@@ -478,9 +478,9 @@ We can now forget about this tiny stack machine: the one task left is to
 take a line from the template, and make substitutions of variables into
 its square-bracketed parts.
 
-Note that we do not allow this to recurse, i.e., if |[[X]]| substitutes into
-text which itself contains a |[[...]]| notation, then we do not expand that
-inner one. If we did, then the value of the bibliographic variable |[[Code]]|,
+Note that we do not allow this to recurse, i.e., if `[[X]]` substitutes into
+text which itself contains a `[[...]]` notation, then we do not expand that
+inner one. If we did, then the value of the bibliographic variable `[[Code]]`,
 used by the HTML renderer, would cause a modest-sized explosion on some pages.
 
 @<Make substitutions of square-bracketed variables in line@> =
@@ -570,7 +570,7 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 	Str::clear(tl); Str::copy(tl, rewritten);
 	DISCARD_TEXT(rewritten)
 
-@ |[[Navigation]]| substitutes to the content of the sidebar navigation file;
+@ `[[Navigation]]` substitutes to the content of the sidebar navigation file;
 this will recursively call The Collater, in fact.
 
 @<Substitute Navigation@> =
@@ -797,8 +797,8 @@ navigation purposes.
 	}
 	WRITE_TO(substituted, "%S", item_name);
 
-@ This is a utility for finding the owner of a module, returning |NULL| (the
-empty text) if it appears to belong to the current web |W|.
+@ This is a utility for finding the owner of a module, returning `NULL` (the
+empty text) if it appears to belong to the current web `W`.
 
 =
 text_stream *Collater::module_owner(const ls_module *M, ls_web *W) {

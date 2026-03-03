@@ -7,8 +7,8 @@ to syntaxes not known in advance, and which may awkwardly overlap, without
 memory allocation during scanning.
 
 We do this by passing the characters one by one into a finite state machine.
-This is in effect a black box, whose internal state is a non-|NULL| value of
-|fsm_state|, together with a count of how many cycles it has had this state for.
+This is in effect a black box, whose internal state is a non-`NULL` value of
+`fsm_state`, together with a count of how many cycles it has had this state for.
 
 Having a cycle count is one of several ways where our FSMs are not as austere
 as the bare minimum implementation would be. These various bells and whistles
@@ -21,7 +21,7 @@ typedef struct finite_state_machine {
 	struct fsm_state *start_at;
 	struct fsm_state *current_state;
 	int cycles_at_current_state;
-	struct linked_list *states; /* of |fsm_state| */
+	struct linked_list *states; /* of `fsm_state` */
 	struct general_pointer last_parameter;
 	CLASS_DEFINITION
 } finite_state_machine;
@@ -40,9 +40,9 @@ finite_state_machine *FSM::new_machine(fsm_state *start) {
 
 @ An "event" is a signal which can be sent back by the machine on certain
 cycles when it finds that something has happened. The function running the
-machine returns |NO_FSMEVENT| when no event has taken place.
+machine returns `NO_FSMEVENT` when no event has taken place.
 
-The special |AGAIN_FSMEVENT| event is used only internally, and means that
+The special `AGAIN_FSMEVENT` event is used only internally, and means that
 the machine is going to cycle an extra time before returning. By definition,
 then, it can never be returned to the caller.
 
@@ -52,11 +52,11 @@ then, it can never be returned to the caller.
 @ Each possible state of the machine must be one of the following.
 
 In practice some states are more important than others. For example, if we're
-looking for text between |XYZ| and |PQR|, then we care more about the state of
+looking for text between `XYZ` and `PQR`, then we care more about the state of
 entering that stretch than we do about the brief interstitial state which
-represents having read |XY| and being potentially about to read |Z|.
+represents having read `XY` and being potentially about to read `Z`.
 Interstitial states like that are "formed from" their origin, i.e., the
-state before the |X|, and we keep a count of how many states are formed from
+state before the `X`, and we keep a count of how many states are formed from
 each state, though only to provide nice human-readable names.
 
 =
@@ -101,8 +101,8 @@ fsm_state *FSM::last_nonintermediate_state(finite_state_machine *fsm) {
 	return state;
 }
 
-@  Note that an |fsm_state| can be the state of at most one possible machine,
-its |owner|. When created, it is detached. As we'll see below, it attaches
+@  Note that an `fsm_state` can be the state of at most one possible machine,
+its `owner`. When created, it is detached. As we'll see below, it attaches
 automatically either by being the start state, or when transitions to or from
 it are made. In either situation this is called:
 
@@ -138,8 +138,8 @@ fsm_transitions FSM::new_transitions(fsm_state *state) {
 	return bank;
 }
 
-@ A transition occurs when the character matches |on|, or when |on| is 0,
-which serves as an "any character" wildcard; except that, if the |first| 
+@ A transition occurs when the character matches `on`, or when `on` is 0,
+which serves as an "any character" wildcard; except that, if the `first` 
 flag is set, then it can occur only on the first cycle of the machine being
 in its current state.
 
@@ -232,7 +232,7 @@ fsm_state *FSM::find_next(fsm_state *from, inchar32_t c, int first_cycle_only) {
 }
 
 @ So now we come to the API for adding transitions. The simplest functions are these;
-once again, one of the two states |from| and |to| must already be attached to a
+once again, one of the two states `from` and `to` must already be attached to a
 machine.
 
 =
@@ -259,7 +259,7 @@ void FSM::add_general_transition(fsm_state *from, inchar32_t c, fsm_state *to,
 
 @ More ambitiously, we can call the following functions to set up a compound
 syntax where the transition is made only when a string of contiguous characters
-in order is scanned, e.g., |XYZ|. Interstitial states are created where necessary,
+in order is scanned, e.g., `XYZ`. Interstitial states are created where necessary,
 but existing ones are used if possible, so this is a little like a trie.
 
 =

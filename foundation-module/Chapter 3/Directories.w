@@ -60,7 +60,7 @@ int Directories::exists(pathname *P) {
 }
 
 @ It turns out to be useful to scan the contents of a directory in an order
-which is predictable regardless of platform -- |Platform::readdir| works in a
+which is predictable regardless of platform Ñ `Platform::readdir` works in a
 different order on MacOS, Windows and Linux, even given the same directory
 of files to work on. So the following returns a linked list of the contents,
 sorted into alphabetical order, but case-insensitively. For the Inform project,
@@ -107,8 +107,8 @@ int Directories::compare_names(const void *ent1, const void *ent2) {
 
 @ This is intentionally limited so that it can only rename a directory in place,
 that is, change its leafname: it cannot move a directory elsewhere in the file system.
-If it succeeds, the pathname |P| is altered to match the new directory name, and
-the function returns |TRUE|; if not, |P| is unchanged, and |FALSE|.
+If it succeeds, the pathname `P` is altered to match the new directory name, and
+the function returns `TRUE`; if not, `P` is unchanged, and `FALSE`.
 
 =
 int Directories::rename(pathname *P, text_stream *new_name) {
@@ -133,9 +133,9 @@ int Directories::rename(pathname *P, text_stream *new_name) {
 	return rv;
 }
 
-@ Be careful with this: it amounts to recursive |rm|. It takes out all files
-with the given file extension, e.g., |I".txt"|, from the directory and,
-potentially, any subdirectories. If a null |extension| is supplied, it takes
+@ Be careful with this: it amounts to recursive `rm`. It takes out all files
+with the given file extension, e.g., `I".txt"`, from the directory and,
+potentially, any subdirectories. If a null `extension` is supplied, it takes
 out all files that do have some extension. (This is less likely to be something
 really awkward, like a symlink.)
 

@@ -653,8 +653,8 @@ tree_node *WeaveTree::embed(heterogeneous_tree *tree,
 	return Trees::new_node(tree, weave_embed_node_type, STORE_POINTER_weave_embed_node(C));
 }
 
-@ This node weaves an angle-bracketed paragraph macro name. |defn| is set
-if and only if this is the place where the macro is defined -- the usual
+@ This node weaves an angle-bracketed paragraph macro name. `defn` is set
+if and only if this is the place where the macro is defined — the usual
 thing is to render some sort of equals sign after it, if so.
 
 =
@@ -675,7 +675,7 @@ tree_node *WeaveTree::tangler_command(heterogeneous_tree *tree, text_stream *cmd
 }
 
 @ The following should render some kind of skip, and may want to take note of
-whether this happens in commentary or in code: the |in_comment| flag provides this
+whether this happens in commentary or in code: the `in_comment` flag provides this
 information.
 
 =
@@ -840,7 +840,7 @@ tree_node *WeaveTree::function_defn(heterogeneous_tree *tree, language_function 
 	return Trees::new_node(tree, weave_function_defn_node_type, STORE_POINTER_weave_function_defn_node(C));
 }
 
-@ This node produces the |>> Example| bits of example source text, really
+@ This node produces the `>> Example` bits of example source text, really
 a convenience for Inform 7 code commentary.
 
 =
@@ -851,8 +851,8 @@ tree_node *WeaveTree::display_line(heterogeneous_tree *tree, text_stream *text) 
 }
 
 @ An item node produces an item marker in a typical (a), (b), (c), ... sort
-of list. |depth| can be 1 or 2: you can have lists in lists, but not lists in
-lists in lists. |label| is the marker text, e.g., |a|, |b|, |c|, ...; it can
+of list. `depth` can be 1 or 2: you can have lists in lists, but not lists in
+lists in lists. `label` is the marker text, e.g., `a`, `b`, `c`, ...; it can
 also be empty, in which case the method should move to the matching level of
 indentation but not weave any bracketed marker.
 

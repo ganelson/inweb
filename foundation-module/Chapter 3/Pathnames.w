@@ -13,8 +13,8 @@ is a pathname, whereas
 	/Users/rblackmore/Documents/Fireball/whoosh.aiff
 =
 is a filename. All references to directory locations in the filing system will be
-held internally as |pathname| objects, and all references to file locations as
-|filename| objects. Once created, these are never destroyed or modified,
+held internally as `pathname` objects, and all references to file locations as
+`filename` objects. Once created, these are never destroyed or modified,
 so that it's safe to store a pointer to a pathname or filename anywhere.
 
 Note that a pathname may well be hypothetical, that is, it may well
@@ -24,14 +24,14 @@ A full path is a linked list, but reverse-ordered: thus,
 = (text)
 	/Users/rblackmore/Documents/
 =
-would be represented as a pointer to the |pathname| for "Documents", which
+would be represented as a pointer to the `pathname` for "Documents", which
 in turn points to one for "rblackmore", which in turn points to "/Users".
 Thus the root of the filing system is represented by the null pointer.
 
-Each |pathname| can represent only a single level in the hierarchy, and
-its textual name is not allowed to contain the |FOLDER_SEPARATOR| character,
-with just one exception: the |pathname| at the end of the chain is allowed
-to begin with |FOLDER_SEPARATOR| to denote that it's at the root of the
+Each `pathname` can represent only a single level in the hierarchy, and
+its textual name is not allowed to contain the `FOLDER_SEPARATOR` character,
+with just one exception: the `pathname` at the end of the chain is allowed
+to begin with `FOLDER_SEPARATOR` to denote that it's at the root of the
 host file system.
 
 =
@@ -44,7 +44,7 @@ typedef struct pathname {
 
 @h Home directory.
 We get the path to the user's home directory from the environment variable
-|HOME|, if it exists.
+`HOME`, if it exists.
 
 =
 pathname *home_path = NULL;
@@ -138,7 +138,7 @@ pathname *Pathnames::path_to_inweb_materials(void) {
 }
 
 @h Creation.
-A subdirectory is made by taking an existing pathname (or possible |NULL|) and
+A subdirectory is made by taking an existing pathname (or possible `NULL`) and
 then going one level deeper, using the supplied name.
 
 =
@@ -161,9 +161,9 @@ pathname *Pathnames::primitive(text_stream *str, int from, int to, pathname *par
 @h Text to pathnames.
 The following takes a text of a name and returns a pathname,
 possibly relative to the home directory. Empty directory names are ignored
-except possibly for an initial slash, so for example |paris/roubaix|,
-|paris//roubaix| and |paris/roubaix/| are indistinguishable here, but
-|/paris/roubaix| is different.
+except possibly for an initial slash, so for example `paris/roubaix`,
+`paris//roubaix` and `paris/roubaix/` are indistinguishable here, but
+`/paris/roubaix` is different.
 
 =
 pathname *Pathnames::from_text(text_stream *path) {
@@ -219,7 +219,7 @@ would be
 If the two pathnames are the same, the relative pathname is the empty text,
 and so nothing is output.
 
-Note that this does not correctly handle symlinks, |.|, |..| and so on,
+Note that this does not correctly handle symlinks, `.`, `..` and so on,
 so it's probably not wise to use it with filenames typed in at the command
 line.
 
@@ -279,8 +279,8 @@ int Pathnames::resemble(pathname *P1, pathname *P2) {
 }
 
 @h Relative URLs.
-Suppose a web page in the directory at |from| wants to link to a page in
-the directory |to|. The following composes a minimal-length URL to do so:
+Suppose a web page in the directory at `from` wants to link to a page in
+the directory `to`. The following composes a minimal-length URL to do so:
 possibly, if they are in fact the same directory, an empty one.
 
 =
@@ -341,8 +341,8 @@ int Pathnames::create_in_file_system_recursively(pathname *P) {
 
 @h Directory synchronisation.
 Both pathnames here represent directories which do exist. The function makes
-the |dest| tree an exact copy of the |source| tree (and therefore deletes
-anything different which was originally in |dest|).
+the `dest` tree an exact copy of the `source` tree (and therefore deletes
+anything different which was originally in `dest`).
 
 =
 int Pathnames::rsync(pathname *source, pathname *dest) {

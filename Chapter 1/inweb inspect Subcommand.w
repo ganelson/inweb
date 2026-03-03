@@ -55,14 +55,14 @@ void InwebInspect::cli(void) {
 =
 typedef struct inweb_inspect_settings {
 	struct inweb_range_specifier subset;
-	int scan_switch;      /* |-scan|: simply show the syntactic scan of the source */
-	int metadata_switch;  /* |-metadata|: simply show the syntactic scan of the source */
-	int index_switch;  /* |-index|: show the web index in textual form */
-	int conventions_switch; /* |-conventions|: show what conventions apply */
-	int resources_switch; /* |-resources|: show WCL objects in scope */
-	int tags_switch; /* |-tags|: show paragraph tags used */
-	int links_switch; /* |-links|: show http(s) links used */
-	int fuller_switch;    /* |-fuller|: give further details */
+	int scan_switch;      /* `-scan`: simply show the syntactic scan of the source */
+	int metadata_switch;  /* `-metadata`: simply show the syntactic scan of the source */
+	int index_switch;  /* `-index`: show the web index in textual form */
+	int conventions_switch; /* `-conventions`: show what conventions apply */
+	int resources_switch; /* `-resources`: show WCL objects in scope */
+	int tags_switch; /* `-tags`: show paragraph tags used */
+	int links_switch; /* `-links`: show http(s) links used */
+	int fuller_switch;    /* `-fuller`: give further details */
 } inweb_inspect_settings;
 
 void InwebInspect::initialise(inweb_inspect_settings *iis) {

@@ -9,7 +9,7 @@ that page in, and puts the chapter/section structure in place from it. This
 is done without reading in those section files, and is a rapid process.
 
 Because a contents page can, by importing a module, cause a further contents
-page to be read, we need to remember that |WebContents::read_contents_page|
+page to be read, we need to remember that `WebContents::read_contents_page`
 can recurse.
 
 =

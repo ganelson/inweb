@@ -7,37 +7,37 @@ code in this section provides a routine to carry out file opening as if
 filenames are case-insensitive, and is used only for extensions.
 
 @ This section contains a single utility routine, contributed by Adam
-Thornton: a specialised, case-insensitive form of |fopen()|. It is specialised
+Thornton: a specialised, case-insensitive form of `fopen()`. It is specialised
 in that it is designed for opening extensions, where the file path will be
 case-correct up to the last two components of the path (the leafname and the
 immediately containing directory), but where the casing may be wrong in those
 last two components.
 
 @ If the exact filename or extension directory (case-correct) exists,
-|CIFilingSystem::fopen()| will choose it to open. If not, it will
-use |strcasecmp()| to find a file or directory with the same name but
+`CIFilingSystem::fopen()` will choose it to open. If not, it will
+use `strcasecmp()` to find a file or directory with the same name but
 differing in case and use it instead. If it finds exactly one candidate file,
-it will then attempt to |fopen()| it and return the result.
+it will then attempt to `fopen()` it and return the result.
 
-If |CIFilingSystem::fopen()| succeeds, it returns a |FILE *|
-(passed back to it from the underlying |fopen()|). If
-|CIFilingSystem::fopen()| fails, it returns |NULL|, and
-|errno| is set accordingly:
+If `CIFilingSystem::fopen()` succeeds, it returns a `FILE *`
+(passed back to it from the underlying `fopen()`). If
+`CIFilingSystem::fopen()` fails, it returns `NULL`, and
+`errno` is set accordingly:
 
-- If no suitable file was found, |errno| is set to |ENOENT|.
+- If no suitable file was found, `errno` is set to `ENOENT`.
 - If more than one possibility was found, but none of them exactly match
-the supplied case, |errno| is set to |EBADF|.
+the supplied case, `errno` is set to `EBADF`.
 - Note that if multiple directories which match case-insensitively are
-found, but none is an exact match, |EBADF| will be set regardless of the
+found, but none is an exact match, `EBADF` will be set regardless of the
 contents of the directories.
-- If |CIFilingSystem::fopen()| fails during its allocation of
+- If `CIFilingSystem::fopen()` fails during its allocation of
 space to hold its intermediate strings for comparison, or for its various
-data structures, |errno| is set to |ENOMEM|.
-- If an unambiguous filename is found but the |fopen()| fails, |errno| is
-left at whatever value the underlying |fopen()| set it to.
+data structures, `errno` is set to `ENOMEM`.
+- If an unambiguous filename is found but the `fopen()` fails, `errno` is
+left at whatever value the underlying `fopen()` set it to.
 
 @h The routine. ^"ifdef-PLATFORM_POSIX"
-The routine is available only on POSIX platforms where |PLATFORM_POSIX|
+The routine is available only on POSIX platforms where `PLATFORM_POSIX`
 is defined (see "Platform-Specific Definitions"). In practice this means
 everywhere except Windows, but all Windows file systems are case-preserving
 and case-insensitive in any case.
@@ -62,7 +62,7 @@ FILE *CIFilingSystem::fopen(const char *path, const char *mode) {
 	@<Parse the path to break it into topdir path, extension directory and leafname@>;
 
 	topdir = opendir(topdirpath); /* whose pathname is assumed case-correct... */
-	if (topdir == NULL) @<Sad ending to ci-fopen@>; /* ...so that failure is fatal; |errno| is set by |opendir| */
+	if (topdir == NULL) @<Sad ending to ci-fopen@>; /* ...so that failure is fatal; `errno` is set by `opendir` */
 
 	sprintf(workstring, "%s%c%s", topdirpath, FOLDER_SEPARATOR, ciextdirpath);
 	extdir = opendir(workstring); /* try with supplied extension directory name */
@@ -138,7 +138,7 @@ We use six strings to hold full or partial pathnames.
 	@<Prepare to exit ci-fopen cleanly@>;
 	return handle;
 
-@ ...and otherwise |NULL|, having already set |errno| with the reason why.
+@ ...and otherwise `NULL`, having already set `errno` with the reason why.
 
 @<Sad ending to ci-fopen@> =
 	@<Prepare to exit ci-fopen cleanly@>;
@@ -167,11 +167,11 @@ We use six strings to hold full or partial pathnames.
 =
 into three components:
 
-- |topdirpath| is |/Users/bobama/Library/Inform/Extensions|, and its casing is correct.
-- |ciextdirpath| is |Hillary Clinton|, but its casing may not be correct.
-- |ciextname| is |Health Care.i7x|, but its casing may not be correct.
+- `topdirpath` is `/Users/bobama/Library/Inform/Extensions`, and its casing is correct.
+- `ciextdirpath` is `Hillary Clinton`, but its casing may not be correct.
+- `ciextname` is `Health Care.i7x`, but its casing may not be correct.
 
-The contents of |workstring| are not significant afterwards.
+The contents of `workstring` are not significant afterwards.
 
 @<Parse the path to break it into topdir path, extension directory and leafname@> =
 	char *p;
@@ -215,12 +215,12 @@ char *CIFilingSystem::strrchr(const char *p) {
 
 @h Counting matches.
 We count the number of names within the directory which case-insensitively
-match against |name|, and copy the last which matches into |last_match|.
-This must be at least as long as |name|. (We ought to be just a little careful
+match against `name`, and copy the last which matches into `last_match`.
+This must be at least as long as `name`. (We ought to be just a little careful
 in case of improbable cases where the matched name contains a different
-number of characters from |name|, for instance because on a strict reading
+number of characters from `name`, for instance because on a strict reading
 of Unicode "SS" is casing-equivalent to the eszet, but it's unlikely
-that many contemporary implementations of |strcasecmp| are aware of this,
+that many contemporary implementations of `strcasecmp` are aware of this,
 and in any case the code above contains much larger buffers than needed.)
 
 =
@@ -241,7 +241,7 @@ int CIFilingSystem::match_in_directory(void *vd,
 }
 
 @h Non-POSIX tail. ^"ifndef-PLATFORM_POSIX"
-On platforms without POSIX directory handling, we revert to regular |fopen|.
+On platforms without POSIX directory handling, we revert to regular `fopen`.
 
 =
 FILE *CIFilingSystem::fopen(const char *path, const char *mode) {

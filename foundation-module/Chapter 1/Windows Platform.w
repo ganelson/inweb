@@ -2,7 +2,7 @@
 
 A version of our operating system interface suitable for Microsoft Windows.
 
-@ This Foundation module comes with two variant versions of the |Platform::|
+@ This Foundation module comes with two variant versions of the `Platform::`
 section of code. The one you're reading compiles on Windows, and the other
 on a POSIX operating system.
 
@@ -32,7 +32,7 @@ When using a Unix-like system such as Cygwin or MSYS2 on Windows, it's
 inevitable that paths will sometimes contain backslashes and sometimes forward
 slashes, meaning a folder (i.e. directory) divide in either case. So:
 
-- When writing such a divider, always write |FOLDER_SEPARATOR|, a backslash;
+- When writing such a divider, always write `FOLDER_SEPARATOR`, a backslash;
 - When testing for such a divider, call the following.
 
 =
@@ -60,10 +60,10 @@ char *Platform::getenv(const char *name) {
 }
 
 @h Executable location.
-Fill the wide-char buffer |p| with the path to the current executable, up to
-length |length|. This function is guaranteed to be called from only one
-thread. Should the information be unavailable, or fail to fit into |p|,
-truncate |p| to zero length. (On some platforms, the information will
+Fill the wide-char buffer `p` with the path to the current executable, up to
+length `length`. This function is guaranteed to be called from only one
+thread. Should the information be unavailable, or fail to fit into `p`,
+truncate `p` to zero length. (On some platforms, the information will
 always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 
@@ -344,8 +344,8 @@ int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
 	return 0;
 }
 
-@h Sleep. The Windows |Sleep| call measures time in milliseconds, whereas
-POSIX |sleep| is for seconds.
+@h Sleep. The Windows `Sleep` call measures time in milliseconds, whereas
+POSIX `sleep` is for seconds.
 
 =
 void Platform::sleep(int seconds) {
@@ -362,7 +362,7 @@ void Platform::notification(text_stream *text, int happy) {
 The idea of this function is that if anything needs to be done to enable the
 output of ANSI-standard coloured terminal output, then this function has the
 chance to do it; similarly, it may need to configure itself to receive console
-output with the correct locale (calling |Locales::get(CONSOLE_LOCALE)| to
+output with the correct locale (calling `Locales::get(CONSOLE_LOCALE)` to
 find this).
 
 =
@@ -455,7 +455,7 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes* pa) {
 	return pa->StackSize;
 }
 
-@ This function returns the number of logical cores in the host computer --
+@ This function returns the number of logical cores in the host computer —
 i.e., twice the number of physical cores if there's hyperthreading. The
 result is used as a guess for an appropriate number of simultaneous threads
 to launch.
@@ -475,7 +475,7 @@ int Platform::get_core_count(void) {
 }
 
 @h Timestamp and file size.
-There are implementations of the C standard library where |time_t| has
+There are implementations of the C standard library where `time_t` has
 super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll

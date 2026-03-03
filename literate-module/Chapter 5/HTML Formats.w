@@ -582,8 +582,8 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	@<Recurse the renderer through children nodes@>;
 	HTML_CLOSE("pre"); WRITE("\n");
 
-@ This has to embed some Internet-sourced content. |service|
-here is something like |YouTube| or |Soundcloud|, and |ID| is whatever code
+@ This has to embed some Internet-sourced content. `service`
+here is something like `YouTube` or `Soundcloud`, and `ID` is whatever code
 that service uses to identify the video/audio in question.
 
 @<Render embed@> =
@@ -846,7 +846,11 @@ that service uses to identify the video/audio in question.
 	if (C->as_markdown) {
 		HTML_OPEN_WITH("span", "class=\"comment-syntax\"");
 		HTMLWeaving::escape_text(OUT, C->comment_open);
+		for (int i=0; ((i<Str::len(C->raw)) && (Characters::is_whitespace(Str::get_at(C->raw, i)))); i++)
+			PUT(Str::get_at(C->raw, i));
 		MDRenderer::render_extended(OUT, (void *) hrs->wv, C->as_markdown, C->variation, 0);
+		for (int i=Str::len(C->raw) - 1; ((i>=0) && (Characters::is_whitespace(Str::get_at(C->raw, i)))); i--)
+			PUT(Str::get_at(C->raw, i));
 		HTMLWeaving::escape_text(OUT, C->comment_close);
 		HTML_CLOSE("span");
 	} else

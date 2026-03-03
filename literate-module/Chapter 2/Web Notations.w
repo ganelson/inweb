@@ -6,7 +6,7 @@ To manage possible notations for writing programs in web form.
 We want to provide a literate-programming engine which can handle a wide range
 of different possible markup notations for LP.
 
-Each notation is represented by a |ls_notation| object:
+Each notation is represented by a `ls_notation` object:
 
 =
 typedef struct ls_notation {
@@ -14,7 +14,7 @@ typedef struct ls_notation {
 	struct text_stream *name;
 
 	/* for deciding when a web might be using this notation */
-	struct linked_list *recognised_filename_extensions; /* of |text_stream| */
+	struct linked_list *recognised_filename_extensions; /* of `text_stream` */
 
 	/* what aspects of LP are allowed under this notation, with what notations */
 	int footnotes_in_commentary;
@@ -84,7 +84,7 @@ ls_notation *WebNotation::new(text_stream *name) {
 Notations are named Inweb resources, so to find a notation with a given name,
 we hand over to the usual resource resolution code.
 
-For historical reasons, |InwebClassic| used to be called web syntax version 2,
+For historical reasons, `InwebClassic` used to be called web syntax version 2,
 which is why "2" is read here as if it were "InwebClassic".
 
 =
@@ -95,8 +95,8 @@ ls_notation *WebNotation::notation_by_name(ls_web *W, text_stream *name) {
 	return NULL;
 }
 
-@ Pages inside colony declarations default to |MarkdownCode|, and all other
-webs default to |InwebClassic|; though in practice other considerations usually
+@ Pages inside colony declarations default to `MarkdownCode`, and all other
+webs default to `InwebClassic`; though in practice other considerations usually
 get in before defaults are resorted to. These will almost certainly be found,
 since they're supplied with Inweb.
 
@@ -160,8 +160,8 @@ ls_notation *WebNotation::guess_from_filename(ls_web *W, filename *F) {
 }
 
 @h Adoption and adaptation to conventions.
-Suppose, then, that the above methods decide that a given web |W| should be read
-with notation |ntn|. What happens then?
+Suppose, then, that the above methods decide that a given web `W` should be read
+with notation `ntn`. What happens then?
 
 Not much, right away: we simply set the `Notation` metadata.
 
@@ -173,7 +173,7 @@ void WebNotation::adopt_for_web(ls_web *W, ls_notation *ntn) {
 	}
 }
 
-@ The |ls_notation| is not immutable once created, because it needs to be
+@ The `ls_notation` is not immutable once created, because it needs to be
 tinkered with each time is used with a given web. The reason for this is that
 each web has its own conventions, and those override some of the syntaxes
 in the notation (or might do). So the following is called whenever a
@@ -218,7 +218,7 @@ void WebNotation::adapt_to_conventions(ls_notation *ntn, linked_list *C) {
 @h Notation markers.
 These are textual markers occurring inside code or commentary, but not at
 convenient line boundaries, such as the "{{" and "}}" used to mark named
-holons in |MarkdownCode|. As it turns out, the ones we need all occur in
+holons in `MarkdownCode`. As it turns out, the ones we need all occur in
 left/right pairs.
 
 @e NAMED_HOLONS_NTNMARKER from 0          /* notation for holon names */
@@ -273,12 +273,12 @@ int WebNotation::supports_paragraph_tags(ls_notation *ntn) {
 
 @h Commentary markup.
 This is entirely decided by conventions, which is why it isn't explicitly
-visible in the |ls_notation| structure. If a notation's declaration says
+visible in the `ls_notation` structure. If a notation's declaration says
 that commentary uses Markdown, for example, that will be part of the
-|Conventions| resource which is a child of the notation declaration.
+`Conventions` resource which is a child of the notation declaration.
 
 So in a sense the following pair of functions don't belong here, since they
-don't use any part of the |ls_notation|. On the other hand, they're clearly
+don't use any part of the `ls_notation`. On the other hand, they're clearly
 notational...
 
 =
@@ -332,7 +332,7 @@ parse the lines of a WCL declaration for the notation, as follows.
 
 There is a possibly unnecessary little dance here to deal with notations
 which have no explicit name: it's unclear whether we should even support those,
-but for what it's worth, we call them |NamelessNotation|, |NamelessNotation2|,
+but for what it's worth, we call them `NamelessNotation`, `NamelessNotation2`,
 ..., in order of discovery.
 
 =
@@ -387,10 +387,10 @@ void WebNotation::read_definition_line(text_stream *line, text_file_position *tf
 @ The following either acts on a line, or does nothing and returns a non-empty
 text which represents an error message.
 
-"Stanzas" are the blocks of lines occurring between, say, |classify| and |end|.
+"Stanzas" are the blocks of lines occurring between, say, `classify` and `end`.
 Some make changes to classifiers, others to processing machines. If our line
-is in a classifier stanza, |ntn->c_stanza| is set to that classifier; if in
-a processing stanza, similarly for |ntn->p_stanza|; and they cannot both be
+is in a classifier stanza, `ntn->c_stanza` is set to that classifier; if in
+a processing stanza, similarly for `ntn->p_stanza`; and they cannot both be
 set at the same time. Stanzas cannot be nested.
 
 =
@@ -530,7 +530,7 @@ notation_rewriting_machine *WebNotation::new_machine(void) {
 	return nrm;
 }
 
-@ When the machine spots a rewrite, it then signals an |INWEB_REWRITE_FSMEVENT|,
+@ When the machine spots a rewrite, it then signals an `INWEB_REWRITE_FSMEVENT`,
 which is supplemented by a pointer to one of these structures:
 
 @e INWEB_REWRITE_FSMEVENT

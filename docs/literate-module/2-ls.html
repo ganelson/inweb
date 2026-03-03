@@ -62,7 +62,7 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  At this point we've done all of the large-scale organisations of webs into
 chapters and sections, and we get into the lower-level literate source.
 By analogy with &quot;compilation units&quot;, we use the term &quot;unit&quot; to mean a stretch
-of self-contained literate source -- self-contained in that its holons can
+of self-contained literate source — self-contained in that its holons can
 incorporate each other, but not holons from other sections of a web, which
 are different units.</p>
 <p>We will end up with an <code>ls_unit</code> which is essentially a list of <code>ls_paragraph</code>,
@@ -84,7 +84,7 @@ which is a list of <code>ls_chunk</code>, which is a list of <code>ls_line</code
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* result of parsing */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">lines_read</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">errors</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |ls_error| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">errors</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>ls_error</code> */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* temporary workspace used only in parsing */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">incomplete</span><span class="plain-syntax">;</span>
@@ -165,7 +165,7 @@ indicate that you're done.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  That function wasn't recursive: this one is. We need to remember here that a
 literal line of source text can, in some notations for LS, produce multiple
-<code>ls_line</code> objects -- if a single line combines a title for a paragraph with
+<code>ls_line</code> objects — if a single line combines a title for a paragraph with
 some commentary beginning that paragraph, for example.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -292,8 +292,8 @@ explicitly marked: in others they are implied, and we need to insert them.</p>
 <p class="commentary firstcommentary"><a id="SP5_4" class="paragraph-anchor"></a><b>&#167;5.4. </b>  Sometimes the classifier has decided that only the first few characters
 of the line were significant, and wants to give us a &quot;residue&quot; of material
 left over. We recurse in order to insert line(s) arising from that, too.</p>
-<p>Usually the classifier has left that residue unclassified for now -- so that
-it will be classified when we recurse -- but sometimes the classifier already
+<p>Usually the classifier has left that residue unclassified for now — so that
+it will be classified when we recurse — but sometimes the classifier already
 knows and wants to tell us:</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">And finally insert any residue left over</span><span class="named-paragraph-number">5.4</span></span> =</p>
@@ -346,10 +346,10 @@ Note that these all increment the line count, just as that does:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_class</span><span class="plain-syntax"> </span><span class="identifier-syntax">classification</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_footnote</span><span class="plain-syntax"> *</span><span class="identifier-syntax">footnote_text</span><span class="plain-syntax">; </span><span class="comment-syntax">/* which fn this is the text of, if it is at all */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">suppress_tangling</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if e.g., lines are tangled out of order */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_marks</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or |NULL| if there are none */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">index_marks</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or <code>NULL</code> if there are none */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* how the line sits inside the wider source */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chunk</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owning_chunk</span><span class="plain-syntax">; </span><span class="comment-syntax">/* |NULL| until the unit has been divided up into chunks */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chunk</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owning_chunk</span><span class="plain-syntax">; </span><span class="comment-syntax">/* <code>NULL</code> until the unit has been divided up into chunks */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prev_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -634,13 +634,13 @@ altogether, so that nobody uses it by mistake.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">analysis_ref</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_holon</span><span class="plain-syntax"> *</span><span class="identifier-syntax">holon</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_class</span><span class="plain-syntax"> </span><span class="identifier-syntax">titling</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">taggings</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |literate_source_tagging| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">taggings</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>literate_source_tagging</code> */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* contents of the paragraph */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chunk</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_chunk</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chunk</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_chunk</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">footnote_count</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">footnotes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |ls_footnote| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">footnotes</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>ls_footnote</code> */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* used only when computing the paragraph numbers */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parent_paragraph</span><span class="plain-syntax">; </span><span class="comment-syntax">/* the super-para of this, if any */</span>
@@ -722,7 +722,7 @@ following:</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">onset_line</span><span class="plain-syntax">; </span><span class="comment-syntax">/* where to report errors about the chunk */</span>
 
 <span class="plain-syntax">    </span><span class="comment-syntax">/* meaningful for EXTRACT_LSCT chunks only */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_holon</span><span class="plain-syntax"> *</span><span class="identifier-syntax">holon</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or |NULL|, if this doesn't contain a program fragment */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_holon</span><span class="plain-syntax"> *</span><span class="identifier-syntax">holon</span><span class="plain-syntax">; </span><span class="comment-syntax">/* or <code>NULL</code>, if this doesn't contain a program fragment */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">plainer</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">hyperlinked</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">extract_to</span><span class="plain-syntax">;</span>

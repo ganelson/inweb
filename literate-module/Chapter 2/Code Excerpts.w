@@ -6,7 +6,7 @@ To manage excerpts of code which may have to be tangled or woven.
 
 =
 typedef struct ls_code_excerpt {
-	struct linked_list *splice_list; /* of |holon_splice| */
+	struct linked_list *splice_list; /* of `holon_splice` */
 	CLASS_DEFINITION
 } ls_code_excerpt;
 
@@ -37,7 +37,7 @@ of "splices", each containing a fragment of a line.
 
 =
 typedef struct holon_splice {
-	int type; /* one of the |*_LSHST| constants */
+	int type; /* one of the `*_LSHST` constants */
 	struct ls_holon *expansion;
 	struct text_stream *texts[3];
 	struct markdown_item *comment_as_markdown;

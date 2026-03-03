@@ -31,7 +31,7 @@ void InwebTestLanguage::cli(void) {
 
 =
 typedef struct inweb_test_language_settings {
-	struct filename *test_language_on_setting; /* |-on X| */
+	struct filename *test_language_on_setting; /* `-on X` */
 	struct text_stream *name;
 } inweb_test_language_settings;
 

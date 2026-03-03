@@ -930,7 +930,7 @@ int Characters::is_Unicode_punctuation(inchar32_t c) {
 }
 
 @ Another epic, mechanically written function, performs the full case folding
-defined by Unicode 15.0, turning |c| into a run of up to four characters
+defined by Unicode 15.0, turning `c` into a run of up to four characters
 representing its canonical upper-case form.
 
 =

@@ -13,10 +13,10 @@ void TeXWeaving::create(void) {
 }
 
 @h Rendering.
-At present, this renderer only makes the dialect of TeX needed for |pdftex|,
+At present, this renderer only makes the dialect of TeX needed for `pdftex`,
 which involves various extension commands: the curse of modern TeX is the
 combination of an outdated original, and a proliferation of non-canonical
-extensions, but |pdftex| is pretty good. All the same, we should perhaps
+extensions, but `pdftex` is pretty good. All the same, we should perhaps
 consider adding LaTeX, or XeTeX.
 
 @e PDFTEX_TEXDIALECT from 1
@@ -27,7 +27,7 @@ void TeXWeaving::render_TeX(weave_format *self, text_stream *OUT, heterogeneous_
 }
 
 @ From here on, then, the renderer, which should generate TeX which is as
-generic as possible, but with special features depending on |trs->TeX_form|.
+generic as possible, but with special features depending on `trs->TeX_form`.
 
 =
 typedef struct TeX_render_state {
@@ -172,7 +172,7 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 @ TeX itself has an almost defiant lack of support for anything pictorial,
 which is one reason it didn't live up to its hope of being the definitive basis
 for typography; even today the loose confederation of TeX-like programs and
-extensions lack standard approaches. Here we're going to use |pdftex| features,
+extensions lack standard approaches. Here we're going to use `pdftex` features,
 having nothing better. All we're trying for is to insert a picture, scaled
 to a given width, into the text at the current position.
 
@@ -314,7 +314,7 @@ to a given width, into the text at the current position.
 
 @ The TeX macro for footnotes means that the text has to accompany the cue,
 which is tricky for us now because the footnote text is somewhere else in
-the weave tree -- so, we go for a little walk:
+the weave tree — so, we go for a little walk:
 
 @<Render footnote cue@> =
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
@@ -452,9 +452,9 @@ to pass the weight that way. Instead we use
 	\weavesectionss
 	\weavesectionsss
 =
-where the weight is the number of terminal |s|s, 0 to 3. (TeX macros,
+where the weight is the number of terminal `s`s, 0 to 3. (TeX macros,
 lamentably, are not allowed digits in their name.) In the cases 0 and 1, we
-also have variants |\nsweavesection| and |\nsweavesections| which are
+also have variants `\nsweavesection` and `\nsweavesections` which are
 the same, but with the initial vertical spacing removed; these allow us to
 prevent unsightly excess white space in certain configurations of a section.
 
@@ -484,7 +484,7 @@ prevent unsightly excess white space in certain configurations of a section.
 which follow the material on those pages: so that the running head for a page
 can show the paragraph range for the material which tops it, for instance.
 
-The ornament has to be set in math mode, even in the mark. |\S| and |\P|,
+The ornament has to be set in math mode, even in the mark. `\S` and `\P`,
 making a section sign and a pilcrow respectively, only work in math mode
 because they abbreviate characters found in math fonts but not regular ones,
 in TeX's deeply peculiar font encoding system.

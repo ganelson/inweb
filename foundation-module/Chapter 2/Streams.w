@@ -25,15 +25,15 @@ We give just one character value a non-Unicode meaning:
 
 @d NEWLINE_IN_STRING ((char) 0x7f) /* Within quoted text, all newlines are converted to this */
 
-@ The |text_stream| type began as a generalisation of the standard C library's
-|FILE|, and it is used in mostly similar ways. The user -- the whole
-program outside of this section -- deals only with |text_stream *| pointers to
+@ The `text_stream` type began as a generalisation of the standard C library's
+`FILE`, and it is used in mostly similar ways. The user — the whole
+program outside of this section — deals only with `text_stream *` pointers to
 represent streams in use.
 
 All stream handling is defined via macros. While many operations could be
-handled by ordinary functions, others cannot. |text_stream| cannot have exactly
-the semantics of |FILE| since we cannot rely on the host operating system
-to allocate and deallocate the structures behind |text_stream *| pointers; and
+handled by ordinary functions, others cannot. `text_stream` cannot have exactly
+the semantics of `FILE` since we cannot rely on the host operating system
+to allocate and deallocate the structures behind `text_stream *` pointers; and
 we cannot use our own memory system, either, since we need stream handling
 to work both before the memory allocator starts and after it has finished.
 Our macros allow us to hide all this. Besides that, a macro approach makes it
@@ -44,14 +44,14 @@ implementation is the second stab at it.)
 with code ordering if we leave them until later. They are written in the
 old-fashioned way, for compatibility with old copies of GCC, and avoid the
 need for comma deletion around empty tokens, as that is a point of
-incompatibility between implementations of the C preprocessor |cpp|. All the
+incompatibility between implementations of the C preprocessor `cpp`. All the
 same, if you're porting this code, you may need to rewrite the macro with
-|...| in place of |args...| in the header, and then |__VA_ARGS__| in place
-of |args| in the definition: that being the modern way, apparently.
+`...` in place of `args...` in the header, and then `__VA_ARGS__` in place
+of `args` in the definition: that being the modern way, apparently.
 
-|WRITE| is essentially |sprintf| and |fprintf| combined, since it prints
+`WRITE` is essentially `sprintf` and `fprintf` combined, since it prints
 formatted text to the current stream, which could be either a string or a
-file. |PRINT| does the same but to |STDOUT|, and is thus essentially |printf|.
+file. `PRINT` does the same but to `STDOUT`, and is thus essentially `printf`.
 
 = (early code)
 #define WRITE(args...) Writers::printf(OUT, args)
@@ -68,31 +68,31 @@ file. |PRINT| does the same but to |STDOUT|, and is thus essentially |printf|.
 
 @ The main purpose of many functions is to write textual material to some
 file. Such functions almost always have a special argument in their
-prototypes: |OUTPUT_STREAM|. This tells them where to pipe their output, which
-is always to a "current stream" called |OUT|. What this leads to, and who will
+prototypes: `OUTPUT_STREAM`. This tells them where to pipe their output, which
+is always to a "current stream" called `OUT`. What this leads to, and who will
 see that it's properly opened and closed, are not their concern.
 
 @d OUTPUT_STREAM text_stream *OUT /* used only as a function prototype argument */
 
-@ Three output streams are always open. One is |NULL|, that is, its value
-as a |text_stream *| pointer is |NULL|, the generic C null pointer. This represents
-an oubliette: it is entirely valid to use it, but output sent to |NULL| will
+@ Three output streams are always open. One is `NULL`, that is, its value
+as a `text_stream *` pointer is `NULL`, the generic C null pointer. This represents
+an oubliette: it is entirely valid to use it, but output sent to `NULL` will
 never be seen again.
 
-The others are |STDOUT| and |STDERR|. As the names suggest these are wrappers
-for |stdout| and |stderr|, the standard console output and error messages
+The others are `STDOUT` and `STDERR`. As the names suggest these are wrappers
+for `stdout` and `stderr`, the standard console output and error messages
 "files" provided by the C library.
 
-We should always use |PRINT(...)| instead of |printf(...)| for console output,
-so that there are no uses of |printf| anywhere in the program.
+We should always use `PRINT(...)` instead of `printf(...)` for console output,
+so that there are no uses of `printf` anywhere in the program.
 
 @d STDOUT Streams::get_stdout()
 @d STDERR Streams::get_stderr()
 
-@ |PUT| and |PUT_TO| similarly print single characters, which are
-specified as unsigned integer values. In practice, |WRITE_TO| and
-|PUT_TO| are seldom needed because there is almost always only one
-stream of interest at a time -- |OUT|, the current stream.
+@ `PUT` and `PUT_TO` similarly print single characters, which are
+specified as unsigned integer values. In practice, `WRITE_TO` and
+`PUT_TO` are seldom needed because there is almost always only one
+stream of interest at a time — `OUT`, the current stream.
 
 @d PUT(c) Streams::putc(c, OUT)
 
@@ -111,24 +111,24 @@ to become negative.
 @ Other streams only exist when explicitly created, or "opened". A function
 is only allowed to open a new stream if it can be proved that this stream will
 always subsequently be "closed". (Except for the possibility of the tool
-halting with an internal error, and therefore an |exit(1)|, while the stream
+halting with an internal error, and therefore an `exit(1)`, while the stream
 is still open.) A stream can be opened and closed only once, and outside that
 time its state is undefined: it must not be used at all.
 
 The simplest way is to make a temporary stream, which can be used as a sort
 of clipboard. For instance, suppose we have to compile X before Y, but have to
 ensure Y comes before X in the eventual output. We create a temporary stream,
-compile X into it, then compile Y to |OUT|, then copy the temporary stream
-into |OUT| and dispose of it.
+compile X into it, then compile Y to `OUT`, then copy the temporary stream
+into `OUT` and dispose of it.
 
 Temporary streams are always created in memory, held in C's local stack frame
-rather than allocated and freed via |malloc| and |free|. It must always be
-possible to prove that execution passes from |TEMPORARY_TEXT| to
-|DISCARD_TEXT|, unless the program makes a fatal exit in between. The stream,
-let's call it |TEMP|, exists only between those macros. We can legitimately
+rather than allocated and freed via `malloc` and `free`. It must always be
+possible to prove that execution passes from `TEMPORARY_TEXT` to
+`DISCARD_TEXT`, unless the program makes a fatal exit in between. The stream,
+let's call it `TEMP`, exists only between those macros. We can legitimately
 create a temporary stream many times in one function (for instance inside a
-loop body) because each time |TEMP| is created as a new stream, overwriting the
-old one. |TEMP| is a different stream each time it is created, so it does
+loop body) because each time `TEMP` is created as a new stream, overwriting the
+old one. `TEMP` is a different stream each time it is created, so it does
 not violate the rule that every stream is opened and closed once only.
 
 @d TEMPORARY_TEXT(T)
@@ -141,13 +141,13 @@ not violate the rule that every stream is opened and closed once only.
 
 @ Otherwise we can create new globally existing streams, provided we take on
 the responsibility for seeing that they are properly closed. There are two
-choices: a stream in memory, allocated via |malloc| and freed by |free| when
-the stream is closed; or a file written to disc, opened via |fopen| and
-later closed by |fclose|. Files are always written in text mode, that is,
-|"w"| not |"wb"|, for those platforms where this makes a difference.
+choices: a stream in memory, allocated via `malloc` and freed by `free` when
+the stream is closed; or a file written to disc, opened via `fopen` and
+later closed by `fclose`. Files are always written in text mode, that is,
+`"w"` not `"wb"`, for those platforms where this makes a difference.
 
 We use streams to handle all of our text file output, so there should be no
-calls to |fprintf| anywhere in the program except for binary files.
+calls to `fprintf` anywhere in the program except for binary files.
 
 @d STREAM_OPEN_TO_FILE(new, fn, enc) Streams::open_to_file(new, fn, enc)
 
@@ -157,7 +157,7 @@ calls to |fprintf| anywhere in the program except for binary files.
 
 @d STREAM_CLOSE(stream) Streams::close(stream)
 
-@ The following operation is equivalent to |fflush| and makes it more likely
+@ The following operation is equivalent to `fflush` and makes it more likely
 (I put it no higher) that the text written to a stream has all actually been
 copied onto the disc, rather than sitting in some operating system buffer.
 This helps ensure that any debugging log is up to the minute, in case of
@@ -168,7 +168,7 @@ a memory stream is legal but does nothing.
 
 @ A piece of information we can read for any stream is the number of characters
 written to it: its "extent". In fact, UTF-8 multi-byte encoding schemes,
-together with differing platform interpretations of C's |'\n'|, mean that this
+together with differing platform interpretations of C's `'\n'`, mean that this
 extent is not necessarily either the final file size in bytes or the final
 number of human-readable characters. We will only actually use it to detect
 whether text has, or has not, been written to a stream between two points in
@@ -177,7 +177,7 @@ time, by seeing whether or not it has increased.
 @d STREAM_EXTENT(x) Streams::get_position(x)
 
 @ The remaining operations are available only for streams in memory (well, and
-for |NULL|, but of course they do nothing when applied to that). While they
+for `NULL`, but of course they do nothing when applied to that). While they
 could be provided for file streams, this would be so inefficient that we will
 pretend it is impossible. Any function which might need to use one
 of these operations should open with the following sentinel macro:
@@ -203,19 +203,19 @@ stream).
 
 @ So much for the definition; now the implementation.
 
-Here is the |text_stream| structure. Open memory streams are represented by
-structures where |write_to_memory| is valid, open file streams by those where
-|write_to_file| is valid. That counts every open stream except |NULL|, which
-of course doesn't point to a |text_stream| structure at all.
+Here is the `text_stream` structure. Open memory streams are represented by
+structures where `write_to_memory` is valid, open file streams by those where
+`write_to_file` is valid. That counts every open stream except `NULL`, which
+of course doesn't point to a `text_stream` structure at all.
 
-Any stream can have |USES_XML_ESCAPES_STRF| set or cleared. When this is set, the
-XML (and HTML) escapes of |&amp;| for ampersand, and |&lt;| and |&gt;| for
+Any stream can have `USES_XML_ESCAPES_STRF` set or cleared. When this is set, the
+XML (and HTML) escapes of `&amp;` for ampersand, and `&lt;` and `&gt;` for
 angle brackets, will be used automatically on writing. By default this flag
 is clear, that is, no conversion is made.
 
-@d MALLOCED_STRF            0x00000001 /* was the |write_to_memory| pointer claimed by |malloc|? */
+@d MALLOCED_STRF            0x00000001 /* was the `write_to_memory` pointer claimed by `malloc`? */
 @d USES_XML_ESCAPES_STRF    0x00000002 /* see above */
-@d USES_LOG_ESCAPES_STRF    0x00000004 /* |WRITE| to this stream supports |$| escapes */
+@d USES_LOG_ESCAPES_STRF    0x00000004 /* `WRITE` to this stream supports `$` escapes */
 @d INDENT_PENDING_STRF      0x00000008 /* we have just ended a line, so further text should indent */
 @d FILE_ENCODING_ISO_STRF   0x00000010 /* relevant only for file streams */
 @d FILE_ENCODING_UTF8_STRF  0x00000020 /* relevant only for file streams */
@@ -233,12 +233,12 @@ is clear, that is, no conversion is made.
 
 =
 typedef struct text_stream {
-	int stream_flags; /* bitmap of the |*_STRF| values above */
-	FILE *write_to_file; /* for an open stream, exactly one of these is |NULL| */
-	struct HTML_file_state *as_HTML; /* relevant only to the |HTML::| section */
+	int stream_flags; /* bitmap of the `*_STRF` values above */
+	FILE *write_to_file; /* for an open stream, exactly one of these is `NULL` */
+	struct HTML_file_state *as_HTML; /* relevant only to the `HTML::` section */
 	inchar32_t *write_to_memory;
 	struct filename *file_written; /* ditto */
-	int chars_written; /* number of characters sent, counting |\n| as 1 */
+	int chars_written; /* number of characters sent, counting `\n` as 1 */
 	int chars_capacity; /* maximum number the stream can accept without claiming more resources */
 	struct text_stream *stream_continues; /* if one memory stream is extended by another */
 } text_stream;
@@ -247,10 +247,10 @@ typedef struct text_stream {
 
 @d STREAM_USES_UTF8(x) ((x)?((x->stream_flags) & FILE_ENCODING_UTF8_STRF):FALSE)
 
-@ When text is stored at |write_to_memory|, it is kept as a zero-terminated C
+@ When text is stored at `write_to_memory`, it is kept as a zero-terminated C
 wide string, with one word per Unicode code point. It turns out to be
 efficient to preserve a small margin of clear space at the end of the space,
-so out of the |chars_capacity| space, the following amount will be kept clear:
+so out of the `chars_capacity` space, the following amount will be kept clear:
 
 @d SPACE_AT_END_OF_STREAM 6
 
@@ -284,7 +284,7 @@ void Streams::initialise(text_stream *stream, int from) {
 }
 
 @ Any stream can have the following flag set or cleared. When this is set, the
-XML (and HTML) escapes of |&amp;| for ampersand, and |&lt;| and |&gt;| for
+XML (and HTML) escapes of `&amp;` for ampersand, and `&lt;` and `&gt;` for
 angle brackets, will be used automatically on writing. By default this flag
 is clear, that is, no conversion is made.
 
@@ -356,8 +356,8 @@ void Streams::log(OUTPUT_STREAM, void *vS) {
 }
 
 @h Standard I/O wrappers.
-The first call to |Streams::get_stdout()| creates a suitable wrapper for |stdout|
-and returns a |text_stream *| pointer to it; subsequent calls just return this wrapper.
+The first call to `Streams::get_stdout()` creates a suitable wrapper for `stdout`
+and returns a `text_stream *` pointer to it; subsequent calls just return this wrapper.
 
 =
 text_stream STDOUT_struct; int stdout_wrapper_initialised = FALSE;
@@ -394,7 +394,7 @@ text_stream *Streams::get_stderr(void) {
 
 @h Creating file streams.
 Note that this can fail, if the host filing system refuses to open the file,
-so we return |TRUE| if and only if successful.
+so we return `TRUE` if and only if successful.
 
 =
 int Streams::open_to_file(text_stream *stream, filename *name, int encoding) {
@@ -543,7 +543,7 @@ void Streams::write_as_wide_string(inchar32_t *C_string, text_stream *stream, in
 	C_string[i] = 0;
 }
 
-@ Unicode code points outside the first page are flattened to |'?'| in an
+@ Unicode code points outside the first page are flattened to `'?'` in an
 ISO string:
 
 =
@@ -631,7 +631,7 @@ void Streams::write_locale_string(text_stream *stream, char *C_string) {
 
 @h Flush and close.
 Note that flush is an operation which can be performed on any stream, including
-|NULL|:
+`NULL`:
 
 =
 void Streams::flush(text_stream *stream) {
@@ -639,7 +639,7 @@ void Streams::flush(text_stream *stream) {
 	if (stream->write_to_file) fflush(stream->write_to_file);
 }
 
-@ But closing is not allowed for |NULL| or the standard I/O wrappers:
+@ But closing is not allowed for `NULL` or the standard I/O wrappers:
 
 =
 void Streams::close(text_stream *stream) {
@@ -660,7 +660,7 @@ void Streams::close(text_stream *stream) {
 was supplied by our client; it only needs freeing if we were the ones who
 allocated it.
 
-Inscrutably, |fclose| returns |EOF| to report any failure.
+Inscrutably, `fclose` returns `EOF` to report any failure.
 
 @<Take suitable action to close the file stream@> =
 	if ((ferror(stream->write_to_file)) || (fclose(stream->write_to_file) == EOF))
@@ -674,11 +674,11 @@ Inscrutably, |fclose| returns |EOF| to report any failure.
 
 @ Note that we need do nothing to close a memory stream when the storage
 was supplied by our client; it only needs freeing if we were the ones who
-allocated it. |free| is a void function; in theory it cannot fail, if
+allocated it. `free` is a void function; in theory it cannot fail, if
 supplied a valid argument.
 
-We have to be very careful once we have called |free|, because that memory
-may well contain the |text_stream| structure to which |stream| points -- see
+We have to be very careful once we have called `free`, because that memory
+may well contain the `text_stream` structure to which `stream` points — see
 how continuations are made, below.
 
 @<Take suitable action to close the memory stream@> =
@@ -690,7 +690,7 @@ how continuations are made, below.
 	}
 
 @h Writing.
-Our equivalent of |fputc| reads:
+Our equivalent of `fputc` reads:
 
 =
 void Streams::putc(inchar32_t c, text_stream *stream) {
@@ -776,20 +776,20 @@ void Streams::putci(int c_int, text_stream *stream) {
 		}
 	}
 
-@ The following is checked before any numerical |printf|-style escape is expanded
+@ The following is checked before any numerical `printf`-style escape is expanded
 into the stream, or before any single character is written. Thus we cannot
 overrun our buffers unless the expansion of a numerical escape exceeds
-|SPACE_AT_END_OF_STREAM| plus 1 in size. Since no outside influence gets to
-choose what formatting escapes we use (so that |%3000d|, say, can't occur),
+`SPACE_AT_END_OF_STREAM` plus 1 in size. Since no outside influence gets to
+choose what formatting escapes we use (so that `%3000d`, say, can't occur),
 we can be pretty confident.
 
 The interesting case occurs when we run out of memory in a memory stream.
-We make a continuation to a fresh |text_stream| structure, which points to twice
-as much memory as the original, allocated via |malloc|. (We will actually need
+We make a continuation to a fresh `text_stream` structure, which points to twice
+as much memory as the original, allocated via `malloc`. (We will actually need
 a little more memory than that because we also have to make room for the
-|text_stream| structure itself.) We then set |stream| to the |continuation|. Given
-that |malloc| was successful -- and it must have been or we would have stopped
-with a fatal error -- the continuation is guaranteed to be large enough,
+`text_stream` structure itself.) We then set `stream` to the `continuation`. Given
+that `malloc` was successful — and it must have been or we would have stopped
+with a fatal error — the continuation is guaranteed to be large enough,
 since it's twice the size of the original, which itself was large enough to
 hold any escape sequence when opened.
 
@@ -854,10 +854,10 @@ int Streams::get_indentation(text_stream *stream) {
 	return (stream->stream_flags & INDENTATION_MASK_STRF)/INDENTATION_BASE_STRF;
 }
 
-@ We can read the position for any stream, including |NULL|, but no matter
-how much is written to |NULL| this position never budges.
+@ We can read the position for any stream, including `NULL`, but no matter
+how much is written to `NULL` this position never budges.
 
-Because of continuations, this is not as simple as returning the |chars_written|
+Because of continuations, this is not as simple as returning the `chars_written`
 field.
 
 =
@@ -949,8 +949,8 @@ void Streams::set_position(text_stream *stream, int position) {
 	}
 }
 
-@ Lastly, our copying function, where |from| has to be a memory stream (or
-|NULL|) but |to| can be anything (including |NULL|).
+@ Lastly, our copying function, where `from` has to be a memory stream (or
+`NULL`) but `to` can be anything (including `NULL`).
 
 =
 void Streams::copy(text_stream *to, text_stream *from) {
@@ -967,7 +967,7 @@ void Streams::copy(text_stream *to, text_stream *from) {
 }
 
 @h Writer.
-This writes one stream into another one, which implements |%S|.
+This writes one stream into another one, which implements `%S`.
 
 =
 void Streams::writer(OUTPUT_STREAM, char *format_string, void *vS) {

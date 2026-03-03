@@ -52,11 +52,11 @@ void InwebTangle::cli(void) {
 
 =
 typedef struct inweb_tangle_settings {
-	struct filename *tangle_setting; /* |-to X|: the tangling */
-	int tangle_to_STDOUT; /* |-to -| */
+	struct filename *tangle_setting; /* `-to X`: the tangling */
+	int tangle_to_STDOUT; /* `-to -` */
 	struct inweb_range_specifier subset;
-	int ctags_switch; /* |-ctags|: generate a set of Universal Ctags on each tangle */
-	struct filename *ctags_setting; /* |-ctags-to X|: the pathname X, if supplied */
+	int ctags_switch; /* `-ctags`: generate a set of Universal Ctags on each tangle */
+	struct filename *ctags_setting; /* `-ctags-to X`: the pathname X, if supplied */
 } inweb_tangle_settings;
 
 void InwebTangle::initialise(inweb_tangle_settings *its) {
@@ -155,7 +155,7 @@ output, but needs to be part of the web since it's essential to an understanding
 of the whole system.
 
 For the main tangle of a web (usually the only one), the destination leafname
-defaults to something like its program name with |.c| (or |.cpp|, |.swift|, ...,
+defaults to something like its program name with `.c` (or `.cpp`, `.swift`, ...,
 as appropriate) tacked on:
 
 @<Work out main tangle destination@> =

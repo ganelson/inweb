@@ -26,9 +26,9 @@ typedef struct tangle_docket {
 	void *state;
 	struct text_file_position at;
 	struct tangle_target *target;
-	struct linked_list *conventions; /* of |ls_conventions| */
+	struct linked_list *conventions; /* of `ls_conventions` */
 	struct pathname *external_path;
-	struct linked_list *external_files; /* of |tangle_external_file| */
+	struct linked_list *external_files; /* of `tangle_external_file` */
 } tangle_docket;
 
 typedef struct tangle_external_file {
@@ -39,7 +39,7 @@ typedef struct tangle_external_file {
 
 @ The idea here is that a docket contains optional callback functions to
 deal with situations arising during the tangle. In each case they can be
-|NULL|, to take no special action.
+`NULL`, to take no special action.
 
 =
 tangle_docket Tangler::new_docket(
@@ -448,10 +448,10 @@ page) and substitutes that, so that we end up with (say)
 	printf("This is build 5Q47.\n");
 =
 In some languages there are also special expansions (for example, in
-InC |[[nonterminals]]| has a special meaning).
+InC `[[nonterminals]]` has a special meaning).
 
 If the text in double-squares isn't recognised, that's not an error: it simply
-passes straight through. So |[[water]]| becomes just |[[water]]|.
+passes straight through. So `[[water]]` becomes just `[[water]]`.
 
 @<Act on this tangler command@> =
 	ls_chunk *chunk = hs->line->owning_chunk;
@@ -607,9 +607,9 @@ void Tangler::tangle_illiterate_code_fragment(OUTPUT_STREAM, text_stream *text,
 	}
 	PUT_TO(OUT, cr);
 
-@ And here we read a normal command. The command name must not include |}|
-or |:|. If there is no |:| then the argument is left unset (so that it will
-be the empty string: see above). The argument must not include |}|.
+@ And here we read a normal command. The command name must not include `}`
+or `:`. If there is no `:` then the argument is left unset (so that it will
+be the empty string: see above). The argument must not include `}`.
 
 @<Read up to the next close brace as a braced command and argument@> =
 	Str::clear(command);
@@ -623,7 +623,7 @@ be the empty string: see above). The argument must not include |}|.
 		else PUT_TO(argument, cr);
 	}
 
-@ And similarly, for the |(+| ... |+)| notation which was once used to mark
+@ And similarly, for the `(+` ... `+)` notation which was once used to mark
 I7 material within I6:
 
 @<Read up to the next plus close-bracket as an I7 expression@> =

@@ -115,7 +115,7 @@ three texts: <code>alpha</code>, <code>72</code>, <code>zeta</code>.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">semantic_version_number</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">version_numbers</span><span class="plain-syntax">[</span><span class="constant-syntax">SEMVER_NUMBER_DEPTH</span><span class="plain-syntax">];</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prerelease_segments</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |text_stream| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prerelease_segments</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>text_stream</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">build_metadata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">semantic_version_number</span><span class="plain-syntax">;</span>
 
@@ -126,7 +126,7 @@ three texts: <code>alpha</code>, <code>72</code>, <code>zeta</code>.</p>
 </pre>
 <ul class="endnotetexts"><li>The structure semantic_version_number is accessed in 7/vnr and here.</li><li>The structure semantic_version_number_holder is private to this section.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  All invalid strings of numbers -- i.e., breaking the above rules -- are
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  All invalid strings of numbers — i.e., breaking the above rules — are
 called &quot;null&quot; versions, and can never be valid as the version of anything.
 Instead they are used to represent the absence of a version number.
 (In particular, a string of <code>-1</code>s is null.)</p>

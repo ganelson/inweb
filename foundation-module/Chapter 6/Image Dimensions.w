@@ -5,16 +5,16 @@ pixel dimensions of any images supplied by the user for cover art and figures.
 
 @h JPEG files.
 The following code, contributed by Toby Nelson, either finds the pixel width
-and height of a given JPEG file and returns |TRUE| or, if it can't read the
-file or doesn't recognise the header as having JPEG format, returns |FALSE|.
+and height of a given JPEG file and returns `TRUE` or, if it can't read the
+file or doesn't recognise the header as having JPEG format, returns `FALSE`.
 
 JPEG is properly speaking not a file format but a compression technique:
 the routine below works with either JIF (JPEG Interchange Format) or its
 simpler cousin JFIF (JPEG File Interchange Format).
 
 We scan the file looking for "markers", each of which begins with an
-|0xFF| byte and is followed by a marker-type byte which is neither |0x00|
-nor |0xFF|. The compulsory marker SOI must appear at the start of the file,
+`0xFF` byte and is followed by a marker-type byte which is neither `0x00`
+nor `0xFF`. The compulsory marker SOI must appear at the start of the file,
 providing one way to detect probable JPEGs by looking at the first two
 bytes. There must also eventually be a start of frame marker, for the
 actual image: this can have many forms, but in all cases tells us the
@@ -26,22 +26,22 @@ int ImageFiles::get_JPEG_dimensions(FILE *JPEG_file, unsigned int *width, unsign
     int marker;
 
     if (!BinaryFiles::read_int16(JPEG_file, &sig)) return FALSE;
-    if (sig != 0xFFD8) return FALSE; /* |0xFF| (marker) then |0xD8| (SOI) */
+    if (sig != 0xFFD8) return FALSE; /* `0xFF` (marker) then `0xD8` (SOI) */
 
     do {
         do {
             marker = getc(JPEG_file);
             if (marker == EOF) return FALSE;
-        } while (marker != 0xff); /* skip to next |0xFF| byte */
+        } while (marker != 0xff); /* skip to next `0xFF` byte */
 
         do {
             marker = getc(JPEG_file);
-        } while (marker == 0xff); /* skip to next non |FF| byte */
+        } while (marker == 0xff); /* skip to next non `FF` byte */
 
         if (!BinaryFiles::read_int16(JPEG_file, &length)) return FALSE; /* length of marker */
 
         switch(marker) {
-        	/* all variant forms of "start of frame": e.g., |0xC0| is a baseline DCT image */
+        	/* all variant forms of "start of frame": e.g., `0xC0` is a baseline DCT image */
             case 0xc0:
             case 0xc1: case 0xc2: case 0xc3:
             case 0xc5: case 0xc6: case 0xc7:

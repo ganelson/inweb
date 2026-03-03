@@ -30,8 +30,8 @@ void ParagraphTags::tag_with_caption(ls_paragraph *par, text_stream *tag, text_s
 }
 
 @ Tags are created simply by being used in taggings. If the tag notation
-|^"History: How tags came about"| is found, the following is called, and
-the tag is |History|, the caption "How tags came about".
+`^"History: How tags came about"` is found, the following is called, and
+the tag is "History", the caption "How tags came about".
 
 =
 void ParagraphTags::tag(ls_paragraph *par, text_stream *text) {

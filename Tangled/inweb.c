@@ -1493,6 +1493,10 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     	for (string_position P = Str__back(Str__end(ST)); P.index >= 0; P.index--)
 
     
+#line 101 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+    #define MAX_TEXTUAL_TABLE_COL_WIDTHS 100
+
+    
 #line 134 "inweb/foundation-module/Chapter 4/Text Files.w"
     #define CH32EOF 0xFFFFFFFFU 
 
@@ -4675,7 +4679,7 @@ typedef struct allocation_status_structure {
 	void *last_in_memory; /* tail of doubly linked list */
 
 	/* used only to provide statistics for the debugging log: */
-	char *name_of_type; /* e.g., |"index_lexicon_entry_CLASS"| */
+	char *name_of_type; /* e.g., `"index_lexicon_entry_CLASS"` */
 	int bytes_allocated; /* total allocation for this type of object, not counting overhead */
 	int objects_count; /* total number currently in existence (i.e., undeleted) */
 	int no_allocated_together; /* number of objects in each array of this type of object */
@@ -4688,7 +4692,7 @@ typedef struct memblock_header {
 } memblock_header;
 #line 217 "inweb/foundation-module/Chapter 2/Memory.w"
 typedef struct memory_frame {
-	int integrity_check; /* this should always contain the |INTEGRITY_NUMBER| */
+	int integrity_check; /* this should always contain the `INTEGRITY_NUMBER` */
 	struct memory_frame *next_frame; /* next frame in the list of memory frames */
 	int mem_type; /* type of object stored in this frame */
 	int allocation_id; /* allocation ID number of object stored in this frame */
@@ -4700,12 +4704,12 @@ typedef struct general_pointer {
 } general_pointer;
 #line 235 "inweb/foundation-module/Chapter 2/Streams.w"
 typedef struct text_stream {
-	int stream_flags; /* bitmap of the |*_STRF| values above */
-	FILE *write_to_file; /* for an open stream, exactly one of these is |NULL| */
-	struct HTML_file_state *as_HTML; /* relevant only to the |HTML::| section */
+	int stream_flags; /* bitmap of the `*_STRF` values above */
+	FILE *write_to_file; /* for an open stream, exactly one of these is `NULL` */
+	struct HTML_file_state *as_HTML; /* relevant only to the `HTML::` section */
 	inchar32_t *write_to_memory;
 	struct filename *file_written; /* ditto */
-	int chars_written; /* number of characters sent, counting |\n| as 1 */
+	int chars_written; /* number of characters sent, counting `\n` as 1 */
 	int chars_capacity; /* maximum number the stream can accept without claiming more resources */
 	struct text_stream *stream_continues; /* if one memory stream is extended by another */
 } text_stream;
@@ -4774,7 +4778,7 @@ typedef struct tree_type {
 } tree_type;
 #line 92 "inweb/foundation-module/Chapter 2/Trees.w"
 typedef struct tree_node_type {
-	struct text_stream *node_type_name; /* text such as |I"INVOCATION"| */
+	struct text_stream *node_type_name; /* text such as `I"INVOCATION"` */
 	int required_CLASS; /* if any; or negative for no restriction */
 	int (*verify_children)(struct tree_node *); /* function to vet the children */
 	CLASS_DEFINITION
@@ -4782,21 +4786,21 @@ typedef struct tree_node_type {
 #line 26 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 typedef struct command_line_subcommand {
 	int subcommand_id;
-	struct text_stream *command_name; /* e.g., |compile| */
+	struct text_stream *command_name; /* e.g., `compile` */
 	struct text_stream *heading; /* explanatory text */
 	struct dictionary *cls_dictionary;
-	struct linked_list *cls_list; /* of |command_line_switch| */
+	struct linked_list *cls_list; /* of `command_line_switch` */
 	CLASS_DEFINITION
 } command_line_subcommand;
 #line 107 "inweb/foundation-module/Chapter 3/Command Line Arguments.w"
 typedef struct command_line_switch {
 	int switch_id;
-	struct text_stream *switch_name; /* e.g., |no-verbose| */
-	struct text_stream *switch_sort_name; /* e.g., |verbose| */
+	struct text_stream *switch_name; /* e.g., `no-verbose` */
+	struct text_stream *switch_sort_name; /* e.g., `verbose` */
 	struct text_stream *help_text;
 	int valency; /* 1 for bare, 2 for one argument follows */
-	int form; /* one of the |*_CLSF| values above */
-	int switch_group; /* one of the |*_CLSG| valyes above */
+	int form; /* one of the `*_CLSF` values above */
+	int switch_group; /* one of the `*_CLSG` valyes above */
 	int active_by_default; /* relevant only for booleans */
 	struct command_line_switch *negates; /* relevant only for booleans */
 	CLASS_DEFINITION
@@ -4837,11 +4841,11 @@ typedef struct stopwatch_timer {
 	clock_t start_time;
 	clock_t end_time;
 	int time_taken; /* measured in centiseconds of CPU time */
-	linked_list *stages_chronological; /* of |stopwatch_timer| */
-	linked_list *stages_sorted; /* of |stopwatch_timer| */
+	linked_list *stages_chronological; /* of `stopwatch_timer` */
+	linked_list *stages_sorted; /* of `stopwatch_timer` */
 	CLASS_DEFINITION
 } stopwatch_timer;
-#line 123 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 122 "inweb/foundation-module/Chapter 4/C Strings.w"
 typedef struct string_storage_area {
 	char *storage_at;
 	int capacity;
@@ -4859,17 +4863,17 @@ typedef struct tabbed_string_iterator {
 	int line_position;
 	int tab_spacing;
 } tabbed_string_iterator;
-#line 6 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 11 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 typedef struct textual_table {
-	struct linked_list *rows; /* of |textual_table_row| */
+	struct linked_list *rows; /* of `textual_table_row` */
 	CLASS_DEFINITION
 } textual_table;
-#line 11 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 16 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 typedef struct textual_table_row {
-	int positioning;
-	int index;
-	int sort_column;
-	struct linked_list *columns; /* of |text_stream| */
+	int positioning;             /* `-1` for header, `0` for most rows, `1` for footer */
+	int index;                   /* position in the list, counting 0, 1, 2, ... from the top */
+	int sort_column;             /* which column we are sorting on */
+	struct linked_list *columns; /* of `text_stream` */
 	CLASS_DEFINITION
 } textual_table_row;
 #line 242 "inweb/foundation-module/Chapter 4/Text Files.w"
@@ -4891,7 +4895,7 @@ typedef struct text_file_position {
 #line 74 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_loop {
 	struct text_stream *loop_var_name;
-	struct linked_list *iterations; /* of |text_stream| */
+	struct linked_list *iterations; /* of `text_stream` */
 	int repeat_is_block;
 	struct text_stream *repeat_saved_dest;
 } preprocessor_loop;
@@ -4906,9 +4910,9 @@ typedef struct preprocessor_state {
 	int last_line_was_blank; /* used to suppress runs of multiple blank lines */
 	struct preprocessor_variable_set *global_variables;
 	struct preprocessor_variable_set *stack_frame;
-	struct linked_list *known_macros; /* of |preprocessor_macro| */
+	struct linked_list *known_macros; /* of `preprocessor_macro` */
 	struct general_pointer specifics;
-	struct linked_list *errors; /* of |preprocessor_error| */
+	struct linked_list *errors; /* of `preprocessor_error` */
 	inchar32_t comment_character;
 } preprocessor_state;
 #line 472 "inweb/foundation-module/Chapter 4/Preprocessor.w"
@@ -4925,7 +4929,7 @@ typedef struct preprocessor_variable {
 } preprocessor_variable;
 #line 527 "inweb/foundation-module/Chapter 4/Preprocessor.w"
 typedef struct preprocessor_variable_set {
-	struct linked_list *variables; /* of |preprocessor_variable| */
+	struct linked_list *variables; /* of `preprocessor_variable` */
 	struct preprocessor_variable_set *outer;
 	CLASS_DEFINITION
 } preprocessor_variable_set;
@@ -4942,10 +4946,10 @@ typedef struct preprocessor_macro {
 	void (*expander)(struct preprocessor_macro *, struct preprocessor_state *, struct text_stream **, struct preprocessor_loop *, struct text_file_position *);
 
 	/* loop construct if any */
-	int begins_loop;               /* |TRUE| for e.g. |repeat-block| or |repeat-span| */
-	int ends_loop;                 /* |TRUE| for e.g. |end-repeat-block| */
-	struct text_stream *loop_name; /* e.g. |repeat| */
-	int span;                      /* |TRUE| for e.g. |end-repeat-span| or |repeat-span| */
+	int begins_loop;               /* `TRUE` for e.g. `repeat-block` or `repeat-span` */
+	int ends_loop;                 /* `TRUE` for e.g. `end-repeat-block` */
+	struct text_stream *loop_name; /* e.g. `repeat` */
+	int span;                      /* `TRUE` for e.g. `end-repeat-span` or `repeat-span` */
 
 	/* textual behaviour */
 	int suppress_newline_after_expanding;
@@ -4978,7 +4982,7 @@ typedef struct finite_state_machine {
 	struct fsm_state *start_at;
 	struct fsm_state *current_state;
 	int cycles_at_current_state;
-	struct linked_list *states; /* of |fsm_state| */
+	struct linked_list *states; /* of `fsm_state` */
 	struct general_pointer last_parameter;
 	CLASS_DEFINITION
 } finite_state_machine;
@@ -5041,38 +5045,38 @@ typedef struct JSON_value {
 	double if_double;
 	struct text_stream *if_string;
 	int if_boolean;
-	struct linked_list *if_list; /* of |JSON_value| */
-	struct dictionary *dictionary_if_object; /* to |JSON_value| */
-	struct linked_list *list_if_object; /* of |text_stream| */
+	struct linked_list *if_list; /* of `JSON_value` */
+	struct dictionary *dictionary_if_object; /* to `JSON_value` */
+	struct linked_list *list_if_object; /* of `text_stream` */
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_value;
-#line 609 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 610 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_requirement {
-	struct linked_list *alternatives; /* of |JSON_single_requirement| */
+	struct linked_list *alternatives; /* of `JSON_single_requirement` */
 	CLASS_DEFINITION
 } JSON_requirement;
-#line 633 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 634 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_single_requirement {
 	struct JSON_requirement *this_requirement;
 	struct JSON_value *this_value;
 	struct JSON_type *this_type;
 	CLASS_DEFINITION
 } JSON_single_requirement;
-#line 671 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 672 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_type {
 	int JSON_type;
 
-	struct linked_list *if_list; /* of |JSON_requirement| */
+	struct linked_list *if_list; /* of `JSON_requirement` */
 	struct JSON_requirement *all_if_list;
 
-	struct dictionary *dictionary_if_object; /* to |JSON_pair_requirement| */
-	struct linked_list *list_if_object; /* of |text_stream| */
+	struct dictionary *dictionary_if_object; /* to `JSON_pair_requirement` */
+	struct linked_list *list_if_object; /* of `text_stream` */
 
 	struct text_stream *if_error;
 	CLASS_DEFINITION
 } JSON_type;
-#line 684 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 685 "inweb/foundation-module/Chapter 4/JSON.w"
 typedef struct JSON_pair_requirement {
 	struct JSON_requirement *req;
 	int optional;
@@ -5088,7 +5092,7 @@ typedef struct JSON_rrf_state {
 #line 54 "inweb/foundation-module/Chapter 5/HTML.w"
 typedef struct HTML_file_state {
 	int XHTML_flag; /* writing strict XHTML for use in epubs */
-	struct lifo_stack *tag_stack; /* of |HTML_tag|: those currently open */
+	struct lifo_stack *tag_stack; /* of `HTML_tag`: those currently open */
 	int CSS_included;
 	int JS_included;
 	CLASS_DEFINITION
@@ -5117,7 +5121,7 @@ typedef struct markdown_type_metadata {
 } markdown_type_metadata;
 #line 507 "inweb/foundation-module/Chapter 5/Markdown.w"
 typedef struct markdown_item {
-	int type; /* one of the |*_MIT| types above */
+	int type; /* one of the `*_MIT` types above */
 
 	/* text storage for inline items */
 	struct text_stream *sliced_from;
@@ -5163,12 +5167,12 @@ typedef struct md_link_dictionary_entry {
 } md_link_dictionary_entry;
 #line 229 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 typedef struct positional_marker {
-	int item_type; /* |BLOCK_QUOTE_MIT|, |ORDERED_LIST_ITEM_MIT|, |UNORDERED_LIST_ITEM_MIT| or |FOOTNOTE_BODY_MIT| */
+	int item_type; /* `BLOCK_QUOTE_MIT`, `ORDERED_LIST_ITEM_MIT`, `UNORDERED_LIST_ITEM_MIT` or `FOOTNOTE_BODY_MIT` */
 	int indent;                /* minimum required indentation for subsequent lines to continue */
 	int at;                    /* character position (not string index) of the start of the marker */
-	int width;                 /* for example, 2 for |7) | or |7. |: the non-whitespace chars only */
-	int list_item_value;       /* for example, 7 for |7) | or |7. | */
-	inchar32_t list_item_flavour; /* for example, |')'| for |7) | and |'.'| for |7. | */
+	int width;                 /* for example, 2 for `7) ` or `7. `: the non-whitespace chars only */
+	int list_item_value;       /* for example, 7 for `7) ` or `7. ` */
+	inchar32_t list_item_flavour; /* for example, `')'` for `7) ` and `'.'` for `7. ` */
 
 	int continues_from_earlier_line;
 	int blank_counts;
@@ -5206,18 +5210,18 @@ typedef struct md_doc_state {
 } md_doc_state;
 #line 944 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 typedef struct md_link_parse {
-	int is_link; /* |TRUE| for link, |FALSE| for image, |NOT_APPLICABLE| for fail */
+	int is_link; /* `TRUE` for link, `FALSE` for image, `NOT_APPLICABLE` for fail */
 	struct md_charpos first;                  /* leftmost character of the whole construct */
 	struct md_charpos link_text_from;         /* leftmost character inside the squares */
 	struct md_charpos link_text_to;           /* ...and so on */
-	int link_text_empty;                      /* |TRUE| or |FALSE| */
+	int link_text_empty;                      /* `TRUE` or `FALSE` */
 	struct md_charpos link_destination_from;
 	struct md_charpos link_destination_to;
 	int link_destination_empty;
 	struct md_charpos link_title_from;
 	struct md_charpos link_title_to;
 	int link_title_empty;
-	struct md_link_dictionary_entry *link_reference; /* or |NULL| if it's not by reference */
+	struct md_link_dictionary_entry *link_reference; /* or `NULL` if it's not by reference */
 	int footnote_link; /* or 0 if it's not a footnote cue */
 	struct md_charpos last; /* rightmost character of the whole construct */
 } md_link_parse;
@@ -5226,8 +5230,8 @@ typedef struct md_emphasis_delimiter {
 	struct md_charpos pos; /* first character in the run */
 	int width;             /* for example, 7 for a run of seven asterisks */
 	int type;              /* 1 for asterisks, -1 for underscores, 0 for tildes */
-	int can_open;          /* result of |MDInlineParser::can_open_emphasis| on it */
-	int can_close;         /* result of |MDInlineParser::can_close_emphasis| on it */
+	int can_open;          /* result of `MDInlineParser::can_open_emphasis` on it */
+	int can_close;         /* result of `MDInlineParser::can_close_emphasis` on it */
 	CLASS_DEFINITION
 } md_emphasis_delimiter;
 #line 58 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
@@ -5264,22 +5268,22 @@ typedef struct IFM_example {
 } IFM_example;
 #line 23 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
 typedef struct ebook {
-	struct linked_list *metadata_list; /* of |ebook_datum|: DCMI-standard bibliographic data */
+	struct linked_list *metadata_list; /* of `ebook_datum`: DCMI-standard bibliographic data */
 	char *prefix; /* to apply to the page leafnames */
 	struct filename *CSS_file_throughout; /* where to find a CSS file to be used for all volumes */
 
-	struct filename *eventual_epub; /* filename of the final |*.epub| to be made */
+	struct filename *eventual_epub; /* filename of the final `*.epub` to be made */
 	struct pathname *holder; /* directory to put the ingredients into */
-	struct pathname *OEBPS_path; /* subdirectory which mysteriously has to be called |OEBPS| */
+	struct pathname *OEBPS_path; /* subdirectory which mysteriously has to be called `OEBPS` */
 
-	struct linked_list *ebook_volume_list; /* of |ebook_volume| */
+	struct linked_list *ebook_volume_list; /* of `ebook_volume` */
 	struct ebook_volume *current_volume; /* the one to which chapters are now being added */
 
-	struct linked_list *ebook_chapter_list; /* of |ebook_chapter| */
+	struct linked_list *ebook_chapter_list; /* of `ebook_chapter` */
 	struct ebook_chapter *current_chapter; /* the one to which pages are now being added */
 
-	struct linked_list *ebook_page_list; /* of |book_page| */
-	struct linked_list *ebook_image_list; /* of |ebook_image| */
+	struct linked_list *ebook_page_list; /* of `book_page` */
+	struct linked_list *ebook_image_list; /* of `ebook_image` */
 	CLASS_DEFINITION
 } ebook;
 #line 48 "inweb/foundation-module/Chapter 5/Epub Ebooks.w"
@@ -5300,7 +5304,7 @@ typedef struct ebook_chapter {
 	struct text_stream *chapter_title;
 	struct ebook_volume *in_volume; /* to which volume this chapter belongs */
 	struct ebook_page *chapter_starts; /* on which page the chapter starts */
-	struct linked_list *ebook_mark_list; /* of |ebook_mark|: for when multiple navigable points exist within this */
+	struct linked_list *ebook_mark_list; /* of `ebook_mark`: for when multiple navigable points exist within this */
 	struct text_stream *start_URL;
 	CLASS_DEFINITION
 } ebook_chapter;
@@ -5333,7 +5337,7 @@ typedef struct ebook_image {
 #line 60 "inweb/foundation-module/Chapter 7/Version Numbers.w"
 typedef struct semantic_version_number {
 	int version_numbers[SEMVER_NUMBER_DEPTH];
-	struct linked_list *prerelease_segments; /* of |text_stream| */
+	struct linked_list *prerelease_segments; /* of `text_stream` */
 	struct text_stream *build_metadata;
 } semantic_version_number;
 #line 66 "inweb/foundation-module/Chapter 7/Version Numbers.w"
@@ -5393,7 +5397,7 @@ typedef struct wcl_scanner {
 #line 23 "inweb/literate-module/Chapter 1/Colonies.w"
 typedef struct ls_colony {
 	struct wcl_declaration *declaration;
-	struct linked_list *members; /* of |ls_colony_member| */
+	struct linked_list *members; /* of `ls_colony_member` */
 	struct text_stream *home; /* path of home repository */
 	struct pathname *redirect; /* temporarily, where we weave to */
 	struct text_stream *assets_path; /* where assets shared between weaves live */
@@ -5404,10 +5408,10 @@ typedef struct ls_colony {
 typedef struct ls_colony_member {
 	struct ls_colony *owner;
 
-	struct text_stream *name; /* the |N| in |N at P in W| */
-	struct text_stream *path; /* the |P| in |N at P in W| */
-	struct text_stream *weave_path; /* the |W| in |N at P in W| */
-	struct text_stream *home_leaf; /* usually |index.html|, but not for single-file webs */
+	struct text_stream *name; /* the `N` in `N at P in W` */
+	struct text_stream *path; /* the `P` in `N at P in W` */
+	struct text_stream *weave_path; /* the `W` in `N at P in W` */
+	struct text_stream *home_leaf; /* usually `index.html`, but not for single-file webs */
 	struct text_stream *default_pattern_name; /* for use when weaving */
 	int external; /* belongs to another colony, really */
 
@@ -5416,7 +5420,7 @@ typedef struct ls_colony_member {
 	struct text_stream *navigation_name; /* navigation sidebar HTML */
 	struct wcl_declaration *navigation; /* navigation sidebar HTML */
 	struct text_stream *crumbs; /* textual form of breadcrumbs */
-	struct linked_list *breadcrumb_tail; /* of |breadcrumb_request| */
+	struct linked_list *breadcrumb_tail; /* of `breadcrumb_request` */
 	CLASS_DEFINITION
 } ls_colony_member;
 #line 339 "inweb/literate-module/Chapter 1/Colonies.w"
@@ -5424,7 +5428,7 @@ typedef struct colony_reader_state {
 	struct wcl_declaration *D;
 	struct ls_colony *province;
 	struct text_stream *nav;
-	struct text_stream *crumbs; /* of |breadcrumb_request| */
+	struct text_stream *crumbs; /* of `breadcrumb_request` */
 	struct text_stream *pattern;
 } colony_reader_state;
 #line 496 "inweb/literate-module/Chapter 1/Colonies.w"
@@ -5437,25 +5441,25 @@ typedef struct breadcrumb_request {
 typedef struct ls_web {
 	struct wcl_declaration *declaration;
 	struct ls_module *main_module; /* the root of a small dependency graph */
-	struct linked_list *chapters; /* of |ls_chapter| */
+	struct linked_list *chapters; /* of `ls_chapter` */
 
 	struct pathname *path_to_web; /* relative to the current working directory */
 	struct filename *single_file; /* relative to the current working directory */
 	int is_page; /* is this a simple one-section web with no contents page? */
-	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
-	struct linked_list *conventions; /* of |ls_conventions| */
+	struct linked_list *bibliographic_data; /* of `web_bibliographic_datum` */
+	struct linked_list *conventions; /* of `ls_conventions` */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_notation *web_notation; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct ls_index *index;
 
 	struct programming_language *web_language; /* in which most of the sections are written */
-	struct linked_list *tangle_target_names; /* of |text_stream| */
-	struct linked_list *tangle_targets; /* of |tangle_target| */
+	struct linked_list *tangle_target_names; /* of `text_stream` */
+	struct linked_list *tangle_targets; /* of `tangle_target` */
 	struct ls_chunk *definitions_chunk;
 
-	struct filename *contents_filename; /* or |NULL| for a single-file web */
-	struct linked_list *header_filenames; /* of |filename| */
+	struct filename *contents_filename; /* or `NULL` for a single-file web */
+	struct linked_list *header_filenames; /* of `filename` */
 
 	struct ls_holon_namespace *global_holon_namespace;
 
@@ -5469,9 +5473,9 @@ typedef struct ls_chapter {
 	struct ls_web *owning_web;
 	struct ls_module *owning_module;
 	int imported; /* did this originate in a different web? */
-	struct linked_list *sections; /* of |ls_section| */
+	struct linked_list *sections; /* of `ls_section` */
 
-	struct text_stream *ch_range; /* e.g., |P| for Preliminaries, |7| for Chapter 7, |C| for Appendix C */
+	struct text_stream *ch_range; /* e.g., `P` for Preliminaries, `7` for Chapter 7, `C` for Appendix C */
 	struct text_stream *ch_title; /* e.g., "Chapter 3: Fresh Water Fish" */
 	struct text_stream *ch_basic_title; /* e.g., "Chapter 3" */
 	struct text_stream *ch_decorated_title; /* e.g., "Fresh Water Fish" */
@@ -5507,7 +5511,7 @@ typedef struct ls_section {
 	struct programming_language *sect_language; /* in which this section is written */
 	struct text_stream *sect_language_name;
 	int is_independent_target;
-	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
+	struct tangle_target *sect_target; /* `NULL` unless this section produces a tangle of its own */
 
 	int scratch_flag; /* temporary workspace */
 
@@ -5567,10 +5571,10 @@ typedef struct sfw_reader_state {
 typedef struct ls_module {
 	struct pathname *module_location;
 	struct text_stream *module_name; /* e.g., "(main)", or "foundation" */
-	struct linked_list *dependencies; /* of |ls_module|: which other modules does this need? */
+	struct linked_list *dependencies; /* of `ls_module`: which other modules does this need? */
 	struct text_stream *module_tag;
-	int origin_marker; /* one of the |*_MOM| values above */
-	struct linked_list *chapters; /* of |ls_chapter|: just the ones in this module */
+	int origin_marker; /* one of the `*_MOM` values above */
+	struct linked_list *chapters; /* of `ls_chapter`: just the ones in this module */
 	CLASS_DEFINITION
 } ls_module;
 #line 97 "inweb/literate-module/Chapter 1/Web Modules.w"
@@ -5580,8 +5584,8 @@ typedef struct module_search {
 } module_search;
 #line 284 "inweb/literate-module/Chapter 1/Conventions.w"
 typedef struct ls_conventions {
-	int level; /* one of the |*_LSCONVENTIONLEVEL| values above */
-	int setting_made[NO_DEFINED_LSCONVENTION_VALUES]; /* |TRUE| only if an explicit choice made */
+	int level; /* one of the `*_LSCONVENTIONLEVEL` values above */
+	int setting_made[NO_DEFINED_LSCONVENTION_VALUES]; /* `TRUE` only if an explicit choice made */
 	int integer_value[NO_DEFINED_LSCONVENTION_VALUES];
 	struct text_stream *textual_value[NO_DEFINED_LSCONVENTION_VALUES];
 	struct text_stream *textual_value2[NO_DEFINED_LSCONVENTION_VALUES];
@@ -5598,7 +5602,7 @@ typedef struct ls_class {
 	struct text_stream *operand2;
 	struct text_stream *operand3;
 	struct text_stream *operand4;
-	struct linked_list *tag_list; /* of |text_stream| */
+	struct linked_list *tag_list; /* of `text_stream` */
 } ls_class;
 #line 16 "inweb/literate-module/Chapter 2/Literate Source.w"
 typedef struct ls_unit {
@@ -5616,7 +5620,7 @@ typedef struct ls_unit {
 
 	/* result of parsing */
 	int lines_read;
-	struct linked_list *errors; /* of |ls_error| */
+	struct linked_list *errors; /* of `ls_error` */
 
 	/* temporary workspace used only in parsing */
 	int incomplete;
@@ -5641,10 +5645,10 @@ typedef struct ls_line {
 	struct ls_class classification;
 	struct ls_footnote *footnote_text; /* which fn this is the text of, if it is at all */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
-	struct linked_list *index_marks; /* or |NULL| if there are none */
+	struct linked_list *index_marks; /* or `NULL` if there are none */
 
 	/* how the line sits inside the wider source */
-	struct ls_chunk *owning_chunk; /* |NULL| until the unit has been divided up into chunks */
+	struct ls_chunk *owning_chunk; /* `NULL` until the unit has been divided up into chunks */
 	struct ls_line *prev_line;
 	struct ls_line *next_line;
 	CLASS_DEFINITION
@@ -5661,13 +5665,13 @@ typedef struct ls_paragraph {
 	void *analysis_ref;
 	struct ls_holon *holon;
 	struct ls_class titling;
-	struct linked_list *taggings; /* of |literate_source_tagging| */
+	struct linked_list *taggings; /* of `literate_source_tagging` */
 
 	/* contents of the paragraph */
 	struct ls_chunk *first_chunk;
 	struct ls_chunk *last_chunk;
 	int footnote_count;
-	struct linked_list *footnotes; /* of |ls_footnote| */
+	struct linked_list *footnotes; /* of `ls_footnote` */
 
 	/* used only when computing the paragraph numbers */
 	struct ls_paragraph *parent_paragraph; /* the super-para of this, if any */
@@ -5687,7 +5691,7 @@ typedef struct ls_chunk {
 	struct ls_line *onset_line; /* where to report errors about the chunk */
 
 	/* meaningful for EXTRACT_LSCT chunks only */
-	struct ls_holon *holon; /* or |NULL|, if this doesn't contain a program fragment */
+	struct ls_holon *holon; /* or `NULL`, if this doesn't contain a program fragment */
 	int plainer;
 	int hyperlinked;
 	struct text_stream *extract_to;
@@ -5732,17 +5736,17 @@ typedef struct ls_class_parsing {
 	struct text_stream *residue;
 	struct ls_class residue_cf;
 	struct text_stream *error; /* filled in only when a parsing error occurs */
-	struct linked_list *index_marks; /* or |NULL| if there are none */
+	struct linked_list *index_marks; /* or `NULL` if there are none */
 } ls_class_parsing;
 #line 9 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 typedef struct ls_classifier {
-	struct linked_list *rules; /* of |ls_notation_rule| */
+	struct linked_list *rules; /* of `ls_notation_rule` */
 	CLASS_DEFINITION
 } ls_classifier;
 #line 138 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 typedef struct ls_notation_rule_condition {
-	int negated; /* if |TRUE|, means we must be not in the given context */
-	int atomic_condition; /* one of the |*_LSNRCAC| values below */
+	int negated; /* if `TRUE`, means we must be not in the given context */
+	int atomic_condition; /* one of the `*_LSNRCAC` values below */
 } ls_notation_rule_condition;
 #line 272 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 typedef struct ls_srtoken {
@@ -5761,8 +5765,8 @@ typedef struct ls_notation_rule_pattern {
 } ls_notation_rule_pattern;
 #line 571 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 typedef struct ls_notation_rule_outcome {
-	int outcome_ID;            /* one of the |*_LSNROID| values below */
-	int options_applied;       /* a bitmap of |*_LSNROBIT| values below */
+	int outcome_ID;            /* one of the `*_LSNROID` values below */
+	int options_applied;       /* a bitmap of `*_LSNROBIT` values below */
 	int new_paragraph;         /* does this line implicitly begin a new para? */
 	struct text_stream *error; /* on a match, in fact throw this error */
 } ls_notation_rule_outcome;
@@ -5777,7 +5781,7 @@ typedef struct ls_notation_rule {
 typedef struct ls_classifier_context {
 	struct ls_class *previously; /* how the previous line was classified */
 	int single_file;             /* is this in a single-file web? */
-	int whitespace_nature;       /* of the current line: a |*_LINESHADE| value */
+	int whitespace_nature;       /* of the current line: a `*_LINESHADE` value */
 	struct ls_notation *ntn;     /* notation currently in use */
 } ls_classifier_context;
 #line 10 "inweb/literate-module/Chapter 2/Web Errors.w"
@@ -5795,7 +5799,7 @@ typedef struct ls_notation {
 	struct text_stream *name;
 
 	/* for deciding when a web might be using this notation */
-	struct linked_list *recognised_filename_extensions; /* of |text_stream| */
+	struct linked_list *recognised_filename_extensions; /* of `text_stream` */
 
 	/* what aspects of LP are allowed under this notation, with what notations */
 	int footnotes_in_commentary;
@@ -5847,23 +5851,23 @@ typedef struct ls_holon {
 	int placed_late; /* similarly */
 	int placed_very_late; /* similarly */
 	struct text_stream *holon_name; /* can be empty */
-	struct markdown_item *holon_name_as_markdown; /* can be |NULL| */
-	struct linked_list *holon_usages; /* of |holon_usage| */
+	struct markdown_item *holon_name_as_markdown; /* can be `NULL` */
+	struct linked_list *holon_usages; /* of `holon_usage` */
 	struct ls_chunk *corresponding_chunk;
 	int addendum;
 	struct ls_holon *addendum_to;
-	struct linked_list *addenda; /* of |ls_holon| */
+	struct linked_list *addenda; /* of `ls_holon` */
 	int file_form;
 	CLASS_DEFINITION
 } ls_holon;
 #line 77 "inweb/literate-module/Chapter 2/Holons.w"
 typedef struct ls_holon_namespace {
-	struct ls_web *owning_web;  /* or |NULL| for code isolated from any web */
-	struct ls_unit *owner;      /* or |NULL| for global scope, but they're not both |NULL| */
+	struct ls_web *owning_web;  /* or `NULL` for code isolated from any web */
+	struct ls_unit *owner;      /* or `NULL` for global scope, but they're not both `NULL` */
 	struct dictionary *names;
-	struct linked_list *holons; /* of |ls_holon| */
+	struct linked_list *holons; /* of `ls_holon` */
 	struct dictionary *expansion_names;
-	struct linked_list *unabbreviated_names; /* of |text_stream| */
+	struct linked_list *unabbreviated_names; /* of `text_stream` */
 	int contains_Main;
 	CLASS_DEFINITION
 } ls_holon_namespace;
@@ -5882,12 +5886,12 @@ typedef struct ls_holon_scanner {
 } ls_holon_scanner;
 #line 8 "inweb/literate-module/Chapter 2/Code Excerpts.w"
 typedef struct ls_code_excerpt {
-	struct linked_list *splice_list; /* of |holon_splice| */
+	struct linked_list *splice_list; /* of `holon_splice` */
 	CLASS_DEFINITION
 } ls_code_excerpt;
 #line 39 "inweb/literate-module/Chapter 2/Code Excerpts.w"
 typedef struct holon_splice {
-	int type; /* one of the |*_LSHST| constants */
+	int type; /* one of the `*_LSHST` constants */
 	struct ls_holon *expansion;
 	struct text_stream *texts[3];
 	struct markdown_item *comment_as_markdown;
@@ -5904,7 +5908,7 @@ typedef struct ls_index_mark {
 } ls_index_mark;
 #line 181 "inweb/literate-module/Chapter 2/Web Indexing.w"
 typedef struct ls_index {
-	struct linked_list *all_marks; /* of |ls_index_mark| */
+	struct linked_list *all_marks; /* of `ls_index_mark` */
 	struct dictionary *lemmas;
 	int no_lemmas_sorted;
 	struct ls_index_lemma **lemmas_sorted;
@@ -5915,13 +5919,13 @@ typedef struct ls_index_lemma {
 	struct text_stream *sort_key;
 	struct text_stream *text;
 	int style;
-	struct linked_list *marks; /* of |ls_index_mark| */
+	struct linked_list *marks; /* of `ls_index_mark` */
 	struct ls_index_lemma *parent;
 	CLASS_DEFINITION
 } ls_index_lemma;
 #line 42 "inweb/literate-module/Chapter 3/Reserved Words.w"
 typedef struct hash_table {
-	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of |hash_table_entry| */
+	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of `hash_table_entry` */
 	int safety_code; /* when we start up, array's contents are undefined, so... */
 } hash_table;
 #line 11 "inweb/literate-module/Chapter 3/Programming Languages.w"
@@ -5930,7 +5934,7 @@ typedef struct programming_language {
 	text_stream *language_name; /* identifies it */
 	text_stream *language_details; /* brief explanation of what language is */
 
-	linked_list *recognised_filename_extensions; /* of |text_stream| */
+	linked_list *recognised_filename_extensions; /* of `text_stream` */
 
 	int supports_namespaces;
 	text_stream *line_comment;
@@ -5963,10 +5967,10 @@ typedef struct programming_language {
 
 	int C_like; /* languages with this set have access to extra features */
 
-	struct linked_list *reserved_words; /* of |reserved_word| */
+	struct linked_list *reserved_words; /* of `reserved_word` */
 	struct hash_table built_in_keywords;
 	struct colouring_language_block *program; /* algorithm for syntax colouring */
-	struct linked_list *custom_colours; /* of |custom_colour| */
+	struct linked_list *custom_colours; /* of `custom_colour` */
 	struct method_set *methods;
 	CLASS_DEFINITION
 } programming_language;
@@ -5979,12 +5983,12 @@ typedef struct language_reader_state {
 } language_reader_state;
 #line 520 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct colouring_language_block {
-	struct linked_list *rules; /* of |colouring_rule| */
-	struct colouring_language_block *parent; /* or |NULL| for the topmost one */
-	int run; /* one of the |*_CRULE_RUN| values, or else a colour */
-	struct text_stream *run_instance; /* used only for |INSTANCES_CRULE_RUN| */
-	struct text_stream *char_set; /* used only for |CHARACTERS_IN_CRULE_RUN| */
-	struct pl_regexp_set *match_regexp_text; /* used for |MATCHES_CRULE_RUN|, |BRACKETS_CRULE_RUN| */
+	struct linked_list *rules; /* of `colouring_rule` */
+	struct colouring_language_block *parent; /* or `NULL` for the topmost one */
+	int run; /* one of the `*_CRULE_RUN` values, or else a colour */
+	struct text_stream *run_instance; /* used only for `INSTANCES_CRULE_RUN` */
+	struct text_stream *char_set; /* used only for `CHARACTERS_IN_CRULE_RUN` */
+	struct pl_regexp_set *match_regexp_text; /* used for `MATCHES_CRULE_RUN`, `BRACKETS_CRULE_RUN` */
 
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
@@ -5993,17 +5997,17 @@ typedef struct colouring_language_block {
 #line 562 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct colouring_rule {
 	/* the premiss: */
-	int sense; /* |FALSE| to negate the condition */
-	inchar32_t match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
-	inchar32_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
+	int sense; /* `FALSE` to negate the condition */
+	inchar32_t match_colour; /* for `coloured C`, or else `NOT_A_COLOUR` */
+	inchar32_t match_keyword_of_colour; /* for `keyword C`, or else `NOT_A_COLOUR` */
 	struct text_stream *match_text; /* or length 0 to mean "anything" */
-	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
+	int match_prefix; /* one of the `*_RULE_PREFIX` values above */
 	struct pl_regexp_set *match_regexp_text;
-	int number; /* for |number N| rules; 0 for others */
-	int number_of; /* for |number N of M| rules; 0 for others */
+	int number; /* for `number N` rules; 0 for others */
+	int number_of; /* for `number N of M` rules; 0 for others */
 
 	/* the conclusion: */
-	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
+	struct colouring_language_block *execute_block; /* or `NULL`, in which case... */
 	inchar32_t set_to_colour; /* ...paint the snippet in this colour */
 	inchar32_t set_prefix_to_colour; /* ...also paint this (same for suffix) */
 	int debug; /* ...or print debugging text to console */
@@ -6028,15 +6032,15 @@ typedef struct pl_regexp_set {
 #line 14 "inweb/literate-module/Chapter 3/Code Analysis.w"
 typedef struct ls_web_analysis {
 	int analysed; /* has this been scanned for function usage and such? */
-	struct linked_list *language_types; /* of |language_type|: used only for C-like languages */
-	struct linked_list *defined_constants;  /* of |defined_constant| */
-	struct linked_list *language_functions; /* of |language_function| */
+	struct linked_list *language_types; /* of `language_type`: used only for C-like languages */
+	struct linked_list *defined_constants;  /* of `defined_constant` */
+	struct linked_list *language_functions; /* of `language_function` */
 	CLASS_DEFINITION
 } ls_web_analysis;
 #line 22 "inweb/literate-module/Chapter 3/Code Analysis.w"
 typedef struct ls_paragraph_analysis {
-	struct linked_list *functions; /* of |function|: those defined in this para */
-	struct linked_list *structures; /* of |language_type|: similarly */
+	struct linked_list *functions; /* of `function`: those defined in this para */
+	struct linked_list *structures; /* of `language_type`: similarly */
 	CLASS_DEFINITION
 } ls_paragraph_analysis;
 #line 28 "inweb/literate-module/Chapter 3/Code Analysis.w"
@@ -6050,7 +6054,7 @@ typedef struct ls_line_analysis {
 #line 300 "inweb/literate-module/Chapter 3/Code Analysis.w"
 typedef struct hash_table_entry_usage {
 	struct ls_paragraph *usage_recorded_at;
-	int form_of_usage; /* bitmap of the |*_USAGE| constants defined above */
+	int form_of_usage; /* bitmap of the `*_USAGE` constants defined above */
 	CLASS_DEFINITION
 } hash_table_entry_usage;
 #line 14 "inweb/literate-module/Chapter 3/Enumerated Constants.w"
@@ -6068,10 +6072,10 @@ typedef struct language_type {
 	struct text_stream *structure_name;
 	int tangled; /* whether the structure definition has been tangled out */
 	struct ls_section *structure_header_in;
-	struct ls_line *structure_header_at; /* opening line of |typedef| */
-	struct ls_line *typedef_ends; /* closing line, where |}| appears */
-	struct linked_list *incorporates; /* of |language_type| */
-	struct linked_list *elements; /* of |structure_element| */
+	struct ls_line *structure_header_at; /* opening line of `typedef` */
+	struct ls_line *typedef_ends; /* closing line, where `}` appears */
+	struct linked_list *incorporates; /* of `language_type` */
+	struct linked_list *elements; /* of `structure_element` */
 	struct language_type *next_cst_alphabetically;
 	CLASS_DEFINITION
 } language_type;
@@ -6084,9 +6088,9 @@ typedef struct structure_element {
 } structure_element;
 #line 117 "inweb/literate-module/Chapter 3/Types and Functions.w"
 typedef struct language_function {
-	struct text_stream *function_name; /* e.g., |"cultivate"| */
-	struct text_stream *function_type; /* e.g., |"tree *"| */
-	struct text_stream *function_arguments; /* e.g., |"int rainfall)"|: note |)| */
+	struct text_stream *function_name; /* e.g., `"cultivate"` */
+	struct text_stream *function_type; /* e.g., `"tree *"` */
+	struct text_stream *function_arguments; /* e.g., `"int rainfall)"`: note `)` */
 	struct ls_section *function_section; /* which section it's defined in */
 	struct ls_line *function_header_at; /* where the first line of the header begins */
 	int within_namespace; /* written using InC namespace dividers */
@@ -6101,7 +6105,7 @@ typedef struct language_function {
 typedef struct hash_table_entry {
 	text_stream *hash_key;
 	int language_reserved_word; /* in the language currently being woven, that is */
-	struct linked_list *usages; /* of |hash_table_entry_usage| */
+	struct linked_list *usages; /* of `hash_table_entry_usage` */
 	struct ls_line *definition_line; /* or null, if it's not a constant, function or type name */
 	struct language_function *as_function; /* for function names only */
 	CLASS_DEFINITION
@@ -6115,23 +6119,23 @@ typedef struct custom_colour {
 } custom_colour;
 #line 111 "inweb/literate-module/Chapter 3/InC Support.w"
 typedef struct preform_nonterminal {
-	struct text_stream *nt_name; /* e.g., |<action-clause>| */
-	struct text_stream *unangled_name; /* e.g., |action-clause| */
-	struct text_stream *as_C_identifier; /* e.g., |action_clause_NTM| */
+	struct text_stream *nt_name; /* e.g., `<action-clause>` */
+	struct text_stream *unangled_name; /* e.g., `action-clause` */
+	struct text_stream *as_C_identifier; /* e.g., `action_clause_NTM` */
 	int as_function; /* defined internally, that is, parsed by a C language_function */
 	int voracious; /* a voracious nonterminal: see "The English Syntax of Inform" */
 	int min_word_count; /* for internals only */
 	int max_word_count;
-	int takes_pointer_result; /* right-hand formula defines |*XP|, not |*X| */
+	int takes_pointer_result; /* right-hand formula defines `*XP`, not `*X` */
 	struct ls_section *where_defined;
 	struct preform_nonterminal *next_pnt_alphabetically;
 	CLASS_DEFINITION
 } preform_nonterminal;
 #line 285 "inweb/literate-module/Chapter 3/InC Support.w"
 typedef struct nonterminal_variable {
-	struct text_stream *ntv_name; /* e.g., |"num"| */
-	struct text_stream *ntv_type; /* e.g., |"int"| */
-	struct text_stream *ntv_identifier; /* e.g., |"num_NTMV"| */
+	struct text_stream *ntv_name; /* e.g., `"num"` */
+	struct text_stream *ntv_type; /* e.g., `"int"` */
+	struct text_stream *ntv_identifier; /* e.g., `"num_NTMV"` */
 	CLASS_DEFINITION
 } nonterminal_variable;
 #line 336 "inweb/literate-module/Chapter 3/InC Support.w"
@@ -6156,9 +6160,9 @@ typedef struct tangle_docket {
 	void *state;
 	struct text_file_position at;
 	struct tangle_target *target;
-	struct linked_list *conventions; /* of |ls_conventions| */
+	struct linked_list *conventions; /* of `ls_conventions` */
 	struct pathname *external_path;
-	struct linked_list *external_files; /* of |tangle_external_file| */
+	struct linked_list *external_files; /* of `tangle_external_file` */
 } tangle_docket;
 #line 34 "inweb/literate-module/Chapter 4/The Tangler.w"
 typedef struct tangle_external_file {
@@ -6180,13 +6184,13 @@ typedef struct ls_web_weaving_details {
 } ls_web_weaving_details;
 #line 15 "inweb/literate-module/Chapter 5/Weaving Details.w"
 typedef struct ls_chapter_weaving_details {
-	struct weave_order *ch_weave; /* |NULL| unless this chapter produces a weave of its own */
+	struct weave_order *ch_weave; /* `NULL` unless this chapter produces a weave of its own */
 	CLASS_DEFINITION
 } ls_chapter_weaving_details;
 #line 20 "inweb/literate-module/Chapter 5/Weaving Details.w"
 typedef struct ls_section_weaving_details {
-	struct weave_order *sect_weave; /* |NULL| unless this section produces a weave of its own */
-	struct filename *sect_weave_to; /* |NULL| unless some special choice has been made */
+	struct weave_order *sect_weave; /* `NULL` unless this section produces a weave of its own */
+	struct filename *sect_weave_to; /* `NULL` unless some special choice has been made */
 	CLASS_DEFINITION
 } ls_section_weaving_details;
 #line 155 "inweb/literate-module/Chapter 5/The Swarm.w"
@@ -6196,8 +6200,8 @@ typedef struct weave_reporting {
 	int verbose;
 	struct pathname *last_reported_weave_path;
 	int file_weaving_reports_made;
-	struct linked_list *files_copied; /* of |weave_copy_record| */
-	struct linked_list *plugins_copied; /* of |weave_plugin| */
+	struct linked_list *files_copied; /* of `weave_copy_record` */
+	struct linked_list *plugins_copied; /* of `weave_plugin` */
 } weave_reporting;
 #line 165 "inweb/literate-module/Chapter 5/The Swarm.w"
 typedef struct weave_copy_record {
@@ -6220,9 +6224,9 @@ typedef struct weave_order {
 	void *post_processing_results; /* optional typesetting diagnostics after running through */
 	int self_contained; /* make a self-contained file if possible */
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
-	struct wcl_declaration *navigation; /* navigation links, or |NULL| if not supplied */
-	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
-	struct linked_list *colour_schemes; /* of |colour_scheme|: these are for HTML */
+	struct wcl_declaration *navigation; /* navigation links, or `NULL` if not supplied */
+	struct linked_list *plugins; /* of `weave_plugin`: these are for HTML extensions */
+	struct linked_list *colour_schemes; /* of `colour_scheme`: these are for HTML */
 	struct weave_reporting *reportage; /* how to report what has been done */
 	int paragraphs_woven;
 
@@ -6233,25 +6237,25 @@ typedef struct weave_order {
 #line 12 "inweb/literate-module/Chapter 5/Patterns.w"
 typedef struct ls_pattern {
 	struct wcl_declaration *declaration;
-	struct text_stream *pattern_name; /* such as |HTML| */
+	struct text_stream *pattern_name; /* such as `HTML` */
 	struct pathname *pattern_location; /* the directory */
 	struct text_stream *based_on_name; /* inherit from which other pattern? */
 
-	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
-	struct linked_list *plugins; /* of |weave_plugin|: any extras needed */
-	struct linked_list *colour_schemes; /* of |colour_scheme|: any extras needed */
+	struct weave_format *pattern_format; /* such as `DVI`: the desired final format */
+	struct linked_list *plugins; /* of `weave_plugin`: any extras needed */
+	struct linked_list *colour_schemes; /* of `colour_scheme`: any extras needed */
 
-	struct text_stream *mathematics_plugin; /* name only, not a |ls_pattern *| */
-	struct text_stream *footnotes_plugin; /* name only, not a |ls_pattern *| */
+	struct text_stream *mathematics_plugin; /* name only, not a `ls_pattern *` */
+	struct text_stream *footnotes_plugin; /* name only, not a `ls_pattern *` */
 
 	struct text_stream *initial_extension; /* filename extension, that is */
-	struct linked_list *post_commands; /* of |text_stream| */
-	struct linked_list *blocked_templates; /* of |text_stream| */
+	struct linked_list *post_commands; /* of `text_stream` */
+	struct linked_list *blocked_templates; /* of `text_stream` */
 
-	struct linked_list *asset_rules; /* of |asset_rule| */
+	struct linked_list *asset_rules; /* of `asset_rule` */
 	int show_abbrevs; /* show section range abbreviations in the weave? */
 	int number_sections; /* insert section numbers into the weave? */
-	struct text_stream *default_range; /* for example, |sections| */
+	struct text_stream *default_range; /* for example, `sections` */
 
 	int assets_mode;
 	int commands_mode;
@@ -6283,7 +6287,7 @@ typedef struct colour_scheme {
 #line 169 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 typedef struct asset_rule {
 	struct text_stream *applies_to;
-	int method; /* one of the |*_ASSET_METHOD| values above */
+	int method; /* one of the `*_ASSET_METHOD` values above */
 	struct text_stream *pre;
 	struct text_stream *post;
 	int transform_names;
@@ -6313,12 +6317,12 @@ typedef struct collater_state {
 	struct filename *errors_at;
 	struct weave_order *wv;
 	struct filename *into_file;
-	struct linked_list *modules; /* of |ls_module| */
+	struct linked_list *modules; /* of `ls_module` */
 	struct weave_reporting *reportage;
 } collater_state;
 #line 131 "inweb/literate-module/Chapter 5/The Weaver.w"
 typedef struct weaver_state {
-	int kind_of_material; /* one of the enumerated |*_MATERIAL| constants above */
+	int kind_of_material; /* one of the enumerated `*_MATERIAL` constants above */
 	int line_break_pending; /* insert a line break before the next woven line? */
 	int next_heading_without_vertical_skip;
 	struct ls_section *last_extract_from;
@@ -6665,9 +6669,9 @@ typedef struct tex_results {
 #line 49 "inweb/literate-module/Chapter 6/Makefiles.w"
 typedef struct makefile_specifics {
 	struct ls_web *for_web; /* if one has been set at the command line */
-	struct dictionary *tools_dictionary;   /* components with |type: tool| */
-	struct dictionary *webs_dictionary;    /* components with |type: web| */
-	struct dictionary *modules_dictionary; /* components with |type: module| */
+	struct dictionary *tools_dictionary;   /* components with `type: tool` */
+	struct dictionary *webs_dictionary;    /* components with `type: web` */
+	struct dictionary *modules_dictionary; /* components with `type: module` */
 	struct text_stream *which_platform;
 	CLASS_DEFINITION
 } makefile_specifics;
@@ -6702,7 +6706,7 @@ typedef struct inweb_advance_build_settings {
 typedef struct inweb_range_specifier {
 	struct text_stream *range; /* which subset of this web we apply to (often, all of it) */
 	int chosen_range_actually_chosen; /* rather than being a default choice */
-	int swarm_mode; /* relevant to weaving only: one of the |*_SWARM| constants */
+	int swarm_mode; /* relevant to weaving only: one of the `*_SWARM` constants */
 } inweb_range_specifier;
 #line 60 "inweb/Chapter 1/inweb weave Subcommand.w"
 typedef struct inweb_weave_settings {
@@ -6714,30 +6718,30 @@ typedef struct inweb_weave_settings {
 } inweb_weave_settings;
 #line 54 "inweb/Chapter 1/inweb tangle Subcommand.w"
 typedef struct inweb_tangle_settings {
-	struct filename *tangle_setting; /* |-to X|: the tangling */
-	int tangle_to_STDOUT; /* |-to -| */
+	struct filename *tangle_setting; /* `-to X`: the tangling */
+	int tangle_to_STDOUT; /* `-to -` */
 	struct inweb_range_specifier subset;
-	int ctags_switch; /* |-ctags|: generate a set of Universal Ctags on each tangle */
-	struct filename *ctags_setting; /* |-ctags-to X|: the pathname X, if supplied */
+	int ctags_switch; /* `-ctags`: generate a set of Universal Ctags on each tangle */
+	struct filename *ctags_setting; /* `-ctags-to X`: the pathname X, if supplied */
 } inweb_tangle_settings;
 #line 56 "inweb/Chapter 1/inweb inspect Subcommand.w"
 typedef struct inweb_inspect_settings {
 	struct inweb_range_specifier subset;
-	int scan_switch;      /* |-scan|: simply show the syntactic scan of the source */
-	int metadata_switch;  /* |-metadata|: simply show the syntactic scan of the source */
-	int index_switch;  /* |-index|: show the web index in textual form */
-	int conventions_switch; /* |-conventions|: show what conventions apply */
-	int resources_switch; /* |-resources|: show WCL objects in scope */
-	int tags_switch; /* |-tags|: show paragraph tags used */
-	int links_switch; /* |-links|: show http(s) links used */
-	int fuller_switch;    /* |-fuller|: give further details */
+	int scan_switch;      /* `-scan`: simply show the syntactic scan of the source */
+	int metadata_switch;  /* `-metadata`: simply show the syntactic scan of the source */
+	int index_switch;  /* `-index`: show the web index in textual form */
+	int conventions_switch; /* `-conventions`: show what conventions apply */
+	int resources_switch; /* `-resources`: show WCL objects in scope */
+	int tags_switch; /* `-tags`: show paragraph tags used */
+	int links_switch; /* `-links`: show http(s) links used */
+	int fuller_switch;    /* `-fuller`: give further details */
 } inweb_inspect_settings;
 #line 92 "inweb/Chapter 1/inweb make- Subcommands.w"
 typedef struct inweb_make_settings {
 	int make_to_stdout;
-	struct filename *make_to_setting; /* |-to X|: for the various make commands */
-	struct filename *script_setting; /* |-script X|: the pathname X, if supplied */
-	struct text_stream *platform_setting; /* |-platform X|: sets prevailing platform to X */
+	struct filename *make_to_setting; /* `-to X`: for the various make commands */
+	struct filename *script_setting; /* `-script X`: the pathname X, if supplied */
+	struct text_stream *platform_setting; /* `-platform X`: sets prevailing platform to X */
 } inweb_make_settings;
 #line 27 "inweb/Chapter 1/inweb map Subcommand.w"
 typedef struct inweb_map_settings {
@@ -6745,14 +6749,14 @@ typedef struct inweb_map_settings {
 } inweb_map_settings;
 #line 33 "inweb/Chapter 1/inweb test-language Subcommand.w"
 typedef struct inweb_test_language_settings {
-	struct filename *test_language_on_setting; /* |-on X| */
+	struct filename *test_language_on_setting; /* `-on X` */
 	struct text_stream *name;
 } inweb_test_language_settings;
 #line 17 "inweb/Chapter 1/Configuration.w"
 typedef struct inweb_instructions {
-	int subcommand; /* our main mode of operation: one of the |*_CLSUB| constants */
-	int verbose_switch; /* |-verbose|: print a narrative of what's happening */
-	int silent_switch; /* |-silent|: print nothing if all is well */
+	int subcommand; /* our main mode of operation: one of the `*_CLSUB` constants */
+	int verbose_switch; /* `-verbose`: print a narrative of what's happening */
+	int silent_switch; /* `-silent`: print nothing if all is well */
 
 	struct inweb_advance_build_settings advance_build_settings;
 	struct inweb_weave_settings weave_settings;
@@ -6762,8 +6766,8 @@ typedef struct inweb_instructions {
 	struct inweb_map_settings map_settings;
 	struct inweb_test_language_settings test_language_settings;
 
-	struct text_stream *temp_colony_setting; /* |-colony X|: file or path, if supplied */
-	struct text_stream *temp_member_setting; /* |-member X|: sets web to member X of ls_colony */
+	struct text_stream *temp_colony_setting; /* `-colony X`: file or path, if supplied */
+	struct text_stream *temp_member_setting; /* `-member X`: sets web to member X of ls_colony */
 	struct pathname *temp_path_setting; /* project folder relative to cwd */
 	struct filename *temp_file_setting; /* or, single file relative to cwd */
 } inweb_instructions;
@@ -7666,9 +7670,9 @@ int  CStrings__cmp(char *A, char *B) ;
 void  CStrings__transcode_ISO_string_to_UTF8(char *p, char *dest) ;
 #line 110 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__truncated_strcpy(char *to, char *from, int max) ;
-#line 130 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 129 "inweb/foundation-module/Chapter 4/C Strings.w"
 char * CStrings__park_string(char *from) ;
-#line 141 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 140 "inweb/foundation-module/Chapter 4/C Strings.w"
 void  CStrings__free_ssas(void) ;
 #line 11 "inweb/foundation-module/Chapter 4/Wide Strings.w"
 int  Wide__len(const inchar32_t *p) ;
@@ -7854,19 +7858,19 @@ int  TabbedStr__eat_spaces(int N, tabbed_string_iterator *mdw) ;
 int  TabbedStr__spaces_available(tabbed_string_iterator *mdw) ;
 #line 130 "inweb/foundation-module/Chapter 4/Tab Stops.w"
 int  TabbedStr__blank_from_here(tabbed_string_iterator *mdw) ;
-#line 19 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 29 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 textual_table * TextualTables__new_table(void) ;
-#line 27 "inweb/foundation-module/Chapter 4/Textual Tables.w"
-textual_table_row * TextualTables__begin_row(textual_table *T) ;
-#line 36 "inweb/foundation-module/Chapter 4/Textual Tables.w"
-textual_table_row * TextualTables__begin_footer_row(textual_table *T) ;
-#line 42 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 41 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 text_stream * TextualTables__next_cell(textual_table *T) ;
-#line 49 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 52 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+textual_table_row * TextualTables__begin_row(textual_table *T) ;
+#line 64 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+textual_table_row * TextualTables__begin_footer_row(textual_table *T) ;
+#line 75 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 void  TextualTables__tabulate(OUTPUT_STREAM, textual_table *T) ;
-#line 53 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 82 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 void  TextualTables__tabulate_sorted(OUTPUT_STREAM, textual_table *T, int on) ;
-#line 107 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 137 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 int  TextualTables__compare_rows(const void *ent1, const void *ent2) ;
 #line 20 "inweb/foundation-module/Chapter 4/Text Files.w"
 int  TextFiles__exists(filename *F) ;
@@ -8080,35 +8084,35 @@ JSON_value * JSON__decode_object_entry(JSON_value *obj, text_stream *T, int from
 JSON_value * JSON__decode_number(text_stream *T, int from, int to, text_file_position *tfp) ;
 #line 469 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_value * JSON__decode_string(text_stream *T, int from, int to, text_file_position *tfp) ;
-#line 521 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 522 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode(OUTPUT_STREAM, JSON_value *J) ;
-#line 581 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 582 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__encode_string(OUTPUT_STREAM, text_stream *T) ;
-#line 614 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 615 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__single_choice(JSON_single_requirement *sing) ;
-#line 621 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 622 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_requirement * JSON__add_alternative(JSON_requirement *so_far, 	JSON_single_requirement *sing) ;
-#line 644 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 645 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_requirement(JSON_requirement *req) ;
-#line 652 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 653 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_value(JSON_value *value) ;
-#line 660 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 661 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_type(int t) ;
-#line 690 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 691 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_type * JSON__new_type_requirement(int t) ;
-#line 718 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 719 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__require_array_of(JSON_requirement *E_req) ;
-#line 729 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 730 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) ;
-#line 741 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 742 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) ;
-#line 745 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 746 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__allow_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) ;
-#line 749 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 750 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key, 	JSON_requirement *req, int opt) ;
-#line 768 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 769 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_pair_requirement * JSON__look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) ;
-#line 781 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 782 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement * JSON__error_sr(text_stream *msg) ;
 #line 799 "inweb/foundation-module/Chapter 4/JSON.w"
 int  JSON__validate(JSON_value *val, JSON_requirement *req, linked_list *errs) ;
@@ -10294,23 +10298,23 @@ void  HTMLWeaving__render(weave_format *self, text_stream *OUT, heterogeneous_tr
 void  HTMLWeaving__render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) ;
 #line 93 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__render_visit(tree_node *N, void *state, int L) ;
-#line 1042 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1046 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__notify_image(weave_order *wv, text_stream *image) ;
-#line 1056 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1060 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content, 	int plain, int displayed) ;
-#line 1095 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1099 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__interior_material(tree_node *N) ;
-#line 1110 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1114 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) ;
-#line 1128 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1132 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__paragraph_number(text_stream *OUT, ls_paragraph *par) ;
-#line 1154 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1158 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__change_colour(text_stream *OUT, int col, colour_scheme *cs) ;
-#line 1168 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1172 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__escape_text(text_stream *OUT, text_stream *id) ;
-#line 1180 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1184 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__begin_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) ;
-#line 1195 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1199 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__end_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) ;
 #line 9 "inweb/literate-module/Chapter 5/Debugging Format.w"
 void  DebuggingWeaving__create(void) ;
@@ -18293,7 +18297,8 @@ void Dictionaries__dispose_of(dictionary *D) {
 			for (dict_entry *E = &(D->hash_table[i]); E; E = E->next_in_entry)
 				if (E->vacant == FALSE)
 					Str__dispose_of(E->value);
-	Memory__I7_free(D->hash_table, DICTIONARY_MREASON, D->hash_table_size*((int) sizeof(dict_entry)));
+	Memory__I7_free(D->hash_table, DICTIONARY_MREASON,
+		D->hash_table_size*((int) sizeof(dict_entry)));
 	D->hash_table = NULL;
 }
 
@@ -19042,11 +19047,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1B97";
+			char *svn = "9.0-beta+1B98";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "24 February 2026";
+			char *d = "25 February 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -22707,7 +22712,7 @@ void CStrings__truncated_strcpy(char *to, char *from, int max) {
 
 
 
-#line 130 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 129 "inweb/foundation-module/Chapter 4/C Strings.w"
 char *CStrings__park_string(char *from) {
 	string_storage_area *ssa = CREATE(string_storage_area);
 	ssa->capacity = (int) CStrings__strlen_unbounded(from) + 1;
@@ -22716,7 +22721,7 @@ char *CStrings__park_string(char *from) {
 	return ssa->storage_at;
 }
 
-#line 141 "inweb/foundation-module/Chapter 4/C Strings.w"
+#line 140 "inweb/foundation-module/Chapter 4/C Strings.w"
 void CStrings__free_ssas(void) {
 	string_storage_area *ssa;
 	LOOP_OVER(ssa, string_storage_area)
@@ -23476,7 +23481,7 @@ int TabbedStr__blank_from_here(tabbed_string_iterator *mdw) {
 
 
 
-#line 10 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+#line 15 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 
 
 
@@ -23485,8 +23490,8 @@ int TabbedStr__blank_from_here(tabbed_string_iterator *mdw) {
 
 
 
-#line 18 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 
+#line 29 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 textual_table *TextualTables__new_table(void) {
 	textual_table *T = CREATE(textual_table);
 	T->rows = NEW_LINKED_LIST(textual_table_row);
@@ -23495,6 +23500,15 @@ textual_table *TextualTables__new_table(void) {
 	return T;
 }
 
+#line 41 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+text_stream *TextualTables__next_cell(textual_table *T) {
+	textual_table_row *R = LAST_IN_LINKED_LIST(textual_table_row, T->rows);
+	text_stream *C = Str__new();
+	ADD_TO_LINKED_LIST(C, text_stream, R->columns);
+	return C;
+}
+
+#line 52 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 textual_table_row *TextualTables__begin_row(textual_table *T) {
 	textual_table_row *R = CREATE(textual_table_row);
 	R->positioning = 0;
@@ -23504,32 +23518,33 @@ textual_table_row *TextualTables__begin_row(textual_table *T) {
 	return R;
 }
 
+#line 64 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 textual_table_row *TextualTables__begin_footer_row(textual_table *T) {
 	textual_table_row *R = TextualTables__begin_row(T);
 	R->positioning = 1;
 	return R;
 }
 
-text_stream *TextualTables__next_cell(textual_table *T) {
-	textual_table_row *R = LAST_IN_LINKED_LIST(textual_table_row, T->rows);
-	text_stream *C = Str__new();
-	ADD_TO_LINKED_LIST(C, text_stream, R->columns);
-	return C;
-}
-
+#line 75 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 void TextualTables__tabulate(OUTPUT_STREAM, textual_table *T) {
 	TextualTables__tabulate_sorted(OUT, T, -1);
 }
 
+#line 82 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 void TextualTables__tabulate_sorted(OUTPUT_STREAM, textual_table *T, int on) {
+	textual_table_row **rows;
+	int width[MAX_TEXTUAL_TABLE_COL_WIDTHS], max_c = 0, N = 0, footer = -1;
+	
+{
+#line 104 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+	for (int c=0; c<MAX_TEXTUAL_TABLE_COL_WIDTHS; c++) width[c] = 0;
 	textual_table_row *R;
-	int width[100], max_c = 0, N = 0, footer = -1;
-	for (int c=0; c<100; c++) width[c] = 0;
 	LOOP_OVER_LINKED_LIST(R, textual_table_row, T->rows) {
 		text_stream *C;
 		int c = 0;
 		LOOP_OVER_LINKED_LIST(C, text_stream, R->columns) {
-			if ((c<100) && (Str__len(C) > width[c])) width[c] = Str__len(C);
+			if ((c<MAX_TEXTUAL_TABLE_COL_WIDTHS) && (Str__len(C) > width[c]))
+				width[c] = Str__len(C);
 			c++;
 			if (c > max_c) max_c = c;
 		}
@@ -23537,44 +23552,79 @@ void TextualTables__tabulate_sorted(OUTPUT_STREAM, textual_table *T, int on) {
 		if (R->positioning == 1) footer = N;
 	}
 
-	textual_table_row **sorted_table =
-		Memory__calloc(N, (int) sizeof(textual_table_row *), ARRAY_SORTING_MREASON);
-
+}
+#line 85 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+;
+	
+{
+#line 120 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+	rows = Memory__calloc(N, (int) sizeof(textual_table_row *), ARRAY_SORTING_MREASON);
 	int r=0;
+	textual_table_row *R;
 	LOOP_OVER_LINKED_LIST(R, textual_table_row, T->rows) {
-		sorted_table[r++] = R;
+		rows[r++] = R;
 		R->sort_column = on;
 	}
 
+}
+#line 86 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+;
+	
+{
+#line 129 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 	if ((on >= 0) && (on < max_c) && (N > 1))
-		qsort(sorted_table, (size_t) N, sizeof(textual_table_row *), TextualTables__compare_rows);
+		qsort(rows, (size_t) N, sizeof(textual_table_row *), TextualTables__compare_rows);
 
+}
+#line 87 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+;
+	
+{
+#line 160 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 	for (int r=0; r<N; r++) {
-		textual_table_row *R = sorted_table[r];
+		textual_table_row *R = rows[r];
 		text_stream *C;
 		int c = 0;
 		LOOP_OVER_LINKED_LIST(C, text_stream, R->columns) {
 			WRITE("%S", C);
-			if (c<100) for (int j=Str__len(C); j<width[c]; j++) WRITE(" ");
+			if (c<MAX_TEXTUAL_TABLE_COL_WIDTHS)
+				for (int j=Str__len(C); j<width[c]; j++) WRITE(" ");
 			c++;
 			if (c < max_c) WRITE(" | ");
 		}
 		WRITE("\n");
-		if ((r == 0) || ((footer>0) && (r == N-2))) {
-			for (int c=0; c<max_c; c++) {
-				if (c<100) {
-					for (int j=0; j<width[c]; j++) WRITE("-");
-				} else {
-					WRITE("-");
-				}
-				if (c < max_c-1) WRITE(" | ");
-			}
-			WRITE("\n");
+		if ((r == 0) || ((footer>0) && (r == N-2))) 
+{
+#line 178 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+	for (int c=0; c<max_c; c++) {
+		if (c<MAX_TEXTUAL_TABLE_COL_WIDTHS) {
+			for (int j=0; j<width[c]; j++) WRITE("-");
+		} else {
+			WRITE("-");
 		}
+		if (c < max_c-1) WRITE(" | ");
 	}
-	Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(textual_table_row *)));
+	WRITE("\n");
+
+}
+#line 172 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+;
+	}
+
+}
+#line 88 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+;
+	
+{
+#line 157 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+	Memory__I7_free(rows, ARRAY_SORTING_MREASON, N*((int) sizeof(textual_table_row *)));
+
+}
+#line 89 "inweb/foundation-module/Chapter 4/Textual Tables.w"
+;
 }
 
+#line 137 "inweb/foundation-module/Chapter 4/Textual Tables.w"
 int TextualTables__compare_rows(const void *ent1, const void *ent2) {
 	const textual_table_row *R1 = *((const textual_table_row **) ent1);
 	const textual_table_row *R2 = *((const textual_table_row **) ent2);
@@ -26155,7 +26205,8 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 		if (c == '\\') {
 			i++;
 			c = Str__get_at(T, i);
-			if (Characters__iscntrl(c)) return JSON__decode_error(TL_IS_44, tfp);
+			if (Characters__iscntrl(c))
+				return JSON__decode_error(TL_IS_44, tfp);
 			switch (c) {
 				case 'b': c = 8; break;
 				case 't': c = 9; break;
@@ -26167,7 +26218,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 				case '"': break;
 				case 'u': 
 {
-#line 504 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 505 "inweb/foundation-module/Chapter 4/JSON.w"
 	if (i+4 >= to) return JSON__decode_error(TL_IS_46, tfp);
 	int hex = 0;
 	for (int j=0; j<4; j++) {
@@ -26183,7 +26234,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 	i += 4;
 
 }
-#line 486 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 487 "inweb/foundation-module/Chapter 4/JSON.w"
 ; break;
 				default: return JSON__decode_error(TL_IS_45, tfp);
 			}
@@ -26197,7 +26248,7 @@ JSON_value *JSON__decode_string(text_stream *T, int from, int to, text_file_posi
 	return val;
 }
 
-#line 521 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 522 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode(OUTPUT_STREAM, JSON_value *J) {
 	if (J == NULL) internal_error("no JSON value supplied");
 	switch (J->JSON_type) {
@@ -26254,7 +26305,7 @@ void JSON__encode(OUTPUT_STREAM, JSON_value *J) {
 	}
 }
 
-#line 581 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 582 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__encode_string(OUTPUT_STREAM, text_stream *T) {
 	LOOP_THROUGH_TEXT(pos, T) {
 		inchar32_t c = Str__get(pos);
@@ -26277,7 +26328,7 @@ void JSON__encode_string(OUTPUT_STREAM, text_stream *T) {
 
 
 
-#line 613 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 614 "inweb/foundation-module/Chapter 4/JSON.w"
 
 JSON_requirement *JSON__single_choice(JSON_single_requirement *sing) {
 	JSON_requirement *req = CREATE(JSON_requirement);
@@ -26300,7 +26351,7 @@ JSON_requirement *JSON__add_alternative(JSON_requirement *so_far,
 
 
 
-#line 644 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 645 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__require_requirement(JSON_requirement *req) {
 	JSON_single_requirement *sing = CREATE(JSON_single_requirement);
 	sing->this_requirement = req;
@@ -26337,14 +26388,14 @@ JSON_single_requirement *JSON__require_type(int t) {
 
 
 
-#line 683 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 684 "inweb/foundation-module/Chapter 4/JSON.w"
 
 
 
 
 
 
-#line 689 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 690 "inweb/foundation-module/Chapter 4/JSON.w"
 
 JSON_type *JSON__new_type_requirement(int t) {
 	JSON_type *type = CREATE(JSON_type);
@@ -26370,14 +26421,14 @@ JSON_type *JSON__new_type_requirement(int t) {
 	return type;
 }
 
-#line 718 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 719 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__require_array_of(JSON_requirement *E_req) {
 	JSON_single_requirement *req = JSON__require_type(ARRAY_JSONTYPE);
 	req->this_type->all_if_list = E_req;
 	return req;
 }
 
-#line 729 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 730 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *entry_sr) {
 	if (array_sr == NULL) internal_error("no array");
 	if ((array_sr->this_type == NULL) ||
@@ -26386,7 +26437,7 @@ void JSON__require_entry(JSON_single_requirement *array_sr, JSON_requirement *en
 	ADD_TO_LINKED_LIST(entry_sr, JSON_requirement, array_sr->this_type->if_list);
 }
 
-#line 741 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 742 "inweb/foundation-module/Chapter 4/JSON.w"
 void JSON__require_pair(JSON_single_requirement *obj_sr, text_stream *key, JSON_requirement *req) {
 	JSON__require_pair_inner(obj_sr, key, req, FALSE);
 }
@@ -26410,7 +26461,7 @@ void JSON__require_pair_inner(JSON_single_requirement *obj_sr, text_stream *key,
 	if (de) de->value = pr;
 }
 
-#line 768 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 769 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_pair_requirement *JSON__look_up_pair(JSON_single_requirement *obj_sr, text_stream *key) {
 	if (obj_sr == NULL) internal_error("no object");
 	if ((obj_sr->this_type == NULL) ||
@@ -26420,7 +26471,7 @@ JSON_pair_requirement *JSON__look_up_pair(JSON_single_requirement *obj_sr, text_
 	return de->value;
 }
 
-#line 781 "inweb/foundation-module/Chapter 4/JSON.w"
+#line 782 "inweb/foundation-module/Chapter 4/JSON.w"
 JSON_single_requirement *JSON__error_sr(text_stream *msg) {
 	JSON_single_requirement *req = JSON__require_type(ERROR_JSONTYPE);
 	req->this_type->if_error = Str__duplicate(msg);
@@ -57893,7 +57944,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 24 February 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 25 February 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
@@ -65009,7 +65060,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 		(N->type == weave_chapter_title_page_node_type) ||
 		(N->type == weave_grammar_index_node_type)) 
 {
-#line 1033 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1037 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	;
 
 }
@@ -65036,7 +65087,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_verbatim_node_type) 
 {
-#line 937 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 941 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
 	WRITE("%S", C->content);
 
@@ -65272,7 +65323,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN("li");
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65554,7 +65605,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	DISCARD_TEXT(cl)
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65592,7 +65643,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65623,7 +65674,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65646,7 +65697,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	}
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65677,7 +65728,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("pre", "class=\"definitions code-font\"");
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65819,7 +65870,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 #line 654 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -65916,7 +65967,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	WRITE("<div class=\"carousel-content\">");
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66054,7 +66105,11 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	if (C->as_markdown) {
 		HTML_OPEN_WITH("span", "class=\"comment-syntax\"");
 		HTMLWeaving__escape_text(OUT, C->comment_open);
+		for (int i=0; ((i<Str__len(C->raw)) && (Characters__is_whitespace(Str__get_at(C->raw, i)))); i++)
+			PUT(Str__get_at(C->raw, i));
 		MDRenderer__render_extended(OUT, (void *) hrs->wv, C->as_markdown, C->variation, 0);
+		for (int i=Str__len(C->raw) - 1; ((i>=0) && (Characters__is_whitespace(Str__get_at(C->raw, i)))); i--)
+			PUT(Str__get_at(C->raw, i));
 		HTMLWeaving__escape_text(OUT, C->comment_close);
 		HTML_CLOSE("span");
 	} else
@@ -66065,7 +66120,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_url_node_type) 
 {
-#line 856 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 860 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
 	HTML__begin_link_with_class(OUT, (C->external)?TL_IS_4564:TL_IS_4565, C->url);
 	WRITE("%S", C->content);
@@ -66076,7 +66131,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_footnote_cue_node_type) 
 {
-#line 862 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 866 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
 	if (hrs->EPUB_flag) {
 		if (N->parent->type != weave_begin_footnote_text_node_type)
@@ -66092,7 +66147,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_begin_footnote_text_node_type) 
 {
-#line 873 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 877 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_begin_footnote_text_node *C =
 		RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
 	if (hrs->EPUB_flag)
@@ -66103,12 +66158,12 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 			C->cue_text);
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 881 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 885 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	if (hrs->EPUB_flag)
 		WRITE("<a href=\"#fnref%S\"> (return to text)</a></p></li>",
@@ -66123,7 +66178,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_display_line_node_type) 
 {
-#line 891 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 895 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_display_line_node *C =
 		RETRIEVE_POINTER_weave_display_line_node(N->content);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
@@ -66137,7 +66192,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_defn_node_type) 
 {
-#line 900 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 904 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	if ((Functions__used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
@@ -66159,12 +66214,12 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 		WRITE(":<br/>");
 		
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 919 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 923 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 		HTMLWeaving__change_colour(OUT, -1, hrs->colours);
 		WRITE("</button>");
@@ -66181,7 +66236,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_item_node_type) 
 {
-#line 931 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 935 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
 	if (Str__eq(C->label, TL_IS_4567)) WRITE("&#9679; ");
 	else if (Str__len(C->label) > 0) WRITE("(%S) ", C->label);
@@ -66192,16 +66247,16 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_inline_node_type) 
 {
-#line 941 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 945 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("span", "class=\"extract\"");
 	
 {
-#line 1036 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1040 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 942 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 946 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("span");
 	return FALSE;
@@ -66211,7 +66266,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_locale_node_type) 
 {
-#line 947 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 951 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_URL(TEMP, C->par1, hrs->wv->weave_to, hrs->wv->weave_colony);
@@ -66234,7 +66289,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_maths_node_type) 
 {
-#line 965 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 969 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
 	HTMLWeaving__render_maths(OUT, hrs->wv, C->content, hrs->EPUB_flag, C->displayed);
 
@@ -66243,7 +66298,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_markdown_node_type) 
 {
-#line 969 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 973 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	ls_paragraph *first_in_para = NULL;
 	if ((N == N->parent->child) &&
 		(N->parent->type == weave_paragraph_heading_node_type)) {
@@ -66275,7 +66330,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_linebreak_node_type) 
 {
-#line 996 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1000 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	WRITE("<br/>");
 
 }
@@ -66283,7 +66338,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_index_marker_node_type) 
 {
-#line 999 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1003 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("div", "class=\"lsindex\"");
 	if ((hrs->wv) && (hrs->wv->weave_web)) {
 		ls_index *index = hrs->wv->weave_web->index;
@@ -66325,7 +66380,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	return TRUE;
 }
 
-#line 1042 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1046 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__notify_image(weave_order *wv, text_stream *image) {
 	if (Str__includes_character(image, '/')) return;
 	if (Str__includes_character(image, '\\')) return;
@@ -66337,7 +66392,7 @@ void HTMLWeaving__notify_image(weave_order *wv, text_stream *image) {
 		wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
 }
 
-#line 1056 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1060 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content,
 	int plain, int displayed) {
 	text_stream *plugin_name = (wv)?(Patterns__get_mathematics_plugin(wv->weave_web, wv->pattern)):NULL;
@@ -66373,7 +66428,7 @@ void HTMLWeaving__render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *cont
 	}
 }
 
-#line 1095 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1099 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int HTMLWeaving__interior_material(tree_node *N) {
 	if (N->type == weave_commentary_node_type) return TRUE;
 	if (N->type == weave_markdown_node_type) return TRUE;
@@ -66385,7 +66440,7 @@ int HTMLWeaving__interior_material(tree_node *N) {
 	return FALSE;
 }
 
-#line 1110 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1114 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) {
 	text_stream *OUT = hrs->OUT;
 	if (from_depth == to_depth) {
@@ -66403,7 +66458,7 @@ void HTMLWeaving__go_to_depth(HTML_render_state *hrs, int from_depth, int to_dep
 	if (to_depth > 0) HTML_OPEN("li");
 }
 
-#line 1128 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1132 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__paragraph_number(text_stream *OUT, ls_paragraph *par) {
 	text_stream *title = LiterateSource__par_title(par);
 	int depth = LiterateSource__par_depth(par);
@@ -66429,7 +66484,7 @@ void HTMLWeaving__paragraph_number(text_stream *OUT, ls_paragraph *par) {
 	}
 }
 
-#line 1154 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1158 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	if (col == -1) {
 		HTML_CLOSE("span");
@@ -66443,7 +66498,7 @@ void HTMLWeaving__change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	}
 }
 
-#line 1168 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1172 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__escape_text(text_stream *OUT, text_stream *id) {
 	for (int i=0; i < Str__len(id); i++) {
 		if (Str__get_at(id, i) == '&') WRITE("&amp;");
@@ -66453,7 +66508,7 @@ void HTMLWeaving__escape_text(text_stream *OUT, text_stream *id) {
 	}
 }
 
-#line 1180 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1184 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int HTMLWeaving__begin_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic__get_datum(W, TL_IS_4577));

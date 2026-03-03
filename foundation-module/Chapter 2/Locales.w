@@ -25,7 +25,7 @@ int Locales::parse_locale(char *name) {
 }
 
 @ The encodings for each locale are stored in the following global array.
-The value |-1| means "platform", that is, "the default value for the current
+The value `-1` means "platform", that is, "the default value for the current
 operating system".
 
 =
@@ -48,7 +48,7 @@ void Locales::set(int L, int E) {
 	locale_settings[L] = E;
 }
 
-@ The possible encodings have names. We must do everything here with |char *|
+@ The possible encodings have names. We must do everything here with `char *`
 and without any higher-level //foundation// facilities, because locale-setting
 has to be done extremely early in the run (since it affects how command line
 arguments are read).
@@ -65,8 +65,8 @@ int Locales::parse_encoding(char *name) {
 }
 
 @ This can only run after locales have safely been set, since it probably
-writes to |STDOUT|, whose encoding depends on locale. For example, //inweb//
-calls this in response to |-verbose|.
+writes to `STDOUT`, whose encoding depends on locale. For example, //inweb//
+calls this in response to `-verbose`.
 
 =
 void Locales::write_locales(OUTPUT_STREAM) {
@@ -92,7 +92,7 @@ void Locales::write_locale(OUTPUT_STREAM, int L) {
 }
 
 @ And this is how we determine the default; see //POSIX Platforms// and
-//Windows Platform// for these |LOCALE_IS_*| constants.
+//Windows Platform// for these `LOCALE_IS_*` constants.
 
 =
 int Locales::platform_locale(void) {
@@ -111,8 +111,8 @@ int Locales::platform_locale(void) {
 }
 
 @ This unlovely function parses a comma-separated list of assignments in
-the form |LOCALE=ENCODING|, returning |TRUE| if this was syntactically valid
-and |FALSE| if not.
+the form `LOCALE=ENCODING`, returning `TRUE` if this was syntactically valid
+and `FALSE` if not.
 
 =
 int Locales::set_locales(char *text) {

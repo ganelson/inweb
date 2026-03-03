@@ -167,12 +167,12 @@ web_bibliographic_datum *Bibliographic::preset_datum(ls_web *W, text_stream *key
 }
 
 @h Parsing bibliographic data.
-The following attempts to parse |line| as a key-value pair, i.e., as text
-reading |Key: Value|, and returns |TRUE| or |FALSE| according to whether the
+The following attempts to parse `line` as a key-value pair, i.e., as text
+reading `Key: Value`, and returns `TRUE` or `FALSE` according to whether the
 text syntactically looks that way. 
 
-If |set| is |TRUE| then the setting is made in the web |W|: or, it that's not
-possible, an error is issued (but the function still returns |TRUE|).
+If `set` is `TRUE` then the setting is made in the web `W`: or, it that's not
+possible, an error is issued (but the function still returns `TRUE`).
 
 =
 int Bibliographic::parse_kvp(ls_web *W, text_stream *line, int set,

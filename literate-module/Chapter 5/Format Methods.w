@@ -33,8 +33,8 @@ weave_format *WeavingFormats::find_by_name(text_stream *name) {
 
 @ Note that this is the file extension before any post-processing. For
 example, PDFs may be made by weaving a TeX file and then running this through
-|pdftex|. The extension here would be |.tex| because that's what the weave
-stage produces, even though we would later end up with a |.pdf|.
+`pdftex`. The extension here would be `.tex` because that's what the weave
+stage produces, even though we would later end up with a `.pdf`.
 
 =
 text_stream *WeavingFormats::file_extension(weave_format *wf) {
@@ -74,12 +74,12 @@ void WeavingFormats::render(weave_order *wv, heterogeneous_tree *weave_tree) {
 These two don't allow output to be produced: they're for any setting up and
 putting away that needs tp be done.
 
-|BEGIN_WEAVING_FOR_MTID| is called before any output is generated, indeed,
+`BEGIN_WEAVING_FOR_MTID` is called before any output is generated, indeed,
 before even the filename(s) for the output are worked out. Note that it
-can return a |*_SWM| code to change the swarm behaviour of the weave to come;
+can return a `*_SWM` code to change the swarm behaviour of the weave to come;
 this is helpful for EPUB weaving.
 
-More simply, |END_WEAVING_FOR_MTID| is called when all weaving is done.
+More simply, `END_WEAVING_FOR_MTID` is called when all weaving is done.
 
 @e BEGIN_WEAVING_FOR_MTID
 @e END_WEAVING_FOR_MTID
@@ -97,11 +97,11 @@ void WeavingFormats::end_weaving(ls_web *W, ls_pattern *pattern) {
 	VOID_METHOD_CALL(Patterns::get_format(W, pattern), END_WEAVING_FOR_MTID, W, pattern);
 }
 
-@ |RENDER_FOR_MTID| renders the weave tree in the given format: a format must
+@ `RENDER_FOR_MTID` renders the weave tree in the given format: a format must
 provide this.
 
 Note the use of an optional "body template" to provide material before and
-after the usage of |[[Weave Content]]|; but note also that this content is
+after the usage of `[[Weave Content]]`; but note also that this content is
 generated first, and the fore and aft matter second, so that the fore matter
 can include plugin links whose need was only realised when rendering the
 actual content.

@@ -7,51 +7,51 @@ deciding what sort of thing each line represents.
 Lines are categorised by a combination of a "major" and "minor" category, with
 the latter used to distinguish subvarieties. 
 
-No line ever has major category |UNCLASSIFIED_MAJLC|, which is used only as a 
-null value, but many lines have minor |NO_MINLC|, meaning that there's nothing
+No line ever has major category `UNCLASSIFIED_MAJLC`, which is used only as a 
+null value, but many lines have minor `NO_MINLC`, meaning that there's nothing
 special about them.
 
 @e UNCLASSIFIED_MAJLC from 0
 @e NO_MINLC from 0
 
 @ Ordinary paragraph starts (such as in this present paragraph) have minor
-|NO_MINLC|, but those with named headings (such as in the "Major and minor"
-case above) are |HEADING_COMMAND_MINLC|, and the grander headings at the
-top of a section ("Line Classification" above) are |SECTION_HEADING_MINLC|.
+`NO_MINLC`, but those with named headings (such as in the "Major and minor"
+case above) are `HEADING_COMMAND_MINLC`, and the grander headings at the
+top of a section ("Line Classification" above) are `SECTION_HEADING_MINLC`.
 
 @e PARAGRAPH_START_MAJLC
-@e HEADING_COMMAND_MINLC /* minor of |PARAGRAPH_START_MAJLC| */
-@e SECTION_HEADING_MINLC /* minor of |PARAGRAPH_START_MAJLC| */
+@e HEADING_COMMAND_MINLC /* minor of `PARAGRAPH_START_MAJLC` */
+@e SECTION_HEADING_MINLC /* minor of `PARAGRAPH_START_MAJLC` */
 
-@ Lines forming commentary material mostly have minor |NO_MINLC|, with the
+@ Lines forming commentary material mostly have minor `NO_MINLC`, with the
 only exception being the optional "purpose" paras at the top of sections.
 
 @e COMMENTARY_MAJLC
-@e PURPOSE_MINLC /* minor of |COMMENTARY_MAJLC| */
+@e PURPOSE_MINLC /* minor of `COMMENTARY_MAJLC` */
 
 @ Blocks of code, whether intended for execution, or simply as displayed "text",
-are held as extracts. Syntactically, an extract begins with an |EXTRACT_START_MAJLC|
+are held as extracts. Syntactically, an extract begins with an `EXTRACT_START_MAJLC`
 line, though this can sometimes be implicit (in which case its minor is always
-|CODE_MINLC|): if not, it signals what sort of extract follows.
+`CODE_MINLC`): if not, it signals what sort of extract follows.
 
-Compiled code, then, lives in extracts with minors |CODE_MINLC|, |EARLY_MINLC|,
-|VERY_EARLY_MINLC|, |LATE_MINLC|, |VERY_LATE_MINLC|. The other extract
+Compiled code, then, lives in extracts with minors `CODE_MINLC`, `EARLY_MINLC`,
+`VERY_EARLY_MINLC`, `LATE_MINLC`, `VERY_LATE_MINLC`. The other extract
 minors are for displayed text.
 
 @e EXTRACT_START_MAJLC
-@e CODE_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e EARLY_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e VERY_EARLY_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e LATE_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e VERY_LATE_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e TEXT_AS_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e TEXT_FROM_AS_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e TEXT_FROM_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e TEXT_TO_MINLC /* minor of |EXTRACT_START_MAJLC| */
-@e TEXT_MINLC /* minor of |EXTRACT_START_MAJLC| */
+@e CODE_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e EARLY_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e VERY_EARLY_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e LATE_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e VERY_LATE_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e TEXT_AS_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e TEXT_FROM_AS_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e TEXT_FROM_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e TEXT_TO_MINLC /* minor of `EXTRACT_START_MAJLC` */
+@e TEXT_MINLC /* minor of `EXTRACT_START_MAJLC` */
 
 @ Each individual code line has this major, and either no minor (for code in
-a holon) or |TEXT_MINLC| (for code in an extract which isn't a holon):
+a holon) or `TEXT_MINLC` (for code in an extract which isn't a holon):
 
 @e EXTRACT_MATTER_MAJLC
 
@@ -60,15 +60,15 @@ web syntaxes. Again it has no minor.
 
 @e EXTRACT_END_MAJLC
 
-@ A definition of a constant begins (and often consists only of) a |DEFINITION_MAJLC|
+@ A definition of a constant begins (and often consists only of) a `DEFINITION_MAJLC`
 line, which has one of the three minors given below.
 
 @e DEFINITION_MAJLC
-@e DEFINE_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
-@e DEFAULT_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
-@e ENUMERATE_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
-@e FORMAT_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
-@e SILENTLY_FORMAT_COMMAND_MINLC /* minor of |DEFINITION_MAJLC| */
+@e DEFINE_COMMAND_MINLC /* minor of `DEFINITION_MAJLC` */
+@e DEFAULT_COMMAND_MINLC /* minor of `DEFINITION_MAJLC` */
+@e ENUMERATE_COMMAND_MINLC /* minor of `DEFINITION_MAJLC` */
+@e FORMAT_COMMAND_MINLC /* minor of `DEFINITION_MAJLC` */
+@e SILENTLY_FORMAT_COMMAND_MINLC /* minor of `DEFINITION_MAJLC` */
 
 @ Definitions can continue onto multiple lines, and if so, all after the first
 have this major, and no minor:
@@ -79,24 +79,24 @@ have this major, and no minor:
 of the code followed usually by an equals sign, with this major:
 
 @e HOLON_DECLARATION_MAJLC
-@e ADDENDUM_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
-@e FILE_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
-@e FILE_ADDENDUM_MINLC /* minor of |HOLON_DECLARATION_MAJLC| */
+@e ADDENDUM_MINLC /* minor of `HOLON_DECLARATION_MAJLC` */
+@e FILE_MINLC /* minor of `HOLON_DECLARATION_MAJLC` */
+@e FILE_ADDENDUM_MINLC /* minor of `HOLON_DECLARATION_MAJLC` */
 
 @ An insertion marks to include a picture or similar in the woven web, and
 always has one of the following minors.
 
 @e INSERTION_MAJLC
-@e AUDIO_MINLC /* minor of |INSERTION_MAJLC| */
-@e CAROUSEL_ABOVE_MINLC /* minor of |INSERTION_MAJLC| */
-@e CAROUSEL_BELOW_MINLC /* minor of |INSERTION_MAJLC| */
-@e CAROUSEL_END_MINLC /* minor of |INSERTION_MAJLC| */
-@e CAROUSEL_SLIDE_MINLC /* minor of |INSERTION_MAJLC| */
-@e DOWNLOAD_MINLC /* minor of |INSERTION_MAJLC| */
-@e EMBEDDED_AV_MINLC /* minor of |INSERTION_MAJLC| */
-@e FIGURE_MINLC /* minor of |INSERTION_MAJLC| */
-@e HTML_MINLC /* minor of |INSERTION_MAJLC| */
-@e VIDEO_MINLC /* minor of |INSERTION_MAJLC| */
+@e AUDIO_MINLC /* minor of `INSERTION_MAJLC` */
+@e CAROUSEL_ABOVE_MINLC /* minor of `INSERTION_MAJLC` */
+@e CAROUSEL_BELOW_MINLC /* minor of `INSERTION_MAJLC` */
+@e CAROUSEL_END_MINLC /* minor of `INSERTION_MAJLC` */
+@e CAROUSEL_SLIDE_MINLC /* minor of `INSERTION_MAJLC` */
+@e DOWNLOAD_MINLC /* minor of `INSERTION_MAJLC` */
+@e EMBEDDED_AV_MINLC /* minor of `INSERTION_MAJLC` */
+@e FIGURE_MINLC /* minor of `INSERTION_MAJLC` */
+@e HTML_MINLC /* minor of `INSERTION_MAJLC` */
+@e VIDEO_MINLC /* minor of `INSERTION_MAJLC` */
 
 @ Last and least, a feature which should perhaps go, for a sort of block-quotation
 form of commentary:
@@ -146,8 +146,8 @@ int LineClassification::definition_lines_can_follow(int major, int minor) {
 The full classification of a line has details as well as the major/minor codes,
 so it comes to quite a chunk of change, in memory terms. The three textual
 operands are used differently for different major/minor pairs; the tag list
-for a paragraph is the run of |^"This"| and |^"That"| markers at the end of
-the line introducing that paragraph, so it's used only for |PARAGRAPH_START_MAJLC|
+for a paragraph is the run of `^"This"` and `^"That"` markers at the end of
+the line introducing that paragraph, so it's used only for `PARAGRAPH_START_MAJLC`
 lines.
 
 =
@@ -161,7 +161,7 @@ typedef struct ls_class {
 	struct text_stream *operand2;
 	struct text_stream *operand3;
 	struct text_stream *operand4;
-	struct linked_list *tag_list; /* of |text_stream| */
+	struct linked_list *tag_list; /* of `text_stream` */
 } ls_class;
 
 ls_class LineClassification::new(int major, int minor) {
@@ -214,22 +214,22 @@ together with the classification of the previous line, and returns the new
 classification.
 
 Actually, though, it also returns some other ephemera, so it actually returns
-a larger structure, |ls_class_parsing|, which additionally contains:
+a larger structure, `ls_class_parsing`, which additionally contains:
 
-- |implies_paragraph|, |implies_extract|, |implies_extract_end| are flags
-which are set to indicate that a |PARAGRAPH_START_MAJLC|, |EXTRACT_START_MAJLC|
-or |EXTRACT_END_MAJLC| line should be considered to have been placed immediately
+- `implies_paragraph`, `implies_extract`, `implies_extract_end` are flags
+which are set to indicate that a `PARAGRAPH_START_MAJLC`, `EXTRACT_START_MAJLC`
+or `EXTRACT_END_MAJLC` line should be considered to have been placed immediately
 before the line just parsed (i.e., between the previous line and this one).
 Note that it's possible to more than one such implication to arise for the
 same line.
 
-- The most notable field here is |residue|. Literate source is usually very
+- The most notable field here is `residue`. Literate source is usually very
 line-oriented, but not always, and sometimes a syntactic feature occupies
 only the initial part of the line, with some left over: this, if it exists,
-is put into the |residue|.
+is put into the `residue`.
 
 - If a syntax error is turned up on the line, it should be filled in as
-text and placed in |error|.
+text and placed in `error`.
 
 =
 typedef struct ls_class_parsing {
@@ -240,7 +240,7 @@ typedef struct ls_class_parsing {
 	struct text_stream *residue;
 	struct ls_class residue_cf;
 	struct text_stream *error; /* filled in only when a parsing error occurs */
-	struct linked_list *index_marks; /* or |NULL| if there are none */
+	struct linked_list *index_marks; /* or `NULL` if there are none */
 } ls_class_parsing;
 
 ls_class_parsing LineClassification::new_results(int major, int minor) {

@@ -38,7 +38,7 @@ tex_results *TeXUtilities::new_results(weave_order *wv, filename *CF) {
 }
 
 @ So, then, here's the function called from //Patterns// in response to
-the special |PROCESS| command:
+the special `PROCESS` command:
 
 =
 void TeXUtilities::scan_TeX_log(weave_order *wv, filename *CF) {
@@ -117,8 +117,8 @@ int TeXUtilities::substitute_post_processing_data(text_stream *to, weave_order *
 
 @h Removing math mode.
 "Math mode", in TeX jargon, is what happens when a mathematical formula
-is written inside dollar signs: in |Answer is $x+y^2$|, the math mode
-content is |x+y^2|. But since math mode doesn't (easily) exist in HTML,
+is written inside dollar signs: in `Answer is $x+y^2$`, the math mode
+content is `x+y^2`. But since math mode doesn't (easily) exist in HTML,
 for example, we want to strip it out if the format is not TeX-related.
 To do this, the weaver calls the following.
 
@@ -151,7 +151,7 @@ void TeXUtilities::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 	}
 }
 
-@ Here we remove |{{top}\over{bottom}}|, converting it to |((top) / (bottom))|.
+@ Here we remove `{{top}\over{bottom}}`, converting it to `((top) / (bottom))`.
 
 @<Remove the over construction@> =
 	if ((Str::get_at(text, i) == '\\') &&
@@ -187,7 +187,7 @@ void TeXUtilities::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 		return;
 	}
 
-@ Here we remove |{\rm text}|, converting it to |text|, and similarly |\it|.
+@ Here we remove `{\rm text}`, converting it to `text`, and similarly `\it`.
 
 @<Remove the rm and it constructions@> =
 	if ((Str::get_at(text, i) == '{') && (Str::get_at(text, i+1) == '\\') &&
@@ -204,8 +204,8 @@ void TeXUtilities::remove_math_mode_range(OUTPUT_STREAM, text_stream *text, int 
 		return;
 	}
 
-@ Here we remove |\sqrt{N}|, converting it to |sqrt(N)|. As a special case,
-we also look out for |{}^3\sqrt{N}| for cube root.
+@ Here we remove `\sqrt{N}`, converting it to `sqrt(N)`. As a special case,
+we also look out for `{}^3\sqrt{N}` for cube root.
 
 @<Remove the sqrt constructions@> =
 	if ((Str::get_at(text, i) == '\\') &&
@@ -358,7 +358,7 @@ we also look out for |{}^3\sqrt{N}| for cube root.
 		WRITE("\\%S", macro);
 	}
 
-@ For Inform's purposes, we need to deal with just |\not\exists| and |\not\forall|.
+@ For Inform's purposes, we need to deal with just `\not\exists` and `\not\forall`.
 
 @<Remove the not prefix@> =
 	if (Str::get_at(text, i) == '\\') {

@@ -25,12 +25,12 @@ typedef struct ls_holon {
 	int placed_late; /* similarly */
 	int placed_very_late; /* similarly */
 	struct text_stream *holon_name; /* can be empty */
-	struct markdown_item *holon_name_as_markdown; /* can be |NULL| */
-	struct linked_list *holon_usages; /* of |holon_usage| */
+	struct markdown_item *holon_name_as_markdown; /* can be `NULL` */
+	struct linked_list *holon_usages; /* of `holon_usage` */
 	struct ls_chunk *corresponding_chunk;
 	int addendum;
 	struct ls_holon *addendum_to;
-	struct linked_list *addenda; /* of |ls_holon| */
+	struct linked_list *addenda; /* of `ls_holon` */
 	int file_form;
 	CLASS_DEFINITION
 } ls_holon;
@@ -75,12 +75,12 @@ ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, in
 }
 
 typedef struct ls_holon_namespace {
-	struct ls_web *owning_web;  /* or |NULL| for code isolated from any web */
-	struct ls_unit *owner;      /* or |NULL| for global scope, but they're not both |NULL| */
+	struct ls_web *owning_web;  /* or `NULL` for code isolated from any web */
+	struct ls_unit *owner;      /* or `NULL` for global scope, but they're not both `NULL` */
 	struct dictionary *names;
-	struct linked_list *holons; /* of |ls_holon| */
+	struct linked_list *holons; /* of `ls_holon` */
 	struct dictionary *expansion_names;
-	struct linked_list *unabbreviated_names; /* of |text_stream| */
+	struct linked_list *unabbreviated_names; /* of `text_stream` */
 	int contains_Main;
 	CLASS_DEFINITION
 } ls_holon_namespace;

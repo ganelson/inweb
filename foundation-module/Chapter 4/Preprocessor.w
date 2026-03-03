@@ -6,19 +6,19 @@ performing repetitions.
 @h Scanner.
 Writing a general-purpose preprocessor really is coding like it's 1974, but
 it turns out to be useful for multiple applications in the Inform project, and
-saves us having to have dependencies on behemoths like the mighty |m4|.
+saves us having to have dependencies on behemoths like the mighty `m4`.
 
 To use the preprocessor, call:
 = (text as InC)
 Preprocessor::preprocess(from, to, header, special_macros, specifics, encoding)
 =
-where |from| and |to| are filenames, |header| is text to place at the top of
-the file (if any), |special_macros| is a |linked_list| of |preprocessor_macro|s
-set up with special meanings to the situation, and |specifics| is a general
-pointer to any data those special meanings need to use. |encoding| should be
-one of |UTF8_ENC| or |ISO_ENC|.
+where `from` and `to` are filenames, `header` is text to place at the top of
+the file (if any), `special_macros` is a `linked_list` of `preprocessor_macro`s
+set up with special meanings to the situation, and `specifics` is a general
+pointer to any data those special meanings need to use. `encoding` should be
+one of `UTF8_ENC` or `ISO_ENC`.
 
-If |to| is |NULL|, we write to standard output instead of a file.
+If `to` is `NULL`, we write to standard output instead of a file.
 
 @d PROTECTED_OPEN_BRACE_PPCHAR 0x25A0
 @d PROTECTED_CLOSE_BRACE_PPCHAR 0x25A1
@@ -65,15 +65,15 @@ typedef struct preprocessor_state {
 	int last_line_was_blank; /* used to suppress runs of multiple blank lines */
 	struct preprocessor_variable_set *global_variables;
 	struct preprocessor_variable_set *stack_frame;
-	struct linked_list *known_macros; /* of |preprocessor_macro| */
+	struct linked_list *known_macros; /* of `preprocessor_macro` */
 	struct general_pointer specifics;
-	struct linked_list *errors; /* of |preprocessor_error| */
+	struct linked_list *errors; /* of `preprocessor_error` */
 	inchar32_t comment_character;
 } preprocessor_state;
 
 typedef struct preprocessor_loop {
 	struct text_stream *loop_var_name;
-	struct linked_list *iterations; /* of |text_stream| */
+	struct linked_list *iterations; /* of `text_stream` */
 	int repeat_is_block;
 	struct text_stream *repeat_saved_dest;
 } preprocessor_loop;
@@ -106,7 +106,7 @@ void Preprocessor::add_loop_iteration(preprocessor_loop *loop, text_stream *valu
 @ Lines from the prototype (or sometimes from files spliced in) are read, one
 at a time, by the following.
 
-Note that |define| and |end-define| are not themselves macros, and are handled
+Note that `define` and `end-define` are not themselves macros, and are handled
 directly here. So you cannot use repeat loops to define multiple macros with
 parametrised names: but then, nor should you.
 
@@ -121,7 +121,7 @@ void Preprocessor::scan_line(text_stream *line, text_file_position *tfp, void *X
 }
 
 @ A line is a comment to the preprocessor if its first non-whitespace character
-is the special comment character: often |#|, but not necessarily.
+is the special comment character: often `#`, but not necessarily.
 
 @<Skip comments@> =
 	LOOP_THROUGH_TEXT(pos, line) {
@@ -220,7 +220,7 @@ is the special comment character: often |#|, but not necessarily.
 @ The expander works on material fed to it which:
 
 1. Does not contain any newlines;
-2. Contains braces |{ ... }| used in nested pairs (unless there is a syntax
+2. Contains braces `{ ... }` used in nested pairs (unless there is a syntax
 error in the prototype, in which case we must complain).
 
 The idea is to pass everything straight through except any braced matter,
@@ -259,9 +259,9 @@ void Preprocessor::expand(text_stream *text, text_file_position *tfp, preprocess
 	DISCARD_TEXT(after_matter)
 }
 
-@ Suppose we are expanding the text |this {ADJECTIVE} ocean {BEHAVIOUR}|: then
-the |before_matter| will be |this |, the |braced_matter| will be |ADJECTIVE|,
-and the |after_matter| will be | ocean {BEHAVIOUR}|.
+@ Suppose we are expanding the text `this {ADJECTIVE} ocean {BEHAVIOUR}`: then
+the `before_matter` will be `this `, the `braced_matter` will be `ADJECTIVE`,
+and the `after_matter` will be ` ocean {BEHAVIOUR}`.
 
 @<Expand braced matter@> =
 	if (Preprocessor::acceptable_variable_name(braced_matter)) {
@@ -291,8 +291,8 @@ and the |after_matter| will be | ocean {BEHAVIOUR}|.
 		Regexp::dispose_of(&mr);
 	}
 
-@ So, for example, the identifier |repeat| would be changed here either to
-|repeat-block| or |repeat-span|: see above for an explanation.
+@ So, for example, the identifier `repeat` would be changed here either to
+`repeat-block` or `repeat-span`: see above for an explanation.
 
 @<Work out which macro identifier is meant by a loop name@> =
 	preprocessor_macro *loop_mm;
@@ -323,7 +323,7 @@ and the |after_matter| will be | ocean {BEHAVIOUR}|.
 		}
 
 @ Note that if we are inside a loop, we do not perform expansion on the variable
-name, and instead pass it through unchanged -- still as, say, |{NAME}|. This
+name, and instead pass it through unchanged — still as, say, `{NAME}`. This
 is because it won't be expanded until later, when the expander reaches the
 end of the loop body.
 
@@ -337,7 +337,7 @@ end of the loop body.
 	Preprocessor::expand(after_matter, tfp, PPS);
 
 @ Similarly, we don't expand macros inside the body of a loop, except that we
-need to expand the |{end-repeat-block}| (or similar) which closes that loop
+need to expand the `{end-repeat-block}` (or similar) which closes that loop
 body, so that we can escape back into normal mode. Because loop constructs
 may be nested, we need to react to (but not expand) loop openings, too.
 The "shadow stack pointer" shows how deep we are inside these shadowy,
@@ -368,7 +368,7 @@ not-yet-acted-on, loops.
 	}
 	Preprocessor::expand(after_matter, tfp, PPS);
 
-@ We can now forget about the |before_matter|, the |after_matter|, or whether
+@ We can now forget about the `before_matter`, the `after_matter`, or whether
 we ought not to expand after all: that's all taken care of. A variable expands
 to its value:
 
@@ -385,7 +385,7 @@ to its value:
 	}
 
 @ This looks fussy, but really it delegates the work by calling a function
-attached to the macro, the |expander|.
+attached to the macro, the `expander`.
 
 @<Definitely expand a macro@> =
 	text_stream *parameter_values[MAX_PP_MACRO_PARAMETERS];
@@ -400,7 +400,7 @@ attached to the macro, the |expander|.
 
 @ Note that textual values of the parameters are themselves expanded before
 use: they might contain variables, or even macros. Parameter names are not.
-So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
+So you can have `in: {WHATEVER}` but not `{WHATEVER}: this`.
 
 @<Parse the parameters supplied@> =
 	match_results mr = Regexp::create_mr();
@@ -448,7 +448,7 @@ So you can have |in: {WHATEVER}| but not |{WHATEVER}: this|.
 				DISCARD_TEXT(erm)
 			}
 
-@ The following code is a little misleading. At present, |PPS->repeat_sp| is
+@ The following code is a little misleading. At present, `PPS->repeat_sp` is
 always either 0 or 1, no matter how deep loop nesting is: but that's just an
 artefact of the current scanning algorithm, which might some day change.
 
@@ -519,13 +519,13 @@ void Preprocessor::write_variable(preprocessor_variable *var, text_stream *val) 
 	var->value = Str::duplicate(val);
 }
 
-@ Each variable belongs to a single "set". If |EXAMPLE| has one meaning outside a
+@ Each variable belongs to a single "set". If `EXAMPLE` has one meaning outside a
 definition and another insider, that's two variables with a common name, not
 one variable belonging to two sets at once.
 
 =
 typedef struct preprocessor_variable_set {
-	struct linked_list *variables; /* of |preprocessor_variable| */
+	struct linked_list *variables; /* of `preprocessor_variable` */
 	struct preprocessor_variable_set *outer;
 	CLASS_DEFINITION
 } preprocessor_variable_set;
@@ -577,11 +577,11 @@ preprocessor_variable *Preprocessor::ensure_variable(text_stream *name,
 @h Macros.
 For the most part, each macro seen by users corresponds to a single
 //preprocessor_macro//, but loop constructs are an exception. When the user
-types |{repeat ...}|, this is a reference to |repeat-block| if the body of
-what to repeat occupies multiple lines, but to |repeat-span| if only one.
+types `{repeat ...}`, this is a reference to `repeat-block` if the body of
+what to repeat occupies multiple lines, but to `repeat-span` if only one.
 
-For example, the first |repeat| loop here uses the macros |repeat-block| and
-|end-repeat-block|, and the second uses |repeat-span| and |end-repeat-span|.
+For example, the first `repeat` loop here uses the macros `repeat-block` and
+`end-repeat-block`, and the second uses `repeat-span` and `end-repeat-span`.
 = (text)
 	{repeat with SEA in Black, Caspian}
 	Welcome to the {SEA} Sea.
@@ -609,10 +609,10 @@ typedef struct preprocessor_macro {
 	void (*expander)(struct preprocessor_macro *, struct preprocessor_state *, struct text_stream **, struct preprocessor_loop *, struct text_file_position *);
 
 	/* loop construct if any */
-	int begins_loop;               /* |TRUE| for e.g. |repeat-block| or |repeat-span| */
-	int ends_loop;                 /* |TRUE| for e.g. |end-repeat-block| */
-	struct text_stream *loop_name; /* e.g. |repeat| */
-	int span;                      /* |TRUE| for e.g. |end-repeat-span| or |repeat-span| */
+	int begins_loop;               /* `TRUE` for e.g. `repeat-block` or `repeat-span` */
+	int ends_loop;                 /* `TRUE` for e.g. `end-repeat-block` */
+	struct text_stream *loop_name; /* e.g. `repeat` */
+	int span;                      /* `TRUE` for e.g. `end-repeat-span` or `repeat-span` */
 
 	/* textual behaviour */
 	int suppress_newline_after_expanding;
@@ -628,11 +628,11 @@ typedef struct preprocessor_macro_parameter {
 	CLASS_DEFINITION
 } preprocessor_macro_parameter;
 
-@ The following creates a new macro and adds it to the list |L|. By default, it
+@ The following creates a new macro and adds it to the list `L`. By default, it
 has an empty definition (i.e., no lines), but may have a meaning provided by its
-|expander| function regardless. The |parameter_specification| is as in the
-textual declaration: for example, |in: IN ?towards: WAY| would be valid, with
-|in| being compulsory and |towards| optional when the macro is used.
+`expander` function regardless. The `parameter_specification` is as in the
+textual declaration: for example, `in: IN ?towards: WAY` would be valid, with
+`in` being compulsory and `towards` optional when the macro is used.
 
 If we expected 10000 macros, a dictionary would be better than a list. But in
 fact we expect more like 10.
@@ -719,7 +719,7 @@ void Preprocessor::add_line_to_macro(preprocessor_state *PPS, preprocessor_macro
 A few macros are "reserved", that is, have built-in meanings, and use expander
 functions other than //Preprocessor::default_expander//.
 
-Some of these, the |special_macros|, are supplied by the code calling the
+Some of these, the `special_macros`, are supplied by the code calling the
 preprocessor. Those will provide domain-specific functionality. But a few are
 built in here and therefore work in every domain:
 
@@ -790,7 +790,7 @@ preprocessor_macro *Preprocessor::find_macro(linked_list *L, text_stream *name) 
 }
 
 @h The expander for user-defined macros.
-All macros created by |{define: ...}| are expanded by the following function.
+All macros created by `{define: ...}` are expanded by the following function.
 It creates a local "stack frame" making the parameters available as variables,
 then runs the definition lines through the scanner, then dismantles the stack
 frame again.

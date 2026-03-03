@@ -15,14 +15,14 @@ text_stream *debug_log_file = &debug_log_file_struct; /* The actual debugging lo
 judiciously placed print statements" (Brian Kernighan).
 
 To write to the debugging log, we must in principle write to a stream called
-|DL|. In practice we more often use a pair of pseudo-functions called |LOG|
-and |LOGIF|, which are macros defined in the section on Streams. For
+`DL`. In practice we more often use a pair of pseudo-functions called `LOG`
+and `LOGIF`, which are macros defined in the section on Streams. For
 instance, the pseudo-function-call
 = (text)
 	LOGIF(WHATEVER, "Heading %d skipped\n", n);
 =
-prints the line in question to the debugging log only if the aspect |WHATEVER|
-is currently switched on. Plain |LOG| does the same, but unconditionally.
+prints the line in question to the debugging log only if the aspect `WHATEVER`
+is currently switched on. Plain `LOG` does the same, but unconditionally.
 
 @d LOG_INDENT STREAM_INDENT(DL)
 @d LOG_OUTDENT STREAM_OUTDENT(DL)
@@ -48,8 +48,8 @@ typedef struct debugging_aspect {
 } debugging_aspect;
 
 @ And now we must define all those constants and names. Note that the
-|TRUE| or |FALSE| settings below are the defaults, and apply unless the
-source says otherwise. The |alternate| settings are those used in
+`TRUE` or `FALSE` settings below are the defaults, and apply unless the
+source says otherwise. The `alternate` settings are those used in
 trace-sentences mode, that is, between asterisk sentences.
 
 @e DEBUGGING_LOG_INCLUSIONS_DA from 0
@@ -99,10 +99,10 @@ behind the scenes; but such a log file is often buffered by the filing system,
 so that a sudden crash of Inform may result in the loss of recent data written to
 the log. Which is a pity, since this is exactly the most useful evidence as to
 the cause of the crash in the first place. Accordingly, we fairly often
-|fflush| the debug log file, forcing any buffered output to be written.
+`fflush` the debug log file, forcing any buffered output to be written.
 
-In this rest of this section, we always assume that |DL| is open. Note that it
-is possible this has been switched to be |stdout|, or even that it is
+In this rest of this section, we always assume that `DL` is open. Note that it
+is possible this has been switched to be `stdout`, or even that it is
 temporarily the sentence tracing file: but we don't care.
 
 =
@@ -200,11 +200,11 @@ void Log::set_all_aspects(int new_state) {
 
 @ We also want the ability to change debugging log settings from the command
 line; the command line form is derived from the textual form by replacing
-every space with a hyphen: for instance, |property-provision|.
+every space with a hyphen: for instance, `property-provision`.
 
-We also recognise |no-property-provision| to switch this off again,
-|everything| and |nothing| with the obvious meanings, and |list| to
-print out a list of debugging aspects to |STDOUT|.
+We also recognise `no-property-provision` to switch this off again,
+`everything` and `nothing` with the obvious meanings, and `list` to
+print out a list of debugging aspects to `STDOUT`.
 
 =
 int Log::set_aspect_from_command_line(text_stream *name, int give_error) {

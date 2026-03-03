@@ -38,10 +38,10 @@ something like this:
 =
 which adopts the traditional layout conventions of Kernighan and Ritchie.
 
-Note that a |fruit| structure contains a |pip| structure (in fact, five of
-them), but only contains pointers to |tree_species| structures and itself.
-C requires therefore that the structure definition for |pip| must occur
-earlier in the code than that for |fruit|. This is a nuisance, so we
+Note that a `fruit` structure contains a `pip` structure (in fact, five of
+them), but only contains pointers to `tree_species` structures and itself.
+C requires therefore that the structure definition for `pip` must occur
+earlier in the code than that for `fruit`. This is a nuisance, so we
 takes care of it automatically.
 
 @<Find every typedef struct in the tangle@> =
@@ -76,7 +76,7 @@ the sake of an illustrative example, let's suppose that line is:
 = (text)
 	unsigned long long int *val;
 =
-We need to extract the element name, |val|, and make a note of it.
+We need to extract the element name, `val`, and make a note of it.
 
 @<Work through a line in the structure definition@> =
 	TEMPORARY_TEXT(p)
@@ -98,7 +98,7 @@ We need to extract the element name, |val|, and make a note of it.
 	}
 	DISCARD_TEXT(p)
 
-@ The following reduces |unsigned long long int *val;| to just |int *val;|.
+@ The following reduces `unsigned long long int *val;` to just `int *val;`.
 
 @<Remove C type modifiers from the front of p@> =
 	inchar32_t *modifier_patterns[] = {
@@ -115,34 +115,34 @@ We need to extract the element name, |val|, and make a note of it.
 			}
 	}
 
-@ At this point |p| has been reduced to |int *val;|, but the following moves
-|pos| to point to the |*|:
+@ At this point `p` has been reduced to `int *val;`, but the following moves
+`pos` to point to the `*`:
 
 @<Move pos past the type name@> =
 	while ((Str::get(pos)) && (Characters::is_space_or_tab(Str::get(pos)) == FALSE))
 		pos = Str::forward(pos);
 
-@ And this moves it past the |*| to point to the |v| in |int *val;|:
+@ And this moves it past the `*` to point to the `v` in `int *val;`:
 
 @<Move pos past any typographical type modifiers@> =
 	while ((Characters::is_space_or_tab(Str::get(pos))) || (Str::get(pos) == '*') ||
 		(Str::get(pos) == '(') || (Str::get(pos) == ')')) pos = Str::forward(pos);
 
-@ This then first copies the substring |val;| into |elname|, then cuts that
-down to just the identifier characters at the front, i.e., to |val|.
+@ This then first copies the substring `val;` into `elname`, then cuts that
+down to just the identifier characters at the front, i.e., to `val`.
 
 @<Copy the element name into elname@> =
 	Str::substr(elname, pos, Str::end(p));
 	if (Regexp::match(&mr, elname, U"(%i+)%c*")) Str::copy(elname, mr.exp[0]);
 
 @h Structure dependency.
-We say that S depends on T if |struct S| has an element whose type is
-|struct T|. That matters because if so then |struct T| has to be defined
-before |struct S| in the tangled output.
+We say that S depends on T if `struct S` has an element whose type is
+`struct T`. That matters because if so then `struct T` has to be defined
+before `struct S` in the tangled output.
 
-It's important to note that |struct S| merely having a member of type
-|struct *T| does not create a dependency. In the code below, because |%i|
-matches only identifier characters and |*| is not one of those, a line like
+It's important to note that `struct S` merely having a member of type
+`struct *T` does not create a dependency. In the code below, because `%i`
+matches only identifier characters and `*` is not one of those, a line like
 = (text)
     struct fruit *often_confused_with;
 =
@@ -170,7 +170,7 @@ will not trip the switch here.
 			ADD_TO_LINKED_LIST(str, language_type, current_str->incorporates);
 
 @h Functions.
-This time, we will need to keep track of |#ifdef| and |#endif| pairs
+This time, we will need to keep track of `#ifdef` and `#endif` pairs
 in the source. This matters because we will want to predeclare functions;
 but if functions are declared in conditional compilation, then their
 predeclarations have to be made under the same conditions.
@@ -218,8 +218,8 @@ void CLike::parse_functions(programming_language *self, ls_web *W) {
 = (text)
 	type identifier(args...
 =
-where we parse |type| only minimally. In InC (only), the identifier can
-contain namespace dividers written |::|. Function declarations, we will assume,
+where we parse `type` only minimally. In InC (only), the identifier can
+contain namespace dividers written `::`. Function declarations, we will assume,
 always begin on column 1 of their source files, and we expect them to take
 modern ANSI C style, not the long-deprecated late 1970s C style.
 
@@ -248,7 +248,7 @@ modern ANSI C style, not the long-deprecated late 1970s C style.
 
 @ C has a whole soup of reserved words applying to types, but most of them
 can't apply to the return type of a function. We do, however, iterate so that
-forms like |static long long int| will work.
+forms like `static long long int` will work.
 
 @<Parse past any type modifiers@> =
 	inchar32_t *modifier_patterns[] = {
@@ -281,9 +281,9 @@ forms like |static long long int| will work.
 	void World::Subjects::make_adj_const_domain(inference_subject *infs,|
 		instance *nc, property *prn) {|
 =		
-Having read the first line, |arguments| would contain |inference_subject *infs,|
+Having read the first line, `arguments` would contain `inference_subject *infs,`
 and would thus be incomplete. We continue across subsequent lines until we
-reach an open brace |{|.
+reach an open brace `{`.
 
 @d MAX_ARG_LINES 32 /* maximum number of lines over which a function's header can extend */
 
@@ -309,7 +309,7 @@ reach an open brace |{|.
 @h Subcategorisation.
 The following is called after the parser gives every line in the web a
 category; we can, if we wish, change that for a more exotic one. We simply
-look for a |#include| of one of the ANSI C standard libraries.
+look for a `#include` of one of the ANSI C standard libraries.
 
 =
 void CLike::subcategorise_line(programming_language *self, ls_line *lst) {
@@ -334,10 +334,10 @@ void CLike::subcategorise_line(programming_language *self, ls_line *lst) {
 @h Tangling extras.
 "Additional early matter" is used for the inclusions of the ANSI library
 files. We need to do that early, because otherwise types declared in them
-(such as |FILE|) won't exist in time for the structure definitions we will
+(such as `FILE`) won't exist in time for the structure definitions we will
 be tangling next.
 
-It might seem reasonable to move all |#include| files up front this way,
+It might seem reasonable to move all `#include` files up front this way,
 not just the ANSI ones. But that would defeat any conditional compilation
 around the inclusions; which Inform (for instance) needs in order to make
 platform-specific details to handle directories without POSIX in Windows.
@@ -363,7 +363,7 @@ void CLike::additional_early_matter(programming_language *self,
 
 @h Tangling predeclarations.
 This is where a language gets the chance to tangle predeclarations, early
-on in the file. We use it first for the structures, and then the functions --
+on in the file. We use it first for the structures, and then the functions —
 in that order since the function types likely involve the typedef names for the
 structures.
 
@@ -379,7 +379,7 @@ void CLike::additional_predeclarations(programming_language *self, text_stream *
 }
 
 @ A "simple typedef" here means one that is aliasing something other than
-a structure: for example |typedef unsigned int uint;| would be a simple typedef.
+a structure: for example `typedef unsigned int uint;` would be a simple typedef.
 
 @<Predeclare simple typedefs@> =
 	ls_chapter *C;
@@ -400,8 +400,8 @@ a structure: for example |typedef unsigned int uint;| would be a simple typedef.
 precede outer, but we need to be careful to be terminating if the source
 code we're given is not well founded because of an error by its programmer:
 for example, that structure A contains B contains C contains A. We do this
-with the |tangled| flag, which is |FALSE| if a structure hasn't been
-started yet, |NOT_APPLICABLE| if it's in progress, and |TRUE| if it's
+with the `tangled` flag, which is `FALSE` if a structure hasn't been
+started yet, `NOT_APPLICABLE` if it's in progress, and `TRUE` if it's
 finished.
 
 @<Predeclare the structures in a well-founded order@> =
@@ -432,7 +432,7 @@ void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, language
 }
 
 @ Functions are rather easier to deal with. In general, if a function was
-defined within some number of nested |#ifdef| or |#ifndef| directives, then
+defined within some number of nested `#ifdef` or `#ifndef` directives, then
 we reproduce those around the predeclaration: except, as a special trick,
 if the line contains a particular comment. For example:
 = (text)

@@ -2,8 +2,8 @@
 
 A minimal library for handling C-style strings.
 
-@ Programs using Foundation store text in |text_stream| structures almost all
-of the time, but old-style, null-terminated |char *| array strings are
+@ Programs using Foundation store text in `text_stream` structures almost all
+of the time, but old-style, null-terminated `char *` array strings are
 still occasionally needed.
 
 We need to handle C strings long enough to contain any plausible filename, and
@@ -11,7 +11,7 @@ any run of a dozen or so lines of code; but we have no real need to handle
 strings of unlimited length, nor to be parsimonious with memory.
 
 The following defines a type for a string long enough for our purposes.
-It should be at least as long as the constant sometimes called |PATH_MAX|,
+It should be at least as long as the constant sometimes called `PATH_MAX`,
 the maximum length of a pathname, which is 1024 on Mac OS X.
 
 @d MAX_STRING_LENGTH 8*1024
@@ -48,7 +48,7 @@ int CStrings::len(char *str) {
 	return MAX_STRING_LENGTH;
 }
 
-@ We then have a replacement for |strcpy|, identical except that it's
+@ We then have a replacement for `strcpy`, identical except that it's
 bounds-checked:
 
 =
@@ -59,7 +59,7 @@ void CStrings::copy(char *to, char *from) {
 	to[i] = 0;
 }
 
-@ String comparisons will be done with the following, not |strcmp| directly:
+@ String comparisons will be done with the following, not `strcmp` directly:
 
 =
 int CStrings::eq(char *A, char *B) {
@@ -100,7 +100,7 @@ void CStrings::transcode_ISO_string_to_UTF8(char *p, char *dest) {
 	dest[j] = 0;
 }
 
-@ I dislike to use |strncpy| because, and for some reason this surprises
+@ I dislike to use `strncpy` because, and for some reason this surprises
 me every time, it truncates but fails to write a null termination character
 if the string to be copied is larger than the buffer to write to: the
 result is therefore not a well-formed string and we have to fix matters by
@@ -113,8 +113,7 @@ void CStrings::truncated_strcpy(char *to, char *from, int max) {
 	to[i] = 0;
 }
 
-@h Text storage.
-The following is convenient for parking a read-only string of text somewhere
+@ The following is convenient for parking a read-only string of text somewhere
 safe in memory. Since the length can't be extended, it's usually unsafe
 to write to the result. (Inform tools very seldom use this, because C strings
 are almost always best avoided.)

@@ -79,8 +79,8 @@ is composed to a single code point as E-acute.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The <code>text_stream</code> type began as a generalisation of the standard C library's
-<code>FILE</code>, and it is used in mostly similar ways. The user -- the whole
-program outside of this section -- deals only with <code>text_stream *</code> pointers to
+<code>FILE</code>, and it is used in mostly similar ways. The user — the whole
+program outside of this section — deals only with <code>text_stream *</code> pointers to
 represent streams in use.</p>
 <p>All stream handling is defined via macros. While many operations could be
 handled by ordinary functions, others cannot. <code>text_stream</code> cannot have exactly
@@ -146,7 +146,7 @@ so that there are no uses of <code>printf</code> anywhere in the program.</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  <code>PUT</code> and <code>PUT_TO</code> similarly print single characters, which are
 specified as unsigned integer values. In practice, <code>WRITE_TO</code> and
 <code>PUT_TO</code> are seldom needed because there is almost always only one
-stream of interest at a time -- <code>OUT</code>, the current stream.</p>
+stream of interest at a time — <code>OUT</code>, the current stream.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PUT(c)</span> <a href="2-str.html#SP37" class="function-link"><span class="function-syntax">Streams::putc</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">, </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">)</span>
 </pre>
@@ -275,11 +275,11 @@ XML (and HTML) escapes of <code>&amp;amp;</code> for ampersand, and <code>&amp;l
 angle brackets, will be used automatically on writing. By default this flag
 is clear, that is, no conversion is made.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MALLOCED_STRF</span> <span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* was the |write_to_memory| pointer claimed by |malloc|? */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MALLOCED_STRF</span> <span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* was the <code>write_to_memory</code> pointer claimed by <code>malloc</code>? */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">USES_XML_ESCAPES_STRF</span> <span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax">/* see above */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">USES_LOG_ESCAPES_STRF</span> <span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax">/* |WRITE| to this stream supports |$| escapes */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">USES_LOG_ESCAPES_STRF</span> <span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax">/* <code>WRITE</code> to this stream supports <code>$</code> escapes */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">INDENT_PENDING_STRF</span> <span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment-syntax">/* we have just ended a line, so further text should indent */</span>
 </pre>
@@ -309,12 +309,12 @@ is clear, that is, no conversion is made.</p>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_flags</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of the |*_STRF| values above */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to_file</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for an open stream, exactly one of these is |NULL| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">HTML_file_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_HTML</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only to the |HTML::| section */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stream_flags</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of the <code>*_STRF</code> values above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">FILE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to_file</span><span class="plain-syntax">; </span><span class="comment-syntax">/* for an open stream, exactly one of these is <code>NULL</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">HTML_file_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_HTML</span><span class="plain-syntax">; </span><span class="comment-syntax">/* relevant only to the <code>HTML::</code> section */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">write_to_memory</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">file_written</span><span class="plain-syntax">; </span><span class="comment-syntax">/* ditto */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chars_written</span><span class="plain-syntax">; </span><span class="comment-syntax">/* number of characters sent, counting |\n| as 1 */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chars_written</span><span class="plain-syntax">; </span><span class="comment-syntax">/* number of characters sent, counting <code>\n</code> as 1 */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">chars_capacity</span><span class="plain-syntax">; </span><span class="comment-syntax">/* maximum number the stream can accept without claiming more resources */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stream_continues</span><span class="plain-syntax">; </span><span class="comment-syntax">/* if one memory stream is extended by another */</span>
 <span class="plain-syntax">} </span><span class="type-syntax">text_stream</span><span class="plain-syntax">;</span>
@@ -774,7 +774,7 @@ was supplied by our client; it only needs freeing if we were the ones who
 allocated it. <code>free</code> is a void function; in theory it cannot fail, if
 supplied a valid argument.</p>
 <p>We have to be very careful once we have called <code>free</code>, because that memory
-may well contain the <code>text_stream</code> structure to which <code>stream</code> points -- see
+may well contain the <code>text_stream</code> structure to which <code>stream</code> points — see
 how continuations are made, below.</p>
 </div>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Take suitable action to close the memory stream</span><span class="named-paragraph-number">36.2</span></span> =</p>
@@ -894,8 +894,8 @@ We make a continuation to a fresh <code>text_stream</code> structure, which poin
 as much memory as the original, allocated via <code>malloc</code>. (We will actually need
 a little more memory than that because we also have to make room for the
 <code>text_stream</code> structure itself.) We then set <code>stream</code> to the <code>continuation</code>. Given
-that <code>malloc</code> was successful -- and it must have been or we would have stopped
-with a fatal error -- the continuation is guaranteed to be large enough,
+that <code>malloc</code> was successful — and it must have been or we would have stopped
+with a fatal error — the continuation is guaranteed to be large enough,
 since it's twice the size of the original, which itself was large enough to
 hold any escape sequence when opened.</p>
 </div>

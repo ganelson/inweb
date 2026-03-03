@@ -5,9 +5,9 @@ only within markers for conditional compilation.
 
 @h Tag representation.
 Paragraph tagging is used to mark that code should be conditional. For
-example, a para which should be included only if |WINDOWS| is defined
-should be tagged |ifdef-WINDOWS|. The "valency" of that tag is 1, and
-the "identifier" is |WINDOWS|.
+example, a para which should be included only if `WINDOWS` is defined
+should be tagged `ifdef-WINDOWS`. The "valency" of that tag is 1, and
+the "identifier" is `WINDOWS`.
 
 =
 int IfdefTags::ifdef_valency(text_stream *tag) {

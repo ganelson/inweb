@@ -52,8 +52,8 @@ void ACMESupport::add_fallbacks(programming_language *pl) {
 		METHOD_ADD(pl, SYNTAX_COLOUR_WEA_MTID, ACMESupport::syntax_colour);
 }
 
-@ This utility does a very limited |WRITE|-like job. (We don't want to use
-the actual |WRITE| because that would make it possible for malicious language
+@ This utility does a very limited `WRITE`-like job. (We don't want to use
+the actual `WRITE` because that would make it possible for malicious language
 files to crash the program.)
 
 =
@@ -205,7 +205,7 @@ void ACMESupport::parse_functions(programming_language *self, ls_web *W) {
 
 @ The following is an opportunity for us to scold the author for any
 violation of the namespace rules. We're going to look for functions named
-|Whatever::name()| whose definitions are not in the |Whatever::| section;
+`Whatever::name()` whose definitions are not in the `Whatever::` section;
 in other words, we police the rule that functions actually are defined in the
 namespace which their names imply. This can be turned off with a special
 bibliographic variable, but don't do that.

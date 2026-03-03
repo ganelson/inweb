@@ -3,14 +3,14 @@
 A simple syntax-colouring engine.
 
 @ This is a very simple syntax colouring algorithm. The work is done by the
-function |Painter::syntax_colour|, which can in principle be applied to texts
+function `Painter::syntax_colour`, which can in principle be applied to texts
 of any length. But it's usually convenient to run it on a long file one line
-at a time, so that it is called repeatedly. The variable |colouring_state|
+at a time, so that it is called repeatedly. The variable `colouring_state`
 remembers where we were at the end of the previous line, so that we can pick
 up again later at the start of the next.
 
 Because of that, we need to call the following before we begin a run of calls
-to |Painter::syntax_colour|:
+to `Painter::syntax_colour`:
 
 =
 int colouring_state = PLAIN_COLOUR;
@@ -20,23 +20,23 @@ void Painter::reset_syntax_colouring(programming_language *pl) {
 	painter_count = 1;
 }
 
-@ As we begin, the text to colour is in |matter|, while |colouring| is an
+@ As we begin, the text to colour is in `matter`, while `colouring` is an
 equal-length text where each character represents the colour of its
-corresponding character in |matter|. For example, we might start as:
+corresponding character in `matter`. For example, we might start as:
 = (text as PainterOutput)
 	int x = 55;
 	ppppppppppp
 =
-with every character having |PLAIN_COLOUR|, but end up with:
+with every character having `PLAIN_COLOUR`, but end up with:
 = (text as PainterOutput)
 	int x = 55;
 	rrrpipppnnp
 =
 
 @ So we begin by defining some colours. Note that there are two pseudo-colours
-here as well (|UNQUOTED_COLOUR| and |NOT_A_COLOUR|), but the rest might all be
+here as well (`UNQUOTED_COLOUR` and `NOT_A_COLOUR`), but the rest might all be
 colurs in our painted output. These values are all legible ASCII characters
-for convenient debugging, as in examples like |rrrpipppnnp| above.
+for convenient debugging, as in examples like `rrrpipppnnp` above.
 
 @d DEFINITION_COLOUR 	'd'
 @d FUNCTION_COLOUR		'f'
@@ -356,7 +356,7 @@ void Painter::syntax_colour_inner(programming_language *pl,
 @ For the moment, we always adopt the C rules on identifiers: they have to
 begin with an underscore or letter, then continue with underscores or
 alphanumeric characters, except that if the language allows it then they
-can contain a |::| namespace divider.
+can contain a `::` namespace divider.
 
 =
 int Painter::identifier_at(programming_language *pl,
@@ -481,12 +481,12 @@ void Painter::execute_rule(hash_table *HT, colouring_rule *rule, text_stream *ma
 
 @ Here we test the "if X":
 
-@d UNSPACED_RULE_PREFIX 2 /* for |prefix P| */
-@d SPACED_RULE_PREFIX 3 /* for |spaced prefix P| */
-@d OPTIONALLY_SPACED_RULE_PREFIX 4 /* for |optionally spaced prefix P| */
-@d UNSPACED_RULE_SUFFIX 5 /* for |suffix P| */
-@d SPACED_RULE_SUFFIX 6 /* for |spaced suffix P| */
-@d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for |optionally spaced suffix P| */
+@d UNSPACED_RULE_PREFIX 2 /* for `prefix P` */
+@d SPACED_RULE_PREFIX 3 /* for `spaced prefix P` */
+@d OPTIONALLY_SPACED_RULE_PREFIX 4 /* for `optionally spaced prefix P` */
+@d UNSPACED_RULE_SUFFIX 5 /* for `suffix P` */
+@d SPACED_RULE_SUFFIX 6 /* for `spaced suffix P` */
+@d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for `optionally spaced suffix P` */
 
 =
 int Painter::satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter,
@@ -634,8 +634,8 @@ void Painter::colour_file(programming_language *pl, filename *F, text_stream *to
 	if (c > 0) { PUT_TO(to, '\n'); PUT_TO(coloured, NEWLINE_COLOUR); }
 }
 
-@ In the following, |q_mode| is 0 outside quotes, 1 inside a character literal,
-and 2 inside a string literal; |c_mode| is 0 outside comments, 1 inside a line
+@ In the following, `q_mode` is 0 outside quotes, 1 inside a character literal,
+and 2 inside a string literal; `c_mode` is 0 outside comments, 1 inside a line
 comment, and 2 inside a multiline comment.
 
 =

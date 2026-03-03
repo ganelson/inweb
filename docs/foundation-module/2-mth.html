@@ -64,7 +64,7 @@ ordinarily not available in C, but doesn't pretend to offer the full
 functionality of an object-oriented language.</p>
 <p>Instead, it's really intended for protocol-based coding patterns. Suppose that
 we have objects of several different structure types, but all of them can
-serve a given purpose -- say, all of them contribute an adjective to the
+serve a given purpose — say, all of them contribute an adjective to the
 Inform language. What we want is the ability to take a pointer, which might be
 to an object of any of these types, and to tell the object to do something, or
 ask it a question.</p>
@@ -91,8 +91,8 @@ differs from another, and they can do that by providing &quot;methods&quot;.</p>
 </pre>
 <ul class="endnotetexts"><li>The structure method_set is private to this section.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Declaring methods.</b>  Each method is a function, though we don't know its type -- which is why we
-resort to the desperate measure of storing it as a <code>void *</code> -- with an ID
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Declaring methods.</b>  Each method is a function, though we don't know its type — which is why we
+resort to the desperate measure of storing it as a <code>void *</code> — with an ID
 number attached to it. IDs should be from the <code>*_MTID</code> enumeration set.</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">UNUSED_METHOD_ID_MTID</span> <span class="constant-syntax">1</span>
@@ -167,7 +167,7 @@ attach it to an object with a method set, using the <code>METHOD_ADD</code> macr
 </pre>
 <div class="lsmarkdown">
 <p>Note that it's entirely possible for the <code>upon</code> object to have multiple methods
-added for the same ID -- or none. In the <code>V</code> (void) cases, what we then do is
+added for the same ID — or none. In the <code>V</code> (void) cases, what we then do is
 to call each of them in turn. In the <code>I</code> (int) cases, we call each in turn, but
 stop the moment any of them returns something other than <code>FALSE</code>, and then
 we put that value into the specified result variable <code>rval</code>.</p>

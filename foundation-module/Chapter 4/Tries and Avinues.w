@@ -17,14 +17,14 @@ front of a text, whereas an end head represents matching from the back.
 
 - "Choices". A choice node has a given match character, say an "f", and
 represents which node to go to next if this is the current character in the
-text. It must either be a valid Unicode character or |TRIE_ANYTHING|, which
+text. It must either be a valid Unicode character or `TRIE_ANYTHING`, which
 is a wildcard representing "any text of any length here". Since a choice
-must always lead somewhere, |on_success| must point to another node.
+must always lead somewhere, `on_success` must point to another node.
 There can be any number of choices at a given position, so choice nodes
-are always organised in linked lists joined by |next|.
+are always organised in linked lists joined by `next`.
 
 - "Terminals", always leaves, which have match character set to the
-impossible value |TRIE_STOP|, and for which |match_outcome| is non-null; thus,
+impossible value `TRIE_STOP`, and for which `match_outcome` is non-null; thus,
 different terminal nodes can result in different outcomes if they are ever
 reached at the end of a successful scan. A terminal node is always the only item
 in a list.
@@ -48,26 +48,26 @@ typedef struct match_trie {
 } match_trie;
 
 @ We have just one routine for extending and scanning the trie: it either
-tries to find whether a text |p| leads to any outcome in the existing trie,
+tries to find whether a text `p` leads to any outcome in the existing trie,
 or else forcibly extends the existing trie to ensure that it does.
 
-It might look as if calling |Tries::search| always returns |add_outcome| when
+It might look as if calling `Tries::search` always returns `add_outcome` when
 this is set, but this isn't true: if the trie already contains a node
-representing how to deal with |p|, we get whatever outcome is already
+representing how to deal with `p`, we get whatever outcome is already
 established.
 
-There are two motions to keep track of: our progress through the text |p|
+There are two motions to keep track of: our progress through the text `p`
 being scanned, and our progress through the trie which tells us how to scan it.
 
 We scan the text either forwards or backwards, starting with the first or
 last character and then working through, finishing with a 0 terminator.
 (This is true even if working backwards: we pretend the character stored
-before the text began is 0.) |i| represents the index of our current position
-in |p|, and runs either from 0 up to |N| or from |N-1| down to |-1|,
-where |N| is the number of characters in |p|.
+before the text began is 0.) `i` represents the index of our current position
+in `p`, and runs either from 0 up to `N` or from `N-1` down to `-1`,
+where `N` is the number of characters in `p`.
 
-We scan the trie using a pair of pointers. |prev| is the last node we
-successfully left, and |pos| is one we are currently at, which can be
+We scan the trie using a pair of pointers. `prev` is the last node we
+successfully left, and `pos` is one we are currently at, which can be
 either a terminal node or a choice node (in which case it's the head of
 a linked list of such nodes).
 
@@ -146,8 +146,8 @@ this tends to make commonly used exits migrate upwards and rarities downwards.
 But we aren't going to search these tries anything like intensively enough
 to make it worth the trouble.
 
-(The following cannot be a |while| loop since C does not allow us to |break|
-or |continue| out of an outer loop from an inner one.)
+(The following cannot be a `while` loop since C does not allow us to `break`
+or `continue` out of an outer loop from an inner one.)
 
 @<Look through the possible exits from this position and move on if any match@> =
 	int ambig = 0, unambig = 0;
@@ -217,8 +217,8 @@ or |continue| out of an outer loop from an inner one.)
 	if (pos == NULL) internal_error("trie invariant broken");
 	prev = pos; pos = prev->on_success;
 
-@ If |pos| is |NULL| then it follows that |prev->on_success| is |NULL|, since
-this is how |pos| was calculated; so to add a new terminal node we simply add
+@ If `pos` is `NULL` then it follows that `prev->on_success` is `NULL`, since
+this is how `pos` was calculated; so to add a new terminal node we simply add
 it there.
 
 @<We failed by running out of trie, so we must add a terminal node to make this string acceptable@> =

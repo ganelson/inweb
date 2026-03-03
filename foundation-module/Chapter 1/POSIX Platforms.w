@@ -13,7 +13,7 @@ purposes we need here, it's simplest to divide all operating systems into
 two groups: the POSIX group, and Windows.
 
 This Foundation module therefore comes with two variant versions of the
-|Platform::| section of code. The one you're reading compiles on a POSIX
+`Platform::` section of code. The one you're reading compiles on a POSIX
 operating system, and the other one on Windows.
 
 @ Some basics that apply to all POSIX-supporting systems.
@@ -75,7 +75,7 @@ When using a Unix-like system such as Cygwin or MSYS2 on Windows, it's
 inevitable that paths will sometimes contain backslashes and sometimes forward
 slashes, meaning a folder (i.e. directory) divide in either case. So:
 
-- When writing such a divider, always write |FOLDER_SEPARATOR|, a backslash;
+- When writing such a divider, always write `FOLDER_SEPARATOR`, a backslash;
 - When testing for such a divider, call the following.
 
 =
@@ -105,10 +105,10 @@ char *Platform::getenv(const char *name) {
 }
 
 @h Executable location. ^"ifdef-PLATFORM_LINUX"
-Fill the wide-char buffer |p| with the path to the current executable, up to
-length |length|. This function is guaranteed to be called from only one
-thread. Should the information be unavailable, or fail to fit into |p|,
-truncate |p| to zero length. (On some platforms, the information will
+Fill the wide-char buffer `p` with the path to the current executable, up to
+length `length`. This function is guaranteed to be called from only one
+thread. Should the information be unavailable, or fail to fit into `p`,
+truncate `p` to zero length. (On some platforms, the information will
 always be unavailable: that doesn't mean we can't run on those platforms,
 just that installation and use of Foundation-built tools is less convenient.)
 
@@ -119,10 +119,10 @@ void Platform::where_am_i(inchar32_t *p, size_t length) {
 	@<Transcode buffer, which is locale-encoded, into the wide-char buffer@>;
 }
 
-@ On Linux, |/proc/self/exe| is a symlink to the current process's executable.
+@ On Linux, `/proc/self/exe` is a symlink to the current process's executable.
 Follow that link to find the path. Normally when reading a symlink, one uses
-|lstat()| to find the path length instead of guessing |PATH_MAX|, but the
-symlinks in |/proc| are special and don't provide a length to |lstat()|.
+`lstat()` to find the path length instead of guessing `PATH_MAX`, but the
+symlinks in `/proc` are special and don't provide a length to `lstat()`.
 
 @<Follow the proc filesystem symlink to the real filesystem's file@> =
 	ssize_t link_len = readlink("/proc/self/exe", buffer, PATH_MAX);
@@ -190,23 +190,23 @@ int Platform::system(const char *cmd) {
 
 @ ^"ifdef-PLATFORM_MACOS"
 In MacOS 10.5, a new implementation of the C standard library 
-crippled performance of |system()| by placing it behind a global mutex, so
+crippled performance of `system()` by placing it behind a global mutex, so
 that it was impossible for two cores to be calling the function at the same
 time. The net effect of this is that the Inform test suite, executing in
 Intest, ran in 1/16th speed. This issue didn't come to light until 2019,
-however, because the build setting |-mmacosx-version-min=10.4| turned out
-to force use of the (perfectly good) pre-10.5 library, where |system()|
+however, because the build setting `-mmacosx-version-min=10.4` turned out
+to force use of the (perfectly good) pre-10.5 library, where `system()`
 continued to run in a multi-threaded way, just as it does on Linux and
 most all other Unixes. The old library was eventually withdrawn by Apple
 in 2018, and in any case would stop working at some point in 2019-20 due
 to the final removal of 32-bit binary support from MacOS.
 
-It took several days to find a pthread-safe way to reimplement |system()|.
-The obvious way, using |fork()| and then running |execve()| on the child
-process -- essentially the standard way to implement |system()|, if you forget
-about signal-handling -- led to obscure and unrepeatable memory corruption
+It took several days to find a pthread-safe way to reimplement `system()`.
+The obvious way, using `fork()` and then running `execve()` on the child
+process — essentially the standard way to implement `system()`, if you forget
+about signal-handling — led to obscure and unrepeatable memory corruption
 bugs in Intest, with the worker threads apparently writing on each other's
-memory space. Using |posix_spawn()| instead appears to work better.
+memory space. Using `posix_spawn()` instead appears to work better.
 
 =
 #include <spawn.h>
@@ -306,7 +306,7 @@ void Platform::copy_file(char *from_transcoded_pathname, char *to_transcoded_pat
 }
 
 @h Timestamp and file size.
-There are implementations of the C standard library where |time_t| has
+There are implementations of the C standard library where `time_t` has
 super-weird behaviour, but on almost all POSIX systems, time 0 corresponds to
 midnight on 1 January 1970. All we really need is that the "never" value
 is one which is earlier than any possible timestamp on the files we'll
@@ -331,10 +331,10 @@ off_t Platform::size(char *transcoded_filename) {
 
 @h Sync.
 Both names here are of directories which do exist. The function makes
-the |dest| tree an exact copy of the |source| tree (and therefore deletes
-anything different which was originally in |dest|).
+the `dest` tree an exact copy of the `source` tree (and therefore deletes
+anything different which was originally in `dest`).
 
-In POSIX world, we can fairly well depend on |rsync| being around:
+In POSIX world, we can fairly well depend on `rsync` being around:
 
 =
 int Platform::rsync(char *transcoded_source, char *transcoded_dest) {
@@ -373,7 +373,7 @@ certain age will remember as the "I have ripped your music CD now" alert from
 SoundJam, the program which Apple bought and rebranded as iTunes. Apple now
 seems to consider this alert a general-purpose "something good has happened".
 
-It is anybody's guess how long Apple will permit the shell command |osascript|
+It is anybody's guess how long Apple will permit the shell command `osascript`
 to survive, given the MacOS team's current hostility to scripting; we're
 actually running a one-line AppleScript here.
 
@@ -398,7 +398,7 @@ void Platform::notification(text_stream *text, int happy) {
 The idea of this function is that if anything needs to be done to enable the
 output of ANSI-standard coloured terminal output, then this function has the
 chance to do it; similarly, it may need to configure itself to receive console
-output with the correct locale (calling |Locales::get(CONSOLE_LOCALE)| to
+output with the correct locale (calling `Locales::get(CONSOLE_LOCALE)` to
 find this).
 
 On POSIX platforms, so far as we know, nothing need be done.
@@ -437,13 +437,13 @@ size_t Platform::get_thread_stack_size(foundation_thread_attributes *pa) {
 }
 
 @ ^"ifdef-PLATFORM_LINUX"
-This function returns the number of logical cores in the host computer --
+This function returns the number of logical cores in the host computer —
 i.e., twice the number of physical cores if there's hyperthreading. The
 result is used as a guess for an appropriate number of simultaneous threads
 to launch.
 
 It's not easy to find a function which reliably does this on all POSIX platforms.
-On Linux we can use |sys/sysinfo.h|, but this header is a POSIX extension which
+On Linux we can use `sys/sysinfo.h`, but this header is a POSIX extension which
 MacOS does not support.
 
 = (very early code)
@@ -458,7 +458,7 @@ int Platform::get_core_count(void) {
 }
 
 @ ^"ifdef-PLATFORM_MACOS"
-While MacOS lacks |sysinfo.h|, it does have |sysctl.h|:
+While MacOS lacks `sysinfo.h`, it does have `sysctl.h`:
 
 = (very early code)
 #include <sys/sysctl.h>

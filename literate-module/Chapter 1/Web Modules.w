@@ -3,21 +3,21 @@
 To search for included modules, and track dependencies between them.
 
 @h Introduction.
-When web |W1| includes webs |W2| and |W3| as well, there are three "modules"
-in play: the so-called "main" module representing the un-imported content of |W1|,
-and then two other modules, one for material imported from |W2|, one for |W3|.
+When web `W1` includes webs `W2` and `W3` as well, there are three "modules"
+in play: the so-called "main" module representing the un-imported content of `W1`,
+and then two other modules, one for material imported from `W2`, one for `W3`.
 Thus, every web has a main module, and many only have that one.
 
 In this example, the literate source which is tangled will be the union of all
-three webs, but the literate source which us woven will just be that of |W1|.
-So, for example, if a tool called |inexample| is written as a web which imports
-this |foundation| library, then what's tangled and compiled is all of the
-source code in both modules, whereas a woven form of |inexample| shows just
-the source code unique to it, and not this |foundation| library as well.
+three webs, but the literate source which us woven will just be that of `W1`.
+So, for example, if a tool called `inexample` is written as a web which imports
+this `foundation` library, then what's tangled and compiled is all of the
+source code in both modules, whereas a woven form of `inexample` shows just
+the source code unique to it, and not this `foundation` library as well.
 
 @h Creation.
 Each module has a "module origin marker", which indicates why it was created:
-this is always |READING_WEB_MOM|, unless we're constructing makefiles.
+this is always `READING_WEB_MOM`, unless we're constructing makefiles.
 
 @e READING_WEB_MOM from 0
 @e MAKEFILE_TOOL_MOM
@@ -28,10 +28,10 @@ this is always |READING_WEB_MOM|, unless we're constructing makefiles.
 typedef struct ls_module {
 	struct pathname *module_location;
 	struct text_stream *module_name; /* e.g., "(main)", or "foundation" */
-	struct linked_list *dependencies; /* of |ls_module|: which other modules does this need? */
+	struct linked_list *dependencies; /* of `ls_module`: which other modules does this need? */
 	struct text_stream *module_tag;
-	int origin_marker; /* one of the |*_MOM| values above */
-	struct linked_list *chapters; /* of |ls_chapter|: just the ones in this module */
+	int origin_marker; /* one of the `*_MOM` values above */
+	struct linked_list *chapters; /* of `ls_chapter`: just the ones in this module */
 	CLASS_DEFINITION
 } ls_module;
 
@@ -48,7 +48,7 @@ ls_module *WebModules::new(text_stream *name, pathname *at, int m) {
 }
 
 @ The main module might be a single-file web, in which case there's no dedicated
-directory for its contents: in that case, |W->path_to_web| will be the directory
+directory for its contents: in that case, `W->path_to_web` will be the directory
 containing the file.
 
 =
@@ -116,8 +116,8 @@ module_search *WebModules::make_search_path(pathname *ext_path) {
 	return ms;
 }
 
-@ When a web's contents page says to |import Blah|, how do we find the module
-called |Blah| on disc? We try two or sometimes three possibilities in sequence:
+@ When a web's contents page says to `import Blah`, how do we find the module
+called `Blah` on disc? We try two or sometimes three possibilities in sequence:
 
 =
 ls_module *WebModules::find(ls_web *WS, text_stream *name) {
@@ -138,7 +138,7 @@ ls_module *WebModules::find(ls_web *WS, text_stream *name) {
 }
 
 @ When the module is found (if it is), a suitable module structure is made,
-and a dependency created from the web's |(main)| module to this one.
+and a dependency created from the web's `(main)` module to this one.
 
 @<Accept this directory as the module@> =
 	pathname *Q = Pathnames::from_text(name);
@@ -155,21 +155,21 @@ int WebModules::exists(pathname *P) {
 }
 
 @h Resolving cross-reference names.
-Suppose we are in module |from_M| and want to understand which section of
-a relevant web |text| might refer to. It could be the name of a module,
+Suppose we are in module `from_M` and want to understand which section of
+a relevant web `text` might refer to. It could be the name of a module,
 either this one or one dependent on it; or the name of a chapter in one
 of those, or the shortened forms of those; or the name of a section. It
 may match multiple possibilities: we return how many, and if this is
-positive, we write the module in which the first find was made in |*return M|,
-the section in |*return_Sm|, and set the flag |*named_as_module| according
+positive, we write the module in which the first find was made in `*return M`,
+the section in `*return_Sm`, and set the flag `*named_as_module` according
 to whether the reference was a bare module name (say, "foundation") or not.
 
-Note that we consider first the possibilities within |from_M|: we only
+Note that we consider first the possibilities within `from_M`: we only
 look at other modules if there are none. Thus, an unambiguous result in
-|from_M| is good enough, even if there are other possibilities elsewhere.
+`from_M` is good enough, even if there are other possibilities elsewhere.
 
-A reference in the form |module: reference| is taken to be in the module
-of that name: for example, |"foundation: Web Modules"| would find the
+A reference in the form `module: reference` is taken to be in the module
+of that name: for example, `"foundation: Web Modules"` would find the
 section of code you are now reading.
 
 =

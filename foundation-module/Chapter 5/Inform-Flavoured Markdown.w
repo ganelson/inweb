@@ -359,7 +359,7 @@ void InformFlavouredMarkdown::detect_embedded_examples_r(markdown_item *md, int 
 
 @ Content for an embedded example runs on after the heading and continues until
 the next Chapter or Section heading, or until its container block ends. We move
-that material down to become the child nodes of the |INFORM_EXAMPLE_HEADING_MIT|
+that material down to become the child nodes of the `INFORM_EXAMPLE_HEADING_MIT`
 item: in effect, it's a container.
 
 =
@@ -562,7 +562,7 @@ void InformFlavouredMarkdown::render_example_heading(OUTPUT_STREAM, IFM_example 
 @h Paste buttons.
 Note that this feature only works if Inform syntax-colouring is also active
 (though not vice versa) and even then only when the tool using it contains
-the Inform |html| module, so this isn't really of general application.
+the Inform `html` module, so this isn't really of general application.
 
 @e PASTE_BUTTONS_MARKDOWNFEATURE
 
@@ -738,7 +738,7 @@ int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *O
 	Markdown::new_quasiplainish_inline_type(INDEX_MARKER_MIT, I"INDEX_MARKER");
 
 @h Heading markers for longer documentation.
-This is a notation from indoc. When a heading ends with a |{tag}| of
+This is a notation from indoc. When a heading ends with a `{tag}` of
 non-whitespace, non-brace characters in single braces, we extract that as
 metadata not passing through into rendering.
 

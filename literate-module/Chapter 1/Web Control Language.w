@@ -10,7 +10,7 @@ them, into a single set of conventions which we will internally call
 "Web Control Language", or WCL.
 
 A valid chunk of WCL consists of declarations, which can be nested. The following
-constants enumerate the possible declaration types: |MISCELLANY_WCLTYPE| is a
+constants enumerate the possible declaration types: `MISCELLANY_WCLTYPE` is a
 special type meaning "this is a list of declarations of possibly different types".
 
 @e MISCELLANY_WCLTYPE from 0
@@ -65,8 +65,8 @@ int WCL::can_contain(int outer_type, int type) {
 
 @h Declarations.
 Because declarations can nest, they are collectively a forest. Each declaration
-contains a list of its nested children, and a link to its parent (called its |scope|).
-If a declaration is not nested in any other, its parental link is |NULL|.
+contains a list of its nested children, and a link to its parent (called its `scope`).
+If a declaration is not nested in any other, its parental link is `NULL`.
 
 =
 typedef struct wcl_declaration {
@@ -118,7 +118,7 @@ void WCL::flag_as_inbuilt(wcl_declaration *C) {
 }
 
 @h Nesting.
-This makes |C| a declaration nested within |P|:
+This makes `C` a declaration nested within `P`:
 
 =
 void WCL::place_within(wcl_declaration *C, wcl_declaration *P) {
@@ -126,7 +126,7 @@ void WCL::place_within(wcl_declaration *C, wcl_declaration *P) {
 	C->scope = P;
 }
 
-@ To merge a miscellany into |M| is to merge each of its ingredients in turn.
+@ To merge a miscellany into `M` is to merge each of its ingredients in turn.
 The following looks potentially recursive in an exciting way, but in fact
 miscellanies shouldn't ever be nested, so it shouldn't go more than one
 call deep.
@@ -210,8 +210,8 @@ but it can also sometimes be given within the body of the declaration in some
 way, which means that it's possible for the name to come from two different
 sources, and therefore even possible to hit a contradiction.
 
-Calling this function resolves the issue. The return value is |TRUE| if
-all has been made well, and |FALSE| if the two possibilities conflicted.
+Calling this function resolves the issue. The return value is `TRUE` if
+all has been made well, and `FALSE` if the two possibilities conflicted.
 
 =
 int WCL::check_name(wcl_declaration *D, text_stream *supposed_name) {
@@ -249,8 +249,8 @@ level of the file can consist of formal declarations, like so:
 =
 but can also just be lines outside of braces, in which case clearly it's a
 declaration of some sort, but we don't know what type. That's where the
-"presumption" comes in -- basically context meaning "if you don't know what
-this is, assume it's a language". A presumption of |MISCELLANY_WCLTYPE| means
+"presumption" comes in — basically context meaning "if you don't know what
+this is, assume it's a language". A presumption of `MISCELLANY_WCLTYPE` means
 no presumption at all.
 
 =
@@ -369,7 +369,7 @@ void WCL::read_line(text_stream *line, text_file_position *tfp, void *v_state) {
 but if tabs are mixed in with spaces, then they advance us only to the next
 tab stop position.
 
-The remainder of the line after the initial white space is written to |tail|.
+The remainder of the line after the initial white space is written to `tail`.
 
 @<Divide line up as initial white space and a tail@> =
 	int past_head = FALSE;
@@ -396,7 +396,7 @@ reading this:
 When we get to the "whatever" line, it's indented by 6 spaces. That establishes
 that the whole declaration of "box" will be indented 6; and so the next line
 will be trimmed so that it consists of five spaces and then the words "this is".
-(This is why the string |trimmed| is not the same as the string |tail|, which
+(This is why the string `trimmed` is not the same as the string `tail`, which
 contains just the words "this is.)
 
 We ignore the first "}" because it's in the wrong column, and close the 
@@ -653,7 +653,7 @@ wcl_declaration *WCL::make_resources_at_file_global(filename *F) {
 	return D;
 }
 
-@ In general the |scope| pointer for a declaration points to the outer
+@ In general the `scope` pointer for a declaration points to the outer
 declaration which contained it, but there's an exception: if a web is found
 outside of a colony file (as is usually the case) but is in fact a member of
 that colony (as is often the case) then the colony is the scope of the web.
@@ -668,11 +668,11 @@ wcl_declaration *WCL::search_scope(wcl_declaration *D) {
 }
 
 @ Okay, so it's time for the search algorithm. The following function finds a
-resource of the given type and name (case insensitively), starting from |D|
-and exploring outwards through everything which is in scope to |D|; we
-return either |NULL| or the first result found.
+resource of the given type and name (case insensitively), starting from `D`
+and exploring outwards through everything which is in scope to `D`; we
+return either `NULL` or the first result found.
 
-If the type given is |-1|, all resource types are allowed; if the name given
+If the type given is `-1`, all resource types are allowed; if the name given
 is the empty text, all names are allowed.
 
 =
@@ -786,7 +786,7 @@ int WCL::compare_names(const void *ent1, const void *ent2) {
 @h Merging declarations into a miscellany.
 The exact rules here are still in a state of flux and represent something of
 a tangled history of unsatisfactory solutions. But the idea is to load
-in every WCL we can find, and merge it into |M|. The resource path |RP|
+in every WCL we can find, and merge it into `M`. The resource path `RP`
 might be a web (in directory format), or might be a cache inside a tool
 like Inform or Inweb.
 
@@ -843,14 +843,14 @@ As we've seen, parsing WCL from a file is a two-phase process, involving
 first "reading for type only", then parsing in more detail, and it turns out
 that we need a variety of minor variations on this theme. Here they are.
 
-@ This reads |F|, assuming it will have type |presumed|, but then requiring
-it to do so in the event: so, for example, if |WCL::read_inner| is called
-presuming a |LANGUAGE_WCLTYPE| and finds a valid |NOTATION_WCLTYPE| instead,
-or a miscellany, it will fail and throw errors. The function returns |NULL|
-if errors of any kind arise, so a non-|NULL| reply means |F| is not only
+@ This reads `F`, assuming it will have type `presumed`, but then requiring
+it to do so in the event: so, for example, if `WCL::read_inner` is called
+presuming a `LANGUAGE_WCLTYPE` and finds a valid `NOTATION_WCLTYPE` instead,
+or a miscellany, it will fail and throw errors. The function returns `NULL`
+if errors of any kind arise, so a non-`NULL` reply means `F` is not only
 what we expect but is syntactically correct too.
 
-The pathname |P|, if not |NULL|, tells us to read in any side-resources from
+The pathname `P`, if not `NULL`, tells us to read in any side-resources from
 that directory. (For example, this would read in dialect definitions in a
 directory-format web.)
 
@@ -880,7 +880,7 @@ wcl_declaration *WCL::read_just_one(filename *F, int presumed) {
 	return WCL::read_inner(NULL, F, presumed, TRUE);
 }
 
-@ At the opposite extreme, this reads |F| but allows any syntactically
+@ At the opposite extreme, this reads `F` but allows any syntactically
 correct contents to result.
 
 =
@@ -900,11 +900,11 @@ be either single files, or else whole directories. If the latter, then the
 WCL matter is in its contents section; if the former, then the file itself is WCL.
 
 So we provide a function which can handle either: the web should either be in
-the file |F| or the directory |P|; however, if |F| is indeed a contents page,
+the file `F` or the directory `P`; however, if `F` is indeed a contents page,
 then the web will be treated as the directory containing it.
 
-Here, |D| can be a partly parsed declaration as returned by |WCL::read_for_type_only_forgivingly|,
-or can be |NULL| to start from scratch.
+Here, `D` can be a partly parsed declaration as returned by `WCL::read_for_type_only_forgivingly`,
+or can be `NULL` to start from scratch.
 
 =
 wcl_declaration *WCL::read_web_or_halt(pathname *P, filename *F, wcl_declaration *D) {

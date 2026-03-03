@@ -259,7 +259,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(ls_footnote, 100)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(literate_source_tagging, 100)
 
 
-@ Like all modules, this one must define a |start| and |end| function:
+@ Like all modules, this one must define a `start` and `end` function:
 
 =
 void LiterateModule::start(void) {

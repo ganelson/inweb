@@ -42,7 +42,7 @@ To recap the syntaxes we're looking for:
 	This one also uses __strong__ and _weak_ emphasis.
 =
 
-Every inline string becomes a subtree under a |MATERIAL_MIT| item. We then
+Every inline string becomes a subtree under a `MATERIAL_MIT` item. We then
 proceed in three stages: make the "chain", which involves finding backtick
 strings, raw HTML and autolinks, all constructions of equal precedence.
 Then we look for links and images, images being essentially a form of link
@@ -106,7 +106,7 @@ markdown_item *MDInlineParser::make_inline_chain(markdown_variation *variation,
 
 @ See CommonMark 6.1: "A backtick string is a string of one or more backtick
 characters that is neither preceded nor followed by a backtick." This returns
-the length of a backtick string beginning at |at|, if one does, or 0 if it
+the length of a backtick string beginning at `at`, if one does, or 0 if it
 does not.
 
 =
@@ -167,15 +167,15 @@ space characters, a single space character is removed from the front and back."
 	}
 
 @ Until December 2025, TeX was handled as a form of inline emphasis markup, that
-is, |$| and |$$| were treated as of equal precedence with |_| and |*|. This
+is, `$` and `$$` were treated as of equal precedence with `_` and `*`. This
 worked well in some ways, but had poor running time on really messy TeX code
 because there were too many potential matches, and also meant that e.g.
-|now read~$N$| would fail to work because the non-breaking space |~| would
-prevent |$| from being recognised as a TeX opening. It seems cleaner to regard
+`now read~$N$` would fail to work because the non-breaking space `~` would
+prevent `$` from being recognised as a TeX opening. It seems cleaner to regard
 TeX as on a par with backticked code in precedence, so that's what we now do,
 and this removes both problems.
 
-The code for the old way remains, though, as the |ALT_TEX_MARKDOWNFEATURE|.
+The code for the old way remains, though, as the `ALT_TEX_MARKDOWNFEATURE`.
 They should not both be used.
 
 @<Does TeX mathematics begin here?@> =
@@ -403,7 +403,7 @@ period, or hyphen."
 	}
 
 @ What constitutes a legal email address follows the HTML 5 regular expression,
-according to CommonMark. Good luck using |{{@1-x.2.z.w| as your email address,
+according to CommonMark. Good luck using `{{@1-x.2.z.w` as your email address,
 but you absolutely can.
 
 @<Vet the username@> =
@@ -630,7 +630,7 @@ int MDInlineParser::extended_autolink_domain_char(inchar32_t c) {
 }
 
 @ "One ore [sic] more characters which are alphanumeric, or ., -, _, or +."
-But we take care of |+| and |.| above.
+But we take care of `+` and `.` above.
 
 =
 int MDInlineParser::extended_autolink_email_char(inchar32_t c) {
@@ -879,7 +879,7 @@ does not hold for images, so this is all legal:
 	This ![picture of [an unperforated Malaya strip](malaya.html)](strip.jpg).
 =
 Indeed, image notations can contain other image notations. Of course, that
-does no good, because rendering uses the textual part of an image as its |"alt"|
+does no good, because rendering uses the textual part of an image as its `"alt"`
 text, which is not allowed to contain tags, only plain text. But syntactically
 it is legal Markdown.
 
@@ -932,28 +932,28 @@ void MDInlineParser::links_and_images(markdown_variation *variation,
 	}
 }
 
-@ The following structure holds the findings of |MDInlineParser::first_valid_link|
+@ The following structure holds the findings of `MDInlineParser::first_valid_link`
 if it succeeds. Note that a link/image which makes a reference is only syntactically
 valid if the reference matches something in the dictionary.
 
-It might seem redundant to have the |*_empty| fields below, but there are some
+It might seem redundant to have the `*_empty` fields below, but there are some
 awkward cases where, as a result of earlier splicing, it's difficult to represent
-nonexistent text with |md_charpos| structs.
+nonexistent text with `md_charpos` structs.
 
 =
 typedef struct md_link_parse {
-	int is_link; /* |TRUE| for link, |FALSE| for image, |NOT_APPLICABLE| for fail */
+	int is_link; /* `TRUE` for link, `FALSE` for image, `NOT_APPLICABLE` for fail */
 	struct md_charpos first;                  /* leftmost character of the whole construct */
 	struct md_charpos link_text_from;         /* leftmost character inside the squares */
 	struct md_charpos link_text_to;           /* ...and so on */
-	int link_text_empty;                      /* |TRUE| or |FALSE| */
+	int link_text_empty;                      /* `TRUE` or `FALSE` */
 	struct md_charpos link_destination_from;
 	struct md_charpos link_destination_to;
 	int link_destination_empty;
 	struct md_charpos link_title_from;
 	struct md_charpos link_title_to;
 	int link_title_empty;
-	struct md_link_dictionary_entry *link_reference; /* or |NULL| if it's not by reference */
+	struct md_link_dictionary_entry *link_reference; /* or `NULL` if it's not by reference */
 	int footnote_link; /* or 0 if it's not a footnote cue */
 	struct md_charpos last; /* rightmost character of the whole construct */
 } md_link_parse;
@@ -1022,8 +1022,8 @@ typedef struct md_link_parse {
 	leftmost_pos = Markdown::left_edge_of(remainder);
 
 @ Okay, so it's time to go looking for the leftmost valid link or image in
-the given part of a chain of nodes. Links begin with an unescaped |[|
-and images with an unescaped |![|.
+the given part of a chain of nodes. Links begin with an unescaped `[`
+and images with an unescaped `![`.
 
 =
 md_link_parse MDInlineParser::first_valid_link(markdown_variation *variation,
@@ -1390,7 +1390,7 @@ preceded or followed by a non-backslash-escaped * character, or a sequence of
 one or more _ characters that is not preceded or followed by a
 non-backslash-escaped _ character."
 
-This function returns 0 unless a delimiter run begins at |at|, and then returns
+This function returns 0 unless a delimiter run begins at `at`, and then returns
 its length if this was asterisked, and minus its length if underscored.
 
 The GitHub extension to CommonMark for tildes meaning strikethrough is restricted
@@ -1519,14 +1519,14 @@ there will be just one open/close option at a time.
 	if (no_options > 0) @<Select the option with the lowest penalty@>;
 
 @ We don't want to find every possible delimiter, in case the source text is
-absolutely huge: indeed, we never exceed |MAX_MD_EMPHASIS_DELIMITERS|.
+absolutely huge: indeed, we never exceed `MAX_MD_EMPHASIS_DELIMITERS`.
 
 A further optimisation is that (a) we needn't even record delimiters which
 can't open or close, (b) or delimiters which can only close and which occur
 before any openers, (c) or anything after a point where we can clearly complete
 at least one pair correctly.
 
-For example, consider |This is *emphatic* and **so is this**.| Rule (c) makes
+For example, consider `This is *emphatic* and **so is this**.` Rule (c) makes
 it unnecessary to look past the end of the word "emphatic", because by that
 point we have seen an opener which cannot close and a closer which cannot open,
 of equal widths. These can only pair with each other; so we can stop.
@@ -1536,7 +1536,7 @@ exactly two delimiters, one open, one close.
 
 In other situations, it's harder to predict what will happen. We will contain
 the possible explosion by restricting to cases where at least one pair can be
-made within the first |MAX_MD_EMPHASIS_DELIMITERS| potential delimiters, and
+made within the first `MAX_MD_EMPHASIS_DELIMITERS` potential delimiters, and
 we can pretty safely keep that number small.
 
 @d MAX_MD_EMPHASIS_DELIMITERS 10
@@ -1546,8 +1546,8 @@ typedef struct md_emphasis_delimiter {
 	struct md_charpos pos; /* first character in the run */
 	int width;             /* for example, 7 for a run of seven asterisks */
 	int type;              /* 1 for asterisks, -1 for underscores, 0 for tildes */
-	int can_open;          /* result of |MDInlineParser::can_open_emphasis| on it */
-	int can_close;         /* result of |MDInlineParser::can_close_emphasis| on it */
+	int can_open;          /* result of `MDInlineParser::can_open_emphasis` on it */
+	int can_close;         /* result of `MDInlineParser::can_close_emphasis` on it */
 	CLASS_DEFINITION
 } md_emphasis_delimiter;
 
@@ -1603,9 +1603,9 @@ typedef struct md_emphasis_delimiter {
 		}
 	}
 
-@ We vet |OD| and |CD| to see if it's possible to pair them together. We
-already know that |OD| can open and |CD| can close, and that |OD| precedes
-|CD| ("The opening and closing delimiters must belong to separate delimiter
+@ We vet `OD` and `CD` to see if it's possible to pair them together. We
+already know that `OD` can open and `CD` can close, and that `OD` precedes
+`CD` ("The opening and closing delimiters must belong to separate delimiter
 runs."). They must have the same type: asterisk pair with asterisks, underscores
 with underscores.
 
@@ -1624,11 +1624,11 @@ multiple of 3 unless both lengths are multiples of 3."
 		}
 	}
 
-@ Okay, so now |OD| and |CD| are conceivable pairs to each other, and we
+@ Okay, so now `OD` and `CD` are conceivable pairs to each other, and we
 investigate the consequences. We need to copy the existing situation so
 that we can alter it without destroying the original.
 
-Note the two recursive uses of |MDInlineParser::emphasis| to continue
+Note the two recursive uses of `MDInlineParser::emphasis` to continue
 the process of pairing: this is where the computational fuse is lit, with
 the explosion to follow. But since each subtree contains fewer delimiter runs
 than the original, it does at least terminate.
@@ -1669,11 +1669,11 @@ than the original, it does at least terminate.
 
 @ This innocent-looking code is very tricky. The issue is that the two delimiters
 may be of unequal width. We want to take as many asterisks/underscores away
-as we can, so we set |width| to the minimum of the two lengths. But a complication
+as we can, so we set `width` to the minimum of the two lengths. But a complication
 is that they need to be cropped to fit inside the slice of the node they belong
 to first.
 
-We then mark to remove |width| characters from the inside edges of each
+We then mark to remove `width` characters from the inside edges of each
 delimiter, not the outside edges.
 
 @<Draw the dotted lines where we will cut@> =
@@ -1705,7 +1705,7 @@ delimiter, not the outside edges.
 	}
 
 @ Suppose we are peeling away 5 asterisks from the inside edges of each delimiter,
-so that |width| is 5. There are only two strengths of emphasis in Markdown, so
+so that `width` is 5. There are only two strengths of emphasis in Markdown, so
 this must be read as one of the various ways to add 1s and 2s to make 5.
 CommonMark rule 13 reads "The number of nestings should be minimized.", so we
 must use all 2s except for the 1 left over. Rule 14 says that left-over 1 must

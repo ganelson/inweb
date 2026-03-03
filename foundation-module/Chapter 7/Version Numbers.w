@@ -4,7 +4,7 @@ Semantic version numbers such as 3.7.1.
 
 @h Standard adoption.
 The Semantic Version Number standard, semver 2.0.0, provides a strict set
-of rules for the format and meaning of version numbers: see |https://semver.org|.
+of rules for the format and meaning of version numbers: see `https://semver.org`.
 
 Prior to the standard most version numbers in computing usage looked like
 dot-divided runs of non-negative integers: for example, 4, 7.1, and 0.2.3.
@@ -13,18 +13,18 @@ therefore formally incorrect to have a version 2, or a version 2.3. We will
 not be so strict on the textual form, which we will allow to be abbreviated.
 Thus:
 
-- The text |6.4.7| is understood to mean 6.4.7 and printed back as |6.4.7|
-- The text |6| is understood to mean 6.0.0 and printed back as |6|
-- The text |6.1| is understood to mean 6.1.0 and printed back as |6.1|
-- The text |6.1.0| is understood to mean 6.1.0 and printed back as |6.1.0|
+- The text `6.4.7` is understood to mean 6.4.7 and printed back as `6.4.7`
+- The text `6` is understood to mean 6.0.0 and printed back as `6`
+- The text `6.1` is understood to mean 6.1.0 and printed back as `6.1`
+- The text `6.1.0` is understood to mean 6.1.0 and printed back as `6.1.0`
 
 Similarly, the absence of a version number (called "null" below) will be
 understood to mean 0.0.0, but will be distinguished from the explicit choice
 to number something as 0.0.0.
 
 @ A complication is that Inform 7 extensions have for many years allowed two
-forms of version number: either just |N|, which fits the scheme above, or
-|N/DDDDDD|, which does not. This is a format which was chosen for sentimental
+forms of version number: either just `N`, which fits the scheme above, or
+`N/DDDDDD`, which does not. This is a format which was chosen for sentimental
 reasons: IF enthusiasts know it well from the banner text of the Infocom
 titles of the 1980s. This story file, for instance, was compiled at the
 time of the Reykjavik summit between Presidents Gorbachev and Reagan:
@@ -35,31 +35,31 @@ time of the Reykjavik summit between Presidents Gorbachev and Reagan:
 	Moonmist is a trademark of Infocom, Inc.
 	Release number 9 / Serial number 861022
 =
-Story file collectors customarily abbreviate this in catalogues to |9/861022|.
+Story file collectors customarily abbreviate this in catalogues to `9/861022`.
 
-So we will allow this notation, but will convert |N/DDDDDD| to |N.0.DDDDDD|,
+So we will allow this notation, but will convert `N/DDDDDD` to `N.0.DDDDDD`,
 pushing the six date digits into the minor patch. (See the discussion of the
 bug report I7-2130, where users curating old extensions recommended this as
-easier to deal with than |N.DDDDDD|.) So, then, |9/861022| means 9.0.861022 in
+easier to deal with than `N.DDDDDD`.) So, then, `9/861022` means 9.0.861022 in
 semver precedence order.
 
 In all non-textual respects, and in particular on precedence rules, we follow
 the standard exactly.
 
-@ In the array below, unspecified numbers are stored as |-1|. The three
+@ In the array below, unspecified numbers are stored as `-1`. The three
 components are otherwise required to be non-negative integers.
 
-Semver allows for more elaborate forms: for example |3.1.41-alpha.72.zeta+6Q45|
-would mean 3.1.41 but with prerelease versioning |alpha.72.zeta| and build
-metadata |6Q45|. The |prerelease_segments| list for this would be a list of
-three texts: |alpha|, |72|, |zeta|.
+Semver allows for more elaborate forms: for example `3.1.41-alpha.72.zeta+6Q45`
+would mean 3.1.41 but with prerelease versioning `alpha.72.zeta` and build
+metadata `6Q45`. The `prerelease_segments` list for this would be a list of
+three texts: `alpha`, `72`, `zeta`.
 
 @d SEMVER_NUMBER_DEPTH 3 /* major, minor, patch */
 
 =
 typedef struct semantic_version_number {
 	int version_numbers[SEMVER_NUMBER_DEPTH];
-	struct linked_list *prerelease_segments; /* of |text_stream| */
+	struct linked_list *prerelease_segments; /* of `text_stream` */
 	struct text_stream *build_metadata;
 } semantic_version_number;
 
@@ -68,10 +68,10 @@ typedef struct semantic_version_number_holder {
 	CLASS_DEFINITION
 } semantic_version_number_holder;
 
-@ All invalid strings of numbers -- i.e., breaking the above rules -- are
+@ All invalid strings of numbers — i.e., breaking the above rules — are
 called "null" versions, and can never be valid as the version of anything.
 Instead they are used to represent the absence of a version number.
-(In particular, a string of |-1|s is null.)
+(In particular, a string of `-1`s is null.)
 
 =
 semantic_version_number VersionNumbers::null(void) {
@@ -116,9 +116,9 @@ void VersionNumbers::to_text(OUTPUT_STREAM, semantic_version_number V) {
 	if (V.build_metadata) WRITE("+%S", V.build_metadata);
 }
 
-@ And this provides for the |%v| escape, though we must be careful when
+@ And this provides for the `%v` escape, though we must be careful when
 using this to pass a pointer to the version, not the version itself;
-variadic macros are not carefully enough type-checked by |clang| or |gcc|
+variadic macros are not carefully enough type-checked by `clang` or `gcc`
 to catch this sort of slip.
 
 =
@@ -128,9 +128,9 @@ void VersionNumbers::writer(OUTPUT_STREAM, char *format_string, void *vE) {
 }
 
 @ Parsing is much more of a slog. The following returns a null version if
-the text |T| is in any respect malformed, i.e., if it deviates from the
+the text `T` is in any respect malformed, i.e., if it deviates from the
 above specification in even the most trivial way. We parse the three parts
-of a semver version in order: e.g. |3.1.41-alpha.72.zeta+6Q45| the first
+of a semver version in order: e.g. `3.1.41-alpha.72.zeta+6Q45` the first
 part is up to the hyphen, the second part between the hyphen and the plus
 sign, and the third part runs to the end. The second and third parts are
 optional, but if both are given, they must be in that order.
@@ -258,7 +258,7 @@ int VersionNumbers::floor(int N) {
 	return N;
 }
 
-@ This returns a non-negative integer if |T| contains only digits, and |-1|
+@ This returns a non-negative integer if `T` contains only digits, and `-1`
 otherwise. If the value has more than about 10 digits, then the result will
 not be meaningful, which I think is a technical violation of the standard.
 
@@ -274,8 +274,8 @@ int VersionNumbers::strict_atoi(text_stream *T) {
 
 @h Trichotomy.
 We now use the above function to construct ordering relations on semvers.
-These are trichotomous, that is, for each pair |V1, V2|, exactly one of the
-|VersionNumbers::eq(V1, V2)|, |VersionNumbers::gt(V1, V2)|, |VersionNumbers::lt(V1, V2)|
+These are trichotomous, that is, for each pair `V1, V2`, exactly one of the
+`VersionNumbers::eq(V1, V2)`, `VersionNumbers::gt(V1, V2)`, `VersionNumbers::lt(V1, V2)`
 is true.
 
 =
@@ -301,7 +301,7 @@ int VersionNumbers::lt(semantic_version_number V1, semantic_version_number V2) {
 	return (VersionNumbers::ge(V1, V2))?FALSE:TRUE;
 }
 
-@ And the following can be used for sorting, following the |strcmp| convention.
+@ And the following can be used for sorting, following the `strcmp` convention.
 
 =
 int VersionNumbers::cmp(semantic_version_number V1, semantic_version_number V2) {

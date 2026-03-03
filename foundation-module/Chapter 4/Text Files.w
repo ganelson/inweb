@@ -10,10 +10,10 @@ standard way to read in and iterate through lines of a text file.
 
 First, though, here is a perhaps clumsy but effective way to test if a
 file actually exists on disc at a given filename. Note that under the C standard,
-it's entirely legal for |fopen| to behave more or less as it likes if asked to
+it's entirely legal for `fopen` to behave more or less as it likes if asked to
 open a directory as a file; and on MacOS, it sometimes opens a directory exactly
 as if it were an empty text file. The safest way to ensure that a directory is
-never confused with a file seems to be to try |opendir| on it, and the following
+never confused with a file seems to be to try `opendir` on it, and the following
 does essentially that.
 
 =
@@ -81,8 +81,8 @@ text_file_position TextFiles::at(filename *F, int line) {
 
 @h Text file scanner.
 We read lines in, delimited by any of the standard line-ending characters,
-and send them one at a time to a function called |iterator|. Throughout,
-we preserve a pointer called |state| to some object being used by the
+and send them one at a time to a function called `iterator`. Throughout,
+we preserve a pointer called `state` to some object being used by the
 client.
 
 =
@@ -107,10 +107,10 @@ int TextFiles::read(filename *F, int escape_oddities, char *message, int serious
 		else { Errors::with_file(message, F); return 0; }
 	}
 
-@ The ANSI definition of |ftell| and |fseek| says that, with text files, the
-only definite position value is 0 -- meaning the beginning of the file -- and
-this is what we initialise |line_position| to. We must otherwise only write
-values returned by |ftell| into this field.
+@ The ANSI definition of `ftell` and `fseek` says that, with text files, the
+only definite position value is 0 — meaning the beginning of the file — and
+this is what we initialise `line_position` to. We must otherwise only write
+values returned by `ftell` into this field.
 
 @<Set the initial position, seeking it in the file if need be@> =
 	if (start_at == NULL) {
@@ -128,8 +128,8 @@ values returned by |ftell| into this field.
 	tfp.actively_scanning = TRUE;
 	tfp.text_file_filename = F;
 
-@ We aim to get this right whether the lines are terminated by |0A|, |0D|,
-|0A 0D| or |0D 0A|. The final line is not required to be terminated.
+@ We aim to get this right whether the lines are terminated by `0A`, `0D`,
+`0A 0D` or `0D 0A`. The final line is not required to be terminated.
 
 @d CH32EOF 0xFFFFFFFFU /* We need an EOF marker that will fit in an inchar32_t. */
 
@@ -164,11 +164,11 @@ values returned by |ftell| into this field.
 
 @ But we update the text file position after every apparent line terminator.
 This is because we might otherwise, on a Windows text file, end up with an
-|ftell| position in between the |CR| and the |LF|; if we resume at that point,
+`ftell` position in between the `CR` and the `LF`; if we resume at that point,
 later on, we'll then have an off-by-one error in the line numbering in the
 resumption as compared to during the original pass.
 
-Properly speaking, |ftell| returns a long |int|, not an |int|, but on a
+Properly speaking, `ftell` returns a long `int`, not an `int`, but on a
 32-bit-or-more integer machine, this gives us room for files to run to 2GB.
 Text files seldom come that large.
 
@@ -215,23 +215,23 @@ void TextFiles::lose_interest(text_file_position *tfp) {
 The following routine reads a sequence of Unicode characters from a UTF-8
 encoded file, but returns them as a sequence of ISO Latin-1 characters, a
 trick it can only pull off by escaping non-ISO characters. This is done by
-taking character number |N| and feeding it out, one character at a time, as
-the text |[unicode N]|, writing the number in decimal. Only one UTF-8
+taking character number `N` and feeding it out, one character at a time, as
+the text `[unicode N]`, writing the number in decimal. Only one UTF-8
 file like this will be being read at a time, and the routine will be
-repeatedly called until |CH32EOF| or a line division.
+repeatedly called until `CH32EOF` or a line division.
 
 Strictly speaking, we transmit not as ISO Latin-1 but as that subset of ISO
 which have corresponding (different) codes in the ZSCII character set. This
 excludes some typewriter symbols and a handful of letterforms, as we shall
 see.
 
-There are two exceptions: |TextFiles::utf8_fgetc| can also return an
-end-of-file pseudo-character |CH32EOF|, and it can also return the Unicode
+There are two exceptions: `TextFiles::utf8_fgetc` can also return an
+end-of-file pseudo-character `CH32EOF`, and it can also return the Unicode
 BOM (byte-ordering marker) pseudo-character, which is legal at the start of a
 file and which is automatically prepended by some text editors and
 word-processors when they save a UTF-8 file (though in fact it is not
-required by the UTF-8 specification). Anyone calling |TextFiles::utf8_fgetc| must
-check the return value for |CH32EOF| every time, and for |0xFEFF| every time
+required by the UTF-8 specification). Anyone calling `TextFiles::utf8_fgetc` must
+check the return value for `CH32EOF` every time, and for `0xFEFF` every time
 we might be at the start of the file being read.
 
 @e NONE_UFBHM from 1
@@ -310,7 +310,7 @@ marks, and that will have to do.
 @ For the ZSCII character set, see "The Inform 6 Designer's Manual", or
 "The Z-Machine Standards Document". It offers a range of west European
 accented letters which almost, but not quite, matches those on offer in
-ISO Latin-1 -- it omits for example Icelandic lower case eth. (ZSCII was
+ISO Latin-1 — it omits for example Icelandic lower case eth. (ZSCII was
 developed in the 1980s by Infocom, Inc., to encode their interactive
 fiction offerings. Had they been collaborating with J. R. R. Tolkien
 rather than Douglas Adams, they might have filled this gap. As it was,
@@ -330,7 +330,7 @@ where we would normally expect hyphens and ordinary spaces: this is intended
 for the benefit of users with helpful word-processors which autocorrect
 hyphens into em-rules when they are flanked by spaces, and so on.
 
-We let the multiplication sign |0xd7| through even though ZSCII doesn't
+We let the multiplication sign `0xd7` through even though ZSCII doesn't
 support it, but convert it to an "x": this is so that we can parse numbers
 in scientific notation.
 

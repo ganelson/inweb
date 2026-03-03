@@ -11,12 +11,12 @@ a "bareword". For example, in
 = (text)
 	-log no-memory-usage -fixtime jam marmalade
 =
-there are two switches, |-log| taking an argument (it has valency 2
-in the terminology below), |-fixtime| not (valency 1). There are
-then two barewords, |jam| and |marmalade|.
+there are two switches, `-log` taking an argument (it has valency 2
+in the terminology below), `-fixtime` not (valency 1). There are
+then two barewords, `jam` and `marmalade`.
 
 @h Subcommands.
-In case of a prodigious number of switches (ever tried typing |clang -help|?),
+In case of a prodigious number of switches (ever tried typing `clang -help`?),
 we'll hash the switch names into a dictionary as well as keeping a list.
 
 @e NO_CLSUB from 0
@@ -25,10 +25,10 @@ we'll hash the switch names into a dictionary as well as keeping a list.
 =
 typedef struct command_line_subcommand {
 	int subcommand_id;
-	struct text_stream *command_name; /* e.g., |compile| */
+	struct text_stream *command_name; /* e.g., `compile` */
 	struct text_stream *heading; /* explanatory text */
 	struct dictionary *cls_dictionary;
-	struct linked_list *cls_list; /* of |command_line_switch| */
+	struct linked_list *cls_list; /* of `command_line_switch` */
 	CLASS_DEFINITION
 } command_line_subcommand;
 
@@ -98,7 +98,7 @@ Switches come in five sorts:
 @e TEXTUAL_CLSF /* sets text to the given value */
 
 @ Switches are also grouped, though this affects only the printout of them
-in |-help|. Groups are enumerated thus:
+in `-help`. Groups are enumerated thus:
 
 @e NO_CLSG from 0
 @e FOUNDATION_CLSG
@@ -106,20 +106,20 @@ in |-help|. Groups are enumerated thus:
 =
 typedef struct command_line_switch {
 	int switch_id;
-	struct text_stream *switch_name; /* e.g., |no-verbose| */
-	struct text_stream *switch_sort_name; /* e.g., |verbose| */
+	struct text_stream *switch_name; /* e.g., `no-verbose` */
+	struct text_stream *switch_sort_name; /* e.g., `verbose` */
 	struct text_stream *help_text;
 	int valency; /* 1 for bare, 2 for one argument follows */
-	int form; /* one of the |*_CLSF| values above */
-	int switch_group; /* one of the |*_CLSG| valyes above */
+	int form; /* one of the `*_CLSF` values above */
+	int switch_group; /* one of the `*_CLSG` valyes above */
 	int active_by_default; /* relevant only for booleans */
 	struct command_line_switch *negates; /* relevant only for booleans */
 	CLASS_DEFINITION
 } command_line_switch;
 
 @ The client must declare all the switches her program will make use of, not
-counting the standard set already declared by Foundation (such as |-help|).
-A new |*_CLSW| value should be enumerated to be the ID referring to this
+counting the standard set already declared by Foundation (such as `-help`).
+A new `*_CLSW` value should be enumerated to be the ID referring to this
 swtich, and then the client should call:
 
 =
@@ -167,9 +167,9 @@ command_line_switch *CommandLine::declare_switch_p(int id,
 	return cls;
 }
 
-@ When we alphabetically sort switches for the |-help| output, we want to
-file, say, |-no-verbose| immediately after |-verbose|, not back in the N
-section. So the sorting version of |no-verbose| is |verbose_|.
+@ When we alphabetically sort switches for the `-help` output, we want to
+file, say, `-no-verbose` immediately after `-verbose`, not back in the N
+section. So the sorting version of `no-verbose` is `verbose_`.
 
 @<Make the sorting name@> =
 	cls->switch_sort_name = Str::duplicate(name);
@@ -178,8 +178,8 @@ section. So the sorting version of |no-verbose| is |verbose_|.
 		WRITE_TO(cls->switch_sort_name, "_");
 	}
 
-@ Booleans are automatically created in pairs, e.g., |-destroy-world| and
-|-no-destroy-world|:
+@ Booleans are automatically created in pairs, e.g., `-destroy-world` and
+`-no-destroy-world`:
 
 =
 command_line_switch *CommandLine::declare_boolean_switch(int id,
@@ -217,22 +217,22 @@ void CommandLine::declare_textual_switch(int id,
 
 @h Reading the command line.
 Once all the switches are declared, the client calls the following routine
-in order to parse the usual C |argc| and |argv| pair, and take action as
-appropriate. The client passes a pointer to some structure in |state|:
+in order to parse the usual C `argc` and `argv` pair, and take action as
+appropriate. The client passes a pointer to some structure in `state`:
 probably a structure holding its settings variables. When we parse a
-switch, we call |f| to say so; when we parse a bareword, we call |g|. In
-each case we pass back |state| so that these functions can record whatever
+switch, we call `f` to say so; when we parse a bareword, we call `g`. In
+each case we pass back `state` so that these functions can record whatever
 they would like to in the state structure.
 
-The return value is |TRUE| if the command line appeared to contain at least
-one non-trivial request, but |FALSE| if it only asked for e.g. |-help|. In
+The return value is `TRUE` if the command line appeared to contain at least
+one non-trivial request, but `FALSE` if it only asked for e.g. `-help`. In
 general, the client should then exit with exit code 0 if this happens.
 
 @ Here goes the reader. It works through the command line arguments, then
 through the file if one has by that point been provided.
 
-Note that |NO_CLSUB| is 0, and so evaluates to |FALSE|, but that this is
-different from |NO_COMMAND_CLSUB|, which means that something substantive
+Note that `NO_CLSUB` is 0, and so evaluates to `FALSE`, but that this is
+different from `NO_COMMAND_CLSUB`, which means that something substantive
 was requested but that no subcommand was issued as part of it.
 
 @d BOGUS_CLSN -12345678 /* bogus because guaranteed not to be a genuine switch ID */
@@ -342,11 +342,11 @@ void CommandLine::play_back_log(void) {
 }
 
 @ White space at start and end of lines is ignored; blank lines and those
-beginning with a |#| are ignored (but a # following other content does not
+beginning with a `#` are ignored (but a # following other content does not
 mean a comment, so don't use trailing comments on lines); each line must
-either be a single switch like |-no-service| or a pair like |-connect tower11|.
-Shell conventions on quoting are not used, but the line |-greet Fred Smith|
-is equivalent to |-greet 'Fred Smith'| on the command line, so there's no
+either be a single switch like `-no-service` or a pair like `-connect tower11`.
+Shell conventions on quoting are not used, but the line `-greet Fred Smith`
+is equivalent to `-greet 'Fred Smith'` on the command line, so there's no
 problem with internal space characters in arguments.
 
 =
@@ -398,7 +398,7 @@ void CommandLine::read_one(clf_reader_state *crs, text_stream *opt) {
 	crs->subs = TRUE;
 }
 
-@ We also allow |-setting=X| as equivalent to |-setting X|.
+@ We also allow `-setting=X` as equivalent to `-setting X`.
 
 =
 int CommandLine::read_pair(clf_reader_state *crs, text_stream *opt, text_stream *arg) {
@@ -454,7 +454,7 @@ int CommandLine::read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 }
 
 @ The common set of switches declared by Foundation are all handled here;
-all other switches are delegated to the client's callback function |f|.
+all other switches are delegated to the client's callback function `f`.
 
 @<Take action on what is now definitely a switch@> =
 	switch (cls->switch_id) {
@@ -508,7 +508,7 @@ all other switches are delegated to the client's callback function |f|.
 	Log::set_aspect_from_command_line(arg, TRUE);
 
 @h Help text.
-That just leaves the following, which implements the |-help| switch. It
+That just leaves the following, which implements the `-help` switch. It
 alphabetically sorts the switches, and prints out a list of them as grouped,
 with ungrouped switches as the top paragraph and Foundation switches as the
 bottom one. (Those are the dull ones.)

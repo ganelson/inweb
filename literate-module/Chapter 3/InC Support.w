@@ -55,11 +55,11 @@ void InCSupport::further_parsing(programming_language *self, ls_web *W, int weav
 @h Parsing Preform grammar.
 This is where we look for declarations of nonterminals. Very little about
 the following code will make sense unless you've first read the Preform
-section of the |words| module, which is what we're supporting, and seen
+section of the `words` module, which is what we're supporting, and seen
 some examples of Preform being used in the Inform source code.
 
-Note that we flag lines inside Preform nonterminals as |preform_grammar|,
-but the lines of InC code inside an |internal| definition remain just plain code.
+Note that we flag lines inside Preform nonterminals as `preform_grammar`,
+but the lines of InC code inside an `internal` definition remain just plain code.
 
 @d NOT_A_NONTERMINAL -4
 @d A_FLEXIBLE_NONTERMINAL -3
@@ -75,9 +75,9 @@ but the lines of InC code inside an |internal| definition remain just plain code
 	DISCARD_TEXT(pntname)
 	DISCARD_TEXT(header)
 
-@ The keyword |internal| can be followed by an indication of the number
+@ The keyword `internal` can be followed by an indication of the number
 of words the nonterminal will match: usually a decimal non-negative number,
-but optionally a question mark |?| to indicate voracity.
+but optionally a question mark `?` to indicate voracity.
 
 @<Parse a Preform nonterminal header line@> =
 	match_results mr = Regexp::create_mr();
@@ -109,14 +109,14 @@ structures to be created:
 
 =
 typedef struct preform_nonterminal {
-	struct text_stream *nt_name; /* e.g., |<action-clause>| */
-	struct text_stream *unangled_name; /* e.g., |action-clause| */
-	struct text_stream *as_C_identifier; /* e.g., |action_clause_NTM| */
+	struct text_stream *nt_name; /* e.g., `<action-clause>` */
+	struct text_stream *unangled_name; /* e.g., `action-clause` */
+	struct text_stream *as_C_identifier; /* e.g., `action_clause_NTM` */
 	int as_function; /* defined internally, that is, parsed by a C language_function */
 	int voracious; /* a voracious nonterminal: see "The English Syntax of Inform" */
 	int min_word_count; /* for internals only */
 	int max_word_count;
-	int takes_pointer_result; /* right-hand formula defines |*XP|, not |*X| */
+	int takes_pointer_result; /* right-hand formula defines `*XP`, not `*X` */
 	struct ls_section *where_defined;
 	struct preform_nonterminal *next_pnt_alphabetically;
 	CLASS_DEFINITION
@@ -209,14 +209,14 @@ the following definition:
 	lst->classification.operand1 = Str::duplicate(header);
 
 @h Parsing the body of Preform grammar.
-After a line like |<action-clause> ::=|, Preform grammar follows on subsequent
+After a line like `<action-clause> ::=`, Preform grammar follows on subsequent
 lines until we hit the end of the paragraph, or a white-space line, whichever
 comes first. If we have a line with an arrow, like so:
 = (text)
 	porcupine tree  ==>  { 2, - }{}
 =
-then the text on the left goes into |text_operand| and the right into
-|text_operand2|, with the arrow itself (and white space around it) cut out.
+then the text on the left goes into `text_operand` and the right into
+`text_operand2`, with the arrow itself (and white space around it) cut out.
 
 @<Parse the subsequent lines as Preform grammar@> =
 	ParagraphTags::tag(L_par, I"Preform");
@@ -252,8 +252,8 @@ trust me, it's correct.
 	Regexp::dispose_of(&mr);
 
 @ Note that nonterminal variables are, by default, integers. If their names
-are divided internally with a colon, however, as |<<structure:name>>|, then
-they have the type |structure *|.
+are divided internally with a colon, however, as `<<structure:name>>`, then
+they have the type `structure *`.
 
 @<Detect any nonterminal variables being set on the right side of the arrow@> =
 	TEMPORARY_TEXT(to_scan) Str::copy(to_scan, A_lst->classification.operand2);
@@ -278,14 +278,14 @@ they have the type |structure *|.
 	Regexp::dispose_of(&mr);
 
 @ Nonterminal variables are actually just global C variables, and their C
-identifiers need to avoid hyphens and colons. For example, |<<kind:ref>>|
-has identifier |"kind_ref_NTMV"|. Each one is recorded in a structure thus:
+identifiers need to avoid hyphens and colons. For example, `<<kind:ref>>`
+has identifier `"kind_ref_NTMV"`. Each one is recorded in a structure thus:
 
 =
 typedef struct nonterminal_variable {
-	struct text_stream *ntv_name; /* e.g., |"num"| */
-	struct text_stream *ntv_type; /* e.g., |"int"| */
-	struct text_stream *ntv_identifier; /* e.g., |"num_NTMV"| */
+	struct text_stream *ntv_name; /* e.g., `"num"` */
+	struct text_stream *ntv_type; /* e.g., `"int"` */
+	struct text_stream *ntv_identifier; /* e.g., `"num_NTMV"` */
 	CLASS_DEFINITION
 } nonterminal_variable;
 
@@ -301,7 +301,7 @@ typedef struct nonterminal_variable {
 
 @h Parsing I-literals.
 A simpler but useful further addition to C is that we recognise a new form
-of string literal: |I"quartz"| makes a constant text stream with the content
+of string literal: `I"quartz"` makes a constant text stream with the content
 "quartz".
 
 =
@@ -329,8 +329,8 @@ void InCSupport::detect_I_literals(text_stream *line) {
 	DISCARD_TEXT(lit)
 
 @ Each I-literal results in an instance of the following being created. The
-I-literal |I"quartz"| would have content |quartz| and identifier something
-like |TL_IS_123|.
+I-literal `I"quartz"` would have content `quartz` and identifier something
+like `TL_IS_123`.
 
 =
 typedef struct text_literal {
@@ -344,7 +344,7 @@ typedef struct text_literal {
 	text_stream *T = I"quartz";
 =
 We create the necessary I-literal, and splice the line so that it now reads
-|text_stream *T = TL_IS_123;|. (That's why we don't call any of this on a
+`text_stream *T = TL_IS_123;`. (That's why we don't call any of this on a
 weave run; we're actually amending the code of the web.)
 
 @<This is definitely an I-literal@> =
@@ -368,11 +368,11 @@ weave run; we're actually amending the code of the web.)
 @ Time to predeclare things. InC is going to create a special function, right
 at the end of the code, which "registers" the nonterminals, creating their
 run-time data structures; we must predeclare this function. It will set values
-for the pointers |action_clause_NTM|, and so on; these are global variables,
-which we initially declare as |NULL|.
+for the pointers `action_clause_NTM`, and so on; these are global variables,
+which we initially declare as `NULL`.
 
-We also declare the nonterminal variables like |kind_ref_NTMV|, initialising
-all integers to zero and all pointers to |NULL|.
+We also declare the nonterminal variables like `kind_ref_NTMV`, initialising
+all integers to zero and all pointers to `NULL`.
 
 We do something similar, but simpler, to declare text stream constants.
 
@@ -451,9 +451,9 @@ we tangle this opening line to
 = (text as code)
 	int k_kind_for_template_NTM(wording W, int *X, void **XP) {
 =
-that is, to a function which returns |TRUE| if it makes a match on the text
-excerpt in Inform's source text, |FALSE| otherwise; if it matches and produces
-an integer and/or pointer result, these are copied into |*X| and |*XP|. The
+that is, to a function which returns `TRUE` if it makes a match on the text
+excerpt in Inform's source text, `FALSE` otherwise; if it matches and produces
+an integer and/or pointer result, these are copied into `*X` and `*XP`. The
 remaining lines of the function are tangled unaltered, i.e., following the
 same rules as for the body of any other C function.
 
@@ -487,10 +487,10 @@ tangles to a function header:
 =
 
 Composition is what happens after a successful match of the text in the
-word range |W|. The idea is that, especially if the pattern was
+word range `W`. The idea is that, especially if the pattern was
 complicated, we will need to "compose" the results of parsing individual
 pieces of it into a result for the whole. These partial results can be found
-in the arrays |R[n]| and |RP[n]| passed as parameters; recall that every
+in the arrays `R[n]` and `RP[n]` passed as parameters; recall that every
 nonterminal has in principle both an integer and a pointer result, though
 often one or both is undefined.
 
@@ -499,20 +499,20 @@ A simple example would be
 	<cardinal-number> + <cardinal-number> ==> R[1] + R[2]
 =
 where the composition function would be called on a match of, say, "$5 + 7$",
-and would find the values 5 and 7 in |R[1]| and |R[2]| respectively. It would
-then add these together, store 12 in |*X|, and return |TRUE| to show that all
+and would find the values 5 and 7 in `R[1]` and `R[2]` respectively. It would
+then add these together, store 12 in `*X`, and return `TRUE` to show that all
 was well.
 
 A more typical example, drawn from the actual Inform 7 web, is:
 = (text)
 	<k-kind-of-kind> <k-formal-variable> ==> { - , Kinds::var_construction(R[2], RP[1]) }
 =
-which says that the composite result -- the right-hand formula -- is formed by
+which says that the composite result — the right-hand formula — is formed by
 calling a particular routine on the integer result of subexpression 2
-(|<k-formal-variable>|) and the pointer result of subexpression 1
-(|<k-kind-of-kind>|). The answer, the composite result, that is, must be
-placed in |*X| and |*XP|. (Composition functions are also allowed to
-invalidate the result, by returning |FALSE|, and have other tricks up their
+(`<k-formal-variable>`) and the pointer result of subexpression 1
+(`<k-kind-of-kind>`). The answer, the composite result, that is, must be
+placed in `*X` and `*XP`. (Composition functions are also allowed to
+invalidate the result, by returning `FALSE`, and have other tricks up their
 sleeves, but none of that is handled by us here: see the Inform 7 web for more
 on this.)
 
@@ -528,7 +528,7 @@ on this.)
 	else @<None of the grammar lines provided an arrow and formula@>;
 	WRITE("\treturn TRUE;\n");
 
-@ In the absence of any |==>| formulae, we simply set |*X| to the default
+@ In the absence of any `==>` formulae, we simply set `*X` to the default
 result supplied; this is the production number within the grammar (0 for the
 first line, 1 for the second, and so on) by default, with an undefined pointer.
 
@@ -562,10 +562,10 @@ and that it produces an integer or a pointer according to what the
 non-terminal expects as its main result. But we make one exception: if
 the formula begins with a paragraph macro, then it can't be an expression,
 and instead we read it as code in a void context. (This code will, we
-assume, set |*X| and/or |*XP| in some ingenious way of its own.)
+assume, set `*X` and/or `*XP` in some ingenious way of its own.)
 
-Within the body of the formula, we allow a pseudo-macro to work: |WR[n]|
-expands to word range |n| in the match which we're compositing. This actually
+Within the body of the formula, we allow a pseudo-macro to work: `WR[n]`
+expands to word range `n` in the match which we're compositing. This actually
 expands like so:
 = (text as code)
 	action_clause_NTM->range_result[n]
@@ -648,10 +648,10 @@ void InCSupport::tangle_line_inner(text_stream *OUT, ls_line *A_lst, preform_non
 	}
 }
 
-@ For example, a function name like |Text::Parsing::get_next| must be rewritten
-as |Text__Parsing__get_next| since colons aren't valid in C identifiers. The
+@ For example, a function name like `Text::Parsing::get_next` must be rewritten
+as `Text__Parsing__get_next` since colons aren't valid in C identifiers. The
 following is prone to all kinds of misreadings, of course; it picks up any use
-of |::| between an alphanumberic character and a letter. In particular, code
+of `::` between an alphanumberic character and a letter. In particular, code
 like
 = (text)
 	printf("Trying Text::Parsing::get_next now.\n");
@@ -672,7 +672,7 @@ no misreadings occur.
 		continue;
 	}
 
-@ For example, |==> { A, B }| assigns the expressions A and B as the results
+@ For example, `==> { A, B }` assigns the expressions A and B as the results
 of parsing a Preform nonterminal.
 
 @d MAX_PREFORM_RESULT_CLAUSES 10
@@ -774,8 +774,8 @@ extra code to execute after the assignments.
 for the current nonterminal; any subsequent clauses must specify which
 variable is to be set. A dash means make no assignment.
 
-For example, |{ R[1], - , <<to>> = R[2] }| sets |*X| to |R[1]|, does not
-alter |*XP|, and sets |<<to>>| to |R[2]|.
+For example, `{ R[1], - , <<to>> = R[2] }` sets `*X` to `R[1]`, does not
+alter `*XP`, and sets `<<to>>` to `R[2]`.
 
 @<Write the assignments@> =
 	for (int c=0; c<clauses; c++) {
@@ -808,9 +808,9 @@ alter |*XP|, and sets |<<to>>| to |R[2]|.
 	}
 
 @ Angle brackets around a valid Preform variable name expand into its
-C identifier; for example, |<<R>>| becomes |most_recent_result|.
-We take no action if it's not a valid name, so |<<fish>>| becomes
-just |<<fish>>|.
+C identifier; for example, `<<R>>` becomes `most_recent_result`.
+We take no action if it's not a valid name, so `<<fish>>` becomes
+just `<<fish>>`.
 
 @<Double-angles sometimes delimit Preform variable names@> =
 	match_results mr = Regexp::create_mr();
@@ -829,7 +829,7 @@ just |<<fish>>|.
 	DISCARD_TEXT(check_this)
 	Regexp::dispose_of(&mr);
 
-@ Similarly for nonterminals; |<k-kind>| might become |k_kind_NTM|.
+@ Similarly for nonterminals; `<k-kind>` might become `k_kind_NTM`.
 Here, though, there's a complication:
 = (text)
 	if (<k-kind>(W)) { ...
@@ -839,8 +839,8 @@ must expand to:
 	if (Text__Languages__parse_nt_against_word_range(k_kind_NTM, W, NULL, NULL)) { ...
 =
 This is all syntactic sugar to make it easier to see parsing in action.
-Anyway, it means we have to set |fcall_pos| to remember to add in the
-two |NULL| arguments when we hit the |)| a little later. We're doing all
+Anyway, it means we have to set `fcall_pos` to remember to add in the
+two `NULL` arguments when we hit the `)` a little later. We're doing all
 of this fairly laxly, but as before: it only needs to work for Inform,
 and Inform doesn't cause any trouble.
 
@@ -887,7 +887,7 @@ preform_nonterminal *InCSupport::nonterminal_by_name(text_stream *name) {
 	return NULL;
 }
 
-@ The special variables |<<R>>| and |<<RP>>| hold the results,
+@ The special variables `<<R>>` and `<<RP>>` hold the results,
 integer and pointer, for the most recent successful match. They're defined
 in the Inform 7 web (see the code for parsing text against Preform grammars),
 not here.
@@ -909,7 +909,7 @@ were tangled into "composition functions", but the grammar itself was
 simply thrown away. It doesn't appear anywhere in the C code tangled.
 
 So what does happen to it? The answer is that it's transcribed into an
-auxiliary file called |Syntax.preform|, which Inform, once it is compiled,
+auxiliary file called `Syntax.preform`, which Inform, once it is compiled,
 will read in at run-time. This is how that happens:
 
 =
@@ -1051,7 +1051,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 
 @h Weaving methods.
 If we're weaving just a document of Preform grammar, then we skip any lines
-of C code which appear in |internal| nonterminal definitions:
+of C code which appear in `internal` nonterminal definitions:
 
 =
 int skipping_internal = FALSE, preform_production_count = 0;

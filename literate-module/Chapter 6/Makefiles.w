@@ -48,9 +48,9 @@ a data structure to store those declarations in:
 =
 typedef struct makefile_specifics {
 	struct ls_web *for_web; /* if one has been set at the command line */
-	struct dictionary *tools_dictionary;   /* components with |type: tool| */
-	struct dictionary *webs_dictionary;    /* components with |type: web| */
-	struct dictionary *modules_dictionary; /* components with |type: module| */
+	struct dictionary *tools_dictionary;   /* components with `type: tool` */
+	struct dictionary *webs_dictionary;    /* components with `type: web` */
+	struct dictionary *modules_dictionary; /* components with `type: module` */
 	struct text_stream *which_platform;
 	CLASS_DEFINITION
 } makefile_specifics;
@@ -335,7 +335,7 @@ linked_list *Makefiles::all_sections_in_module(ls_module *M) {
 }
 
 @ This outputs a makefile pattern matching a bunch of web source code filenames:
-say, |inweb/Chapter\ %d/*.w|.
+say, `inweb/Chapter\ %d/*.w`.
 
 =
 void Makefiles::pattern(OUTPUT_STREAM, linked_list *L, filename *F) {

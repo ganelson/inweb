@@ -21,22 +21,22 @@ essentially individual HTML files, plus some images.
 
 =
 typedef struct ebook {
-	struct linked_list *metadata_list; /* of |ebook_datum|: DCMI-standard bibliographic data */
+	struct linked_list *metadata_list; /* of `ebook_datum`: DCMI-standard bibliographic data */
 	char *prefix; /* to apply to the page leafnames */
 	struct filename *CSS_file_throughout; /* where to find a CSS file to be used for all volumes */
 
-	struct filename *eventual_epub; /* filename of the final |*.epub| to be made */
+	struct filename *eventual_epub; /* filename of the final `*.epub` to be made */
 	struct pathname *holder; /* directory to put the ingredients into */
-	struct pathname *OEBPS_path; /* subdirectory which mysteriously has to be called |OEBPS| */
+	struct pathname *OEBPS_path; /* subdirectory which mysteriously has to be called `OEBPS` */
 
-	struct linked_list *ebook_volume_list; /* of |ebook_volume| */
+	struct linked_list *ebook_volume_list; /* of `ebook_volume` */
 	struct ebook_volume *current_volume; /* the one to which chapters are now being added */
 
-	struct linked_list *ebook_chapter_list; /* of |ebook_chapter| */
+	struct linked_list *ebook_chapter_list; /* of `ebook_chapter` */
 	struct ebook_chapter *current_chapter; /* the one to which pages are now being added */
 
-	struct linked_list *ebook_page_list; /* of |book_page| */
-	struct linked_list *ebook_image_list; /* of |ebook_image| */
+	struct linked_list *ebook_page_list; /* of `book_page` */
+	struct linked_list *ebook_image_list; /* of `ebook_image` */
 	CLASS_DEFINITION
 } ebook;
 
@@ -65,7 +65,7 @@ typedef struct ebook_chapter {
 	struct text_stream *chapter_title;
 	struct ebook_volume *in_volume; /* to which volume this chapter belongs */
 	struct ebook_page *chapter_starts; /* on which page the chapter starts */
-	struct linked_list *ebook_mark_list; /* of |ebook_mark|: for when multiple navigable points exist within this */
+	struct linked_list *ebook_mark_list; /* of `ebook_mark`: for when multiple navigable points exist within this */
 	struct text_stream *start_URL;
 	CLASS_DEFINITION
 } ebook_chapter;

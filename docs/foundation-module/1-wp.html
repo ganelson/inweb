@@ -162,8 +162,8 @@ just that installation and use of Foundation-built tools is less convenient.)</p
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="comment-syntax">/* Check the first element of the command: if it has path separators in
-   it, we assume we are running one of our commands, otherwise it is a
-   Unix style command. */</span>
+it, we assume we are running one of our commands, otherwise it is a
+Unix style command. */</span>
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Platform::Win32_is_unix_cmd</span><span class="plain-syntax">(</span><span class="type-syntax">const</span><span class="plain-syntax"> </span><span class="type-syntax">char</span><span class="plain-syntax">* </span><span class="identifier-syntax">cmd</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> </span><span class="identifier-syntax">stop</span><span class="plain-syntax"> = </span><span class="character-syntax">' '</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
@@ -185,7 +185,7 @@ just that installation and use of Foundation-built tools is less convenient.)</p
 
 <span class="plain-syntax">    </span>
 <span class="comment-syntax">/* Check if the command should be executed with the Windows cmd interpreter
- </span><span class="plain-syntax">   </span><span class="comment-syntax">   or a Unix-like shell. */</span>
+or a Unix-like shell. */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">unix</span><span class="plain-syntax"> = </span><a href="1-wp.html#SP6" class="function-link"><span class="function-syntax">Platform::Win32_is_unix_cmd</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">cmd</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">unix</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="comment-syntax">/* For a Unix shell command, escape any double quotes and backslashes. */</span>
@@ -537,7 +537,7 @@ find this).</p>
 </pre>
 <ul class="endnotetexts"><li>This paragraph is used only if PLATFORM_WINDOWS is defined.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  This function returns the number of logical cores in the host computer --
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. </b>  This function returns the number of logical cores in the host computer —
 i.e., twice the number of physical cores if there's hyperthreading. The
 result is used as a guess for an appropriate number of simultaneous threads
 to launch.</p>

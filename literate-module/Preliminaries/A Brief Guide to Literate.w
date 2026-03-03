@@ -19,8 +19,8 @@ module:
 Import: literate
 =
 
-* The parent must call |LiterateModule::start()| just after it starts up, and
-|LiterateModule::end()| just before it shuts down. (But just after, and just
+* The parent must call `LiterateModule::start()` just after it starts up, and
+`LiterateModule::end()` just before it shuts down. (But just after, and just
 before, the corresponding calls to //foundation//.)
 
 @h Literate programming.
@@ -39,43 +39,43 @@ or a library of code which can be "imported" by other webs. Each web is
 represented in the filing system either by its own private directory of
 resources, which is good for larger programs or libraries, or more simply
 by a single file, which is less fuss for simpler programs. Each web is
-represented in memory by an |ls_web| structure.
+represented in memory by an `ls_web` structure.
 
 A web is basically some metadata together with some literate code divided
-into chapters, each represented by an |ls_chapter|. A chapter is further
-divided into sections, each an |ls_section|. Small single-file webs don't
+into chapters, each represented by an `ls_chapter`. A chapter is further
+divided into sections, each an `ls_section`. Small single-file webs don't
 appear to have these, but in fact they do: there's an implicit chapter
 containing an implicit section, which contains the program. Middle-sized
 webs divided into section files in the filing system similarly have an implicit
-chapter to hold those sections. So all webs of every size have an |ls_web|
-holding |ls_chapter| holding |ls_section| hierarchy.
+chapter to hold those sections. So all webs of every size have an `ls_web`
+holding `ls_chapter` holding `ls_section` hierarchy.
 
 Because one web can import another one (see above), it may contain chapters
 drawn from multiple sources. These are called its "modules", and represented by
-|ls_module| structures. A simple web which imports nothing has just one "main
+`ls_module` structures. A simple web which imports nothing has just one "main
 module", holding its entire source. But if a web representing tool X imports
 library L, then there will be two modules for X: the main module and also the
 module of code imported from L. Since an imported module might then import other
 modules in turn, the modules of a web form a small dependency graph, of which
 the main module is the root.
 
-@ Each section then contains a single "unit" of literate source, held in an |ls_unit|.
-This consists of |ls_paragraph| objects, which in turn are divided into |ls_chunk|
-objects, which in turn contain |ls_line| objects. This paragraph you're reading
-is a single |ls_paragraph|, containing a single |ls_chunk|, with 11 |ls_line|s (one
+@ Each section then contains a single "unit" of literate source, held in an `ls_unit`.
+This consists of `ls_paragraph` objects, which in turn are divided into `ls_chunk`
+objects, which in turn contain `ls_line` objects. This paragraph you're reading
+is a single `ls_paragraph`, containing a single `ls_chunk`, with 11 `ls_line`s (one
 blank). More complex paragraphs might have a chunk of commentary text, then some
 definitions (each of which is another chunk), then a block of code (another chunk
 again). 
 
 Fragments of source code which are part of the program to be compiled are called
 "holons". So only some chunks are holons, and details of the code they hold are
-held in |ls_holon| objects. (Note that a definition of a symbol is not a holon.)
+held in `ls_holon` objects. (Note that a definition of a symbol is not a holon.)
 
 Parsing a unit mostly involves "classifying" its lines according to the current
 notation being used for LP. We support multiple notations, with the current
-parsing rules being expressed as an |ls_notation| object. Classification of a
-line produces |ls_class| objects as intermediate results, and if it goes badly
-then it can also produce errors, each stored as an |ls_error|.
+parsing rules being expressed as an `ls_notation` object. Classification of a
+line produces `ls_class` objects as intermediate results, and if it goes badly
+then it can also produce errors, each stored as an `ls_error`.
 
 @ To sum up, then, webs are stored in the following nine structures:
 
@@ -129,18 +129,18 @@ in order to provide convenient tangling features when tangling. See
 
 Languages declaring themselves "C-like" have access to special tangling
 facilities, all implemented with non-ACME method calls: see //C-Like Languages//.
-In particular, for coping with how |#ifdef| affects |#include| see
+In particular, for coping with how `#ifdef` affects `#include` see
 //CLike::additional_early_matter//; for predeclaration of functions and
-structs and |typedef|s, see //CLike::additional_predeclarations//.
+structs and `typedef`s, see //CLike::additional_predeclarations//.
 
 A special language calling itself "InC" gets even more: see //InC Support//, and
-in particular //text_literal// for text constants like |I"banana"|
+in particular //text_literal// for text constants like `I"banana"`
 and //preform_nonterminal// for Preform grammar notation like
-|<sentence-ending>|. "InC" is basically a more convenient form of C, and
+`<sentence-ending>`. "InC" is basically a more convenient form of C, and
 is the language in which the foundation library is written.
 
 @ There are also some minor conveniences for setting up Github repositories
 which contain literate programs. In particular, we use the preprocessor of
 //foundation// to construct //Makefiles// and the like: see also //Git Support//,
-which helps with |.gitignore| creation, and //Readme Writeme//, a convenient
-utility for generating |README.md| files for GitHub repositories.
+which helps with `.gitignore` creation, and //Readme Writeme//, a convenient
+utility for generating `README.md` files for GitHub repositories.

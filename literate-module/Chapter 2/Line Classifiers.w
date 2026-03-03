@@ -7,7 +7,7 @@ A line classifier is really just a list of rules:
 
 =
 typedef struct ls_classifier {
-	struct linked_list *rules; /* of |ls_notation_rule| */
+	struct linked_list *rules; /* of `ls_notation_rule` */
 	CLASS_DEFINITION
 } ls_classifier;
 
@@ -44,8 +44,8 @@ ls_notation_rule *LineClassifiers::new_rule(ls_notation_rule_condition condition
 }
 
 @h Parsing.
-The following takes pattern text |pt| and tail text |tail|, and either adds
-a valid rule to the classifier and returns |NULL|, or does nothing and returns
+The following takes pattern text `pt` and tail text `tail`, and either adds
+a valid rule to the classifier and returns `NULL`, or does nothing and returns
 a non-empty error message as text.
 
 =
@@ -96,11 +96,11 @@ void LineClassifiers::reparse_patterns_with_new_conventions(ls_classifier *lc,
 
 @h Matching.
 We find the first rule in the list which applies to the given text, and return
-it; if none apply, we return |NULL|. What matches may depend on what has been
-classified in previous lines, which forms the |context|.
+it; if none apply, we return `NULL`. What matches may depend on what has been
+classified in previous lines, which forms the `context`.
 
 If a match is made, then the content of any wildcards is written into the
-supplied |wildcards| array.
+supplied `wildcards` array.
 
 @d TRACE_LCLASSIFIER FALSE
 
@@ -108,7 +108,7 @@ supplied |wildcards| array.
 typedef struct ls_classifier_context {
 	struct ls_class *previously; /* how the previous line was classified */
 	int single_file;             /* is this in a single-file web? */
-	int whitespace_nature;       /* of the current line: a |*_LINESHADE| value */
+	int whitespace_nature;       /* of the current line: a `*_LINESHADE` value */
 	struct ls_notation *ntn;     /* notation currently in use */
 } ls_classifier_context;
 
@@ -131,13 +131,13 @@ ls_notation_rule *LineClassifiers::match(ls_classifier *lc, text_stream *full_te
 }
 
 @h Conditions.
-The condition applied to a rule — for example, |if following title| — is
+The condition applied to a rule — for example, `if following title` — is
 turned into one of these:
 
 =
 typedef struct ls_notation_rule_condition {
-	int negated; /* if |TRUE|, means we must be not in the given context */
-	int atomic_condition; /* one of the |*_LSNRCAC| values below */
+	int negated; /* if `TRUE`, means we must be not in the given context */
+	int atomic_condition; /* one of the `*_LSNRCAC` values below */
 } ls_notation_rule_condition;
 
 ls_notation_rule_condition LineClassifiers::truth_condition(void) {
@@ -300,8 +300,8 @@ ls_srtoken LineClassifiers::wildcard_token(int n) {
 	return tok;
 }
 
-@ The following parses source code such as |@enum MATERIAL(NONWHITESPACE) from SECOND|
-into a |ls_notation_rule_pattern|.
+@ The following parses source code such as `@enum MATERIAL(NONWHITESPACE) from SECOND`
+into a `ls_notation_rule_pattern`.
 
 @e MATERIAL_LSWILDCARD from 0
 @e SECOND_LSWILDCARD
@@ -459,7 +459,7 @@ int LineClassifiers::match_pattern(ls_notation_rule_pattern *pattern, text_strea
 	return FALSE;
 }
 
-@ Each |<INDENT>| marker at the start of the pattern represents one tab's worth
+@ Each `<INDENT>` marker at the start of the pattern represents one tab's worth
 of white space to strip from the start of the line being matched. This does that:
 
 @<Reduce the line indentation to allow for <INDENT> markers@> =
@@ -564,13 +564,13 @@ grammars.
 	if (lookahead > l_to) break;
 
 @h Outcomes and their options.
-If successful, a rule produces an "outcome" such as |namedholon| or |code|,
-together perhaps with options such as |earlyholonoption|.
+If successful, a rule produces an "outcome" such as `namedholon` or `code`,
+together perhaps with options such as `earlyholonoption`.
 
 =
 typedef struct ls_notation_rule_outcome {
-	int outcome_ID;            /* one of the |*_LSNROID| values below */
-	int options_applied;       /* a bitmap of |*_LSNROBIT| values below */
+	int outcome_ID;            /* one of the `*_LSNROID` values below */
+	int options_applied;       /* a bitmap of `*_LSNROBIT` values below */
 	int new_paragraph;         /* does this line implicitly begin a new para? */
 	struct text_stream *error; /* on a match, in fact throw this error */
 } ls_notation_rule_outcome;
@@ -623,7 +623,7 @@ ls_notation_rule_outcome LineClassifiers::parse_outcome(text_stream *ot, text_st
 }
 
 @ These outcome and option IDs share an enumeration; first, here are the outcomes.
-Note that |NO_LSNROID| is never the outcome of any rule: it's a value
+Note that `NO_LSNROID` is never the outcome of any rule: it's a value
 used to mean "nothing matched".
 
 @e NO_LSNROID from 0

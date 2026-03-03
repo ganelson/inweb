@@ -3,39 +3,39 @@
 Formatted text output to streams.
 
 @h Registration.
-The main function here is modelled on the "minimum |printf|" function
+The main function here is modelled on the "minimum `printf`" function
 used as an example in Kernighan and Ritchie, Chapter 7, but because it
-prints to streams, it combines the traditional functions |printf|, |sprintf|
-and |fprintf| in one. It also contains a number of doohickeys to provide
+prints to streams, it combines the traditional functions `printf`, `sprintf`
+and `fprintf` in one. It also contains a number of doohickeys to provide
 for a wider and extensible range of string interpolations.
 
 Traditionally, in the C library, everything in the formatting string is
-literal except for |%| escapes: thus |%d| means "integer goes here", and
-so on. We follow this but allow extra |%| escapes unknown to K&R, and we
-also allow a further family of |$| escapes intended for the debugging log
+literal except for `%` escapes: thus `%d` means "integer goes here", and
+so on. We follow this but allow extra `%` escapes unknown to K&R, and we
+also allow a further family of `$` escapes intended for the debugging log
 only; these are restricted to streams flagged as for debugging and generally
 produce guru meditation numbers rather than user-friendly information.
 
-Each escape, say |%z|, must be "registered" before use, and will be
+Each escape, say `%z`, must be "registered" before use, and will be
 given one of the following categories:
 
 @d VACANT_ECAT 0		/* unregistered */
 @d POINTER_ECAT 1		/* data to be printed is a pointer to a structure */
 @d INTSIZED_ECAT 2		/* data to be printed is or fits into an integer */
-@d WORDING_ECAT 3		/* data to be printed is a |wording| structure from inform7 */
+@d WORDING_ECAT 3		/* data to be printed is a `wording` structure from inform7 */
 @d DIRECT_ECAT 4		/* data must be printed directly by the code below */
 
-@ We'll start with |%| escapes, which generalise the familiar |printf|
-escapes such as |%d|. Cumbersomely, we need three sorts of escape: those where
+@ We'll start with `%` escapes, which generalise the familiar `printf`
+escapes such as `%d`. Cumbersomely, we need three sorts of escape: those where
 the variable argument token is a pointer, those where it's essentially an
 integer, and those where it's a structure used only in the Inform 7 compiler
-called a |wording|. The standard C typechecker can't generalise across these,
+called a `wording`. The standard C typechecker can't generalise across these,
 so we have to do everything three times. (And then we have to do all that twice,
 because the loggers don't use format strings.)
 
 =
 int escapes_registered = FALSE;
-int escapes_category[2][128]; /* one of the |*_ECAT| values above */
+int escapes_category[2][128]; /* one of the `*_ECAT` values above */
 void *the_escapes[2][128]; /* the function to call to implement this */
 
 typedef void (*writer_function)(text_stream *, char *, void *);
@@ -98,10 +98,10 @@ void Writers::register_writer_p(int set, int esc, void *f, int cat) {
 	the_escapes[set][esc] = f;
 }
 
-@ We're going to implement |%d| and a few others directly, so those are marked
+@ We're going to implement `%d` and a few others directly, so those are marked
 in the table as being unavailable for registration.
 
-Note that we don't support |%f| for floats; but we do add our very own |%w|
+Note that we don't support `%f` for floats; but we do add our very own `%w`
 for wide strings.
 
 @<Initialise the table of escapes@> =
@@ -220,24 +220,24 @@ void Writers::printf(text_stream *stream, char *fmt, ...) {
 	}
 
 @ Here the traditional C library helps us out with the difficult ones to get
-right. We don't trouble to check that correct |printf| escapes have been used:
+right. We don't trouble to check that correct `printf` escapes have been used:
 instead, we pass anything in the form of a percentage sign, followed by
 up to four nonalphabetic modifying characters, followed by an alphabetic
-category character for numerical printing, straight through to |sprintf|
-or |fprintf|.
+category character for numerical printing, straight through to `sprintf`
+or `fprintf`.
 
-Thus an escape like |%04d| is handled by the standard C library, but not
-|%s|, which we handle directly. That's for two reasons: first, we want to
+Thus an escape like `%04d` is handled by the standard C library, but not
+`%s`, which we handle directly. That's for two reasons: first, we want to
 be careful to prevent overruns of memory streams; second, we need to ensure
 that the correct encoding is used when writing to disc. The numerical
 escapes involve only characters whose representation is the same in all our
-file encodings, but expanding |%s| does not.
+file encodings, but expanding `%s` does not.
 
 @<Implement this using the original printf@> =
 	#pragma clang diagnostic push
 	#pragma clang diagnostic ignored "-Wformat-nonliteral"
 	switch (esc_number) {
-		case 'c': { /* |char| is promoted to |int| in variable arguments */
+		case 'c': { /* `char` is promoted to `int` in variable arguments */
 			int ival = va_arg(ap, int);
 			Streams::putci(ival, stream);
 			break;

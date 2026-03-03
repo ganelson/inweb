@@ -8,17 +8,17 @@ Do not call functions in this section directly: use the API in //Markdown//.
 
 @h State.
 We now define the state of the Phase I parser preserved between successive
-calls to the function |MDBlockParser::add_to_document|.
+calls to the function `MDBlockParser::add_to_document`.
 
 The most important part is the pair of stacks. The "container stack" holds the
 chain of container blocks containing the current write position. For
 example, if the words "Sundman traded the Z-Grill for a block of four Inverted
 Jennys" appear in a paragraph under a list of notable philately deals, then
-the container stack will consist of the |DOCUMENT_MIT| head node (position 0),
-then an |UNORDERED_LIST_ITEM_MIT| node (position 1), and the |container_sp|
+the container stack will consist of the `DOCUMENT_MIT` head node (position 0),
+then an `UNORDERED_LIST_ITEM_MIT` node (position 1), and the `container_sp`
 will be 2. The paragraph item does exist, but is not a container and is not
 held on the stack; it will be one of the child nodes (in fact, the last one)
-of the |UNORDERED_LIST_ITEM_MIT| node.
+of the `UNORDERED_LIST_ITEM_MIT` node.
 
 The container stack, then, refers to the actual tree, and provides us with a
 quick way to access the latest goings-on. The full tree may be very large,
@@ -26,17 +26,17 @@ so we wouldn't want to traverse it every time a line came along: that would
 have quadratic running time in the number of lines.
 
 The "marker stack" records the notation used to specify this situation.
-For example, the line |* > The future King George V paid £1,450 for an unused blue|
-contains two "positional marker" notations: the |*| indicates an unordered list
-item, the |>| a block quote. Here, then, the marker stack also holds two items.
+For example, the line `* > The future King George V paid £1,450 for an unused blue`
+contains two "positional marker" notations: the `*` indicates an unordered list
+item, the `>` a block quote. Here, then, the marker stack also holds two items.
 But because we want the indexing of the two stacks to correspond exactly,
 these two items are indexed 1 and 2, not 0 and 1. The hypothetical entry 0
 on the marker stack would correspond to saying that the text is to go into
 the document as a whole, and that goes without saying, so we do not use entry 0.
 
 This correspondence means that when the line has been acted on, marker 1
-(the |*|) leads to container 1 being an |UNORDERED_LIST_ITEM_MIT|, and
-marker 2 (the |>|) leads to container 2 being a |BLOCK_QUOTE_MIT|. So at
+(the `*`) leads to container 1 being an `UNORDERED_LIST_ITEM_MIT`, and
+marker 2 (the `>`) leads to container 2 being a `BLOCK_QUOTE_MIT`. So at
 some points during parsing, the two stacks line up nicely. Nevertheless,
 they are not the same, and they have different stack pointers, because
 at times one contains more entries than the other.
@@ -166,11 +166,11 @@ void MDBlockParser::remove_receiver(md_doc_state *state, markdown_item *block) {
 
 @ "Fencing", in the sense of gardens not sword-fighting, happens when a 
 fenced code block is being parsed. This requires quite a bit of extra state,
-since we are not allowed to match a fence |~~~| with a fence |````|, and so on.
+since we are not allowed to match a fence `~~~` with a fence `~~~~`, and so on.
 The width of the fence is the number of characters used in its opening, so
-for example 3 for |~~~|.
+for example 3 for `~~~`.
 
-Note that |fencing_material| is always 0 when we are not parsing a fenced
+Note that `fencing_material` is always 0 when we are not parsing a fenced
 code block.
 
 The "left margin" is measured in character positions (not string index points)
@@ -210,10 +210,10 @@ Consider the sequence
 	* Edwardian stamps
 =
 Three positional markers are obvious in this text, but in fact there's a fourth
-implicit one. The line |  - Penny Black| implicitly marks itself as being a subentry
+implicit one. The line `  - Penny Black` implicitly marks itself as being a subentry
 of the outer entry, as if a ghostly asterisk were hiding behind the opening spacing.
 In this case, we will parse that by preserving the marker from the previous line,
-but flagging it as |continues_from_earlier_line|.
+but flagging it as `continues_from_earlier_line`.
 
 Note that block quote markers are never flagged as continuing, because they work
 differently: instead of being implicitly continued, block quotes are explicitly so.
@@ -222,17 +222,17 @@ differently: instead of being implicitly continued, block quotes are explicitly 
 	> the same block quote.
 =
 
-The |blank_counts| keeps track of how many blank lines follow, and is needed only
+The `blank_counts` keeps track of how many blank lines follow, and is needed only
 because of the special rule that a list item cannot begin with two blank lines.
 
 =
 typedef struct positional_marker {
-	int item_type; /* |BLOCK_QUOTE_MIT|, |ORDERED_LIST_ITEM_MIT|, |UNORDERED_LIST_ITEM_MIT| or |FOOTNOTE_BODY_MIT| */
+	int item_type; /* `BLOCK_QUOTE_MIT`, `ORDERED_LIST_ITEM_MIT`, `UNORDERED_LIST_ITEM_MIT` or `FOOTNOTE_BODY_MIT` */
 	int indent;                /* minimum required indentation for subsequent lines to continue */
 	int at;                    /* character position (not string index) of the start of the marker */
-	int width;                 /* for example, 2 for |7) | or |7. |: the non-whitespace chars only */
-	int list_item_value;       /* for example, 7 for |7) | or |7. | */
-	inchar32_t list_item_flavour; /* for example, |')'| for |7) | and |'.'| for |7. | */
+	int width;                 /* for example, 2 for `7) ` or `7. `: the non-whitespace chars only */
+	int list_item_value;       /* for example, 7 for `7) ` or `7. ` */
+	inchar32_t list_item_flavour; /* for example, `')'` for `7) ` and `'.'` for `7. ` */
 
 	int continues_from_earlier_line;
 	int blank_counts;
@@ -250,14 +250,14 @@ void MDBlockParser::clear_marker(positional_marker *marker) {
 }
 
 @ Ordinarily, we can parse markers to our heart's content, or at least up to
-|MAX_MARKDOWN_CONTAINER_DEPTH| of them. But sometimes we mustn't. Consider:
+`MAX_MARKDOWN_CONTAINER_DEPTH` of them. But sometimes we mustn't. Consider:
 = (text)
 	```
 	> * 1) Whatever
 	```
 =
 This is a fenced code block, so the tantalising string of potential markers,
-|> * 1)|, is in fact part of the code being fenced. We need to prevent that,
+`> * 1)`, is in fact part of the code being fenced. We need to prevent that,
 so during the parsing of lines in such a block, the following limit is
 imposed on the number of markers we are allowed to parse. (In this example, 0.)
 
@@ -272,7 +272,7 @@ void MDBlockParser::lift_marker_limit(md_doc_state *state) {
 
 @ The marker stack is only in some ways a stack: we have access at any time
 to the markers at each level. Here, we put a new blank marker in place at
-level |position|: remember that this counts from 1, not from 0.
+level `position`: remember that this counts from 1, not from 0.
 
 =
 positional_marker *MDBlockParser::new_marker_at(md_doc_state *state, int position, int type) {
@@ -333,7 +333,7 @@ void MDBlockParser::debug_marker(OUTPUT_STREAM, positional_marker *marker, int i
 }
 
 @ Let's finally do some actual parsing. Block quote markers are very simple:
-they are just |>| signs. The following function indicates success by advancing
+they are just `>` signs. The following function indicates success by advancing
 the read position, and failure by not doing so.
 
 =
@@ -343,7 +343,7 @@ tabbed_string_iterator MDBlockParser::block_quote_marker(tabbed_string_iterator 
 	return line_scanner;
 }
 
-@ Bullet list markers are |-|, |+| or |*|, this character being the "flavour".
+@ Bullet list markers are `-`, `+` or `*`, this character being the "flavour".
 
 =
 tabbed_string_iterator MDBlockParser::bullet_list_marker(tabbed_string_iterator line_scanner,
@@ -358,8 +358,8 @@ tabbed_string_iterator MDBlockParser::bullet_list_marker(tabbed_string_iterator 
 	return line_scanner;
 }
 
-@ Ordered list markers are |N)| or |N.|, with the terminal character being the
-flavour once more, and |N| being a string of up to 9 decimal digits. These
+@ Ordered list markers are `N)` or `N.`, with the terminal character being the
+flavour once more, and `N` being a string of up to 9 decimal digits. These
 can include leading zeros, but not minus signs, and can only be in decimal.
 They are in fact almost entirely thrown away as information, as we'll see
 when we get to rendering, but we parse them anyway.
@@ -388,7 +388,7 @@ tabbed_string_iterator MDBlockParser::ordered_list_marker(tabbed_string_iterator
 	return old;
 }
 
-@ Footnote text markers are |[N]|, with |N| being a string of up to 9 decimal
+@ Footnote text markers are `[N]`, with `N` being a string of up to 9 decimal
 digits, the first of which must not be a zero. 
 
 =
@@ -420,7 +420,7 @@ tabbed_string_iterator MDBlockParser::footnote_text_marker(tabbed_string_iterato
 
 @ A line which can be interpreted as a thematic break is never a list item,
 so we need to parse those too. These always occur after the early phase in
-which tabs count as spaces, so we no longer use a |tabbed_string_iterator|
+which tabs count as spaces, so we no longer use a `tabbed_string_iterator`
 here. The function returns either true or false.
 
 =
@@ -444,7 +444,7 @@ int MDBlockParser::thematic_marker(text_stream *line, int index) {
 @ So now we're ready for the main function which parses the prefix to a line,
 moving the scanner past the sequence of positional markers which appear to be
 present. Note that we observe any temporary marker limit, and that in the
-remote contingency of |MAX_MARKDOWN_CONTAINER_DEPTH| being reached (e.g. if
+remote contingency of `MAX_MARKDOWN_CONTAINER_DEPTH` being reached (e.g. if
 somebody's cat stood on the "greater than" button when they weren't looking),
 we simply ignore markers beyond that point.
 
@@ -489,12 +489,12 @@ int MDBlockParser::parse_positional_markers(md_doc_state *state, tabbed_string_i
 	     It continues here.
 =
 The second line implies a continuation of the first because of the indentation
-by five spaces, which is the |width| recorded in marker 1 (i.e., the |2)|)
+by five spaces, which is the `width` recorded in marker 1 (i.e., the `2)`)
 recorded on line 1.
 
 If we're in that position, we retain the marker from last time around, but
 flag it as a continuation. (If we didn't, we would create a second list entry
-also numbered |2)|.)
+also numbered `2)`.)
 
 @<Is there enough space here to be able to infer a continuation of a marker?@> =
 	positional_marker *marker = MDBlockParser::marker_at(state, sp);
@@ -507,7 +507,7 @@ also numbered |2)|.)
 	}
 
 @ If there are more than four spaces, we have indented far enough to make this
-a code block, so that any punctuation like |17.| that we see past that point
+a code block, so that any punctuation like `17.` that we see past that point
 would be part of the quoted code, not a marker.
 
 @<Is there an explicit marker here?@> =
@@ -522,10 +522,10 @@ would be part of the quoted code, not a marker.
 	}
 
 @ The "black width" of a marker is the width in characters of the actual
-non-spaces used to express it: so, |153. This is item 153.| has black width 3.
+non-spaces used to express it: so, `153. This is item 153.` has black width 3.
 The "white width" is the black width plus the position width of any required
 white spacing which follows. For block quote markers, no such spacing is
-required - |>> This is a legal double block quote| - and so the white width
+required - `>> This is a legal double block quote` - and so the white width
 is the same as the black width.
 
 @<Is there a block quote marker here?@> =
@@ -589,7 +589,7 @@ list and hasn't simply written something like:
 	1869. Permission to use the prefix "Royal" was granted by King
 	Edward VII in November 1906.
 =
-where we don't want to parse the |1869.| as beginning a list with first
+where we don't want to parse the `1869.` as beginning a list with first
 entry "Permission to use...".
 
 @<Is there an ordered list marker here?@> =
@@ -685,9 +685,9 @@ int MDBlockParser::marker_is_new_footnote_body(positional_marker *marker) {
 @h Containers.
 Enough on markers: we also need some preparatory work on container and leaf blocks.
 
-A block can occasionally change type. For example, a |PARAGRAPH_MIT| may turn
+A block can occasionally change type. For example, a `PARAGRAPH_MIT` may turn
 out to be a heading after all because of a subsequent setext underline, and then
-it must become a |HEADING_MIT|. We do this carefully to avoid getting the
+it must become a `HEADING_MIT`. We do this carefully to avoid getting the
 receiver states cross-wired.
 
 =
@@ -719,8 +719,8 @@ void MDBlockParser::mark_block_with_ws(md_doc_state *state, markdown_item *block
 }
 
 @ We have a not-very-important concept of blocks being open or closed. Only
-leaf and container blocks can meaningfully be opened: for other items, |block->open|
-will remain |NOT_APPLICABLE|. A block can be opened only once, and closed only
+leaf and container blocks can meaningfully be opened: for other items, `block->open`
+will remain `NOT_APPLICABLE`. A block can be opened only once, and closed only
 once, and it can only be closed after it has been opened.
 
 =
@@ -749,7 +749,7 @@ void MDBlockParser::close_block(md_doc_state *state, markdown_item *at) {
 	MDBlockParser::remove_link_references(state, at);
 }
 
-@ So when are blocks opened? We've already seen that the |DOCUMENT_MIT| block
+@ So when are blocks opened? We've already seen that the `DOCUMENT_MIT` block
 is opened right at the start. As we will later see, container blocks are
 opened when they are created. And the following function opens a new leaf
 block and joins it to the tree:
@@ -858,10 +858,10 @@ does not necessarily mean there is no content. Consider:
 =
 Line 3 here contains an (implied) positional marker, since it's still part
 of list item 12, but any white space occurring from the character position
-underneath the |T| onwards is part of the content, and must live on in the
+underneath the `T` onwards is part of the content, and must live on in the
 code block. We deal with this by moving the read position of the line
 scanner (which is currently at the end of the line, wherever that is)
-back to the |T| position.
+back to the `T` position.
 
 @<If the line is blank from here on, some of it may still be content@> =
 	if (TabbedStr::blank_from_here(&line_scanner))
@@ -889,9 +889,9 @@ subsequent lines the same margin will be followed.
 = (text)
 	12)
 =
-where there is not enough white space after the |)| to force indentation as a
+where there is not enough white space after the `)` to force indentation as a
 new indented code block (i.e., of which the first line happens to be blank).
-Where are we to set the indentation position for the |12)|? We make it the
+Where are we to set the indentation position for the `12)`? We make it the
 absolute minimum: the black width plus 1.
 
 @<This line will open a list item with no content as yet@> =
@@ -930,13 +930,13 @@ followed by white space.
 	}
 
 @ We finally reach the content, and move from tab-respecting-parsing with a
-scanner to regular character-by-character parsing. |content_index| is the
+scanner to regular character-by-character parsing. `content_index` is the
 index position of the line at which content begins. There's actually a
 tricky edge case here if we're in a code block where the content opens
 with white space: we could find ourselves with the line scanner still midway
 through a not-fully-consumed tab character. Infuriatingly, it is only
 compliant with CommonMark to deal with this situation (by injecting additional
-space characters not found in |line|) in certain cases, so for now we have
+space characters not found in `line`) in certain cases, so for now we have
 to live with this uneasy worry.
 
 @<Parse the content@> =
@@ -1011,7 +1011,7 @@ So for example:
 	1) By 1887 his collection was second only to that of Philippe Ferrari de La
 	Renotière. Among...
 =
-Here, all of the lines are part of list entry |1)|. This is a different situation
+Here, all of the lines are part of list entry `1)`. This is a different situation
 from:
 = (text)
 	1) By 1887 his collection was second only to that of Philippe Ferrari de La
@@ -1031,7 +1031,7 @@ that a thematic interpretation of that sort does not veto lazy continuation.
 CommonMark requires close study here.
 
 Note also that any requirement in the markers to create new list entries or
-block quotes is enough to veto LC (this is what |MDBlockParser::container_will_change|
+block quotes is enough to veto LC (this is what `MDBlockParser::container_will_change`
 is testing for), and of course, there has to be a paragraph going on or else
 there is nothing to continue.
 
@@ -1055,9 +1055,9 @@ there is nothing to continue.
 		interpretations[SETEXT_UNDERLINE_MDINTERPRETATION] = FALSE;
 
 @ As noted above, what's lazy about lazy continuation is that the markers were
-not fully specified to match the containers, so that |marker_sp| is below
-|container_sp|. But the markers from last time are still there on the stack,
-so to retrieve them, all we have to do is raise |marker_sp| back to where it was.
+not fully specified to match the containers, so that `marker_sp` is below
+`container_sp`. But the markers from last time are still there on the stack,
+so to retrieve them, all we have to do is raise `marker_sp` back to where it was.
 
 As for the content, it's either paragraph copy or else a setext underline, but
 can only be the latter if the alignment is right.
@@ -1077,8 +1077,8 @@ can never be continued again.
 
 The sequence of the interpretation tests is important here, as it decides
 which take priority: for example, a blank line occurring inside HTML is
-not white space and must be given the |HTML_CONTINUATION_MDINTERPRETATION|.
-Each of the 10 possible outcomes below ends with a |return| from the function,
+not white space and must be given the `HTML_CONTINUATION_MDINTERPRETATION`.
+Each of the 10 possible outcomes below ends with a `return` from the function,
 so exactly one will take effect.
 
 @<This is not a lazy continuation@> =
@@ -1104,7 +1104,7 @@ so exactly one will take effect.
 
 @ This is really the heart of the stacking algorithm: we've reached a point where
 the row of markers has expressed a clear description of what the containers ought
-to be. For example, if it read |* * > 2) Whatever|, we would have four items on
+to be. For example, if it read `* * > 2) Whatever`, we would have four items on
 the marker stack, and we need to make sure that the container stack also has
 four items (not counting item 0, the document head) which exactly match those
 markers. 
@@ -1231,7 +1231,7 @@ away. But consider the following edge case:
 	[pb]: /pennyblacks.html "Penny Black catalogue"
 	-----
 =
-Here |-----| looks like, and has been parsed as, a setext underline. But it
+Here `-----` looks like, and has been parsed as, a setext underline. But it
 isn't, because in fact the whole paragraph was taken up with link references,
 leaving it with no content. So the only way correctly to deal with this is to
 remove the link references first and see if there's any para left.
@@ -1247,7 +1247,7 @@ can do so in a way such that the first line alone is also a valid link reference
 So it is not safe to strip out link references until a paragraph is done.
 In these cases where the apparent underline is, in fact, not an underline
 because there was no content left, we have to preserve it as literal
-content, opening a new paragraph to hold the |-----|.
+content, opening a new paragraph to hold the `-----`.
 
 @<Line is a setext underline and turns the existing paragraph into a heading@> =
 	inchar32_t c = Str::get_at(line, content_index);
@@ -1370,7 +1370,7 @@ in place of spaces to make it more visible:
 	____it actually contained more than 4 spaces of indentation,
 	____7 in fact, so three of those must be put into the block.
 =
-Those extra spaces are cached in |state->blank_matter_after_receiver|. They
+Those extra spaces are cached in `state->blank_matter_after_receiver`. They
 can't be added to the code block yet because, of course, we don't yet know
 when parsing the blank line whether the future lines will continue the code
 block or not. (In this example, they will, but we can't know that.)
@@ -1557,7 +1557,7 @@ That finally completes the main "process a line" function, but we delegated
 a whole lot of syntactic parsing to work out which interpretations for a line
 are tenable. So, here goes.
 
-The following always says no to |LAZY_CONTINUATION_MDINTERPRETATION| because
+The following always says no to `LAZY_CONTINUATION_MDINTERPRETATION` because
 it's not in a position to know: that decision depends on all the other
 decisions, and on the situation at large as well. See above for where it is
 actually decided.
@@ -1601,7 +1601,7 @@ int MDBlockParser::can_interpret_as(md_doc_state *state, text_stream *line,
 			return FALSE;
 	return TRUE;
 
-@ Beware: indent a thematic marker like |-  -  -| far enough, and it becomes
+@ Beware: indent a thematic marker like `-  -  -` far enough, and it becomes
 part of a code block, not a thematic break at all.
 
 @<Is THEMATIC_MDINTERPRETATION tenable?@> =
@@ -1611,8 +1611,8 @@ part of a code block, not a thematic break at all.
 		return MDBlockParser::thematic_marker(line, content_index);
 	return FALSE;
 
-@ One to six |#| characters, followed by white space or the end of the line.
-Note that there can be junk in the form of further |#|s at the far end,
+@ One to six `#` characters, followed by white space or the end of the line.
+Note that there can be junk in the form of further `#`s at the far end,
 but removing that junk is not our business here.
 
 @<Is ATX_HEADING_MDINTERPRETATION tenable?@> =
@@ -1632,7 +1632,7 @@ but removing that junk is not our business here.
 	return FALSE;
 
 @ Provided we're following a paragraph, any sequence of 1 or more identical
-|-| or |=| characters followed by white space to the end of the line is a
+`-` or `=` characters followed by white space to the end of the line is a
 setext underline.
 
 @<Is SETEXT_UNDERLINE_MDINTERPRETATION tenable?@> =
@@ -1669,7 +1669,7 @@ opening fence, using at least as many of the same character. Thus:
 	-----
 =
 is in fact a single fenced code block. Once line 1 has been accepted as being
-a |CODE_FENCE_OPEN_MDINTERPRETATION| case, the subsequent lines are not
+a `CODE_FENCE_OPEN_MDINTERPRETATION` case, the subsequent lines are not
 the closing fence because they are too short or of the wrong kind, until we
 reach line 5.
 
@@ -1707,7 +1707,7 @@ string, which is an optional run of characters following the opening fence
 on the same line. Note that a code fence is illegal if unescaped backticks
 are used in it, where the backtick is the fencing material. In such a case,
 it is not enough to reject the info string, we must reject the interpretation
-of the line as |CODE_FENCE_OPEN_MDINTERPRETATION|.
+of the line as `CODE_FENCE_OPEN_MDINTERPRETATION`.
 
 @<Looks good so far, but what about the info string?@> =
 	int ambiguous = FALSE, count = 0, escaped = FALSE;
@@ -1740,7 +1740,7 @@ condition for HTML blocks, referred to in CommonMark as types. They must not
 quite be tested in their numerical order, since type 4 implies type 5, so
 5 must be checked before 4.
 
-The one piece of good news is that they all start with a |<| character.
+The one piece of good news is that they all start with a `<` character.
 
 @e PRE_MDHTMLC from 1   /* CommonMark type 1 */
 @e COMMENT_MDHTMLC      /* CommonMark type 2 */
@@ -1760,7 +1760,7 @@ The one piece of good news is that they all start with a |<| character.
 
 	int condition_type = 0; /* not a valid condition */
 	
-	int i = content_index+1; /* i.e., the index after the |<| */
+	int i = content_index+1; /* i.e., the index after the `<` */
 	TEMPORARY_TEXT(tag)
 	for (; i<Str::len(line); i++) {
 		inchar32_t c = Str::get_at(line, i);
@@ -1892,9 +1892,9 @@ The one piece of good news is that they all start with a |<| character.
 	}
 
 @ And now the really painful one. See CommonMark, but basically this is
-where we have what looks like a tag and is not one that would cause |PRE_MDHTMLC|,
+where we have what looks like a tag and is not one that would cause `PRE_MDHTMLC`,
 but can also be followed by HTML attributes and values: for example,
-|<img src="this">| would be matched by the following.
+`<img src="this">` would be matched by the following.
 
 @<Is a MISCPAIR_MDHTMLC type HTML opening tenable?@> =
 	Str::clear(tag);
@@ -2007,7 +2007,7 @@ int MDBlockParser::advance_past_spacing(text_stream *tag, int i) {
 @h Parsing link references.
 When a paragraph contains link references, that will be at the beginning,
 and they need to be excised. Since this can in principle leave the paragraph
-entirely denuded of text, we may need to convert it to an |EMPTY_MIT| node.
+entirely denuded of text, we may need to convert it to an `EMPTY_MIT` node.
 
 =
 int MDBlockParser::remove_link_references(md_doc_state *state, markdown_item *at) {
@@ -2257,7 +2257,7 @@ int MDBlockParser::count_cells(text_stream *line, int is_delimiter_row,
 Phase I is now complete except for two tidying-up operations needed for lists.
 The first is to group together consecutive list entries which look as if they
 belong to the same list; they need the same flavour and the same basic type
-(ordered or unordered). We insert |ORDERED_LIST_MIT| or |UNORDERED_LIST_MIT|
+(ordered or unordered). We insert `ORDERED_LIST_MIT` or `UNORDERED_LIST_MIT`
 items into the tree to hold these.
 
 =
@@ -2290,7 +2290,7 @@ int MDBlockParser::in_same_list(markdown_item *A, markdown_item *B) {
 
 @ In order to be able to detect looseness of lists, we will need to make
 sure the white space flags are correct. Why would they be wrong, you ask?
-Well, because the new |ORDERED_LIST_MIT| or |UNORDERED_LIST_MIT| items have
+Well, because the new `ORDERED_LIST_MIT` or `UNORDERED_LIST_MIT` items have
 only just appeared, so had no opportunity to pick up these flags during Phase I.
 
 =

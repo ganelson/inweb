@@ -5,11 +5,11 @@ been used for the same visual effect.
 
 @ Suppose we want to read through a line in which tab characters mean "this
 material occurs on the next tab stop position", with stops every 8 characters.
-We want to treat the sequence A, space, B, tab, C, D exactly as |"A B     CD"|,
+We want to treat the sequence A, space, B, tab, C, D exactly as `"A B     CD"`,
 that is, as if had been typed with spaces to reach the same visual outcome.
 
 Writing code to handle such lines, without modifying them, is tricky, and the
-following gadget can help. Be a little wary, though: if the text in |line|
+following gadget can help. Be a little wary, though: if the text in `line`
 is freed in memory, this will leave a dangling pointer, so it's best not to
 keep these iterators alive for longer than necessary.
 
@@ -54,7 +54,7 @@ inchar32_t TabbedStr::get_character(tabbed_string_iterator *mdw) {
 }
 
 @ It's possible for the index point to be at a tab which is incompletely
-being expanded into spaces: then the following returns |FALSE|.
+being expanded into spaces: then the following returns `FALSE`.
 
 =
 int TabbedStr::at_whole_character(tabbed_string_iterator *mdw) {

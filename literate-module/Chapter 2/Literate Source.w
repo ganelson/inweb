@@ -5,12 +5,12 @@ To parse and represent units of literate source text.
 @ At this point we've done all of the large-scale organisations of webs into
 chapters and sections, and we get into the lower-level literate source.
 By analogy with "compilation units", we use the term "unit" to mean a stretch
-of self-contained literate source -- self-contained in that its holons can
+of self-contained literate source — self-contained in that its holons can
 incorporate each other, but not holons from other sections of a web, which
 are different units.
 
-We will end up with an |ls_unit| which is essentially a list of |ls_paragraph|,
-which is a list of |ls_chunk|, which is a list of |ls_line|.
+We will end up with an `ls_unit` which is essentially a list of `ls_paragraph`,
+which is a list of `ls_chunk`, which is a list of `ls_line`.
 
 =
 typedef struct ls_unit {
@@ -28,7 +28,7 @@ typedef struct ls_unit {
 	
 	/* result of parsing */
 	int lines_read;
-	struct linked_list *errors; /* of |ls_error| */
+	struct linked_list *errors; /* of `ls_error` */
 	
 	/* temporary workspace used only in parsing */
 	int incomplete;
@@ -43,15 +43,15 @@ typedef struct ls_unit {
 	CLASS_DEFINITION
 } ls_unit;
 
-@ To parse source text into an |ls_unit|, begin by calling this to produce
-an empty one, ready for parsing. Note that |S|, the section, can be |NULL|,
+@ To parse source text into an `ls_unit`, begin by calling this to produce
+an empty one, ready for parsing. Note that `S`, the section, can be `NULL`,
 in cases when tiny fragments of code are being parsed outside the context
-of a full literate program. However, |syntax| and |language| must be set.
+of a full literate program. However, `syntax` and `language` must be set.
 
-The |extracts_path| and |dialects_path| directories are relevant only when
+The `extracts_path` and `dialects_path` directories are relevant only when
 parsing extracts: those drawn from files need to get the files from somewhere,
 and those which name their contents as being written in a given language
-need to get that from somewhere, too. Either or both can be |NULL|, which
+need to get that from somewhere, too. Either or both can be `NULL`, which
 means the current working directory.
 
 =
@@ -93,8 +93,8 @@ void LiterateSource::add_purpose(ls_unit *lsu, text_file_position *tfp, text_str
 	line->classification.operand1 = Str::duplicate(text);
 }
 
-@ Once the unit has been begun, call |LiterateSource::feed_line| on each line
-of source text to feed into it; then call |LiterateSource::complete_unit| to
+@ Once the unit has been begun, call `LiterateSource::feed_line` on each line
+of source text to feed into it; then call `LiterateSource::complete_unit` to
 indicate that you're done.
 
 =
@@ -105,7 +105,7 @@ ls_line *LiterateSource::feed_line(ls_unit *lsu, text_file_position *tfp, text_s
 
 @ That function wasn't recursive: this one is. We need to remember here that a
 literal line of source text can, in some notations for LS, produce multiple
-|ls_line| objects -- if a single line combines a title for a paragraph with
+`ls_line` objects — if a single line combines a title for a paragraph with
 some commentary beginning that paragraph, for example.
 
 =
@@ -128,7 +128,7 @@ ls_line *LiterateSource::feed_line_segment(ls_unit *lsu, text_file_position *tfp
 	return line;
 }
 
-@ If we were called with |major| and |minor| already set to a given classification,
+@ If we were called with `major` and `minor` already set to a given classification,
 then that's how the line segment is classified. If not, then we don't know the
 answer in advance, and will have to work it out. This depends on context, as
 provided by the previous line segment's classification.
@@ -221,8 +221,8 @@ Note that it is possible for more than one of these occur at at single position.
 of the line were significant, and wants to give us a "residue" of material
 left over. We recurse in order to insert line(s) arising from that, too.
 
-Usually the classifier has left that residue unclassified for now -- so that
-it will be classified when we recurse -- but sometimes the classifier already
+Usually the classifier has left that residue unclassified for now — so that
+it will be classified when we recurse — but sometimes the classifier already
 knows and wants to tell us:
 
 @<And finally insert any residue left over@> =
@@ -232,7 +232,7 @@ knows and wants to tell us:
 
 @ If for some reason you don't want to use any external classification, because
 you already know how all your lines are to be classified, you can use these
-convenience functions rather than calling |LiterateSource::feed_line|.
+convenience functions rather than calling `LiterateSource::feed_line`.
 Note that these all increment the line count, just as that does:
 
 =
@@ -257,7 +257,7 @@ void LiterateSource::feed_code_end(ls_unit *lsu, text_file_position *tfp) {
 	LiterateSource::feed_line_segment(lsu, tfp, I"", EXTRACT_END_MAJLC, NO_MINLC);
 }
 
-@ The above created |ls_line| objects, so we should take a look at those:
+@ The above created `ls_line` objects, so we should take a look at those:
 
 =
 typedef struct ls_line {
@@ -270,10 +270,10 @@ typedef struct ls_line {
 	struct ls_class classification;
 	struct ls_footnote *footnote_text; /* which fn this is the text of, if it is at all */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
-	struct linked_list *index_marks; /* or |NULL| if there are none */
+	struct linked_list *index_marks; /* or `NULL` if there are none */
 
 	/* how the line sits inside the wider source */
-	struct ls_chunk *owning_chunk; /* |NULL| until the unit has been divided up into chunks */
+	struct ls_chunk *owning_chunk; /* `NULL` until the unit has been divided up into chunks */
 	struct ls_line *prev_line;
 	struct ls_line *next_line;
 	CLASS_DEFINITION
@@ -347,7 +347,7 @@ completion begins, set the following constant to N.
 
 @ If the first line of substance is a section heading then we take that out of
 the list; if the first remaining is a purpose line, we do likewise. Those should
-be the only |SECTION_HEADING_MINLC| or |PURPOSE_MINLC| lines in the list,
+be the only `SECTION_HEADING_MINLC` or `PURPOSE_MINLC` lines in the list,
 leaving us with standard material only.
 
 @<Trim off header lines at the top@> =
@@ -383,8 +383,8 @@ with some blank commentary lines or paragraph-start markers, so:
 This is handled by loading it in, and inserting it as extract lines into the
 list, with each new line being added after the "spool point".
 
-After this point, all |TEXT_FROM_MINLC| extracts have been converted to
-|TEXT_MINLC|, and all |TEXT_FROM_AS_MINLC| to |TEXT_AS_MINLC|.
+After this point, all `TEXT_FROM_MINLC` extracts have been converted to
+`TEXT_MINLC`, and all `TEXT_FROM_AS_MINLC` to `TEXT_AS_MINLC`.
 
 We're forgiving if the file doesn't exist, but not if it does exist but
 can't be read for some permissions reason, which is more serious.
@@ -432,14 +432,14 @@ void LiterateSource::spool_line(text_stream *line, text_file_position *tfp, void
 	lsu->spool_point = new_lst;	
 }
 
-@ Okay, so within the line list, paragraph divisions occur at |PARAGRAPH_START_MAJLC|
-lines. We assign an |ls_paragraph| to each gap between those divisions, including
-before the first and after the last. Note that the |PARAGRAPH_START_MAJLC| lines
+@ Okay, so within the line list, paragraph divisions occur at `PARAGRAPH_START_MAJLC`
+lines. We assign an `ls_paragraph` to each gap between those divisions, including
+before the first and after the last. Note that the `PARAGRAPH_START_MAJLC` lines
 are then not included in any of the chunks.
 
 Within each paragraph, chunk divisions occur when a line belonging to a different
 "chunk type" is found, or when the start of a definition is found. Thus, for example,
-these nine lines would be formed into three chunks, each getting an |ls_chunk|:
+these nine lines would be formed into three chunks, each getting an `ls_chunk`:
 = (text)
 	COMMENTARY_MAJLC                chunk 1 (2 lines)
 	COMMENTARY_MAJLC
@@ -518,7 +518,7 @@ altogether, so that nobody uses it by mistake.
 		WebIndexing::index_at(ie, par);
 	}
 
-@ So this is the |ls_paragraph| object:
+@ So this is the `ls_paragraph` object:
 
 =
 typedef struct ls_paragraph {
@@ -532,13 +532,13 @@ typedef struct ls_paragraph {
 	void *analysis_ref;
 	struct ls_holon *holon;
 	struct ls_class titling;
-	struct linked_list *taggings; /* of |literate_source_tagging| */
+	struct linked_list *taggings; /* of `literate_source_tagging` */
 
 	/* contents of the paragraph */
 	struct ls_chunk *first_chunk;
 	struct ls_chunk *last_chunk;
 	int footnote_count;
-	struct linked_list *footnotes; /* of |ls_footnote| */
+	struct linked_list *footnotes; /* of `ls_footnote` */
 
 	/* used only when computing the paragraph numbers */
 	struct ls_paragraph *parent_paragraph; /* the super-para of this, if any */
@@ -605,7 +605,7 @@ typedef struct ls_chunk {
 	struct ls_line *onset_line; /* where to report errors about the chunk */
 
 	/* meaningful for EXTRACT_LSCT chunks only */
-	struct ls_holon *holon; /* or |NULL|, if this doesn't contain a program fragment */
+	struct ls_holon *holon; /* or `NULL`, if this doesn't contain a program fragment */
 	int plainer;
 	int hyperlinked;
 	struct text_stream *extract_to;
@@ -771,15 +771,15 @@ the chunk, then we remove the chunk entirely, because we do not allow empty chun
 		chunk->last_line->next_line = NULL;
 	}
 
-@ At this point an extract chunk can begin with one optional |EXTRACT_START_MAJLC|
+@ At this point an extract chunk can begin with one optional `EXTRACT_START_MAJLC`
 line, giving details of what sort of extract it is: if this isn't present, the
-extract will be standard code. It then consists only of |EXTRACT_MATTER_MAJLC|
-lines, running up to an optional |EXTRACT_END_MAJLC| line which, if present,
+extract will be standard code. It then consists only of `EXTRACT_MATTER_MAJLC`
+lines, running up to an optional `EXTRACT_END_MAJLC` line which, if present,
 must be the last in the chunk.
 
 Here we strip out the start and end markers, if they are present, extracting
 any metadata from the start marker as we do. That leaves a chunk with a list
-of 0 or more |EXTRACT_MATTER_MAJLC| lines: if there are none, we remove the
+of 0 or more `EXTRACT_MATTER_MAJLC` lines: if there are none, we remove the
 chunk.
 
 If the syntax calls for extracts to have opening and closing blank lines
@@ -813,8 +813,8 @@ empty as a result.
 			@<Trim whitespace lines from end of this chunk@>;
 	}
 
-@ A definition chunk begins with a |DEFINITION_MAJLC| line, followed by 0
-or more |DEFINITION_CONTINUED_MAJLC| lines. We trim away any blank continuation
+@ A definition chunk begins with a `DEFINITION_MAJLC` line, followed by 0
+or more `DEFINITION_CONTINUED_MAJLC` lines. We trim away any blank continuation
 lines from the bottom end, but don't touch the top. Note that the chunk cannot
 thus become empty, because it always has its header line.
 
@@ -970,11 +970,11 @@ we sometimes read this as a purpose written in plain text, and remove the para.
 
 @ So, each chunk which contains a fragment of the actual program code (rather
 than, say, a definition, or commentary, or an extract of other code not to be
-compiled) must be paired to an |ls_holon| structure. If there's a holon
+compiled) must be paired to an `ls_holon` structure. If there's a holon
 declaration line (i.e., a name for it) anywhere in the paragraph prior to
 this chunk, we'll use that as the name; otherwise it will go nameless.
 
-This process removes all |EARLY_MINLC|, |VERY_EARLY_MINLC| or corresponding late
+This process removes all `EARLY_MINLC`, `VERY_EARLY_MINLC` or corresponding late
 minors.
 
 We finish up by scanning the holons in detail, and resolving cross-references
@@ -1244,7 +1244,7 @@ void LiterateSource::remove_par_from_unit(ls_paragraph *par, ls_unit *lsu) {
 
 @h Fragments only.
 The following provides the simplest possible demonstration of the functions
-above. It makes an |ls_unit| out of a small fragment of code stored as text
+above. It makes an `ls_unit` out of a small fragment of code stored as text
 in memory, and which contains only code, not commentary or any of the other
 bells and whistles possible.
 

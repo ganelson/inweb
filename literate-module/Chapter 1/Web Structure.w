@@ -4,12 +4,12 @@ To read the structure of a literate programming web from a path in the file
 system.
 
 @h Web objects.
-Each web loaded in produces a single instance of the following. If |W| is an
-|ls_web|, note that |W->chapters| is the full list of all chapters in its
+Each web loaded in produces a single instance of the following. If `W` is an
+`ls_web`, note that `W->chapters` is the full list of all chapters in its
 program, including those imported from other webs: this may be different from
-|W->main_module->chapters|, which contains just its own chapters.
+`W->main_module->chapters`, which contains just its own chapters.
 
-In fact, the |W->chapters| list is arguably redundant, since it's just a
+In fact, the `W->chapters` list is arguably redundant, since it's just a
 concatenation of the chapter lists of the modules, but it's much more convenient
 to store this redundant copy than to have to keep traversing the module tree.
 
@@ -17,25 +17,25 @@ to store this redundant copy than to have to keep traversing the module tree.
 typedef struct ls_web {
 	struct wcl_declaration *declaration;
 	struct ls_module *main_module; /* the root of a small dependency graph */
-	struct linked_list *chapters; /* of |ls_chapter| */
+	struct linked_list *chapters; /* of `ls_chapter` */
 
 	struct pathname *path_to_web; /* relative to the current working directory */
 	struct filename *single_file; /* relative to the current working directory */
 	int is_page; /* is this a simple one-section web with no contents page? */
-	struct linked_list *bibliographic_data; /* of |web_bibliographic_datum| */
-	struct linked_list *conventions; /* of |ls_conventions| */
+	struct linked_list *bibliographic_data; /* of `web_bibliographic_datum` */
+	struct linked_list *conventions; /* of `ls_conventions` */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_notation *web_notation; /* which version syntax the sections will have */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct ls_index *index;
 
 	struct programming_language *web_language; /* in which most of the sections are written */
-	struct linked_list *tangle_target_names; /* of |text_stream| */
-	struct linked_list *tangle_targets; /* of |tangle_target| */
+	struct linked_list *tangle_target_names; /* of `text_stream` */
+	struct linked_list *tangle_targets; /* of `tangle_target` */
 	struct ls_chunk *definitions_chunk;
 
-	struct filename *contents_filename; /* or |NULL| for a single-file web */
-	struct linked_list *header_filenames; /* of |filename| */
+	struct filename *contents_filename; /* or `NULL` for a single-file web */
+	struct linked_list *header_filenames; /* of `filename` */
 
 	struct ls_holon_namespace *global_holon_namespace;
 
@@ -285,18 +285,18 @@ void WebStructure::write_literate_source(OUTPUT_STREAM, ls_web *W) {
 }
 
 @h Chapter objects.
-The |chapters| list in a |ls_web| contains these as its entries. Instances
-of |ls_chapter| are never created for any other purpose, so they can exist only
-as part of an |ls_web|; and once added they are never removed.
+The `chapters` list in a `ls_web` contains these as its entries. Instances
+of `ls_chapter` are never created for any other purpose, so they can exist only
+as part of an `ls_web`; and once added they are never removed.
 
 =
 typedef struct ls_chapter {
 	struct ls_web *owning_web;
 	struct ls_module *owning_module;
 	int imported; /* did this originate in a different web? */
-	struct linked_list *sections; /* of |ls_section| */
+	struct linked_list *sections; /* of `ls_section` */
 
-	struct text_stream *ch_range; /* e.g., |P| for Preliminaries, |7| for Chapter 7, |C| for Appendix C */
+	struct text_stream *ch_range; /* e.g., `P` for Preliminaries, `7` for Chapter 7, `C` for Appendix C */
 	struct text_stream *ch_title; /* e.g., "Chapter 3: Fresh Water Fish" */
 	struct text_stream *ch_basic_title; /* e.g., "Chapter 3" */
 	struct text_stream *ch_decorated_title; /* e.g., "Fresh Water Fish" */
@@ -341,9 +341,9 @@ ls_chapter *WebStructure::new_ls_chapter(ls_web *W, text_stream *range, text_str
 }
 
 @h Section objects.
-The |chapters| list in an |ls_chapter| contains these as its entries. Instances
-of |ls_section| are never created for any other purpose, so they can exist only
-as part of an |ls_chapter|; and once added they are never removed.
+The `chapters` list in an `ls_chapter` contains these as its entries. Instances
+of `ls_section` are never created for any other purpose, so they can exist only
+as part of an `ls_chapter`; and once added they are never removed.
 
 =
 typedef struct ls_section {
@@ -367,7 +367,7 @@ typedef struct ls_section {
 	struct programming_language *sect_language; /* in which this section is written */
 	struct text_stream *sect_language_name;
 	int is_independent_target;
-	struct tangle_target *sect_target; /* |NULL| unless this section produces a tangle of its own */
+	struct tangle_target *sect_target; /* `NULL` unless this section produces a tangle of its own */
 
 	int scratch_flag; /* temporary workspace */
 
@@ -498,9 +498,9 @@ filename *WebStructure::contents_filename(ls_web *W) {
 
 @h Reading from the file system.
 Webs can be stored in two ways: as a directory containing a multitude of files,
-in which case the pathname |P| is supplied; or as a single file with everything
+in which case the pathname `P` is supplied; or as a single file with everything
 in one (and thus, implicitly, a single chapter and a single section), in which
-case a filename |alt_F| is supplied.
+case a filename `alt_F` is supplied.
 
 =
 ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
@@ -521,7 +521,7 @@ ls_web *WebStructure::parse_declaration(wcl_declaration *D) {
 
 @h Web reading.
 All of that ran very quickly, but now things will slow down. The next
-function is where the actual contents of a web are read -- which means opening
+function is where the actual contents of a web are read — which means opening
 each section and reading it line by line. We read the complete literate source
 of the web into memory, which is profligate, but saves time.
 

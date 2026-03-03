@@ -179,7 +179,7 @@ linked_list *WebIndexing::index_from_line(OUTPUT_STREAM, text_stream *line, ls_n
 
 =
 typedef struct ls_index {
-	struct linked_list *all_marks; /* of |ls_index_mark| */
+	struct linked_list *all_marks; /* of `ls_index_mark` */
 	struct dictionary *lemmas;
 	int no_lemmas_sorted;
 	struct ls_index_lemma **lemmas_sorted;
@@ -190,7 +190,7 @@ typedef struct ls_index_lemma {
 	struct text_stream *sort_key;
 	struct text_stream *text;
 	int style;
-	struct linked_list *marks; /* of |ls_index_mark| */
+	struct linked_list *marks; /* of `ls_index_mark` */
 	struct ls_index_lemma *parent;
 	CLASS_DEFINITION
 } ls_index_lemma;

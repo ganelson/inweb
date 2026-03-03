@@ -7,9 +7,9 @@ within it. This is not as simple as it seems because it depends both on the
 syntax used to mark holons inside code, and also the syntax of the programming
 language, in order that we don't get false positives of holon notation from
 inside comments, string literals or character literals. For example, if our
-syntax for a holon in C is |XXname of holonYY|, then we don't want to be fooled
-by |printf("XX"); /* YYZ is my favourite Rush number */|, where the |XX|
-doesn't count because it's inside a string literal, and the |YY| because it's
+syntax for a holon in C is `XXname of holonYY`, then we don't want to be fooled
+by `printf("XX"); /* YYZ is my favourite Rush number */`, where the `XX`
+doesn't count because it's inside a string literal, and the `YY` because it's
 inside a multiline comment.
 
 We therefore construct a finite state machine which does the necessary parsing

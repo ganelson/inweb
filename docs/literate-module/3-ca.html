@@ -68,15 +68,15 @@ structures. Each <code>ls_web</code> has an <code>ls_web_analysis</code> attache
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_web_analysis</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">analysed</span><span class="plain-syntax">; </span><span class="comment-syntax">/* has this been scanned for function usage and such? */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language_types</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |language_type|: used only for C-like languages */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defined_constants</span><span class="plain-syntax">;  </span><span class="comment-syntax">/* of |defined_constant| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language_functions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |language_function| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language_types</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>language_type</code>: used only for C-like languages */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">defined_constants</span><span class="plain-syntax">;  </span><span class="comment-syntax">/* of <code>defined_constant</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">language_functions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>language_function</code> */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">ls_web_analysis</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_paragraph_analysis</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">functions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |function|: those defined in this para */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">structures</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |language_type|: similarly */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">functions</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>function</code>: those defined in this para */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">structures</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>language_type</code>: similarly */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">ls_paragraph_analysis</span><span class="plain-syntax">;</span>
 
@@ -168,7 +168,7 @@ structures. Each <code>ls_web</code> has an <code>ls_web_analysis</code> attache
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Analysing code.</b>  We can't pretend to a full-scale static analysis of the code -- for one thing,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Analysing code.</b>  We can't pretend to a full-scale static analysis of the code — for one thing,
 that would mean knowing more about the syntax of the web's language than we
 actually do. So the following provides only a toolkit which other code can
 use when looking for certain syntactic patterns: something which looks like
@@ -188,11 +188,11 @@ a function call, or a C structure field reference, for example.</p>
 with punctuation around them. Usage codes are used to define a set of allowed
 contexts in which to spot these identifiers.</p>
 </div>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ELEMENT_ACCESS_USAGE</span> <span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* C-like languages: access via |-&gt;| or |.| operators to structure element */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">ELEMENT_ACCESS_USAGE</span> <span class="constant-syntax">0x00000001</span><span class="plain-syntax"> </span><span class="comment-syntax">/* C-like languages: access via <code>-&gt;</code> or <code>.</code> operators to structure element */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">FCALL_USAGE</span> <span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax">/* C-like languages: function call made using brackets, |name(args)| */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">FCALL_USAGE</span> <span class="constant-syntax">0x00000002</span><span class="plain-syntax"> </span><span class="comment-syntax">/* C-like languages: function call made using brackets, <code>name(args)</code> */</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PREFORM_IN_CODE_USAGE</span> <span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax">/* InC only: use of a Preform nonterminal as a C "constant" */</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PREFORM_IN_CODE_USAGE</span> <span class="constant-syntax">0x00000004</span><span class="plain-syntax"> </span><span class="comment-syntax">/* InC only: use of a Preform nonterminal as a C &quot;constant&quot; */</span>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PREFORM_IN_GRAMMAR_USAGE</span> <span class="constant-syntax">0x00000008</span><span class="plain-syntax"> </span><span class="comment-syntax">/* InC only: ditto, but within Preform production rather than C code */</span>
 </pre>
@@ -396,7 +396,7 @@ same paragraph of code.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">hash_table_entry_usage</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">usage_recorded_at</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form_of_usage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of the |*_USAGE| constants defined above */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">form_of_usage</span><span class="plain-syntax">; </span><span class="comment-syntax">/* bitmap of the <code>*_USAGE</code> constants defined above */</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">hash_table_entry_usage</span><span class="plain-syntax">;</span>
 </pre>

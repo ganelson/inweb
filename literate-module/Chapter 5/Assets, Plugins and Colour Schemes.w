@@ -87,8 +87,8 @@ no matter how many times this is called.
 To include a plugin is by definition to include its assets. These may be held
 either in the current pattern, or in the one it is based on, or the one
 that in turn is based on, and so forth. The first-discovered asset wins:
-i.e., if the current pattern's copy of the asset contains |MyAsset.png| then
-this prevails over any |MyAsset.png| held by patterns further down. To do
+i.e., if the current pattern's copy of the asset contains `MyAsset.png` then
+this prevails over any `MyAsset.png` held by patterns further down. To do
 this, we store the leafnames in a dictionary.
 
 =
@@ -126,7 +126,7 @@ void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
 	}
 }
 
-@ Colour schemes are CSS files held slightly differently, in the |Colouring|
+@ Colour schemes are CSS files held slightly differently, in the `Colouring`
 subdirectory of (presumably) an HTML-based pattern.
 
 A colour scheme can only be included once in each round, i.e., for each woven
@@ -158,7 +158,7 @@ void Assets::include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
 The practical effect of the two function above, then, is to call
 //Assets::include_asset// on each asset needed. What that function does
 is highly configurable by the pattern, so we now have to show how. Each
-different filename extension, such as |.jpg|, has its own rule for what to do:
+different filename extension, such as `.jpg`, has its own rule for what to do:
 
 @e EMBED_ASSET_METHOD from 1
 @e COPY_ASSET_METHOD
@@ -168,7 +168,7 @@ different filename extension, such as |.jpg|, has its own rule for what to do:
 =
 typedef struct asset_rule {
 	struct text_stream *applies_to;
-	int method; /* one of the |*_ASSET_METHOD| values above */
+	int method; /* one of the `*_ASSET_METHOD` values above */
 	struct text_stream *pre;
 	struct text_stream *post;
 	int transform_names;
@@ -176,7 +176,7 @@ typedef struct asset_rule {
 } asset_rule;
 
 @ A pattern has a list of such rules, as follows. In each list, exactly one
-rule has the empty text as its |applies_to|: that one is the default, for any
+rule has the empty text as its `applies_to`: that one is the default, for any
 file whose extension does not appear in the rules list.
 
 (The default rule is to copy the file as a binary object, doing nothing fancy.)
@@ -188,8 +188,8 @@ linked_list *Assets::new_asset_rules_list(void) {
 	return L;
 }
 
-@ This is called by //Patterns// in response to |assets: EXT CMD| commands. The
-|CMD| part is in |line|.
+@ This is called by //Patterns// in response to `assets: EXT CMD` commands. The
+`CMD` part is in `line`.
 
 =
 void Assets::add_asset_rule(linked_list *L, text_stream *ext, text_stream *line,
@@ -248,7 +248,7 @@ asset_rule *Assets::new_rule(linked_list *L, text_stream *ext, text_stream *line
 	}
 	Regexp::dispose_of(&mr);
 
-@ Given a filename |F| for some asset, which rule applies to it? The answer
+@ Given a filename `F` for some asset, which rule applies to it? The answer
 is that if the current pattern, or any pattern it is based on, defines a rule,
 then the topmost one applies; and otherwise the default rule applies.
 
@@ -272,7 +272,7 @@ asset_rule *Assets::applicable_rule(wcl_declaration *D, ls_pattern *pattern, fil
 
 @h Inclusion of assets.
 Finally, then, we can include a single asset. This has already been located,
-at filename |F|, and we now know how to find the applicable rule.
+at filename `F`, and we now know how to find the applicable rule.
 
 =
 pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filename *F,
@@ -349,9 +349,9 @@ pathname *Assets::include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	WRITE("\n");
 
 @ "Transforming" is what happens to a CSS file to change the class names of
-its |span| and |pre| styling rules, to add a prefix text. This is what changes
+its `span` and `pre` styling rules, to add a prefix text. This is what changes
 the style names for colouring, say, COBOL source code from, e.g.,
-|span.identifier-syntax| to |span.ConsoleText-identifier-syntax|.
+`span.identifier-syntax` to `span.ConsoleText-identifier-syntax`.
 
 =
 typedef struct css_file_transformation {

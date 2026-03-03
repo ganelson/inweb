@@ -91,9 +91,9 @@ void InwebMake::cli(void) {
 =
 typedef struct inweb_make_settings {
 	int make_to_stdout;
-	struct filename *make_to_setting; /* |-to X|: for the various make commands */
-	struct filename *script_setting; /* |-script X|: the pathname X, if supplied */
-	struct text_stream *platform_setting; /* |-platform X|: sets prevailing platform to X */
+	struct filename *make_to_setting; /* `-to X`: for the various make commands */
+	struct filename *script_setting; /* `-script X`: the pathname X, if supplied */
+	struct text_stream *platform_setting; /* `-platform X`: sets prevailing platform to X */
 } inweb_make_settings;
 
 void InwebMake::initialise(inweb_make_settings *ims) {

@@ -3,8 +3,8 @@
 Manages the build metadata for an inweb project.
 
 @h About build files.
-When we read a web, we look for a file in it (or alongside it) called |build.txt|.
-If no such file exists, we return |NULL|.
+When we read a web, we look for a file in it (or alongside it) called `build.txt`.
+If no such file exists, we return `NULL`.
 
 =
 filename *BuildFiles::build_file_for_web(ls_web *WS, int creating) {
@@ -111,7 +111,7 @@ synthesize the semantic version number for the project. Note that this is
 called even if no build file had ever been found, so it's quite legal for
 the Contents page to specify all of this.
 
-If no error occurs, then the expansion |[[Semantic Version Number]]| is
+If no error occurs, then the expansion `[[Semantic Version Number]]` is
 guaranteed to produce a semver-legal version number.
 
 =
@@ -178,8 +178,8 @@ void BuildFiles::advance(filename *F) {
 }
 
 @ The standard date format we use is "26 February 2018". If the contents of
-|dateline| match today's date in this format, we return |TRUE|; otherwise we
-rewrite |dateline| to today and return |FALSE|.
+`dateline` match today's date in this format, we return `TRUE`; otherwise we
+rewrite `dateline` to today and return `FALSE`.
 
 =
 void BuildFiles::today(OUTPUT_STREAM) {
@@ -202,11 +202,11 @@ int BuildFiles::dated_today(text_stream *dateline) {
 	return rv;
 }
 
-@ Traditional Inform build codes are four-character, e.g., |3Q27|. Here, we
+@ Traditional Inform build codes are four-character, e.g., `3Q27`. Here, we
 read such a code and increase it by one. The two-digit code at the back is
-incremented, but rolls around from |99| to |01|, in which case the letter is
-advanced, except that |I| and |O| are skipped, and if the letter passes |Z|
-then it rolls back around to |A| and the initial digit is incremented.
+incremented, but rolls around from `99` to `01`, in which case the letter is
+advanced, except that `I` and `O` are skipped, and if the letter passes `Z`
+then it rolls back around to `A` and the initial digit is incremented.
 
 This allows for 21384 distinct build codes, enough to use one each day for
 some 58 years.

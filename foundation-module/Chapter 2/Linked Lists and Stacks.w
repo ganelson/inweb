@@ -105,8 +105,8 @@ void *LinkedLists::delete(int N, linked_list *L) {
 	return NULL;
 }
 
-@ And indeed to insert at a known position, where |N| being 0 means the front
-of the list, |N| being 1 means "after the first item", and so on.
+@ And indeed to insert at a known position, where `N` being 0 means the front
+of the list, `N` being 1 means "after the first item", and so on.
 
 =
 void LinkedLists::insert(linked_list *L, int N, void *P) {
@@ -169,10 +169,10 @@ void *LinkedLists::content(linked_list_item *I) {
 
 @h A macro-ized API.
 These intentionally hide the implementation. The difference between
-|FIRST_IN_LINKED_LIST| and |FIRST_ITEM_IN_LINKED_LIST| is that one returns
+`FIRST_IN_LINKED_LIST` and `FIRST_ITEM_IN_LINKED_LIST` is that one returns
 the first structure in the list, and the other returns the first
-|linked_list_item| chunk in the list. From the latter you can make the
-former using |CONTENT_IN_ITEM|, but not vice versa. The same object
+`linked_list_item` chunk in the list. From the latter you can make the
+former using `CONTENT_IN_ITEM`, but not vice versa. The same object
 may be listed in many different lists, so if all you have is the object,
 you don't know its place in the list.
 
@@ -206,13 +206,13 @@ you don't know its place in the list.
 @d LAST_IN_LINKED_LIST(T, L)
 	((T *) (LinkedLists::content(LinkedLists::last(L))))
 
-@ The following macro requires slight care to use: the list |L| needs to be
-calculable without side-effects. There's no such worry over |P| or |T|, since
+@ The following macro requires slight care to use: the list `L` needs to be
+calculable without side-effects. There's no such worry over `P` or `T`, since
 they're just identifier names: the loop variable and the type name respectively.
 
-Note that the loop variable |P| must already be defined. Inside the loop body,
-a new variable will also then exist, |P_item|, to refer to the item which
-points to |P|. This allows us to iterate despite the comments above.
+Note that the loop variable `P` must already be defined. Inside the loop body,
+a new variable will also then exist, `P_item`, to refer to the item which
+points to `P`. This allows us to iterate despite the comments above.
 
 @d LOOP_OVER_LINKED_LIST(P, T, L)
 	for (linked_list_item *P##_item = (P = FIRST_IN_LINKED_LIST(T, L), FIRST_ITEM_IN_LINKED_LIST(T, L));
@@ -226,7 +226,7 @@ the front. To push an item, we add it at the front; to pull, we remove the
 front item.
 
 We provide an abstract type name for these stacks, even though they're the
-exact same structure. For reasons to do with the way |typedef| works in C,
+exact same structure. For reasons to do with the way `typedef` works in C,
 it is awkward to typedef the two names together, so we'll simply use the
 preprocessor:
 

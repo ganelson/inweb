@@ -31,20 +31,20 @@ can be found in //foundation-test//.
 Import lines appear after the metadata, but before the roster of sections
 and chapters.
 
-2. The constant |PROGRAM_NAME| must be defined equal to a C string with a
+2. The constant `PROGRAM_NAME` must be defined equal to a C string with a
 brief version of the program's name. For example,
 = (text as Inweb)
 	@d PROGRAM_NAME "declutter"
 =
 
-3. The |main| function for the client should, as one of its very first acts,
-call |Foundation::start()|, and should similarly, just before it exits, call
-|Foundation::end()|. Any other module used should be started after Foundation
+3. The `main` function for the client should, as one of its very first acts,
+call `Foundation::start()`, and should similarly, just before it exits, call
+`Foundation::end()`. Any other module used should be started after Foundation
 starts, and ended before Foundation ends.
 
 @h Truth.
 Every large C program starts by defining constants for truth and falsity. So
-does Foundation: |TRUE|, |FALSE|, and a third state |NOT_APPLICABLE|.
+does Foundation: `TRUE`, `FALSE`, and a third state `NOT_APPLICABLE`.
 
 @h Text streams and formatted output.
 Perhaps the most useful feature of Foundation is that it provides for
@@ -59,33 +59,33 @@ A typical function writing to one of these might be:
 		WRITE("According to %S, the square of %d is %d.\n", authority, N, N*N);
 	}
 =
-Here |WRITE| is a variadic macro rather like |printf|, and note the use of
-the escape |%S| to write a text stream. It writes formatted output into the
-stream |OUT|, and is actually an abbreviation for this:
+Here `WRITE` is a variadic macro rather like `printf`, and note the use of
+the escape `%S` to write a text stream. It writes formatted output into the
+stream `OUT`, and is actually an abbreviation for this:
 = (text as InC)
 	void Hypothetical::writer(text_stream *OUT, text_stream *authority, int N) {
 		WRITE_TO(OUT, "According to %S, the square of %d is %d.\n", authority, N, N*N);
 	}
 =
-The function |Hypothetical::writer| can write equally to a text file or to a
+The function `Hypothetical::writer` can write equally to a text file or to a
 string, whichever it's given, and doesn't need to worry about memory management
 or text encodings.
 
 The standard output and standard error "files" on Unix-based systems are
-referred to as |STDOUT| and |STDERR|, both constants of type |text_stream *|
-defined by Foundation. The value |NULL|, used as a text stream, is valid and
+referred to as `STDOUT` and `STDERR`, both constants of type `text_stream *`
+defined by Foundation. The value `NULL`, used as a text stream, is valid and
 prints as the empty string, while ignoring any content written to it.
 All of these capitalised macros are defined in //Streams//.
 
-|PRINT("...")| is an abbreviation for |WRITE_TO(STDOUT, "...")|, and
-|LOG("...")| similarly writes to the log file. (See //Debugging Log//.)
+`PRINT("...")` is an abbreviation for `WRITE_TO(STDOUT, "...")`, and
+`LOG("...")` similarly writes to the log file. (See //Debugging Log//.)
 
 @ If you're using InC, the slight extension to C made by Inweb, there's a
 simple notation for constants of this type:
 = (text as InC)
 	text_stream *error_message = I"quadro-triticale stocks depleted";
 =
-The |I| prefix is meant to imitate the |L| used in standard C99 for long string
+The `I` prefix is meant to imitate the `L` used in standard C99 for long string
 constants. But this is a feature of //inweb// rather than of Foundation.
 
 @ Programs doing a lot of parsing need to create and throw away strings all
@@ -101,14 +101,14 @@ momentary period, do this:
 	...
 	DISCARD_TEXT(alpha)
 =
-Between the use of these two macros, |alpha| is a valid |text_stream *|,
+Between the use of these two macros, `alpha` is a valid `text_stream *`,
 and is a string capable of growing to arbitrary size.
 
 @ Foundation provides an elaborate system for providing new string escapes
-like |%S|: see //Writers and Loggers//. A similar system manages a debugging
+like `%S`: see //Writers and Loggers//. A similar system manages a debugging
 log, to which it's easy to make "dollar escapes" for pretty-printing internal
-data structures: for example, if you've made a structure called |recipe|, you
-could make |$R| pretty-print one.
+data structures: for example, if you've made a structure called `recipe`, you
+could make `$R` pretty-print one.
 
 @ Foundation also has an extensive library of string-handling routines,
 providing the sort of facilities you would expect in a typical scripting
@@ -122,14 +122,14 @@ For slicing, see the //string_position// type, representing positions for the
 benefit of functions like //Str::substr//.
 
 @ Individual characters are represented in Foundation using the standard
-POSIX type |inchar32_t|, which on all modern systems is a very wide integer,
+POSIX type `inchar32_t`, which on all modern systems is a very wide integer,
 whether or not signed. It's safe to assume it can hold all normal Unicode
 code points. See //Characters// for class functions like //Characters::isdigit//,
 which have been carefully written to work equivalently on either Windows or
 Unix-based systems.
 
 //C Strings// and //Wide Strings// provide bare-minimum facilities for handling
-traditional null-terminated |char| and |inchar32_t| arrays, but don't use these.
+traditional null-terminated `char` and `inchar32_t` arrays, but don't use these.
 Texts are just better.
 
 @h Objects.
@@ -137,10 +137,10 @@ To a very limited extent, Foundation enables C programs to have "classes",
 "objects" and "methods", and it makes use of that ability itself, too. (See
 //Foundation Classes// for the list of classes made by //foundation//.) For
 example, suppose we are writing a program to store recipes, and we want
-something in C which corresponds to objects of the class |recipe|. We need to
+something in C which corresponds to objects of the class `recipe`. We need to
 do three things:
 
-1. Declare an enumerated constant ending |_CLASS| to represent this type in the
+1. Declare an enumerated constant ending `_CLASS` to represent this type in the
 memory manager, and then make a matching use of a macro to define some associated
 functions, which we never see or think about. For example:
 = (text as Inweb)
@@ -163,10 +163,10 @@ of throwaway instances, we would instead write:
 	DECLARE_CLASS_ALLOCATED_IN_ARRAYS(salt_grain, 1000)
 =
 The memory manager then claims these in blocks of 1000. Use this only if it's
-actually needed; note that |DESTROY| cannot be used with objects created
+actually needed; note that `DESTROY` cannot be used with objects created
 this way.
 
-2. We have to declare the actual structure, and |typedef| the name to it. For
+2. We have to declare the actual structure, and `typedef` the name to it. For
 example:
 = (text as InC)
 	typedef struct recipe {
@@ -175,17 +175,17 @@ example:
 		CLASS_DEFINITION
 	} recipe;
 =
-Here |CLASS_DEFINITION| is a macro defined in //Memory// which expands to the
+Here `CLASS_DEFINITION` is a macro defined in //Memory// which expands to the
 necessary field(s) to keep track of this. We won't use those fields, or ever
 think about them.
 
-3. In fact we've now finished. The macro |CREATE(recipe)| returns a new
-instance, and |DESTROY(R)| would destroy an existing one, |R|. Unless manually
+3. In fact we've now finished. The macro `CREATE(recipe)` returns a new
+instance, and `DESTROY(R)` would destroy an existing one, `R`. Unless manually
 destroyed, objects last forever; there is no garbage collection. In practice
 the Inform tools suite, for which Foundation was written, almost never destroy
 objects.
 
-Customarily, though, we wrap the use of |CREATE| in a constructor function:
+Customarily, though, we wrap the use of `CREATE` in a constructor function:
 = (text as InC)
 	recipe *Recipes::new(text_stream *name) {
 		recipe *R = CREATE(recipe);
@@ -195,7 +195,7 @@ Customarily, though, we wrap the use of |CREATE| in a constructor function:
 	}
 =
 
-We also often use the convenient |LOOP_OVER| macro:
+We also often use the convenient `LOOP_OVER` macro:
 = (text as InC)
 	void Recipes::list_all(text_stream *OUT) {
 		WRITE("I know about the following recipes:\n");
@@ -204,16 +204,16 @@ We also often use the convenient |LOOP_OVER| macro:
 			WRITE("- %S\n", R->name_of_dish);
 	}
 =
-|LOOP_OVER| loops through all created |recipe| instances (which have not been
+`LOOP_OVER` loops through all created `recipe` instances (which have not been
 destroyed).
 
 There are a few other facilities, for which see //Memory//, and also ways to
-allocate memory for arrays -- see //Memory::calloc// and //Memory::malloc//.
+allocate memory for arrays — see //Memory::calloc// and //Memory::malloc//.
 
 @h Methods.
 It's also possible to have method calls on object instances, though the
 syntax is not as tidy as it would be in an object-oriented language. To allow
-this for |recipe|, we would have to add another line to the structure:
+this for `recipe`, we would have to add another line to the structure:
 = (text as InC)
 	typedef struct recipe {
 		struct text_stream *name_of_dish;
@@ -226,8 +226,8 @@ and another line to the constructor function:
 = (text as InC)
 		R->methods = Methods::new_set();
 =
-The object |R| is then ready to receive method calls. Each different call needs
-an enumerated constant ending |_MTID| to identify it, and an indication of the
+The object `R` is then ready to receive method calls. Each different call needs
+an enumerated constant ending `_MTID` to identify it, and an indication of the
 type of the function call involved:
 = (text as Inweb)
 	@ Here is my "cook the recipe" method call:
@@ -241,8 +241,8 @@ It's now possible to call this on any recipe:
 = (text as InC)
 	VOID_METHOD_CALL(duck_a_l_orange, COOK_MTID, 45);
 =
-What then happens? Nothing at all, unless the recipe instance in question --
-here, |duck_a_l_orange| -- has been given a receiver function. Let's revisit
+What then happens? Nothing at all, unless the recipe instance in question —
+here, `duck_a_l_orange` — has been given a receiver function. Let's revisit
 the constructor function for recipes:
 = (text as InC)
 	recipe *Recipes::new(text_stream *name) {
@@ -272,16 +272,16 @@ is to call:
 
 @ In fact it's possible to attach multiple receivers to the same object, in
 which case they each run in turn. As a variant on this, methods can also return
-their "success". If multiple receivers run, the first to return |TRUE| has
+their "success". If multiple receivers run, the first to return `TRUE` has
 claimed the right to act, and subsequent receivers aren't consulted.
 
-Such methods must be defined with |INT_METHOD_CALL| and are rarely needed. See
+Such methods must be defined with `INT_METHOD_CALL` and are rarely needed. See
 //Methods// for more.
 
 @h Collections.
 Foundation provides three sorts of "collection": see //Linked Lists and Stacks//,
 and also //Dictionaries//. These all collect values which are expected to be
-pointers: for example, text streams (of type |text_stream *|) or objects like
+pointers: for example, text streams (of type `text_stream *`) or objects like
 the ones created above. For example,
 = (text as InC)
 	linked_list *cookbook = NEW_LINKED_LIST(recipe);
@@ -324,7 +324,7 @@ These both hold names, not actual files: they are places where files or
 directories might be.
 
 Both tend to refer relative to the current working directory, represented by
-the null |pathname| pointer. //Pathnames::up// and //Pathnames::down// go
+the null `pathname` pointer. //Pathnames::up// and //Pathnames::down// go
 to parent or subdirectories, respectively. A filename cannot exist without
 a pathname; for example,
 = (text as InC)
@@ -333,11 +333,11 @@ a pathname; for example,
 	filename *F = Filenames::in(P, I"options.txt");
 	PRINT("I have arrived at %f.\n", F);
 =
-produces, on platforms where |/| is used as the file system dividing character,
+produces, on platforms where `/` is used as the file system dividing character,
 = (text)
 	I have arrived at App/Config/options.txt.
 =
-Note the use of the escape |%f| for printing filenames; there's also |%p| for
+Note the use of the escape `%f` for printing filenames; there's also `%p` for
 pathnames.
 
 See //Filenames// and //Pathnames// for more.
@@ -356,7 +356,7 @@ useful for testing the correctness of our tools.
 @ //Text Files// allows us to read text files. Its most useful function is
 //TextFiles::read//, which opens a file, can print an error if it doesn't
 exist, and if it does, then feeds the lines one at a time to an iterator.
-For example, if |F| is a filename, the following reads the file into a
+For example, if `F` is a filename, the following reads the file into a
 linked list of texts:
 = (text as InC)
 	linked_list *Hypothetical::list_from_file(filename *F) {
@@ -390,7 +390,7 @@ What else? Well:
 for timing internal program activity using //Time::start_stopwatch// and
 //Time::stop_stopwatch//;
 
-- //Shell// for issuing shell commands via the C library's |system| function,
+- //Shell// for issuing shell commands via the C library's `system` function,
 or its equivalent;
 
 - //HTML// and //Epub Ebooks// for generating web pages and ebooks;

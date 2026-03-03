@@ -12,11 +12,11 @@ objects created are given unique IDs (within that type) counting upwards
 from 0. These IDs will be unique across all threads.
 
 @ Before going much further, we will need to anticipate what the memory
-manager wants.  An "object" is a copy in memory of a C |struct|; thus,
-a plain |int| is not an object. The memory manager can only deal with
-a given type of |struct| if it contains three special elements, and we
+manager wants.  An "object" is a copy in memory of a C `struct`; thus,
+a plain `int` is not an object. The memory manager can only deal with
+a given type of `struct` if it contains three special elements, and we
 define those using a macro. Thus, if the user wants to allocate larger
-structures of type |thingummy|, then it needs to be defined like so:
+structures of type `thingummy`, then it needs to be defined like so:
 = (text as code)
 	typedef struct thingummy {
 	    int whatsit;
@@ -36,8 +36,8 @@ IDs; and they cannot be iterated over.
 	void *prev_structure; /* Previous object in double-linked list */
 
 @ It is also necessary to define a constant in the following enumeration
-family: for |thingummy|, it would be |thingummy_CLASS|. Had it been a smaller
-object, it would have been |thingummy_array_CLASS| instead.
+family: for `thingummy`, it would be `thingummy_CLASS`. Had it been a smaller
+object, it would have been `thingummy_array_CLASS` instead.
 
 There is no significance to the order in which classes are registered
 with the memory system; the following sentinel value is not the class ID
@@ -48,9 +48,9 @@ positive, since they count upwards from this.
 
 @ For each type of object to be allocated, a single structure of the
 following design is maintained. Types which are allocated individually,
-like world objects, have |no_allocated_together| set to 1, and the doubly
+like world objects, have `no_allocated_together` set to 1, and the doubly
 linked list is of the objects themselves. For types allocated in small
-arrays (typically of 100 objects at a time), |no_allocated_together| is set
+arrays (typically of 100 objects at a time), `no_allocated_together` is set
 to the number of objects in each completed array (so, typically 100) and
 the doubly linked list is of the arrays.
 
@@ -62,7 +62,7 @@ typedef struct allocation_status_structure {
 	void *last_in_memory; /* tail of doubly linked list */
 
 	/* used only to provide statistics for the debugging log: */
-	char *name_of_type; /* e.g., |"index_lexicon_entry_CLASS"| */
+	char *name_of_type; /* e.g., `"index_lexicon_entry_CLASS"` */
 	int bytes_allocated; /* total allocation for this type of object, not counting overhead */
 	int objects_count; /* total number currently in existence (i.e., undeleted) */
 	int no_allocated_together; /* number of objects in each array of this type of object */
@@ -114,8 +114,8 @@ the debugging log.
 @d SAFETY_MARGIN 128
 @d BLANK_END_SIZE 256
 
-@ At present |MEMORY_GRANULARITY| is 800K. This is the quantity of memory
-allocated by each individual |malloc| call.
+@ At present `MEMORY_GRANULARITY` is 800K. This is the quantity of memory
+allocated by each individual `malloc` call.
 
 As of the early 2020s, typical Inform projects need around 500 blocks to be
 allocated, for around 400 MB of memory in all; the largest known take us into
@@ -129,7 +129,7 @@ int total_objects_allocated = 0; /* a potentially larger number, used only for t
 
 @ Memory blocks are stored in a linked list, and we keep track of the
 size of the current block: that is, the block at the tail of the list.
-Each memory block consists of a header structure, followed by |SAFETY_MARGIN|
+Each memory block consists of a header structure, followed by `SAFETY_MARGIN`
 null bytes, followed by actual data.
 
 =
@@ -166,7 +166,7 @@ void Memory::allocate_another_block(void) {
 	@<Add new block to the tail of the list of memory blocks@>;
 }
 
-@ Note that |cp| and |mh| are set to the same value: they merely have different
+@ Note that `cp` and `mh` are set to the same value: they merely have different
 pointer types as far as the C compiler is concerned.
 
 @<Allocate and zero out a block of memory, making cp point to it@> =
@@ -215,7 +215,7 @@ a single large object, or a single array of small objects.
 
 =
 typedef struct memory_frame {
-	int integrity_check; /* this should always contain the |INTEGRITY_NUMBER| */
+	int integrity_check; /* this should always contain the `INTEGRITY_NUMBER` */
 	struct memory_frame *next_frame; /* next frame in the list of memory frames */
 	int mem_type; /* type of object stored in this frame */
 	int allocation_id; /* allocation ID number of object stored in this frame */
@@ -231,7 +231,7 @@ memory_frame *last_memory_frame = NULL;  /* most recent memory frame allocated *
 
 @ If the integrity numbers of every frame are still intact, then it is pretty
 unlikely that any bug has caused memory to overwrite one frame into another.
-|Memory::check_memory_integrity| might on very large runs be run often, if we didn't
+`Memory::check_memory_integrity` might on very large runs be run often, if we didn't
 prevent this: since the number of calls would be roughly proportional to
 memory usage, we would implicitly have an $O(n^2)$ running time in the
 amount of storage $n$ allocated.
@@ -272,7 +272,7 @@ void *Memory::allocate(int mem_type, int extent) {
 	int bytes_free_in_current_memblock, extent_without_overheads = extent;
 
 	extent += sizeof(memory_frame); /* each allocation is preceded by a memory frame */
-	extent += SAFETY_MARGIN; /* each allocation is followed by |SAFETY_MARGIN| null bytes */
+	extent += SAFETY_MARGIN; /* each allocation is followed by `SAFETY_MARGIN` null bytes */
 
 	@<Ensure that the current memory block has room for this many bytes@>;
 
@@ -314,7 +314,7 @@ for a user with a particularly long and involved source text to discover.
 	else last_memory_frame->next_frame = mf;
 	last_memory_frame = mf;
 
-@ See the definition of |alloc_status| above.
+@ See the definition of `alloc_status` above.
 
 @<Update the allocation status for this type of object@> =
 	if (alloc_status[mem_type].first_in_memory == NULL)
@@ -329,9 +329,9 @@ argument is the name of a type: expanding these macros provides suitable C
 functions to handle each possible type. These macros provide the interface
 through which all other sections allocate and leaf through memory.
 
-The |##| concatenation operator in the C preprocessor enables these names
-to be smushed together: thus |CREATE(thing)| expands into |(allocate_thing())|
-because of the |##|. (See Kernighan and Ritchie, section 4.11.2.)
+The `##` concatenation operator in the C preprocessor enables these names
+to be smushed together: thus `CREATE(thing)` expands into `(allocate_thing())`
+because of the `##`. (See Kernighan and Ritchie, section 4.11.2.)
 
 @d CREATE(type_name) (allocate_##type_name())
 @d COPY(to, from, type_name) (copy_##type_name(to, from))
@@ -354,11 +354,11 @@ given type.
 
 @h Allocator functions created by macros.
 The following macros generate a family of systematically named functions.
-For instance, we shall shortly expand |DECLARE_CLASS(parse_node)|,
-which will expand to three functions: |allocate_parse_node|,
-|deallocate_parse_node| and |allocate_parse_node_before|.
+For instance, we shall shortly expand `DECLARE_CLASS(parse_node)`,
+which will expand to three functions: `allocate_parse_node`,
+`deallocate_parse_node` and `allocate_parse_node_before`.
 
-Quaintly, |#type_name| expands into the value of |type_name| put within
+Quaintly, `#type_name` expands into the value of `type_name` put within
 double-quotes.
 
 @d NEW_OBJECT(type_name) ((type_name *) Memory::allocate(type_name##_CLASS, sizeof(type_name)))
@@ -424,9 +424,9 @@ void copy_##type_name(type_name *to, type_name *from) {
 	UNLOCK_MUTEX(memory_single_allocation_mutex);
 }
 
-@ |DECLARE_CLASS_ALLOCATED_IN_ARRAYS| is still more obfuscated. When we
-|DECLARE_CLASS_ALLOCATED_IN_ARRAYS(X, 100)|, the result will be definitions of
-a new type |X_array| and constructors for both |X| and |X_array|, the former
+@ `DECLARE_CLASS_ALLOCATED_IN_ARRAYS` is still more obfuscated. When we
+`DECLARE_CLASS_ALLOCATED_IN_ARRAYS(X, 100)`, the result will be definitions of
+a new type `X_array` and constructors for both `X` and `X_array`, the former
 of which uses the latter. Note that we are not provided with the means to
 deallocate individual objects this time: that's the trade-off for
 allocating in blocks.
@@ -438,7 +438,7 @@ typedef struct type_name##_array {
 	struct type_name array[NO_TO_ALLOCATE_TOGETHER];
 	CLASS_DEFINITION
 } type_name##_array;
-int type_name##_array_CLASS = type_name##_CLASS; /* C does permit |#define| to make |#define|s */
+int type_name##_array_CLASS = type_name##_CLASS; /* C does permit `#define` to make `#define`s */
 DECLARE_CLASS_WITH_ID(type_name##_array, type_name##_CLASS) 
 type_name##_array *next_##type_name##_array = NULL;
 struct type_name *allocate_##type_name(void) {
@@ -456,7 +456,7 @@ struct type_name *allocate_##type_name(void) {
 
 @h Simple memory allocations.
 Not all of our memory will be claimed in the form of structures: now and then
-we need to use the equivalent of traditional |malloc| and |calloc| routines.
+we need to use the equivalent of traditional `malloc` and `calloc` routines.
 
 @e STREAM_MREASON from 0
 @e FILENAME_STORAGE_MREASON
@@ -493,7 +493,7 @@ net amount of memory currently owned, which is increased when we allocate
 it and decreased when we free it. Whether the host OS is able to make
 efficient use of the memory we free, we can't know, but it probably is, and
 therefore the best estimate of how well we're doing is the "maximum memory
-claimed" -- the highest recorded net usage count over the run.
+claimed" — the highest recorded net usage count over the run.
 
 =
 int max_memory_at_once_for_each_need[NO_DEFINED_MREASON_VALUES],
@@ -501,11 +501,11 @@ int max_memory_at_once_for_each_need[NO_DEFINED_MREASON_VALUES],
 	number_of_claims_for_each_need[NO_DEFINED_MREASON_VALUES];
 int total_claimed_simply = 0;
 
-@ Our allocation routines behave just like the standard C library's |malloc|
-and |calloc|, but where a third argument supplies a reason why the memory is
+@ Our allocation routines behave just like the standard C library's `malloc`
+and `calloc`, but where a third argument supplies a reason why the memory is
 needed, and where any failure to allocate memory is tidily dealt with. We will
 exit on any such failure, so that the caller can be certain that the return
-values of these functions are always non-|NULL| pointers.
+values of these functions are always non-`NULL` pointers.
 
 =
 void *Memory::calloc(int how_many, int size_in_bytes, int reason) {
@@ -528,8 +528,8 @@ void *Memory::alloc_inner(int N, int S, int R) {
 	return pointer;
 }
 
-@ I am nervous about assuming that |calloc(0, X)| returns a non-|NULL| pointer
-in all implementations of the standard C library, so the case when |N| is zero
+@ I am nervous about assuming that `calloc(0, X)` returns a non-`NULL` pointer
+in all implementations of the standard C library, so the case when `N` is zero
 allocates a tiny but positive amount of memory, just to be safe.
 
 @<Claim the memory using malloc or calloc as appropriate@> =
@@ -545,7 +545,7 @@ allocates a tiny but positive amount of memory, just to be safe.
 	}
 
 @ These statistics have no function except to improve the diagnostics in the
-debugging log, but they are very cheap to keep, since |Memory::alloc_inner| is called only
+debugging log, but they are very cheap to keep, since `Memory::alloc_inner` is called only
 rarely and to allocate large blocks of memory.
 
 @<Zero out the statistics on simple memory allocations@> =
@@ -566,7 +566,7 @@ rarely and to allocate large blocks of memory.
 		max_memory_at_once_for_each_need[R] = memory_claimed_for_each_need[R];
 	UNLOCK_MUTEX(memory_statistics_mutex);
 
-@ We also provide our own wrapper for |free|:
+@ We also provide our own wrapper for `free`:
 
 =
 void Memory::I7_free(void *pointer, int R, int bytes_freed) {
@@ -594,7 +594,7 @@ void Memory::log_statistics(void) {
 
 	@<Sort the table of memory type usages into decreasing size order@>;
 
-	int total_for_objects_used = 0; /* out of the |total_for_objects|, the bytes used */
+	int total_for_objects_used = 0; /* out of the `total_for_objects`, the bytes used */
 	int total_objects = 0;
 	@<Calculate the memory usage for objects@>;
 	int overhead_for_objects = total_for_objects - total_for_objects_used; /* bytes wasted */
@@ -695,7 +695,7 @@ int Memory::compare_usage(const void *ent1, const void *ent2) {
 }
 
 @ Finally, a little routine to compute the proportions of memory for each
-usage. Recall that |bytes| is measured in bytes, but |total| in kilobytes.
+usage. Recall that `bytes` is measured in bytes, but `total` in kilobytes.
 
 =
 void Memory::log_percentage(int bytes, int total) {
@@ -707,7 +707,7 @@ void Memory::log_percentage(int bytes, int total) {
 }
 
 @ At one time, the following function was paranoid about thread-safety of
-|calloc| as implemented in some C libraries, and was protected by a mutex.
+`calloc` as implemented in some C libraries, and was protected by a mutex.
 It has now learned to chill.
 
 =
@@ -717,21 +717,21 @@ void *Memory::paranoid_calloc(size_t N, size_t S) {
 }
 
 @h Run-time pointer type checking.
-In several places Inform needs to store pointers of type |void *|, that is,
+In several places Inform needs to store pointers of type `void *`, that is,
 pointers which have no indication of what type of data they point to.
 This is not type-safe and therefore offers plenty of opportunity for
 blunders. The following provides run-time type checking to ensure that
 each time we dereference a typeless pointer, it does indeed point to
 a structure of the type we think it should.
 
-The structure |general_pointer| holds a |void *| pointer to any one of the
+The structure `general_pointer` holds a `void *` pointer to any one of the
 following:
 
-- |NULL|, to which we assign ID number $-1$;
-- |char|, to which we assign ID number 1000;
+- `NULL`, to which we assign ID number $-1$;
+- `char`, to which we assign ID number 1000;
 - any individually allocated structure of the types listed above, to
-which we assign the ID numbers used above: for instance, |figures_data_CLASS|
-is the ID number for a |general_pointer| which points to a |figures_data|
+which we assign the ID numbers used above: for instance, `figures_data_CLASS`
+is the ID number for a `general_pointer` which points to a `figures_data`
 structure.
 
 @d NULL_GENERAL_POINTER (Memory::store_gp_null())
@@ -746,7 +746,7 @@ typedef struct general_pointer {
 general_pointer Memory::store_gp_null(void) {
 	general_pointer gp;
 	gp.pointer_to_data = NULL;
-	gp.run_time_type_code = -1; /* guaranteed to differ from all |_CLASS| values */
+	gp.run_time_type_code = -1; /* guaranteed to differ from all `_CLASS` values */
 	return gp;
 }
 int Memory::test_gp_null(general_pointer gp) {
@@ -765,11 +765,11 @@ objects and to help with interpreting output from GDB, so we abstract that too.
 @d GENERAL_POINTER_AS_INT(gp)
 	((pointer_sized_int) gp.pointer_to_data)
 
-@ If we have a pointer to |circus| (say) then |g=STORE_POINTER_circus(p)|
-returns a |general_pointer| with |p| as the actual pointer, but will not
-compile unless |p| is indeed of type |circus *|. When we later
-|RETRIEVE_POINTER_circus(g)|, an internal error is thrown if |g| contains a pointer
-which is other than |void *|, or which has never been referenced.
+@ If we have a pointer to `circus` (say) then `g=STORE_POINTER_circus(p)`
+returns a `general_pointer` with `p` as the actual pointer, but will not
+compile unless `p` is indeed of type `circus *`. When we later
+`RETRIEVE_POINTER_circus(g)`, an internal error is thrown if `g` contains a pointer
+which is other than `void *`, or which has never been referenced.
 
 @d MAKE_REFERENCE_ROUTINES(type_name, id_code)
 general_pointer STORE_POINTER_##type_name(type_name *data) {
@@ -799,8 +799,8 @@ int VALID_POINTER_##type_name(general_pointer gp) {
 	return FALSE;
 }
 
-@ Suitable |MAKE_REFERENCE_ROUTINES| were expanded for all of the memory
-allocated objects above; so that leaves only humble |char *| pointers:
+@ Suitable `MAKE_REFERENCE_ROUTINES` were expanded for all of the memory
+allocated objects above; so that leaves only humble `char *` pointers:
 
 =
 MAKE_REFERENCE_ROUTINES(char, 1000)

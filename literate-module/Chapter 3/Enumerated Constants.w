@@ -3,9 +3,9 @@
 To define sequentially numbered values for families of constants.
 
 @ The idea here is that each enumeration set is a sequence of named constants
-with a given postfix: for example, |HARRY_ST|, |NEVILLE_ST|, |ANGELINA_ST|
-form the |*_ST| set. By definition, the postfix part is the portion of the
-name following the final underscore, so in this case |ST|.
+with a given postfix: for example, `HARRY_ST`, `NEVILLE_ST`, `ANGELINA_ST`
+form the `*_ST` set. By definition, the postfix part is the portion of the
+name following the final underscore, so in this case `ST`.
 
 Each set of constants begins at a given value (typically 0) and then
 increments sequentially in definition order.
@@ -33,7 +33,7 @@ enumeration_set *Enumerations::find(text_stream *post) {
 	return NULL;
 }
 
-@ The following is called when an enumeration is found. If |from| has a
+@ The following is called when an enumeration is found. If `from` has a
 sensible value, this is the start of a new enumeration set; otherwise it's
 a further constant in what ought to be an existing set.
 
@@ -52,7 +52,7 @@ void Enumerations::define(OUTPUT_STREAM, text_stream *symbol,
 	}
 }
 
-@ So for instance |HARRY_ST| to |ST|:
+@ So for instance `HARRY_ST` to `ST`:
 
 @<Find the postfix in this symbol name@> =
 	match_results mr = Regexp::create_mr();
@@ -92,8 +92,8 @@ void Enumerations::define(OUTPUT_STREAM, text_stream *symbol,
 	if (es->stub) WRITE(")");
 
 @ For each set, a further constant is defined to give the range; for example,
-we would have |NO_DEFINED_ST_VALUES| set to 3. This is notionally placed in
-the code at the last line on which an |*_ST| value was defined.
+we would have `NO_DEFINED_ST_VALUES` set to 3. This is notionally placed in
+the code at the last line on which an `*_ST` value was defined.
 
 =
 void Enumerations::define_extents(OUTPUT_STREAM, tangle_target *target,

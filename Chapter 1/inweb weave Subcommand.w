@@ -225,7 +225,7 @@ void InwebWeave::run_on(inweb_weave_settings *iws, ls_colony *C, ls_colony_membe
 	}
 }
 
-@ This is one of the few subcommands making use of the colony membership |op.CM|,
+@ This is one of the few subcommands making use of the colony membership `op.CM`,
 which even so is used only for putting together the panels of navigation links
 in HTML to other colony members, or for re-routing the output.
 

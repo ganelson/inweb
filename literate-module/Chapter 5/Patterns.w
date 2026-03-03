@@ -4,32 +4,32 @@ Managing weave patterns, which are bundled configuration settings for weaving.
 
 @h Reading in.
 Patterns are stored as directories in the file system, and are identified by
-names such as |HTML|. Within those directories, though, the file |pattern.inweb|
+names such as `HTML`. Within those directories, though, the file `pattern.inweb`
 contains a WCL file which is parsed to give details, and those details are
 stored in instances of the following:
 
 =
 typedef struct ls_pattern {
 	struct wcl_declaration *declaration;
-	struct text_stream *pattern_name; /* such as |HTML| */
+	struct text_stream *pattern_name; /* such as `HTML` */
 	struct pathname *pattern_location; /* the directory */
 	struct text_stream *based_on_name; /* inherit from which other pattern? */
 
-	struct weave_format *pattern_format; /* such as |DVI|: the desired final format */
-	struct linked_list *plugins; /* of |weave_plugin|: any extras needed */
-	struct linked_list *colour_schemes; /* of |colour_scheme|: any extras needed */
+	struct weave_format *pattern_format; /* such as `DVI`: the desired final format */
+	struct linked_list *plugins; /* of `weave_plugin`: any extras needed */
+	struct linked_list *colour_schemes; /* of `colour_scheme`: any extras needed */
 
-	struct text_stream *mathematics_plugin; /* name only, not a |ls_pattern *| */
-	struct text_stream *footnotes_plugin; /* name only, not a |ls_pattern *| */
+	struct text_stream *mathematics_plugin; /* name only, not a `ls_pattern *` */
+	struct text_stream *footnotes_plugin; /* name only, not a `ls_pattern *` */
 
 	struct text_stream *initial_extension; /* filename extension, that is */
-	struct linked_list *post_commands; /* of |text_stream| */
-	struct linked_list *blocked_templates; /* of |text_stream| */
+	struct linked_list *post_commands; /* of `text_stream` */
+	struct linked_list *blocked_templates; /* of `text_stream` */
 
-	struct linked_list *asset_rules; /* of |asset_rule| */
+	struct linked_list *asset_rules; /* of `asset_rule` */
 	int show_abbrevs; /* show section range abbreviations in the weave? */
 	int number_sections; /* insert section numbers into the weave? */
-	struct text_stream *default_range; /* for example, |sections| */
+	struct text_stream *default_range; /* for example, `sections` */
 	
 	int assets_mode;
 	int commands_mode;
@@ -217,7 +217,7 @@ ls_pattern *Patterns::basis(wcl_declaration *D, ls_pattern *wp) {
 }
 
 @ The Foundation module provides a standard way to scan text files line by
-line, and this is used to send each line in the |pattern.txt| file to the
+line, and this is used to send each line in the `pattern.txt` file to the
 following routine:
 
 =
@@ -366,7 +366,7 @@ void Patterns::post_process(ls_pattern *pattern, weave_order *wv) {
 }
 
 @h Obtaining files.
-Patterns provide place template files, such as |template-body.html|, in
+Patterns provide place template files, such as `template-body.html`, in
 their root directories.
 
 Note that if you're rash enough to set up a cycle of patterns inheriting

@@ -4,7 +4,7 @@ Most webs tangle to just one program, but we do support multiple targets,
 which can be in different programming languages.
 
 @ In Knuth's original conception of literate programming, a web produces
-just one piece of tangled output -- the program for compilation. But this
+just one piece of tangled output — the program for compilation. But this
 assumes that the underlying program is so simple that it won't require
 ancillary files, configuration data, and such; and this is often just as
 complex and worth explaining as the program itself. So here we will allow a
@@ -57,7 +57,7 @@ tangle_target *TangleTargets::of_section(ls_section *S) {
 }
 
 @ And the following provides a way to iterate through the lines in a tangle,
-while keeping the variables |C|, |S| and |L| pointing to the current chapter,
+while keeping the variables `C`, `S` and `L` pointing to the current chapter,
 section and line.
 
 

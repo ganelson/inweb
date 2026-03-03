@@ -9,7 +9,7 @@ functionality of an object-oriented language.
 
 Instead, it's really intended for protocol-based coding patterns. Suppose that
 we have objects of several different structure types, but all of them can
-serve a given purpose -- say, all of them contribute an adjective to the
+serve a given purpose — say, all of them contribute an adjective to the
 Inform language. What we want is the ability to take a pointer, which might be
 to an object of any of these types, and to tell the object to do something, or
 ask it a question.
@@ -35,9 +35,9 @@ method_set *Methods::new_set(void) {
 }
 
 @h Declaring methods.
-Each method is a function, though we don't know its type -- which is why we
-resort to the desperate measure of storing it as a |void *| -- with an ID
-number attached to it. IDs should be from the |*_MTID| enumeration set.
+Each method is a function, though we don't know its type — which is why we
+resort to the desperate measure of storing it as a `void *` — with an ID
+number attached to it. IDs should be from the `*_MTID` enumeration set.
 
 @e UNUSED_METHOD_ID_MTID from 1
 
@@ -45,8 +45,8 @@ number attached to it. IDs should be from the |*_MTID| enumeration set.
 of two macros: one for methods returning an integer, one for void methods,
 i.e., those returning no value.
 
-What these do is to use typedef to give the name |X_type| to the type of all
-functions sharing the method ID |X|.
+What these do is to use typedef to give the name `X_type` to the type of all
+functions sharing the method ID `X`.
 
 @d INT_METHOD_TYPE(id, args...)
 	typedef int (*id##_type)(args);
@@ -58,7 +58,7 @@ INT_METHOD_TYPE(UNUSED_METHOD_ID_MTID, text_stream *example, int wont_be_used)
 
 @h Adding methods.
 Provided a function has the right type for the ID we're using, we can now
-attach it to an object with a method set, using the |METHOD_ADD| macro.
+attach it to an object with a method set, using the `METHOD_ADD` macro.
 (If the type is wrong, the C compiler will throw errors here.)
 
 @d METHOD_ADD(upon, id, func)
@@ -97,26 +97,26 @@ int Methods::provided(method_set *S, int ID) {
 @h Calling methods.
 Method calls are also done with a macro, but it has to come in four variants:
 
-- |INT_METHOD_CALL| for a method taking arguments and returning an |int|,
-- |INT_METHOD_CALL_WITHOUT_ARGUMENTS| for a method without arguments which returns an |int|,
-- |VOID_METHOD_CALL| for a method taking arguments and returning nothing,
-- |VOID_METHOD_CALL_WITHOUT_ARGUMENTS| for a method without arguments which returns nothing.
+- `INT_METHOD_CALL` for a method taking arguments and returning an `int`,
+- `INT_METHOD_CALL_WITHOUT_ARGUMENTS` for a method without arguments which returns an `int`,
+- `VOID_METHOD_CALL` for a method taking arguments and returning nothing,
+- `VOID_METHOD_CALL_WITHOUT_ARGUMENTS` for a method without arguments which returns nothing.
 
 For example:
 = (text as code)
 	INT_METHOD_CALL(some_object, UNUSED_METHOD_ID_MTID, I"Hello", 17)
 =
-Note that it's entirely possible for the |upon| object to have multiple methods
-added for the same ID -- or none. In the |V| (void) cases, what we then do is
-to call each of them in turn. In the |I| (int) cases, we call each in turn, but
-stop the moment any of them returns something other than |FALSE|, and then
-we put that value into the specified result variable |rval|.
+Note that it's entirely possible for the `upon` object to have multiple methods
+added for the same ID — or none. In the `V` (void) cases, what we then do is
+to call each of them in turn. In the `I` (int) cases, we call each in turn, but
+stop the moment any of them returns something other than `FALSE`, and then
+we put that value into the specified result variable `rval`.
 
-If |some_object| has no methods for the given ID, then nothing happens, and
-in the |I| case, the return value is |FALSE|.
+If `some_object` has no methods for the given ID, then nothing happens, and
+in the `I` case, the return value is `FALSE`.
 
-It will, however, produce a compilation error if |some_object| is not a pointer
-to a structure which has a |methods| element as part of its definition.
+It will, however, produce a compilation error if `some_object` is not a pointer
+to a structure which has a `methods` element as part of its definition.
 
 @d INT_METHOD_CALL(rval, upon, id, args...) {
 	rval = FALSE;

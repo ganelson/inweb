@@ -13,13 +13,13 @@ typedef struct ls_web_weaving_details {
 } ls_web_weaving_details;
 
 typedef struct ls_chapter_weaving_details {
-	struct weave_order *ch_weave; /* |NULL| unless this chapter produces a weave of its own */
+	struct weave_order *ch_weave; /* `NULL` unless this chapter produces a weave of its own */
 	CLASS_DEFINITION
 } ls_chapter_weaving_details;
 
 typedef struct ls_section_weaving_details {
-	struct weave_order *sect_weave; /* |NULL| unless this section produces a weave of its own */
-	struct filename *sect_weave_to; /* |NULL| unless some special choice has been made */
+	struct weave_order *sect_weave; /* `NULL` unless this section produces a weave of its own */
+	struct filename *sect_weave_to; /* `NULL` unless some special choice has been made */
 	CLASS_DEFINITION
 } ls_section_weaving_details;
 

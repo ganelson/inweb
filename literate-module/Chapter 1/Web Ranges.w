@@ -136,8 +136,8 @@ ls_section *WebRanges::to_section(ls_web *W, text_stream *range) {
 
 @h Ranges and containment.
 This provides a sort of partial ordering on ranges, testing if the portion
-of the web represented by |range1| is contained inside the portion represented
-by |range2|. Note that |"0"| means the entire web, and is what the word |all|
+of the web represented by `range1` is contained inside the portion represented
+by `range2`. Note that `"0"` means the entire web, and is what the word `all`
 translates to when it's used on the command line.
 
 =

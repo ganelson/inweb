@@ -148,8 +148,8 @@ int BinaryFiles::read_float80(FILE *binary_file, unsigned int *result) {
 }
 
 @ And lastly we read a string of a supplied length from the file, and
-then null terminate it to make it valid C string. (|string| must therefore
-be at least |length| plus 1 bytes long.)
+then null terminate it to make it valid C string. (`string` must therefore
+be at least `length` plus 1 bytes long.)
 
 =
 int BinaryFiles::read_string(FILE *binary_file, char *string, unsigned int length) {
@@ -255,14 +255,14 @@ a form of checksum created by Ronald Rivest in 1992, remains very useful as a
 way to compare files quickly, at least when we're sure nobody is being malicious.
 
 There are thousands of amateur implementations, most of them, like this one,
-paraphrased from the pseudocode at the Wikipedia page. The |mask| function allows
+paraphrased from the pseudocode at the Wikipedia page. The `mask` function allows
 certain fixed byte positions in the file to be considered as if they were zero bytes,
 which is helpful when testing comparing files whose headers change in uninteresting
-ways. If |mask| is |NULL|, or always returns |FALSE|, then the hash computed is
+ways. If `mask` is `NULL`, or always returns `FALSE`, then the hash computed is
 exactly the canonical md5.
 
 The code below is about as enigmatic as a page of well-meaning code can be, but
-that's down to the algorithm itself. The |K| array hold bits drawn from the sines
+that's down to the algorithm itself. The `K` array hold bits drawn from the sines
 of the integers 1 to 64: sines computed in radians, so that in a sense the md5
 algorithm relies on the irrationality of $\pi$ to make these so unpredictable.
 At any rate, the magic numbers below are all drawn from RFC 1321.
@@ -389,7 +389,7 @@ void BinaryFiles::md5(OUTPUT_STREAM, filename *F, int (*mask)(uint64_t)) {
 	}
 
 @ This is a C-compiler safe way to rotate a 32-bit unsigned integer left
-by |shift| number of bits. Enjoy:
+by `shift` number of bits. Enjoy:
 
 =
 uint32_t BinaryFiles::rotate(uint32_t value, uint32_t shift) {

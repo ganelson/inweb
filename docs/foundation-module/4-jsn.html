@@ -126,9 +126,9 @@ invalid data resulting from attempting to decode erroneous JSON.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">double</span><span class="plain-syntax"> </span><span class="identifier-syntax">if_double</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_string</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">if_boolean</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |JSON_value| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dictionary_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to |JSON_value| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |text_stream| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>JSON_value</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dictionary_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to <code>JSON_value</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>text_stream</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_error</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">JSON_value</span><span class="plain-syntax">;</span>
@@ -182,7 +182,7 @@ invalid data resulting from attempting to decode erroneous JSON.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  JSON arrays -- lists, in effect -- should be created in an empty state, and
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  JSON arrays — lists, in effect — should be created in an empty state, and
 then have entries added sequentially:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -204,7 +204,7 @@ then have entries added sequentially:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Similarly, JSON objects -- dictionaries of key-value pairs, in effect --
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  Similarly, JSON objects — dictionaries of key-value pairs, in effect —
 should be created in an empty state, and then have key-value pairs added as needed:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -684,7 +684,7 @@ good alternative specifications. Note that the empty list is not allowed.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">JSON_requirement</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alternatives</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |JSON_single_requirement| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">alternatives</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>JSON_single_requirement</code> */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">JSON_requirement</span><span class="plain-syntax">;</span>
 
@@ -753,11 +753,11 @@ non-<code>NULL</code>, so we have one constructor function for each case:</p>
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">JSON_type</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="type-syntax">JSON_type</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |JSON_requirement| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_list</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>JSON_requirement</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">JSON_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">all_if_list</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dictionary_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to |JSON_pair_requirement| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |text_stream| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dictionary_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* to <code>JSON_pair_requirement</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_if_object</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>text_stream</code> */</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">if_error</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
@@ -878,8 +878,7 @@ but it is not valid as a requirement itself.</p>
 if not, <code>FALSE</code>, and then if <code>errs</code> is not null, a list of error messages is
 appended to the linked list <code>errs</code>.</p>
 <p>The stack here is used to give better error messages by locating where the
-problem was: e.g. <code>&quot;object.coordinates[1]&quot;</code> is the result of the stack
-holding <code>&quot;object&quot; &gt; &quot;.cooordinates&quot; &gt; &quot;[1]&quot;</code>.</p>
+problem was.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">JSON::validate</span><span class="plain-syntax">(</span><span class="type-syntax">JSON_value</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">, </span><span class="type-syntax">JSON_requirement</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">errs</span><span class="plain-syntax">) {</span>
@@ -1462,8 +1461,8 @@ header, or the end of the file. So for example:</p>
 <span class="plain-syntax">    }</span>
 </pre>
 <div class="lsmarkdown">
-<p>is a valid file declaring two requirements. Forward references are not allowed --
-e.g., &lt;position&gt; can refer to &lt;optional-letter&gt; but not vice versa -- and
+<p>is a valid file declaring two requirements. Forward references are not allowed —
+e.g., <position> can refer to <optional-letter> but not vice versa — and
 therefore the requirements read in will always be well-founded. Comments are
 lines beginning with <code>!</code>; other than comments, only white space is permitted
 before the first requirement begins.</p>

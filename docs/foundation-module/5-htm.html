@@ -110,7 +110,7 @@ text stream.</p>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">HTML_file_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">XHTML_flag</span><span class="plain-syntax">; </span><span class="comment-syntax">/* writing strict XHTML for use in epubs */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="constant-syntax">lifo_stack</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tag_stack</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |HTML_tag|: those currently open */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="constant-syntax">lifo_stack</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tag_stack</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>HTML_tag</code>: those currently open */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">CSS_included</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">JS_included</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
@@ -980,7 +980,7 @@ need to run quickly.</p>
 <ul>
 <li>if the <code>words</code> and <code>html</code> modules are both present, we recognise
 <code>*source text*Source/story.ni*14*</code> as something which should expand to a
-source code link -- except that the much less commonly occurring
+source code link — except that the much less commonly occurring
 <code>SOURCE_REF_CHAR</code> character code is used in place of the asterisk;</li>
 <li>if the <code>problems</code> module is present, we recognise <code>FORCE_NEW_PARA_CHAR</code>
 as a paragraph break.</li>

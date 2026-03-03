@@ -56,8 +56,6 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">foundation</a></li><li><a href="index.html#4">Chapter 4: Text Handling</a></li><li><b>C Strings</b></li></ul></div>
 <p class="purpose">A minimal library for handling C-style strings.</p>
 
-<ul class="toc"><li><a href="4-cst.html#SP10">&#167;10. Text storage</a></li></ul><hr class="tocbar">
-
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  Programs using Foundation store text in <code>text_stream</code> structures almost all
 of the time, but old-style, null-terminated <code>char *</code> array strings are
@@ -177,7 +175,7 @@ hand. This I think makes for opaque code. So:</p>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Text storage.</b>  The following is convenient for parking a read-only string of text somewhere
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. </b>  The following is convenient for parking a read-only string of text somewhere
 safe in memory. Since the length can't be extended, it's usually unsafe
 to write to the result. (Inform tools very seldom use this, because C strings
 are almost always best avoided.)</p>

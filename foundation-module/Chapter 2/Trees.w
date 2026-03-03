@@ -86,11 +86,11 @@ tree_type *Trees::new_type(text_stream *name, int (*verifier)(tree_node *)) {
 }
 
 @ Each node in a tree also has a type. Whenever the children of a node change,
-they are re-verified by the |verify_children|.
+they are re-verified by the `verify_children`.
 
 =
 typedef struct tree_node_type {
-	struct text_stream *node_type_name; /* text such as |I"INVOCATION"| */
+	struct text_stream *node_type_name; /* text such as `I"INVOCATION"` */
 	int required_CLASS; /* if any; or negative for no restriction */
 	int (*verify_children)(struct tree_node *); /* function to vet the children */
 	CLASS_DEFINITION
@@ -172,7 +172,7 @@ void Trees::make_sibling(tree_node *N, tree_node *of) {
 	if (of->parent)	Trees::verify_children(of->parent);
 }
 
-@ Removing a node from a tree does not change its ownership -- it still belongs
+@ Removing a node from a tree does not change its ownership — it still belongs
 to that tree.
 
 =

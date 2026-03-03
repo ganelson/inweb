@@ -6,7 +6,7 @@ this on Windows.
 @h Operating system interface.
 Some of our programs have to issue commands to the host operating system,
 to copy files, pass them through TeX, and so on. All of that is done using
-the C standard library |system| function; the commands invoked are all
+the C standard library `system` function; the commands invoked are all
 standard for POSIX, so will work on MacOS and Linux, but on a Windows system
 they would need to be read in a POSIX-style environment like Cygwin or MSYS2.
 
@@ -44,7 +44,7 @@ void Shell::quote_text(OUTPUT_STREAM, text_stream *raw) {
 	PUT(' ');
 }
 
-@ The generic shell code to apply |command| to a file |F|:
+@ The generic shell code to apply `command` to a file `F`:
 
 =
 void Shell::apply(char *command, filename *F) {
@@ -64,7 +64,7 @@ void Shell::apply_S(text_stream *command, filename *F) {
 	DISCARD_TEXT(COMMAND)
 }
 
-@ Applications to using |rm| and |cp|:
+@ Applications to using `rm` and `cp`:
 
 =
 void Shell::rm(filename *F) {
@@ -83,7 +83,7 @@ void Shell::copy(filename *F, pathname *T, char *options) {
 }
 
 @ This writes the traditional Unix shell syntax for redirecting the output
-from both |stdout| and |stderr| to the same named file.
+from both `stdout` and `stderr` to the same named file.
 
 =
 void Shell::redirect(OUTPUT_STREAM, filename *F) {

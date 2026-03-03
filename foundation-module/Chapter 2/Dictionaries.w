@@ -64,8 +64,8 @@ void Dictionaries::log(OUTPUT_STREAM, dictionary *D) {
 @h Hashing.
 The whole point of a hash table is that it crudely sorts the contents by a rough
 indication of the key values. This crude indication is the hash value, calculated
-here. If there are |N| slots in the dictionary table, this tells us which slot
-(from 0 to |N-1|) a given key value belongs in.
+here. If there are `N` slots in the dictionary table, this tells us which slot
+(from 0 to `N-1`) a given key value belongs in.
 
 =
 int Dictionaries::hash(text_stream *K, int N) {
@@ -93,8 +93,8 @@ void Dictionaries::destroy(dictionary *D, text_stream *K) {
 }
 
 @ A nuisance we have to live with is that we often want to express the key
-as wide text (so that we can use literals like |L"my-key"|) instead of text
-streams. So we also offer versions suffixed |_literal|:
+as wide text (so that we can use literals like `L"my-key"`) instead of text
+streams. So we also offer versions suffixed `_literal`:
 
 =
 dict_entry *Dictionaries::find_literal(dictionary *D, inchar32_t *lit) {
@@ -118,8 +118,8 @@ void Dictionaries::destroy_literal(dictionary *D, inchar32_t *lit) {
 	DISCARD_TEXT(K)
 }
 
-@ So, then, find an entry (if |change| is |0|), create it (if |+1|) or delete
-it (if |-1|).
+@ So, then, find an entry (if `change` is `0`), create it (if `+1`) or delete
+it (if `-1`).
 
 =
 dict_entry *Dictionaries::find_p(dictionary *D, text_stream *K, int change) {
@@ -256,7 +256,7 @@ text_stream *Dictionaries::create_text_literal(dictionary *D, inchar32_t *lit) {
 }
 
 @ We only need a read operation, because the caller can write to the dictionary
-entry by reading the text pointer and then using |WRITE_TO|.
+entry by reading the text pointer and then using `WRITE_TO`.
 
 =
 text_stream *Dictionaries::get_text(dictionary *D, text_stream *key) {
@@ -286,6 +286,7 @@ void Dictionaries::dispose_of(dictionary *D) {
 			for (dict_entry *E = &(D->hash_table[i]); E; E = E->next_in_entry)
 				if (E->vacant == FALSE)
 					Str::dispose_of(E->value);
-	Memory::I7_free(D->hash_table, DICTIONARY_MREASON, D->hash_table_size*((int) sizeof(dict_entry)));
+	Memory::I7_free(D->hash_table, DICTIONARY_MREASON,
+		D->hash_table_size*((int) sizeof(dict_entry)));
 	D->hash_table = NULL;
 }

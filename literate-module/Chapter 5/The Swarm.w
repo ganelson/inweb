@@ -10,10 +10,10 @@ Weaves are highly comfigurable, so they depend on several factors:
 example, HTML, ePub and PDF are all formats.
 - Which pattern is used, as represented by a //ls_pattern// object. A
 pattern is a choice of format together with some naming conventions and
-auxiliary files. For example, |GitHubPages| is a pattern which imposes HTML
+auxiliary files. For example, `GitHubPages` is a pattern which imposes HTML
 format but also throws in, for example, the GitHub logo icon.
 - Whether a filter to particular tags is used.
-- What subset of the web the user wants to weave -- by default the whole
+- What subset of the web the user wants to weave — by default the whole
 thing, but sometimes just one chapter, or just one section, and sometimes
 a special setting for "do all chapters one at a time" or "do all sections
 one at a time", a procedure called a "swarm".
@@ -62,10 +62,10 @@ it on Spotify.
 @ Syntax-colouring is worth further mention. Just as the Weaver tries not to
 get itself into fiddly details of formats, it also avoids specifics of
 programming languages. It does this by calling //LanguageMethods::syntax_colour//,
-which in turn calls the |SYNTAX_COLOUR_WEA_MTID| method for the relevant
+which in turn calls the `SYNTAX_COLOUR_WEA_MTID` method for the relevant
 instance of //programming_language//. In effect the weaver sends a snippet
 of code and asks to be told how it's to be coloured: not in terms of green
-vs blue, but in terms of |IDENTIFIER_COLOUR| vs |RESERVED_COLOUR| and so on.
+vs blue, but in terms of `IDENTIFIER_COLOUR` vs `RESERVED_COLOUR` and so on.
 
 Thus, the object representing "the C programming language" can in principle
 choose any semantic colouring that it likes. In practice, if (as is usual) it
@@ -80,7 +80,7 @@ in effect, a mini-language of their own, which is compiled by
 
 @ So, then, the weave tree is now made. Just as each programming language
 has an object representing it, so does each format, and at render time the
-method call |RENDER_FOR_MTID| is sent to it. This has to turn the tree into
+method call `RENDER_FOR_MTID` is sent to it. This has to turn the tree into
 HTML, plain text, TeX source, or whatever may be. It's understood that not
 every rendering instruction in the weave tree can be fully followed in every
 format: for example, there's not much that plain text can do to render an
@@ -90,7 +90,7 @@ Inweb currently contains four renderers:
 
 - //Debugging Format// renders the weave tree as a plain text display, and
 is solely for testing.
-- //TeX Format// renders the weave tree as TeX markup code -- in the early
+- //TeX Format// renders the weave tree as TeX markup code — in the early
 days of literate programming, this was the sole weave format used; now it
 has been eclipsed by...
 - ...//HTML Formats//, which renders to HTML and also handles ePub ebooks.
@@ -98,7 +98,7 @@ has been eclipsed by...
 
 Renderers should make requests for weave plugins or colour schemes if, and
 only if, the need arises: for example, the HTML renderer requests the plugin
-|Carousel| only if an image carousel is actually called for. Requests are
+`Carousel` only if an image carousel is actually called for. Requests are
 made by calling //Swarm::ensure_plugin// or //Swarm::ensure_colour_scheme//,
 and see also the underlying code at //Assets, Plugins and Colour Schemes//.
 (We want our HTML to run as little JavaScript as necessary at load time, which
@@ -109,7 +109,7 @@ for example, when weaving the text you are currently reading, Inweb has to
 decide where to send //weave_order//. This is handled by a suite of useful
 functions in //Colonies// which coordinate URLs across websites so
 that one web's weave can safely link to another's. In particular, cross-references
-written in |//this notation//| are "resolved" by //Colonies::resolve_reference_in_weave//,
+written in `//this notation//` are "resolved" by //Colonies::resolve_reference_in_weave//,
 and the function //Colonies::reference_URL// turns them into relative URLs
 from any given file. Within the main web being woven, //Colonies::paragraph_URL//
 can make a link to any paragraph of your choice.[1]
@@ -120,8 +120,8 @@ context and explanation to understand what is being linked to.
 
 @ Finally on weaving, special mention should go to //The Collater//, a
 subsystem which amounts to a stream editor. Its role is to work through a
-"template" and substitute in material from outside -- from the weave rendering,
-from the bibliographic data for a web, and so on -- to produce a final file.
+"template" and substitute in material from outside — from the weave rendering,
+from the bibliographic data for a web, and so on — to produce a final file.
 For example, a simple use of the collater is to work through the template:
 = (text)
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -136,7 +136,7 @@ For example, a simple use of the collater is to work through the template:
 	</html>
 =
 and to collate material already generated by other parts of Inweb to fill the
-double-squared placeholders, such as |[[Plugins]]|. The Collater, in fact,
+double-squared placeholders, such as `[[Plugins]]`. The Collater, in fact,
 is ultimately what generates all of the files made in a weave, even though
 other parts of Inweb did all of the real work.
 
@@ -158,8 +158,8 @@ typedef struct weave_reporting {
 	int verbose;
 	struct pathname *last_reported_weave_path;
 	int file_weaving_reports_made;
-	struct linked_list *files_copied; /* of |weave_copy_record| */
-	struct linked_list *plugins_copied; /* of |weave_plugin| */
+	struct linked_list *files_copied; /* of `weave_copy_record` */
+	struct linked_list *plugins_copied; /* of `weave_plugin` */
 } weave_reporting;
 
 typedef struct weave_copy_record {
@@ -378,8 +378,8 @@ void Swarm::cancel_redirection(ls_web *W) {
 }
 
 @h Swarming.
-A "weave" occurs when we take a portion of a literate web -- one section, one
-chapter, or the whole thing -- and write it out in a human-readable form (or
+A "weave" occurs when we take a portion of a literate web — one section, one
+chapter, or the whole thing — and write it out in a human-readable form (or
 in some intermediate state which can be made into one, like a TeX file).
 There can be many weaves in a single run, in which case we call the resulting
 flurry a "swarm", like the glittering cloud of locusts in the title of Chapter
@@ -387,7 +387,7 @@ flurry a "swarm", like the glittering cloud of locusts in the title of Chapter
 
 When weaving a swarm, then, it's no longer a matter of weaving a particular
 section or chapter: we can weave all of the sections or chapters, one after
-another. |swarm_mode|, then, is one of these:
+another. `swarm_mode`, then, is one of these:
 
 @e SWARM_OFF_SWM from 0
 @e SWARM_INDEX_SWM    /* make index(es) as if swarming, but don't actually swarm */
@@ -481,9 +481,9 @@ typedef struct weave_order {
 	void *post_processing_results; /* optional typesetting diagnostics after running through */
 	int self_contained; /* make a self-contained file if possible */
 	struct linked_list *breadcrumbs; /* non-standard breadcrumb trail, if any */
-	struct wcl_declaration *navigation; /* navigation links, or |NULL| if not supplied */
-	struct linked_list *plugins; /* of |weave_plugin|: these are for HTML extensions */
-	struct linked_list *colour_schemes; /* of |colour_scheme|: these are for HTML */
+	struct wcl_declaration *navigation; /* navigation links, or `NULL` if not supplied */
+	struct linked_list *plugins; /* of `weave_plugin`: these are for HTML extensions */
+	struct linked_list *colour_schemes; /* of `colour_scheme`: these are for HTML */
 	struct weave_reporting *reportage; /* how to report what has been done */
 	int paragraphs_woven;
 

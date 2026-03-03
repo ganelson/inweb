@@ -111,10 +111,10 @@ method of calculation even though the same answer was required. We'll
 instead follow the algorithm of J.-M. Oudin, first published in the
 Bulletin astronomique in 1940, as adapted by the US Naval Observatory.
 Oudin corrected a small mistake in the calculation by Gauss (1800) of the
-Allgemeiner Reichskalender (1776) which reconciled Lutheran Easter with
+<em>Allgemeiner Reichskalender</em> (1776) which reconciled Lutheran Easter with
 Gregorian, which in turn followed the reforms of Clavius et al. (1582),
-which in turn... and so on. See Leofranc Holford-Strevens, &quot;The History of
-Time&quot; (Oxford, 2005).</p>
+which in turn... and so on. See Leofranc Holford-Strevens, <em>The History of
+Time</em> (Oxford, 2005).</p>
 <p>In principle we calculate the first Sunday after the first ecclesiastical
 moon that occurs on or after March 21. An &quot;ecclesiastical moon&quot; is one as
 seen from a longitude near Rome, except that the ratios used to adjust lunar and
@@ -189,8 +189,8 @@ than from the actual time of day.</p>
 <span class="plain-syntax">    </span><span class="identifier-syntax">clock_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">start_time</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">clock_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_time</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_taken</span><span class="plain-syntax">; </span><span class="comment-syntax">/* measured in centiseconds of CPU time */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_chronological</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |stopwatch_timer| */</span>
-<span class="plain-syntax">    </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_sorted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of |stopwatch_timer| */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_chronological</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>stopwatch_timer</code> */</span>
+<span class="plain-syntax">    </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_sorted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>stopwatch_timer</code> */</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="type-syntax">stopwatch_timer</span><span class="plain-syntax">;</span>
 </pre>

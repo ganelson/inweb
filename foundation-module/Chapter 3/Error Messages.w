@@ -4,7 +4,7 @@ A basic system for command-line tool error messages.
 
 @h Errors handler.
 The user can provide a routine to deal with error messages before they're
-issued. If this returns |FALSE|, nothing is printed to |stderr|.
+issued. If this returns `FALSE`, nothing is printed to `stderr`.
 
 =
 int (*errors_handler)(text_stream *, int) = NULL;
@@ -80,7 +80,7 @@ void Errors::fatal_with_path(char *message, pathname *P) {
 }
 
 @ Assertion failures lead to the following. Note the use of the C11 syntax
-|_Noreturn|; this seems now to be well-supported on modern C compilers, though.
+`_Noreturn`; this seems now to be well-supported on modern C compilers, though.
 (It needs to be on its own line to avoid hassle with InC, which has no special
 support for C annotations.)
 
@@ -99,7 +99,7 @@ void Errors::internal_error_handler(void *p, char *message, char *f, int lc) {
 @h Deliberately crashing.
 It's sometimes convenient to get a backtrace from the debugger when an error
 occurs unexpectedly, and one way to do that is to force a division by zero.
-(This is only enabled by |-crash| at the command line and is for debugging only.)
+(This is only enabled by `-crash` at the command line and is for debugging only.)
 
 =
 int debugger_mode = FALSE;

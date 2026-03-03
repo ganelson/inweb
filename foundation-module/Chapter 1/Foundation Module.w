@@ -15,14 +15,14 @@ Inform programming language's compiler and all its outlying tools. If you need
 to write a command-line utility in ANSI C with no dependencies on other tools or
 libraries to speak of, you could do worse.
 
-To use |foundation|, the Contents section of a web should include:
+To use `foundation`, the Contents section of a web should include:
 = (text)
 	Import: foundation
 =
 before beginning the chapter rundown. There are then a few conventions
-which must be followed. The |main| routine for the client should, as one
-of its very first acts, call |Foundation::start()|, and should similarly, just
-before it exits, call |Foundation::end()|. Any other module used should be
+which must be followed. The `main` routine for the client should, as one
+of its very first acts, call `Foundation::start()`, and should similarly, just
+before it exits, call `Foundation::end()`. Any other module used should be
 started after Foundation starts, and ended before Foundation ends.
 
 In addition, the client's source code needs to define a few symbols to indicate
@@ -44,7 +44,7 @@ These inclusion files are all from the ANSI C standard library.
 typedef uint32_t inchar32_t;
 
 @ =
-text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| until opened */
+text_stream *DL = NULL; /* Current destination of debugging text: kept `NULL` until opened */
 
 @ We'll use three truth states, the third of which can also mean "unknown".
 
@@ -52,19 +52,19 @@ text_stream *DL = NULL; /* Current destination of debugging text: kept |NULL| un
 @d FALSE 0
 @d NOT_APPLICABLE 2
 
-@ And we recognise two different encodings for narrow (i.e., |char *|) C strings.
+@ And we recognise two different encodings for narrow (i.e., `char *`) C strings.
 
 @d UTF8_ENC 1 /* Write as UTF-8 without BOM */
 @d ISO_ENC 2 /* Write as ISO Latin-1 (i.e., no conversion needed) */
 
 @ It is assumed that our host filing system can manage at least 30-character
 filenames, that space is legal as a character in a filename, and that trailing
-extensions can be longer than 3 characters (in particular, that |.html| is
-allowed). There are no clear rules but on Windows |MAX_PATH| can be as low as
+extensions can be longer than 3 characters (in particular, that `.html` is
+allowed). There are no clear rules but on Windows `MAX_PATH` can be as low as
 260, and on Mac OS X the equivalent limit is 1024; both systems can house
 files buried more deeply, but in both cases the user interface to the
 operating system fails to recognise them. Some Linux implementations raise the
-equivalent |PATH_MAX| limit as high as 4096. This seems a reasonable
+equivalent `PATH_MAX` limit as high as 4096. This seems a reasonable
 compromise in practice:
 
 @d MAX_FILENAME_LENGTH 1025
@@ -78,10 +78,10 @@ typedef uintptr_t pointer_sized_int;
 As noted above, the client needs to call these when starting up and when
 shutting down.
 
-The function |Inweb_InC_register_I_literals| is not declared anywhere in the
+The function `Inweb_InC_register_I_literals` is not declared anywhere in the
 source, but is instead written automatically by Inweb whenever it tangles
 an InC program. It inserts declarations of I-literals, that is, literal
-|text_stream *| values written as |I"strings"|. It should never be used
+`text_stream *` values written as `I"strings"`. It should never be used
 anywhere but here.
 
 =
@@ -100,10 +100,10 @@ void Foundation::start(int argc, char **argv) {
 	@<Register the default command line switches@>;
 }
 
-@ After calling |Foundation::start()|, the client can register further stream
+@ After calling `Foundation::start()`, the client can register further stream
 writing routines, following these models: they define the meaning of escape
-characters in |WRITE|, our version of formatted printing. |%f|, for example,
-prints a filename by calling |Filenames::writer|.
+characters in `WRITE`, our version of formatted printing. `%f`, for example,
+prints a filename by calling `Filenames::writer`.
 
 @<Register the default stream writers@> =
 	Writers::register_writer('f', &Filenames::writer);
@@ -122,9 +122,9 @@ The following are always provided, but are all off by default.
 	Log::declare_aspect(MEMORY_USAGE_DA, U"memory usage", FALSE, FALSE);
 	Log::declare_aspect(TEXT_FILES_DA, U"text files", FALSE, FALSE);
 
-@ Debugging log writers are similar to stream writers, but implement the |$|
-escapes only available to the debugging log. For example, |$S| calls the
-|Streams::log| function to print a textual representation of the current
+@ Debugging log writers are similar to stream writers, but implement the `$`
+escapes only available to the debugging log. For example, `$S` calls the
+`Streams::log` function to print a textual representation of the current
 state of a stream.
 
 @<Register the default debugging log writers@> =
@@ -132,11 +132,11 @@ state of a stream.
 	Writers::register_logger('S', &Streams::log);
 
 @ We provide an optional service for parsing the command line. By default,
-the |-log A| switch makes that aspect active, though it's hyphenated, so
-for example |-log memory-usage| or |-log no-memory-usage|. |-fixtime| is
+the `-log A` switch makes that aspect active, though it's hyphenated, so
+for example `-log memory-usage` or `-log no-memory-usage`. `-fixtime` is
 used to ease automated testing: we don't want to reject the output from
 some tool just because it contains today's date and not the date when the
-test was set up. |-crash| tells the tool to crash on a fatal error, rather
+test was set up. `-crash` tells the tool to crash on a fatal error, rather
 than to exit cleanly, to make it easier to diagnose in a debugger.
 
 @e LOG_CLSW from 0
@@ -166,7 +166,7 @@ than to exit cleanly, to make it easier to diagnose in a debugger.
 	CommandLine::end_group();
 
 @ Once the following has been called, it is not safe to use any of the
-|foundation| facilities. It should be called on any normal exit, but not on
+`foundation` facilities. It should be called on any normal exit, but not on
 an early termination due to a fatal error, as this may lead to thread
 safety problems.
 

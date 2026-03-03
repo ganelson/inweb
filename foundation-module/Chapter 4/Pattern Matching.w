@@ -12,7 +12,7 @@ int Regexp::white_space(inchar32_t c) {
 	return FALSE;
 }
 
-@ The presence of |:| here is perhaps a bit surprising, since it's illegal in
+@ The presence of `:` here is perhaps a bit surprising, since it's illegal in
 C and has other meanings in other languages, but it's legal in C-for-Inform
 identifiers.
 
@@ -27,8 +27,8 @@ int Regexp::identifier_char(inchar32_t c) {
 
 @h Simple parsing.
 The following finds the earliest minimal-length substring of a string,
-delimited by two pairs of characters: for example, |<<| and |>>|. This could
-easily be done as a regular expression using |Regexp::match|, but the routine
+delimited by two pairs of characters: for example, `<<` and `>>`. This could
+easily be done as a regular expression using `Regexp::match`, but the routine
 here is much quicker.
 
 =
@@ -56,7 +56,7 @@ int Regexp::find_open_brace(text_stream *text) {
 }
 
 @ Note that we count the empty string as being white space. Again, this is
-equivalent to |Regexp::match(p, " *")|, but much faster.
+equivalent to `Regexp::match(p, " *")`, but much faster.
 
 =
 int Regexp::string_is_white_space(text_stream *text) {
@@ -67,8 +67,8 @@ int Regexp::string_is_white_space(text_stream *text) {
 }
 
 @h A Worse PCRE.
-I originally wanted to call the function in this section |a_better_sscanf|, then
-thought perhaps |a_worse_PCRE| would be more true. (PCRE is Philip Hazel's superb
+I originally wanted to call the function in this section `a_better_sscanf`, then
+thought perhaps `a_worse_PCRE` would be more true. (PCRE is Philip Hazel's superb
 C implementation of regular-expression parsing, but I didn't need its full strength,
 and I didn't want to complicate the build process by linking to it.)
 
@@ -82,23 +82,23 @@ short texts against particularly simple patterns. Here is an example of use:
 	}
 	Regexp::dispose_of(&mr);
 =
-Note the |L| at the front of the regex itself: this is a wide string.
+Note the `L` at the front of the regex itself: this is a wide string.
 
-This tries to match the given |text| to see if it consists of the word fish,
+This tries to match the given `text` to see if it consists of the word fish,
 then any amount of whitespace, then a string of digits which are copied into
-|mr->exp[0]|, then whitespace again, and then an alphanumeric identifier to be
-copied into |mr->exp[1]|, and finally optional whitespace. (If no match is
+subexpression 0, then whitespace again, and then an alphanumeric identifier to be
+copied into subexpression 1, and finally optional whitespace. (If no match is
 made, the contents of the found strings are undefined.)
 
 Note that this differs from, for example, Perl's regular expression matcher
 in several ways. The regular expression syntax is slightly different and in
 general simpler. A match has to be made from start to end, so it's as if there
-were an implicit |^| at the front and |$| at the back (in Perl terms). The
+were an implicit `^` at the front and `$` at the back (in Perl terms). The
 full match text is therefore always the entire text put in, so there's no
-need to record this. In Perl, matching against |m/(.*) plus (.*)/| would
+need to record this. In Perl, matching against `m/(.*) plus (.*)/` would
 set three subexpressions: number 0 would be the whole text matched, number
 1 would be the first bracketed part, number 2 the second. Here, though, the
-corresponding regex would be written |L"(%c*) plus (%c*)"|, and the bracketed
+corresponding regex would be written `L"(%c*) plus (%c*)"`, and the bracketed
 terms would be subexpressions 0 and 1.
 
 @d MAX_BRACKETED_SUBEXPRESSIONS 5 /* this many bracketed subexpressions can be extracted */
@@ -213,8 +213,8 @@ int Regexp::match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 		if ((allow_partial) && (pattern[at.ppos] == 0)) break;
 		@<Parentheses in the match pattern set up substrings to extract@>;
 
-		int chcl, /* what class of characters to match: a |*_CHARCLASS| value */
-			range_from, range_to, /* for |LITERAL_CHARCLASS| only */
+		int chcl, /* what class of characters to match: a `*_CHARCLASS` value */
+			range_from, range_to, /* for `LITERAL_CHARCLASS` only */
 			reverse = FALSE; /* require a non-match rather than a match */
 		@<Extract the character class to match from the pattern@>;
 
@@ -237,7 +237,7 @@ int Regexp::match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 		@<Count how many repetitions can be made here@>;
 		if (reps < rep_from) return -1;
 
-		/* we can now accept anything from |rep_from| to |reps| repetitions */
+		/* we can now accept anything from `rep_from` to `reps` repetitions */
 		if (rep_from == reps) { at.tpos += reps; continue; }
 		@<Try all possible match lengths until we find a match@>;
 
@@ -314,24 +314,24 @@ to implement numeric repetition counts, which we won't need:
 	}
 
 @ So then: most characters in the pattern are taken literally (if the pattern
-says |q|, the only match is with a lower-case letter "q"), except that:
+says `q`, the only match is with a lower-case letter "q"), except that:
 
 - a space means "one or more characters of white space";
-- |%d| means any decimal digit;
-- |%c| means any character at all;
-- |%C| means any character which isn't white space;
-- |%i| means any character from the identifier class (see above);
-- |%p| means any character which can be used in the name of a Preform
+- `%d` means any decimal digit;
+- `%c` means any character at all;
+- `%C` means any character which isn't white space;
+- `%i` means any character from the identifier class (see above);
+- `%p` means any character which can be used in the name of a Preform
 nonterminal, which is to say, an identifier character or a hyphen;
-- |%P| means the same or else a colon;
-- |%t| means a tab;
-- |%q| means a double-quote.
+- `%P` means the same or else a colon;
+- `%t` means a tab;
+- `%q` means a double-quote.
 
-|%| otherwise makes a literal escape; a space means any whitespace character;
+`%` otherwise makes a literal escape; a space means any whitespace character;
 square brackets enclose literal alternatives, and note as usual with grep
-engines that |[]xyz]| is legal and makes a set of four possibilities, the
+engines that `[]xyz]` is legal and makes a set of four possibilities, the
 first of which is a literal close square; within a set, a hyphen makes a
-character range; an initial |^| negates the result; and otherwise everything
+character range; an initial `^` negates the result; and otherwise everything
 is literal.
 
 @d ANY_CHARCLASS 1
@@ -422,13 +422,13 @@ int Regexp::test_cclass(inchar32_t c, int chcl, int range_from, int range_to, in
 
 @h Replacement.
 And this routine conveniently handles searching and replacing. This time we
-can match at substrings of the |text| (i.e., we are not forced to match
+can match at substrings of the `text` (i.e., we are not forced to match
 from the start right to the end), and multiple replacements can be made.
 For example,
 = (text as code)
 	Regexp::replace(text, U"[aeiou]", U"!", REP_REPEATING);
 =
-will turn the |text| "goose eggs" into "g!!s! !ggs".
+will turn the `text` "goose eggs" into "g!!s! !ggs".
 
 @d REP_REPEATING 1
 @d REP_ATSTART 2

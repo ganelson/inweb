@@ -3,7 +3,7 @@
 To construct Readme and similar files.
 
 @ This is a simple use of //foundation: Preprocessor//. Note that we use a
-non-standard comment syntax (i.e., |/| at start of line, not |#|) to avoid
+non-standard comment syntax (i.e., `/` at start of line, not `#`) to avoid
 colliding with Markdown's heading syntax.
 
 =
@@ -318,7 +318,7 @@ void Readme::extension_harvester(text_stream *text, text_file_position *tfp, voi
 	Regexp::dispose_of(&mr);
 }
 
-@ Explicit code to read from |header.h| in the Inform 6 repository.
+@ Explicit code to read from `header.h` in the Inform 6 repository.
 
 =
 void Readme::header_harvester(text_stream *text, text_file_position *tfp, void *state) {
@@ -348,7 +348,7 @@ void Readme::template_harvester(text_stream *text, text_file_position *tfp, void
 	Regexp::dispose_of(&mr);
 }
 
-@ And this is needed for |cheapglk| and |glulxe| in the Inform repository.
+@ And this is needed for `cheapglk` and `glulxe` in the Inform repository.
 
 =
 void Readme::readme_harvester(text_stream *text, text_file_position *tfp, void *state) {

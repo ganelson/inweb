@@ -4,7 +4,7 @@ Defining the programming languages supported by our LP system, loading in their
 definitions from files.
 
 @ Each different programming language is represented by an instance of
-|programming_language|. Some webs specify their language by name, and others
+`programming_language`. Some webs specify their language by name, and others
 imply it with filename extensions.
 
 =
@@ -13,7 +13,7 @@ typedef struct programming_language {
 	text_stream *language_name; /* identifies it */
 	text_stream *language_details; /* brief explanation of what language is */
 	
-	linked_list *recognised_filename_extensions; /* of |text_stream| */
+	linked_list *recognised_filename_extensions; /* of `text_stream` */
 
 	int supports_namespaces;
 	text_stream *line_comment;
@@ -46,10 +46,10 @@ typedef struct programming_language {
 
 	int C_like; /* languages with this set have access to extra features */
 
-	struct linked_list *reserved_words; /* of |reserved_word| */
+	struct linked_list *reserved_words; /* of `reserved_word` */
 	struct hash_table built_in_keywords;
 	struct colouring_language_block *program; /* algorithm for syntax colouring */
-	struct linked_list *custom_colours; /* of |custom_colour| */
+	struct linked_list *custom_colours; /* of `custom_colour` */
 	struct method_set *methods;
 	CLASS_DEFINITION
 } programming_language;
@@ -99,10 +99,10 @@ programming_language *Languages::new(void) {
 }
 
 @h Identification.
-Programming languages are WCL resources of type |LANGUAGE_WCLTYPE|, so we
+Programming languages are WCL resources of type `LANGUAGE_WCLTYPE`, so we
 find them by looking for a suitable resource.
 
-Like all resources they are identified by name: for example, |C++| or |Perl|.
+Like all resources they are identified by name: for example, `C++` or `Perl`.
 A nuisance too is that we have to decide what to recognise when it comes to
 names for Inform: Inform, Inform 6, Inform6, I6, Inform 7, Inform7 and I7.
 We're just going to pragmatically convert the unspaced versions into the spaced
@@ -147,7 +147,7 @@ void Languages::show(OUTPUT_STREAM, ls_web *W) {
 	WCL::write_sorted_list_of_resources(OUT, W, LANGUAGE_WCLTYPE);
 }
 
-@ Here we take a guess from a filename in the form |leaf.language.notation|:
+@ Here we take a guess from a filename in the form `leaf.language.notation`:
 
 =
 programming_language *Languages::guess_from_filename(ls_web *W, filename *F) {
@@ -239,7 +239,7 @@ itself C-like has functionality for function and structure definitions;
 the language whose name is InC gets even more, without having to ask.
 
 Languages have effect through their method calls, which is how those
-extra features are provided. The call to |ACMESupport::add_fallbacks|
+extra features are provided. The call to `ACMESupport::add_fallbacks`
 adds generic method calls to give effect to the settings in the definition.
 
 @<Add method calls to the language@> =
@@ -247,10 +247,10 @@ adds generic method calls to give effect to the settings in the definition.
 	if (Str::eq(pl->language_name, I"InC")) InCSupport::add_features(pl);
 	ACMESupport::add_fallbacks(pl);
 
-@ This is a simple one-pass compiler. The |language_reader_state| provides
+@ This is a simple one-pass compiler. The `language_reader_state` provides
 the only state preserved as we work through line by line, except of course
-that we are also working on the programming language it is |defining|. The
-|current_block| is the braced block of colouring instructions we are
+that we are also working on the programming language it is `defining`. The
+`current_block` is the braced block of colouring instructions we are
 currently inside.
 
 =
@@ -506,7 +506,7 @@ void Languages::resolve_declaration(wcl_declaration *D) {
 }
 
 @h Blocks.
-These are code blocks of colouring instructions. A block whose |parent| is |NULL|
+These are code blocks of colouring instructions. A block whose `parent` is `NULL`
 represents a complete program.
 
 @d WHOLE_LINE_CRULE_RUN -1 /* This block applies to the whole snippet being coloured */
@@ -518,12 +518,12 @@ represents a complete program.
 
 =
 typedef struct colouring_language_block {
-	struct linked_list *rules; /* of |colouring_rule| */
-	struct colouring_language_block *parent; /* or |NULL| for the topmost one */
-	int run; /* one of the |*_CRULE_RUN| values, or else a colour */
-	struct text_stream *run_instance; /* used only for |INSTANCES_CRULE_RUN| */
-	struct text_stream *char_set; /* used only for |CHARACTERS_IN_CRULE_RUN| */
-	struct pl_regexp_set *match_regexp_text; /* used for |MATCHES_CRULE_RUN|, |BRACKETS_CRULE_RUN| */
+	struct linked_list *rules; /* of `colouring_rule` */
+	struct colouring_language_block *parent; /* or `NULL` for the topmost one */
+	int run; /* one of the `*_CRULE_RUN` values, or else a colour */
+	struct text_stream *run_instance; /* used only for `INSTANCES_CRULE_RUN` */
+	struct text_stream *char_set; /* used only for `CHARACTERS_IN_CRULE_RUN` */
+	struct pl_regexp_set *match_regexp_text; /* used for `MATCHES_CRULE_RUN`, `BRACKETS_CRULE_RUN` */
 	
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
@@ -551,27 +551,27 @@ little context before it (where available).
 Note that rules can be unconditional, in that the premiss always passes.
 
 @d NOT_A_RULE_PREFIX 1 /* this isn't a prefix rule */
-@d UNSPACED_RULE_PREFIX 2 /* for |prefix P| */
-@d SPACED_RULE_PREFIX 3 /* for |spaced prefix P| */
-@d OPTIONALLY_SPACED_RULE_PREFIX 4 /* for |optionally spaced prefix P| */
-@d UNSPACED_RULE_SUFFIX 5 /* for |suffix P| */
-@d SPACED_RULE_SUFFIX 6 /* for |spaced suffix P| */
-@d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for |optionally spaced suffix P| */
+@d UNSPACED_RULE_PREFIX 2 /* for `prefix P` */
+@d SPACED_RULE_PREFIX 3 /* for `spaced prefix P` */
+@d OPTIONALLY_SPACED_RULE_PREFIX 4 /* for `optionally spaced prefix P` */
+@d UNSPACED_RULE_SUFFIX 5 /* for `suffix P` */
+@d SPACED_RULE_SUFFIX 6 /* for `spaced suffix P` */
+@d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for `optionally spaced suffix P` */
 
 =
 typedef struct colouring_rule {
 	/* the premiss: */
-	int sense; /* |FALSE| to negate the condition */
-	inchar32_t match_colour; /* for |coloured C|, or else |NOT_A_COLOUR| */
-	inchar32_t match_keyword_of_colour; /* for |keyword C|, or else |NOT_A_COLOUR| */
+	int sense; /* `FALSE` to negate the condition */
+	inchar32_t match_colour; /* for `coloured C`, or else `NOT_A_COLOUR` */
+	inchar32_t match_keyword_of_colour; /* for `keyword C`, or else `NOT_A_COLOUR` */
 	struct text_stream *match_text; /* or length 0 to mean "anything" */
-	int match_prefix; /* one of the |*_RULE_PREFIX| values above */
+	int match_prefix; /* one of the `*_RULE_PREFIX` values above */
 	struct pl_regexp_set *match_regexp_text;
-	int number; /* for |number N| rules; 0 for others */
-	int number_of; /* for |number N of M| rules; 0 for others */
+	int number; /* for `number N` rules; 0 for others */
+	int number_of; /* for `number N of M` rules; 0 for others */
 
 	/* the conclusion: */
-	struct colouring_language_block *execute_block; /* or |NULL|, in which case... */
+	struct colouring_language_block *execute_block; /* or `NULL`, in which case... */
 	inchar32_t set_to_colour; /* ...paint the snippet in this colour */
 	inchar32_t set_prefix_to_colour; /* ...also paint this (same for suffix) */
 	int debug; /* ...or print debugging text to console */
@@ -680,7 +680,7 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 	}
 
 @h Reserved words.
-Note that these can come in any colour, though usually it's |RESERVED_COLOUR|.
+Note that these can come in any colour, though usually it's `RESERVED_COLOUR`.
 
 =
 typedef struct reserved_word {
@@ -707,7 +707,7 @@ reserved_word *Languages::reserved(language_reader_state *state,
 
 @h Literal values in language declarations.
 We will use have three types of data: colours, booleans, and text. Colour names
-like |!constant| are those used by the Painter:
+like `!constant` are those used by the Painter:
 
 =
 inchar32_t Languages::colour(language_reader_state *state, text_stream *T, text_file_position *tfp) {
@@ -722,7 +722,7 @@ inchar32_t Languages::colour(language_reader_state *state, text_stream *T, text_
 	return C;
 }
 
-@ A boolean must be written as |true| or |false|.
+@ A boolean must be written as `true` or `false`.
 
 =
 int Languages::boolean(language_reader_state *state, text_stream *T, text_file_position *tfp) {
@@ -734,8 +734,8 @@ int Languages::boolean(language_reader_state *state, text_stream *T, text_file_p
 	}
 }
 
-@ In text, |\n| represents a newline, |\s| a space and |\t| a tab. Spaces
-can be given in the ordinary way inside a text in any case. |\\| is a
+@ In text, `\n` represents a newline, `\s` a space and `\t` a tab. Spaces
+can be given in the ordinary way inside a text in any case. `\\` is a
 literal backslash.
 
 =

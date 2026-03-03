@@ -50,8 +50,8 @@ markdown_variation *MarkdownVariations::TeX_flavoured_Markdown(void) {
 parsing, or rendering, or both.
 
 All newly-created variations begin with the CommonMark baseline set of features
-active, and no others. The caller should use |MarkdownVariations::add_feature| to
-add a home-brew feature, or |MarkdownVariations::remove_feature| to take away
+active, and no others. The caller should use `MarkdownVariations::add_feature` to
+add a home-brew feature, or `MarkdownVariations::remove_feature` to take away
 one of the CommonMark ones.
 
 =
@@ -345,7 +345,7 @@ void MarkdownVariations::make_TeX_flavoured_Markdown_features_active(markdown_va
 New features need to be able to intervene in the parsing or rendering algorithms,
 so for that we provide methods.
 
-|RENDER_MARKDOWN_MTID| allows a feature to meddle in how a node is rendered.
+`RENDER_MARKDOWN_MTID` allows a feature to meddle in how a node is rendered.
 
 @e RENDER_MARKDOWN_MTID
 
@@ -365,8 +365,8 @@ int MarkdownVariations::intervene_in_rendering(markdown_variation *variation,
 	return FALSE;
 }
 
-@ |POST_PHASE_I_MARKDOWN_MTID| allows a feature to restructure or annotate the
-block tree produced by Phase I parsing; similarly |POST_PHASE_II_MARKDOWN_MTID|.
+@ `POST_PHASE_I_MARKDOWN_MTID` allows a feature to restructure or annotate the
+block tree produced by Phase I parsing; similarly `POST_PHASE_II_MARKDOWN_MTID`.
 
 @e POST_PHASE_I_MARKDOWN_MTID
 @e POST_PHASE_II_MARKDOWN_MTID
@@ -395,10 +395,10 @@ void MarkdownVariations::intervene_after_Phase_II(markdown_variation *variation,
 	}
 }
 
-@ |MULTIFILE_MARKDOWN_MTID| allows a feature to tell the parser that the content
+@ `MULTIFILE_MARKDOWN_MTID` allows a feature to tell the parser that the content
 will end up being split across multiple HTML files. If a feature wants to do
 this, it should then set a "file point" at any top-level positions of its
-choice, and return |TRUE|.
+choice, and return `TRUE`.
 
 @e MULTIFILE_MARKDOWN_MTID
 

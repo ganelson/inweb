@@ -114,7 +114,8 @@ Notation "InwebClassic" {
 	end
 	
 	Conventions {
-		commentary uses simplified markup
+		commentary uses Markdown markup
+		comments can contain styling
 		a summary under the title is read as the purpose
 		holon names are written between @< and @>
 		metadata in strings are written between [[ and ]]

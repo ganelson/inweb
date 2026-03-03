@@ -5,7 +5,7 @@ language, and to assemble a minimal web structure around its one unit of source.
 
 @ A single-file web consists one one section, which is the only one in its
 chapter, which is the only one in its web. The web has just one module (the
-whole thing), and -- for now, at least -- cannot import others.
+whole thing), and — for now, at least — cannot import others.
 
 The following function doesn't read in the source code stored in the web, it
 simply takes a preliminary look.
@@ -54,7 +54,7 @@ advance, and the file didn't declare one explicitly, and didn't have a shebang.
 	}
 
 @ And similarly for languages, except that here it's acceptable to give up and
-leave the language |NULL| if there really is no indication:
+leave the language `NULL` if there really is no indication:
 
 @<Try to deduce the language from the filename extension@> =
 	if (W->single_file)
@@ -100,7 +100,7 @@ typedef struct sfw_reader_state {
 @<Initialise the reader state@> =
 	RS.W = W;
 
-	RS.detected_syntax = W->web_notation; /* with |NULL| meaning not yet known */
+	RS.detected_syntax = W->web_notation; /* with `NULL` meaning not yet known */
 	RS.detected_language = NULL; /* i.e., unknown */
 	RS.skip_from = 0; /* meaning, skip nothing */
 	RS.skip_to = 0;

@@ -8,7 +8,7 @@ into memory and fully parsed. A request was then made either to swarm a mass of
 individual weaves, or to make just a single weave, with the target in each case
 being identified by its range. A further decoding layer then translated each
 range into rather more basic details of what to weave and where to put the
-result: and so we arrive at the front door of the routine |Weaver::weave| below.
+result: and so we arrive at the front door of the routine `Weaver::weave` below.
 
 The basic idea is to build a new tree of rendering instructions, and then to
 hand it over for rendering. A fair critique of this approach would be
@@ -25,7 +25,7 @@ void Weaver::weave(weave_order *wv) {
 
 @ The tree is independent of format except that, to save passing arguments
 endlessly around, it contains a marker in the root of its head node which
-has a pointer to |wv|. In particular, this means that the tree records what
+has a pointer to `wv`. In particular, this means that the tree records what
 format (HTML, etc.) it will be woven to.
 
 =
@@ -122,14 +122,14 @@ We can now begin on a clean page, by initialising the state of the weaver:
 
 @e COMMENTARY_MATERIAL from 1
 @e MACRO_MATERIAL          /* when a macro is being defined... */
-@e DEFINITION_MATERIAL     /* ...versus when an |@d| definition is being made */
+@e DEFINITION_MATERIAL     /* ...versus when an `@d` definition is being made */
 @e CODE_MATERIAL           /* verbatim code */
 @e ENDNOTES_MATERIAL       /* endnotes at the foot of a paragraph */
 @e FOOTNOTES_MATERIAL	   /* footnote texts for a paragraph */
 
 =
 typedef struct weaver_state {
-	int kind_of_material; /* one of the enumerated |*_MATERIAL| constants above */
+	int kind_of_material; /* one of the enumerated `*_MATERIAL` constants above */
 	int line_break_pending; /* insert a line break before the next woven line? */
 	int next_heading_without_vertical_skip;
 	struct ls_section *last_extract_from;
@@ -503,7 +503,7 @@ we only have to transcribe it. But not quite!
 	Weaver::commentary_text(tree, wv, state->ap, matter);
 	continue;
 
-@ Displayed source is the material marked with |>>| arrows in column 1.
+@ Displayed source is the material marked with `>>` arrows in column 1.
 
 @<Weave displayed source in its own special style@> =
 	if (chunk->chunk_type == QUOTATION_LSCT) {
@@ -527,7 +527,7 @@ add a vertical skip between them to show the division more clearly.
 	}
 
 @ Here our extension is simply to provide a tidier way to use TeX's standard
-|\item| and |\itemitem| macros for indented list items.
+`\item` and `\itemitem` macros for indented list items.
 
 @<Weave bracketed list indications at start of line into items@> =
 	match_results mr = Regexp::create_mr();
@@ -585,7 +585,7 @@ in the source is set indented in code style.
 	}
 
 @h Code-like matter.
-Even though our approach, unlike |CWEB|'s, is to respect the layout of the
+Even though our approach, unlike `CWEB`'s, is to respect the layout of the
 original, this is still quite typographically complex: commentary and macro
 usage is rendered differently.
 
@@ -674,7 +674,7 @@ example, or flush left. (This is currently inactive; it had down sides.)
 	DISCARD_TEXT(part_before_comment)
 	DISCARD_TEXT(part_within_comment)
 
-@ Set the |@d| definition escape very slightly more fancily:
+@ Set the `@d` definition escape very slightly more fancily:
 
 @<Give constant definition lines slightly fancier openings@> =
 	if ((chunk->chunk_type == DEFINITION_LSCT) && (lst == chunk->first_line)) {
@@ -712,7 +712,7 @@ example, or flush left. (This is currently inactive; it had down sides.)
 
 @h Endnotes.
 The endnotes describe function calls from far away, or unexpected
-structure usage, or how |CWEB|-style code substitutions were made.
+structure usage, or how `CWEB`-style code substitutions were made.
 
 =
 void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
@@ -973,7 +973,7 @@ void Weaver::commentary_text(heterogeneous_tree *tree, weave_order *wv,
 
 @h Section tables of contents.
 These appear at the top of each woven section, and give links to the paragraphs
-marked as |@h| headings.
+marked as `@h` headings.
 
 =
 int Weaver::weave_table_of_contents(heterogeneous_tree *tree,

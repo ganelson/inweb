@@ -3,13 +3,13 @@
 Utility functions for dealing with those ampersanded paraphrases of characters
 which seemed like a good idea in around the year 2000.
 
-@ The following returns |TRUE| if |entity| is a valid HTML5 entity: note that
+@ The following returns `TRUE` if `entity` is a valid HTML5 entity: note that
 this includes some with no trailing semicolon. (I didn't make these rules.)
 
-If the pointers |A| and |B| are non-null, they are set to the Unicode code points
-for the character referred to by the entity. |B| is zero unless this is a digraph.
+If the pointers `A` and `B` are non-null, they are set to the Unicode code points
+for the character referred to by the entity. `B` is zero unless this is a digraph.
 
-If the |entity| is not valid, neither |A| nor |B| is written to, and |FALSE|
+If the `entity` is not valid, neither `A` nor `B` is written to, and `FALSE`
 is returned.
 
 =

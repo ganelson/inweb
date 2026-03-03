@@ -4,7 +4,7 @@ Cross-referencing multiple webs gathered together.
 
 @h Colonies of webs.
 Social spiders are said to form "colonies" when their webs are shared,[1] and in
-that spirit, a colony is a collection of coexisting webs -- which share no code,
+that spirit, a colony is a collection of coexisting webs — which share no code,
 and in that sense have no connection at run-time, but which need to be
 cross-referenced in their woven form, so that readers can easily turn from one
 to another.
@@ -22,7 +22,7 @@ notations:
 =
 typedef struct ls_colony {
 	struct wcl_declaration *declaration;
-	struct linked_list *members; /* of |ls_colony_member| */
+	struct linked_list *members; /* of `ls_colony_member` */
 	struct text_stream *home; /* path of home repository */
 	struct pathname *redirect; /* temporarily, where we weave to */
 	struct text_stream *assets_path; /* where assets shared between weaves live */
@@ -30,20 +30,20 @@ typedef struct ls_colony {
 	CLASS_DEFINITION
 } ls_colony;
 
-@ Each member is represented by an instance of the following. Note the |loaded|
+@ Each member is represented by an instance of the following. Note the `loaded`
 field: this holds metadata on the web/module in question.
 
-Note that the |path| might be either the name of a single-file web, or of a
+Note that the `path` might be either the name of a single-file web, or of a
 directory holding a multi-section web.
 
 =
 typedef struct ls_colony_member {
 	struct ls_colony *owner;
 
-	struct text_stream *name; /* the |N| in |N at P in W| */
-	struct text_stream *path; /* the |P| in |N at P in W| */
-	struct text_stream *weave_path; /* the |W| in |N at P in W| */
-	struct text_stream *home_leaf; /* usually |index.html|, but not for single-file webs */
+	struct text_stream *name; /* the `N` in `N at P in W` */
+	struct text_stream *path; /* the `P` in `N at P in W` */
+	struct text_stream *weave_path; /* the `W` in `N at P in W` */
+	struct text_stream *home_leaf; /* usually `index.html`, but not for single-file webs */
 	struct text_stream *default_pattern_name; /* for use when weaving */
 	int external; /* belongs to another colony, really */
 
@@ -52,7 +52,7 @@ typedef struct ls_colony_member {
 	struct text_stream *navigation_name; /* navigation sidebar HTML */
 	struct wcl_declaration *navigation; /* navigation sidebar HTML */
 	struct text_stream *crumbs; /* textual form of breadcrumbs */
-	struct linked_list *breadcrumb_tail; /* of |breadcrumb_request| */
+	struct linked_list *breadcrumb_tail; /* of `breadcrumb_request` */
 	CLASS_DEFINITION
 } ls_colony_member;
 
@@ -332,7 +332,7 @@ void Colonies::member_complete(ls_colony_member *CM, colony_reader_state *crs, t
 	DISCARD_TEXT(bc)
 }
 
-@ And the following reads a colony file |F| and produces a suitable |colony|
+@ And the following reads a colony file `F` and produces a suitable `colony`
 object from it.
 
 =
@@ -340,7 +340,7 @@ typedef struct colony_reader_state {
 	struct wcl_declaration *D;
 	struct ls_colony *province;
 	struct text_stream *nav;
-	struct text_stream *crumbs; /* of |breadcrumb_request| */
+	struct text_stream *crumbs; /* of `breadcrumb_request` */
 	struct text_stream *pattern;
 } colony_reader_state;
 
@@ -416,7 +416,7 @@ void Colonies::read_line(text_stream *line, text_file_position *tfp, void *v_crs
 
 	Str::trim_white_space(line); /* ignore trailing space */
 	if (Str::len(line) == 0) return; /* ignore blank lines */
-	if (Str::get_first_char(line) == '#') return; /* lines opening with |#| are comments */
+	if (Str::get_first_char(line) == '#') return; /* lines opening with `#` are comments */
 
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, line, U"to: \"*(%C+)\" *(%c*)")) {
@@ -551,7 +551,7 @@ void Colonies::resolve_nav_declaration(wcl_declaration *D) {
 }
 
 @h Searching.
-Given a name |T|, we try to find a colony member of that name, returning the
+Given a name `T`, we try to find a colony member of that name, returning the
 first we find.
 
 =
@@ -717,11 +717,11 @@ The following must decide what references like the following should refer to:
 	foundation: Text Streams
 	goldbach
 =
-The reference text is in |text|; we return |TRUE| if we can make unambiguous
-sense of it, or throw an error and return |FALSE| if not. If all is well, we
+The reference text is in `text`; we return `TRUE` if we can make unambiguous
+sense of it, or throw an error and return `FALSE` if not. If all is well, we
 must write a title and URL for the link.
 
-The web metadata |Wm| is for the web currently being woven, and the line |L|
+The web metadata `Wm` is for the web currently being woven, and the line `L`
 is where the reference is made from.
 
 =

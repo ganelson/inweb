@@ -133,8 +133,8 @@ text_stream *Filenames::get_leafname(filename *F) {
 The following functions are written cautiously because of an oddity in
 Windows's handling of filenames, which are allowed to have trailing dots or
 spaces, in a way which isn't necessarily visible to the user, who may have added
-these by an accidental brush of the keyboard. Thus |frog.jpg .| should be
-treated as equivalent to |frog.jpg| when deciding the likely file format.
+these by an accidental brush of the keyboard. Thus `frog.jpg .` should be
+treated as equivalent to `frog.jpg` when deciding the likely file format.
 
 =
 void Filenames::write_unextended_leafname(OUTPUT_STREAM, filename *F) {
@@ -172,7 +172,7 @@ filename *Filenames::set_extension(filename *F, text_stream *extension) {
 	return N;
 }
 
-@ It's occasionally useful to dismantle two-deck extensions like |.tar.zip|:
+@ It's occasionally useful to dismantle two-deck extensions like `.tar.zip`:
 
 =
 void Filenames::write_final_extension(OUTPUT_STREAM, filename *F) {
@@ -258,10 +258,10 @@ int Filenames::guess_format(filename *F) {
 }
 
 @h Opening.
-These files are wrappers for |fopen|, the traditional C library call, but
+These files are wrappers for `fopen`, the traditional C library call, but
 referring to the file by filename structure rather than a textual name. Note
 that we must transcode the filename to whatever the locale expects before
-we call |fopen|, which is the main reason for the wrapper.
+we call `fopen`, which is the main reason for the wrapper.
 
 =
 FILE *Filenames::fopen(filename *F, char *usage) {
@@ -336,8 +336,8 @@ int Filenames::size(filename *F) {
 }
 
 @h Renaming.
-If this succeeds, the filename |F| is altered to match the new name, and
-the function returns |TRUE|; if not, |F| is unchanged, and |FALSE|.
+If this succeeds, the filename `F` is altered to match the new name, and
+the function returns `TRUE`; if not, `F` is unchanged, and `FALSE`.
 
 =
 int Filenames::rename(filename *F, text_stream *new_name) {
