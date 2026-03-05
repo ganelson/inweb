@@ -90,6 +90,7 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
 	else if (N->type == weave_defn_node_type) @<Render defn@>
 	else if (N->type == weave_source_code_node_type) @<Render source code@>
+	else if (N->type == weave_comment_in_holon_node_type) @<Render comment in holon@>
 	else if (N->type == weave_url_node_type) @<Render URL@>
 	else if (N->type == weave_footnote_cue_node_type) @<Render footnote cue@>
 	else if (N->type == weave_display_line_node_type) @<Render display line@>
@@ -102,7 +103,10 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
 	else if (N->type == weave_index_marker_node_type) @<Render index@>
 
-	else internal_error("unable to render unknown node");
+	else {
+		WRITE_TO(STDERR, "errant node type: %S\n", N->type->node_type_name);
+		internal_error("unable to render unknown node");
+	}
 	return TRUE;
 }
 
@@ -307,6 +311,21 @@ to a given width, into the text at the current position.
 	if (N == N->parent->child) starts = TRUE;
 	TeXWeaving::source_code(OUT, trs->wv,
 		C->matter, C->colouring, starts);
+
+@<Render comment in holon@> =
+	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
+	TEMPORARY_TEXT(cm)
+	TEMPORARY_TEXT(col)
+	WRITE_TO(cm, "%S", C->comment_open);
+	WRITE_TO(cm, "%S", C->raw);
+	WRITE_TO(cm, "%S", C->comment_close);
+	for (int i=0; i<Str::len(cm); i++) PUT_TO(col, COMMENT_COLOUR);
+	int starts = FALSE;
+	if (N == N->parent->child) starts = TRUE;
+	TeXWeaving::source_code(OUT, trs->wv,
+		cm, col, starts);
+	DISCARD_TEXT(cm)
+	DISCARD_TEXT(col)
 
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);

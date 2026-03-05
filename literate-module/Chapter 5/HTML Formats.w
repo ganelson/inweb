@@ -147,7 +147,10 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
 	else if (N->type == weave_index_marker_node_type) @<Render index@>
 
-	else internal_error("unable to render unknown node");
+	else {
+		WRITE_TO(STDERR, "errant node type: %S\n", N->type->node_type_name);
+		internal_error("unable to render unknown node");
+	}
 	return TRUE;
 }
 

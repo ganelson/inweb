@@ -70,6 +70,7 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_commentary_node_type) @<Render commentary@>
 	else if (N->type == weave_defn_node_type) @<Render defn@>
 	else if (N->type == weave_source_code_node_type) @<Render source code@>
+	else if (N->type == weave_comment_in_holon_node_type) @<Render comment in holon@>
 	else if (N->type == weave_url_node_type) @<Render URL@>
 	else if (N->type == weave_footnote_cue_node_type) @<Render footnote cue@>
 	else if (N->type == weave_begin_footnote_text_node_type) @<Render footnote text@>
@@ -81,7 +82,10 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
 	else if (N->type == weave_index_marker_node_type) @<Render index@>
 
-	else internal_error("unable to render unknown node");
+	else {
+		WRITE_TO(STDERR, "errant node type: %S\n", N->type->node_type_name);
+		internal_error("unable to render unknown node");
+	}
 	return TRUE;
 }
 
@@ -188,6 +192,12 @@ int PlainTextWeaving::render_visit(tree_node *N, void *state, int L) {
 @<Render source code@> =
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	WRITE("%S", C->matter);
+
+@<Render comment in holon@> =
+	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
+	WRITE("%S", C->comment_open);
+	WRITE("%S", C->raw);
+	WRITE("%S", C->comment_close);
 
 @<Render URL@> =
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);

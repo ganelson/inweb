@@ -29,8 +29,7 @@ document weave order 0
               defn <define>
               source_code <100 >
                           _nnnp_
-              source_code </* the upper limit to the numbers we will consider */>
-                          _!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!_
+              comment in holon (no details available)
           material code: C
             code line
               source_code <#include <stdio.h>>

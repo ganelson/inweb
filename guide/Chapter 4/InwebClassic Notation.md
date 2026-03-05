@@ -7,23 +7,28 @@ but with its literate features written in `InwebClassic` rather than `MarkdownCo
 notation. The first thing to notice is that there are `@` marker signs scattered
 at various line-beginnings throughout, which divide the web into paragraphs: when
 using `MarkdownCode`, Inweb deduces paragraph boundaries, but here we write them
-explicitly.
+explicitly. Similarly, the dividing point between commentary and code is written
+explicitly with `=` markers. Otherwise, though, the two notations are mostly
+the same, as we'll see.
 
-To start with, though, another concept not found in `MarkdownCode`: "limbo".
+The fact that paragraphs begin at `@` markers open up a possibility not found
+in `MarkdownCode`: there can be lines at the start of a section in "limbo".
 This term, coined by Knuth, refers to any chunk of material found before the
 first `@` marker, and therefore not in any paragraph at all:
 
 	Counting Sort.
 	
 	An implementation of the 1954 sort algorithm.
+	
+	@ The first para has just begun, and...
 
-This contains a titling line — which, note, needs to end in a full stop — and
+This limbo contains a titling line — which, note, needs to end in a full stop — and
 then an (optional) description of the purpose of the program. Unlike `MarkdownCode`,
 this notation doesn't allow titling lines to be elaborated with author names,
 version numbers and such. (`InwebClassic` was really a notation devised for
 larger webs which have contents pages, where that can be spelled out fully.)
 
-Here's the first paragraph. The `@` followed by at least one character of white
+Here's the actual first paragraph. The `@` followed by at least one character of white
 space marks the opening. All the verbiage from "This algorithm" through to "is returned"
 is commentary. 
 	
@@ -33,16 +38,13 @@ is commentary.
 	comparisons in the following function, only iteration.
 	
 	This function takes an array of non-negative integers, sorts it, and returns
-	the result. The test |if unsorted| means "if the unsorted array is not empty",
+	the result. The test `if unsorted` means "if the unsorted array is not empty",
 	and is needed because Python would otherwise handle this case badly: of course,
-	if |unsorted| does equal |[]|, then so should |sorted|, and so the right answer
+	if `unsorted` does equal `[]`, then so should `sorted`, and so the right answer
 	is returned.
 
-Note that commentary in this notation doesn't follow Markdown syntax. In fact, it's
-much more limited in what markup can do: vertical strokes `|like this|` are used
-to denote small code snippets, instead of Markdown's backticks; links, like
-the one to Seward's Wikipedia page, are still recognised; so are mathematics
-and footnotes, which use the same syntax. But most of Markdown is unavailable.
+Once again, the commentary itself uses Markdown notation, so we see the familiar
+backticks for code snippets, for example.
 
 We now pass to some code. This is a top-level holon, indicated by an equals
 sign `=` in the first column of a line:
@@ -59,9 +61,9 @@ sign `=` in the first column of a line:
 Note that holon names are written in `@<` and `@>` markers, instead of `{{` and `}}`
 as in `MarkdownCode`. In the next paragraph, one of those is defined:
 	
-	@ For example, suppose the array is initially |[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]|.
+	@ For example, suppose the array is initially `[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]`.
 	Then the maximum value is 6. Python arrays index from 0, so we need an incidence
-	counts array of size 7, and we create it as |[0, 0, 0, 0, 0, 0, 0]|.
+	counts array of size 7, and we create it as `[0, 0, 0, 0, 0, 0, 0]`.
 	
 	@<initialise the incidence counts to zero@> =
 		max_val = max(unsorted)
@@ -74,18 +76,18 @@ this is a named holon, not a top-level and nameless one.
 The program continues in similar vein:
 
 	@ In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
-	following produces the counts |[0, 1, 3, 3, 1, 1, 2]|.
+	following produces the counts `[0, 1, 3, 3, 1, 1, 2]`.
 	
 	@<tally how many times each value occurs in the unsorted array@> =
 		for value in unsorted:
 			counts[value] += 1
 	
 	@ Unusually for a sorting algorithm, an entirely new sorted array is created,
-	using only the incidence counts as a sort of program. We fill |sorted|
-	with no |0|s, one |1|, three |2|s, and so on, producing |[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]|.[1]
+	using only the incidence counts as a sort of program. We fill `sorted`
+	with no `0`s, one `1`, three `2`s, and so on, producing `[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]`.[1]
 	
 	[1] The unsorted array is no longer needed, in fact, and so we could easily make this
-	algorithm "sort in place" by simply rewriting |unsorted|, rather than making
+	algorithm "sort in place" by simply rewriting `unsorted`, rather than making
 	a new array.
 	
 	@<construct the sorted array with the right number of each value@> =
@@ -217,27 +219,14 @@ three possible segments:
 
 ## Commentary syntax
 
-As noted above, this is (by default) neither Markdown nor TeX — though note
-that this can be changed by applying //Conventions//. `InwebClassic` notation
-has the convention `commentary uses simplified markup` by default, and that
-is indeed simple:
+As noted above, commentary follows Markdown syntax. So for example a quotation
+can be made using leading `>` signs:
 
-- code excerpts use vertical strokes `|like this|`;
-- mathematics is written in dollar signs, as in `$n^2$`;
-- and displayed mathematics in double-dollar signs;
-- footnotes are written in square brackets, `[1]`, and follow the same
-  conventions as in Markdown commentary;
-- links are written either `//thus//` or in Markdown syntax, and follow the
-  same conventions as in Markdown commentary;
-- quotations are introduced `>>`.
+	> You sit on the veranda drinking tea and your ducklings swim on the pond,
+	> and everything smells good... and there are gooseberries. (Anton Chekhov)
 
-As an example of the latter:
-
-	>> You sit on the veranda drinking tea and your ducklings swim on the pond,
-	and everything smells good... and there are gooseberries. (Anton Chekhov)
-
-A particular difference is the way that quoted text, or code from a different
-program entirely, is written. In Markdown, this would simply be indented.
+But there are additional syntaxes for inserting displayed material or gadgets.
+In regular Markdown, this would simply be indented:
 
 	= (text)
 	This is some plain text being quoted.
@@ -301,6 +290,8 @@ The file to download, in this case `alice.crt`, must be placed in a `Downloads`
 subdirectory of the web. The explanatory text — usually just an indication
 of what sort of file this is — is optional.
 
+For reasons going back to earlier versions of Inweb, the notation also provides
+a way to impose images:
 
 	= (figure MATERIAL "SECOND")
 	= (figure MATERIAL)
@@ -319,6 +310,16 @@ centimeters asked for, and rendering to HTML makes the image width or height
 correspond. If you really want to monkey with the aspect ratio,
 
 	= (figure Whatever.jpg at 20 by 100)
+
+But note that these figures can all be achieved with (more or less) regular
+Markdown just as easily:
+
+	![This is a doohickey.](Wotsit.jpg)
+
+	![This is a rescaled doohickey.](Wotsit.jpg@20x100)
+
+That is, the same conventions used for images in `MarkdownCode` work just
+as well here.
 
 A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.

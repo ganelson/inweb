@@ -31,7 +31,6 @@
 
 ME = inweb
 FTEST = $(ME)/foundation-test
-LTEST = $(ME)/literate-test
 LBUILD = $(ME)/licence-build
 SAFETYCOPY = $(ME)/Tangled/inweb_dev
 
@@ -46,7 +45,7 @@ COLONY = $(ME)/colony.inweb
 
 .PHONY: all
 
-all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test $(LTEST)/Tangled/literate-test
+all: $(ME)/platform-settings.mk $(LBUILD)/Tangled/licence-build $(ME)/Tangled/$(ME) $(FTEST)/Tangled/foundation-test
 
 $(LBUILD)/Tangled/licence-build: $(LBUILD)/Contents.w $(LBUILD)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-licence-build)
@@ -57,14 +56,10 @@ $(ME)/Tangled/$(ME): $(ME)/Contents.w $(ME)/Chapter*/*.w $(ME)/foundation-module
 $(FTEST)/Tangled/foundation-test: $(FTEST)/Contents.w $(FTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w
 	$(call make-ftest)
 
-$(LTEST)/Tangled/literate-test: $(LTEST)/Contents.w $(LTEST)/Sections/*.w $(ME)/foundation-module/Contents.w $(ME)/foundation-module/Chapter*/*.w $(ME)/literate-module/Contents.w $(ME)/literate-module/Chapter*/*.w
-	$(call make-ltest)
-
 .PHONY: force
 force: $(ME)/platform-settings.mk
 	$(call make-me)
 	$(call make-ftest)
-	$(call make-ltest)
 	$(call make-licence-build)
 
 {define: make-settings platform: PLATFORM}
@@ -85,7 +80,6 @@ makers:
 initial: $(ME)/platform-settings.mk
 	$(call make-me-once-tangled)
 	$(call make-ftest)
-	$(call make-ltest)
 	$(call make-licence-build)
 
 .PHONY: safe
@@ -151,7 +145,6 @@ endef
 test:
 	$(INTEST) -from $(ME) all
 	$(INTEST) -from $(FTEST) all
-	$(INTEST) -from $(LTEST) all
 
 # "make commit" should be used only by the Benevolent Overlord of Inweb.
 # It updates the build code and commits to the repository.
@@ -194,17 +187,12 @@ pages:
 	rm -f $(ME)/docs/foundation-test/*.html
 	$(INWEB) weave -colony $(COLONY) -member overview
 	$(INWEB) weave -colony $(COLONY) -member goldbach
-	$(INWEB) weave -colony $(COLONY) -member goldbach -as Plain        -to inweb/docs/goldbach/goldbach.txt
-	$(INWEB) weave -colony $(COLONY) -member goldbach -as TestingInweb -to inweb/docs/goldbach/goldbach-test.txt
-	$(INWEB) weave -colony $(COLONY) -member goldbach -as PDFTeX       -to inweb/docs/goldbach/goldbach.pdf
-	$(INWEB) weave -colony $(COLONY) -member goldbach -as TeX          -to inweb/docs/goldbach/goldbach.tex
 	$(INWEB) weave -colony $(COLONY) -member twinprimes
 	$(INWEB) weave -colony $(COLONY) -member eastertide
 	$(INWEB) weave -colony $(COLONY) -member inweb
 	$(INWEB) weave -colony $(COLONY) -member foundation
 	$(INWEB) weave -colony $(COLONY) -member foundation-test
 	$(INWEB) weave -colony $(COLONY) -member literate
-	$(INWEB) weave -colony $(COLONY) -member literate-test
 
 # Cleaning up:
 

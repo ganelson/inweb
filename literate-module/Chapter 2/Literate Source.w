@@ -1112,9 +1112,11 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 				WebNotation::postprocess(pp, lsu->unit_notation);
 				markdown_item *md = Markdown::parse_extended(pp, variation);
 				if (md->type == DOCUMENT_MIT) md = md->down;
-				if (md->type == PARAGRAPH_MIT) md = md->down;
-				chunk->holon->holon_name_as_markdown = md;
-				ParagraphTags::autotag(NULL, par, md);
+				if (md) {
+					if (md->type == PARAGRAPH_MIT) md = md->down;
+					chunk->holon->holon_name_as_markdown = md;
+					ParagraphTags::autotag(NULL, par, md);
+				}
 				DISCARD_TEXT(pp)
 			}
 			if ((chunk->code_excerpt) &&
@@ -1127,9 +1129,11 @@ void LiterateSource::parse_markdown(ls_unit *lsu, markdown_variation *variation)
 						WebNotation::postprocess(pp, lsu->unit_notation);
 						markdown_item *md = Markdown::parse_extended(pp, variation);
 						if (md->type == DOCUMENT_MIT) md = md->down;
-						if (md->type == PARAGRAPH_MIT) md = md->down;
-						hs->comment_as_markdown = md;
-						ParagraphTags::autotag(NULL, par, md);
+						if (md) {
+							if (md->type == PARAGRAPH_MIT) md = md->down;
+							hs->comment_as_markdown = md;
+							ParagraphTags::autotag(NULL, par, md);
+						}
 						DISCARD_TEXT(pp)
 					}
 			}
