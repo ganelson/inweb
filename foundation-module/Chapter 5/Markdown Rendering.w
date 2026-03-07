@@ -208,28 +208,45 @@ been taken out at the parsing stage.)
 
 @<Render a code block@> =
 	mode = mode & (~ESCAPES_MDRMODE) & (~ENTITIES_MDRMODE);
-	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
 	TEMPORARY_TEXT(language)
 	for (int i=0; i<Str::len(md->info_string); i++) {
 		inchar32_t c = Str::get_at(md->info_string, i);
 		if ((c == ' ') || (c == '\t')) break;
 		PUT_TO(language, c);
 	}
+	TEMPORARY_TEXT(language_rendered)
 	if (Str::len(language) > 0) {
-		TEMPORARY_TEXT(language_rendered)
 		md->sliced_from = language;
 		md->from = 0; md->to = Str::len(language) - 1;
 		if (MarkdownVariations::supports(variation, ENTITIES_MARKDOWNFEATURE))
 			MDRenderer::slice(language_rendered, md, mode | ENTITIES_MDRMODE);
 		else
 			MDRenderer::slice(language_rendered, md, mode);
+	}
+	DISCARD_TEXT(language)
+
+	if (MarkdownVariations::supports(variation, INWEB_SYNTAX_COLOURING_MARKDOWNFEATURE)) {
+		#ifdef LITERATE_MODULE
+		HTMLWeaving::render_code_block(OUT, mode, (weave_order *) state, md->stashed, language_rendered);
+		#endif
+		
+		#ifndef LITERATE_MODULE
+		@<Render a code block the default way@>;
+		#endif
+	} else {
+		@<Render a code block the default way@>;
+	}
+
+	DISCARD_TEXT(language_rendered)
+
+@<Render a code block the default way@> =
+	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
+	if (Str::len(language_rendered) > 0) {
 		if (mode & TAGS_MDRMODE)
 			HTML_OPEN_WITH("code", "class=\"language-%S\"", language_rendered);
-		DISCARD_TEXT(language_rendered)
 	} else {
 		if (mode & TAGS_MDRMODE) HTML_OPEN("code");
 	}
-	DISCARD_TEXT(language)
 	md->sliced_from = md->stashed;
 	md->from = 0; md->to = Str::len(md->sliced_from) - 1;
 	MDRenderer::slice(OUT, md, mode);

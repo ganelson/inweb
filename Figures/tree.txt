@@ -11,19 +11,6 @@ document weave order 0
         paragraph P1'The conjecture'
           material discussion
             markdown (no details available)
-          material code: C
-            code line
-              source_code <    3 and 5>
-                          _ppppnpiiipn_
-            code line
-              source_code <    5 and 7>
-                          _ppppnpiiipn_
-            code line
-              source_code <    11 and 13>
-                          _ppppnnpiiipnn_
-            code line
-              source_code <    ...>
-                          _ppppppp_
           material definition
             code line
               defn <define>

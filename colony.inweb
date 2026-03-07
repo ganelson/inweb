@@ -7,8 +7,8 @@ Colony {
 	member: "foundation-test" at "foundation-test"
 	member: "literate"        at "literate-module"      to "literate-module"
 	member: "goldbach"        at "Examples/goldbach"
-	member: "twinprimes"      at "Examples/twinprimes.c.w"
-	member: "eastertide"      at "Examples/eastertide"
+	member: "twinprimes"      at "Examples/twinprimes.w"
+	member: "eastertide"      at "Examples/eastertide.w"
 	member: "guide"           at "guide"
 	
 	Page "overview" {

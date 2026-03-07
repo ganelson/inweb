@@ -12,12 +12,14 @@ and many others, 2014).
 
 This program finds a few small pairs of twins, by the simplest method possible,
 and should print output like so:
-= (text)
+
+``` ConsoleText
+	$ twinprimes
 	3 and 5
 	5 and 7
 	11 and 13
 	...
-=
+```
 
 @d RANGE 100 /* the upper limit to the numbers we will consider */
 

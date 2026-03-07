@@ -27,7 +27,7 @@ span.named-paragraph-container {
 
 /* This is the box into which multi-line stretches of code are put: */
 
-pre.displayed-code {
+pre.displayed-code, div.lsmarkdown pre.displayed-code {
 	background: #222222;
 	border: 1px solid #008000;
 }

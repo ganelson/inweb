@@ -174,6 +174,15 @@ int WebStructure::imported_section_count(ls_web *W) {
 				n++;
 	return n;
 }
+int WebStructure::unimported_section_count(ls_web *W) {
+	int n = 0;
+	ls_chapter *C; ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		if (C->imported == FALSE)
+			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+				n++;
+	return n;
+}
 int WebStructure::paragraph_count(ls_web *W) {
 	int n = 0;
 	ls_chapter *C; ls_section *S;
@@ -213,8 +222,8 @@ int WebStructure::imported_line_count(ls_web *W) {
 	return n;
 }
 
-int WebStructure::has_only_one_section(ls_web *W) {
-	if (WebStructure::section_count(W) == 1) return TRUE;
+int WebStructure::weave_has_only_one_section(ls_web *W) {
+	if (WebStructure::unimported_section_count(W) == 1) return TRUE;
 	return FALSE;
 }
 

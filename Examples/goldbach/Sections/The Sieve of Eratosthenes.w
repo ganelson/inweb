@@ -32,8 +32,8 @@ int isprime(int n) {
 	return still_in_sieve[n];
 }
 
-@ We save a little time by noting that if a number up to |RANGE| is composite
-then one of its factors must be smaller than the square root of |RANGE|. Thus,
+@ We save a little time by noting that if a number up to `RANGE` is composite
+then one of its factors must be smaller than the square root of `RANGE`. Thus,
 in a sieve of size 10000, one only needs to remove multiples of 2 up to 100,
 for example.
 

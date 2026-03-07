@@ -1,4 +1,4 @@
-web "The Twin Primes Conjecture" (C program in InwebClassic notation): 3 paragraphs : 51 lines
+web "The Twin Primes Conjecture" (C program in InwebClassic notation): 3 paragraphs : 53 lines
 Purpose 'This example of using inweb is a whole web in a single short file, to look for twin primes, a classic problem in number theory.'
 S1 'The conjecture'
     C1: commentary
@@ -10,25 +10,28 @@ S1 'The conjecture'
         _______ 
         _______ This⏑program⏑finds⏑a⏑few⏑small⏑pairs⏑of⏑twins,⏑by⏑the⏑simplest⏑method⏑possible,
         _______ and⏑should⏑print⏑output⏑like⏑so:
-    C2: plain text extract
+        _______ 
+        _______ ```⏑ConsoleText
+        _______ ⏑⏑⏑⏑$⏑twinprimes
         _______ ⏑⏑⏑⏑3⏑and⏑5
         _______ ⏑⏑⏑⏑5⏑and⏑7
         _______ ⏑⏑⏑⏑11⏑and⏑13
         _______ ⏑⏑⏑⏑...
-    C3: define 'RANGE' = 100
-    C4: holon (used sequentially)
-        0000025 #include⏑<stdio.h>
-        0000026 
-        0000027 int⏑main(int⏑argc,⏑char⏑*argv[])⏑{
-        0000028 ⏑⏑⏑⏑for⏑(int⏑i=1;⏑i<RANGE;⏑i++)
-        0000029 ⏑⏑⏑⏑⏑⏑⏑⏑
+        _______ ```
+    C2: define 'RANGE' = 100
+    C3: holon (used sequentially)
+        0000027 #include⏑<stdio.h>
+        0000028 
+        0000029 int⏑main(int⏑argc,⏑char⏑*argv[])⏑{
+        0000030 ⏑⏑⏑⏑for⏑(int⏑i=1;⏑i<RANGE;⏑i++)
+        0000031 ⏑⏑⏑⏑⏑⏑⏑⏑
           holon 'Test for twin prime at i' (defined in S1.1)
-        0000029 ;
-        0000030 }
+        0000031 ;
+        0000032 }
 S1.1
     C1: holon 'Test for twin prime at i' (used in S1)
-        0000033 ⏑⏑⏑⏑if⏑((isprime(i))⏑&&⏑(isprime(i+2)))
-        0000034 ⏑⏑⏑⏑⏑⏑⏑⏑printf("%d⏑and⏑%d\n",⏑i,⏑i+2);
+        0000035 ⏑⏑⏑⏑if⏑((isprime(i))⏑&&⏑(isprime(i+2)))
+        0000036 ⏑⏑⏑⏑⏑⏑⏑⏑printf("%d⏑and⏑%d\n",⏑i,⏑i+2);
 S2 'Primality'
     C1: commentary
         _______ This⏑simple⏑and⏑slow⏑test⏑tries⏑to⏑divide⏑by⏑every⏑whole⏑number⏑at⏑least
@@ -40,10 +43,10 @@ S2 'Primality'
     C2: define 'TRUE' = 1
     C3: define 'FALSE' = 0
     C4: holon (used sequentially)
-        0000048 int⏑isprime(int⏑n)⏑{
-        0000049 ⏑⏑⏑⏑if⏑(n⏑<=⏑1)⏑return⏑FALSE;
-        0000050 ⏑⏑⏑⏑for⏑(int⏑m⏑=⏑2;⏑m*m⏑<=⏑n;⏑m++)
-        0000051 ⏑⏑⏑⏑⏑⏑⏑⏑if⏑(n⏑%⏑m⏑==⏑0)
-        0000052 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑return⏑FALSE;
-        0000053 ⏑⏑⏑⏑return⏑TRUE;
-        0000054 }
+        0000050 int⏑isprime(int⏑n)⏑{
+        0000051 ⏑⏑⏑⏑if⏑(n⏑<=⏑1)⏑return⏑FALSE;
+        0000052 ⏑⏑⏑⏑for⏑(int⏑m⏑=⏑2;⏑m*m⏑<=⏑n;⏑m++)
+        0000053 ⏑⏑⏑⏑⏑⏑⏑⏑if⏑(n⏑%⏑m⏑==⏑0)
+        0000054 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑return⏑FALSE;
+        0000055 ⏑⏑⏑⏑return⏑TRUE;
+        0000056 }

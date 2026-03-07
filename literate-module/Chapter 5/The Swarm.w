@@ -514,7 +514,7 @@ typedef struct weave_order {
 	}
 	wv->plugins = NEW_LINKED_LIST(weave_plugin);
 	wv->colour_schemes = NEW_LINKED_LIST(colour_scheme);
-	if (WebStructure::has_only_one_section(W)) wv->self_contained = TRUE;
+	if (WebStructure::weave_has_only_one_section(W)) wv->self_contained = TRUE;
 	wv->reportage = R;
 	wv->paragraphs_woven = 0;
 	

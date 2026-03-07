@@ -189,7 +189,8 @@ void InwebWeave::run_on(inweb_weave_settings *iws, ls_colony *C, ls_colony_membe
 		if (Str::len(pattern->based_on_name) > 0) PRINT(" (based on %S)", pattern->based_on_name);
 		PRINT("\n");
 	}
-	if ((iws->subset.chosen_range_actually_chosen == FALSE) && (W->is_page == FALSE))
+	if ((iws->subset.chosen_range_actually_chosen == FALSE) &&
+		(WebStructure::weave_has_only_one_section(W) == FALSE))
 		Configuration::set_range(&(iws->subset), Patterns::get_default_range(W, pattern), TRUE);
 	if (Str::len(iws->to_setting) > 0) {
 		pathname *P = Pathnames::from_text(iws->to_setting);

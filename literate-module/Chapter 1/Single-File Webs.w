@@ -123,24 +123,43 @@ pass bibliographic data on. Note that the opening run of these continues until
 the first line which doesn't match, and is then trimmed away by being skipped.
 
 @<Look for key-value pairs at the top of the file@> =
-	TEMPORARY_TEXT(key)
-	if ((Conventions::get_int(RS->W, SINGLE_FILE_METADATA_PAIRS_LSCONVENTION)) &&
-		(Bibliographic::parse_kvp(RS->W, line, TRUE, tfp, key, FALSE))) {
-		if (Str::eq(key, I"Web Syntax Version")) {
-			WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
-			ls_notation *ntn = WebNotation::notation_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
-			if (ntn) RS->detected_syntax = ntn;
-		}
-		if (Str::eq(key, I"Notation")) {
-			ls_notation *ntn = WebNotation::notation_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
-			if (ntn) RS->detected_syntax = ntn;
-		}
-		if (Str::eq(key, I"Language")) {
-			programming_language *pl = Languages::find(RS->W, Bibliographic::get_datum(RS->W, key));
-			if (pl) RS->detected_language = pl;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, line, U"Import: (%c+)")) {
+		ls_module *imported = WebModules::find(RS->W, mr.exp[0]);
+		if (imported == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "unable to find module '%S'", mr.exp[0]);
+			Errors::in_text_file_S(err, tfp);
+			DISCARD_TEXT(err)
+		} else {
+			ls_notation *save_ntn = RS->W->web_notation;
+			WebContents::read_contents_page(RS->W, imported,
+				TRUE, imported->module_location);
+			RS->W->is_page = FALSE;
+			WebNotation::adopt_for_web(RS->W, save_ntn);
 		}
 		RS->skip_from = 1; RS->skip_to = tfp->line_count;
 	} else {
-		RS->reading_opening_stanza = FALSE;
+		TEMPORARY_TEXT(key)
+		if ((Conventions::get_int(RS->W, SINGLE_FILE_METADATA_PAIRS_LSCONVENTION)) &&
+			(Bibliographic::parse_kvp(RS->W, line, TRUE, tfp, key, FALSE))) {
+			if (Str::eq(key, I"Web Syntax Version")) {
+				WCL::error(RS->W->declaration, tfp, I"'Web Syntax Version' has been withdrawn");
+				ls_notation *ntn = WebNotation::notation_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
+				if (ntn) RS->detected_syntax = ntn;
+			}
+			if (Str::eq(key, I"Notation")) {
+				ls_notation *ntn = WebNotation::notation_by_name(RS->W, Bibliographic::get_datum(RS->W, key));
+				if (ntn) RS->detected_syntax = ntn;
+			}
+			if (Str::eq(key, I"Language")) {
+				programming_language *pl = Languages::find(RS->W, Bibliographic::get_datum(RS->W, key));
+				if (pl) RS->detected_language = pl;
+			}
+			RS->skip_from = 1; RS->skip_to = tfp->line_count;
+		} else {
+			RS->reading_opening_stanza = FALSE;
+		}
+		DISCARD_TEXT(key)
 	}
-	DISCARD_TEXT(key)
+	Regexp::dispose_of(&mr);

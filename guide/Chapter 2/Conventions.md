@@ -87,7 +87,10 @@ which are closely related, it's probably better to create a colony for them
   if the notation is not `MarkdownCode`. Older Inweb webs have traditionally
   used `commentary uses simplified markup`, which as the name suggests, is
   more restricted. At present, `commentary uses TeX markup` is experimental
-  and not fully working. Generically, `commentary uses simplified markup`.
+  and not fully working. Generically, `commentary uses simplified markup`,
+  but both of the main notations supplied with Inweb now specify that
+  `commentary uses Markdown markup`, so in practice that's what users will
+  see unless they make a choice otherwise.
 
 * `a summary under the title is read as the purpose`,
   `an italicised summary under the title is read as the purpose`, or

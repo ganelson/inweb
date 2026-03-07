@@ -1,6 +1,6 @@
 # Inweb 9.0
 
-[Version](notes/versioning.md): 9.0-beta+1C01 'Invasion' (5 March 2026)
+[Version](notes/versioning.md): 9.0-beta+1C03 'Invasion' (7 March 2026)
 
 ## About Inweb
 

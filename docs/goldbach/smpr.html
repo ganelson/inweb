@@ -53,7 +53,7 @@ MathJax = {
 </ul><h2>Example Webs</h2><ul>
 <li><a href="index.html"><span class="selectedlink">goldbach</span></a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -112,18 +112,15 @@ better methods than the one we use here. We will only go up to:</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1. </b>  This ought to print:</p>
-</div>
-<pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">goldbach/Tangled/goldbach</span>
-<span class="ConsoleText-plain-syntax">    4 = 2+2</span>
-<span class="ConsoleText-plain-syntax">    6 = 3+3</span>
-<span class="ConsoleText-plain-syntax">    8 = 3+5</span>
-<span class="ConsoleText-plain-syntax">    10 = 3+7 = 5+5</span>
-<span class="ConsoleText-plain-syntax">    12 = 5+7</span>
-<span class="ConsoleText-plain-syntax">    14 = 3+11 = 7+7</span>
-<span class="ConsoleText-plain-syntax">    ...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="ConsoleText-displayed-code all-displayed-code code-font"><span class="ConsoleText-plain-syntax">	</span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">goldbach/Tangled/goldbach</span><span class="ConsoleText-plain-syntax">
+	4 = 2+2
+	6 = 3+3
+	8 = 3+5
+	10 = 3+7 = 5+5
+	12 = 5+7
+	14 = 3+11 = 7+7
+	...
+</span></pre>
 <p>We'll print each different pair of primes adding up to \INWEBMATH(i\INWEBMATH). We
 only check in the range \INWEBMATH(2 \leq j \leq i/2\INWEBMATH) to avoid counting pairs
 twice over (thus \INWEBMATH(8 = 3+5 = 5+3\INWEBMATH), but that's hardly two different ways).</p>

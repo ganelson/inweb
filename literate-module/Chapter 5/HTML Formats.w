@@ -827,22 +827,7 @@ that service uses to identify the video/audio in question.
 
 @<Render source code@> =
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
-	int starts = FALSE;
-	if (N == N->parent->child) starts = TRUE;
-	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
-	for (int i=0; i < Str::len(C->matter); i++) {
-		colour_wanted = (int) Str::get_at(C->colouring, i);
-		if (colour_wanted != current_colour) {
-			if (current_colour >= 0) HTML_CLOSE("span");
-			HTMLWeaving::change_colour(OUT, colour_wanted, hrs->colours);
-			current_colour = colour_wanted;
-		}
-		if (Str::get_at(C->matter, i) == '<') WRITE("&lt;");
-		else if (Str::get_at(C->matter, i) == '>') WRITE("&gt;");
-		else if (Str::get_at(C->matter, i) == '&') WRITE("&amp;");
-		else WRITE("%c", Str::get_at(C->matter, i));
-	}
-	if (current_colour >= 0) HTMLWeaving::change_colour(OUT, -1, hrs->colours);
+	HTMLWeaving::render_syntax_coloured(OUT, C->matter, C->colouring, hrs->colours);
 
 @<Render comment in holon@> =
 	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
@@ -1179,6 +1164,72 @@ void HTMLWeaving::escape_text(text_stream *OUT, text_stream *id) {
 		else if (Str::get_at(id, i) == '>') WRITE("&gt;");
 		else PUT(Str::get_at(id, i));
 	}
+}
+
+@
+
+=
+void HTMLWeaving::render_code_block(OUTPUT_STREAM, int mode, weave_order *wv, text_stream *code, text_stream *language_rendered) {
+	if (Str::len(language_rendered) > 0) {
+		if (mode & TAGS_MDRMODE)
+			HTML_OPEN_WITH("pre", "class=\"%S-displayed-code all-displayed-code code-font\"",
+				language_rendered);
+	} else {
+		if (mode & TAGS_MDRMODE)
+			HTML_OPEN_WITH("pre", "class=\"displayed-code all-displayed-code code-font\"");
+	}
+	TEMPORARY_TEXT(colouring)
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%S-Colours", language_rendered);
+	colour_scheme *colours = Swarm::ensure_colour_scheme(wv, name, language_rendered);
+	DISCARD_TEXT(name)
+	programming_language *pl = wv->weave_web->web_language;
+	if (Str::len(language_rendered) > 0)
+		pl = Languages::find(wv->weave_web, language_rendered);
+	if (pl == NULL) {
+		WRITE_TO(STDERR, "warning: no language definition for '%S'\n", language_rendered);
+		pl = Languages::find(wv->weave_web, I"None");
+	}
+	Painter::reset_syntax_colouring(pl);
+	TEMPORARY_TEXT(line)
+	TEMPORARY_TEXT(cols)
+	int i = 0;
+	while (i < Str::len(code)) {
+		inchar32_t c = Str::get_at(code, i);
+		if ((c == '\n') || (i+1 == Str::len(code))) {
+			Painter::syntax_colour(pl, &(pl->built_in_keywords), line, cols, FALSE, TRUE);
+			Str::clear(line);
+			WRITE_TO(colouring, "%S%c", cols, PLAIN_COLOUR);
+			Str::clear(cols);
+		} else {
+			PUT_TO(line, c);
+		}
+		i++;
+	}
+	DISCARD_TEXT(line)
+	DISCARD_TEXT(cols)
+	HTMLWeaving::render_syntax_coloured(OUT, code, colouring, colours);
+	DISCARD_TEXT(colouring)
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("pre");
+	WRITE("\n");
+}
+
+void HTMLWeaving::render_syntax_coloured(OUTPUT_STREAM, text_stream *code,
+	text_stream *colouring, colour_scheme *colours) {
+	int current_colour = -1, colour_wanted = PLAIN_COLOUR;
+	for (int i=0; i < Str::len(code); i++) {
+		colour_wanted = (int) Str::get_at(colouring, i);
+		if (colour_wanted != current_colour) {
+			if (current_colour >= 0) HTML_CLOSE("span");
+			HTMLWeaving::change_colour(OUT, colour_wanted, colours);
+			current_colour = colour_wanted;
+		}
+		if (Str::get_at(code, i) == '<') WRITE("&lt;");
+		else if (Str::get_at(code, i) == '>') WRITE("&gt;");
+		else if (Str::get_at(code, i) == '&') WRITE("&amp;");
+		else WRITE("%c", Str::get_at(code, i));
+	}
+	if (current_colour >= 0) HTMLWeaving::change_colour(OUT, -1, colours);
 }
 
 @h EPUB-only methods.

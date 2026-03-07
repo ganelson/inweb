@@ -70,7 +70,6 @@ force: $(ME)/platform-settings.mk
 .PHONY: makers
 makers:
 	$(INWEB) make-makefile $(FTEST) -to $(FTEST)/foundation-test.mk
-	$(INWEB) make-makefile $(LTEST) -to $(LTEST)/literate-test.mk
 	$(INWEB) make-makefile $(LBUILD) -to $(LBUILD)/licence-build.mk
 	{repeat with: PLATFORM in: {PLATFORMS}}
 	{make-settings platform: {PLATFORM}}
@@ -123,13 +122,6 @@ endef
 define make-ftest
 	$(INWEB) make-makefile $(FTEST) -to $(FTEST)/foundation-test.mk
 	make -f $(FTEST)/foundation-test.mk force
-endef
-
-# And literate-test...
-
-define make-ltest
-	$(INWEB) make-makefile $(LTEST) -to $(LTEST)/literate-test.mk
-	make -f $(LTEST)/literate-test.mk force
 endef
 
 # And licence-build...

@@ -1,9 +1,11 @@
-[Main::] Reporting the Date.
+Title: Eastertide
+Author: Graham Nelson
+Language: InC
+Notation: InwebClassic
+Import: foundation
 
-This is really the whole Eastertide program, in a single section.
-
-@ This utility, or perhaps futility, is a minimal example of the use of the
-Foundation library, which comes supplied with //inweb// for the benefit
+@ This utility, or perhaps futility, is a minimal example of the use of
+the //foundation// library, which comes supplied with inweb for the benefit
 of C programs wanting to use it. We will do everything in an unnecessarily
 fancy way, just to give the tires a kick.
 
@@ -11,13 +13,13 @@ Any program using Foundation must define this constant:
 
 @d PROGRAM_NAME "eastertide"
 
-@ The |main| routine must start and end Foundation, and is not allowed to
+@ The `main` routine must start and end Foundation, and is not allowed to
 do much after that; but it is allowed to ask if error messages were generated,
 so that it can return conventional Unix return values 0 (okay) or 1 (not okay).
 
 =
 int main(int argc, char *argv[]) {
-	Foundation::start();
+	Foundation::start(argc, argv);
 
 	@<Read the command line@>;
 	@<Write the report to the console@>;
@@ -29,15 +31,15 @@ int main(int argc, char *argv[]) {
 
 @ The general scheme here is that we read the command line to work out which
 the user is interested in, and store those in memory; but eventually we will
-actually report on them, thus. |STDOUT| is the "text stream" for standard
+actually report on them, thus. `STDOUT` is the "text stream" for standard
 output, i.e., writing to it will print to the Terminal or similar console.
 
 @<Write the report to the console@> =
-	Main::report_on_years(STDOUT);
+	report_on_years(STDOUT);
 
 @ All this program does is to print the date of Easter on any years requested,
 but we'll give it some command-line options anyway. Foundation will add also
-|-help| and a few others to the mix.
+`-help` and a few others to the mix.
 
 @e CALENDAR_FILE_CLSW
 
@@ -59,10 +61,11 @@ but we'll give it some command-line options anyway. Foundation will add also
 	CommandLine::declare_boolean_switch(AMERICAN_CLSW, U"american", 1,
 		U"print dates in American MM/DD format", FALSE);
 	CommandLine::end_group();
-	CommandLine::read(argc, argv, NULL, &Main::switch, &Main::bareword);
+	CommandLine::read(argc, argv, NULL, &cli_switch, &bareword);
 
 @ That results in dialogue like the following:
-= (text as ConsoleText)
+
+``` ConsoleText
 	$ eastertide 2020
 	12/4/2020
 	$ eastertide -help
@@ -94,25 +97,28 @@ but we'll give it some command-line options anyway. Foundation will add also
 	eastertide: cal.txt, line 2: not a year: '1791b'
 	15/4/1770
 	15/4/1827
+```
 
 @ So let's get back to how this is done. The Foundation function //CommandLine::read//
-calls our function |Main::switch| when any of our three switches is used
+calls our function `cli_switch` when any of our three switches is used
 (we don't need to handle the ones Foundation added, only our own); and
-|Main::bareword| for any other words given on the command line. For example,
-= (text as ConsoleText)
+`bareword` for any other words given on the command line. For example,
+
+``` ConsoleText
 	$ eastertide -american -calendar-file cal.txt 1982 2007 
-=
-...results in two calls to |Main::switch|, then two to |Main::bareword|.
+```
+
+...results in two calls to `switch`, then two to `bareword`.
 
 =
 int verbose_mode = FALSE;
 int american_mode = FALSE;
 
-void Main::bareword(int id, text_stream *arg, void *state) {
-	Main::request(arg, NULL);
+void bareword(int id, text_stream *arg, void *state) {
+	request(arg, NULL);
 }
 
-void Main::switch(int id, int val, text_stream *arg, void *state) {
+void cli_switch(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
 		case VERBOSE_CLSW: verbose_mode = val; break;
 		case AMERICAN_CLSW: american_mode = val; break;
@@ -125,27 +131,27 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 @<Process calendar file@> =
 	filename *F = Filenames::from_text(arg);
 	TextFiles::read(F, FALSE, "can't open calendar file",
-		TRUE, Main::calendar_line, NULL, NULL);
+		TRUE, calendar_line, NULL, NULL);
 
 @ To make this a little more gratuitous, we'll give calendar files some
 syntax. The following function is called on each line in turn; we're going
 to trim white space, ignore blank lines, and also ignore any line beginning
-withn a |#| as being a comment.
+withn a `#` as being a comment.
 
 =
-void Main::calendar_line(text_stream *line, text_file_position *tfp, void *state) {
+void calendar_line(text_stream *line, text_file_position *tfp, void *state) {
 	Str::trim_white_space(line);
 	if (Str::len(line) == 0) return;
 	if (Str::get_first_char(line) == '#') return;
-	Main::request(line, tfp);
+	request(line, tfp);
 }
 
 @ And with that done, we can process a request for a year, which comes from
-either the command lihe (in which case |tfp| here is null), or from the
+either the command lihe (in which case `tfp` here is null), or from the
 calendar file (in which case it remembers the filename and line number).
 
 =
-void Main::request(text_stream *year, text_file_position *tfp) {
+void request(text_stream *year, text_file_position *tfp) {
 	int bad_digit = FALSE;
 	LOOP_THROUGH_TEXT(pos, year)
 		if (Characters::isdigit(Str::get(pos)) == FALSE)
@@ -161,7 +167,7 @@ void Main::request(text_stream *year, text_file_position *tfp) {
 		Errors::in_text_file("Gregorian calendar only valid from 1582", tfp);
 		return;
 	}
-	Main::new_year(Y);
+	new_year(Y);
 }
 
 @ Now it's time to actually store a request. There are many simpler ways to
@@ -170,10 +176,10 @@ so we'll wrap each year supplied in an object. First, we have to define an
 ID constant for this new class of object, and use a macro which causes
 Foundation to generate the necessary handling functions:
 
-@e year_request_MT
+@e year_request_CLASS
 
 =
-ALLOCATE_INDIVIDUALLY(year_request)
+DECLARE_CLASS(year_request)
 
 @ Now we should define the rather unnecessary structure itself, and then
 a sort of constructor function. We won't need a destructor: we will never
@@ -182,10 +188,10 @@ destroy the years.
 =
 typedef struct year_request {
 	int year;
-	MEMORY_MANAGEMENT
+	CLASS_DEFINITION
 } year_request;
 
-year_request *Main::new_year(int Y) {
+year_request *new_year(int Y) {
 	year_request *YR = CREATE(year_request);
 	YR->year = Y;
 	return YR;
@@ -193,10 +199,10 @@ year_request *Main::new_year(int Y) {
 
 @ We can't spin this out much longer, though... This is the actually
 functional part of the program, and even so, it only calls a routine
-in Foundation. (See //Time::easter//.)
+in Foundation. (See //foundation: Time//.)
 
 =
-void Main::report_on_years(text_stream *OUT) {
+void report_on_years(text_stream *OUT) {
 	year_request *YR;
 	LOOP_OVER(YR, year_request) {
 		int d, m;
