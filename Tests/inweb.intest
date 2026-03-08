@@ -28,14 +28,14 @@
 	or: 'failed inprint'
 	set: $RELA = ../../../../$A
 	set: $RELINWEB = ../../../../$INWEB
-	step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] -fixtime >$RELA 2>&1
+	step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] -fixtime -locale console=utf-8 >$RELA 2>&1
 	or: 'failed inweb' $A
 	show: $A
-	match text: $A $I
+	match platform text: $A $I
 	or: 'produced the wrong console output'
 	step: $INPRINT draw $SANDBOX -to $ABP
 	or: 'failed inprint'
-	match text: $ABP $IBP
+	match platform text: $ABP $IBP
 	or: 'produced the wrong file tree'
 
 	pass: 'passed'
@@ -71,7 +71,7 @@
 	fail step: cd $SANDBOX ; $RELINWEB $[$PATH/$CASE.txt$] -fixtime >$RELA 2>&1
 	or: 'inweb did not return error' $A
 	show: $A
-	match text: $A $I
+	match platform text: $A $I
 	or: 'produced the wrong console output'
 
 	pass: 'passed'
