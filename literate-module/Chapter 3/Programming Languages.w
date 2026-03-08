@@ -8,7 +8,7 @@ definitions from files.
 imply it with filename extensions.
 
 =
-typedef struct programming_language {
+classdef programming_language {
 	struct wcl_declaration *declaration;
 	text_stream *language_name; /* identifies it */
 	text_stream *language_details; /* brief explanation of what language is */
@@ -51,8 +51,7 @@ typedef struct programming_language {
 	struct colouring_language_block *program; /* algorithm for syntax colouring */
 	struct linked_list *custom_colours; /* of `custom_colour` */
 	struct method_set *methods;
-	CLASS_DEFINITION
-} programming_language;
+}
 
 programming_language *Languages::new(void) {
 	programming_language *pl = CREATE(programming_language);
@@ -254,7 +253,7 @@ that we are also working on the programming language it is `defining`. The
 currently inside.
 
 =
-typedef struct language_reader_state {
+classdef language_reader_state {
 	struct programming_language *defining;
 	struct colouring_language_block *current_block;
 	inchar32_t keywords_block_colour;
@@ -517,7 +516,7 @@ represents a complete program.
 @d BRACKETS_CRULE_RUN -6 /* This block applies to bracketed subexpressions in a regexp */
 
 =
-typedef struct colouring_language_block {
+classdef colouring_language_block {
 	struct linked_list *rules; /* of `colouring_rule` */
 	struct colouring_language_block *parent; /* or `NULL` for the topmost one */
 	int run; /* one of the `*_CRULE_RUN` values, or else a colour */
@@ -527,8 +526,7 @@ typedef struct colouring_language_block {
 	
 	/* workspace during painting */
 	struct match_results mr; /* of a regular expression */
-	CLASS_DEFINITION
-} colouring_language_block;
+}
 
 @ =
 colouring_language_block *Languages::new_block(colouring_language_block *within, int r) {
@@ -559,7 +557,7 @@ Note that rules can be unconditional, in that the premiss always passes.
 @d OPTIONALLY_SPACED_RULE_SUFFIX 7 /* for `optionally spaced suffix P` */
 
 =
-typedef struct colouring_rule {
+classdef colouring_rule {
 	/* the premiss: */
 	int sense; /* `FALSE` to negate the condition */
 	inchar32_t match_colour; /* for `coloured C`, or else `NOT_A_COLOUR` */
@@ -579,8 +577,7 @@ typedef struct colouring_rule {
 	/* workspace during painting */
 	int fix_position; /* where the prefix or suffix started */
 	struct match_results mr; /* of a regular expression */
-	CLASS_DEFINITION
-} colouring_rule;
+}
 
 @ =
 colouring_rule *Languages::new_rule(colouring_language_block *within) {
@@ -683,11 +680,10 @@ void Languages::parse_rule(language_reader_state *state, text_stream *premiss,
 Note that these can come in any colour, though usually it's `RESERVED_COLOUR`.
 
 =
-typedef struct reserved_word {
+classdef reserved_word {
 	struct text_stream *word;
 	int colour;
-	CLASS_DEFINITION
-} reserved_word;
+}
 
 reserved_word *Languages::reserved(language_reader_state *state,
 	programming_language *pl, text_stream *W, inchar32_t C,
@@ -802,11 +798,10 @@ text_stream *Languages::text(language_reader_state *state, text_stream *T, text_
 @d MAX_ILDF_REGEXP_LENGTH 64
 
 =
-typedef struct pl_regexp_set {
+classdef pl_regexp_set {
 	inchar32_t expression[MAX_ILDF_REGEXP_LENGTH + 1];
 	struct pl_regexp_set *alternate;
-	CLASS_DEFINITION
-} pl_regexp_set;
+}
 
 pl_regexp_set *Languages::new_regexp_set(void) {
 	pl_regexp_set *rs = CREATE(pl_regexp_set);

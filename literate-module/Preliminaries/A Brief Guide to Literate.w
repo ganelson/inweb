@@ -13,15 +13,16 @@ We'll use the term "parent" to mean the tool which is importing //literate//,
 that is, which will include its code and be able to use it. As with any
 imported module,
 
-* The contents page of the parent's web must identify and locate the
-module:
-= (text as Inweb)
-Import: literate
-=
+*	The contents page of the parent's web must identify and locate the
+	module:
 
-* The parent must call `LiterateModule::start()` just after it starts up, and
-`LiterateModule::end()` just before it shuts down. (But just after, and just
-before, the corresponding calls to //foundation//.)
+	``` None
+	Import: literate
+	```
+
+*	The parent must call `LiterateModule::start()` just after it starts up, and
+	`LiterateModule::end()` just before it shuts down. (But just after, and just
+	before, the corresponding calls to //foundation//.)
 
 @h Literate programming.
 This library was created to serve a family of compilers which all make use of
@@ -79,7 +80,7 @@ then it can also produce errors, each stored as an `ls_error`.
 
 @ To sum up, then, webs are stored in the following nine structures:
 
-= (text)
+``` None
 	ls_web
 		with tree of at least 1 ls_module
 		and list of 1 or more ls_chapter
@@ -90,20 +91,20 @@ then it can also produce errors, each stored as an `ls_error`.
 							where one chunk in the list may have 1 ls_holon
 							and every chunk has a list of 1 or more ls_line
 					and a list of 0 or more ls_error
-=
+```
 
 Note that a web must have at least one chapter, each chapter must have at
 least one section, each paragraph must have at least one chunk, and each
 chunk must have at least one line. The empty program would be stored as:
 
-= (text)
+``` None
 	ls_web
 		1 ls_module
 		1 ls_chapter
 			1 ls_section
 				1 ls_unit
 					with 0 ls_paragraph objects
-=
+```
 
 @ The fundamental things we can do with a web, then, are:
 

@@ -110,17 +110,11 @@ so the default Ctags file is called <code>tags</code> and not <code>tags.ctag</c
 line break characters or tabs, a ctags file has a simple format to read or
 write: there's one tag on each line, and each line has three or more fields
 divided by tab characters. If we write <code>-&gt;</code> for a tab, a line looks like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">tagname</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; /</span><span class="identifier-syntax">find</span><span class="plain-syntax">/;</span><span class="string-syntax">" -&gt; more</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	tagname -&gt; filename -&gt; /find/;" -&gt; more
+</span></pre>
 <p>The stranded double-quote there is not a misprint. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Frogs::spawn</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; </span><span class="identifier-syntax">pond</span><span class="plain-syntax">/</span><span class="identifier-syntax">Chapter</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">/</span><span class="identifier-syntax">Amphibians</span><span class="plain-syntax">.</span><span class="element-syntax">w</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax">&gt; /^</span><span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="identifier-syntax">Frogs::spawn</span><span class="plain-syntax">(</span><span class="identifier-syntax">species</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {$/;</span><span class="string-syntax">" -&gt; f</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Frogs::spawn -&gt; pond/Chapter 1/Amphibians.w -&gt; /^void Frogs::spawn(species *S) {$/;" -&gt; f
+</span></pre>
 <p>Here the tagname is <code>Frogs::spawn</code>. The filename <code>pond/Chapter 1/Amphibians.w</code>
 is the file defining this function. The <code>find</code> field is an EX-format command for
 finding the line in question: see below. Finally, the <code>more</code> field is actually
@@ -230,7 +224,7 @@ not need to be escaped.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Ctags::write_line_ref</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Ctags::write_line_ref</span></span>:<br/><a href="4-cs.html#SP2_2">&#167;2.2</a>, <a href="4-cs.html#SP2_3">&#167;2.3</a>, <a href="4-cs.html#SP2_4">&#167;2.4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lst</span><span class="plain-syntax">, </span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><a href="2-ls.html#SP19" class="function-link"><span class="function-syntax">LiterateSource::section_of_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lst</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><a href="2-ls.html#SP8_18" class="function-link"><span class="function-syntax">LiterateSource::section_of_line</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lst</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">, </span><span class="string-syntax">"%f"</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">source_file_for_section</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Platform::is_folder_separator</span><span class="plain-syntax">(</span><span class="identifier-syntax">Str::get_first_char</span><span class="plain-syntax">(</span><span class="identifier-syntax">fn</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
@@ -258,11 +252,10 @@ this is one of those times when life is short and memory is cheap. It's easier
 to keep a duplicate list.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">defined_constant</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">defined_constant</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">ls_line</span><span class="plain-syntax"> *</span><span class="identifier-syntax">at</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">defined_constant</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure defined_constant is accessed in 1/wcl, 1/cln, 1/ws, 1/wcp, 2/wn, 2/hs, 2/wi, 3/pl, 3/tp, 4/tt2, 5/ts, 5/ptt, 5/apacs, 5/wt, 5/hf, 6/rw and here.</li></ul>
 <div class="lsmarkdown">

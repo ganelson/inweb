@@ -13,7 +13,7 @@ We will end up with an `ls_unit` which is essentially a list of `ls_paragraph`,
 which is a list of `ls_chunk`, which is a list of `ls_line`.
 
 =
-typedef struct ls_unit {
+classdef ls_unit {
 	struct ls_notation *unit_notation; /* what notation is this unit written with? */
 	struct programming_language *language; /* what language is the program in? */
 
@@ -40,8 +40,7 @@ typedef struct ls_unit {
 	struct ls_line *temp_last_line;
 	struct ls_line *spool_point;
 
-	CLASS_DEFINITION
-} ls_unit;
+}
 
 @ To parse source text into an `ls_unit`, begin by calling this to produce
 an empty one, ready for parsing. Note that `S`, the section, can be `NULL`,
@@ -260,7 +259,7 @@ void LiterateSource::feed_code_end(ls_unit *lsu, text_file_position *tfp) {
 @ The above created `ls_line` objects, so we should take a look at those:
 
 =
-typedef struct ls_line {
+classdef ls_line {
 	/* where this came from, and its original text */
 	struct text_file_position origin;
 	struct text_stream *text;
@@ -276,8 +275,7 @@ typedef struct ls_line {
 	struct ls_chunk *owning_chunk; /* `NULL` until the unit has been divided up into chunks */
 	struct ls_line *prev_line;
 	struct ls_line *next_line;
-	CLASS_DEFINITION
-} ls_line;
+}
 
 ls_line *LiterateSource::new_line(text_file_position *tfp, text_stream *text, ls_class cf) {
 	ls_line *line = CREATE(ls_line);
@@ -440,7 +438,8 @@ are then not included in any of the chunks.
 Within each paragraph, chunk divisions occur when a line belonging to a different
 "chunk type" is found, or when the start of a definition is found. Thus, for example,
 these nine lines would be formed into three chunks, each getting an `ls_chunk`:
-= (text)
+
+``` None
 	COMMENTARY_MAJLC                chunk 1 (2 lines)
 	COMMENTARY_MAJLC
 	EXTRACT_START_MAJLC             chunk 2 (4 lines)
@@ -450,7 +449,8 @@ these nine lines would be formed into three chunks, each getting an `ls_chunk`:
 	DEFINITION_MAJLC                chunk 3 (1 line)
 	DEFINITION_MAJLC                chunk 4 (2 lines)
 	DEFINITION_CONTINUED_MAJLC
-=
+```
+
 The original doubly-linked line list is broken into smaller lists, one for each
 chunk, and we conclude by removing the unit's pointers to its temporary list
 altogether, so that nobody uses it by mistake.
@@ -487,6 +487,7 @@ altogether, so that nobody uses it by mistake.
 				break;
 			case INSERTION_MAJLC:            ct = INSERTION_LSCT; break;
 			case DEFINITIONS_HERE_MAJLC:     ct = DEFINITIONS_HERE_LSCT; break;
+			case CLASSES_HERE_MAJLC:         ct = CLASSES_HERE_LSCT; break;
 			default:                         ct = OTHER_LSCT; break;
 		}
 		if ((chunk == NULL) || (ct != chunk->chunk_type) ||
@@ -521,7 +522,7 @@ altogether, so that nobody uses it by mistake.
 @ So this is the `ls_paragraph` object:
 
 =
-typedef struct ls_paragraph {
+classdef ls_paragraph {
 	/* how the paragraph sits inside the wider source */
 	struct ls_unit *owning_unit;
 	struct ls_paragraph *prev_par;
@@ -543,8 +544,7 @@ typedef struct ls_paragraph {
 	/* used only when computing the paragraph numbers */
 	struct ls_paragraph *parent_paragraph; /* the super-para of this, if any */
 	int next_child_number; /* how many sub-paras we've had so far */
-	CLASS_DEFINITION
-} ls_paragraph;
+}
 
 @ The new paragraph is appended to the list of paras in the unit, and assigned
 a temporary paragraph number. (This may be replaced later by better numbers,
@@ -590,10 +590,11 @@ following:
 @e HOLON_FILE_ADDENDUM_LSCT
 @e INSERTION_LSCT
 @e DEFINITIONS_HERE_LSCT
+@e CLASSES_HERE_LSCT
 @e OTHER_LSCT
 
 =
-typedef struct ls_chunk {
+classdef ls_chunk in 100s {
 	/* how the chunk sits inside the wider source */
 	struct ls_paragraph *owner;
 	struct ls_chunk *prev_chunk;
@@ -626,8 +627,7 @@ typedef struct ls_chunk {
 	struct ls_line *first_line;
 	struct ls_line *last_line;
 
-	CLASS_DEFINITION
-} ls_chunk;
+}
 
 @ When created, a chunk contains a single line:
 
@@ -1420,7 +1420,7 @@ ls_section *LiterateSource::section_of_line(ls_line *line) {
 @h Footnote notation.
 
 =
-typedef struct ls_footnote {
+classdef ls_footnote in 100s {
 	int footnote_cue_number;
 	int footnote_text_number;
 	struct text_stream *cue_text;
@@ -1714,6 +1714,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 			WRITE("\n");
 			break;
 		case DEFINITIONS_HERE_LSCT: WRITE("definitions marker\n"); break;
+		case CLASSES_HERE_LSCT: WRITE("classes marker\n"); break;
 		case HOLON_DECLARATION_LSCT: WRITE("holon definition\n"); break;
 		case HOLON_ADDENDUM_LSCT: WRITE("holon addendum\n"); break;
 		case HOLON_FILE_LSCT: WRITE("holon file\n"); break;

@@ -180,11 +180,10 @@ to write to the result. (Inform tools very seldom use this, because C strings
 are almost always best avoided.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">string_storage_area</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">string_storage_area</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">storage_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">capacity</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">string_storage_area</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure string_storage_area is private to this section.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b> </p>

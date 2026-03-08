@@ -46,14 +46,13 @@ linked_list *Makefiles::write(ls_web *W, filename *prototype, filename *F,
 a data structure to store those declarations in:
 
 =
-typedef struct makefile_specifics {
+classdef makefile_specifics {
 	struct ls_web *for_web; /* if one has been set at the command line */
 	struct dictionary *tools_dictionary;   /* components with `type: tool` */
 	struct dictionary *webs_dictionary;    /* components with `type: web` */
 	struct dictionary *modules_dictionary; /* components with `type: module` */
 	struct text_stream *which_platform;
-	CLASS_DEFINITION
-} makefile_specifics;
+}
 
 @<Initialise the specific data for makefile-preprocessing@> =
 	specifics->for_web = W;

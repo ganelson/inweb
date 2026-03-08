@@ -108,7 +108,7 @@ but optionally a question mark `?` to indicate voracity.
 structures to be created:
 
 =
-typedef struct preform_nonterminal {
+classdef preform_nonterminal {
 	struct text_stream *nt_name; /* e.g., `<action-clause>` */
 	struct text_stream *unangled_name; /* e.g., `action-clause` */
 	struct text_stream *as_C_identifier; /* e.g., `action_clause_NTM` */
@@ -119,8 +119,7 @@ typedef struct preform_nonterminal {
 	int takes_pointer_result; /* right-hand formula defines `*XP`, not `*X` */
 	struct ls_section *where_defined;
 	struct preform_nonterminal *next_pnt_alphabetically;
-	CLASS_DEFINITION
-} preform_nonterminal;
+}
 
 @ We will...
 
@@ -212,9 +211,11 @@ the following definition:
 After a line like `<action-clause> ::=`, Preform grammar follows on subsequent
 lines until we hit the end of the paragraph, or a white-space line, whichever
 comes first. If we have a line with an arrow, like so:
-= (text)
+
+``` Preform
 	porcupine tree  ==>  { 2, - }{}
-=
+```
+
 then the text on the left goes into `text_operand` and the right into
 `text_operand2`, with the arrow itself (and white space around it) cut out.
 
@@ -239,9 +240,11 @@ then the text on the left goes into `text_operand` and the right into
 	}
 
 @ In case we have a comment at the end of the grammar, like this:
-= (text)
+
+``` Preform
 	porcupine tree  /* what happens now? */
-=
+```
+
 we want to remove it. The regular expression here isn't terribly legible, but
 trust me, it's correct.
 
@@ -282,12 +285,11 @@ identifiers need to avoid hyphens and colons. For example, `<<kind:ref>>`
 has identifier `"kind_ref_NTMV"`. Each one is recorded in a structure thus:
 
 =
-typedef struct nonterminal_variable {
+classdef nonterminal_variable {
 	struct text_stream *ntv_name; /* e.g., `"num"` */
 	struct text_stream *ntv_type; /* e.g., `"int"` */
 	struct text_stream *ntv_identifier; /* e.g., `"num_NTMV"` */
-	CLASS_DEFINITION
-} nonterminal_variable;
+}
 
 @<This one's new, so create a new nonterminal variable@> =
 	ntv = CREATE(nonterminal_variable);
@@ -333,16 +335,17 @@ I-literal `I"quartz"` would have content `quartz` and identifier something
 like `TL_IS_123`.
 
 =
-typedef struct text_literal {
+classdef text_literal {
 	struct text_stream *tl_identifier;
 	struct text_stream *tl_content;
-	CLASS_DEFINITION
-} text_literal;
+}
 
 @ So suppose we've got a line of web such as
-= (text)
+
+```
 	text_stream *T = I"quartz";
-=
+```
+
 We create the necessary I-literal, and splice the line so that it now reads
 `text_stream *T = TL_IS_123;`. (That's why we don't call any of this on a
 weave run; we're actually amending the code of the web.)
@@ -444,13 +447,15 @@ to how to tangle the lines we've given special categories to.
 We need to tangle Preform lines (those holding nonterminal declarations)
 in a special way. As can be seen, each nonterminal turns into a C function.
 In the case of an internal definition, like
-= (text)
+
+``` Preform
 	<k-kind-for-template> internal {
-=
+```
+
 we tangle this opening line to
-= (text as code)
+
 	int k_kind_for_template_NTM(wording W, int *X, void **XP) {
-=
+
 that is, to a function which returns `TRUE` if it makes a match on the text
 excerpt in Inform's source text, `FALSE` otherwise; if it matches and produces
 an integer and/or pointer result, these are copied into `*X` and `*XP`. The
@@ -478,13 +483,14 @@ void InCSupport::insert_in_tangle(programming_language *self, text_stream *OUT,
 
 @ On the other hand, a grammar nonterminal tangles to a "compositor function".
 Thus the opening line
-= (text)
+
+``` Preform
 	<action-clause> ::=
-=
+```
+
 tangles to a function header:
-= (text as code)
+
 	int action_clause_NTMC(int *X, void **XP, int *R, void **RP, wording *FW, wording W) {
-=
 
 Composition is what happens after a successful match of the text in the
 word range `W`. The idea is that, especially if the pattern was
@@ -495,18 +501,22 @@ nonterminal has in principle both an integer and a pointer result, though
 often one or both is undefined.
 
 A simple example would be
-= (text)
+
+``` Preform
 	<cardinal-number> + <cardinal-number> ==> R[1] + R[2]
-=
+```
+
 where the composition function would be called on a match of, say, "$5 + 7$",
 and would find the values 5 and 7 in `R[1]` and `R[2]` respectively. It would
 then add these together, store 12 in `*X`, and return `TRUE` to show that all
 was well.
 
 A more typical example, drawn from the actual Inform 7 web, is:
-= (text)
+
+``` Preform
 	<k-kind-of-kind> <k-formal-variable> ==> { - , Kinds::var_construction(R[2], RP[1]) }
-=
+```
+
 which says that the composite result — the right-hand formula — is formed by
 calling a particular routine on the integer result of subexpression 2
 (`<k-formal-variable>`) and the pointer result of subexpression 1
@@ -567,9 +577,9 @@ assume, set `*X` and/or `*XP` in some ingenious way of its own.)
 Within the body of the formula, we allow a pseudo-macro to work: `WR[n]`
 expands to word range `n` in the match which we're compositing. This actually
 expands like so:
-= (text as code)
+
 	action_clause_NTM->range_result[n]
-=
+
 which saves a good deal of typing. (A regular C preprocessor macro couldn't
 easily do this, because it needs to include the identifier name of the
 nonterminal being parsed.)
@@ -653,13 +663,13 @@ as `Text__Parsing__get_next` since colons aren't valid in C identifiers. The
 following is prone to all kinds of misreadings, of course; it picks up any use
 of `::` between an alphanumberic character and a letter. In particular, code
 like
-= (text)
+
 	printf("Trying Text::Parsing::get_next now.\n");
-=
+
 will be rewritten as
-= (text as code)
+
 	printf("Trying Text__Parsing__get_next now.\n");
-=
+
 This is probably unwanted, but it doesn't matter, because these Inform-only
 extension features aren't intended for general use: only for Inform, where
 no misreadings occur.
@@ -831,13 +841,13 @@ just `<<fish>>`.
 
 @ Similarly for nonterminals; `<k-kind>` might become `k_kind_NTM`.
 Here, though, there's a complication:
-= (text)
+
 	if (<k-kind>(W)) { ...
-=
+
 must expand to:
-= (text as code)
+
 	if (Text__Languages__parse_nt_against_word_range(k_kind_NTM, W, NULL, NULL)) { ...
-=
+
 This is all syntactic sugar to make it easier to see parsing in action.
 Anyway, it means we have to set `fcall_pos` to remember to add in the
 two `NULL` arguments when we hit the `)` a little later. We're doing all
@@ -941,9 +951,11 @@ right-hand side of the arrow in a grammar line uses a paragraph macro which
 mentions a problem message, then we transcribe a Preform comment to that
 effect. (This really is a comment: Inform ignores it, but it makes the
 file more comprehensible to human eyes.) For example,
-= (text)
+
+``` Preform
 	<article> kind ==> @<Issue C8PropertyOfKind problem@>
-=
+```
+
 (The code in this paragraph macro will indeed issue this problem message, we
 assume.)
 

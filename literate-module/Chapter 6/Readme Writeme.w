@@ -7,12 +7,11 @@ non-standard comment syntax (i.e., `/` at start of line, not `#`) to avoid
 colliding with Markdown's heading syntax.
 
 =
-typedef struct inweb_reference_data {
+classdef inweb_reference_data {
 	struct ls_web *W;
 	struct ls_colony *C;
 	struct ls_colony_member *CM;
-	CLASS_DEFINITION
-} inweb_reference_data;
+}
 
 linked_list *Readme::write(filename *prototype, filename *F, ls_web *W, ls_colony *C, ls_colony_member *CM) {
 	linked_list *L = NEW_LINKED_LIST(preprocessor_macro);
@@ -253,15 +252,14 @@ range of bibliographic data, just the version and date (and we will not
 assume that the version complies with any format).
 
 =
-typedef struct writeme_asset {
+classdef writeme_asset {
 	struct text_stream *name;
 	struct ls_web *if_web;
 	struct text_stream *date;
 	struct text_stream *version;
 	int next_is_version;
 	int identified;
-	CLASS_DEFINITION
-} writeme_asset;
+}
 
 void Readme::write_var(text_stream *OUT, text_stream *program, text_stream *datum) {
 	writeme_asset *A = Readme::find_asset(program);

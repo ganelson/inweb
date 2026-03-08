@@ -232,7 +232,7 @@ is clear, that is, no conversion is made.
 @d INDENTATION_MASK_STRF    0x0FFF0000 /* (held in these bits) */
 
 =
-typedef struct text_stream {
+classdef text_stream in 100s {
 	int stream_flags; /* bitmap of the `*_STRF` values above */
 	FILE *write_to_file; /* for an open stream, exactly one of these is `NULL` */
 	struct HTML_file_state *as_HTML; /* relevant only to the `HTML::` section */
@@ -241,7 +241,7 @@ typedef struct text_stream {
 	int chars_written; /* number of characters sent, counting `\n` as 1 */
 	int chars_capacity; /* maximum number the stream can accept without claiming more resources */
 	struct text_stream *stream_continues; /* if one memory stream is extended by another */
-} text_stream;
+}
 
 @ A theological question: what is the text encoding for the null stream?
 

@@ -61,7 +61,7 @@ void JSON::write_type(OUTPUT_STREAM, int t) {
 @
 
 =
-typedef struct JSON_value {
+classdef JSON_value {
 	int JSON_type;
 	int if_integer;
 	double if_double;
@@ -71,8 +71,7 @@ typedef struct JSON_value {
 	struct dictionary *dictionary_if_object; /* to `JSON_value` */
 	struct linked_list *list_if_object; /* of `text_stream` */
 	struct text_stream *if_error;
-	CLASS_DEFINITION
-} JSON_value;
+}
 
 @ Now some constructor functions to create data of each JSON type:
 
@@ -607,10 +606,9 @@ of a //JSON_value//. At the top level, it's a list of one or more equally
 good alternative specifications. Note that the empty list is not allowed.
 
 =
-typedef struct JSON_requirement {
+classdef JSON_requirement {
 	struct linked_list *alternatives; /* of `JSON_single_requirement` */
-	CLASS_DEFINITION
-} JSON_requirement;
+}
 
 JSON_requirement *JSON::single_choice(JSON_single_requirement *sing) {
 	JSON_requirement *req = CREATE(JSON_requirement);
@@ -631,12 +629,11 @@ if Javascript actually had types. It can communicate something like "a number"
 or "a list of strings"; but it can also say "the value has to be exactly this".
 
 =
-typedef struct JSON_single_requirement {
+classdef JSON_single_requirement {
 	struct JSON_requirement *this_requirement;
 	struct JSON_value *this_value;
 	struct JSON_type *this_type;
-	CLASS_DEFINITION
-} JSON_single_requirement;
+}
 
 @ Exactly one of `this_requirement`, `this_value` and `this_type` should be
 non-`NULL`, so we have one constructor function for each case:
@@ -669,7 +666,7 @@ JSON_single_requirement *JSON::require_type(int t) {
 @ JSON types, in our model, look very like //JSON_value//s.
 
 =
-typedef struct JSON_type {
+classdef JSON_type {
 	int JSON_type;
 
 	struct linked_list *if_list; /* of `JSON_requirement` */
@@ -679,14 +676,12 @@ typedef struct JSON_type {
 	struct linked_list *list_if_object; /* of `text_stream` */
 
 	struct text_stream *if_error;
-	CLASS_DEFINITION
-} JSON_type;
+}
 
-typedef struct JSON_pair_requirement {
+classdef JSON_pair_requirement {
 	struct JSON_requirement *req;
 	int optional;
-	CLASS_DEFINITION
-} JSON_pair_requirement;
+}
 
 JSON_type *JSON::new_type_requirement(int t) {
 	JSON_type *type = CREATE(JSON_type);
@@ -982,7 +977,8 @@ used in place of their respective values;
 
 For example:
 
-= (text)
+
+``` None
 {
 	"coordinates": [ double, double, string ],
 	?"jurisdiction": string,
@@ -991,7 +987,7 @@ For example:
 		"entry": string
 	}* ]
 }
-=
+```
 
 This function is essentially the same as //JSON::decode//, but returning a
 requirement rather than a value.
@@ -1250,10 +1246,10 @@ JSON_single_requirement *JSON::decode_req_object_entry(JSON_single_requirement *
 This is now simple, with one caveat. It's possible to set up requirement trees
 so that they are not well-founded. For example:
 
-= (text as InC)
+```
 	JSON_single_requirement *set = JSON::require_type(ARRAY_JSONTYPE);
 	set->all_if_list = JSON::single_choice(set);
-=
+```
 
 This is not useless: it matches, say, `[]`, `[ [] ]` and `[ [], [ [] ] ]`
 and other constructions giving amusement to set theorists. But it would cause
@@ -1332,7 +1328,8 @@ void JSON::encode_type(OUTPUT_STREAM, JSON_type *type) {
 This convenient function reads in a set of requirements from a text file. Each
 requirement should begin `<name> ::=`, and then continues until the next such
 header, or the end of the file. So for example:
-= (text)
+
+``` None
 	! My scheme for JSON files describing geographical locations
 	
 	<optional-letter> ::= ( "alpha" | "beta" | null )
@@ -1342,7 +1339,8 @@ header, or the end of the file. So for example:
 		"latitude": double,
 		"longitude": double,
 	}
-=
+```
+
 is a valid file declaring two requirements. Forward references are not allowed —
 e.g., <position> can refer to <optional-letter> but not vice versa — and
 therefore the requirements read in will always be well-founded. Comments are

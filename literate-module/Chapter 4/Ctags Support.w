@@ -55,13 +55,17 @@ void Ctags::write(ls_web *W, filename *F) {
 line break characters or tabs, a ctags file has a simple format to read or
 write: there's one tag on each line, and each line has three or more fields
 divided by tab characters. If we write ` -> ` for a tab, a line looks like:
-= (text)
+
+``` None
 	tagname -> filename -> /find/;" -> more
-=
+```
+
 The stranded double-quote there is not a misprint. For example:
-= (text)
+
+``` None
 	Frogs::spawn -> pond/Chapter 1/Amphibians.w -> /^void Frogs::spawn(species *S) {$/;" -> f
-=
+```
+
 Here the tagname is `Frogs::spawn`. The filename `pond/Chapter 1/Amphibians.w`
 is the file defining this function. The `find` field is an EX-format command for
 finding the line in question: see below. Finally, the `more` field is actually
@@ -179,11 +183,10 @@ this is one of those times when life is short and memory is cheap. It's easier
 to keep a duplicate list.
 
 =
-typedef struct defined_constant {
+classdef defined_constant {
 	struct text_stream *name;
 	struct ls_line *at;
-	CLASS_DEFINITION
-} defined_constant;
+}
 
 @ This is called for any defined or enumerated constant name, then:
 

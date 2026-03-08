@@ -7,11 +7,10 @@ also with a contextually relevant caption. The following records those;
 they're stored as a linked list within each paragraph.
 
 =
-typedef struct literate_source_tagging {
+classdef literate_source_tagging in 100s {
 	struct text_stream *the_tag;
 	struct text_stream *caption;
-	CLASS_DEFINITION
-} literate_source_tagging;
+}
 
 void ParagraphTags::tag_with_caption(ls_paragraph *par, text_stream *tag, text_stream *caption) {
 	if (Str::len(tag) == 0) internal_error("empty tag name");

@@ -8,12 +8,11 @@ Exactly as in the previous chapter, each format expresses its behaviour
 through optional method calls.
 
 =
-typedef struct weave_format {
+classdef weave_format {
 	struct text_stream *format_name;
 	struct text_stream *woven_extension;
 	struct method_set *methods;
-	CLASS_DEFINITION
-} weave_format;
+}
 
 weave_format *WeavingFormats::create_weave_format(text_stream *name, text_stream *ext) {
 	weave_format *wf = CREATE(weave_format);

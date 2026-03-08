@@ -19,12 +19,11 @@ a new FSM every time, so we cache the results.
 @d DO_NOT_TRACE_HOLON_FSMS
 
 =
-typedef struct ls_holon_scanner {
+classdef ls_holon_scanner {
 	struct ls_notation *ntn;
 	struct programming_language *pl;
 	struct finite_state_machine *machine;
-	CLASS_DEFINITION
-} ls_holon_scanner;
+}
 
 finite_state_machine *HolonSyntax::get(ls_notation *ntn, programming_language *pl) {
 	ls_holon_scanner *sc;

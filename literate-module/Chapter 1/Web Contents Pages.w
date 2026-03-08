@@ -50,7 +50,7 @@ void WebContents::read_contents_page(ls_web *W, ls_module *of_module,
 contents page in, line by line:
 
 =
-typedef struct web_contents_state {
+classdef web_contents_state {
 	struct ls_web *W;
 	int relative_line_count;
 	int in_biblio;

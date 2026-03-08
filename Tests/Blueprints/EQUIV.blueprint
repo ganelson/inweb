@@ -1,0 +1,221 @@
+begin
+directory: equiv
+file: equiv/equiv.w
+    Title: Syntax Colouring Equivalency
+    Author: Graham Nelson
+    Language: InC
+    Notation: InwebClassic
+
+    @ This is regular code:
+
+    =
+    int main(int argc, char *argv[]) {
+    	Foundation::start(argc, argv);
+    	Foundation::end();
+    	if (Errors::have_occurred()) return 1;
+    	return 0;
+    }
+
+    @ Okay, so code extracts with no specified language:
+
+    ```
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    ```
+
+    = (text)
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    =
+
+    @ The old-fashioned `text as code` notation produces:
+
+    = (text as code)
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    =
+
+    @ Now with `None`:
+
+    ``` None
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    ```
+
+    = (text as None)
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    =
+
+    @ Okay, so `InC`:
+
+    ``` InC
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    ```
+
+    = (text as InC)
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    =
+
+    @ And `C`:
+
+    ``` C
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    ```
+
+    = (text as C)
+    	int main(int argc, char *argv[]) {
+    		Foundation::start(argc, argv);
+    		Foundation::end();
+    		if (Errors::have_occurred()) return 1;
+    		return 0;
+    	}
+    =
+
+    @ Okay, so `BoxArt`:
+
+    ``` BoxArt
+      textual                                  textual
+      inter   ---+                       +---> inter
+                  \                     /
+                   \                   /
+                    ---->  memory  ----
+                   /       inter       \
+      binary      /                     \      binary
+      inter   ---+                       +---> inter
+    ```
+
+    = (text as BoxArt)
+      textual                                  textual
+      inter   ---+                       +---> inter
+                  \                     /
+                   \                   /
+                    ---->  memory  ----
+                   /       inter       \
+      binary      /                     \      binary
+      inter   ---+                       +---> inter
+    =
+
+    @ Okay, so `Blurb`:
+
+    ``` Blurb
+    	auxiliary <filename> <string>
+    	auxiliary "map.png" "Black Pete's treasure map"
+    ```
+
+    = (text as Blurb)
+    	auxiliary <filename> <string>
+    	auxiliary "map.png" "Black Pete's treasure map"
+    =
+
+    @ Okay, so `Delia`:
+
+    ``` Delia
+    	set: $A = $PATH/_actual/$CASE.txt
+    	set: $I = $PATH/_ideal/$CASE.txt
+    ```
+
+    = (text as Delia)
+    	set: $A = $PATH/_actual/$CASE.txt
+    	set: $I = $PATH/_ideal/$CASE.txt
+    =
+
+    @ Okay, so `Inter`:
+
+    ``` Inter
+    	inv !ifelse
+    		val x
+    		code
+    			inv !printnumber
+    				x
+    		code
+    			inv !print
+    				"I refuse to print zeroes on principle."
+    ```
+
+    = (text as Inter)
+    	inv !ifelse
+    		val x
+    		code
+    			inv !printnumber
+    				x
+    		code
+    			inv !print
+    				"I refuse to print zeroes on principle."
+    =
+
+    @ Okay, so `ConsoleText`:
+
+    ``` ConsoleText
+    	$ eastertide -american -calendar-file cal.txt 1982 2007 
+    ```
+
+    = (text as ConsoleText)
+    	$ eastertide -american -calendar-file cal.txt 1982 2007 
+    =
+
+    @ Okay, so `Preform`:
+
+    ``` Preform
+    	<fiddle-with-words> ::=
+    		<fiddle-with-exceptions> |
+    		... <fiddle-with-irregular-endings> |
+    		... <fiddle-with-regular-endings>
+    ```
+
+    = (text as Preform)
+    	<fiddle-with-words> ::=
+    		<fiddle-with-exceptions> |
+    		... <fiddle-with-irregular-endings> |
+    		... <fiddle-with-regular-endings>
+    =
+
+    @ Okay, so `PainterOutput`:
+
+    ``` PainterOutput
+    	int x = 55;
+    	rrrpipppnnp
+    ```
+
+    = (text as PainterOutput)
+    	int x = 55;
+    	rrrpipppnnp
+    =
+
+
+end

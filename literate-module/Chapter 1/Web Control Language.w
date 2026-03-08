@@ -69,7 +69,7 @@ contains a list of its nested children, and a link to its parent (called its `sc
 If a declaration is not nested in any other, its parental link is `NULL`.
 
 =
-typedef struct wcl_declaration {
+classdef wcl_declaration {
 	int declaration_type;
 	int modifier;
 	int inbuilt;
@@ -86,8 +86,7 @@ typedef struct wcl_declaration {
 	struct filename *associated_file;
 	struct general_pointer object_declared;
 	int external_resources_loaded;
-	CLASS_DEFINITION
-} wcl_declaration;
+}
 
 wcl_declaration *WCL::new(int type) {
 	wcl_declaration *D = CREATE(wcl_declaration);
@@ -149,11 +148,10 @@ void WCL::merge_within(wcl_declaration *D, wcl_declaration *M) {
 Errors in parsing WCL files are accumulated under the relevant declarations:
 
 =
-typedef struct wcl_error {
+classdef wcl_error {
 	struct text_file_position tfp;
 	struct text_stream *message;
-	CLASS_DEFINITION
-} wcl_error;
+}
 
 wcl_error *WCL::error(wcl_declaration *D, text_file_position *tfp, text_stream *msg) {
 	wcl_error *E = CREATE(wcl_error);
@@ -242,11 +240,13 @@ wcl_declaration *WCL::read_for_type_only(filename *F, int presumed) {
 
 @ Everything here is made exasperatingly tricky by the fact that the outermost
 level of the file can consist of formal declarations, like so:
-= (text)
+
+``` None
 	Language "C" {
 		...
 	}
-=
+```
+
 but can also just be lines outside of braces, in which case clearly it's a
 declaration of some sort, but we don't know what type. That's where the
 "presumption" comes in — basically context meaning "if you don't know what
@@ -254,7 +254,7 @@ this is, assume it's a language". A presumption of `MISCELLANY_WCLTYPE` means
 no presumption at all.
 
 =
-typedef struct wcl_scanner {
+classdef wcl_scanner {
 	struct wcl_declaration *D;
 	int margin;
 } wcl_scanner;
@@ -386,13 +386,15 @@ The remainder of the line after the initial white space is written to `tail`.
 @ The tricky point here is that if we read a line with 14 initial spaces,
 say, then only some of those spaces should be trimmed away. Suppose we're
 reading this:
-= (text)
+
+``` None
 	Gadget "box" {
 		  whatever
 		       this is {
 		    }
 	}
-=
+```
+
 When we get to the "whatever" line, it's indented by 6 spaces. That establishes
 that the whole declaration of "box" will be indented 6; and so the next line
 will be trimmed so that it consists of five spaces and then the words "this is".

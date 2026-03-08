@@ -62,11 +62,8 @@ Inform programming language's compiler and all its outlying tools. If you need
 to write a command-line utility in ANSI C with no dependencies on other tools or
 libraries to speak of, you could do worse.</p>
 <p>To use <code>foundation</code>, the Contents section of a web should include:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Import:</span><span class="plain-syntax"> </span><span class="identifier-syntax">foundation</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Import: foundation
+</span></pre>
 <p>before beginning the chapter rundown. There are then a few conventions
 which must be followed. The <code>main</code> routine for the client should, as one
 of its very first acts, call <code>Foundation::start()</code>, and should similarly, just
@@ -167,7 +164,7 @@ prints a filename by calling <code>Filenames::writer</code>.</p>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_writer</span></a><span class="plain-syntax">(</span><span class="character-syntax">'f'</span><span class="plain-syntax">, &amp;</span><a href="3-fln.html#SP4" class="function-link"><span class="function-syntax">Filenames::writer</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_writer</span></a><span class="plain-syntax">(</span><span class="character-syntax">'p'</span><span class="plain-syntax">, &amp;</span><a href="3-pth.html#SP6" class="function-link"><span class="function-syntax">Pathnames::writer</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_writer</span></a><span class="plain-syntax">(</span><span class="character-syntax">'v'</span><span class="plain-syntax">, &amp;</span><a href="7-vn.html#SP6" class="function-link"><span class="function-syntax">VersionNumbers::writer</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_writer</span></a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP45" class="function-link"><span class="function-syntax">Streams::writer</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-wal.html#SP4" class="function-link"><span class="function-syntax">Writers::register_writer</span></a><span class="plain-syntax">(</span><span class="character-syntax">'S'</span><span class="plain-syntax">, &amp;</span><a href="2-str.html#SP43" class="function-link"><span class="function-syntax">Streams::writer</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-fm.html#SP8">&#167;8</a>.</li></ul>
 <div class="lsmarkdown">

@@ -74,14 +74,14 @@ and I didn't want to complicate the build process by linking to it.)
 
 This is a very minimal regular expression parser, simply for convenience of parsing
 short texts against particularly simple patterns. Here is an example of use:
-= (text as code)
+
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, U"fish (%d+) ([a-zA-Z_][a-zA-Z0-9_]*) *") {
 	    PRINT("Fish number: %S\n", mr.exp[0]);
 	    PRINT("Fish name: %S\n", mr.exp[1]);
 	}
 	Regexp::dispose_of(&mr);
-=
+
 Note the `L` at the front of the regex itself: this is a wide string.
 
 This tries to match the given `text` to see if it consists of the word fish,
@@ -425,9 +425,9 @@ And this routine conveniently handles searching and replacing. This time we
 can match at substrings of the `text` (i.e., we are not forced to match
 from the start right to the end), and multiple replacements can be made.
 For example,
-= (text as code)
+
 	Regexp::replace(text, U"[aeiou]", U"!", REP_REPEATING);
-=
+
 will turn the `text` "goose eggs" into "g!!s! !ggs".
 
 @d REP_REPEATING 1

@@ -63,18 +63,16 @@ for printing out to the console. (Inweb makes use of this for commands such
 as <code>inweb inspect</code>.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">textual_table</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">textual_table</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rows</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>textual_table_row</code> */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">textual_table</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">textual_table_row</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">textual_table_row</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">positioning</span><span class="plain-syntax">;             </span><span class="comment-syntax">/* <code>-1</code> for header, <code>0</code> for most rows, <code>1</code> for footer */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">index</span><span class="plain-syntax">;                   </span><span class="comment-syntax">/* position in the list, counting 0, 1, 2, ... from the top */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">sort_column</span><span class="plain-syntax">;             </span><span class="comment-syntax">/* which column we are sorting on */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">columns</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>text_stream</code> */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">textual_table_row</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure textual_table is private to this section.</li><li>The structure textual_table_row is accessed in 4/sm and here.</li></ul>
 <div class="lsmarkdown">
@@ -146,8 +144,8 @@ means &quot;leave the table with its rows in creation order&quot;, as here:</p>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Compute widths and such</span></span><span class="named-paragraph-number">7.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_2" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Make a qsortable array of table row pointers</span></span><span class="named-paragraph-number">7.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_3" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">And qsort it</span></span><span class="named-paragraph-number">7.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Print the now-sorted table</span></span><span class="named-paragraph-number">7.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_4" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Free the memory for the pointer array</span></span><span class="named-paragraph-number">7.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_6" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Print the now-sorted table</span></span><span class="named-paragraph-number">7.6</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_5" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Free the memory for the pointer array</span></span><span class="named-paragraph-number">7.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <div class="lsmarkdown">
@@ -196,11 +194,11 @@ and <code>footer</code> is the row number of the footer row, if there is one.</p
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">on</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">on</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">max_c</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">qsort</span><span class="plain-syntax">(</span><span class="identifier-syntax">rows</span><span class="plain-syntax">, (</span><span class="type-syntax">size_t</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="type-syntax">textual_table_row</span><span class="plain-syntax"> *), </span><a href="4-tt.html#SP8" class="function-link"><span class="function-syntax">TextualTables::compare_rows</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">qsort</span><span class="plain-syntax">(</span><span class="identifier-syntax">rows</span><span class="plain-syntax">, (</span><span class="type-syntax">size_t</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="type-syntax">textual_table_row</span><span class="plain-syntax"> *), </span><a href="4-tt.html#SP7_4" class="function-link"><span class="function-syntax">TextualTables::compare_rows</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-tt.html#SP7">&#167;7</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Which uses the following pairwise comparison function. Note that the indexes
+<p class="commentary firstcommentary"><a id="SP7_4" class="paragraph-anchor"></a><b>&#167;7.4. </b>  Which uses the following pairwise comparison function. Note that the indexes
 are used to ensure that the sorting is stable, i.e., preserves the original row
 order when the contents of the sort column are equal.</p>
 </div>
@@ -224,13 +222,13 @@ order when the contents of the sort column are equal.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">R1</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">index</span><span class="plain-syntax"> </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="identifier-syntax">R2</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">index</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7_4" class="paragraph-anchor"></a><b>&#167;7.4. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Free the memory for the pointer array</span><span class="named-paragraph-number">7.4</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP7_5" class="paragraph-anchor"></a><b>&#167;7.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Free the memory for the pointer array</span><span class="named-paragraph-number">7.5</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><a href="2-mmr.html#SP26" class="function-link"><span class="function-syntax">Memory::I7_free</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">rows</span><span class="plain-syntax">, </span><span class="constant-syntax">ARRAY_SORTING_MREASON</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">*((</span><span class="type-syntax">int</span><span class="plain-syntax">) </span><span class="reserved-syntax">sizeof</span><span class="plain-syntax">(</span><span class="type-syntax">textual_table_row</span><span class="plain-syntax"> *)));</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-tt.html#SP7">&#167;7</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7_5" class="paragraph-anchor"></a><b>&#167;7.5. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print the now-sorted table</span><span class="named-paragraph-number">7.5</span></span> =</p>
+<p class="commentary firstcommentary"><a id="SP7_6" class="paragraph-anchor"></a><b>&#167;7.6. </b> <span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print the now-sorted table</span><span class="named-paragraph-number">7.6</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">r</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">r</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">N</span><span class="plain-syntax">; </span><span class="identifier-syntax">r</span><span class="plain-syntax">++) {</span>
@@ -245,14 +243,14 @@ order when the contents of the sort column are equal.</p>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">max_c</span><span class="plain-syntax">) </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" | "</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">r</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) || ((</span><span class="identifier-syntax">footer</span><span class="plain-syntax">&gt;0) &amp;&amp; (</span><span class="identifier-syntax">r</span><span class="plain-syntax"> == </span><span class="identifier-syntax">N</span><span class="plain-syntax">-2))) </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_5_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Print a divider row</span></span><span class="named-paragraph-number">7.5.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">r</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) || ((</span><span class="identifier-syntax">footer</span><span class="plain-syntax">&gt;0) &amp;&amp; (</span><span class="identifier-syntax">r</span><span class="plain-syntax"> == </span><span class="identifier-syntax">N</span><span class="plain-syntax">-2))) </span><span class="named-paragraph-container code-font"><a href="4-tt.html#SP7_6_1" class="named-paragraph-link"><span class="named-paragraph"><span class="mathjax_process">Print a divider row</span></span><span class="named-paragraph-number">7.6.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-tt.html#SP7">&#167;7</a>.</li></ul>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP7_5_1" class="paragraph-anchor"></a><b>&#167;7.5.1. </b>  Rows of dashes appear below the header and above the footer (if one exists):</p>
+<p class="commentary firstcommentary"><a id="SP7_6_1" class="paragraph-anchor"></a><b>&#167;7.6.1. </b>  Rows of dashes appear below the header and above the footer (if one exists):</p>
 </div>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print a divider row</span><span class="named-paragraph-number">7.5.1</span></span> =</p>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Print a divider row</span><span class="named-paragraph-number">7.6.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">c</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">max_c</span><span class="plain-syntax">; </span><span class="identifier-syntax">c</span><span class="plain-syntax">++) {</span>
@@ -265,7 +263,7 @@ order when the contents of the sort column are equal.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"\n"</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="4-tt.html#SP7_5">&#167;7.5</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="4-tt.html#SP7_6">&#167;7.6</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="4-ts.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresschapter"><a href="2-dl.html">2</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-chr.html">chr</a></li><li class="progresssection"><a href="4-cst.html">cst</a></li><li class="progresssection"><a href="4-ws.html">ws</a></li><li class="progresssection"><a href="4-sm.html">sm</a></li><li class="progresssection"><a href="4-ts.html">ts</a></li><li class="progresscurrent">tt</li><li class="progresssection"><a href="4-tf.html">tf</a></li><li class="progresssection"><a href="4-prp.html">prp</a></li><li class="progresssection"><a href="4-taa.html">taa</a></li><li class="progresssection"><a href="4-fsm.html">fsm</a></li><li class="progresssection"><a href="4-pm.html">pm</a></li><li class="progresssection"><a href="4-jsn.html">jsn</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progressnext"><a href="4-tf.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

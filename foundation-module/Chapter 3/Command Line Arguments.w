@@ -8,9 +8,11 @@ Our scheme is that the command line syntax will contain an optional
 series of dashed switches. Some switches appear alone, others must be
 followed by an argument. Anything not part of the switches is termed
 a "bareword". For example, in
-= (text)
+
+``` None
 	-log no-memory-usage -fixtime jam marmalade
-=
+```
+
 there are two switches, `-log` taking an argument (it has valency 2
 in the terminology below), `-fixtime` not (valency 1). There are
 then two barewords, `jam` and `marmalade`.
@@ -23,14 +25,13 @@ we'll hash the switch names into a dictionary as well as keeping a list.
 @e NO_COMMAND_CLSUB
 
 =
-typedef struct command_line_subcommand {
+classdef command_line_subcommand {
 	int subcommand_id;
 	struct text_stream *command_name; /* e.g., `compile` */
 	struct text_stream *heading; /* explanatory text */
 	struct dictionary *cls_dictionary;
 	struct linked_list *cls_list; /* of `command_line_switch` */
-	CLASS_DEFINITION
-} command_line_subcommand;
+}
 
 command_line_subcommand *current_subcommand = NULL, *empty_subcommand = NULL;
 
@@ -104,7 +105,7 @@ in `-help`. Groups are enumerated thus:
 @e FOUNDATION_CLSG
 
 =
-typedef struct command_line_switch {
+classdef command_line_switch {
 	int switch_id;
 	struct text_stream *switch_name; /* e.g., `no-verbose` */
 	struct text_stream *switch_sort_name; /* e.g., `verbose` */
@@ -114,8 +115,7 @@ typedef struct command_line_switch {
 	int switch_group; /* one of the `*_CLSG` valyes above */
 	int active_by_default; /* relevant only for booleans */
 	struct command_line_switch *negates; /* relevant only for booleans */
-	CLASS_DEFINITION
-} command_line_switch;
+}
 
 @ The client must declare all the switches her program will make use of, not
 counting the standard set already declared by Foundation (such as `-help`).

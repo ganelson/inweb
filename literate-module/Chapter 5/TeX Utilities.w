@@ -17,14 +17,13 @@ the error messages (which begin with an exclamation mark in column 1).
 This structure will store what we find:
 
 =
-typedef struct tex_results {
+classdef tex_results {
 	int overfull_hbox_count;
 	int tex_error_count;
 	int page_count;
 	int pdf_size;
 	struct filename *PDF_filename;
-	CLASS_DEFINITION
-} tex_results;
+}
 
 @ =
 tex_results *TeXUtilities::new_results(weave_order *wv, filename *CF) {

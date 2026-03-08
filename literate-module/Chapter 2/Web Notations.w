@@ -9,7 +9,7 @@ of different possible markup notations for LP.
 Each notation is represented by a `ls_notation` object:
 
 =
-typedef struct ls_notation {
+classdef ls_notation {
 	struct wcl_declaration *declaration;
 	struct text_stream *name;
 
@@ -42,8 +42,7 @@ typedef struct ls_notation {
 	/* temporarily needed in parsing notation files */
 	struct ls_classifier *c_stanza;
 	struct notation_rewriting_machine *p_stanza;
-	CLASS_DEFINITION
-} ls_notation;
+}
 
 @ =
 ls_notation *WebNotation::new(text_stream *name) {
@@ -517,11 +516,10 @@ A "notation rewriting machine" is a form of finite state machine, set to recogni
 the patterns needing to be rewritten.
 
 =
-typedef struct notation_rewriting_machine {
+classdef notation_rewriting_machine {
 	struct finite_state_machine *fsm;
 	struct fsm_state *base_state;
-	CLASS_DEFINITION
-} notation_rewriting_machine;
+}
 
 notation_rewriting_machine *WebNotation::new_machine(void) {
 	notation_rewriting_machine *nrm = CREATE(notation_rewriting_machine);
@@ -536,11 +534,10 @@ which is supplemented by a pointer to one of these structures:
 @e INWEB_REWRITE_FSMEVENT
 
 =
-typedef struct notation_rewriter {
+classdef notation_rewriter {
 	struct text_stream *from;
 	struct text_stream *to;
-	CLASS_DEFINITION
-} notation_rewriter;
+}
 
 @ And the following sets that up:
 

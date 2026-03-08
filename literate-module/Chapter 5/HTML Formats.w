@@ -26,7 +26,7 @@ To keep track of what we're writing, we store the renderer state in an
 instance of this:
 
 =
-typedef struct HTML_render_state {
+classdef HTML_render_state {
 	struct text_stream *OUT;
 	struct filename *into_file;
 	struct weave_order *wv;
@@ -1170,19 +1170,29 @@ void HTMLWeaving::escape_text(text_stream *OUT, text_stream *id) {
 
 =
 void HTMLWeaving::render_code_block(OUTPUT_STREAM, int mode, weave_order *wv, text_stream *code, text_stream *language_rendered) {
-	if (Str::len(language_rendered) > 0) {
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%S-Colours", language_rendered);
+	colour_scheme *colours = Assets::find_colour_scheme(wv->weave_web, wv->pattern,
+		name, language_rendered);
+	text_stream *prefix = language_rendered;
+	if (colours) Swarm::ensure_colour_scheme(wv, name, language_rendered);
+	if (colours == NULL) {
+		colours = Assets::find_colour_scheme(wv->weave_web, wv->pattern, I"Colours", I"");
+		prefix = NULL;
+	}
+	if (colours == NULL) internal_error("no colour scheme available");
+	DISCARD_TEXT(name)
+
+	if (Str::len(prefix) > 0) {
 		if (mode & TAGS_MDRMODE)
 			HTML_OPEN_WITH("pre", "class=\"%S-displayed-code all-displayed-code code-font\"",
-				language_rendered);
+				prefix);
 	} else {
 		if (mode & TAGS_MDRMODE)
 			HTML_OPEN_WITH("pre", "class=\"displayed-code all-displayed-code code-font\"");
 	}
+
 	TEMPORARY_TEXT(colouring)
-	TEMPORARY_TEXT(name)
-	WRITE_TO(name, "%S-Colours", language_rendered);
-	colour_scheme *colours = Swarm::ensure_colour_scheme(wv, name, language_rendered);
-	DISCARD_TEXT(name)
 	programming_language *pl = wv->weave_web->web_language;
 	if (Str::len(language_rendered) > 0)
 		pl = Languages::find(wv->weave_web, language_rendered);

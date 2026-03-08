@@ -14,7 +14,7 @@ concatenation of the chapter lists of the modules, but it's much more convenient
 to store this redundant copy than to have to keep traversing the module tree.
 
 =
-typedef struct ls_web {
+classdef ls_web {
 	struct wcl_declaration *declaration;
 	struct ls_module *main_module; /* the root of a small dependency graph */
 	struct linked_list *chapters; /* of `ls_chapter` */
@@ -32,7 +32,8 @@ typedef struct ls_web {
 	struct programming_language *web_language; /* in which most of the sections are written */
 	struct linked_list *tangle_target_names; /* of `text_stream` */
 	struct linked_list *tangle_targets; /* of `tangle_target` */
-	struct ls_chunk *definitions_chunk;
+	struct ls_chunk *definitions_chunk; /* this is where definitions should tangle */
+	struct ls_chunk *classes_chunk; /* this is where InC "classes" should tangle */
 
 	struct filename *contents_filename; /* or `NULL` for a single-file web */
 	struct linked_list *header_filenames; /* of `filename` */
@@ -42,8 +43,7 @@ typedef struct ls_web {
 	void *weaving_ref;
 	void *tangling_ref;
 	void *analysis_ref;
-	CLASS_DEFINITION
-} ls_web;
+}
 
 ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	ls_web *W = CREATE(ls_web);
@@ -86,6 +86,7 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	W->tangle_target_names = NEW_LINKED_LIST(text_stream);
 	W->tangle_targets = NEW_LINKED_LIST(tangle_target);
 	W->definitions_chunk = NULL;
+	W->classes_chunk = NULL;
 	W->web_language = NULL;
 	W->header_filenames = NEW_LINKED_LIST(filename);
 	W->main_module = WebModules::create_main_module(W);
@@ -299,7 +300,7 @@ of `ls_chapter` are never created for any other purpose, so they can exist only
 as part of an `ls_web`; and once added they are never removed.
 
 =
-typedef struct ls_chapter {
+classdef ls_chapter {
 	struct ls_web *owning_web;
 	struct ls_module *owning_module;
 	int imported; /* did this originate in a different web? */
@@ -317,8 +318,7 @@ typedef struct ls_chapter {
 	void *weaving_ref;
 	void *tangling_ref;
 	void *analysis_ref;
-	CLASS_DEFINITION
-} ls_chapter;
+}
 
 ls_chapter *WebStructure::new_ls_chapter(ls_web *W, text_stream *range, text_stream *titling) {
 	if (W == NULL) internal_error("no web for chapter");
@@ -355,7 +355,7 @@ of `ls_section` are never created for any other purpose, so they can exist only
 as part of an `ls_chapter`; and once added they are never removed.
 
 =
-typedef struct ls_section {
+classdef ls_section {
 	struct ls_chapter *owning_chapter;
 
 	struct text_stream *sect_title; /* e.g., "Program Control" */
@@ -383,8 +383,7 @@ typedef struct ls_section {
 	void *weaving_ref;
 	void *tangling_ref;
 	void *analysis_ref;
-	CLASS_DEFINITION
-} ls_section;
+}
 
 ls_section *WebStructure::new_ls_section(ls_chapter *C, text_stream *titling, text_stream *at) {
 	if (C == NULL) internal_error("no chapter for section");
@@ -541,12 +540,22 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			@<Read one section from a file@>;
-	int dc = 0;
+	int dc = 0, cc = 0;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
 			Holons::vet_usage(S->literate_source);
 			for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par)
-				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
+					if (chunk->chunk_type == CLASSES_HERE_LSCT) {
+						cc++;
+						if (cc > 1) {
+							WebErrors::record_at(
+								I"classes position set for a second time",
+								chunk->first_line);
+						} else {
+							W->classes_chunk = chunk;
+						}
+					}
 					if (chunk->chunk_type == DEFINITIONS_HERE_LSCT) {
 						dc++;
 						if (dc > 1) {
@@ -557,6 +566,7 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 							W->definitions_chunk = chunk;
 						}
 					}
+				}
 		}
 	WebErrors::issue_all_recorded(W);
 	WCL::report_errors(W->declaration);

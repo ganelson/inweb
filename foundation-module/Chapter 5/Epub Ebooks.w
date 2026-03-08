@@ -20,7 +20,7 @@ of "volumes" (possibly only one), each of which is a series of "chapters"
 essentially individual HTML files, plus some images.
 
 =
-typedef struct ebook {
+classdef ebook {
 	struct linked_list *metadata_list; /* of `ebook_datum`: DCMI-standard bibliographic data */
 	char *prefix; /* to apply to the page leafnames */
 	struct filename *CSS_file_throughout; /* where to find a CSS file to be used for all volumes */
@@ -37,44 +37,40 @@ typedef struct ebook {
 
 	struct linked_list *ebook_page_list; /* of `book_page` */
 	struct linked_list *ebook_image_list; /* of `ebook_image` */
-	CLASS_DEFINITION
-} ebook;
+}
 
 @ DCMI, or "Dublin Core", metadata is a standard set of key-value pairs used to
 identify ebooks; we need to maintain a small dictionary, and so small that a
 list is entirely sufficient.
 
 =
-typedef struct ebook_datum {
+classdef ebook_datum {
 	struct text_stream *key;
 	struct text_stream *value;
-	CLASS_DEFINITION
-} ebook_datum;
+}
 
 @ As noted above, we use the following to stratify the book:
 
 =
-typedef struct ebook_volume {
+classdef ebook_volume {
 	struct text_stream *volume_title;
 	struct ebook_page *volume_starts; /* on which page the volume starts */
 	struct filename *CSS_file; /* where to find the CSS file to be included */
-	CLASS_DEFINITION
-} ebook_volume;
+}
 
-typedef struct ebook_chapter {
+classdef ebook_chapter {
 	struct text_stream *chapter_title;
 	struct ebook_volume *in_volume; /* to which volume this chapter belongs */
 	struct ebook_page *chapter_starts; /* on which page the chapter starts */
 	struct linked_list *ebook_mark_list; /* of `ebook_mark`: for when multiple navigable points exist within this */
 	struct text_stream *start_URL;
-	CLASS_DEFINITION
-} ebook_chapter;
+}
 
 @ Now for the actual resources which will end up in the EPUB. Here are the
 pages:
 
 =
-typedef struct ebook_page {
+classdef ebook_page {
 	struct text_stream *page_title;
 	struct text_stream *page_type;
 	struct text_stream *page_ID;
@@ -85,20 +81,17 @@ typedef struct ebook_page {
 	struct ebook_chapter *in_chapter; /* to which chapter this page belongs */
 
 	int nav_entry_written; /* keep track of what we've written to the navigation tree */
-	CLASS_DEFINITION
-} ebook_page;
+}
 
-typedef struct ebook_mark {
+classdef ebook_mark {
 	struct text_stream *mark_text;
 	struct text_stream *mark_URL;
-	CLASS_DEFINITION
-} ebook_mark;
+}
 
-typedef struct ebook_image {
+classdef ebook_image {
 	struct text_stream *image_ID;
 	struct filename *relative_URL; /* eventual URL of this image within the ebook */
-	CLASS_DEFINITION
-} ebook_image;
+}
 
 @h Creation.
 

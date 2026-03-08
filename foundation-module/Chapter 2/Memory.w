@@ -17,14 +17,17 @@ a plain `int` is not an object. The memory manager can only deal with
 a given type of `struct` if it contains three special elements, and we
 define those using a macro. Thus, if the user wants to allocate larger
 structures of type `thingummy`, then it needs to be defined like so:
-= (text as code)
+
 	typedef struct thingummy {
 	    int whatsit;
 	    struct text_stream *doobrey;
 	    ...
 	    CLASS_DEFINITION
 	} thingummy;
-=
+
+(Using InC, this can be done more concisely with the keyword `classdef`,
+but that amounts to writing the above.)
+
 The caveat about "larger structures" is that smaller objects can instead be
 stored in arrays, to reduce memory and speed overheads. Their structure
 declarations do not include the following macro; they do not have unique
@@ -804,3 +807,8 @@ allocated objects above; so that leaves only humble `char *` pointers:
 
 =
 MAKE_REFERENCE_ROUTINES(char, 1000)
+
+@ This special marker, which should never be used anywhere else or in any
+other web, indicates to `inweb` where class functions should be placed:
+
+@m

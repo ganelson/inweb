@@ -101,7 +101,7 @@ maximum, but it doesn't seem worth it.</p>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">MAX_MARKDOWN_CONTAINER_DEPTH</span> <span class="constant-syntax">128</span><span class="plain-syntax"> </span><span class="comment-syntax">/* human users rarely exceed 2 */</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">md_doc_state</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">md_doc_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tree_head</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_references</span><span class="plain-syntax">;</span>
@@ -121,9 +121,7 @@ maximum, but it doesn't seem worth it.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">md_fencing_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">fencing</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">HTML_end_condition</span><span class="plain-syntax">;</span>
-
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">md_doc_state</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">md_doc_state</span><span class="plain-syntax"> *</span><span class="function-syntax">MDBlockParser::initialise</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">MDBlockParser::initialise</span></span>:<br/>Markdown - <a href="5-mrk.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">markdown_variation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">variation</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="type-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">head</span><span class="plain-syntax">, </span><span class="type-syntax">md_links_dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dict</span><span class="plain-syntax">) {</span>
@@ -263,13 +261,10 @@ syntax, so we need to remember some state when parsing those, too.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Markers.</b>  Markers can survive from one line to the next, and indeed this is essential.
 Consider the sequence</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    * </span><span class="identifier-syntax">Victorian</span><span class="plain-syntax"> </span><span class="identifier-syntax">stamps</span>
-<span class="plain-syntax">      </span><span class="constant-syntax">-</span><span class="plain-syntax"> </span><span class="identifier-syntax">Penny</span><span class="plain-syntax"> </span><span class="identifier-syntax">Black</span>
-<span class="plain-syntax">    * </span><span class="identifier-syntax">Edwardian</span><span class="plain-syntax"> </span><span class="identifier-syntax">stamps</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	* Victorian stamps
+	  - Penny Black
+	* Edwardian stamps
+</span></pre>
 <p>Three positional markers are obvious in this text, but in fact there's a fourth
 implicit one. The line <code>  - Penny Black</code> implicitly marks itself as being a subentry
 of the outer entry, as if a ghostly asterisk were hiding behind the opening spacing.
@@ -277,12 +272,9 @@ In this case, we will parse that by preserving the marker from the previous line
 but flagging it as <code>continues_from_earlier_line</code>.</p>
 <p>Note that block quote markers are never flagged as continuing, because they work
 differently: instead of being implicitly continued, block quotes are explicitly so.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">all</span><span class="plain-syntax"> </span><span class="identifier-syntax">part</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span>
-<span class="plain-syntax">    &gt; </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">same</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax"> </span><span class="identifier-syntax">quote</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; This is all part of
+	&gt; the same block quote.
+</span></pre>
 <p>The <code>blank_counts</code> keeps track of how many blank lines follow, and is needed only
 because of the special rule that a list item cannot begin with two blank lines.</p>
 </div>
@@ -314,13 +306,10 @@ because of the special rule that a list item cannot begin with two blank lines.<
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  Ordinarily, we can parse markers to our heart's content, or at least up to
 <code>MAX_MARKDOWN_CONTAINER_DEPTH</code> of them. But sometimes we mustn't. Consider:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ```</span>
-<span class="plain-syntax">    &gt; * </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">Whatever</span>
-<span class="plain-syntax">    ```</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	```
+	&gt; * 1) Whatever
+	```
+</span></pre>
 <p>This is a fenced code block, so the tantalising string of potential markers,
 <code>&gt; * 1)</code>, is in fact part of the code being fenced. We need to prevent that,
 so during the parsing of lines in such a block, the following limit is
@@ -557,12 +546,9 @@ therefore begin at this character position.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP18_1" class="paragraph-anchor"></a><b>&#167;18.1. </b>  Suppose we see these two lines in succession:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">2</span><span class="plain-syntax">)   </span><span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">entry</span><span class="plain-syntax"> </span><span class="identifier-syntax">two</span><span class="plain-syntax">.</span>
-<span class="plain-syntax">         </span><span class="identifier-syntax">It</span><span class="plain-syntax"> </span><span class="identifier-syntax">continues</span><span class="plain-syntax"> </span><span class="identifier-syntax">here</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	2)   This is list entry two.
+	     It continues here.
+</span></pre>
 <p>The second line implies a continuation of the first because of the indentation
 by five spaces, which is the <code>width</code> recorded in marker 1 (i.e., the <code>2)</code>)
 recorded on line 1.</p>
@@ -673,13 +659,10 @@ black width, in the second case it is the black width plus 1.</p>
 <p class="commentary firstcommentary"><a id="SP18_2_3" class="paragraph-anchor"></a><b>&#167;18.2.3. </b>  Ordered list markers are allowed to interrupt a paragraph, but only if the
 number used in them is 1, so that there's some evidence the author intended a
 list and hasn't simply written something like:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">Royal</span><span class="plain-syntax"> </span><span class="identifier-syntax">Philatelic</span><span class="plain-syntax"> </span><span class="identifier-syntax">Society</span><span class="plain-syntax"> </span><span class="identifier-syntax">London</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">founded</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax"> </span><span class="constant-syntax">10</span><span class="plain-syntax"> </span><span class="identifier-syntax">April</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">1869</span><span class="plain-syntax">. </span><span class="identifier-syntax">Permission</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">use</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">prefix</span><span class="plain-syntax"> </span><span class="string-syntax">"Royal"</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">granted</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="identifier-syntax">King</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Edward</span><span class="plain-syntax"> </span><span class="identifier-syntax">VII</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">November</span><span class="plain-syntax"> </span><span class="constant-syntax">1906</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	The Royal Philatelic Society London was founded on 10 April
+	1869. Permission to use the prefix "Royal" was granted by King
+	Edward VII in November 1906.
+</span></pre>
 <p>where we don't want to parse the <code>1869.</code> as beginning a list with first
 entry &quot;Permission to use...&quot;.</p>
 </div>
@@ -788,7 +771,7 @@ it must become a <code>HEADING_MIT</code>. We do this carefully to avoid getting
 receiver states cross-wired.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MDBlockParser::change_type</span><button class="popup" onclick="togglePopup('usagePopup27')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup27">Usage of <span class="code-font"><span class="function-syntax">MDBlockParser::change_type</span></span>:<br/><a href="5-mpi.html#SP25_3_2_1">&#167;25.3.2.1</a>, <a href="5-mpi.html#SP28">&#167;28</a>, <a href="5-mpi.html#SP28_2">&#167;28.2</a><br/>Inform-Flavoured Markdown - <a href="5-im.html#SP3">&#167;3</a>, <a href="5-im.html#SP4">&#167;4</a>, <a href="5-im.html#SP5">&#167;5</a>, <a href="5-im.html#SP8">&#167;8</a>, <a href="5-im.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">md_doc_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">, </span><span class="type-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">MDBlockParser::change_type</span><button class="popup" onclick="togglePopup('usagePopup27')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup27">Usage of <span class="code-font"><span class="function-syntax">MDBlockParser::change_type</span></span>:<br/><a href="5-mpi.html#SP25_3_2_1">&#167;25.3.2.1</a>, <a href="5-mpi.html#SP28">&#167;28</a>, <a href="5-mpi.html#SP28_2">&#167;28.2</a><br/>Inform-Flavoured Markdown - <a href="5-im.html#SP1_4">&#167;1.4</a>, <a href="5-im.html#SP1_6">&#167;1.6</a>, <a href="5-im.html#SP1_7">&#167;1.7</a>, <a href="5-im.html#SP1_11">&#167;1.11</a>, <a href="5-im.html#SP1_24">&#167;1.24</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">md_doc_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">, </span><span class="type-syntax">markdown_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">block</span><span class="plain-syntax">, </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">block</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no block"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tracing_Markdown_parser</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">PRINT</span><span class="plain-syntax">(</span><span class="string-syntax">"Change type: "</span><span class="plain-syntax">); </span><a href="5-mrk.html#SP53" class="function-link"><span class="function-syntax">Markdown::debug_item</span></a><span class="plain-syntax">(</span><span class="constant-syntax">STDOUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">block</span><span class="plain-syntax">);</span>
@@ -881,14 +864,11 @@ stack.</p>
 <p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. The main function.</b>  So, now we're off to the races. Unsurprisingly, we work from left to right.
 We divide the line into four sections: left margin, positional markers,
 intervening white space, and content. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">      </span><span class="constant-syntax">-</span><span class="plain-syntax">  </span><span class="constant-syntax">21</span><span class="plain-syntax">)   </span><span class="identifier-syntax">Thomas</span><span class="plain-syntax"> </span><span class="identifier-syntax">Keay</span><span class="plain-syntax"> </span><span class="identifier-syntax">Tapling</span><span class="plain-syntax"> (1855-1891) </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">English</span><span class="plain-syntax"> </span><span class="identifier-syntax">politician</span><span class="plain-syntax">.</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">mmpppppppppcccccccccccccccccccccccccccc</span>
-<span class="plain-syntax">                  </span><span class="identifier-syntax">He</span><span class="plain-syntax"> </span><span class="identifier-syntax">played</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax">-</span><span class="identifier-syntax">class</span><span class="plain-syntax"> </span><span class="identifier-syntax">cricket</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">also</span><span class="plain-syntax"> </span><span class="identifier-syntax">an</span><span class="plain-syntax"> </span><span class="identifier-syntax">eminent</span><span class="plain-syntax"> </span><span class="identifier-syntax">philatelist</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">mmpppppppppwwwccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	  -  21)   Thomas Keay Tapling (1855-1891) was an English politician.
+	mmpppppppppcccccccccccccccccccccccccccc
+	              He played first-class cricket and was also an eminent philatelist
+	mmpppppppppwwwccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+</span></pre>
 <p>Note that the intervening white space, if any, is the bonus white space beyond
 any which is used to imply positional markers.</p>
 <p>CommonMark requires that tabs are to be read as if spaces had been typed to
@@ -958,14 +938,11 @@ use regular string processing thereafter.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP25_2_1" class="paragraph-anchor"></a><b>&#167;25.2.1. </b>  If the line contains only white space after the positional markers, that
 does not necessarily mean there is no content. Consider:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">12</span><span class="plain-syntax">)  ~~~</span>
-<span class="plain-syntax">         </span><span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">fenced</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	12)  ~~~
+	     This is a fenced code block.
 
-<span class="plain-syntax">         ~~~</span>
-</pre>
-<div class="lsmarkdown">
+	     ~~~
+</span></pre>
 <p>Line 3 here contains an (implied) positional marker, since it's still part
 of list item 12, but any white space occurring from the character position
 underneath the <code>T</code> onwards is part of the content, and must live on in the
@@ -1004,11 +981,8 @@ subsequent lines the same margin will be followed.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-mpi.html#SP25_2">&#167;25.2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP25_2_3" class="paragraph-anchor"></a><b>&#167;25.2.3. </b>  Suppose something like this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">12</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	12)
+</span></pre>
 <p>where there is not enough white space after the <code>)</code> to force indentation as a
 new indented code block (i.e., of which the first line happens to be blank).
 Where are we to set the indentation position for the <code>12)</code>? We make it the
@@ -1027,16 +1001,13 @@ absolute minimum: the black width plus 1.</p>
 <ul class="endnotetexts"><li>This code is used in <a href="5-mpi.html#SP25_2">&#167;25.2</a>.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP25_2_4" class="paragraph-anchor"></a><b>&#167;25.2.4. </b>  A list item is not permitted to begin with two blanks:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">11</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">part</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="constant-syntax">11</span><span class="plain-syntax">.</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	11)
+	    This is part of list item 11.
 
-<span class="plain-syntax">    </span><span class="constant-syntax">12</span><span class="plain-syntax">)</span>
+	12)
 
-<span class="plain-syntax">        </span><span class="identifier-syntax">This</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">not</span><span class="plain-syntax"> </span><span class="identifier-syntax">part</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">item</span><span class="plain-syntax"> </span><span class="constant-syntax">12</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+	    This is not part of list item 12.
+</span></pre>
 <p>So if we find ourselves in the situation of the blank line 5, we delete the
 innermost marker, and go back to the start of the intervening space parsing,
 because there's a new innermost marker now, and indentation also needs
@@ -1135,31 +1106,22 @@ interpretation is possible.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP25_3_1_1" class="paragraph-anchor"></a><b>&#167;25.3.1.1. </b>  This is a little subtle. It seems obvious enough that these lines all belong
 to the same paragraph:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">By</span><span class="plain-syntax"> </span><span class="constant-syntax">1887</span><span class="plain-syntax"> </span><span class="identifier-syntax">his</span><span class="plain-syntax"> </span><span class="identifier-syntax">collection</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Philippe</span><span class="plain-syntax"> </span><span class="identifier-syntax">Ferrari</span><span class="plain-syntax"> </span><span class="identifier-syntax">de</span><span class="plain-syntax"> </span><span class="identifier-syntax">La</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Renoti</span><span class="plain-syntax">è</span><span class="identifier-syntax">re</span><span class="plain-syntax">. </span><span class="identifier-syntax">Among</span><span class="plain-syntax"> </span><span class="identifier-syntax">his</span><span class="plain-syntax"> </span><span class="identifier-syntax">holdings</span><span class="plain-syntax"> </span><span class="identifier-syntax">were</span><span class="plain-syntax"> </span><span class="identifier-syntax">many</span><span class="plain-syntax"> </span><span class="identifier-syntax">world</span><span class="plain-syntax">-</span><span class="identifier-syntax">famous</span><span class="plain-syntax"> </span><span class="identifier-syntax">rarities</span><span class="plain-syntax">, </span><span class="identifier-syntax">including</span><span class="plain-syntax"> </span><span class="identifier-syntax">both</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">values</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="string-syntax">"Post Office"</span><span class="plain-syntax"> </span><span class="identifier-syntax">Mauritius</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">three</span><span class="plain-syntax"> </span><span class="identifier-syntax">examples</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inverted</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Head</span><span class="plain-syntax"> </span><span class="identifier-syntax">Four</span><span class="plain-syntax"> </span><span class="identifier-syntax">Annas</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">India</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	By 1887 his collection was second only to that of Philippe Ferrari de La
+	Renotière. Among his holdings were many world-famous rarities, including both
+	values of the "Post Office" Mauritius and three examples of the Inverted
+	Head Four Annas of India.
+</span></pre>
 <p>But &quot;lazy continuation&quot; goes further. It provides that if there is no indication
 to the contrary, a line should be taken as a continuation of the current paragraph.
 So for example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">By</span><span class="plain-syntax"> </span><span class="constant-syntax">1887</span><span class="plain-syntax"> </span><span class="identifier-syntax">his</span><span class="plain-syntax"> </span><span class="identifier-syntax">collection</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Philippe</span><span class="plain-syntax"> </span><span class="identifier-syntax">Ferrari</span><span class="plain-syntax"> </span><span class="identifier-syntax">de</span><span class="plain-syntax"> </span><span class="identifier-syntax">La</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Renoti</span><span class="plain-syntax">è</span><span class="identifier-syntax">re</span><span class="plain-syntax">. </span><span class="identifier-syntax">Among</span><span class="plain-syntax">...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	1) By 1887 his collection was second only to that of Philippe Ferrari de La
+	Renotière. Among...
+</span></pre>
 <p>Here, all of the lines are part of list entry <code>1)</code>. This is a different situation
 from:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">By</span><span class="plain-syntax"> </span><span class="constant-syntax">1887</span><span class="plain-syntax"> </span><span class="identifier-syntax">his</span><span class="plain-syntax"> </span><span class="identifier-syntax">collection</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">second</span><span class="plain-syntax"> </span><span class="identifier-syntax">only</span><span class="plain-syntax"> </span><span class="identifier-syntax">to</span><span class="plain-syntax"> </span><span class="identifier-syntax">that</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">Philippe</span><span class="plain-syntax"> </span><span class="identifier-syntax">Ferrari</span><span class="plain-syntax"> </span><span class="identifier-syntax">de</span><span class="plain-syntax"> </span><span class="identifier-syntax">La</span>
-<span class="plain-syntax">       </span><span class="identifier-syntax">Renoti</span><span class="plain-syntax">è</span><span class="identifier-syntax">re</span><span class="plain-syntax">. </span><span class="identifier-syntax">Among</span><span class="plain-syntax">...</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	1) By 1887 his collection was second only to that of Philippe Ferrari de La
+	   Renotière. Among...
+</span></pre>
 <p>where continuation occurs because the subsequent lines are indented to match
 the list item marker's margin. The difference between these two cases is that
 in the second case there is a continuing positional marker on the marker stack,
@@ -1280,29 +1242,22 @@ markers.</p>
 <p class="commentary firstcommentary"><a id="SP25_3_3_1_1" class="paragraph-anchor"></a><b>&#167;25.3.3.1.1. </b>  The two stacks may in fact agree up to a certain point, but they diverge
 as soon as they run into a non-continued list marker. For example, with the
 lines:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    &gt; &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">Switzerland:</span><span class="plain-syntax"> </span><span class="identifier-syntax">Zurich:</span><span class="plain-syntax"> </span><span class="constant-syntax">1843</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">rappen</span><span class="plain-syntax">, </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">unique</span><span class="plain-syntax"> </span><span class="identifier-syntax">unsevered</span><span class="plain-syntax"> </span><span class="identifier-syntax">horizontal</span><span class="plain-syntax"> </span><span class="identifier-syntax">strip</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">five</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    &gt; &gt; </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">Uruguay:</span><span class="plain-syntax"> </span><span class="constant-syntax">1858</span><span class="plain-syntax"> </span><span class="constant-syntax">120</span><span class="plain-syntax"> </span><span class="identifier-syntax">centavos</span><span class="plain-syntax"> </span><span class="identifier-syntax">blue</span><span class="plain-syntax"> </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="constant-syntax">180</span><span class="plain-syntax"> </span><span class="identifier-syntax">centavos</span><span class="plain-syntax"> </span><span class="identifier-syntax">green</span><span class="plain-syntax">, </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">t</span><span class="plain-syntax">ê</span><span class="identifier-syntax">te</span><span class="plain-syntax"> </span><span class="identifier-syntax">beche</span><span class="plain-syntax"> </span><span class="identifier-syntax">pairs</span><span class="plain-syntax">, </span><span class="identifier-syntax">two</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">five</span><span class="plain-syntax"> </span><span class="identifier-syntax">known</span><span class="plain-syntax">;</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&gt; &gt; 1) Switzerland: Zurich: 1843 4 rappen, the unique unsevered horizontal strip of five;
+	&gt; &gt; 2) Uruguay: 1858 120 centavos blue and 180 centavos green, in tête beche pairs, two of five known;
+</span></pre>
 <p>the outermost point of disagreement (i.e., the leftmost) is at stack position
 3, where the two numbered item markers live. The eventual effect will be to
 change the container stack from:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">BLOCK_QUOTE_MIT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">BLOCK_QUOTE_MIT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">ORDERED_LIST_ITEM_MIT</span><span class="plain-syntax"> </span><span class="string-syntax">"Switzerland: Zurich: 1843..."</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	BLOCK_QUOTE_MIT
+		BLOCK_QUOTE_MIT
+			ORDERED_LIST_ITEM_MIT "Switzerland: Zurich: 1843..."
+</span></pre>
 <p>to become:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	BLOCK_QUOTE_MIT
+		BLOCK_QUOTE_MIT
+			ORDERED_LIST_ITEM_MIT "Uruguay: 1858 120 centavos..."
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">BLOCK_QUOTE_MIT</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">BLOCK_QUOTE_MIT</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">ORDERED_LIST_ITEM_MIT</span><span class="plain-syntax"> </span><span class="string-syntax">"Uruguay: 1858 120 centavos..."</span>
-</pre>
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Find the outermost point of current disagreement</span><span class="named-paragraph-number">25.3.3.1.1</span></span> =</p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -1385,25 +1340,19 @@ them in the same priority sequence as was followed above.</p>
 <p>First, the two paragraph-continuation cases, where a setext underline takes
 priority. &quot;Setext&quot; stands for &quot;Structure Enhanced Text&quot;, a precursor language
 to Markdown created by Ian Feldman in 1991.</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Women</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">Philately</span>
-<span class="plain-syntax">    ==================</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">One</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">earliest</span><span class="plain-syntax"> </span><span class="identifier-syntax">was</span><span class="plain-syntax"> </span><span class="identifier-syntax">Adelaide</span><span class="plain-syntax"> </span><span class="identifier-syntax">Lucy</span><span class="plain-syntax"> </span><span class="identifier-syntax">Fenton</span><span class="plain-syntax">, </span><span class="identifier-syntax">who</span><span class="plain-syntax"> </span><span class="identifier-syntax">wrote</span><span class="plain-syntax"> </span><span class="identifier-syntax">articles</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">1860</span><span class="identifier-syntax">s</span><span class="plain-syntax"> </span><span class="reserved-syntax">for</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">journal</span><span class="plain-syntax"> </span><span class="identifier-syntax">The</span><span class="plain-syntax"> </span><span class="identifier-syntax">Philatelist</span><span class="plain-syntax"> </span><span class="identifier-syntax">under</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">name</span><span class="plain-syntax"> </span><span class="identifier-syntax">Herbert</span><span class="plain-syntax"> </span><span class="identifier-syntax">Camoens</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Women in Philately
+	==================
+	One of the earliest was Adelaide Lucy Fenton, who wrote articles in the
+	1860s for the journal The Philatelist under the name Herbert Camoens.
+</span></pre>
 <p>This natural-looking notation survives in Markdown today, and line 2 above
 is a &quot;setext underline&quot;.</p>
 <p>Dealing with it would be straightforward - simply make the paragraph item
 holding &quot;Women in Philately&quot; a heading item, and throw the underline characters
 away. But consider the following edge case:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [</span><span class="identifier-syntax">pb</span><span class="plain-syntax">]: /</span><span class="identifier-syntax">pennyblacks</span><span class="plain-syntax">.</span><span class="identifier-syntax">html</span><span class="plain-syntax"> </span><span class="string-syntax">"Penny Black catalogue"</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">----</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	[pb]: /pennyblacks.html "Penny Black catalogue"
+	-----
+</span></pre>
 <p>Here <code>-----</code> looks like, and has been parsed as, a setext underline. But it
 isn't, because in fact the whole paragraph was taken up with link references,
 leaving it with no content. So the only way correctly to deal with this is to
@@ -1411,13 +1360,10 @@ remove the link references first and see if there's any para left.</p>
 <p>It might seem tidier to deal with link references when they join paragraphs
 but, infuriatingly, they can sometimes run across multiple lines, and moreover
 can do so in a way such that the first line alone is also a valid link reference:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    [</span><span class="identifier-syntax">pb</span><span class="plain-syntax">]: /</span><span class="identifier-syntax">pennyblacks</span><span class="plain-syntax">.</span><span class="identifier-syntax">html</span>
-<span class="plain-syntax">      </span><span class="string-syntax">"Penny Black catalogue"</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">----</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	[pb]: /pennyblacks.html
+	  "Penny Black catalogue"
+	-----
+</span></pre>
 <p>So it is not safe to strip out link references until a paragraph is done.
 In these cases where the apparent underline is, in fact, not an underline
 because there was no content left, we have to preserve it as literal
@@ -1560,19 +1506,16 @@ tab for this: we must use the correct fraction of a tab, using spaces as quarter
 But that doesn't mean it should be discarded. There's an edge case (those happy
 words again) where something like this happens, where I'm typing underscores
 in place of spaces to make it more visible:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Here</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">some</span><span class="plain-syntax"> </span><span class="identifier-syntax">code:</span>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Here is some code:
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">____You</span><span class="plain-syntax"> </span><span class="identifier-syntax">can</span><span class="plain-syntax"> </span><span class="identifier-syntax">see</span><span class="plain-syntax"> </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">____because</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">indentation</span><span class="plain-syntax"> </span><span class="identifier-syntax">by</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">spaces</span><span class="plain-syntax">.</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">_______</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">____Now</span><span class="plain-syntax"> </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> </span><span class="identifier-syntax">part</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">same</span><span class="plain-syntax"> </span><span class="identifier-syntax">code</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax">, </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">although</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">____the</span><span class="plain-syntax"> </span><span class="identifier-syntax">whitespace</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax"> </span><span class="identifier-syntax">falling</span><span class="plain-syntax"> </span><span class="identifier-syntax">between</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">two</span><span class="plain-syntax"> </span><span class="identifier-syntax">looked</span><span class="plain-syntax"> </span><span class="identifier-syntax">blank</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">____it</span><span class="plain-syntax"> </span><span class="identifier-syntax">actually</span><span class="plain-syntax"> </span><span class="identifier-syntax">contained</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="identifier-syntax">than</span><span class="plain-syntax"> </span><span class="constant-syntax">4</span><span class="plain-syntax"> </span><span class="identifier-syntax">spaces</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">indentation</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">____7</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">fact</span><span class="plain-syntax">, </span><span class="identifier-syntax">so</span><span class="plain-syntax"> </span><span class="identifier-syntax">three</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">those</span><span class="plain-syntax"> </span><span class="identifier-syntax">must</span><span class="plain-syntax"> </span><span class="identifier-syntax">be</span><span class="plain-syntax"> </span><span class="identifier-syntax">put</span><span class="plain-syntax"> </span><span class="identifier-syntax">into</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">block</span><span class="plain-syntax">.</span>
-</pre>
-<div class="lsmarkdown">
+	____You can see this is a code block,
+	____because of the indentation by 4 spaces.
+	_______
+	____Now this is part of the same code block, and although
+	____the whitespace line falling between the two looked blank,
+	____it actually contained more than 4 spaces of indentation,
+	____7 in fact, so three of those must be put into the block.
+</span></pre>
 <p>Those extra spaces are cached in <code>state-&gt;blank_matter_after_receiver</code>. They
 can't be added to the code block yet because, of course, we don't yet know
 when parsing the blank line whether the future lines will continue the code
@@ -1921,15 +1864,12 @@ setext underline.</p>
 <p class="commentary firstcommentary"><a id="SP26_5" class="paragraph-anchor"></a><b>&#167;26.5. </b>  A code fence is a run of three or more backticks or three or more tildes,
 except that if it's to be a closing fence then it only works if it matches the
 opening fence, using at least as many of the same character. Thus:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">--</span>
-<span class="plain-syntax">    ~~~~</span>
-<span class="plain-syntax">    ~~~~</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">-</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">-</span><span class="plain-syntax">----</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	---
+	~~~~
+	~~~~
+	--
+	-----
+</span></pre>
 <p>is in fact a single fenced code block. Once line 1 has been accepted as being
 a <code>CODE_FENCE_OPEN_MDINTERPRETATION</code> case, the subsequent lines are not
 the closing fence because they are too short or of the wrong kind, until we

@@ -71,14 +71,13 @@ range of what can be scanned for, but do reduce the size and increase the
 human-readability of the machines.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">finite_state_machine</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">finite_state_machine</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start_at</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">current_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">cycles_at_current_state</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">states</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>fsm_state</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">last_parameter</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">finite_state_machine</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">finite_state_machine</span><span class="plain-syntax"> *</span><span class="function-syntax">FSM::new_machine</span><span class="plain-syntax">(</span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">start</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">start</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no state for fsm"</span><span class="plain-syntax">);</span>
@@ -116,15 +115,14 @@ state before the <code>X</code>, and we keep a count of how many states are form
 each state, though only to provide nice human-readable names.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mnemonic</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">finite_state_machine</span><span class="plain-syntax"> *</span><span class="identifier-syntax">owner</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">formed_from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_transitions</span><span class="plain-syntax"> </span><span class="identifier-syntax">exits</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_transitions</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_states_formed_from_this</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">fsm_state</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="function-syntax">FSM::new_state</span><span class="plain-syntax">(</span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">memo</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">fsm_state</span><span class="plain-syntax">);</span>
@@ -205,7 +203,7 @@ flag is set, then it can occur only on the first cycle of the machine being
 in its current state.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_transition</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_transition</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="comment-syntax">/* match criteria: */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">inchar32_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">on</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">to</span><span class="plain-syntax">;</span>
@@ -216,8 +214,7 @@ in its current state.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">parameter</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">fsm_transition</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_trans</span><span class="plain-syntax">; </span><span class="comment-syntax">/* within the list for a bank */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">fsm_transition</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure fsm_transition is accessed in 3/tm, 5/mrk, 5/mpi2, 5/mr, 5/im and here.</li></ul>
 <div class="lsmarkdown">

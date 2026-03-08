@@ -325,7 +325,7 @@ Language "InC" {
 	end
 
 	keywords
-		break case continue default do else extern for goto if register
+		break case classdef continue default do else extern for goto if register
 		return sizeof static switch typedef volatile while _Packed
 	end
 	

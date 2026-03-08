@@ -9,11 +9,10 @@ are a single instance of the following. (Note that the text part is stored
 as Unicode code points, regardless of what text encoding the locale has.)
 
 =
-typedef struct filename {
+classdef filename {
 	struct pathname *pathname_of_location;
 	struct text_stream *leafname;
-	CLASS_DEFINITION
-} filename;
+}
 
 @h Creation.
 A filename is made by supplying a pathname and a leafname.

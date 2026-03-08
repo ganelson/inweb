@@ -16,7 +16,7 @@ has one called "Check final state of machine". Others, like the holon about
 to appear after this paragraph, are nameless.
 
 =
-typedef struct ls_holon {
+classdef ls_holon in 100s {
 	int main_holon; /* called "Main", or some casing variation on that */
 	int webwide; /* visible from other sections, for continuation purposes */
 	int top_level; /* rather than being a code block */
@@ -32,8 +32,7 @@ typedef struct ls_holon {
 	struct ls_holon *addendum_to;
 	struct linked_list *addenda; /* of `ls_holon` */
 	int file_form;
-	CLASS_DEFINITION
-} ls_holon;
+}
 
 ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, int file_form,
 	ls_holon_namespace *ns, int bitmap, ls_notation *ntn, programming_language *pl) {
@@ -74,7 +73,7 @@ ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, in
 	return holon;
 }
 
-typedef struct ls_holon_namespace {
+classdef ls_holon_namespace {
 	struct ls_web *owning_web;  /* or `NULL` for code isolated from any web */
 	struct ls_unit *owner;      /* or `NULL` for global scope, but they're not both `NULL` */
 	struct dictionary *names;
@@ -82,8 +81,7 @@ typedef struct ls_holon_namespace {
 	struct dictionary *expansion_names;
 	struct linked_list *unabbreviated_names; /* of `text_stream` */
 	int contains_Main;
-	CLASS_DEFINITION
-} ls_holon_namespace;
+}
 
 ls_holon_namespace *Holons::new_namespace(ls_web *W, ls_unit *owner) {
 	ls_holon_namespace *ns = CREATE(ls_holon_namespace);
@@ -295,11 +293,10 @@ which other holons, and it comes to the same thing anyway since a paragraph
 can only have at most one holon.
 
 =
-typedef struct holon_usage {
+classdef holon_usage in 1000s {
 	struct ls_paragraph *used_in_paragraph;
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
-	CLASS_DEFINITION
-} holon_usage;
+}
 
 void Holons::scan(ls_holon_namespace *ns) {
 	linked_list *holon_list = ns->holons;

@@ -55,16 +55,16 @@ function togglePopup(material_id) {
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><b>Eastertide</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  This utility, or perhaps futility, is a minimal example of the use of
-the <a href="../foundation-module/index.html" class="internal">foundation</a> library, which comes supplied with inweb for the benefit
-of C programs wanting to use it. We will do everything in an unnecessarily
-fancy way, just to give the tires a kick.</p>
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b>  This utility might better be called a futility. It is a minimal example of the
+use of the InC dialect of C and of the <a href="../foundation-module/index.html" class="internal">foundation</a> library, which comes
+supplied with <a href="../inweb/index.html" class="internal">inweb</a> for the benefit of programs wanting to use it. We will
+do everything in an unnecessarily fancy way, just to give the tires a kick.</p>
 <p>Any program using Foundation must define this constant:</p>
 </div>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">PROGRAM_NAME</span> <span class="string-syntax">"eastertide"</span>
 </pre>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The <code>main</code> routine must start and end Foundation, and is not allowed to
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  The <code>main</code> routine must start and end <a href="../foundation-module/index.html" class="internal">foundation</a>, and is not allowed to
 do much after that; but it is allowed to ask if error messages were generated,
 so that it can return conventional Unix return values 0 (okay) or 1 (not okay).</p>
 </div>
@@ -211,7 +211,7 @@ withn a <code>#</code> as being a comment.</p>
 </pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  And with that done, we can process a request for a year, which comes from
-either the command lihe (in which case <code>tfp</code> here is null), or from the
+either the command lihe (in which case <code>tfp</code> here is <code>NULL</code>), or from the
 calendar file (in which case it remembers the filename and line number).</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -237,33 +237,29 @@ calendar file (in which case it remembers the filename and line number).</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Now it's time to actually store a request. There are many simpler ways to
 do this, but we want to demonstrate Foundation's objects system in action,
-so we'll wrap each year supplied in an object. First, we have to define an
-ID constant for this new class of object, and use a macro which causes
-Foundation to generate the necessary handling functions:</p>
-</div>
-<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">year_request_CLASS</span> 
-</pre>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="type-syntax">year_request</span><span class="plain-syntax">)</span>
-</pre>
-<div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  Now we should define the rather unnecessary structure itself, and then
-a sort of constructor function. We won't need a destructor: we will never
-destroy the years.</p>
+so we'll wrap each year in a <code>classdef</code>, which is really very similar to a
+<code>typedef struct</code> but with some book-keeping added for the memory manager's sake.
+(<code>classdef</code> is a feature of InC not found in regular C, but there is much less
+to it than meets the eye: it handles memory management and nothing more.)</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">year_request</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">year_request</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">year</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">year_request</span><span class="plain-syntax">;</span>
-
+<span class="plain-syntax">}</span>
+</pre>
+<ul class="endnotetexts"><li>The structure year_request is private to this section.</li></ul>
+<div class="lsmarkdown">
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  The macro <code>CREATE(year_request)</code> gets the memory manager to return a pointer
+to a newly-allocated <code>year_request</code> structure, whose contents must then be
+initialised:</p>
+</div>
+<pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">year_request</span><span class="plain-syntax"> *</span><span class="function-syntax">new_year</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">new_year</span></span>:<br/><a href="eastertide.html#SP6">&#167;6</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">Y</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">year_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">YR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">year_request</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">YR</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">year</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">YR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure year_request is private to this section.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. </b>  We can't spin this out much longer, though... This is the actually
 functional part of the program, and even so, it only calls a routine

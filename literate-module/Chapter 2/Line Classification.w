@@ -111,6 +111,10 @@ form of commentary:
 
 @e DEFINITIONS_HERE_MAJLC
 
+@ As is this:
+
+@e CLASSES_HERE_MAJLC
+
 @ The following conditions are useful for deciding what a line might be, on the
 basis of what the previous one was:
 
@@ -151,7 +155,7 @@ the line introducing that paragraph, so it's used only for `PARAGRAPH_START_MAJL
 lines.
 
 =
-typedef struct ls_class {
+classdef ls_class {
 	int major;
 	int minor;
 	int options_bitmap;
@@ -232,7 +236,7 @@ is put into the `residue`.
 text and placed in `error`.
 
 =
-typedef struct ls_class_parsing {
+classdef ls_class_parsing {
 	struct ls_class cf;
 	int implies_paragraph;
 	int implies_extract;
@@ -480,6 +484,11 @@ match, we consider that line to be code.
 
 		case MAKEDEFINITIONSHERE_LSNROID:
 			res = LineClassification::new_results(DEFINITIONS_HERE_MAJLC, NO_MINLC);
+			if (follows_extract) res.implies_paragraph = TRUE;
+			break;
+
+		case MAKECLASSESHERE_LSNROID:
+			res = LineClassification::new_results(CLASSES_HERE_MAJLC, NO_MINLC);
 			if (follows_extract) res.implies_paragraph = TRUE;
 			break;
 

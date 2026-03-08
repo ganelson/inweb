@@ -18,9 +18,11 @@ To write to the debugging log, we must in principle write to a stream called
 `DL`. In practice we more often use a pair of pseudo-functions called `LOG`
 and `LOGIF`, which are macros defined in the section on Streams. For
 instance, the pseudo-function-call
-= (text)
+
+``` None
 	LOGIF(WHATEVER, "Heading %d skipped\n", n);
-=
+```
+
 prints the line in question to the debugging log only if the aspect `WHATEVER`
 is currently switched on. Plain `LOG` does the same, but unconditionally.
 
@@ -38,14 +40,13 @@ not, as we please. Each has a unique number and a name of up to three words in
 length.
 
 =
-typedef struct debugging_aspect {
+classdef debugging_aspect {
 	struct text_stream *hyphenated_name; /* e.g., "memory-usage" */
 	struct text_stream *negated_name; /* e.g., "no-memory-usage" */
 	struct text_stream *unhyphenated_name; /* e.g., "memory usage" */
 	int on_or_off; /* whether or not active when writing to debugging log */
 	int alternate; /* whether or not active when writing in trace mode */
-	CLASS_DEFINITION
-} debugging_aspect;
+}
 
 @ And now we must define all those constants and names. Note that the
 `TRUE` or `FALSE` settings below are the defaults, and apply unless the

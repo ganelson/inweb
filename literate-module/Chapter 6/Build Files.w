@@ -22,7 +22,7 @@ filename *BuildFiles::build_file_for_web(ls_web *WS, int creating) {
 @ The format of such a file is very simple: up to three text fields:
 
 =
-typedef struct build_file_data {
+classdef build_file_data {
 	struct text_stream *prerelease_text;
 	struct text_stream *build_code;
 	struct text_stream *build_date;

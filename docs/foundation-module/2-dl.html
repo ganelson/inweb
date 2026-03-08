@@ -71,11 +71,8 @@ judiciously placed print statements&quot; (Brian Kernighan).</p>
 <code>DL</code>. In practice we more often use a pair of pseudo-functions called <code>LOG</code>
 and <code>LOGIF</code>, which are macros defined in the section on Streams. For
 instance, the pseudo-function-call</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">WHATEVER</span><span class="plain-syntax">, </span><span class="string-syntax">"Heading %d skipped\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	LOGIF(WHATEVER, "Heading %d skipped\n", n);
+</span></pre>
 <p>prints the line in question to the debugging log only if the aspect <code>WHATEVER</code>
 is currently switched on. Plain <code>LOG</code> does the same, but unconditionally.</p>
 </div>
@@ -93,14 +90,13 @@ not, as we please. Each has a unique number and a name of up to three words in
 length.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">debugging_aspect</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">debugging_aspect</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">hyphenated_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;memory-usage&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">negated_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;no-memory-usage&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">unhyphenated_name</span><span class="plain-syntax">; </span><span class="comment-syntax">/* e.g., &quot;memory usage&quot; */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">on_or_off</span><span class="plain-syntax">; </span><span class="comment-syntax">/* whether or not active when writing to debugging log */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">alternate</span><span class="plain-syntax">; </span><span class="comment-syntax">/* whether or not active when writing in trace mode */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">debugging_aspect</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure debugging_aspect is private to this section.</li></ul>
 <div class="lsmarkdown">
@@ -347,7 +343,7 @@ but weren't.</p>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="1-wp.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">dl</li><li class="progresssection"><a href="2-mmr.html">mmr</a></li><li class="progresssection"><a href="2-fc.html">fc</a></li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-str.html">str</a></li><li class="progresssection"><a href="2-wal.html">wal</a></li><li class="progresssection"><a href="2-mth.html">mth</a></li><li class="progresssection"><a href="2-llas.html">llas</a></li><li class="progresssection"><a href="2-dct.html">dct</a></li><li class="progresssection"><a href="2-trs.html">trs</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progressnext"><a href="2-mmr.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="1-wp.html">&#10094;</a></li><li class="progresschapter"><a href="P-abgtf.html">P</a></li><li class="progresschapter"><a href="1-fm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresscurrent">dl</li><li class="progresssection"><a href="2-mmr.html">mmr</a></li><li class="progresssection"><a href="2-lcl.html">lcl</a></li><li class="progresssection"><a href="2-str.html">str</a></li><li class="progresssection"><a href="2-wal.html">wal</a></li><li class="progresssection"><a href="2-mth.html">mth</a></li><li class="progresssection"><a href="2-llas.html">llas</a></li><li class="progresssection"><a href="2-dct.html">dct</a></li><li class="progresssection"><a href="2-trs.html">trs</a></li><li class="progresschapter"><a href="3-em.html">3</a></li><li class="progresschapter"><a href="4-chr.html">4</a></li><li class="progresschapter"><a href="5-htm.html">5</a></li><li class="progresschapter"><a href="6-bf.html">6</a></li><li class="progresschapter"><a href="7-vn.html">7</a></li><li class="progressnext"><a href="2-mmr.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

@@ -9,7 +9,7 @@ contains a WCL file which is parsed to give details, and those details are
 stored in instances of the following:
 
 =
-typedef struct ls_pattern {
+classdef ls_pattern {
 	struct wcl_declaration *declaration;
 	struct text_stream *pattern_name; /* such as `HTML` */
 	struct pathname *pattern_location; /* the directory */
@@ -36,14 +36,12 @@ typedef struct ls_pattern {
 	struct text_stream *pending;
 	struct text_stream *pending_command;
 	int pending_lines;
-	CLASS_DEFINITION
-} ls_pattern;
+}
 
-typedef struct ls_pattern_pair {
+classdef ls_pattern_pair {
 	struct text_stream *key;
 	struct text_stream *value;
-	CLASS_DEFINITION
-} ls_pattern_pair;
+}
 
 @ When a given web needs a pattern with a given name, this is where it comes.
 

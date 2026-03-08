@@ -5,7 +5,7 @@ Basic support for languages to recognise structure and function declarations.
 @ For each `typedef struct` we find, we will make one of these:
 
 =
-typedef struct language_type {
+classdef language_type {
 	struct text_stream *structure_name;
 	int tangled; /* whether the structure definition has been tangled out */
 	struct ls_section *structure_header_in;
@@ -14,8 +14,10 @@ typedef struct language_type {
 	struct linked_list *incorporates; /* of `language_type` */
 	struct linked_list *elements; /* of `structure_element` */
 	struct language_type *next_cst_alphabetically;
-	CLASS_DEFINITION
-} language_type;
+	int classdef;
+	struct text_stream *id_val;
+	int allocation_size;
+}
 
 @ =
 language_type *first_cst_alphabetically = NULL;
@@ -38,6 +40,9 @@ language_type *Functions::new_struct(ls_web *W, text_stream *name, ls_section *S
 	str->typedef_ends = NULL;
 	str->incorporates = NEW_LINKED_LIST(language_type);
 	str->elements = NEW_LINKED_LIST(structure_element);
+	str->classdef = FALSE;
+	str->id_val = NULL;
+	str->allocation_size = 1;
 
 @<Add this to the lists for its web and its paragraph@> =
 	ParagraphTags::tag(par, I"Structures");
@@ -80,12 +85,11 @@ has no effect on tangling, so it doesn't change the program. It simply
 affects the reports in the woven code about where structures are used.
 
 =
-typedef struct structure_element {
+classdef structure_element {
 	struct text_stream *element_name;
 	struct ls_section *element_created_at;
 	int allow_sharing;
-	CLASS_DEFINITION
-} structure_element;
+}
 
 @ =
 structure_element *Functions::new_element(language_type *str, text_stream *elname,
@@ -114,7 +118,7 @@ language_type *Functions::find_structure(ls_web *W, text_stream *name) {
 Each function definition found results in one of these structures being made:
 
 =
-typedef struct language_function {
+classdef language_function {
 	struct text_stream *function_name; /* e.g., `"cultivate"` */
 	struct text_stream *function_type; /* e.g., `"tree *"` */
 	struct text_stream *function_arguments; /* e.g., `"int rainfall)"`: note `)` */
@@ -126,8 +130,7 @@ typedef struct language_function {
 	int usage_described;
 	int no_conditionals;
 	struct ls_line *within_conditionals[MAX_CONDITIONAL_COMPILATION_STACK];
-	CLASS_DEFINITION
-} language_function;
+}
 
 @ =
 language_function *Functions::new_function(text_stream *fname, ls_line *lst,

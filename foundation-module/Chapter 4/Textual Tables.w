@@ -8,18 +8,16 @@ for printing out to the console. (Inweb makes use of this for commands such
 as `inweb inspect`.)
 
 =
-typedef struct textual_table {
+classdef textual_table {
 	struct linked_list *rows; /* of `textual_table_row` */
-	CLASS_DEFINITION
-} textual_table;
+}
 
-typedef struct textual_table_row {
+classdef textual_table_row {
 	int positioning;             /* `-1` for header, `0` for most rows, `1` for footer */
 	int index;                   /* position in the list, counting 0, 1, 2, ... from the top */
 	int sort_column;             /* which column we are sorting on */
 	struct linked_list *columns; /* of `text_stream` */
-	CLASS_DEFINITION
-} textual_table_row;
+}
 
 @ The model here is that we first create an empty table object by calling the
 following. A header row is automatically created, ready for us to fill its

@@ -504,7 +504,7 @@ clarity seems more important. In typical MD text, there are only about two
 or three items per line, so the memory overhead is harmless enough.
 
 =
-typedef struct markdown_item {
+classdef markdown_item in 1000s {
 	int type; /* one of the `*_MIT` types above */
 
 	/* text storage for inline items */
@@ -531,8 +531,7 @@ typedef struct markdown_item {
 
 	int cycle_count; /* used only for tracing the tree when debugging */
 	int id;          /* used only for tracing the tree when debugging */
-	CLASS_DEFINITION
-} markdown_item;
+}
 
 int md_ids = 1;
 markdown_item *Markdown::new_item(int type) {
@@ -1077,16 +1076,14 @@ Phase I and used during Phase II. For example, the label `home` might have
 destination `https://supervillain.com/secret-lair` and title `"Evil Plans"`.
 
 =
-typedef struct md_links_dictionary {
+classdef md_links_dictionary {
 	struct dictionary *dict;
-	CLASS_DEFINITION
-} md_links_dictionary;
+}
 
-typedef struct md_link_dictionary_entry {
+classdef md_link_dictionary_entry in 100s {
 	struct text_stream *destination;
 	struct text_stream *title;
-	CLASS_DEFINITION
-} md_link_dictionary_entry;
+}
 
 md_links_dictionary *Markdown::new_links_dictionary(void) {
 	md_links_dictionary *dict = CREATE(md_links_dictionary);

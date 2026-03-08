@@ -11,21 +11,19 @@ This needs some annotation of the web structure, provided by the following
 structures. Each `ls_web` has an `ls_web_analysis` attached, and so on.
 
 =
-typedef struct ls_web_analysis {
+classdef ls_web_analysis {
 	int analysed; /* has this been scanned for function usage and such? */
 	struct linked_list *language_types; /* of `language_type`: used only for C-like languages */
 	struct linked_list *defined_constants;  /* of `defined_constant` */
 	struct linked_list *language_functions; /* of `language_function` */
-	CLASS_DEFINITION
-} ls_web_analysis;
+}
 
-typedef struct ls_paragraph_analysis {
+classdef ls_paragraph_analysis in 100s {
 	struct linked_list *functions; /* of `function`: those defined in this para */
 	struct linked_list *structures; /* of `language_type`: similarly */
-	CLASS_DEFINITION
-} ls_paragraph_analysis;
+}
 
-typedef struct ls_line_analysis {
+classdef ls_line_analysis in 1000s {
 	struct language_function *function_defined; /* if any C-like function is defined on this line */
 	struct preform_nonterminal *preform_nonterminal_defined; /* similarly */
 	int part_of_typedef;
@@ -297,11 +295,10 @@ a function might be both called and used as a constant value within the
 same paragraph of code.
 
 =
-typedef struct hash_table_entry_usage {
+classdef hash_table_entry_usage {
 	struct ls_paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the `*_USAGE` constants defined above */
-	CLASS_DEFINITION
-} hash_table_entry_usage;
+}
 
 @ And here's how we create these usages:
 

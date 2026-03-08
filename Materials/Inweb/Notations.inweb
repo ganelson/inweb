@@ -31,6 +31,7 @@ Notation "InwebClassic" {
 		@heading MATERIAL. RESIDUE                  ==> beginparagraph
 		@h MATERIAL                                 ==> error "no full stop after heading text"
 		@heading MATERIAL                           ==> error "no full stop after heading text"
+		@m											==> makeclasseshere
 	
 		>> MATERIAL                                 ==> quotation if not in extract context
 	end

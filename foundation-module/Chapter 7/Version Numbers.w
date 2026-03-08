@@ -28,13 +28,15 @@ forms of version number: either just `N`, which fits the scheme above, or
 reasons: IF enthusiasts know it well from the banner text of the Infocom
 titles of the 1980s. This story file, for instance, was compiled at the
 time of the Reykjavik summit between Presidents Gorbachev and Reagan:
-= (text)
+
+``` None
 	Moonmist
 	Infocom interactive fiction - a mystery story
 	Copyright (c) 1986 by Infocom, Inc. All rights reserved.
 	Moonmist is a trademark of Infocom, Inc.
 	Release number 9 / Serial number 861022
-=
+```
+
 Story file collectors customarily abbreviate this in catalogues to `9/861022`.
 
 So we will allow this notation, but will convert `N/DDDDDD` to `N.0.DDDDDD`,
@@ -63,10 +65,9 @@ typedef struct semantic_version_number {
 	struct text_stream *build_metadata;
 } semantic_version_number;
 
-typedef struct semantic_version_number_holder {
+classdef semantic_version_number_holder {
 	struct semantic_version_number version;
-	CLASS_DEFINITION
-} semantic_version_number_holder;
+}
 
 @ All invalid strings of numbers — i.e., breaking the above rules — are
 called "null" versions, and can never be valid as the version of anything.

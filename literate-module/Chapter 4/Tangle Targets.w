@@ -13,11 +13,10 @@ sections. Each section belongs to exactly one tangle target; by default
 a web contains just one target, which contains all of the sections.
 
 =
-typedef struct tangle_target {
+classdef tangle_target {
 	struct programming_language *tangle_language; /* common to the entire contents */
 	struct hash_table symbols; /* a table of identifiable names in this program */
-	CLASS_DEFINITION
-} tangle_target;
+}
 
 @ =
 tangle_target *TangleTargets::add(ls_web *W, programming_language *language) {

@@ -376,7 +376,8 @@ int Str::ne_insensitive(text_stream *S1, text_stream *S2) {
 alphabetic sorting, like `strlen` in the C standard library.
 
 This would be a more elegant implementation:
-= (text as InC)
+
+``` InC
 	for (string_position P = Str::start(S1), Q = Str::start(S2);
 		(P.index < Str::len(S1)) && (Q.index < Str::len(S2));
 		P = Str::forward(P), Q = Str::forward(Q)) {
@@ -384,7 +385,8 @@ This would be a more elegant implementation:
 		if (d != 0) return d;
 	}
 	return Str::len(S1) - Str::len(S2);
-=
+```
+
 But profiling shows that the following speeds up the Inform 7 compiler by
 around 1%.
 
@@ -411,9 +413,9 @@ int Str::cmp_insensitive(text_stream *S1, text_stream *S2) {
 
 @ It's sometimes useful to see whether two strings agree on their last
 `N` characters, or their first `N`. For example,
-= (text as code)
+
 	Str::suffix_eq(I"wayzgoose", I"snow goose", N)
-=
+
 will return `TRUE` for `N` equal to 0 to 5, and `FALSE` thereafter.
 
 (The Oxford English Dictionary defines a "wayzgoose" as a holiday outing

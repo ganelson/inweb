@@ -27,16 +27,22 @@ void CLike::parse_types(programming_language *self, ls_web *W) {
 }
 
 @ We're going to assume that the C source code uses structures looking
-something like this:
-= (text as C)
-	typedef struct fruit {
+something like these:
+
+``` InC
+	classdef fruit {
 	    struct pip the_pips[5];
 	    struct fruit *often_confused_with;
 	    struct tree_species *grows_on;
 	    int typical_weight;
-	} fruit;
-=
-which adopts the traditional layout conventions of Kernighan and Ritchie.
+	}
+
+	typedef struct pip {
+		int size;
+	} pip;
+```
+
+which adopt the traditional bracing conventions of Kernighan and Ritchie.
 
 Note that a `fruit` structure contains a `pip` structure (in fact, five of
 them), but only contains pointers to `tree_species` structures and itself.
@@ -57,6 +63,29 @@ takes care of it automatically.
 			if (Regexp::match(&mr, line, U"typedef struct (%i+) %c*{%c*")) {
 				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
 				ParagraphTags::tag(L_par, I"Structures");
+			} else if (Regexp::match(&mr, line, U"classdef (%i+) *{%c*")) {
+				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				ParagraphTags::tag(L_par, I"Structures");
+				current_str->classdef = TRUE;
+				if (Enumerations::find(I"CLASS")) {
+					TEMPORARY_TEXT(symbol)
+					current_str->id_val = Str::new();
+					WRITE_TO(symbol, "%S_CLASS", mr.exp[0]);
+					Enumerations::define(current_str->id_val, symbol, NULL, lst, S);
+					DISCARD_TEXT(symbol)
+				}
+			} else if (Regexp::match(&mr, line, U"classdef (%i+) in (%d+)s *{%c*")) {
+				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				ParagraphTags::tag(L_par, I"Structures");
+				current_str->classdef = TRUE;
+				current_str->allocation_size = Str::atoi(mr.exp[1], 0);
+				if (Enumerations::find(I"CLASS")) {
+					TEMPORARY_TEXT(symbol)
+					current_str->id_val = Str::new();
+					WRITE_TO(symbol, "%S_CLASS", mr.exp[0]);
+					Enumerations::define(current_str->id_val, symbol, NULL, lst, S);
+					DISCARD_TEXT(symbol)
+				}
 			} else if ((Str::get_first_char(line) == '}') && (current_str)) {
 				current_str->typedef_ends = lst;
 				current_str = NULL;
@@ -73,9 +102,11 @@ takes care of it automatically.
 
 @ At this point we're reading a line within the structure's definition; for
 the sake of an illustrative example, let's suppose that line is:
-= (text)
+
+``` None
 	unsigned long long int *val;
-=
+```
+
 We need to extract the element name, `val`, and make a note of it.
 
 @<Work through a line in the structure definition@> =
@@ -143,9 +174,11 @@ before `struct S` in the tangled output.
 It's important to note that `struct S` merely having a member of type
 `struct *T` does not create a dependency. In the code below, because `%i`
 matches only identifier characters and `*` is not one of those, a line like
-= (text)
+
+``` None
     struct fruit *often_confused_with;
-=
+```
+
 will not trip the switch here.
 
 @<Work out which structs contain which others@> =
@@ -168,6 +201,30 @@ will not trip the switch here.
 		if ((str != current_str) &&
 			(Str::eq(used_structure, str->structure_name)))
 			ADD_TO_LINKED_LIST(str, language_type, current_str->incorporates);
+
+@h Classdefs.
+
+=
+void CLike::define_classes(OUTPUT_STREAM, tangle_target *target,
+	programming_language *lang, tangle_docket *docket, ls_web *W) {
+	language_type *current_str;
+	LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis::language_types_list(W))
+		if (current_str->classdef) {
+			WRITE("#define %S_CLASS %S\n", current_str->structure_name, current_str->id_val);
+		}
+}
+
+void CLike::define_classes2(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) {
+	language_type *current_str;
+	LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis::language_types_list(W))
+		if (current_str->classdef) {
+			if (current_str->allocation_size > 1)
+				WRITE("DECLARE_CLASS_ALLOCATED_IN_ARRAYS(%S, %d)\n",
+					current_str->structure_name, current_str->allocation_size);
+			else
+				WRITE("DECLARE_CLASS(%S)\n", current_str->structure_name);
+		}
+}
 
 @h Functions.
 This time, we will need to keep track of `#ifdef` and `#endif` pairs
@@ -215,9 +272,11 @@ void CLike::parse_functions(programming_language *self, ls_web *W) {
 	}
 
 @ So, then, we recognise a C function as being a line which takes the form
-= (text)
+
+``` None
 	type identifier(args...
-=
+```
+
 where we parse `type` only minimally. In InC (only), the identifier can
 contain namespace dividers written `::`. Function declarations, we will assume,
 always begin on column 1 of their source files, and we expect them to take
@@ -277,10 +336,10 @@ forms like `static long long int` will work.
 	for (int i=0; i<cc_sp; i++) fn->within_conditionals[i] = cc_stack[i];
 
 @ In some cases the function's declaration runs over several lines:
-= (text as code)
-	void World::Subjects::make_adj_const_domain(inference_subject *infs,|
-		instance *nc, property *prn) {|
-=		
+
+	void World::Subjects::make_adj_const_domain(inference_subject *infs,
+		instance *nc, property *prn) {
+
 Having read the first line, `arguments` would contain `inference_subject *infs,`
 and would thus be incomplete. We continue across subsequent lines until we
 reach an open brace `{`.
@@ -424,9 +483,26 @@ void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, language
 	IfdefTags::open_ifdefs(OUT, LiterateSource::par_of_line(str->structure_header_at));
 	LanguageMethods::insert_line_marker(OUT, self, str->structure_header_at);
 	for (ls_line *lst = str->structure_header_at; lst; lst = lst->next_line) {
-		WRITE("%S\n", lst->text);
 		lst->suppress_tangling = TRUE;
-		if (lst == str->typedef_ends) break;
+		if (lst == str->structure_header_at) {
+			if (str->classdef) {
+				WRITE("typedef struct %S {\n", str->structure_name);
+			} else {
+				WRITE("%S\n", lst->text);
+			}
+		} else if (lst == str->typedef_ends) {
+			if (str->classdef) {
+				if (str->allocation_size == 1)
+					WRITE("\tCLASS_DEFINITION\n} %S;\n", str->structure_name);
+				else
+					WRITE("} %S;\n", str->structure_name);
+			} else {
+				WRITE("%S\n", lst->text);
+			}
+			break;
+		} else {
+			WRITE("%S\n", lst->text);
+		}
 	}
 	IfdefTags::close_ifdefs(OUT, LiterateSource::par_of_line(str->structure_header_at));
 }
@@ -435,14 +511,16 @@ void CLike::tangle_structure(OUTPUT_STREAM, programming_language *self, language
 defined within some number of nested `#ifdef` or `#ifndef` directives, then
 we reproduce those around the predeclaration: except, as a special trick,
 if the line contains a particular comment. For example:
-= (text)
+
+``` None
 	#ifdef SOLARIS /* inweb: always predeclare */
-=
+```
+
 That exempts any functions inside this condition from meeting the condition
 in order to be predeclared. It's a trick used in the foundation module just
 a couple of times: the idea is that although a definition of the functions
-is given which only works under SOLARIS, an external piece of code will
-provide alternative function definitions which would work without SOLARIS.
+is given which only works under `SOLARIS`, an external piece of code will
+provide alternative function definitions which would work without `SOLARIS`.
 The functions therefore need predeclaration regardless, because they will
 exist either way.
 

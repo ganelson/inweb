@@ -17,7 +17,6 @@ Chapter 2: Memory, Streams and Collections
 "Creating objects in memory, and forming lists, hashes, and text streams."
 	Debugging Log
 	Memory
-	Foundation Classes
 	Locales
 	Streams
 	Writers and Loggers

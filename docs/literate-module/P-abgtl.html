@@ -59,18 +59,17 @@ of code to handle &quot;literate programs&quot;.</p>
 that is, which will include its code and be able to use it. As with any
 imported module,</p>
 <ul>
-<li>The contents page of the parent's web must identify and locate the
-module:</li>
-</ul>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Import: literate</span>
-</pre>
-<div class="lsmarkdown">
-<ul>
-<li>The parent must call <code>LiterateModule::start()</code> just after it starts up, and
+<li>
+<p>The contents page of the parent's web must identify and locate the
+module:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Import: literate
+</span></pre>
+</li>
+<li>
+<p>The parent must call <code>LiterateModule::start()</code> just after it starts up, and
 <code>LiterateModule::end()</code> just before it shuts down. (But just after, and just
-before, the corresponding calls to <a href="../foundation-module/index.html" class="internal">foundation</a>.)</li>
+before, the corresponding calls to <a href="../foundation-module/index.html" class="internal">foundation</a>.)</p>
+</li>
 </ul>
 </div>
 <div class="lsmarkdown">
@@ -124,32 +123,28 @@ then it can also produce errors, each stored as an <code>ls_error</code>.</p>
 </div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  To sum up, then, webs are stored in the following nine structures:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">ls_web</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">tree</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">least</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_module</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chapter</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">each</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="type-syntax">ls_section</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">each</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">exactly</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_unit</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">each</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="type-syntax">ls_paragraph</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">each</span><span class="plain-syntax"> </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chunk</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">where</span><span class="plain-syntax"> </span><span class="identifier-syntax">one</span><span class="plain-syntax"> </span><span class="identifier-syntax">chunk</span><span class="plain-syntax"> </span><span class="identifier-syntax">in</span><span class="plain-syntax"> </span><span class="identifier-syntax">the</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">may</span><span class="plain-syntax"> </span><span class="identifier-syntax">have</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_holon</span>
-<span class="plain-syntax">                            </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">every</span><span class="plain-syntax"> </span><span class="identifier-syntax">chunk</span><span class="plain-syntax"> </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="type-syntax">ls_line</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">and</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">list</span><span class="plain-syntax"> </span><span class="identifier-syntax">of</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="identifier-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">more</span><span class="plain-syntax"> </span><span class="type-syntax">ls_error</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ls_web
+		with tree of at least 1 ls_module
+		and list of 1 or more ls_chapter
+			each with list of 1 or more ls_section
+				each with exactly 1 ls_unit
+					each with list of 0 or more ls_paragraph
+						each with list of 1 or more ls_chunk
+							where one chunk in the list may have 1 ls_holon
+							and every chunk has a list of 1 or more ls_line
+					and a list of 0 or more ls_error
+</span></pre>
 <p>Note that a web must have at least one chapter, each chapter must have at
 least one section, each paragraph must have at least one chunk, and each
 chunk must have at least one line. The empty program would be stored as:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	ls_web
+		1 ls_module
+		1 ls_chapter
+			1 ls_section
+				1 ls_unit
+					with 0 ls_paragraph objects
+</span></pre>
 </div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="type-syntax">ls_web</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_module</span>
-<span class="plain-syntax">        </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_chapter</span>
-<span class="plain-syntax">            </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_section</span>
-<span class="plain-syntax">                </span><span class="constant-syntax">1</span><span class="plain-syntax"> </span><span class="type-syntax">ls_unit</span>
-<span class="plain-syntax">                    </span><span class="identifier-syntax">with</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> </span><span class="identifier-syntax">objects</span>
-</pre>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. </b>  The fundamental things we can do with a web, then, are:</p>
 <ul>
@@ -181,11 +176,11 @@ in order to provide convenient tangling features when tangling. See
 <p>Languages declaring themselves &quot;C-like&quot; have access to special tangling
 facilities, all implemented with non-ACME method calls: see <a href="3-cl.html" class="internal">C-Like Languages</a>.
 In particular, for coping with how <code>#ifdef</code> affects <code>#include</code> see
-<a href="3-cl.html#SP5" class="internal">CLike::additional_early_matter</a>; for predeclaration of functions and
-structs and <code>typedef</code>s, see <a href="3-cl.html#SP6" class="internal">CLike::additional_predeclarations</a>.</p>
+<a href="3-cl.html#SP6" class="internal">CLike::additional_early_matter</a>; for predeclaration of functions and
+structs and <code>typedef</code>s, see <a href="3-cl.html#SP7" class="internal">CLike::additional_predeclarations</a>.</p>
 <p>A special language calling itself &quot;InC&quot; gets even more: see <a href="3-is.html" class="internal">InC Support</a>, and
-in particular <a href="3-is.html#SP6" class="internal">text_literal</a> for text constants like <code>I&quot;banana&quot;</code>
-and <a href="3-is.html#SP3" class="internal">preform_nonterminal</a> for Preform grammar notation like
+in particular <a href="3-is.html#SP3_1_1" class="internal">text_literal</a> for text constants like <code>I&quot;banana&quot;</code>
+and <a href="3-is.html#SP2_1_2" class="internal">preform_nonterminal</a> for Preform grammar notation like
 <code>&lt;sentence-ending&gt;</code>. &quot;InC&quot; is basically a more convenient form of C, and
 is the language in which the foundation library is written.</p>
 </div>

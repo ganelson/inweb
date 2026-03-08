@@ -5,13 +5,17 @@ Locations of hypothetical or real directories in the filing system.
 @h About pathnames.
 We use the word "pathname" to mean a file-system location of a directory,
 and "filename" to mean a location of a file. For example:
-= (text)
+
+``` None
 	/Users/rblackmore/Documents/Fireball
-=
+```
+
 is a pathname, whereas
-= (text)
+
+``` None
 	/Users/rblackmore/Documents/Fireball/whoosh.aiff
-=
+```
+
 is a filename. All references to directory locations in the filing system will be
 held internally as `pathname` objects, and all references to file locations as
 `filename` objects. Once created, these are never destroyed or modified,
@@ -21,9 +25,11 @@ Note that a pathname may well be hypothetical, that is, it may well
 describe a directory which doesn't exist on disc.
 
 A full path is a linked list, but reverse-ordered: thus,
-= (text)
+
+``` None
 	/Users/rblackmore/Documents/
-=
+```
+
 would be represented as a pointer to the `pathname` for "Documents", which
 in turn points to one for "rblackmore", which in turn points to "/Users".
 Thus the root of the filing system is represented by the null pointer.
@@ -35,12 +41,11 @@ to begin with `FOLDER_SEPARATOR` to denote that it's at the root of the
 host file system.
 
 =
-typedef struct pathname {
+classdef pathname {
 	struct text_stream *intermediate;
 	struct pathname *pathname_of_parent;
 	int known_to_exist; /* corresponds to a directory in the filing system */
-	CLASS_DEFINITION
-} pathname;
+}
 
 @h Home directory.
 We get the path to the user's home directory from the environment variable
@@ -205,17 +210,23 @@ void Pathnames::writer_r(OUTPUT_STREAM, pathname *P, inchar32_t divider) {
 @h Relative pathnames.
 Occasionally we want to shorten a pathname relative to another one:
 for example,
-= (text)
+
+``` None
 	/Users/rblackmore/Documents/Fireball/tablature
-=
+```
+
 relative to
-= (text)
+
+``` None
 	/Users/rblackmore/Documents/
-=
+```
+
 would be
-= (text)
+
+``` None
 	Fireball/tablature
-=
+```
+
 If the two pathnames are the same, the relative pathname is the empty text,
 and so nothing is output.
 

@@ -8,11 +8,10 @@ The tree itself is really just a root node, which is initially null, so that
 a tree can be empty.
 
 =
-typedef struct heterogeneous_tree {
+classdef heterogeneous_tree {
 	struct tree_type *type;
 	struct tree_node *root;
-	CLASS_DEFINITION
-} heterogeneous_tree;
+}
 
 @ =
 heterogeneous_tree *Trees::new(tree_type *type) {
@@ -23,15 +22,14 @@ heterogeneous_tree *Trees::new(tree_type *type) {
 }
 
 @ =
-typedef struct tree_node {
+classdef tree_node {
 	struct heterogeneous_tree *owner;
 	struct tree_node_type *type;
 	struct general_pointer content;
 	struct tree_node *next;
 	struct tree_node *parent;
 	struct tree_node *child;
-	CLASS_DEFINITION
-} tree_node;
+}
 
 @ A node is created in limbo, removed from its tree, but it is still somehow
 owned by it.
@@ -71,11 +69,10 @@ type-unsafe structures, so we want to hedge them in with self-imposed
 constraints:
 
 =
-typedef struct tree_type {
+classdef tree_type {
 	struct text_stream *name;
 	int (*verify_root)(struct tree_node *); /* function to vet the root node */
-	CLASS_DEFINITION
-} tree_type;
+}
 
 @ =
 tree_type *Trees::new_type(text_stream *name, int (*verifier)(tree_node *)) {
@@ -89,12 +86,11 @@ tree_type *Trees::new_type(text_stream *name, int (*verifier)(tree_node *)) {
 they are re-verified by the `verify_children`.
 
 =
-typedef struct tree_node_type {
+classdef tree_node_type {
 	struct text_stream *node_type_name; /* text such as `I"INVOCATION"` */
 	int required_CLASS; /* if any; or negative for no restriction */
 	int (*verify_children)(struct tree_node *); /* function to vet the children */
-	CLASS_DEFINITION
-} tree_node_type;
+}
 
 @ =
 tree_node_type *Trees::new_node_type(text_stream *name, int req,

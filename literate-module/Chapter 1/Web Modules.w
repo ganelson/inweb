@@ -25,15 +25,14 @@ this is always `READING_WEB_MOM`, unless we're constructing makefiles.
 @e MAKEFILE_MODULE_MOM
 
 =
-typedef struct ls_module {
+classdef ls_module {
 	struct pathname *module_location;
 	struct text_stream *module_name; /* e.g., "(main)", or "foundation" */
 	struct linked_list *dependencies; /* of `ls_module`: which other modules does this need? */
 	struct text_stream *module_tag;
 	int origin_marker; /* one of the `*_MOM` values above */
 	struct linked_list *chapters; /* of `ls_chapter`: just the ones in this module */
-	CLASS_DEFINITION
-} ls_module;
+}
 
 @ =
 ls_module *WebModules::new(text_stream *name, pathname *at, int m) {
@@ -94,10 +93,9 @@ The following abstracts the idea of a place where modules might be found.
 (At one time there was going to be a more elaborate search hierarchy.)
 
 =
-typedef struct module_search {
+classdef module_search {
 	struct pathname *path_to_search;
-	CLASS_DEFINITION
-} module_search;
+}
 
 @ =
 module_search *default_module_search_path = NULL;

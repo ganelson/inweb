@@ -30,7 +30,7 @@ void TeXWeaving::render_TeX(weave_format *self, text_stream *OUT, heterogeneous_
 generic as possible, but with special features depending on `trs->TeX_form`.
 
 =
-typedef struct TeX_render_state {
+classdef TeX_render_state {
 	struct text_stream *OUT;
 	struct weave_order *wv;
 	int TeX_form;
@@ -465,12 +465,14 @@ void TeXWeaving::general_heading(text_stream *OUT, weave_order *wv,
 @ We want to have different heading styles for different weights, and TeX is
 horrible at using macro parameters as function arguments, so we don't want
 to pass the weight that way. Instead we use
-= (text)
+
+``` None
 	\weavesection
 	\weavesections
 	\weavesectionss
 	\weavesectionsss
-=
+```
+
 where the weight is the number of terminal `s`s, 0 to 3. (TeX macros,
 lamentably, are not allowed digits in their name.) In the cases 0 and 1, we
 also have variants `\nsweavesection` and `\nsweavesections` which are

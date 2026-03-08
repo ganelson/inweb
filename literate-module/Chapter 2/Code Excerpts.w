@@ -5,10 +5,9 @@ To manage excerpts of code which may have to be tangled or woven.
 @
 
 =
-typedef struct ls_code_excerpt {
+classdef ls_code_excerpt {
 	struct linked_list *splice_list; /* of `holon_splice` */
-	CLASS_DEFINITION
-} ls_code_excerpt;
+}
 
 ls_code_excerpt *CodeExcerpts::new(void) {
 	ls_code_excerpt *ex = CREATE(ls_code_excerpt);
@@ -36,14 +35,13 @@ of "splices", each containing a fragment of a line.
 @e COMMENT_LSHST
 
 =
-typedef struct holon_splice {
+classdef holon_splice in 100s {
 	int type; /* one of the `*_LSHST` constants */
 	struct ls_holon *expansion;
 	struct text_stream *texts[3];
 	struct markdown_item *comment_as_markdown;
 	struct ls_line *line;
-	CLASS_DEFINITION
-} holon_splice;
+}
 
 holon_splice *CodeExcerpts::new_splice(ls_code_excerpt *ex, ls_line *lst, int type) {
 	holon_splice *hs = CREATE(holon_splice);

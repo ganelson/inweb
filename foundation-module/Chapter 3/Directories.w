@@ -5,11 +5,10 @@ Scanning directories on the host filing system.
 @ All of this abstracts the code already found in the platform definitions.
 
 =
-typedef struct scan_directory {
+classdef scan_directory {
 	void *directory_handle;
 	char directory_name_written_out[4*MAX_FILENAME_LENGTH];
-	CLASS_DEFINITION
-} scan_directory;
+}
 
 @ The directory name going out has to be transcoded from flat Unicode to
 whatever the locale encoding is; the filenames coming back have to be

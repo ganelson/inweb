@@ -165,9 +165,8 @@ the following limitations currently exist:
 - InC can only be used literately, i.e., with Inweb. There is no freestanding
   "InC compiler". InC is tangled down to ANSI C, and the result can then be
   compiled with `clang` or `gcc`.
-- InC programs must be multi-file webs, not single-file.
-- They must all import the `foundation` module (included with Inweb).
-- They must be written in `InwebClassic` notation.
+- InC programs must import the `foundation` module (included with Inweb).
+- InC programs must be written in `InwebClassic` notation.
 
 With that said, InC is a stable design which has been used on a variety
 of tools by the Inform project for many years now. Anyone is welcome to use it.
@@ -215,6 +214,54 @@ open with a titling line. If it takes the form:
 must live in. For example:
 
 	[WebNotation::] Web Notations.
+
+-- -- --
+
+The `foundation` module provides a system for allocating structures in memory.
+Full details are best left to the `foundation` documentation, but briefly,
+to use this one must first `typedef` a suitable `struct`, then ensure it
+contains some members needed by the memory manager for book-keeping, and
+then create an enumerated ID to distinguish this memory block from others.
+
+This can indeed be done by hand:
+
+	@ Somewhat like so...
+
+	@e manual_CLASS
+	
+	=
+	DECLARE_CLASS(manual)
+	
+	typedef struct manual {
+		int x;
+		CLASS_DEFINITION
+	} manual;
+
+But that makes a lot of tiresome boilerplate code, so InC provides this
+abbreviation:
+
+	@ Somewhat like so...
+
+	=
+	classdef automatic {
+		int x;
+	}
+
+These are not really classes in the sense of an object-oriented programming
+language: the keyword `classdef` was chosen to emphasise that it's a concept
+which is as much `typedef struct` as class.
+
+The memory manager can be instructed to make slightly more lightweight objects
+which are allocated in bulk, for speed: that involves some trade-offs in how
+they can be used. The notation for this is:
+
+	classdef profuse in 1000s {
+		int y;
+	}
+
+The `in 1000s` means that the memory manager should allocate these in blocks
+of 1000 as needed. (Of course, this means that if 1006 are needed, 2000 will
+be allocated.)
 
 -- -- --
 

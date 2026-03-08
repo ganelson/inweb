@@ -60,17 +60,11 @@ function togglePopup(material_id) {
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. About pathnames.</b>  We use the word &quot;pathname&quot; to mean a file-system location of a directory,
 and &quot;filename&quot; to mean a location of a file. For example:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /</span><span class="identifier-syntax">Users</span><span class="plain-syntax">/</span><span class="identifier-syntax">rblackmore</span><span class="plain-syntax">/</span><span class="identifier-syntax">Documents</span><span class="plain-syntax">/</span><span class="identifier-syntax">Fireball</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	/Users/rblackmore/Documents/Fireball
+</span></pre>
 <p>is a pathname, whereas</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /</span><span class="identifier-syntax">Users</span><span class="plain-syntax">/</span><span class="identifier-syntax">rblackmore</span><span class="plain-syntax">/</span><span class="identifier-syntax">Documents</span><span class="plain-syntax">/</span><span class="identifier-syntax">Fireball</span><span class="plain-syntax">/</span><span class="identifier-syntax">whoosh</span><span class="plain-syntax">.</span><span class="identifier-syntax">aiff</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	/Users/rblackmore/Documents/Fireball/whoosh.aiff
+</span></pre>
 <p>is a filename. All references to directory locations in the filing system will be
 held internally as <code>pathname</code> objects, and all references to file locations as
 <code>filename</code> objects. Once created, these are never destroyed or modified,
@@ -78,11 +72,8 @@ so that it's safe to store a pointer to a pathname or filename anywhere.</p>
 <p>Note that a pathname may well be hypothetical, that is, it may well
 describe a directory which doesn't exist on disc.</p>
 <p>A full path is a linked list, but reverse-ordered: thus,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /</span><span class="identifier-syntax">Users</span><span class="plain-syntax">/</span><span class="identifier-syntax">rblackmore</span><span class="plain-syntax">/</span><span class="identifier-syntax">Documents</span><span class="plain-syntax">/</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	/Users/rblackmore/Documents/
+</span></pre>
 <p>would be represented as a pointer to the <code>pathname</code> for &quot;Documents&quot;, which
 in turn points to one for &quot;rblackmore&quot;, which in turn points to &quot;/Users&quot;.
 Thus the root of the filing system is represented by the null pointer.</p>
@@ -93,12 +84,11 @@ to begin with <code>FOLDER_SEPARATOR</code> to denote that it's at the root of t
 host file system.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pathname</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">pathname</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">intermediate</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pathname_of_parent</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">known_to_exist</span><span class="plain-syntax">; </span><span class="comment-syntax">/* corresponds to a directory in the filing system */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">pathname</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure pathname is accessed in 3/fln, 3/drc and here.</li></ul>
 <div class="lsmarkdown">
@@ -264,23 +254,14 @@ except possibly for an initial slash, so for example <code>paris/roubaix</code>,
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Relative pathnames.</b>  Occasionally we want to shorten a pathname relative to another one:
 for example,</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /</span><span class="identifier-syntax">Users</span><span class="plain-syntax">/</span><span class="identifier-syntax">rblackmore</span><span class="plain-syntax">/</span><span class="identifier-syntax">Documents</span><span class="plain-syntax">/</span><span class="identifier-syntax">Fireball</span><span class="plain-syntax">/</span><span class="identifier-syntax">tablature</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	/Users/rblackmore/Documents/Fireball/tablature
+</span></pre>
 <p>relative to</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    /</span><span class="identifier-syntax">Users</span><span class="plain-syntax">/</span><span class="identifier-syntax">rblackmore</span><span class="plain-syntax">/</span><span class="identifier-syntax">Documents</span><span class="plain-syntax">/</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	/Users/rblackmore/Documents/
+</span></pre>
 <p>would be</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Fireball</span><span class="plain-syntax">/</span><span class="identifier-syntax">tablature</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Fireball/tablature
+</span></pre>
 <p>If the two pathnames are the same, the relative pathname is the empty text,
 and so nothing is output.</p>
 <p>Note that this does not correctly handle symlinks, <code>.</code>, <code>..</code> and so on,

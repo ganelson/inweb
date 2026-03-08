@@ -83,7 +83,7 @@ specifies an ad-hoc syntax to apply to just that file, in which case the
 lines containing those syntax definitions are skipped.
 
 =
-typedef struct sfw_reader_state {
+classdef sfw_reader_state {
 	struct ls_web *W;
 
 	/* What we aim to find out: */

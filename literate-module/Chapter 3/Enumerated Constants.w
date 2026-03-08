@@ -11,15 +11,14 @@ Each set of constants begins at a given value (typically 0) and then
 increments sequentially in definition order.
 
 =
-typedef struct enumeration_set {
+classdef enumeration_set {
 	struct text_stream *postfix;
 	struct text_stream *stub;
 	int first_value;
 	int next_free_value;
 	struct ls_line *last_observed_at;
 	struct ls_section *last_observed_in;
-	CLASS_DEFINITION
-} enumeration_set;
+}
 
 @ There won't be enough sets to make a hash table worth the overhead, so
 compare all against all:

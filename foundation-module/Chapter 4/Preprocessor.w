@@ -9,9 +9,11 @@ it turns out to be useful for multiple applications in the Inform project, and
 saves us having to have dependencies on behemoths like the mighty `m4`.
 
 To use the preprocessor, call:
-= (text as InC)
-Preprocessor::preprocess(from, to, header, special_macros, specifics, encoding)
-=
+
+``` InC
+	Preprocessor::preprocess(from, to, header, special_macros, specifics, encoding)
+```
+
 where `from` and `to` are filenames, `header` is text to place at the top of
 the file (if any), `special_macros` is a `linked_list` of `preprocessor_macro`s
 set up with special meanings to the situation, and `specifics` is a general
@@ -469,11 +471,10 @@ artefact of the current scanning algorithm, which might some day change.
 @h Errors.
 
 =
-typedef struct preprocessor_error {
+classdef preprocessor_error {
 	struct text_stream *message;
 	struct text_file_position at;
-	CLASS_DEFINITION
-} preprocessor_error;
+}
 
 void Preprocessor::error(preprocessor_state *PPS, text_file_position *tfp, text_stream *text) {
 	if (PPS) {
@@ -504,11 +505,10 @@ int Preprocessor::acceptable_variable_name(text_stream *name) {
 @ Variables are all textual:
 
 =
-typedef struct preprocessor_variable {
+classdef preprocessor_variable {
 	struct text_stream *name;
 	struct text_stream *value;
-	CLASS_DEFINITION
-} preprocessor_variable;
+}
 
 text_stream *Preprocessor::read_variable(preprocessor_variable *var) {
 	if (var == NULL) internal_error("no such pp variable");
@@ -524,11 +524,10 @@ definition and another insider, that's two variables with a common name, not
 one variable belonging to two sets at once.
 
 =
-typedef struct preprocessor_variable_set {
+classdef preprocessor_variable_set {
 	struct linked_list *variables; /* of `preprocessor_variable` */
 	struct preprocessor_variable_set *outer;
-	CLASS_DEFINITION
-} preprocessor_variable_set;
+}
 
 preprocessor_variable_set *Preprocessor::new_variable_set(preprocessor_variable_set *outer) {
 	preprocessor_variable_set *set = CREATE(preprocessor_variable_set);
@@ -582,13 +581,14 @@ what to repeat occupies multiple lines, but to `repeat-span` if only one.
 
 For example, the first `repeat` loop here uses the macros `repeat-block` and
 `end-repeat-block`, and the second uses `repeat-span` and `end-repeat-span`.
-= (text)
+
+``` None
 	{repeat with SEA in Black, Caspian}
 	Welcome to the {SEA} Sea.
 	{end-repeat}
 	...
 	Seas available:{repeat with SEA in Sargasso, Libyan} {SEA} Sea;{end-repeat}
-=
+```
 
 @ There are (for now, anyway) hard but harmlessly large limits on the number of
 parameters and the length of a macro:
@@ -597,7 +597,7 @@ parameters and the length of a macro:
 @d MAX_PP_MACRO_LINES 128
 
 =
-typedef struct preprocessor_macro {
+classdef preprocessor_macro {
 	/* syntax */
 	struct text_stream *identifier;
 	struct preprocessor_macro_parameter *parameters[MAX_PP_MACRO_PARAMETERS];
@@ -617,16 +617,13 @@ typedef struct preprocessor_macro {
 	/* textual behaviour */
 	int suppress_newline_after_expanding;
 	int suppress_whitespace_when_expanding;
+}
 
-	CLASS_DEFINITION
-} preprocessor_macro;
-
-typedef struct preprocessor_macro_parameter {
+classdef preprocessor_macro_parameter {
 	struct text_stream *name;
 	struct text_stream *definition_token;
 	int optional;
-	CLASS_DEFINITION
-} preprocessor_macro_parameter;
+}
 
 @ The following creates a new macro and adds it to the list `L`. By default, it
 has an empty definition (i.e., no lines), but may have a meaning provided by its

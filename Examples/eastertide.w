@@ -4,16 +4,16 @@ Language: InC
 Notation: InwebClassic
 Import: foundation
 
-@ This utility, or perhaps futility, is a minimal example of the use of
-the //foundation// library, which comes supplied with inweb for the benefit
-of C programs wanting to use it. We will do everything in an unnecessarily
-fancy way, just to give the tires a kick.
+@ This utility might better be called a futility. It is a minimal example of the
+use of the InC dialect of C and of the //foundation// library, which comes
+supplied with //inweb// for the benefit of programs wanting to use it. We will
+do everything in an unnecessarily fancy way, just to give the tires a kick.
 
 Any program using Foundation must define this constant:
 
 @d PROGRAM_NAME "eastertide"
 
-@ The `main` routine must start and end Foundation, and is not allowed to
+@ The `main` routine must start and end //foundation//, and is not allowed to
 do much after that; but it is allowed to ask if error messages were generated,
 so that it can return conventional Unix return values 0 (okay) or 1 (not okay).
 
@@ -147,7 +147,7 @@ void calendar_line(text_stream *line, text_file_position *tfp, void *state) {
 }
 
 @ And with that done, we can process a request for a year, which comes from
-either the command lihe (in which case `tfp` here is null), or from the
+either the command lihe (in which case `tfp` here is `NULL`), or from the
 calendar file (in which case it remembers the filename and line number).
 
 =
@@ -172,25 +172,21 @@ void request(text_stream *year, text_file_position *tfp) {
 
 @ Now it's time to actually store a request. There are many simpler ways to
 do this, but we want to demonstrate Foundation's objects system in action,
-so we'll wrap each year supplied in an object. First, we have to define an
-ID constant for this new class of object, and use a macro which causes
-Foundation to generate the necessary handling functions:
-
-@e year_request_CLASS
-
-=
-DECLARE_CLASS(year_request)
-
-@ Now we should define the rather unnecessary structure itself, and then
-a sort of constructor function. We won't need a destructor: we will never
-destroy the years.
+so we'll wrap each year in a `classdef`, which is really very similar to a
+`typedef struct` but with some book-keeping added for the memory manager's sake.
+(`classdef` is a feature of InC not found in regular C, but there is much less
+to it than meets the eye: it handles memory management and nothing more.)
 
 =
-typedef struct year_request {
+classdef year_request {
 	int year;
-	CLASS_DEFINITION
-} year_request;
+}
 
+@ The macro `CREATE(year_request)` gets the memory manager to return a pointer
+to a newly-allocated `year_request` structure, whose contents must then be
+initialised:
+
+=
 year_request *new_year(int Y) {
 	year_request *YR = CREATE(year_request);
 	YR->year = Y;

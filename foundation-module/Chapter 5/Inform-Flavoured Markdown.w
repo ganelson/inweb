@@ -70,11 +70,13 @@ int InformFlavouredMarkdown::render_errors(markdown_feature *feature, text_strea
 
 @h Old-style Indoc headings.
 Indoc used to use a truly odd style for headings:
-= (text)
+
+``` None
 	[Chapter: Things] Descriptions
 
 	[x] Rooms and the map
-=
+```
+
 The second is a section heading, but the first is a sort of duplex containing
 both a chapter heading and a section heading, and thus needs to be expanded
 into two Markdown items, not one.
@@ -119,10 +121,12 @@ void InformFlavouredMarkdown::OIH_intervene_after_Phase_I(markdown_feature *feat
 
 @h Descriptive headings.
 Markdown paragraphs which take the following shapes are to be headings:
-= (text)
+
+``` None
 	Chapter: Survey and Prospecting
 	Section: Black Gold
-=
+```
+
 where in each case the colon can equally be a hyphen, and with optional
 space either side. We treat the Chapter headings as level 1, and Sections
 as level 2.
@@ -312,9 +316,11 @@ directory-format extension documentation or Indoc manuals.
 	Markdown::new_container_block_type(INFORM_EXAMPLE_HEADING_MIT, I"INFORM_EXAMPLE_HEADING");
 
 @ The first thing we need to do is to spot the heading, which looks like this:
-= (text)
+
+``` None
 	Example: *** Gelignite Anderson - A Tale of the Texas Oilmen
-=
+```
+
 where the colon can equally be a hyphen, and with optional space either side.
 
 =
@@ -413,7 +419,7 @@ void InformFlavouredMarkdown::find_e(markdown_item *md, int eg, markdown_item **
 from 1, 2, ...; letters are unique from A, B, C, ...
 
 =
-typedef struct IFM_example {
+classdef IFM_example {
 	struct text_stream *name;
 	struct text_stream *description;
 	struct markdown_item *header;
@@ -428,8 +434,7 @@ typedef struct IFM_example {
 	struct text_stream *URL;
 	struct text_stream *ex_index;
 	struct text_stream *ex_subtitle;
-	CLASS_DEFINITION
-} IFM_example;
+}
 
 IFM_example *InformFlavouredMarkdown::new_example(text_stream *title, text_stream *desc,
 	int star_count, int ecount) {

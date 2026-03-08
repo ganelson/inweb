@@ -55,12 +55,11 @@ add a home-brew feature, or `MarkdownVariations::remove_feature` to take away
 one of the CommonMark ones.
 
 =
-typedef struct markdown_variation {
+classdef markdown_variation {
 	struct text_stream *name;
 	int active_built_in_features[NO_DEFINED_MARKDOWNFEATURE_VALUES];
 	struct method_set *methods;
-	CLASS_DEFINITION
-} markdown_variation;
+}
 
 markdown_variation *MarkdownVariations::new(text_stream *name) {
 	markdown_variation *variation = CREATE(markdown_variation);
@@ -89,13 +88,11 @@ void MarkdownVariations::copy_features_of(markdown_variation *to, markdown_varia
 can either support it or not.
 
 =
-typedef struct markdown_feature {
+classdef markdown_feature {
 	struct text_stream *name;
 	int feature_ID;
 	struct method_set *methods;
-	CLASS_DEFINITION
-} markdown_feature;
-
+}
 
 markdown_feature *MarkdownVariations::new_feature(text_stream *name, int id) {
 	markdown_feature *feature = CREATE(markdown_feature);

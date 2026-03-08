@@ -39,7 +39,7 @@ int ReservedWords::hash_code_from_word(text_stream *text) {
 @d HASH_SAFETY_CODE 0x31415927
 
 =
-typedef struct hash_table {
+classdef hash_table {
 	struct linked_list *analysis_hash[HASH_TAB_SIZE]; /* of `hash_table_entry` */
 	int safety_code; /* when we start up, array's contents are undefined, so... */
 } hash_table;
@@ -52,14 +52,13 @@ void ReservedWords::initialise_hash_table(hash_table *HT) {
 @ Where we define:
 
 =
-typedef struct hash_table_entry {
+classdef hash_table_entry {
 	text_stream *hash_key;
 	int language_reserved_word; /* in the language currently being woven, that is */
 	struct linked_list *usages; /* of `hash_table_entry_usage` */
 	struct ls_line *definition_line; /* or null, if it's not a constant, function or type name */
 	struct language_function *as_function; /* for function names only */
-	CLASS_DEFINITION
-} hash_table_entry;
+}
 
 @ A single routine is used both to interrogate the hash and to lodge values
 in it, as usual with symbols tables. For example, the code to handle C-like

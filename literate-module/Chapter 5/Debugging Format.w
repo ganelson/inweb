@@ -15,7 +15,7 @@ void DebuggingWeaving::create(void) {
 For documentation, see "Weave Fornats".
 
 =
-typedef struct debugging_render_state {
+classdef debugging_render_state {
 	struct text_stream *OUT;
 	struct weave_order *wv;
 } debugging_render_state;

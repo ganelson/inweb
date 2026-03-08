@@ -23,15 +23,18 @@ void Painter::reset_syntax_colouring(programming_language *pl) {
 @ As we begin, the text to colour is in `matter`, while `colouring` is an
 equal-length text where each character represents the colour of its
 corresponding character in `matter`. For example, we might start as:
-= (text as PainterOutput)
+
+``` PainterOutput
 	int x = 55;
 	ppppppppppp
-=
+```
+
 with every character having `PLAIN_COLOUR`, but end up with:
-= (text as PainterOutput)
+
+``` PainterOutput
 	int x = 55;
 	rrrpipppnnp
-=
+```
 
 @ So we begin by defining some colours. Note that there are two pseudo-colours
 here as well (`UNQUOTED_COLOUR` and `NOT_A_COLOUR`), but the rest might all be
@@ -56,12 +59,11 @@ for convenient debugging, as in examples like `rrrpipppnnp` above.
 @d NOT_A_COLOUR         ' '
 
 =
-typedef struct custom_colour {
+classdef custom_colour {
 	struct text_stream *name;
 	inchar32_t value;
 	inchar32_t like_this;
-	CLASS_DEFINITION
-} custom_colour;
+}
 
 custom_colour *Painter::custom(text_stream *T, inchar32_t like, linked_list *L) {
 	custom_colour *cc = CREATE(custom_colour);

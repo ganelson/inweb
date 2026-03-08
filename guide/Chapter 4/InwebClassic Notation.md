@@ -1,5 +1,18 @@
 # InwebClassic Notation
 
+Despite first appearances — when it seems full of mysterious `@` and `=` signs —
+`InwebClassic` is quite similar to the `MarkdownCode` notation used in the rest
+of this guide. The differences are:
+
+- Paragraph boundaries are explicitly marked with `@` or `@h`.
+- Code boundaries are explicitly marked with `=`.
+- In C-like languages, definitions and enumerations can be made with `@d` and `@e`.
+- Commentary has additional notations for embedding video, carousels, and such.
+
+`InwebClassic` is a little heavier on the eye, then, but reads easily enough
+with practice, and does have some advantages. The source code of Inweb is
+itself written in `InwebClassic` notation.
+
 ## Example
 
 Here is the same program used as an example in //A Little Literate Programming//,
@@ -8,8 +21,7 @@ notation. The first thing to notice is that there are `@` marker signs scattered
 at various line-beginnings throughout, which divide the web into paragraphs: when
 using `MarkdownCode`, Inweb deduces paragraph boundaries, but here we write them
 explicitly. Similarly, the dividing point between commentary and code is written
-explicitly with `=` markers. Otherwise, though, the two notations are mostly
-the same, as we'll see.
+explicitly with `=` markers.
 
 The fact that paragraphs begin at `@` markers open up a possibility not found
 in `MarkdownCode`: there can be lines at the start of a section in "limbo".
@@ -46,7 +58,7 @@ is commentary.
 Once again, the commentary itself uses Markdown notation, so we see the familiar
 backticks for code snippets, for example.
 
-We now pass to some code. This is a top-level holon, indicated by an equals
+Now for some code. The following is a top-level holon, indicated by an equals
 sign `=` in the first column of a line:
 
 	=
@@ -219,38 +231,6 @@ three possible segments:
 
 ## Commentary syntax
 
-As noted above, commentary follows Markdown syntax. So for example a quotation
-can be made using leading `>` signs:
-
-	> You sit on the veranda drinking tea and your ducklings swim on the pond,
-	> and everything smells good... and there are gooseberries. (Anton Chekhov)
-
-But there are additional syntaxes for inserting displayed material or gadgets.
-In regular Markdown, this would simply be indented:
-
-	= (text)
-	This is some plain text being quoted.
-	=
-
-Note that it begins and ends with `=` markers, but that these do not end the
-commentary section. The request for "text" can be varied:
-
-	= (text as code)
-
-	= (text as LANGUAGE)
-
-Text can also be drawn from an external file, in which case there are no
-subsequent lines of textual content, of course, and no end marker:
-
-	= (text from FILE)
-
-	= (text from FILE as code)
-
-	= (text from FILE as LANGUAGE)
-
-And the word `text` can be prefaced with either or both of the keywords
-`hyperlinked` and `undisplayed`.
-
 A similar notation can be used to include a variety of gadgets into the
 commentary segment of a paragraph. These all use the `=` marker, but with
 different bracketed explanations. Some of these are stand-alone, and are
@@ -282,6 +262,19 @@ assuming it has one. (Single-file webs cannot use this feature.)
 
 	= (html fireworks.html)
 
+Text can also be drawn from an external file:
+
+	= (text from FILE)
+
+	= (text from FILE as code)
+
+	= (text from FILE as LANGUAGE)
+
+And the word `text` can be prefaced with either or both of the keywords
+`hyperlinked` and `undisplayed`. The note `as code` means to syntax-colour
+the material with the conventions of the language used by the program in
+the current web; `as LANGUAGE` says to use that language instead.
+
 Similarly, we can have downloads:
 
 	= (download alice.crt "certificate file")
@@ -289,6 +282,58 @@ Similarly, we can have downloads:
 The file to download, in this case `alice.crt`, must be placed in a `Downloads`
 subdirectory of the web. The explanatory text — usually just an indication
 of what sort of file this is — is optional.
+
+A carousel is a slide-show of (usually but not always) figures; there's a
+set of slides with captions, only one of which is visible at a time.
+
+	= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+	![The Royal Albert Hall at night.](rah.jpg)
+	= (carousel "Brighton Beach")
+	![Brighton beach by day.](brighton.jpg)
+	= (figure brighton.jpg)
+	![Roman amphitheatre in a bay.](pula.jpg)
+	= (carousel "St Mark's Basilica, Venice")
+	![St Mark's Basilica.](venice.jpg)
+	= (carousel end)
+
+That carousel contained only figures, but almost any material can go into the
+slides, paragraph breaks excepted. For example:
+
+	= (carousel "Stage 1 - Raw tree" above)
+	``` BoxArt
+		ROOT ---> DOCUMENT
+	```
+	= (carousel "Stage 2 - Developed tree" above)
+	``` BoxArt
+		ROOT ---> DOCUMENT
+					|
+				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+	```
+	= (carousel "Stage 3 - Completed tree" above)
+	``` BoxArt
+		ROOT ---> DOCUMENT
+					|
+				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+					|            |            |
+				  text 1       text 2       text 3  ...
+	```
+	= (carousel end)
+
+This carousel has differently placed captions, too: that's because the
+slide lines were typed as:
+
+	= (carousel "Stage 2 - Developed tree" above)
+
+and the like. By default, a caption overlaps slightly with the content; but
+it can also be `above` or `below`. A slide can also have no caption at all:
+
+	= (carousel)
+	![A faceless figure.](anonymous.jpg)
+	= (carousel)
+	![A figure with back turned.](furtive.jpg)
+	= (carousel end)
+
+## Mildly deprecated syntaxes
 
 For reasons going back to earlier versions of Inweb, the notation also provides
 a way to impose images:
@@ -321,52 +366,59 @@ Markdown just as easily:
 That is, the same conventions used for images in `MarkdownCode` work just
 as well here.
 
-A carousel is a slide-show of (usually but not always) figures; there's a
-set of slides with captions, only one of which is visible at a time.
+Similarly, Inweb historically provided this syntax:
 
-	= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
-	= (figure rah.jpg)
-	= (carousel "Brighton Beach")
-	= (figure brighton.jpg)
-	= (carousel "Roman Amphitheatre, Pula")
-	= (figure pula.jpg)
-	= (carousel "St Mark's Basilica, Venice")
-	= (figure venice.jpg)
-	= (carousel end)
+	>> You sit on the veranda drinking tea and your ducklings swim on the pond,
+	and everything smells good... and there are gooseberries. (Anton Chekhov)
 
-That carousel contained only figures, but almost any material can go into the
-slides, paragraph breaks excepted. For example:
+for a block quotation; but the more standard Markdown syntax should now be
+used, with leading `>` signs on each line:
 
-	= (carousel "Stage 1 - Raw tree" above)
-	= (text as BoxArt)
-		ROOT ---> DOCUMENT
+	> You sit on the veranda drinking tea and your ducklings swim on the pond,
+	> and everything smells good... and there are gooseberries. (Anton Chekhov)
+
+Similarly, there are some now-redundant syntaxes for incorporating blocks
+of quoted code which are not part of the program. This:
+
+	Consider the following code sample:
+
+	= (text)
+	int whatever(int x, char *y) {
+	}
 	=
-	= (carousel "Stage 2 - Developed tree" above)
-	= (text as BoxArt)
-		ROOT ---> DOCUMENT
-					|
-				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+
+is equivalent to an indented Markdown code extract, like so:
+
+	Consider the following code sample:
+
+		int whatever(int x, char *y) {
+		}
+
+or equally to a fenced Markdown code extract, like so:
+
+	Consider the following code sample:
+
+	```
+	int whatever(int x, char *y) {
+	}
+	```
+
+The material in the quotation is syntax-coloured following the conventions
+of the language used in the program of the current web. Those can be overridden
+by specifying a language with a fenced Markdown extract, thus:
+
+	Consider the following code sample:
+
+	``` ConsoleText
+    $ inweb tangle countsort.py.md -to unexpected.py
+    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'
+	```
+
+This is equivalent to the older notation:
+
+	Consider the following code sample:
+
+	= (text as ConsoleText)
+    $ inweb tangle countsort.py.md -to unexpected.py
+    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'
 	=
-	= (carousel "Stage 3 - Completed tree" above)
-	= (text as BoxArt)
-		ROOT ---> DOCUMENT
-					|
-				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
-					|            |            |
-				  text 1       text 2       text 3  ...
-	=
-	= (carousel end)
-
-This carousel has differently placed captions, too: that's because the
-slide lines were typed as:
-
-	= (carousel "Stage 2 - Developed tree" above)
-
-and the like. By default, a caption overlaps slightly with the content; but
-it can also be `above` or `below`. A slide can also have no caption at all:
-
-	= (carousel)
-	= (figure anonymous.jpg)
-	= (carousel)
-	= (figure furtive.jpg)
-	= (carousel end)

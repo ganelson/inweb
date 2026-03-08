@@ -17,7 +17,7 @@ During any tangle, a collection of settings is held in an instance of the
 following:
 
 =
-typedef struct tangle_docket {
+classdef tangle_docket {
 	void (*command_callback)(struct text_stream *, struct text_stream *,
 		struct text_stream *, struct tangle_docket *);
 	void (*bplus_callback)(struct text_stream *, struct tangle_docket *);
@@ -31,11 +31,10 @@ typedef struct tangle_docket {
 	struct linked_list *external_files; /* of `tangle_external_file` */
 } tangle_docket;
 
-typedef struct tangle_external_file {
+classdef tangle_external_file {
 	struct filename *fn;
 	struct text_stream stream;
-	CLASS_DEFINITION
-} tangle_external_file;
+}
 
 @ The idea here is that a docket contains optional callback functions to
 deal with situations arising during the tangle. In each case they can be
@@ -242,6 +241,7 @@ void Tangler::tangle_constants(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) 
 				LanguageMethods::close_ifdef(OUT, language, L_chunk->symbol_defined, FALSE);
 			}
 	Enumerations::define_extents(OUT, target, language, docket);
+	CLike::define_classes(OUT, target, language, docket, W);
 	LanguageMethods::additional_predeclarations(OUT, language, docket, W);
 }
 
@@ -302,6 +302,9 @@ void Tangler::tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu,
 		if ((lsu->context) && (lsu->context->definitions_chunk) &&
 			(lsu->context->definitions_chunk->owner == par) && (segment == MAIN_TANGLE_SEGMENT))
 			Tangler::tangle_constants(OUT, docket, lsu->context); 
+		if ((lsu->context) && (lsu->context->classes_chunk) &&
+			(lsu->context->classes_chunk->owner == par) && (segment == MAIN_TANGLE_SEGMENT))
+			CLike::define_classes2(OUT, docket, lsu->context); 
 		if ((par->holon) && (par->holon->top_level) && (par->holon->addendum_to == NULL)) {
 			text_stream *TO = OUT;
 			text_stream *N = Holons::external_filename(par->holon);
@@ -439,14 +442,14 @@ void Tangler::tangle_line(OUTPUT_STREAM, ls_line *lst, tangle_docket *docket) {
 	Tangler::tangle_line_marker(OUT, hs->line, docket);
 
 @ This is a similar matter, except that it expands bibliographic data:
-= (text)
+
 	printf("This is build [[Build Number]].\n");
-=
+
 takes the bibliographic data for "Build Number" (as set on the web's contents
 page) and substitutes that, so that we end up with (say)
-= (text as C)
+
 	printf("This is build 5Q47.\n");
-=
+
 In some languages there are also special expansions (for example, in
 InC `[[nonterminals]]` has a special meaning).
 

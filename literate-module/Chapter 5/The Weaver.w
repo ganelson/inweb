@@ -128,7 +128,7 @@ We can now begin on a clean page, by initialising the state of the weaver:
 @e FOOTNOTES_MATERIAL	   /* footnote texts for a paragraph */
 
 =
-typedef struct weaver_state {
+classdef weaver_state {
 	int kind_of_material; /* one of the enumerated `*_MATERIAL` constants above */
 	int line_break_pending; /* insert a line break before the next woven line? */
 	int next_heading_without_vertical_skip;

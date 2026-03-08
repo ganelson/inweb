@@ -6,22 +6,19 @@ Annotations to a LP tree to accommodate weaving.
 LP source trees to enable weaving.
 
 =
-typedef struct ls_web_weaving_details {
+classdef ls_web_weaving_details {
 	struct ebook *as_ebook; /* when being woven to an ebook */
 	struct pathname *redirect_weaves_to; /* ditto */
-	CLASS_DEFINITION
-} ls_web_weaving_details;
+}
 
-typedef struct ls_chapter_weaving_details {
+classdef ls_chapter_weaving_details {
 	struct weave_order *ch_weave; /* `NULL` unless this chapter produces a weave of its own */
-	CLASS_DEFINITION
-} ls_chapter_weaving_details;
+}
 
-typedef struct ls_section_weaving_details {
+classdef ls_section_weaving_details {
 	struct weave_order *sect_weave; /* `NULL` unless this section produces a weave of its own */
 	struct filename *sect_weave_to; /* `NULL` unless some special choice has been made */
-	CLASS_DEFINITION
-} ls_section_weaving_details;
+}
 
 @
 

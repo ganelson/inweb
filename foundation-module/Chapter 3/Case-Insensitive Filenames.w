@@ -162,9 +162,11 @@ We use six strings to hold full or partial pathnames.
 	if (length < 1) { errno = ENOENT; return NULL; }
 
 @ And here we break up a pathname like
-= (text)
+
+``` None
 	/Users/bobama/Library/Inform/Extensions/Hillary Clinton/Health Care.i7x
-=
+```
+
 into three components:
 
 - `topdirpath` is `/Users/bobama/Library/Inform/Extensions`, and its casing is correct.

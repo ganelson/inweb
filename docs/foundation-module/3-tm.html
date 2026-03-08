@@ -182,7 +182,7 @@ the <code>clock()</code> (i.e., how much CPU time the current process has taken)
 than from the actual time of day.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">stopwatch_timer</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">stopwatch_timer</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">running</span><span class="plain-syntax">; </span><span class="comment-syntax">/* set if this has been started but not stopped */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">event</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">clock_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">start_time</span><span class="plain-syntax">;</span>
@@ -190,8 +190,7 @@ than from the actual time of day.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">time_taken</span><span class="plain-syntax">; </span><span class="comment-syntax">/* measured in centiseconds of CPU time */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_chronological</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>stopwatch_timer</code> */</span>
 <span class="plain-syntax">    </span><span class="type-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">stages_sorted</span><span class="plain-syntax">; </span><span class="comment-syntax">/* of <code>stopwatch_timer</code> */</span>
-<span class="plain-syntax">    </span><span class="constant-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">stopwatch_timer</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure stopwatch_timer is accessed in 4/fsm and here.</li></ul>
 <div class="lsmarkdown">

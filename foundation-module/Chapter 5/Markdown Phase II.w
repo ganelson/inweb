@@ -31,7 +31,8 @@ nested, the result is a further tree, using a whole lot of new items never
 generated in Phase I.
 
 To recap the syntaxes we're looking for:
-= (text)
+
+``` None
 	This is a line of plain copy.
 	This one has `a backtick string`.
 	This one an autolink, <stanley.gibbons@heaven.org>, in email form.
@@ -40,7 +41,7 @@ To recap the syntaxes we're looking for:
 	This one depicts ![the Blue Mauritius](https://upload.wikimedia.org/wikipedia/commons/8/8e/1847_BothPost_Office_Jakubek.jpg).
 	This one uses **strong** and *weak* emphasis.
 	This one also uses __strong__ and _weak_ emphasis.
-=
+```
 
 Every inline string becomes a subtree under a `MATERIAL_MIT` item. We then
 proceed in three stages: make the "chain", which involves finding backtick
@@ -870,14 +871,18 @@ int MDInlineParser::extended_autolink_trailing_punctuation_char(inchar32_t c) {
 Well, so now we come to the middle-precedence items: links and images. These
 have equal precedence, so they ought to be read from left to right, but there's
 a twist: a link is not valid if its linked material contains another link.
-= (text)
+
+``` None
 	This [looks like [a link within a link](somewhere.html)](nowhere.html).
-=
+```
+
 results in only the inner link being processed as such. That restriction
 does not hold for images, so this is all legal:
-= (text)
+
+``` None
 	This ![picture of [an unperforated Malaya strip](malaya.html)](strip.jpg).
-=
+```
+
 Indeed, image notations can contain other image notations. Of course, that
 does no good, because rendering uses the textual part of an image as its `"alt"`
 text, which is not allowed to contain tags, only plain text. But syntactically
@@ -1542,14 +1547,13 @@ we can pretty safely keep that number small.
 @d MAX_MD_EMPHASIS_DELIMITERS 10
 
 =
-typedef struct md_emphasis_delimiter {
+classdef md_emphasis_delimiter in 1000s {
 	struct md_charpos pos; /* first character in the run */
 	int width;             /* for example, 7 for a run of seven asterisks */
 	int type;              /* 1 for asterisks, -1 for underscores, 0 for tildes */
 	int can_open;          /* result of `MDInlineParser::can_open_emphasis` on it */
 	int can_close;         /* result of `MDInlineParser::can_close_emphasis` on it */
-	CLASS_DEFINITION
-} md_emphasis_delimiter;
+}
 
 @<Find the possible emphasis delimiters@> =
 	int open_count[3] = { 0, 0, 0 }, close_count[3] = { 0, 0, 0 }, both_count[3] = { 0, 0, 0 };
@@ -1710,12 +1714,13 @@ this must be read as one of the various ways to add 1s and 2s to make 5.
 CommonMark rule 13 reads "The number of nestings should be minimized.", so we
 must use all 2s except for the 1 left over. Rule 14 says that left-over 1 must
 be outermost. So this would give us:
-= (text)
+
+``` None
 	EMPHASIS_MIT  <--- this is em_top
 		STRONG_MIT
 			STRONG_MIT  <--- this is em_bottom
 				...the actual content being emphasised
-=
+```
 
 @<Make the chain of emphasis items from top to bottom@> =
 	if (OD->type == 0) {

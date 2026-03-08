@@ -50,7 +50,7 @@ maximum, but it doesn't seem worth it.
 @d MAX_MARKDOWN_CONTAINER_DEPTH 128 /* human users rarely exceed 2 */
 
 =
-typedef struct md_doc_state {
+classdef md_doc_state {
 	struct markdown_variation *variation;
 	struct markdown_item *tree_head;
 	struct md_links_dictionary *link_references;
@@ -70,9 +70,7 @@ typedef struct md_doc_state {
 	struct md_fencing_data fencing;
 
 	int HTML_end_condition;
-
-	CLASS_DEFINITION
-} md_doc_state;
+}
 
 md_doc_state *MDBlockParser::initialise(markdown_variation *variation,
 	markdown_item *head, md_links_dictionary *dict) {
@@ -204,11 +202,13 @@ void MDBlockParser::clear_HTML_data(md_doc_state *state) {
 @h Markers.
 Markers can survive from one line to the next, and indeed this is essential.
 Consider the sequence
-= (text)
+
+``` None
 	* Victorian stamps
 	  - Penny Black
 	* Edwardian stamps
-=
+```
+
 Three positional markers are obvious in this text, but in fact there's a fourth
 implicit one. The line `  - Penny Black` implicitly marks itself as being a subentry
 of the outer entry, as if a ghostly asterisk were hiding behind the opening spacing.
@@ -217,10 +217,11 @@ but flagging it as `continues_from_earlier_line`.
 
 Note that block quote markers are never flagged as continuing, because they work
 differently: instead of being implicitly continued, block quotes are explicitly so.
-= (text)
+
+``` None
 	> This is all part of
 	> the same block quote.
-=
+```
 
 The `blank_counts` keeps track of how many blank lines follow, and is needed only
 because of the special rule that a list item cannot begin with two blank lines.
@@ -251,11 +252,13 @@ void MDBlockParser::clear_marker(positional_marker *marker) {
 
 @ Ordinarily, we can parse markers to our heart's content, or at least up to
 `MAX_MARKDOWN_CONTAINER_DEPTH` of them. But sometimes we mustn't. Consider:
-= (text)
+
+``` None
 	```
 	> * 1) Whatever
 	```
-=
+```
+
 This is a fenced code block, so the tantalising string of potential markers,
 `> * 1)`, is in fact part of the code being fenced. We need to prevent that,
 so during the parsing of lines in such a block, the following limit is
@@ -484,10 +487,12 @@ int MDBlockParser::parse_positional_markers(md_doc_state *state, tabbed_string_i
 }
 
 @ Suppose we see these two lines in succession:
-= (text)
+
+``` None
 	2)   This is list entry two.
 	     It continues here.
-=
+```
+
 The second line implies a continuation of the first because of the indentation
 by five spaces, which is the `width` recorded in marker 1 (i.e., the `2)`)
 recorded on line 1.
@@ -584,11 +589,13 @@ black width, in the second case it is the black width plus 1.
 @ Ordered list markers are allowed to interrupt a paragraph, but only if the
 number used in them is 1, so that there's some evidence the author intended a
 list and hasn't simply written something like:
-= (text)
+
+``` None
 	The Royal Philatelic Society London was founded on 10 April
 	1869. Permission to use the prefix "Royal" was granted by King
 	Edward VII in November 1906.
-=
+```
+
 where we don't want to parse the `1869.` as beginning a list with first
 entry "Permission to use...".
 
@@ -781,12 +788,14 @@ int MDBlockParser::container_will_change(md_doc_state *state) {
 So, now we're off to the races. Unsurprisingly, we work from left to right.
 We divide the line into four sections: left margin, positional markers,
 intervening white space, and content. For example:
-= (text)
+
+``` None
 	  -  21)   Thomas Keay Tapling (1855-1891) was an English politician.
 	mmpppppppppcccccccccccccccccccccccccccc
 	              He played first-class cricket and was also an eminent philatelist
 	mmpppppppppwwwccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-=
+```
+
 Note that the intervening white space, if any, is the bonus white space beyond
 any which is used to imply positional markers.
 
@@ -850,12 +859,14 @@ void MDBlockParser::add_to_document(md_doc_state *state, text_stream *line) {
 
 @ If the line contains only white space after the positional markers, that
 does not necessarily mean there is no content. Consider:
-= (text)
+
+``` None
 	12)  ~~~
 	     This is a fenced code block.
 	         
 	     ~~~
-=
+```
+
 Line 3 here contains an (implied) positional marker, since it's still part
 of list item 12, but any white space occurring from the character position
 underneath the `T` onwards is part of the content, and must live on in the
@@ -886,9 +897,11 @@ subsequent lines the same margin will be followed.
 	}
 
 @ Suppose something like this:
-= (text)
+
+``` None
 	12)
-=
+```
+
 where there is not enough white space after the `)` to force indentation as a
 new indented code block (i.e., of which the first line happens to be blank).
 Where are we to set the indentation position for the `12)`? We make it the
@@ -903,14 +916,16 @@ absolute minimum: the black width plus 1.
 	innermost->blank_counts = 1;
 
 @ A list item is not permitted to begin with two blanks:
-= (text)
+
+``` None
 	11)	
 	    This is part of list item 11.
 
 	12)
 	
 	    This is not part of list item 12.
-=
+```
+
 So if we find ourselves in the situation of the blank line 5, we delete the
 innermost marker, and go back to the start of the intervening space parsing,
 because there's a new innermost marker now, and indentation also needs
@@ -998,25 +1013,31 @@ interpretation is possible.
 
 @ This is a little subtle. It seems obvious enough that these lines all belong
 to the same paragraph:
-= (text)
+
+``` None
 	By 1887 his collection was second only to that of Philippe Ferrari de La
 	Renotière. Among his holdings were many world-famous rarities, including both
 	values of the "Post Office" Mauritius and three examples of the Inverted
 	Head Four Annas of India.
-=
+```
+
 But "lazy continuation" goes further. It provides that if there is no indication
 to the contrary, a line should be taken as a continuation of the current paragraph.
 So for example:
-= (text)
+
+``` None
 	1) By 1887 his collection was second only to that of Philippe Ferrari de La
 	Renotière. Among...
-=
+```
+
 Here, all of the lines are part of list entry `1)`. This is a different situation
 from:
-= (text)
+
+``` None
 	1) By 1887 his collection was second only to that of Philippe Ferrari de La
 	   Renotière. Among...
-=
+```
+
 where continuation occurs because the subsequent lines are indented to match
 the list item marker's margin. The difference between these two cases is that
 in the second case there is a continuing positional marker on the marker stack,
@@ -1125,24 +1146,29 @@ markers.
 @ The two stacks may in fact agree up to a certain point, but they diverge
 as soon as they run into a non-continued list marker. For example, with the
 lines:
-= (text)
+
+``` None
 	> > 1) Switzerland: Zurich: 1843 4 rappen, the unique unsevered horizontal strip of five;
 	> > 2) Uruguay: 1858 120 centavos blue and 180 centavos green, in tête beche pairs, two of five known;
-=
+```
+
 the outermost point of disagreement (i.e., the leftmost) is at stack position
 3, where the two numbered item markers live. The eventual effect will be to
 change the container stack from:
-= (text)
+
+``` None
 	BLOCK_QUOTE_MIT
 		BLOCK_QUOTE_MIT
 			ORDERED_LIST_ITEM_MIT "Switzerland: Zurich: 1843..."
-=
+```
+
 to become:
-= (text)
+
+``` None
 	BLOCK_QUOTE_MIT
 		BLOCK_QUOTE_MIT
 			ORDERED_LIST_ITEM_MIT "Uruguay: 1858 120 centavos..."
-=
+```
 
 @<Find the outermost point of current disagreement@> =
 	int min_sp = state->marker_sp, max_sp = state->marker_sp;
@@ -1215,22 +1241,26 @@ them in the same priority sequence as was followed above.
 First, the two paragraph-continuation cases, where a setext underline takes
 priority. "Setext" stands for "Structure Enhanced Text", a precursor language
 to Markdown created by Ian Feldman in 1991.
-= (text)
+
+``` None
 	Women in Philately
 	==================
 	One of the earliest was Adelaide Lucy Fenton, who wrote articles in the
 	1860s for the journal The Philatelist under the name Herbert Camoens.
-=
+```
+
 This natural-looking notation survives in Markdown today, and line 2 above
 is a "setext underline".
 
 Dealing with it would be straightforward - simply make the paragraph item
 holding "Women in Philately" a heading item, and throw the underline characters
 away. But consider the following edge case:
-= (text)
+
+``` None
 	[pb]: /pennyblacks.html "Penny Black catalogue"
 	-----
-=
+```
+
 Here `-----` looks like, and has been parsed as, a setext underline. But it
 isn't, because in fact the whole paragraph was taken up with link references,
 leaving it with no content. So the only way correctly to deal with this is to
@@ -1239,11 +1269,13 @@ remove the link references first and see if there's any para left.
 It might seem tidier to deal with link references when they join paragraphs
 but, infuriatingly, they can sometimes run across multiple lines, and moreover
 can do so in a way such that the first line alone is also a valid link reference:
-= (text)
+
+``` None
 	[pb]: /pennyblacks.html
 	  "Penny Black catalogue"
 	-----
-=
+```
+
 So it is not safe to strip out link references until a paragraph is done.
 In these cases where the apparent underline is, in fact, not an underline
 because there was no content left, we have to preserve it as literal
@@ -1359,7 +1391,8 @@ tab for this: we must use the correct fraction of a tab, using spaces as quarter
 But that doesn't mean it should be discarded. There's an edge case (those happy
 words again) where something like this happens, where I'm typing underscores
 in place of spaces to make it more visible:
-= (text)
+
+``` None
 	Here is some code:
 	
 	____You can see this is a code block,
@@ -1369,7 +1402,8 @@ in place of spaces to make it more visible:
 	____the whitespace line falling between the two looked blank,
 	____it actually contained more than 4 spaces of indentation,
 	____7 in fact, so three of those must be put into the block.
-=
+```
+
 Those extra spaces are cached in `state->blank_matter_after_receiver`. They
 can't be added to the code block yet because, of course, we don't yet know
 when parsing the blank line whether the future lines will continue the code
@@ -1661,13 +1695,15 @@ setext underline.
 @ A code fence is a run of three or more backticks or three or more tildes,
 except that if it's to be a closing fence then it only works if it matches the
 opening fence, using at least as many of the same character. Thus:
-= (text)
+
+``` None
 	---
 	~~~~
 	~~~~
 	--
 	-----
-=
+```
+
 is in fact a single fenced code block. Once line 1 has been accepted as being
 a `CODE_FENCE_OPEN_MDINTERPRETATION` case, the subsequent lines are not
 the closing fence because they are too short or of the wrong kind, until we

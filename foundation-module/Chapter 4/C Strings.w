@@ -119,11 +119,10 @@ to write to the result. (Inform tools very seldom use this, because C strings
 are almost always best avoided.)
 
 =
-typedef struct string_storage_area {
+classdef string_storage_area {
 	char *storage_at;
 	int capacity;
-	CLASS_DEFINITION
-} string_storage_area;
+}
 
 @ =
 char *CStrings::park_string(char *from) {

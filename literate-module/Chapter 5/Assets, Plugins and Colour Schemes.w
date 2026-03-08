@@ -9,11 +9,10 @@ about what they do. The model is just that a file being woven either does or
 does not need a plugin of a given name.
 
 =
-typedef struct weave_plugin {
+classdef weave_plugin {
 	struct text_stream *plugin_name;
 	int last_included_in_round;
-	CLASS_DEFINITION
-} weave_plugin;
+}
 
 @ =
 weave_plugin *Assets::new(text_stream *name) {
@@ -31,13 +30,12 @@ weave_plugin *Assets::new(text_stream *name) {
 actually look for: they will be available to some patterns and not others.
 
 =
-typedef struct colour_scheme {
+classdef colour_scheme {
 	struct text_stream *scheme_name;
 	struct text_stream *prefix;
 	struct filename *at;
 	int last_included_in_round;
-	CLASS_DEFINITION
-} colour_scheme;
+}
 
 @ =
 colour_scheme *Assets::find_colour_scheme(ls_web *W, ls_pattern *pattern,
@@ -166,14 +164,13 @@ different filename extension, such as `.jpg`, has its own rule for what to do:
 @e COLLATE_ASSET_METHOD
 
 =
-typedef struct asset_rule {
+classdef asset_rule {
 	struct text_stream *applies_to;
 	int method; /* one of the `*_ASSET_METHOD` values above */
 	struct text_stream *pre;
 	struct text_stream *post;
 	int transform_names;
-	CLASS_DEFINITION
-} asset_rule;
+}
 
 @ A pattern has a list of such rules, as follows. In each list, exactly one
 rule has the empty text as its `applies_to`: that one is the default, for any
@@ -354,7 +351,7 @@ the style names for colouring, say, COBOL source code from, e.g.,
 `span.identifier-syntax` to `span.ConsoleText-identifier-syntax`.
 
 =
-typedef struct css_file_transformation {
+classdef css_file_transformation {
 	struct text_stream *OUT;
 	struct text_stream *trans;
 } css_file_transformation;

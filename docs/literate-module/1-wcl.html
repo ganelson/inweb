@@ -132,7 +132,7 @@ contains a list of its nested children, and a link to its parent (called its <co
 If a declaration is not nested in any other, its parental link is <code>NULL</code>.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">declaration_type</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">modifier</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">inbuilt</span><span class="plain-syntax">;</span>
@@ -149,8 +149,7 @@ If a declaration is not nested in any other, its parental link is <code>NULL</co
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">associated_file</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">general_pointer</span><span class="plain-syntax"> </span><span class="identifier-syntax">object_declared</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">external_resources_loaded</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
 <span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="function-syntax">WCL::new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">WCL::new</span></span>:<br/><a href="1-wcl.html#SP11">&#167;11</a>, <a href="1-wcl.html#SP12_5">&#167;12.5</a>, <a href="1-wcl.html#SP14">&#167;14</a>, <a href="1-wcl.html#SP30_1">&#167;30.1</a><br/>Patterns - <a href="5-ptt.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">type</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax">);</span>
@@ -214,13 +213,12 @@ call deep.</p>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Errors.</b>  Errors in parsing WCL files are accumulated under the relevant declarations:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_error</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_error</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_file_position</span><span class="plain-syntax"> </span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
-<span class="plain-syntax">} </span><span class="type-syntax">wcl_error</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 
-<span class="type-syntax">wcl_error</span><span class="plain-syntax"> *</span><span class="function-syntax">WCL::error</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">WCL::error</span></span>:<br/><a href="1-wcl.html#SP11_1">&#167;11.1</a>, <a href="1-wcl.html#SP11_4">&#167;11.4</a>, <a href="1-wcl.html#SP12_2_1">&#167;12.2.1</a>, <a href="1-wcl.html#SP12_3">&#167;12.3</a>, <a href="1-wcl.html#SP26">&#167;26</a><br/>Colonies - <a href="1-cln.html#SP6">&#167;6</a><br/>Web Structure - <a href="1-ws.html#SP8">&#167;8</a><br/>Web Contents Pages - <a href="1-wcp.html#SP1">&#167;1</a>, <a href="1-wcp.html#SP3_1">&#167;3.1</a><br/>Single-File Webs - <a href="1-sw.html#SP3_1">&#167;3.1</a><br/>Conventions - <a href="1-cnv.html#SP7">&#167;7</a><br/>Web Notations - <a href="2-wn.html#SP12">&#167;12</a>, <a href="2-wn.html#SP12_1">&#167;12.1</a>, <a href="2-wn.html#SP13">&#167;13</a><br/>Programming Languages - <a href="3-pl.html#SP2">&#167;2</a>, <a href="3-pl.html#SP8">&#167;8</a>, <a href="3-pl.html#SP9">&#167;9</a><br/>Patterns - <a href="5-ptt.html#SP4_2">&#167;4.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">msg</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">wcl_error</span><span class="plain-syntax"> *</span><span class="function-syntax">WCL::error</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">WCL::error</span></span>:<br/><a href="1-wcl.html#SP11_1">&#167;11.1</a>, <a href="1-wcl.html#SP11_4">&#167;11.4</a>, <a href="1-wcl.html#SP12_2_1">&#167;12.2.1</a>, <a href="1-wcl.html#SP12_3">&#167;12.3</a>, <a href="1-wcl.html#SP26">&#167;26</a><br/>Colonies - <a href="1-cln.html#SP6">&#167;6</a><br/>Web Structure - <a href="1-ws.html#SP8">&#167;8</a><br/>Web Contents Pages - <a href="1-wcp.html#SP1">&#167;1</a>, <a href="1-wcp.html#SP2_1">&#167;2.1</a><br/>Single-File Webs - <a href="1-sw.html#SP2_1">&#167;2.1</a><br/>Conventions - <a href="1-cnv.html#SP7">&#167;7</a><br/>Web Notations - <a href="2-wn.html#SP12">&#167;12</a>, <a href="2-wn.html#SP12_1">&#167;12.1</a>, <a href="2-wn.html#SP13">&#167;13</a><br/>Programming Languages - <a href="3-pl.html#SP2">&#167;2</a>, <a href="3-pl.html#SP8">&#167;8</a>, <a href="3-pl.html#SP8_2">&#167;8.2</a><br/>Patterns - <a href="5-ptt.html#SP4_2">&#167;4.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_file_position</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">msg</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">wcl_error</span><span class="plain-syntax"> *</span><span class="identifier-syntax">E</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="type-syntax">wcl_error</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">tfp</span><span class="plain-syntax"> = *</span><span class="identifier-syntax">tfp</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">E</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">message</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">msg</span><span class="plain-syntax">);</span>
@@ -310,13 +308,10 @@ thing it tells us is what kind of thing is being declared.</p>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. </b>  Everything here is made exasperatingly tricky by the fact that the outermost
 level of the file can consist of formal declarations, like so:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Language</span><span class="plain-syntax"> </span><span class="string-syntax">"C"</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">        ...</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Language "C" {
+		...
+	}
+</span></pre>
 <p>but can also just be lines outside of braces, in which case clearly it's a
 declaration of some sort, but we don't know what type. That's where the
 &quot;presumption&quot; comes in — basically context meaning &quot;if you don't know what
@@ -324,7 +319,7 @@ this is, assume it's a language&quot;. A presumption of <code>MISCELLANY_WCLTYPE
 no presumption at all.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_scanner</span><span class="plain-syntax"> {</span>
+<span class="reserved-syntax">classdef</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_scanner</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">struct</span><span class="plain-syntax"> </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">margin</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="type-syntax">wcl_scanner</span><span class="plain-syntax">;</span>
@@ -475,15 +470,12 @@ tab stop position.</p>
 <p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2. </b>  The tricky point here is that if we read a line with 14 initial spaces,
 say, then only some of those spaces should be trimmed away. Suppose we're
 reading this:</p>
-</div>
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Gadget</span><span class="plain-syntax"> </span><span class="string-syntax">"box"</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">          </span><span class="identifier-syntax">whatever</span>
-<span class="plain-syntax">               </span><span class="identifier-syntax">this</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> {</span>
-<span class="plain-syntax">            }</span>
-<span class="plain-syntax">    }</span>
-</pre>
-<div class="lsmarkdown">
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Gadget "box" {
+		  whatever
+		       this is {
+		    }
+	}
+</span></pre>
 <p>When we get to the &quot;whatever&quot; line, it's indented by 6 spaces. That establishes
 that the whole declaration of &quot;box&quot; will be indented 6; and so the next line
 will be trimmed so that it consists of five spaces and then the words &quot;this is&quot;.
@@ -655,7 +647,7 @@ resource, and must be found.</p>
 <span class="plain-syntax">            </span><a href="1-wcl.html#SP13" class="function-link"><span class="function-syntax">WCL::resolve_r</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">X</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">D</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">declaration_type</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">COLONY_WCLTYPE:</span><span class="plain-syntax">     </span><a href="1-cln.html#SP6" class="function-link"><span class="function-syntax">Colonies::resolve_declaration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">LANGUAGE_WCLTYPE:</span><span class="plain-syntax">   </span><a href="3-pl.html#SP11" class="function-link"><span class="function-syntax">Languages::resolve_declaration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">LANGUAGE_WCLTYPE:</span><span class="plain-syntax">   </span><a href="3-pl.html#SP10" class="function-link"><span class="function-syntax">Languages::resolve_declaration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NAVIGATION_WCLTYPE:</span><span class="plain-syntax"> </span><a href="1-cln.html#SP9" class="function-link"><span class="function-syntax">Colonies::resolve_nav_declaration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NOTATION_WCLTYPE:</span><span class="plain-syntax">   </span><a href="2-wn.html#SP15" class="function-link"><span class="function-syntax">WebNotation::resolve_declaration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PATTERN_WCLTYPE:</span><span class="plain-syntax">    </span><a href="5-ptt.html#SP5" class="function-link"><span class="function-syntax">Patterns::resolve_declaration</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
@@ -1037,7 +1029,7 @@ then the web will be treated as the directory containing it.</p>
 or can be <code>NULL</code> to start from scratch.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="function-syntax">WCL::read_web_or_halt</span><button class="popup" onclick="togglePopup('usagePopup32')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup32">Usage of <span class="code-font"><span class="function-syntax">WCL::read_web_or_halt</span></span>:<br/>The Tangler - <a href="4-tt2.html#SP4">&#167;4</a><br/>Makefiles - <a href="6-mkf.html#SP6_1">&#167;6.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="function-syntax">WCL::read_web_or_halt</span><button class="popup" onclick="togglePopup('usagePopup32')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup32">Usage of <span class="code-font"><span class="function-syntax">WCL::read_web_or_halt</span></span>:<br/>The Tangler - <a href="4-tt2.html#SP4">&#167;4</a><br/>Makefiles - <a href="6-mkf.html#SP5_1">&#167;5.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="type-syntax">wcl_declaration</span><span class="plain-syntax"> *</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">D</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><a href="1-wcl.html#SP13" class="function-link"><span class="function-syntax">WCL::parse_declarations_throwing_errors</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="1-wcl.html#SP8" class="function-link"><span class="function-syntax">WCL::is_incorrect</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">)) </span><span class="identifier-syntax">D</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>

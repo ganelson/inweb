@@ -39,13 +39,13 @@ in a list.
 @d MAX_TRIE_GROUP_SIZE 26 /* size of the allowable groups of characters */
 
 =
-typedef struct match_trie {
+classdef match_trie in 1000s {
 	int match_character; /* or one of the special cases above */
 	inchar32_t group_characters[MAX_TRIE_GROUP_SIZE+1];
 	inchar32_t *match_outcome;
 	struct match_trie *on_success;
 	struct match_trie *next;
-} match_trie;
+}
 
 @ We have just one routine for extending and scanning the trie: it either
 tries to find whether a text `p` leads to any outcome in the existing trie,
@@ -281,10 +281,10 @@ start again with the next, and so on. Inform therefore often matches text
 against a linked list of tries: we'll call that an "avinue".
 
 =
-typedef struct match_avinue {
+classdef match_avinue in 1000s {
 	struct match_trie *the_trie;
 	struct match_avinue *next;
-} match_avinue;
+}
 
 @ An avinue starts out with a single trie, which itself has just a single
 head node (of either sort).

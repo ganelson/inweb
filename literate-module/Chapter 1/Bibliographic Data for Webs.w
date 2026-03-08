@@ -8,7 +8,7 @@ There are never more than a dozen or so key-value pairs, and it's more
 convenient to store them in a linked list than to use a dictionary.
 
 =
-typedef struct web_bibliographic_datum {
+classdef web_bibliographic_datum {
 	struct text_stream *key;
 	struct text_stream *value;
 	int declaration_permitted; /* is the contents page of the web allowed to set this? */
@@ -16,8 +16,7 @@ typedef struct web_bibliographic_datum {
 	int on_or_off; /* boolean: which we handle as the string "On" or "Off" */
 	int default_setting_only; /* made by Inweb to ensure the key's existence */
 	struct web_bibliographic_datum *alias;
-	CLASS_DEFINITION
-} web_bibliographic_datum;
+}
 
 @ We keep these in linked lists, and here's a convenient way to scan them:
 

@@ -26,11 +26,10 @@ typedef struct range_end {
 	struct semantic_version_number end_value;
 } range_end;
 
-typedef struct semver_range {
+classdef semver_range {
 	struct range_end lower;
 	struct range_end upper;
-	CLASS_DEFINITION
-} semver_range;
+}
 
 @ As hinted above, the notation `[` and `]` is used for closed ends, and `(`
 and `)` for open ones.

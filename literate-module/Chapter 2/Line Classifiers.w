@@ -6,10 +6,9 @@ Simple matching grammars to decide what LP content is present in a given text.
 A line classifier is really just a list of rules:
 
 =
-typedef struct ls_classifier {
+classdef ls_classifier {
 	struct linked_list *rules; /* of `ls_notation_rule` */
-	CLASS_DEFINITION
-} ls_classifier;
+}
 
 ls_classifier *LineClassifiers::new(void) {
 	ls_classifier *lc = CREATE(ls_classifier);
@@ -27,12 +26,11 @@ to be allowed at all; a textual pattern which the line has to match; and then
 the result if the rule should succeed.
 
 =
-typedef struct ls_notation_rule {
+classdef ls_notation_rule {
 	struct ls_notation_rule_condition condition; /* provided this is met... */
 	struct ls_notation_rule_pattern pattern;     /* and the line matches this... */
 	struct ls_notation_rule_outcome outcome;     /* then we classify like so */
-	CLASS_DEFINITION
-} ls_notation_rule;
+}
 
 ls_notation_rule *LineClassifiers::new_rule(ls_notation_rule_condition condition,
 	ls_notation_rule_pattern pattern, ls_notation_rule_outcome outcome) {
@@ -105,7 +103,7 @@ supplied `wildcards` array.
 @d TRACE_LCLASSIFIER FALSE
 
 =
-typedef struct ls_classifier_context {
+classdef ls_classifier_context {
 	struct ls_class *previously; /* how the previous line was classified */
 	int single_file;             /* is this in a single-file web? */
 	int whitespace_nature;       /* of the current line: a `*_LINESHADE` value */
@@ -135,7 +133,7 @@ The condition applied to a rule — for example, `if following title` — is
 turned into one of these:
 
 =
-typedef struct ls_notation_rule_condition {
+classdef ls_notation_rule_condition {
 	int negated; /* if `TRUE`, means we must be not in the given context */
 	int atomic_condition; /* one of the `*_LSNRCAC` values below */
 } ls_notation_rule_condition;
@@ -251,7 +249,7 @@ once; but they need not occur in numerical order, and need not all be present.
 @d MAX_LSSRTOKENS (2*NO_DEFINED_LSWILDCARD_VALUES+1)
 
 =
-typedef struct ls_notation_rule_pattern {
+classdef ls_notation_rule_pattern {
 	int strip_indents;
 	int no_tokens;
 	struct ls_srtoken tokens[MAX_LSSRTOKENS];
@@ -269,7 +267,7 @@ ls_notation_rule_pattern LineClassifiers::new_pattern(void) {
 @ So here are the tokens:
 
 =
-typedef struct ls_srtoken {
+classdef ls_srtoken {
 	struct text_stream *fixed_content;
 	int wildcard;
 	int whitespace;
@@ -568,7 +566,7 @@ If successful, a rule produces an "outcome" such as `namedholon` or `code`,
 together perhaps with options such as `earlyholonoption`.
 
 =
-typedef struct ls_notation_rule_outcome {
+classdef ls_notation_rule_outcome {
 	int outcome_ID;            /* one of the `*_LSNROID` values below */
 	int options_applied;       /* a bitmap of `*_LSNROBIT` values below */
 	int new_paragraph;         /* does this line implicitly begin a new para? */
@@ -647,6 +645,7 @@ used to mean "nothing matched".
 @e HTML_LSNROID
 @e INCLUDEFILE_LSNROID
 @e MAKEDEFINITIONSHERE_LSNROID
+@e MAKECLASSESHERE_LSNROID
 @e NAMEDHOLON_LSNROID
 @e NAMELESSHOLON_LSNROID
 @e PARAGRAPHTAG_LSNROID
@@ -711,6 +710,7 @@ int LineClassifiers::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"html"))                 return HTML_LSNROID;
 	if (Str::eq(outcome, I"includefile"))          return INCLUDEFILE_LSNROID;
 	if (Str::eq(outcome, I"makedefinitionshere"))  return MAKEDEFINITIONSHERE_LSNROID;
+	if (Str::eq(outcome, I"makeclasseshere"))      return MAKECLASSESHERE_LSNROID;
 	if (Str::eq(outcome, I"namedholon"))    	   return NAMEDHOLON_LSNROID;
 	if (Str::eq(outcome, I"namelessholon"))        return NAMELESSHOLON_LSNROID;
 	if (Str::eq(outcome, I"paragraphtag"))         return PARAGRAPHTAG_LSNROID;

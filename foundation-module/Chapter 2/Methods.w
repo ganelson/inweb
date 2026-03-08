@@ -23,10 +23,9 @@ differs from another, and they can do that by providing "methods".
 @ A "method set" is simply a linked list of methods:
 
 =
-typedef struct method_set {
+classdef method_set {
 	struct method *first_method;
-	CLASS_DEFINITION
-} method_set;
+}
 
 method_set *Methods::new_set(void) {
 	method_set *S = CREATE(method_set);
@@ -65,12 +64,11 @@ attach it to an object with a method set, using the `METHOD_ADD` macro.
 	Methods::add(upon->methods, id, (void *) &func);
 
 =
-typedef struct method {
+classdef method {
 	int method_id;
 	void *method_function;
 	struct method *next_method;
-	CLASS_DEFINITION
-} method;
+}
 
 void Methods::add(method_set *S, int ID, void *function) {
 	method *M = CREATE(method);
@@ -103,9 +101,9 @@ Method calls are also done with a macro, but it has to come in four variants:
 - `VOID_METHOD_CALL_WITHOUT_ARGUMENTS` for a method without arguments which returns nothing.
 
 For example:
-= (text as code)
+
 	INT_METHOD_CALL(some_object, UNUSED_METHOD_ID_MTID, I"Hello", 17)
-=
+
 Note that it's entirely possible for the `upon` object to have multiple methods
 added for the same ID — or none. In the `V` (void) cases, what we then do is
 to call each of them in turn. In the `I` (int) cases, we call each in turn, but

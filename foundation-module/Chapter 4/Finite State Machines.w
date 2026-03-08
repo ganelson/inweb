@@ -17,14 +17,13 @@ range of what can be scanned for, but do reduce the size and increase the
 human-readability of the machines.
 
 =
-typedef struct finite_state_machine {
+classdef finite_state_machine {
 	struct fsm_state *start_at;
 	struct fsm_state *current_state;
 	int cycles_at_current_state;
 	struct linked_list *states; /* of `fsm_state` */
 	struct general_pointer last_parameter;
-	CLASS_DEFINITION
-} finite_state_machine;
+}
 
 finite_state_machine *FSM::new_machine(fsm_state *start) {
 	if (start == NULL) internal_error("no state for fsm");
@@ -60,15 +59,14 @@ state before the `X`, and we keep a count of how many states are formed from
 each state, though only to provide nice human-readable names.
 
 =
-typedef struct fsm_state {
+classdef fsm_state {
 	struct text_stream *mnemonic;
 	struct finite_state_machine *owner;
 	struct fsm_state *formed_from;
 	struct fsm_transitions exits;
 	struct fsm_transitions entries;
 	int no_states_formed_from_this;
-	CLASS_DEFINITION
-} fsm_state;
+}
 
 fsm_state *FSM::new_state(text_stream *memo) {
 	fsm_state *state = CREATE(fsm_state);
@@ -144,7 +142,7 @@ flag is set, then it can occur only on the first cycle of the machine being
 in its current state.
 
 =
-typedef struct fsm_transition {
+classdef fsm_transition {
 	/* match criteria: */
 	inchar32_t on;
 	struct fsm_state *to;
@@ -155,8 +153,7 @@ typedef struct fsm_transition {
 	struct general_pointer parameter;
 
 	struct fsm_transition *next_trans; /* within the list for a bank */
-	CLASS_DEFINITION
-} fsm_transition;
+}
 
 @ There is an API for adding transitions, but this is not it: it's used only
 below.

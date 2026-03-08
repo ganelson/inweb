@@ -10,20 +10,19 @@ pointers to some external structure. Often these will also be texts, but
 not necessarily.
 
 =
-typedef struct dictionary {
+classdef dictionary {
 	int textual; /* values are texts? */
 	int no_entries; /* total number of key-value pairs currently stored here */
 	int hash_table_size; /* size of array... */
 	struct dict_entry *hash_table; /* ...of linked lists of dictionary entries */
-	CLASS_DEFINITION
-} dictionary;
+}
 
-typedef struct dict_entry {
+classdef dict_entry in 100s {
 	int vacant; /* a "vacant" entry is not currently used to store a k-v pair */
 	struct text_stream *key; /* for non-vacant entries only: the key text */
 	void *value; /* for non-vacant entries only: the value, some kind of pointer */
 	struct dict_entry *next_in_entry;
-} dict_entry;
+}
 
 @h Creation.
 Dictionaries can have arbitrary size, in that they expand as needed, but for

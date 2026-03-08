@@ -281,14 +281,13 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 @h Convention sets.
 
 =
-typedef struct ls_conventions {
+classdef ls_conventions {
 	int level; /* one of the `*_LSCONVENTIONLEVEL` values above */
 	int setting_made[NO_DEFINED_LSCONVENTION_VALUES]; /* `TRUE` only if an explicit choice made */
 	int integer_value[NO_DEFINED_LSCONVENTION_VALUES];
 	struct text_stream *textual_value[NO_DEFINED_LSCONVENTION_VALUES];
 	struct text_stream *textual_value2[NO_DEFINED_LSCONVENTION_VALUES];
-	CLASS_DEFINITION
-} ls_conventions;
+}
 
 ls_conventions *Conventions::new_set(int level) {
 	ls_conventions *conventions = CREATE(ls_conventions);

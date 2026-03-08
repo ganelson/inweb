@@ -8,291 +8,239 @@ and this inevitably means an awful lot of tedious stucture declarations and
 creator functions. Deep breath now:
 
 =
-typedef struct weave_document_node {
+classdef weave_document_node {
 	struct weave_order *wv;
 	int footnotes_present;
-	CLASS_DEFINITION
-} weave_document_node;
+}
 
-typedef struct weave_head_node {
+classdef weave_head_node {
 	struct text_stream *banner;
-	CLASS_DEFINITION
-} weave_head_node;
+}
 
-typedef struct weave_body_node {
-	CLASS_DEFINITION
-} weave_body_node;
+classdef weave_body_node {
+}
 
-typedef struct weave_tail_node {
+classdef weave_tail_node {
 	struct text_stream *rennab;
-	CLASS_DEFINITION
-} weave_tail_node;
+}
 
-typedef struct weave_chapter_header_node {
+classdef weave_chapter_header_node {
 	struct ls_chapter *chap;
-	CLASS_DEFINITION
-} weave_chapter_header_node;
+}
 
-typedef struct weave_chapter_footer_node {
+classdef weave_chapter_footer_node {
 	struct ls_chapter *chap;
-	CLASS_DEFINITION
-} weave_chapter_footer_node;
+}
 
-typedef struct weave_section_header_node {
+classdef weave_section_header_node {
 	struct ls_section *sect;
-	CLASS_DEFINITION
-} weave_section_header_node;
+}
 
-typedef struct weave_section_footer_node {
+classdef weave_section_footer_node {
 	struct ls_section *sect;
-	CLASS_DEFINITION
-} weave_section_footer_node;
+}
 
-typedef struct weave_section_purpose_node {
+classdef weave_section_purpose_node {
 	struct text_stream *purpose;
-	CLASS_DEFINITION
-} weave_section_purpose_node;
+}
 
-typedef struct weave_subheading_node {
+classdef weave_subheading_node {
 	struct text_stream *text;
-	CLASS_DEFINITION
-} weave_subheading_node;
+}
 
-typedef struct weave_subsubheading_node {
+classdef weave_subsubheading_node {
 	struct text_stream *text;
-	CLASS_DEFINITION
-} weave_subsubheading_node;
+}
 
-typedef struct weave_bar_node {
-	CLASS_DEFINITION
-} weave_bar_node;
+classdef weave_bar_node {
+}
 
-typedef struct weave_pagebreak_node {
-	CLASS_DEFINITION
-} weave_pagebreak_node;
+classdef weave_pagebreak_node {
+}
 
-typedef struct weave_linebreak_node {
-	CLASS_DEFINITION
-} weave_linebreak_node;
+classdef weave_linebreak_node {
+}
 
-typedef struct weave_paragraph_heading_node {
+classdef weave_paragraph_heading_node {
 	struct ls_paragraph *para;
 	int no_skip;
-	CLASS_DEFINITION
-} weave_paragraph_heading_node;
+}
 
-typedef struct weave_endnote_node {
-	CLASS_DEFINITION
-} weave_endnote_node;
+classdef weave_endnote_node {
+}
 
-typedef struct weave_figure_node {
+classdef weave_figure_node {
 	struct text_stream *figname;
 	struct text_stream *alt_text;
 	int w;
 	int h;
-	CLASS_DEFINITION
-} weave_figure_node;
+}
 
-typedef struct weave_extract_node {
+classdef weave_extract_node {
 	struct text_stream *extract;
-	CLASS_DEFINITION
-} weave_extract_node;
+}
 
-typedef struct weave_audio_node {
+classdef weave_audio_node {
 	struct text_stream *audio_name;
 	int w;
-	CLASS_DEFINITION
-} weave_audio_node;
+}
 
-typedef struct weave_video_node {
+classdef weave_video_node {
 	struct text_stream *video_name;
 	int w;
 	int h;
-	CLASS_DEFINITION
-} weave_video_node;
+}
 
-typedef struct weave_download_node {
+classdef weave_download_node {
 	struct text_stream *download_name;
 	struct text_stream *filetype;
-	CLASS_DEFINITION
-} weave_download_node;
+}
 
-typedef struct weave_material_node {
+classdef weave_material_node {
 	int material_type;
 	int plainly;
 	struct programming_language *styling;
 	struct text_stream *endnote;
-	CLASS_DEFINITION
-} weave_material_node;
+}
 
-typedef struct weave_embed_node {
+classdef weave_embed_node {
 	struct text_stream *service;
 	struct text_stream *ID;
 	int w;
 	int h;
-	CLASS_DEFINITION
-} weave_embed_node;
+}
 
-typedef struct weave_holon_usage_node {
+classdef weave_holon_usage_node {
 	struct ls_holon *holon;
 	struct markdown_variation *variation;
-	CLASS_DEFINITION
-} weave_holon_usage_node;
+}
 
-typedef struct weave_tangler_command_node {
+classdef weave_tangler_command_node {
 	struct text_stream *command;
-	CLASS_DEFINITION
-} weave_tangler_command_node;
+}
 
-typedef struct weave_holon_declaration_node {
+classdef weave_holon_declaration_node {
 	struct ls_holon *holon;
 	struct markdown_variation *variation;
-	CLASS_DEFINITION
-} weave_holon_declaration_node;
+}
 
-typedef struct weave_vskip_node {
+classdef weave_vskip_node {
 	int in_comment;
-	CLASS_DEFINITION
-} weave_vskip_node;
+}
 
-typedef struct weave_chapter_node {
+classdef weave_chapter_node {
 	struct ls_chapter *chap;
-	CLASS_DEFINITION
-} weave_chapter_node;
+}
 
-typedef struct weave_section_node {
+classdef weave_section_node {
 	struct ls_section *sect;
-	CLASS_DEFINITION
-} weave_section_node;
+}
 
-typedef struct weave_code_line_node {
-	CLASS_DEFINITION
-} weave_code_line_node;
+classdef weave_code_line_node {
+}
 
-typedef struct weave_function_usage_node {
+classdef weave_function_usage_node {
 	struct text_stream *url;
 	struct language_function *fn;
-	CLASS_DEFINITION
-} weave_function_usage_node;
+}
 
-typedef struct weave_commentary_node {
+classdef weave_commentary_node {
 	struct text_stream *text;
 	int in_code;
-	CLASS_DEFINITION
-} weave_commentary_node;
+}
 
-typedef struct weave_carousel_slide_node {
+classdef weave_carousel_slide_node {
 	struct text_stream *caption;
 	int positioning;
-	CLASS_DEFINITION
-} weave_carousel_slide_node;
+}
 
-typedef struct weave_toc_node {
+classdef weave_toc_node {
 	struct text_stream *text1;
-	CLASS_DEFINITION
-} weave_toc_node;
+}
 
-typedef struct weave_toc_line_node {
+classdef weave_toc_line_node {
 	struct text_stream *text1;
 	struct text_stream *text2;
 	struct ls_paragraph *para;
-	CLASS_DEFINITION
-} weave_toc_line_node;
+}
 
-typedef struct weave_chapter_title_page_node {
-	CLASS_DEFINITION
-} weave_chapter_title_page_node;
+classdef weave_chapter_title_page_node {
+}
 
-typedef struct weave_defn_node {
+classdef weave_defn_node {
 	struct text_stream *keyword;
 	struct text_stream *symbol;
-	CLASS_DEFINITION
-} weave_defn_node;
+}
 
-typedef struct weave_inline_node {
-	CLASS_DEFINITION
-} weave_inline_node;
+classdef weave_inline_node {
+}
 
-typedef struct weave_locale_node {
+classdef weave_locale_node {
 	struct ls_paragraph *par1;
 	struct ls_paragraph *par2;
 	int distant;
-	CLASS_DEFINITION
-} weave_locale_node;
+}
 
-typedef struct weave_source_code_node {
+classdef weave_source_code_node {
 	struct text_stream *matter;
 	struct text_stream *colouring;
-	CLASS_DEFINITION
-} weave_source_code_node;
+}
 
-typedef struct weave_comment_in_holon_node {
+classdef weave_comment_in_holon_node {
 	struct text_stream *raw;
 	struct text_stream *comment_open;
 	struct text_stream *comment_close;
 	struct markdown_item *as_markdown;
 	struct markdown_variation *variation;
-	CLASS_DEFINITION
-} weave_comment_in_holon_node;
+}
 
-typedef struct weave_url_node {
+classdef weave_url_node {
 	struct text_stream *url;
 	struct text_stream *content;
 	int external;
-	CLASS_DEFINITION
-} weave_url_node;
+}
 
-typedef struct weave_footnote_cue_node {
+classdef weave_footnote_cue_node {
 	struct text_stream *cue_text;
-	CLASS_DEFINITION
-} weave_footnote_cue_node;
+}
 
-typedef struct weave_begin_footnote_text_node {
+classdef weave_begin_footnote_text_node {
 	struct text_stream *cue_text;
-	CLASS_DEFINITION
-} weave_begin_footnote_text_node;
+}
 
-typedef struct weave_display_line_node {
+classdef weave_display_line_node {
 	struct text_stream *text;
-	CLASS_DEFINITION
-} weave_display_line_node;
+}
 
-typedef struct weave_function_defn_node {
+classdef weave_function_defn_node {
 	struct language_function *fn;
-	CLASS_DEFINITION
-} weave_function_defn_node;
+}
 
-typedef struct weave_item_node {
+classdef weave_item_node {
 	int depth;
 	struct text_stream *label;
-	CLASS_DEFINITION
-} weave_item_node;
+}
 
-typedef struct weave_grammar_index_node {
-	CLASS_DEFINITION
-} weave_grammar_index_node;
+classdef weave_grammar_index_node {
+}
 
-typedef struct weave_maths_node {
+classdef weave_maths_node {
 	struct text_stream *content;
 	int displayed;
-	CLASS_DEFINITION
-} weave_maths_node;
+}
 
-typedef struct weave_markdown_node {
+classdef weave_markdown_node {
 	struct markdown_item *content;
 	struct markdown_variation *variation;
-	CLASS_DEFINITION
-} weave_markdown_node;
+}
 
-typedef struct weave_verbatim_node {
+classdef weave_verbatim_node {
 	struct text_stream *content;
-	CLASS_DEFINITION
-} weave_verbatim_node;
+}
 
-typedef struct weave_index_marker_node {
+classdef weave_index_marker_node {
 	struct ls_paragraph *par;
-	CLASS_DEFINITION
-} weave_index_marker_node;
+}
 
 @ =
 tree_type *weave_tree_type = NULL;

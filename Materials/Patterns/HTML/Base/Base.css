@@ -127,7 +127,7 @@ p.purpose {
 
 /* Blocks of code appear in these */
 
-pre.all-displayed-code {
+pre.all-displayed-code, div.lsmarkdown pre.all-displayed-code {
 	padding: 10px;
 	margin-top: 5px;
 	margin-bottom: 5px;

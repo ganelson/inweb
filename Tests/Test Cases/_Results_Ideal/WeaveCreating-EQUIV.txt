@@ -1,0 +1,4 @@
+weaving web "Syntax Colouring Equivalency" (InC program in InwebClassic notation) as HTML
+(created directory 'equiv/equiv-assets')
+    generated: equiv/equiv.html
+    12 files copied to: equiv/equiv-assets

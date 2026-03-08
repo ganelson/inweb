@@ -7,14 +7,13 @@ of literate source text.
 need to store them up, with this:
 
 =
-typedef struct ls_error {
+classdef ls_error {
 	int issued_already;
 	int warning;
 	struct ls_line *line;
 	struct text_file_position tfp;
 	struct text_stream *message;
-	CLASS_DEFINITION
-} ls_error;
+}
 
 void WebErrors::record_at(text_stream *message, ls_line *lst) {
 	if (lst == NULL) {

@@ -20,15 +20,14 @@ ability to provide those members with shared resources such as patterns or
 notations:
 
 =
-typedef struct ls_colony {
+classdef ls_colony {
 	struct wcl_declaration *declaration;
 	struct linked_list *members; /* of `ls_colony_member` */
 	struct text_stream *home; /* path of home repository */
 	struct pathname *redirect; /* temporarily, where we weave to */
 	struct text_stream *assets_path; /* where assets shared between weaves live */
 	struct pathname *patterns_path; /* where additional patterns live */
-	CLASS_DEFINITION
-} ls_colony;
+}
 
 @ Each member is represented by an instance of the following. Note the `loaded`
 field: this holds metadata on the web/module in question.
@@ -37,7 +36,7 @@ Note that the `path` might be either the name of a single-file web, or of a
 directory holding a multi-section web.
 
 =
-typedef struct ls_colony_member {
+classdef ls_colony_member {
 	struct ls_colony *owner;
 
 	struct text_stream *name; /* the `N` in `N at P in W` */
@@ -53,8 +52,7 @@ typedef struct ls_colony_member {
 	struct wcl_declaration *navigation; /* navigation sidebar HTML */
 	struct text_stream *crumbs; /* textual form of breadcrumbs */
 	struct linked_list *breadcrumb_tail; /* of `breadcrumb_request` */
-	CLASS_DEFINITION
-} ls_colony_member;
+}
 
 ls_colony_member *Colonies::new_member(text_stream *name, ls_colony *C, int ext) {
 	ls_colony_member *CM = CREATE(ls_colony_member);
@@ -336,7 +334,7 @@ void Colonies::member_complete(ls_colony_member *CM, colony_reader_state *crs, t
 object from it.
 
 =
-typedef struct colony_reader_state {
+classdef colony_reader_state {
 	struct wcl_declaration *D;
 	struct ls_colony *province;
 	struct text_stream *nav;
@@ -493,11 +491,10 @@ void Colonies::add_crumb(linked_list *L, text_stream *spec, text_file_position *
 	ADD_TO_LINKED_LIST(br, breadcrumb_request, L);
 }
 
-typedef struct breadcrumb_request {
+classdef breadcrumb_request {
 	struct text_stream *breadcrumb_text;
 	struct text_stream *breadcrumb_link;
-	CLASS_DEFINITION
-} breadcrumb_request;
+}
 
 breadcrumb_request *Colonies::request_breadcrumb(text_stream *arg) {
 	breadcrumb_request *BR = CREATE(breadcrumb_request);
@@ -708,7 +705,8 @@ int Colonies::join_to_skeleton(linked_list *L, pathname *P) {
 
 @h Cross-references.
 The following must decide what references like the following should refer to:
-= (text)
+
+``` None
 	Chapter 3
 	Manual
 	Enumerated Constants
@@ -716,7 +714,8 @@ The following must decide what references like the following should refer to:
 	weave_order
 	foundation: Text Streams
 	goldbach
-=
+```
+
 The reference text is in `text`; we return `TRUE` if we can make unambiguous
 sense of it, or throw an error and return `FALSE` if not. If all is well, we
 must write a title and URL for the link.

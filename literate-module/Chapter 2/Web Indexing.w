@@ -85,13 +85,12 @@ finite_state_machine *WebIndexing::make_indexing_machine(linked_list *convention
 @
 
 =
-typedef struct ls_index_mark {
+classdef ls_index_mark {
 	struct text_stream *text;
 	int style;
 	int important;
 	struct ls_paragraph *at;
-	CLASS_DEFINITION
-} ls_index_mark;
+}
 
 ls_index_mark *WebIndexing::new_mark(text_stream *text, int style, int important) {
 	ls_index_mark *ie = CREATE(ls_index_mark);
@@ -178,22 +177,20 @@ linked_list *WebIndexing::index_from_line(OUTPUT_STREAM, text_stream *line, ls_n
 @
 
 =
-typedef struct ls_index {
+classdef ls_index {
 	struct linked_list *all_marks; /* of `ls_index_mark` */
 	struct dictionary *lemmas;
 	int no_lemmas_sorted;
 	struct ls_index_lemma **lemmas_sorted;
-	CLASS_DEFINITION
-} ls_index;
+}
 
-typedef struct ls_index_lemma {
+classdef ls_index_lemma {
 	struct text_stream *sort_key;
 	struct text_stream *text;
 	int style;
 	struct linked_list *marks; /* of `ls_index_mark` */
 	struct ls_index_lemma *parent;
-	CLASS_DEFINITION
-} ls_index_lemma;
+}
 
 ls_index *WebIndexing::new_index(void) {
 	ls_index *index = CREATE(ls_index);

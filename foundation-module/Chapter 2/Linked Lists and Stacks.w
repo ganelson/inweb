@@ -12,19 +12,18 @@ a few items, only one call to the memory manager is needed.
 @d NO_LL_EARLY_ITEMS 32
 
 =
-typedef struct linked_list {
+classdef linked_list {
 	struct linked_list_item *first_list_item;
 	struct linked_list_item *last_list_item;
 	int linked_list_length;
 	int early_items_used;
 	struct linked_list_item early_items[NO_LL_EARLY_ITEMS];
-	CLASS_DEFINITION
-} linked_list;
+}
 
-typedef struct linked_list_item {
+classdef linked_list_item in 1000s {
 	void *item_contents;
 	struct linked_list_item *next_list_item;
-} linked_list_item;
+}
 
 @ =
 linked_list *LinkedLists::new(void) {

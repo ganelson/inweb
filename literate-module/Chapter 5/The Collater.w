@@ -48,7 +48,7 @@ void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 @d CI_STACK_CAPACITY 8 /* maximum recursion of chapter/section iteration */
 
 =
-typedef struct collater_state {
+classdef collater_state {
 	struct ls_colony *context;
 	struct ls_web *for_web;
 	struct text_stream *tlines[MAX_TEMPLATE_LINES];

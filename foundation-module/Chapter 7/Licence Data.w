@@ -6,12 +6,11 @@ Storing names and standard SPDX identifiers for common open source licences.
 set of open source licences maintained by SPDX.
 
 =
-typedef struct open_source_licence {
+classdef open_source_licence {
 	struct text_stream *SPDX_id;
 	struct text_stream *name;
 	int deprecated;
-	CLASS_DEFINITION
-} open_source_licence;
+}
 
 dictionary *SPDX_licence_identifiers = NULL;
 

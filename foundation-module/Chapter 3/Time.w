@@ -126,7 +126,7 @@ the `clock()` (i.e., how much CPU time the current process has taken) rather
 than from the actual time of day.
 
 =
-typedef struct stopwatch_timer {
+classdef stopwatch_timer {
 	int running; /* set if this has been started but not stopped */
 	struct text_stream *event;
 	clock_t start_time;
@@ -134,8 +134,7 @@ typedef struct stopwatch_timer {
 	int time_taken; /* measured in centiseconds of CPU time */
 	linked_list *stages_chronological; /* of `stopwatch_timer` */
 	linked_list *stages_sorted; /* of `stopwatch_timer` */
-	CLASS_DEFINITION
-} stopwatch_timer;
+}
 
 @ If `within` is not null, it must be another stopwatch which is also running;
 the idea is that the new stopwatch is to time a sub-task of the main task which

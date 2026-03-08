@@ -56,20 +56,22 @@ easy to pick up, and also to have the convenience that a web using this
 notation renders well in a Markdown viewer — for example, if such a source
 code file is viewed at GitHub.
 
-`InwebClassic` is a more traditional LP notation, and is something of a
-compromise between the Knuth syntax (filled with escape characters) and a
-more easily understood line-based, rather than stream-of-character-based, syntax.
-Until 2025, `InwebClassic` was the only notation Inweb could use; hence the name.
-At time of writing, many webs used by the Inform project are in `InwebClassic` notation.
+`InwebClassic` is a more traditional LP notation, in that paragraph and code
+boundaries are explicitly marked. This increases the amount of markup needed,
+but in compensation, a few additional features are provided: automated
+definitions and enumerations (in C-like languages), and embedded gadgets
+such as carousels of images, video, audio and so on. But commentary itself
+uses the same Markdown syntax as `MarkdownCode`, and so the two notations
+are not as different as they may appear at first sight.
 
 `CWEB` is a partial compatibility mode with Knuth's CWEB tool. It is able to
 tangle, and to weave, at least some of his programs of the last forty years,
-more or less adequately.
+more or less adequately. Here, commentary uses TeX, not conventional Markdown.
 
 `WEB` is an even more partial compatibility mode for Knuth's early WEB tool.
 It can only usefully weave, not tangle, and even then, quite imperfectly.
 WEB is used today only for the ${\rm\TeX}$ and Metafont source code, and there
 is little point in tangling these, since they are written in a long-obsolete
-form of Pascal.
+form of Pascal. Again, commentary uses TeX.
 
 As we shall see, though, it's easy to create entirely new notations.

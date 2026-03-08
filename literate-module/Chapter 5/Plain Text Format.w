@@ -14,7 +14,7 @@ void PlainTextWeaving::create(void) {
 @h Methods.
 
 =
-typedef struct PlainText_render_state {
+classdef PlainText_render_state {
 	struct text_stream *OUT;
 	struct weave_order *wv;
 } PlainText_render_state;
