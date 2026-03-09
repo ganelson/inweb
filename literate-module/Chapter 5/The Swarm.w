@@ -566,7 +566,7 @@ and details of any cover-sheet to use.
 		else Filenames::write_unextended_leafname(leafname, W->single_file);
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
-	} else if (W->is_page) {
+	} else if ((W->is_page) || (wv->self_contained)) {
 		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
 		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
 		else WRITE_TO(leafname, "%S", W->declaration->name);

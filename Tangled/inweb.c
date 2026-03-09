@@ -18712,11 +18712,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C04";
+			char *svn = "9.0-beta+1C05";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "8 March 2026";
+			char *d = "9 March 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -57561,7 +57561,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 8 March 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 9 March 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
@@ -58100,7 +58100,7 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 }
 #line 568 "inweb/literate-module/Chapter 5/The Swarm.w"
 ;
-	} else if (W->is_page) {
+	} else if ((W->is_page) || (wv->self_contained)) {
 		wv->booklet_title = Str__duplicate(Bibliographic__get_datum(W, TL_IS_4304));
 		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
 		else WRITE_TO(leafname, "%S", W->declaration->name);
