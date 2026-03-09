@@ -147,7 +147,7 @@ void InwebTangle::run_on_web(inweb_tangle_settings *its, ls_web *W) {
 @ We can tangle to any one of what might be several targets, numbered upwards
 from 0. Target 0 always exists, and is the main program forming the web. For
 many webs, this will in fact be the only target, but Inweb also allows
-marked sections of a web to be independent targets -- the idea here is to
+marked sections of a web to be independent targets — the idea here is to
 allow an Appendix in the web to contain a configuration file, or auxiliary
 program, needed for the main program to work; this might be written in a
 quite different language from the rest of the web, and tangles to a different

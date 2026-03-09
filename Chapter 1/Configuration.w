@@ -224,7 +224,7 @@ operand, but otherwise use the same rules for all of them:
 
 @ A further tweak is that we sometimes want the web to be read in a particular
 way (if a web is what is provided). If `enumerating` is set then values will be
-assigned to enumerated constants found in the web -- this is unnecessary most
+assigned to enumerated constants found in the web — this is unnecessary most
 of the time, and will be meaningless or impossible if only a subset of the web
 is being considered. If `weaving` is set, then certain sorts of code rewriting
 are not performed (for example, the I-string constants like `I"this"` used in

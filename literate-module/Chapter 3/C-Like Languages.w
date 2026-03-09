@@ -205,25 +205,29 @@ will not trip the switch here.
 @h Classdefs.
 
 =
-void CLike::define_classes(OUTPUT_STREAM, tangle_target *target,
+void CLike::define_classdef_constants(OUTPUT_STREAM, tangle_target *target,
 	programming_language *lang, tangle_docket *docket, ls_web *W) {
-	language_type *current_str;
-	LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis::language_types_list(W))
-		if (current_str->classdef) {
-			WRITE("#define %S_CLASS %S\n", current_str->structure_name, current_str->id_val);
-		}
+	if (W->analysis_ref) {
+		language_type *current_str;
+		LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis::language_types_list(W))
+			if (current_str->classdef) {
+				WRITE("#define %S_CLASS %S\n", current_str->structure_name, current_str->id_val);
+			}
+	}
 }
 
-void CLike::define_classes2(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) {
-	language_type *current_str;
-	LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis::language_types_list(W))
-		if (current_str->classdef) {
-			if (current_str->allocation_size > 1)
-				WRITE("DECLARE_CLASS_ALLOCATED_IN_ARRAYS(%S, %d)\n",
-					current_str->structure_name, current_str->allocation_size);
-			else
-				WRITE("DECLARE_CLASS(%S)\n", current_str->structure_name);
-		}
+void CLike::define_classdef_macros(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) {
+	if (W->analysis_ref) {
+		language_type *current_str;
+		LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis::language_types_list(W))
+			if (current_str->classdef) {
+				if (current_str->allocation_size > 1)
+					WRITE("DECLARE_CLASS_ALLOCATED_IN_ARRAYS(%S, %d)\n",
+						current_str->structure_name, current_str->allocation_size);
+				else
+					WRITE("DECLARE_CLASS(%S)\n", current_str->structure_name);
+			}
+	}
 }
 
 @h Functions.

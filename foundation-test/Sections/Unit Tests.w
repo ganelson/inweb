@@ -318,24 +318,15 @@ void Unit::test_semver(void) {
 
 @h Trees.
 
-@e prince_CLASS
-@e princess_CLASS
-
 =
-DECLARE_CLASS(prince)
-DECLARE_CLASS(princess)
-
-@ =
-typedef struct prince {
+classdef prince {
 	struct text_stream *boys_name;
-	CLASS_DEFINITION
-} prince;
+}
 
-typedef struct princess {
+classdef princess {
 	int meaningless;
 	struct text_stream *girls_name;
-	CLASS_DEFINITION
-} princess;
+}
 
 tree_node_type *M = NULL, *F = NULL;
 

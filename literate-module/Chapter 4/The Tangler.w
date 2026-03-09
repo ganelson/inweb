@@ -241,7 +241,7 @@ void Tangler::tangle_constants(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) 
 				LanguageMethods::close_ifdef(OUT, language, L_chunk->symbol_defined, FALSE);
 			}
 	Enumerations::define_extents(OUT, target, language, docket);
-	CLike::define_classes(OUT, target, language, docket, W);
+	CLike::define_classdef_constants(OUT, target, language, docket, W);
 	LanguageMethods::additional_predeclarations(OUT, language, docket, W);
 }
 
@@ -304,7 +304,7 @@ void Tangler::tangle_holons_in_segment(OUTPUT_STREAM, ls_unit *lsu,
 			Tangler::tangle_constants(OUT, docket, lsu->context); 
 		if ((lsu->context) && (lsu->context->classes_chunk) &&
 			(lsu->context->classes_chunk->owner == par) && (segment == MAIN_TANGLE_SEGMENT))
-			CLike::define_classes2(OUT, docket, lsu->context); 
+			CLike::define_classdef_macros(OUT, docket, lsu->context); 
 		if ((par->holon) && (par->holon->top_level) && (par->holon->addendum_to == NULL)) {
 			text_stream *TO = OUT;
 			text_stream *N = Holons::external_filename(par->holon);

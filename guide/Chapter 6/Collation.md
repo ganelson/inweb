@@ -45,7 +45,7 @@ in double square brackets.
 
 ## Placeholders used on body pages
 
-- `[[Weave Content]]` expands to the body of the web page -- the headings,
+- `[[Weave Content]]` expands to the body of the web page — the headings,
 paragraphs and so on.
 
 - `[[Plugins]]` expands to any links to CSS or Javascript files needed
