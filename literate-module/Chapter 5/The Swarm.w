@@ -490,6 +490,7 @@ classdef weave_order {
 
 	/* used for workspace during an actual weave: */
 	struct ls_line *current_weave_line;
+	struct filename *current_weave_file;
 }
 
 @<Compile a set of instructions for the weaver@> =
@@ -519,6 +520,7 @@ classdef weave_order {
 	wv->paragraphs_woven = 0;
 	
 	wv->current_weave_line = NULL;
+	wv->current_weave_file = NULL;
 
 	int has_content = FALSE;
 	ls_chapter *C;

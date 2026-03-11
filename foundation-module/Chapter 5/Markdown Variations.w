@@ -252,6 +252,7 @@ We provide just a few of these, and they are intended to be used on top of GFM:
 @e INWEB_LINKS_MARKDOWNFEATURE
 @e ALT_INWEB_LINKS_MARKDOWNFEATURE
 @e INWEB_SYNTAX_COLOURING_MARKDOWNFEATURE
+@e TEXT_AS_IMAGES_MARKDOWNFEATURE
 @e FOOTNOTES_MARKDOWNFEATURE
 @e STROKED_CODE_MARKDOWNFEATURE
 
@@ -261,6 +262,7 @@ markdown_feature *alt_TeX_Markdown_feature = NULL;
 markdown_feature *inweb_links_Markdown_feature = NULL;
 markdown_feature *alt_inweb_links_Markdown_feature = NULL;
 markdown_feature *inweb_syntax_colouring_Markdown_feature = NULL;
+markdown_feature *text_as_images_Markdown_feature;
 markdown_feature *footnotes_Markdown_feature = NULL;
 markdown_feature *stroked_code_Markdown_feature = NULL;
 
@@ -270,6 +272,7 @@ void MarkdownVariations::define_IWFM(void) {
 	inweb_links_Markdown_feature =     MarkdownVariations::new_feature(I"inweb links",     INWEB_LINKS_MARKDOWNFEATURE);
 	alt_inweb_links_Markdown_feature = MarkdownVariations::new_feature(I"alt-inweb links", ALT_INWEB_LINKS_MARKDOWNFEATURE);
 	inweb_syntax_colouring_Markdown_feature = MarkdownVariations::new_feature(I"inweb syntax-colouring", INWEB_SYNTAX_COLOURING_MARKDOWNFEATURE);
+	text_as_images_Markdown_feature =  MarkdownVariations::new_feature(I"text as images", TEXT_AS_IMAGES_MARKDOWNFEATURE);
 	footnotes_Markdown_feature =       MarkdownVariations::new_feature(I"inweb footnotes", FOOTNOTES_MARKDOWNFEATURE);
 	stroked_code_Markdown_feature =    MarkdownVariations::new_feature(I"stroked code",    STROKED_CODE_MARKDOWNFEATURE);
 
@@ -289,6 +292,7 @@ void MarkdownVariations::make_Inweb_features_active(markdown_variation *variatio
 	MarkdownVariations::add_feature(variation, INWEB_LINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, FOOTNOTES_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, INWEB_SYNTAX_COLOURING_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, TEXT_AS_IMAGES_MARKDOWNFEATURE);
 	MarkdownVariations::remove_feature(variation, EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
 }
 

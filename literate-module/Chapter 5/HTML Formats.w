@@ -59,6 +59,9 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 
 	Swarm::ensure_plugin(wv, I"Base");
 	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
+
+	wv->current_weave_file = into;
+
 	return hrs;
 }
 
@@ -410,51 +413,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Render download@> =
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
-	pathname *P = Pathnames::down(hrs->wv->weave_web->path_to_web, I"Downloads");
-	filename *F = Filenames::in(P, C->download_name);
-	filename *TF = Patterns::find_file_in_subdirectory(hrs->wv->weave_web, hrs->wv->pattern, I"Embedding",
-		I"Download.html");
-	if (TF == NULL) {
-		WebErrors::issue_at(I"Downloads are not supported", hrs->wv->current_weave_line);
-	} else {
-		Swarm::ensure_plugin(hrs->wv, I"Downloads");
-		pathname *TOP =
-			Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-				hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
-		if (TOP == NULL) TOP = Filenames::up(F);
-		TEMPORARY_TEXT(url)
-		TEMPORARY_TEXT(size)
-		Pathnames::relative_URL(url, Filenames::up(hrs->wv->weave_to), TOP);
-		WRITE_TO(url, "%S", Filenames::get_leafname(F));
-		int N = Filenames::size(F);
-		if (N > 0) @<Describe the file size@>
-		else WebErrors::issue_at(I"Download file missing or empty",
-				hrs->wv->current_weave_line);
-		filename *D = Filenames::from_text(C->download_name);
-		Bibliographic::set_datum(hrs->wv->weave_web, I"File Name",
-			Filenames::get_leafname(D));
-		Bibliographic::set_datum(hrs->wv->weave_web, I"File URL", url);
-		Bibliographic::set_datum(hrs->wv->weave_web, I"File Details", size);
-		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
-			TF, hrs->into_file, hrs->wv->weave_colony, hrs->wv->reportage);
-		WRITE("\n");
-		DISCARD_TEXT(url)
-		DISCARD_TEXT(size)
-	}
-
-@<Describe the file size@> =
-	WRITE_TO(size, " (");
-	if (Str::len(C->filetype) > 0) WRITE_TO(size, "%S, ", C->filetype);
-	int x = 0, y = 0;
-	text_stream *unit = I" byte"; x = N; y = 0;
-	if (N > 1) { unit = I" bytes"; }
-	if (N >= 1024) { unit = I"kB"; x = 10*N/1024; y = x%10; x = x/10; }
-	if (N >= 1024*1024) { unit = I"MB"; x = 10*N/1024/1024; y = x%10; x = x/10; }
-	if (N >= 1024*1024*1024) { unit = I"GB"; x = 10*N/1024/1024/1024; y = x%10; x = x/10; }
-	WRITE_TO(size, "%d", x);
-	if (y > 0) WRITE_TO(size, ".%d", y);
-	WRITE_TO(size, "%S", unit);
-	WRITE_TO(size, ")");
+	HTMLWeaving::render_download(OUT, hrs->wv, C->download_name, C->filetype, hrs->into_file);
 
 @<Render material@> =
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
@@ -1207,6 +1166,7 @@ void HTMLWeaving::render_code_block(OUTPUT_STREAM, int mode, weave_order *wv, te
 	while (i < Str::len(code)) {
 		inchar32_t c = Str::get_at(code, i);
 		if ((c == '\n') || (i+1 == Str::len(code))) {
+			if (c != '\n') PUT_TO(line, c);
 			Painter::syntax_colour(pl, &(pl->built_in_keywords), line, cols, FALSE, TRUE);
 			Str::clear(line);
 			WRITE_TO(colouring, "%S%c", cols, PLAIN_COLOUR);
@@ -1241,6 +1201,87 @@ void HTMLWeaving::render_syntax_coloured(OUTPUT_STREAM, text_stream *code,
 	}
 	if (current_colour >= 0) HTMLWeaving::change_colour(OUT, -1, colours);
 }
+
+int HTMLWeaving::render_text_as_image(OUTPUT_STREAM, int mode, weave_order *wv,
+	text_stream *desc, text_stream *path) {
+	match_results mr = Regexp::create_mr();
+	text_stream *as = NULL;
+	if (Regexp::match(&mr, desc, U"text as (%c+)")) as = mr.exp[0];
+	if (Str::eq(desc, I"text")) as = I"None";
+	if (as) {
+		filename *F = Filenames::from_text_relative(wv->weave_web->path_to_web, path);
+		if (TextFiles::exists(F) == FALSE) {
+			WRITE_TO(STDERR, "warning: text file at '%S' not found\n", path);
+		} else {
+			TEMPORARY_TEXT(code)
+			TextFiles::write_file_contents(code, F);
+			while ((Str::get_last_char(code) == ' ') || 
+					(Str::get_last_char(code) == '\t') || 
+					(Str::get_last_char(code) == '\n')) Str::delete_last_character(code);
+			HTMLWeaving::render_code_block(OUT, mode, wv, code, as);
+			DISCARD_TEXT(code)
+		}
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if (Regexp::match(&mr, desc, U"download: (%c+)")) {
+		HTMLWeaving::render_download(OUT, wv, path, mr.exp[0], wv->current_weave_file);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	Regexp::dispose_of(&mr);
+	return FALSE;
+}
+
+void HTMLWeaving::render_download(OUTPUT_STREAM, weave_order *wv, text_stream *download_name,
+	text_stream *filetype, filename *into_file) {
+	pathname *P = Pathnames::down(wv->weave_web->path_to_web, I"Downloads");
+	filename *F = Filenames::in(P, download_name);
+	filename *TF = Patterns::find_file_in_subdirectory(wv->weave_web, wv->pattern, I"Embedding",
+		I"Download.html");
+	if (TF == NULL) {
+		WebErrors::issue_at(I"Downloads are not supported", wv->current_weave_line);
+	} else {
+		Swarm::ensure_plugin(wv, I"Downloads");
+		asset_rule *R = Assets::new_rule(NULL, I"", I"privately copy", NULL);
+		pathname *TOP =
+			Assets::include_asset(OUT, R, wv->weave_web, F, NULL,
+				wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
+		if (TOP == NULL) TOP = Filenames::up(F);
+		TEMPORARY_TEXT(url)
+		TEMPORARY_TEXT(size)
+		Pathnames::relative_URL(url, Filenames::up(wv->weave_to), TOP);
+		WRITE_TO(url, "%S", Filenames::get_leafname(F));
+		int N = Filenames::size(F);
+		if (N > 0) @<Describe the file size@>
+		else WebErrors::issue_at(I"Download file missing or empty",
+				wv->current_weave_line);
+		filename *D = Filenames::from_text(download_name);
+		Bibliographic::set_datum(wv->weave_web, I"File Name",
+			Filenames::get_leafname(D));
+		Bibliographic::set_datum(wv->weave_web, I"File URL", url);
+		Bibliographic::set_datum(wv->weave_web, I"File Details", size);
+		Collater::for_web_and_pattern(OUT, wv->weave_web, wv->pattern,
+			TF, into_file, wv->weave_colony, wv->reportage);
+		WRITE("\n");
+		DISCARD_TEXT(url)
+		DISCARD_TEXT(size)
+	}
+}
+
+@<Describe the file size@> =
+	WRITE_TO(size, " (");
+	if (Str::len(filetype) > 0) WRITE_TO(size, "%S, ", filetype);
+	int x = 0, y = 0;
+	text_stream *unit = I" byte"; x = N; y = 0;
+	if (N > 1) { unit = I" bytes"; }
+	if (N >= 1024) { unit = I"kB"; x = 10*N/1024; y = x%10; x = x/10; }
+	if (N >= 1024*1024) { unit = I"MB"; x = 10*N/1024/1024; y = x%10; x = x/10; }
+	if (N >= 1024*1024*1024) { unit = I"GB"; x = 10*N/1024/1024/1024; y = x%10; x = x/10; }
+	WRITE_TO(size, "%d", x);
+	if (y > 0) WRITE_TO(size, ".%d", y);
+	WRITE_TO(size, "%S", unit);
+	WRITE_TO(size, ")");
 
 @h EPUB-only methods.
 

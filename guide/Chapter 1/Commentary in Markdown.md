@@ -275,6 +275,41 @@ produces:
 And the text "fragment from book VIII on Papyrus Oxyrhynchus 2099" is used as the
 alt-text for the image, which will be shown by screen-readers.
 
+**Inserted text files**. It's sometimes useful to be able to copy a text file
+into the woven output: that is, to say "put the contents of the file `whatever.txt`
+at this point". This is handled by an extension to Markdown like so:
+
+	![text](whatever.txt)
+
+This is intentionally the same syntax as for an image, because the text file
+is treated like a sort of textual picture. The "alt-text" in square brackets
+must be exactly the word `text` for this to work: and the contents of the file
+are then pasted in without any syntax-colouring.
+
+So, for example, `![text](haiku.txt)` might produce the equivalent of:
+
+	``` None
+	The whitebait
+	opens its eye
+	in the net of the law
+	```
+
+The further development:
+
+	![text as LANGUAGE](whatever.txt)
+
+does the same, but with the syntax-colouring conventions of `LANGUAGE` rather
+than `None`.
+
+**Downloadable files**. A similar extension to Markdown's normal way to write
+images can place a downloadable file link into the woven output. For example:
+
+	![download: Preform diagnostics file](preform-diagnostics.txt)
+
+The alt-text in square brackets must begin `download:`, and then continue
+with the caption for the file, that is, the brief description presented to
+the reader saying what the file is.
+
 **Footnotes**. These add a certain style to commentary,[1] and can be used to supply
 trivia.[2] That last sentence was typed as:
 

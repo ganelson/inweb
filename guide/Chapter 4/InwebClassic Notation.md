@@ -262,27 +262,6 @@ assuming it has one. (Single-file webs cannot use this feature.)
 
 	= (html fireworks.html)
 
-Text can also be drawn from an external file:
-
-	= (text from FILE)
-
-	= (text from FILE as code)
-
-	= (text from FILE as LANGUAGE)
-
-And the word `text` can be prefaced with either or both of the keywords
-`hyperlinked` and `undisplayed`. The note `as code` means to syntax-colour
-the material with the conventions of the language used by the program in
-the current web; `as LANGUAGE` says to use that language instead.
-
-Similarly, we can have downloads:
-
-	= (download alice.crt "certificate file")
-
-The file to download, in this case `alice.crt`, must be placed in a `Downloads`
-subdirectory of the web. The explanatory text — usually just an indication
-of what sort of file this is — is optional.
-
 A carousel is a slide-show of (usually but not always) figures; there's a
 set of slides with captions, only one of which is visible at a time.
 
@@ -366,7 +345,7 @@ Markdown just as easily:
 That is, the same conventions used for images in `MarkdownCode` work just
 as well here.
 
-Similarly, Inweb historically provided this syntax:
+Inweb historically provided this syntax:
 
 	>> You sit on the veranda drinking tea and your ducklings swim on the pond,
 	and everything smells good... and there are gooseberries. (Anton Chekhov)
@@ -422,3 +401,25 @@ This is equivalent to the older notation:
     $ inweb tangle countsort.py.md -to unexpected.py
     tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'
 	=
+
+Text was traditionally inserted from an external file with syntaxes like:
+
+	= (text from FILE)
+
+	= (text from FILE as code)
+
+	= (text from FILE as LANGUAGE)
+
+This should now be done thus:
+
+	![text](FILE)
+	
+	![text as LANGUAGE](FILE)
+
+Downloads were likewise historically written like so:
+
+	= (download alice.crt "certificate file")
+
+but this is now preferred:
+
+	![download: certificate file](alice.crt)
