@@ -24,8 +24,10 @@ Installation instructions are elsewhere, at [the project's GitHub page](https://
 The software is provided as a command-line tool, and if your installation has
 been successful, you should be able to type Inweb to use it:
 
+``` ConsoleText
     $ inweb
     inweb: a tool for literate programming. See 'inweb help' for more.
+```
 
 In this manual, the shell prompt is shown as `$`, so the command typed there was
 `inweb`, while the subsequent lines were printed by the program in reply.
@@ -43,6 +45,7 @@ or parameters needed by the command in question.
 brief reminder of how to use Inweb at the command line. For every other
 command, for example `inweb tangle`, further help is also available:
 
+``` ConsoleText
     $ inweb help tangle
     inweb tangle
 
@@ -50,6 +53,7 @@ command, for example `inweb tangle`, further help is also available:
 
     Tangling is one of the two fundamental operations of literate programming
     (for the other, see 'inweb help weave'). It strips out the markup in a web,
+```
 
 ... and so on: about a screenful is printed.
 
@@ -63,13 +67,17 @@ support different switches. For example, the `inweb tangle` command has the
 optional switch `-to FILE`, which changes where the tangled program is written to.
 Without the switch:
 
+``` ConsoleText
     $ inweb tangle countsort.py.md
     tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'
+```
 
 And with it:
 
+``` ConsoleText
     $ inweb tangle countsort.py.md -to unexpected.py
     tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'
+```
 
 This overrode the default filename `countsort.py`, which would otherwise have been
 used, and it's typical of how switches change only the details of what is done.
@@ -82,11 +90,15 @@ useful, though, control the amount of console output produced by Inweb.
 
 For the most part, replies like:
 
+``` ConsoleText
     tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'
+```
 
 are a helpful reassurance. But users who prefer the customary Unix silence can add `-silent`:
 
+``` ConsoleText
     $ inweb tangle countsort.py.md -silent
+```
 
 in which case nothing at all will be printed unless some error occurs. There is
 also an opposite extreme, `-verbose`, which gives a running narrative of what

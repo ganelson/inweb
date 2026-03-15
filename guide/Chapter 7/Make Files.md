@@ -5,8 +5,10 @@ to be used by the Unix utility `make`, much like its system for generating
 //README Files//. The command `inweb make-makefile` works almost exactly like
 `inweb make-readme`, and once again generates a makefile from a script:
 
+``` ConsoleText
 	$ inweb make-makefile smorgasbord
 	smorgasbord/smorgasbord.mkscript -> smorgasbord/smorgasbord.mk
+```
 
 A new switch, `-platform X`, allows the platform (i.e. operating system)
 being targeted to be changed: by default, this is whatever Inweb is running

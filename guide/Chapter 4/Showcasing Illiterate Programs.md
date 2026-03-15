@@ -76,12 +76,14 @@ no actual content got through.
 
 And now we're off to the races:
 
-	inweb weave vdu.a.mossy -using mossy.inweb -creating
+``` ConsoleText
+	$ inweb weave vdu.a.mossy -using mossy.inweb -creating
 	weaving web "Untitled" (ACME program in Mossy notation) as HTML
 	(created directory 'vdu-assets')
 		generated: vdu.html
 		11 files copied to: vdu-assets
-	
+```
+
 So much for a single fragment of code. More ambitiously, the next task is to
 present a slew of assembly files, which will become the sections of a multi-file web.
 
@@ -122,6 +124,7 @@ in commands about the `mos` web: the web sees this definition all by itself.
 
 Another plus of having a contents page is that it gives the web some metadata:
 
+``` ConsoleText
 	$ inweb inspect mos -metadata
 	web "MOS" (ACME program in Mossy notation): 2 sections : 9 paragraphs : 179 lines
 	
@@ -132,6 +135,7 @@ Another plus of having a contents page is that it gives the web some metadata:
 	Notation: Mossy
 	Semantic Version Number: 1.2
 	Version Number: 1.2
+```
 
 The source files, here `vdu.a` and `star.a`, are longer now. Suppose they start
 like this:
@@ -178,12 +182,14 @@ seemed actually to be called "Star commands".)
 Setting up the contents page was a little fuss, but now we get a neat little
 website as the reward:
 
-	inweb weave mos -creating
+``` ConsoleText
+	$ inweb weave mos -creating
 	weaving web "MOS" (ACME program in Mossy notation) as HTML
 	(created directory 'mos/Woven/assets')
 		[mos/Woven/vd.html] [stcm] 
 		[index] 
 		10 files copied to: mos/Woven/assets
+```
 
 ## Example: Semiliterate C
 
@@ -224,10 +230,12 @@ This time the program will be:
 
 Note that this is a valid ANSI C program, and requires no tangling to run:
 
+``` ConsoleText
 	$ cd jasmine
 	$ clang main.c
 	$ ./a.out
 	e = 2.718281828
+```
 
 (which, despite the crudeness of the method, is the right answer). So there
 is no point in tangling: but if we supply also the following contents page —
@@ -257,8 +265,10 @@ is no point in tangling: but if we supply also the following contents page —
 then we can weave the program directly to a website which contains mathematical
 formulae, headings, a contents page, and so on:
 
-	inweb weave jasmine -creating
+``` ConsoleText
+	$ inweb weave jasmine -creating
 	weaving web "Jasmine" (C program in SemiliterateC notation) as HTML
 		[jasmine/Woven/mn.html] 
 		[index] 
 		11 files copied to: jasmine/Woven/assets
+```

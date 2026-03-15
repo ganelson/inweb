@@ -334,8 +334,12 @@ void Tangler::tangle_holon(OUTPUT_STREAM, ls_holon *main_holon, tangle_docket *d
 
 	ls_holon *holon = main_holon;
 	@<Tangle this holon alone@>;
-	LOOP_OVER_LINKED_LIST(holon, ls_holon, main_holon->addenda)
+	LOOP_OVER_LINKED_LIST(holon, ls_holon, main_holon->addenda) {
+		ls_paragraph *par = holon->corresponding_chunk->owner;
+		IfdefTags::open_ifdefs(OUT, par);
 		@<Tangle this holon alone@>;
+		IfdefTags::close_ifdefs(OUT, par);
+	}
 	WRITE("\n%S", indentation);
 }
 
@@ -458,7 +462,8 @@ passes straight through. So `[[water]]` becomes just `[[water]]`.
 
 @<Act on this tangler command@> =
 	ls_chunk *chunk = hs->line->owning_chunk;
-	int handled = LanguageMethods::special_tangle_command(OUT, docket->target->tangle_language, hs->texts[0]);
+	int handled = LanguageMethods::special_tangle_command(OUT,
+		docket->target->tangle_language, hs->texts[0]);
 	ls_notation *ntn = chunk->owner->owning_unit->unit_notation;
 	if (handled == FALSE) {
 		ls_section *sect = LiterateSource::section_of_par(chunk->owner);

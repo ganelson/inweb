@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -52,22 +52,25 @@ make slightly different websites.</p>
 <h2>Tapestry</h2>
 <p>Suppose <code>pyramid.c.w</code> is some web in the current working directory, and we create
 a new pattern called <code>Tapestry</code>:</p>
-<pre><code>pyramid.c.w
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">pyramid.c.w
 Tapestry
 	Tapestry.inweb
-</code></pre>
+</span></pre>
 <p>A minimal declaration can be minimal indeed. Here's just enough for
 <code>Tapestry.inweb</code> to get going:</p>
-<pre><code>Pattern &quot;Tapestry&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Pattern "Tapestry" {
 	based on: HTML
 }
-</code></pre>
+</span></pre>
 <p>And now:</p>
-<pre><code>$ inweb weave pyramid.c.w -as Tapestry -using Tapestry
-weaving web &quot;Hilbert's Pyramid&quot; (C program in MarkdownCode notation) as Tapestry
-	generated: sample.html
-	10 files copied to: sample-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave pyramid.c.w</span><span class="ConsoleText-identifier-syntax"> -as</span><span class="ConsoleText-plain-syntax"> Tapestry</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> Tapestry</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as Tapestry</span>
+<span class="ConsoleText-plain-syntax">        generated: sample.html</span>
+<span class="ConsoleText-plain-syntax">        10 files copied to: sample-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>Any pattern can be based on any (one) other pattern, which doesn't have to be
 one of those built into Inweb. So it would be quite feasible to create one
 new pattern, <code>Fancy</code>, based on <code>HTML</code>, and then another, <code>SuperFancy</code>, based
@@ -84,7 +87,7 @@ contain any of the following:</p>
 <li>A &quot;plugin&quot; subdirectory, which contains one or more asset files.</li>
 </ul>
 <p>For example, at time of writing the <code>HTML</code> template built into Inweb contains:</p>
-<pre><code>Base
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Base
 Bigfoot
 Breadcrumbs
 Carousel
@@ -96,7 +99,7 @@ MathJax3
 Popups
 template-body.html
 template-index.html
-</code></pre>
+</span></pre>
 <p>Of these, <code>HTML.inweb</code> is the declaration file, and <code>template-body.html</code> and
 <code>template-index.html</code> are the templates. Everything else here is a subdirectory
 containing a plugin. (There are no &quot;loose assets&quot;: all the assets are in plugins.)</p>
@@ -104,10 +107,10 @@ containing a plugin. (There are no &quot;loose assets&quot;: all the assets are 
 a name to a bundle of design aiming to accomplish one thing. For example,
 <code>Breadcrumbs</code> contains the CSS needed for the row of breadcrumb links at the
 top of a web page, along with an image used to texture them.</p>
-<pre><code>Breadcrumbs
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Breadcrumbs
 	crumbs.gif
 	Breadcrumbs.css
-</code></pre>
+</span></pre>
 <p>Exactly how assets are used is a topic for later, but the point here is that
 our <code>Tapestry</code> weaves will also contain all of these plugins, because it is
 based on <code>HTML</code>. It can also contain new plugins, if we want. For example,
@@ -117,12 +120,12 @@ this image file. But how is this to be done?</p>
 <p>The answer is that <code>Tapestry</code> can contain a new plugin. It will be very simple:
 just a directory called <code>Logo</code> which contains our logo image, called <code>gobelins.jpg</code>.
 The files in this example now look like so:</p>
-<pre><code>pyramid.c.w
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">pyramid.c.w
 Tapestry
 	Logo
 		gobelins.jpg
 	Tapestry.inweb
-</code></pre>
+</span></pre>
 <p>Now when the weave is made as <code>Tapestry</code>, the image <code>gobelins.jpg</code> is automatically
 copied into the &quot;assets&quot; directory of the website being created.</p>
 <p>But that doesn't cause it to appear on any web pages: at present, it's just
@@ -131,48 +134,48 @@ need the HTML for each page to contain an image tag.</p>
 <p>This is where we need to provide a changed version of <code>template-body.html</code>, the
 prototype web page from which all other pages on the website will be made. The
 generic version in <code>HTML</code> is surprisingly short:</p>
-<pre><code>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;title&gt;[[Booklet Title]]&lt;/title&gt;
 		[[Plugins]]
 	&lt;/head&gt;
-	&lt;body class=&quot;commentary-font&quot;&gt;
+	&lt;body class="commentary-font"&gt;
 [[Weave Content]]
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</span></pre>
 <p>When Inweb makes a page, it performs what's called <em>collation</em> on this file.
 That means it copies the thing out, but substitutes appropriate content for
 certain placeholders written in double-square brackets, like <code>[[Weave Content]]</code>.
 (This is often replaced by a massive amount of HTML, in fact: all the woven
 code and commentary from the section.)</p>
 <p>So here's a revised version:</p>
-<pre><code>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;title&gt;[[Booklet Title]]&lt;/title&gt;
 		[[Plugins]]
 	&lt;/head&gt;
-	&lt;body class=&quot;commentary-font&quot;&gt;
+	&lt;body class="commentary-font"&gt;
 [[Weave Content]]
 	&lt;hr&gt;
-	&lt;img src=&quot;[[Assets]]gobelins.jpg&quot; alt=&quot;Tapestry Logo&quot;&gt;
+	&lt;img src="[[Assets]]gobelins.jpg" alt="Tapestry Logo"&gt;
 	&lt;p&gt;Brought to you by the Tapestry Foundation.&lt;/p&gt;
 	&lt;/body&gt;
 &lt;/html&gt;
-</code></pre>
+</span></pre>
 <p>Note the new lines at the bottom of the body of the page. Weaving with this
 now produces pages looking as normal, except for a ruled line at the bottom,
 and a shot of corporate branding.</p>
 <p>The setup now looks like so:</p>
-<pre><code>pyramid.c.w
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">pyramid.c.w
 Tapestry
 	Logo
 		gobelins.jpg
 	Tapestry.inweb
 	template-body.html
-</code></pre>
+</span></pre>
 <p>Why did this work? Well, when Inweb needs a file from a pattern — for example
 <code>template-body.html</code> — it looks for it first in the pattern currently in use;
 if the file isn't there, it looks in the pattern that is based on; and so on.
@@ -184,7 +187,7 @@ in HTML — allowing us to change the CSS or Javascript code in use. For example
 the plugin <code>Colouring</code> contains the colour choices made by <code>HTML</code>. The <code>Colouring</code>
 plugin contains other things too, but the file to monkey with is
 <code>Colouring/Colours.css</code>. We can provide a new version:</p>
-<pre><code>pyramid.c.w
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">pyramid.c.w
 Tapestry
 	Colouring
 		Colours.css
@@ -192,32 +195,32 @@ Tapestry
 		gobelins.jpg
 	Tapestry.inweb
 	template-body.html
-</code></pre>
+</span></pre>
 <p>And now the version of <code>Colours.css</code> used by Inweb (on a <code>Tapestry</code> weave)
 will be this new one, not the original still in <code>HTML</code>. Note that we are
 not under any obligation to provide the rest of the plugin: we only need
 to provide replacements for the files we want to change.</p>
 <p>So, for example, <code>Colours.css</code> contains the line:</p>
-<pre><code>span.identifier-syntax  { color: #4040ff; }
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">span.identifier-syntax  { color: #4040ff; }
+</span></pre>
 <p>This is a not-too-light green. Rewriting the line as:</p>
-<pre><code>span.identifier-syntax  { color: #111111; }
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">span.identifier-syntax  { color: #111111; }
+</span></pre>
 <p>makes the identifiers a very dark charcoal grey. (Strictly speaking, it does
 this to any code syntax-coloured as <code>!identifier</code>, or as a colour like it:
 see <a href="5-scp.html" class="internal">Syntax Colouring Programs</a>.)</p>
 <h2>MonoGitHub</h2>
 <p>As a further example: suppose the following is placed in a <code>MonoGitHub</code> directory, with
 the name <code>MonoGitHub.inweb</code> —</p>
-<pre><code>pattern &quot;MonoGitHub&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">pattern "MonoGitHub" {
 	based on: GitHubPages
 }
-</code></pre>
+</span></pre>
 <p>Then a subdirectory <code>Base</code> is added, with just one file in it, <code>Fonts.css</code>,
 which reads:</p>
-<pre><code>.code-font { font-family: monospace; }
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">.code-font { font-family: monospace; }
 .commentary-font { font-family: monospace; }
-</code></pre>
+</span></pre>
 <p>When weaving with this new pattern, Inweb will use the new <code>Fonts.css</code> file
 rather than the one in the <code>Base</code> plugin of <code>HTML</code>. Pages will then use
 a monospaced font for commentary as well as code. All the other files of

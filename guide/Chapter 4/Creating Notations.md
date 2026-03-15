@@ -56,12 +56,14 @@ This can be placed in, say, the file `simple.inweb`.
 
 Everything seems to work nicely:
 
+``` ConsoleText
 	$ inweb inspect countsort.py.simp -using simple.inweb
 	web "Untitled" (Python program in Simple notation): 3 paragraphs : 31 lines
 
 	$ inweb tangle countsort.py.simp -using simple.inweb -to - | python3
 	Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
 	Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
+```
 
 Note the `-using simple.inweb` added to the Inweb commands here: these make
 declarations in the file `simple.inweb` available to Inweb. There are
@@ -188,6 +190,7 @@ So, then, the result of the above classifier is:
 	
 and so on. That can be verified using `inweb inspect -scan`:
 
+``` ConsoleText
 	$ inweb inspect countsort.py.simp -scan -using simple.inweb
 	web "Untitled" (Python program in Simple notation): 3 paragraphs : 27 lines
 	S1
@@ -213,6 +216,7 @@ and so on. That can be verified using `inweb inspect -scan`:
 			0000018 print("Unsorted:",⏑A)
 			0000019 print("Sorted:",⏑countingSort(A))
 	...
+```
 
 In these scan printouts, `S1`, `S2`, ..., are the paragraphs, which are internally
 divided into _chunks_, `C1`, `C2`, and so on. What has happened, then, is that
@@ -315,9 +319,11 @@ The effect is an eccentric new syntax, one which would read the following web:
 
 And then indeed:
 
+``` ConsoleText
 	$ inweb tangle countsort.py.nssimp -to - -using nssimple.inweb | python2
 	('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])
 	('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])
+```
 
 Of course, this notation is only a little different from `MarkdownCode`. We
 are writing holons as `<[Name]>` rather than `{{Name}}`, and declaring them

@@ -58,15 +58,16 @@ code file is viewed at GitHub.
 
 `InwebClassic` is a more traditional LP notation, in that paragraph and code
 boundaries are explicitly marked. This increases the amount of markup needed,
-but in compensation, a few additional features are provided: automated
-definitions and enumerations (in C-like languages), and embedded gadgets
-such as carousels of images, video, audio and so on. But commentary itself
-uses the same Markdown syntax as `MarkdownCode`, and so the two notations
-are not as different as they may appear at first sight.
+but some people find this clearer. It also provides for automated definitions
+and enumerations when coding in C-like languages, and for that reason is used
+by the Inform project. But since the commentary uses the same Markdown syntax as
+`MarkdownCode`, the two notations are not as different as they may appear at
+first sight.
 
 `CWEB` is a partial compatibility mode with Knuth's CWEB tool. It is able to
-tangle, and to weave, at least some of his programs of the last forty years,
-more or less adequately. Here, commentary uses TeX, not conventional Markdown.
+tangle, and to weave to HTML, at least some of his programs of the last
+forty years, more or less adequately. Here, commentary uses TeX, not
+conventional Markdown.
 
 `WEB` is an even more partial compatibility mode for Knuth's early WEB tool.
 It can only usefully weave, not tangle, and even then, quite imperfectly.

@@ -58,7 +58,7 @@ leave the language `NULL` if there really is no indication:
 
 @<Try to deduce the language from the filename extension@> =
 	if (W->single_file)
-		RS.detected_language = Languages::guess_from_filename(W, W->single_file);
+		RS.detected_language = Languages::guess_from_filename(W, W->single_file, 2);
 
 @<Apply any detected syntax and programming language to the web@> =
 	WebNotation::adopt_for_web(W, RS.detected_syntax);

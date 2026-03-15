@@ -1,19 +1,23 @@
 # About Patterns
 
-Every weave is makes use of a _pattern_. The same web can look very different
+Every weave makes use of a _pattern_. The same web can look very different
 when woven with two different patterns; and a pattern can, in principle, be
 used with many different webs.
 
 Like languages and notations, patterns are resources identified by their names. 
 The default pattern is called `HTML`:
 
+``` ConsoleText
 	$ inweb weave pyramid.c.w
 	weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as HTML
+```
 
 Note the `as HTML` at the end of that line. Whereas:
 
+``` ConsoleText
 	$ inweb weave pyramid.c.w -as GitHubPages
 	weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as GitHubPages
+```
 
 That's to say, running the `inweb weave` command with the switch `-as NAME`
 tells Inweb to use the pattern called `NAME`.

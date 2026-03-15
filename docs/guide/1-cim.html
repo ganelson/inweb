@@ -31,6 +31,8 @@ MathJax = {
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
+<link href="../docs-assets/Carousel.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="../docs-assets/Carousel.js"></script>
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
@@ -47,13 +49,12 @@ MathJax = {
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -74,38 +75,38 @@ There are many online guides to Markdown, but here are the main points:</p>
 <p><strong>Headings</strong>. Markdown has six levels of subheading, denoted <code>#</code> to <code>######</code>. The top two
 levels are meaningful to Inweb. The highest level, <code>#</code>, should be used only
 on the opening line of a file, and to write the title text:</p>
-<pre><code># Heapsort by J. W. J. Williams
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Heapsort by J. W. J. Williams
+</span></pre>
 <p>After that, the file can contain any number of <code>##</code> subheadings. Inweb uses
 these when breaking the material into &quot;paragraphs&quot;, and renders them neatly
 when weaving the web. For example, a file of 500 lines might sensibly be
 broken up with five or six subheadings like this one:</p>
-<pre><code>## Some Initialization
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Some Initialization
+</span></pre>
 <p>Lesser subheadings are ignored by Inweb, or rather, are treated as commentary
 features like any other: they're probably best not used, but chacun à son goût.</p>
 <p><strong>Character set</strong>. Inweb uses Unicode throughout and expects files to be
 encoded as UTF-8. This means that the commentary in a web can freely use
 exotica like this:</p>
-<pre><code>Chacun à son goût, as the French say.🇫🇷
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Chacun à son goût, as the French say.🇫🇷
+</span></pre>
 <p>Older compilers and interpreters may not accept Unicode in their source code,
 but the tangled output from a web will only contain what characters we use in
 the holons, not the commentary. So this web:</p>
-<pre><code>Περσέων μέν νυν οἱ λόγιοι Φοίνικας αἰτίους φασί γενέσθαι τῆς διαφορῆς.
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Περσέων μέν νυν οἱ λόγιοι Φοίνικας αἰτίους φασί γενέσθαι τῆς διαφορῆς.
 
 	phoenicians.angry = true;
-</code></pre>
+</span></pre>
 <p>tangles to a program containing no Greek characters, since those were only
 present in the commentary.</p>
 <p><strong>Styling of text</strong>. The following:</p>
-<pre><code>* Code can be written in `backticks` like so.
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">* Code can be written in `backticks` like so.
 
 * _Emphasis_ and **strong emphasis** are technically not the same thing as
   italics and boldface, but are often rendered that way.
 
 * ~Strikethrough~ if a word displeases you.
-</code></pre>
+</span></pre>
 <p>renders as:</p>
 <ul>
 <li>
@@ -141,14 +142,14 @@ your curiosity.</p>
 </li>
 </ul>
 <p><strong>Lists</strong>. Lists are indicated with bullets. This:</p>
-<pre><code>A tight list has less vertical space between the items. Both sorts can have
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">A tight list has less vertical space between the items. Both sorts can have
 nested sub-lists.
 * First item.
 * Second item.
    * Nested item 1.
    * Nested item 2.
 * Third item.
-</code></pre>
+</span></pre>
 <p>Comes out as:</p>
 <p>A tight list has less vertical space between the items. Both sorts can have
 nested sub-lists.</p>
@@ -163,14 +164,15 @@ nested sub-lists.</p>
 <li>Third item.</li>
 </ul>
 <p>It's also possible to have a numbered list:</p>
-<pre><code>1. First item.
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">1. First item.
 2. Second item.
    * Nested item 1.
    * Nested item 2.
 3. Third item.
-</code></pre>
-<p>...though a quaint feature of Markdown is that it ignores the numbers actually
-used in the text, and applied its own counting from 1.</p>
+</span></pre>
+<p>...though a quaint &quot;feature&quot; of Markdown is that it ignores the numbers actually
+used in the text, and applies its own counting from 1; so if you write a list
+numbered as 3, 4, 5, it will still come out as 1, 2, 3.</p>
 <ol>
 <li>First item.</li>
 <li>Second item.
@@ -185,12 +187,12 @@ used in the text, and applied its own counting from 1.</p>
 In most uses of Markdown, longer code extracts would be indented by one tab
 stop, but we can't do that here, because if we did then the code would become
 part of the program. Instead we use an alternate Markdown notation, &quot;fences&quot;:</p>
-<pre><code>```
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">```
 int strangiato(int villa) {
     return 0;
 }
 ```
-</code></pre>
+</span></pre>
 <p>producing:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -212,8 +214,8 @@ how to syntax-colour the result:</p>
 taught about new languages as needed: see <a href="5-al.html" class="internal">About Languages</a>.</p>
 <p><strong>Links</strong>. Links in the web-page sense are written with square and then round
 brackets in Markdown:</p>
-<pre><code>[this text is highlighted](https://en.wikipedia.org/wiki/Highlights_(band))
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[this text is highlighted](https://en.wikipedia.org/wiki/Highlights_(band))
+</span></pre>
 <p>produces: <a href="https://en.wikipedia.org/wiki/Highlights_(band)">this text is highlighted</a>.</p>
 <p>Inweb pre-populates the Markdown links dictionary in such a way that if a web
 has multiple sections then the names of those sections can be used as self-contained
@@ -221,25 +223,23 @@ links. For example, if a web has a section called &quot;Gold-Digging Ants&quot;,
 anywhere in the web, the link <code>[Gold-Digging Ants]</code> will produce the words
 &quot;Gold-Digging Ants&quot; and also link them to the relevant section. Alternatively,
 to provide different text which is still linked there:</p>
-<pre><code>Some defend [Herodotus's more improbable claims](Gold-Digging Ants).
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Some defend [Herodotus's more improbable claims](Gold-Digging Ants).
+</span></pre>
 <p>For this to work, the section name can't be a positive number, because that
 would be read instead as a footnote (see below).</p>
 <p><strong>Mathematics</strong>. The usual reason to dip into mathematics notation in program
 commentary is to agonise over running time, like so:</p>
-<pre><code>Though it is often said that sorting algorithms cannot run faster than $O(n\log n)$
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Though it is often said that sorting algorithms cannot run faster than $O(n\log n)$
 time when sorting $n$ items, this is only true for comparison-based sorting, and
 counting sort trades memory for time in order to run in $O(n+k)$ time, where $k$
 is the maximum value of the items being sorted.
-</code></pre>
+</span></pre>
 <p>Here the mathematics <code>$n$</code>, <code>$O(n\log n)$</code>, and such are written in \INWEBMATH({\rm\TeX}\INWEBMATH) notation,
 and sandwiched in between dollar signs <code>$</code>. This produces \INWEBMATH(n\INWEBMATH), \INWEBMATH(O(n\log n)\INWEBMATH) and so on,
 and will be rendered in HTML using the \INWEBMATH({\rm\TeX}\INWEBMATH) engine to produce a typeset fragment of
 a page which is then displayed as an image. Longer, centred-on-the-page, formulae
-can be displayed using doubled dollar signs <code>$$</code>, so:</p>
-<pre><code>$$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$
-</code></pre>
-<p>types a formula for the gamma function:</p>
+can be displayed using doubled dollar signs <code>$$</code>, so <code>$$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$</code>
+types a formula for the gamma function:</p>
 <p>$$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$</p>
 <p>All of this takes away the ability to use the dollar character for its own sake,
 as in the phrase &quot;Herodotus' <em>Histories</em> currently ship for $18.44 in paperback&quot;.
@@ -248,7 +248,7 @@ the otherwise special behaviour of <code>$</code>. Of course, <em>this</em> then
 backslash, but <code>\\</code> then works. So <code>/a little tent\\</code> produces /a little tent\.</p>
 <p><strong>Tables</strong>. See Github's documentation on writing tables in Markdown for
 more, but e.g.:</p>
-<pre><code>MS | Library                         | Shelfmark              | Century
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">MS | Library                         | Shelfmark              | Century
 -- | ------------------------------- | ---------------------- | ---------
 A  | Laurentian                      | Plutei 70.03           | 10th
 B  | Angelicanus                     |                        | 11th
@@ -259,7 +259,7 @@ U  | Vatican                         | Urbinas 88             |
 C  | Laurentian                      | conventi soppressi 207 | 11th
 E  | Bibliotheque National de France | suppl. 134             | 13th
 P  | Bibliotheque National de France | gr. 1633               | 14th
-</code></pre>
+</span></pre>
 <p>produces:</p>
 <table>
 <thead>
@@ -336,52 +336,208 @@ where they continue even now to dwell, set themselves forthwith to make
 long voyages by sea.&quot;</p>
 </blockquote>
 <p>was produced by:</p>
-<pre><code>&gt; &quot;Those of the Persians who have knowledge of history declare that the
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; "Those of the Persians who have knowledge of history declare that the
 &gt; Phoenicians first began the quarrel. These, they say, came from that which
 &gt; is called the Erythraian Sea to this of ours; and having settled in the land
 &gt; where they continue even now to dwell, set themselves forthwith to make
-&gt; long voyages by sea.&quot;
-</code></pre>
+&gt; long voyages by sea."
+</span></pre>
 <p>Note the running <code>&gt;</code> marks, which are essential on each line. The quotation
 marks <code>&quot;</code> at the start and end here were on the other hand optional.</p>
 <p><strong>Ruled lines</strong>. Feel free to draw a line:</p>
 <hr />
 <p>by means of:</p>
-<pre><code>Feel free to draw a line:
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Feel free to draw a line:
 
 --- ---
-</code></pre>
+</span></pre>
 <p><strong>Pictures</strong>. Traditional Markdown is <code>![Alt text here](/image/url/here.png)</code>.
 This works fine, but is a little awkward because you need to know the relative
 URL to whichever directory holds the images, and also, you need to put them there.</p>
 <p>When Inweb renders Markdown images in a weave to HTML, then, there are two bonus
 features. Firstly, <em>if</em> the image filename contains no slashes <code>/</code>, as in the
 following example...</p>
-<pre><code>![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg)
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg)
+</span></pre>
 <p>...then Inweb finds the image in the <code>Figures</code> subdirectory of the directory
 containing the colony file, and automatically copies it to where it's needed.</p>
 <p><img src="papyrus.jpg" alt="fragment from book VIII on Papyrus Oxyrhynchus 2099" /></p>
 <p>Secondly, images can be resized, which regular Markdown image links would not allow:</p>
-<pre><code>![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@200)
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@200)
 
 ![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@150x30)
-</code></pre>
+</span></pre>
 <p>produces:</p>
 <p><img src="papyrus.jpg" alt="fragment from book VIII on Papyrus Oxyrhynchus 2099" width="200" /></p>
 <p><img src="papyrus.jpg" alt="fragment from book VIII on Papyrus Oxyrhynchus 2099" width="150" height="30" /></p>
 <p>And the text &quot;fragment from book VIII on Papyrus Oxyrhynchus 2099&quot; is used as the
 alt-text for the image, which will be shown by screen-readers.</p>
+<p><strong>Inserted text files</strong>. It's sometimes useful to be able to copy a text file
+into the woven output: that is, to say &quot;put the contents of the file <code>whatever.txt</code>
+at this point&quot;. This is handled by an extension to Markdown like so:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![text](whatever.txt)
+</span></pre>
+<p>This is intentionally the same syntax as for an image, because the text file
+is treated like a sort of textual picture. The &quot;alt-text&quot; in square brackets
+must be exactly the word <code>text</code> for this to work: and the contents of the file
+are then pasted in without any syntax-colouring.</p>
+<p>So, for example, <code>![text](haiku.txt)</code> might produce the equivalent of:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">``` None
+The whitebait
+opens its eye
+in the net of the law
+```
+</span></pre>
+<p>The further development:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![text as LANGUAGE](whatever.txt)
+</span></pre>
+<p>does the same, but with the syntax-colouring conventions of <code>LANGUAGE</code> rather
+than <code>None</code>.</p>
+<p><strong>Downloadable files</strong>. A similar extension to Markdown's normal way to write
+images can place a downloadable file link into the woven output. For example:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![download: Preform diagnostics file](preform-diagnostics.txt)
+</span></pre>
+<p>The alt-text in square brackets must begin <code>download:</code>, and then continue
+with the caption for the file, that is, the brief description presented to
+the reader saying what the file is.</p>
+<p><strong>Audio and video</strong>. We can put audio and video players into the woven commentary
+which will play files included in a web:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![audio](example.mp3)
+
+![video](sample.mp4)
+</span></pre>
+<p>These filenames will be relative to the web's <code>Audio</code> and <code>Video</code> subdirectories
+respectively. The players can be rescaled:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![video at 200 by 150](sample.mp4)
+
+![video at height 200](sample.mp4)
+</span></pre>
+<p>Or we can put in embedded audio or video players calling on external resources.
+In that case, the bracketed &quot;links&quot; are media ID numbers at the service in
+question.</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![embedded YouTube video](GR3aImy7dWw)
+
+![embedded Vimeo video](204519)
+
+![embedded SoundCloud audio](42803139)
+
+![embedded Vimeo video at 400 by 300](204519)
+
+![embedded SoundCloud audio at height 200](42803139)
+</span></pre>
+<p>The latter sets just the height (of the displayed waveform, that is —
+arguably music has width and not height, but SoundCloud thinks otherwise).</p>
+<p><strong>Carousels</strong>. A carousel is a slide-show of (usually but not always) figures;
+there's a set of slides with captions, only one of which is visible at a time.</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">* (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+
+	![The Royal Albert Hall at night.](rah.jpg)
+
+* (carousel "Brighton Beach")
+
+	![Brighton beach by day.](brighton.jpg)
+
+* (carousel "Pula")
+
+	![Roman amphitheatre in a bay.](pula.jpg)
+
+* (carousel "St Mark's Basilica, Venice")
+
+	![St Mark's Basilica.](venice.jpg)
+</span></pre>
+<p>Note that this is an unordered list in Markdown notation (that's what the <code>*</code>
+bullets indicate): but if Inweb sees that <em>every</em> item in an unordered list
+begins with a paragraph reading <code>(carousel &quot;CAPTION HERE&quot;)</code>, then Inweb renders
+the list as a carousel rather than simply a list of images one after another.</p>
+<p>That carousel contained only figures, but almost any Markdown material can go
+into the slides. For example:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">* (carousel "Stage 1 - Raw tree" captioned below)
+
+	``` BoxArt
+		ROOT ---&gt; DOCUMENT
+	```
+
+* (carousel "Stage 2 - Developed tree" captioned below)
+
+	``` BoxArt
+		ROOT ---&gt; DOCUMENT
+					|
+				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+	```
+
+* (carousel "Stage 3 - Completed tree" captioned below)
+
+	``` BoxArt
+		ROOT ---&gt; DOCUMENT
+					|
+				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+					|            |            |
+				  text 1       text 2       text 3  ...
+	```
+</span></pre>
+<p>Note the optional <code>captioned below</code>; <code>captioned above</code> is also allowed. By
+default, the caption for a carousel slide stylishly overlies the bottom of
+the content, but while that's good for pictures, it obstructs the view of
+diagrams like these. So:</p>
+<div class="carousel-container" id="carousel-no-1">
+<div class="carousel-slide fading-slide" style="display: block;">
+<div class="carousel-number">1 / 3</div>
+<div class="carousel-content"><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="function-syntax">ROOT</span><span class="plain-syntax"> ---&gt; </span><span class="function-syntax">DOCUMENT</span><span class="plain-syntax">
+</span></pre>
+</div>
+<div class="carousel-caption-below">Stage 1 - Raw tree</div>
+</div>
+<div class="carousel-slide fading-slide" style="display: none;">
+<div class="carousel-number">2 / 3</div>
+<div class="carousel-content"><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="function-syntax">ROOT</span><span class="plain-syntax"> ---&gt; </span><span class="function-syntax">DOCUMENT</span><span class="plain-syntax">
+				|
+			  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">  --- ...
+</span></pre>
+</div>
+<div class="carousel-caption-below">Stage 2 - Developed tree</div>
+</div>
+<div class="carousel-slide fading-slide" style="display: none;">
+<div class="carousel-number">3 / 3</div>
+<div class="carousel-content"><pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	</span><span class="function-syntax">ROOT</span><span class="plain-syntax"> ---&gt; </span><span class="function-syntax">DOCUMENT</span><span class="plain-syntax">
+				|
+			  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">  ---  </span><span class="function-syntax">NODE</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">  --- ...
+				|            |            |
+			  </span><span class="element-syntax">text</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">       </span><span class="element-syntax">text</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">       </span><span class="element-syntax">text</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">  ...
+</span></pre>
+</div>
+<div class="carousel-caption-below">Stage 3 - Completed tree</div>
+</div>
+<a class="carousel-prev-button" onclick="carouselMoveSlide(&quot;carousel-no-1&quot;, &quot;carousel-dots-no-1&quot;, -1)">&#10094;</a>
+<a class="carousel-next-button" onclick="carouselMoveSlide(&quot;carousel-no-1&quot;, &quot;carousel-dots-no-1&quot;, 1)">&#10095;</a>
+</div>
+<div class="carousel-dots-container" id="carousel-dots-no-1">
+<span class="carousel-dot carousel-dot-active" onclick="carouselSetSlide(&quot;carousel-no-1&quot;, &quot;carousel-dots-no-1&quot;, 0)"></span>
+<span class="carousel-dot" onclick="carouselSetSlide(&quot;carousel-no-1&quot;, &quot;carousel-dots-no-1&quot;, 1)"></span>
+<span class="carousel-dot" onclick="carouselSetSlide(&quot;carousel-no-1&quot;, &quot;carousel-dots-no-1&quot;, 2)"></span>
+</div>
+<p>Carousels can also have slides with no caption at all:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">* (carousel)
+
+	![A faceless figure.](anonymous.jpg)
+
+* (carousel)
+
+	![A figure with back turned.](furtive.jpg)
+</span></pre>
+<p><strong>Embedded HTML</strong>. This splices in some raw HTML code from a file in the web's
+<code>HTML</code> subdirectory, assuming it has one:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![html](fireworks.html)
+</span></pre>
 <p><strong>Footnotes</strong>. These add a certain style to commentary,<sup id="fnred:1"><a href="#fn:1" rel="footnote">1</a></sup> and can be used to supply
 trivia.<sup id="fnred:2"><a href="#fn:2" rel="footnote">2</a></sup> That last sentence was typed as:</p>
-<pre><code>These add a certain style to commentary,[1] and can be used to supply
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">These add a certain style to commentary,[1] and can be used to supply
 trivia.[2]
 
 [1] Some would say.
 
 [2] Herodotus was born not far from the site of the future Tomb of Mausolus, one of
 the seven wonders of the ancient world, from which the word _mausoleum_ derives.
-</code></pre>
+</span></pre>
 <p>Square brackets in Markdown ordinarily mean links. They do here, too: what is
 going on is that a link whose text and address are both the same, and are both a
 positive integer of 1 to 9 digits, is read as being a link to the footnote of

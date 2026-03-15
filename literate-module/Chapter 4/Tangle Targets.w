@@ -76,7 +76,8 @@ section and line.
 			if ((T == NULL) || (TangleTargets::of_section(S) == T))
 				for (ls_paragraph *L_par = S->literate_source->first_par; L_par; L_par = L_par->next_par)
 					for (ls_chunk *L_chunk = L_par->first_chunk; L_chunk; L_chunk = L_chunk->next_chunk)
-						if (LiterateSource::is_code_chunk(L_chunk))
+						if ((LiterateSource::is_code_chunk(L_chunk)) &&
+							((L_chunk->holon == NULL) || (L_chunk->holon->file_form == FALSE)))
 							for (ls_line *lst = L_chunk->first_line; lst; lst = lst->next_line)
 
 @d LOOP_WITHIN_CODE_AND_DEFINITIONS(C, S, T)
@@ -85,6 +86,7 @@ section and line.
 			if ((T == NULL) || (TangleTargets::of_section(S) == T))
 				for (ls_paragraph *L_par = S->literate_source->first_par; L_par; L_par = L_par->next_par)
 					for (ls_chunk *L_chunk = L_par->first_chunk; L_chunk; L_chunk = L_chunk->next_chunk)
-						if ((LiterateSource::is_code_chunk(L_chunk)) ||
+						if (((LiterateSource::is_code_chunk(L_chunk)) &&
+							((L_chunk->holon == NULL) || (L_chunk->holon->file_form == FALSE))) ||
 							(L_chunk->chunk_type == DEFINITION_LSCT))
 							for (ls_line *lst = L_chunk->first_line; lst; lst = lst->next_line)

@@ -28,13 +28,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -52,16 +51,16 @@ part of a language definition. In <a href="5-cl.html" class="internal">Creating 
 block improved the syntax-colouring for code in the Rust language, but as an
 earlier example showed, these blocks can also be used for &quot;languages&quot; which are
 really just ways to mark up textual displays or diagrams:</p>
-<pre><code>Language &quot;VowelsExample&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "VowelsExample" {
 	colour !vowel like !function
 	colouring
 		=&gt; !plain
-		characters in &quot;AEIOUaeiou&quot; {
+		characters in "AEIOUaeiou" {
 			=&gt; !vowel
 		}
 	end
 }
-</code></pre>
+</span></pre>
 <p>Thus:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -185,22 +184,22 @@ colouring programs give a language definition a lot of freedom in assigning
 these colours to different globs of characters.</p>
 <h2>If there is no colouring program...</h2>
 <p>Note that a simple text display, like this one:</p>
-<pre><code>My memory takes me back across the interval of fifty years to a little
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">My memory takes me back across the interval of fifty years to a little
 ill-lit room with a sash window open to a starry sky, and instantly
 there returns to me the characteristic smell of that room, the
 penetrating odor of an ill-trimmed lamp, burning cheap paraffin.
-</code></pre>
+</span></pre>
 <p>will be coloured <code>!plain</code> throughout. This effect could be duplicated by:</p>
-<pre><code>Language &quot;Colourless&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Colourless" {
 	colouring
 		=&gt; !plain
 	end
 }
-</code></pre>
+</span></pre>
 <p>Code for a completely bare language like:</p>
-<pre><code>Language &quot;Bland&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Bland" {
 }
-</code></pre>
+</span></pre>
 <p>will get a little fancier treatment, but only a little. The following is
 rendered as <code>Bland</code>:</p>
 </div>
@@ -241,44 +240,44 @@ if the program really insists, <code>!comment</code>).</p>
 <h2>Colouring programs</h2>
 <p>These always begin with a line reading just <code>colouring</code>, and end with a line
 reading just <code>end</code>. The empty colouring program is legal:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 end
-</code></pre>
+</span></pre>
 <p>This makes stage 3 ineffective, and thus is equivalent to not to having a
 colouring program at all.</p>
 <p>The material in between is called a <em>block</em>. Each block runs on a
 given stretch of contiguous text, called the <em>snippet</em>. For the outermost
 block, that's a line of source code. Blocks normally contain one or more
 <em>rules</em>:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
     marble =&gt; !function
 end
-</code></pre>
+</span></pre>
 <p>Rules take the form of &quot;if X, then Y&quot;, and the <code>=&gt;</code> divides the X from the Y.
 This one says that if the snippet consists of the word &quot;marble&quot;, then colour
 it <code>!function</code>. Of course this is not very useful, since it would only catch
 lines containing only that one word. So we really want to narrow in on smaller
 snippets. This, for example, applies its rule to each individual character
 in turn:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
     characters {
         K =&gt; !identifier
     }
 end
-</code></pre>
+</span></pre>
 <p>In the above examples, <code>K</code> and <code>marble</code> appeared without quotation marks,
 but they were only allowed to do that because (a) they were single words,
 (b) those words had no other meaning, and (c) they didn't contain any
 awkward characters. For any more complicated texts, always use quotation
 marks. For example, in</p>
-<pre><code>&quot;=&gt;&quot; =&gt; !reserved
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">"=&gt;" =&gt; !reserved
+</span></pre>
 <p>the <code>=&gt;</code> in quotes is just text, whereas the one outside quotes is being
 used to divide a rule.</p>
 <p>If you need a literal double quote inside the double-quotes, use <code>\&quot;</code>; and
 use <code>\\</code> for a literal backslash. For example:</p>
-<pre><code>&quot;\\\&quot;&quot; =&gt; !reserved
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">"\\\"" =&gt; !reserved
+</span></pre>
 <p>actually matches the text <code>\&quot;</code>.</p>
 <h3>The six splits</h3>
 <p><code>characters</code> is an example of a <em>split</em>, which splits up the original snippet
@@ -322,34 +321,34 @@ is no match, or there are no bracketed terms in <code>E</code>, nothing happens.
 </ol>
 <p>Demonstrations are probably clearer than elaborate descriptions. <code>characters</code>
 was shown above, and <code>characters in T</code> has also been seen before in this chapter:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	=&gt; !plain
-	characters in &quot;AEIOUaeiou&quot; {
+	characters in "AEIOUaeiou" {
 		=&gt; !function
 	}
 end
-</code></pre>
+</span></pre>
 <p>Note that it splits the line up into characters, but ignores all those characters
 not found in the text, i.e., all the non-vowels. That doesn't destroy them, because
 the next rule could always split the line differently:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	=&gt; !plain
-	characters in &quot;AEIOUaeiou&quot; {
+	characters in "AEIOUaeiou" {
 		=&gt; !function
 	}
-	characters in &quot;Yy&quot; {
+	characters in "Yy" {
 		=&gt; !element
 	}
 end
-</code></pre>
+</span></pre>
 <p><code>instances of X</code> splits into potentially larger snippets. For example,</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	=&gt; !plain
-	instances of &quot;son&quot; {
+	instances of "son" {
 		=&gt; !function
 	}
 end
-</code></pre>
+</span></pre>
 <p>might produce:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -365,16 +364,16 @@ in the word <code>grandson</code>, should be coloured <code>!function</code>.</p
 considered as having only one instance of <code>==</code> (the first two characters),
 while <code>====</code> would have two.</p>
 <p>As an example of <code>runs of !C</code>, where <code>!C</code> describes a colour, consider:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	=&gt; !plain
-	characters in &quot;0123456789&quot; {
+	characters in "0123456789" {
 		=&gt; !function
 	}
 	runs of !plain {
-		&quot;-&quot; =&gt; !function
+		"-" =&gt; !function
 	}
 end
-</code></pre>
+</span></pre>
 <p>which has this effect:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -404,13 +403,13 @@ rule is reached) are:</p>
 <p>Thus the two hyphens occurring in the date ranges occupy entire runs, but
 the one in &quot;so-called&quot; does not.</p>
 <p>A more computer-science sort of example would be:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	runs of !identifier {
 		printf =&gt; !function
 		sscanf =&gt; !function
 	}
 end
-</code></pre>
+</span></pre>
 <p>which might produce:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -422,12 +421,12 @@ the third is coloured as <code>!function</code>, because only the third matches 
 rules inside the <code>runs of</code> block.</p>
 <p>The split <code>matches of /E/</code> brings in regular expressions for the first time.
 For example:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	matches of /\.[A-Za-z_][A-Za-z_0-9]*/ {
 		=&gt; !function
 	}
 end
-</code></pre>
+</span></pre>
 <p>says that a literal full stop, followed by a letter or underscore, and then
 any number (including 0) of letters, digits or underscores, should be painted
 as <code>!function</code>. As it happens, that's customary notation for labels in some
@@ -460,13 +459,13 @@ that it has the magic <code>*</code> star at the end: this means &quot;repeated 
 <p>So for example <code>.check_6845_registers</code> matches: <code>.</code> matches (1), then <code>c</code> matches (2),
 then <code>heck_6845_registers</code> matches (3), with the <code>*</code> operator counting up to 19.</p>
 <p>Lastly, <code>brackets in /E/</code>:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	=&gt; !plain
 	brackets in /.*?([A-Z])\s*=\s*(\d+).*/ {
 		=&gt; !function
 	}
 end
-</code></pre>
+</span></pre>
 <p>producing:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
@@ -508,28 +507,28 @@ does <em>not</em> match the regular expression <code>/beach/</code>. Only <code>
 Y&quot;. The following are the possibilities for X, the condition.</p>
 <p>(1) The easiest thing is to give nothing at all, and then the rule always
 applies. As we've seen, this nihilistic program gets rid of colouring entirely:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
     =&gt; !plain
 end
-</code></pre>
+</span></pre>
 <p>(2) If X is a piece of literal text, the rule applies when the snippet is
 exactly that text. For example,</p>
-<pre><code>printf =&gt; !function
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">printf =&gt; !function
+</span></pre>
 <p>(3) X can require the whole snippet to be of a particular colour, by writing
 <code>coloured !C</code> (or <code>colored !C</code>). For example:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
     characters {
         coloured !character =&gt; !plain
     }
 end
-</code></pre>
+</span></pre>
 <p>removes the syntax colouring on character literals.</p>
 <p>(4) X can require the snippet to be one of the language's known keywords, as
 declared earlier in the ILD by a <code>keyword</code> command. The syntax here is
 <code>keyword of !C</code>, where <code>!C</code> is a colour. For example:</p>
-<pre><code>keyword of !element =&gt; !element
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">keyword of !element =&gt; !element
+</span></pre>
 <p>says: if the snippet is a keyword declared as being of colour <code>!element</code>,
 then actually colour it that way. (This is much faster than making many
 comparison rules in a row, one for each keyword in the language; Inweb has
@@ -537,64 +536,64 @@ put all of the registered keywords into a hash table for rapid lookup.)</p>
 <p>(5) X can look at a little context before or after the snippet, testing it
 with one of the following: <code>prefix P</code>, <code>spaced prefix P</code>,
 <code>optionally spaced prefix P</code>. For example, consider this:</p>
-<pre><code>runs of !identifier {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">runs of !identifier {
     prefix % =&gt; !element
 }
-</code></pre>
+</span></pre>
 <p>applied to the text <code>%total += %price</code>. The two runs of <code>!identifier</code> here
 are <code>total</code> and <code>price</code>, but the condition <code>prefix %</code> is able to look at
 the character occurring in the original line <em>before</em> the snippet, to see
 if it is <code>%</code> or not. In both cases it is, so the colour is applied... but
 only to the words <code>total</code> and <code>price</code>, not to the percentage signs as well.
 Changing the rule to:</p>
-<pre><code>    prefix % =&gt; !element on both
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    prefix % =&gt; !element on both
+</span></pre>
 <p>would colour the percentage signs (i.e., the prefixes) as well.</p>
 <p>Another variation of this is to do with whether white space must appear
 between the prefix and the snippet. For example,</p>
-<pre><code>    spaced prefix £ =&gt; !element
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    spaced prefix £ =&gt; !element
+</span></pre>
 <p><em>requires</em> white space, and means that <code>£ discount</code> matches, but that
 <code>£discount</code> does not. This is not the same thing as</p>
-<pre><code>    prefix &quot;£ &quot; =&gt; !element
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    prefix "£ " =&gt; !element
+</span></pre>
 <p>because that would not match <code>£      discount</code>. The white space implied by
 <code>spaced</code> can be any run of 1 or more spaces and tabs.</p>
-<pre><code>    optionally spaced prefix £ =&gt; !element
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">    optionally spaced prefix £ =&gt; !element
+</span></pre>
 <p>makes that &quot;0 or more&quot;, and matches <code>£ discount</code> or <code>£discount</code> equally.</p>
 <p>And of course all of these work analogously for <code>suffix</code>. Note that these
 cannot see the line before or after the current line: only material also
 appearing on the same original line.</p>
 <p>(6) X can test the snippet against a regular expression, with <code>matching /E/</code>.
 For example:</p>
-<pre><code>runs of !identifier {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">runs of !identifier {
     matching /.*x.*/ =&gt; !element
 }
-</code></pre>
+</span></pre>
 <p>...turns any identifier containing a lower-case <code>x</code> into <code>!element</code> colour.
 Note that <code>matching /x/</code> would not have worked, because our regular expression
 is required to match the entire snippet, not just somewhere inside.</p>
-<pre><code>characters in &quot;0123456789&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">characters in "0123456789" {
 	=&gt; !element
 }
 runs of !element {
 	=&gt; !plain
     matching /\d\d\d\d/ =&gt; !element
 }
-</code></pre>
+</span></pre>
 <p>...colours all four-digit numbers <code>!element</code>, and all other decimal digits <code>!plain</code>.</p>
 <p>(7) Whenever a split takes place, Inweb keeps count of how many pieces there are,
 and different rules can apply to differently numbered pieces. The notation
 is <code>number N</code>, where <code>N</code> is the number, counting from 1. For example,</p>
-<pre><code>colour !emphasised like !function
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colour !emphasised like !function
 colouring
 	=&gt; !plain
 	matches of /\S+/ {
 		number 3 =&gt; !emphasised
 	}
 end
-</code></pre>
+</span></pre>
 <p>applies colour to every third word (where by word we mean &quot;run of non-whitespace
 characters&quot;, since that's what <code>\S</code> means in regexp language). For example:</p>
 </div>
@@ -621,25 +620,25 @@ so on. Thus <code>number 1 of 3</code> would work on the 1st, 4th, 7th, ... time
 <code>number 2 of 3</code> on the 2nd, 5th, 8th, ...; <code>number 3 of 3</code> on the 3rd, 6th,
 9th, and so on. This, for example, paints the output from the painting
 algorithm in Inweb:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
 	number 1 of 2 =&gt; !plain
 	number 2 of 2 =&gt; {
 		characters {
-			&quot;!&quot; =&gt; !comment
-			&quot;c&quot; =&gt; !character
-			&quot;d&quot; =&gt; !definition
-			&quot;e&quot; =&gt; !element
-			&quot;f&quot; =&gt; !function
-			&quot;i&quot; =&gt; !identifier
-			&quot;n&quot; =&gt; !constant
-			&quot;p&quot; =&gt; !plain
-			&quot;r&quot; =&gt; !reserved
-			&quot;s&quot; =&gt; !string
-			&quot;x&quot; =&gt; !extract
+			"!" =&gt; !comment
+			"c" =&gt; !character
+			"d" =&gt; !definition
+			"e" =&gt; !element
+			"f" =&gt; !function
+			"i" =&gt; !identifier
+			"n" =&gt; !constant
+			"p" =&gt; !plain
+			"r" =&gt; !reserved
+			"s" =&gt; !string
+			"x" =&gt; !extract
 		}
 	}
 end
-</code></pre>
+</span></pre>
 <p>The result is that lines 1, 3, 5, ... are run through <code>=&gt; !plain</code>, while
 lines 2, 4, 6, ... are run through a more complicated colouring.</p>
 </div>
@@ -651,8 +650,8 @@ lines 2, 4, 6, ... are run through a more complicated colouring.</p>
 </pre>
 <div class="lsmarkdown">
 <p>Any condition can be reversed by preceding it with <code>not</code>. For example,</p>
-<pre><code>not coloured !string =&gt; !plain
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">not coloured !string =&gt; !plain
+</span></pre>
 <h3>The three ways rules can take effect</h3>
 <p>Now let's look at the conclusion Y of a rule. Here the possibilities are
 simpler:</p>
@@ -662,21 +661,21 @@ prefix or suffix as well: use the notation <code>=&gt; C on both</code> or <code
 or <code>=&gt; C on prefix</code>.</p>
 <p>(2) If Y is an open brace <code>{</code>, then it introduces a block of rules which are
 applied to the snippet only if this rule has matched. For example,</p>
-<pre><code>keyword !element =&gt; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">keyword !element =&gt; {
     optionally spaced prefix . =&gt; !element
     optionally spaced prefix -&gt; =&gt; !element
 }
-</code></pre>
+</span></pre>
 <p>means that if the original condition <code>keyword !element</code> applies, then two
 further rules are applied.</p>
 <p>(3) If Y is the word <code>debug</code>, then the current snippet and its colouring
 are printed out on the command line. Thus:</p>
-<pre><code>colouring
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">colouring
     matches of /\d\S+/ {
         =&gt; debug
     }
 end
-</code></pre>
+</span></pre>
 <p>The rule <code>=&gt; debug</code> is unconditional, and will print whenever it's reached.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">

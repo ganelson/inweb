@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -58,42 +58,51 @@ own diminutive colony.</p>
 <p>Creating a colony is very easy. For example, suppose we wanted our <code>smorgasbord</code>
 example web to start a colony. It would be enough to create a file called
 <code>colony.inweb</code>, placed alongside <code>smorgasbord</code>, with the contents:</p>
-<pre><code>Colony {
-	member: &quot;smorgasbord&quot;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
+	member: "smorgasbord"
 }
-</code></pre>
+</span></pre>
 <p>But for the sake of a more interesting example, suppose we have written two
 programs called <code>front-office</code> and <code>back-office</code>, which each share a library of
 code called <code>inventory-module</code> (also a web). These will all live inside a
 directory called <code>retail</code>. So, we create a file <code>colony.inweb</code>, also inside
 <code>retail</code>, with the following contents:</p>
-<pre><code>Colony {
-	member: &quot;front&quot;     at &quot;front-office&quot;
-	member: &quot;back&quot;      at &quot;back-office.py.md&quot;
-	member: &quot;inventory&quot; at &quot;inventory-module&quot;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
+	member: "front"     at "front-office"
+	member: "back"      at "back-office.py.md"
+	member: "inventory" at "inventory-module"
 }
-</code></pre>
+</span></pre>
 <p>So at this point, assuming <code>retail</code> is the current working directory:</p>
-<pre><code>$ ls
-back-office.py.md   colony.inweb    front-office    inventory-module
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
+<span class="ConsoleText-plain-syntax">    back-office.py.md   colony.inweb    front-office    inventory-module</span>
+</pre>
+<div class="lsmarkdown">
 <h2>Member names</h2>
 <p>Each member has a <em>name</em>. These names can be used as a shorthand when typing
 commands. For example:</p>
-<pre><code>$ inweb inspect ::back
-web &quot;The Back Office&quot; (Python program in MarkdownCode notation): 13 paragraphs : 248 lines
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect ::back</span>
+<span class="ConsoleText-plain-syntax">    web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines</span>
+</pre>
+<div class="lsmarkdown">
 <p>Here <code>inweb inspect ::back</code> achieved the same result as <code>inweb inspect back-office.py.md</code>.
 And in general, <code>COLONY::MEMBER</code> can be used on the Inweb command line to mean
 the web which is the member named <code>MEMBER</code> of the colony <code>COLONY</code>. If we don't
 specify <code>COLONY</code>, it's taken to be the colony file in the current working directory,
 which is why <code>::back</code> works from inside <code>retail</code>. If we stepped up one level:</p>
-<pre><code>$ cd ..
-$ ls
-retail
-$ inweb inspect retail::back
-web &quot;The Back Office&quot; (Python program in MarkdownCode notation): 13 paragraphs : 248 lines
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> ..</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span>
+<span class="ConsoleText-plain-syntax">    retail</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect retail::back</span>
+<span class="ConsoleText-plain-syntax">    web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines</span>
+</pre>
+<div class="lsmarkdown">
 <p>The <code>COLONY</code> part of <code>COLONY::MEMBER</code> can either give the filename of the colony
 file, or can just give a directory name, in which case Inweb looks for a file
 called <code>colony.inweb</code> in that directory. (It's because of this convention
@@ -103,21 +112,21 @@ directory, this is no hardship.)</p>
 <h2>Member locations</h2>
 <p>As lines like this demonstrate, the <em>name</em> of a member can be different from
 its <em>location</em>:</p>
-<pre><code>	member: &quot;front&quot;     at &quot;front-office&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	member: "front"     at "front-office"
+</span></pre>
 <p>Thus the member <code>front</code> is a web located in the directory <code>front-office</code>,
 which is in the same directory as <code>colony.inweb</code>. But in practice, name and
 location often coincide, and then <code>at ...</code> can be omitted. For example,</p>
-<pre><code>	member: &quot;smorgasbord&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	member: "smorgasbord"
+</span></pre>
 <p>is equivalent to writing</p>
-<pre><code>	member: &quot;smorgasbord&quot; at &quot;smorgasbord&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	member: "smorgasbord" at "smorgasbord"
+</span></pre>
 <p>The location following <code>at</code> is in fact a pathname or filename relative to the
 directory holding the colony file, i.e., for us, relative to <code>retail</code>. There's
 nothing to stop this path leading us outside and some distance away:</p>
-<pre><code>	member: &quot;distant&quot; at &quot;../around/the/houses/distant.c.md&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	member: "distant" at "../around/the/houses/distant.c.md"
+</span></pre>
 <h2>Placing a colony inside a web directory</h2>
 <p>Here's another perhaps surprising use of <code>at</code>. Simplifying the truth a little,
 Inweb itself is a web called <code>inweb</code> which contains two subsidiary modules,
@@ -127,7 +136,7 @@ We want its colony file to be included in that repository, so it's not
 convenient to place this <em>outside</em> <code>inweb</code>: if we did, it couldn't be added
 to the repository with <code>git add</code>. So what we actually do is to place the
 colony file inside <code>inweb</code>. That gives a directory structure like so:</p>
-<pre><code>inweb
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">inweb
 	colony.inweb
 	Contents.w
 	...
@@ -137,12 +146,12 @@ colony file inside <code>inweb</code>. That gives a directory structure like so:
 	literate-module
 		Contents.w
 		...
-</code></pre>
+</span></pre>
 <p>And the colony file is then written like this:</p>
-<pre><code>	member: &quot;inweb&quot;      at &quot;&quot;
-	member: &quot;foundation&quot; at &quot;foundation-module&quot;
-	member: &quot;literate&quot;   at &quot;literate-module&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	member: "inweb"      at ""
+	member: "foundation" at "foundation-module"
+	member: "literate"   at "literate-module"
+</span></pre>
 <p>Note the <code>at &quot;&quot;</code> for <code>inweb</code> itself: because relative to the location of
 <code>colony.inweb</code>, you're already there. (This could also have been written <code>&quot;.&quot;</code>,
 meaning &quot;the current directory&quot;, but there's no need to.)</p>
@@ -153,55 +162,67 @@ though <code>inweb weave</code> and <code>inweb tangle</code> can be applied to 
 for tangling. If our current working directory contains a <code>colony.inweb</code> file,
 then we don't even need to indicate what <code>COLONY</code> we mean: Inweb will see it
 automatically. Thus, in the above <code>retail</code> example, we can tangle:</p>
-<pre><code>$ inweb tangle
-(Tangle 1 of 3: front)
-tangling web &quot;The Front Office&quot; (Python program in MarkdownCode notation) to file 'front-office/Tangled/The Front Office.py'
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle</span>
+<span class="ConsoleText-plain-syntax">    (Tangle 1 of 3: front)</span>
+<span class="ConsoleText-plain-syntax">    tangling web "The Front Office" (Python program in MarkdownCode notation) to file 'front-office/Tangled/The Front Office.py'</span>
 
-(Tangle 2 of 3: back)
-tangling web &quot;The Back Office&quot; (Python program in MarkdownCode notation) to file 'back-office.py'
+<span class="ConsoleText-plain-syntax">    (Tangle 2 of 3: back)</span>
+<span class="ConsoleText-plain-syntax">    tangling web "The Back Office" (Python program in MarkdownCode notation) to file 'back-office.py'</span>
 
-(Tangle 3 of 3: inventory)
-tangling web &quot;inventory-module&quot; (Python program in MarkdownCode notation) to file 'inventory-module/Tangled/inventory-module.py'
-</code></pre>
+<span class="ConsoleText-plain-syntax">    (Tangle 3 of 3: inventory)</span>
+<span class="ConsoleText-plain-syntax">    tangling web "inventory-module" (Python program in MarkdownCode notation) to file 'inventory-module/Tangled/inventory-module.py'</span>
+</pre>
+<div class="lsmarkdown">
 <p>When we weave, it's clear at once that a skeleton of directories will be needed
 in order to hold all the HTML generated:</p>
-<pre><code>$ inweb weave
-the weave would require these 5 directories to exist:
-	docs
-	docs/docs-assets
-	docs/front
-	docs/back
-	docs/inventory
-inweb: fatal error: giving up: either make them by hand, or run again with -creating set
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave</span>
+<span class="ConsoleText-plain-syntax">    the weave would require these 5 directories to exist:</span>
+<span class="ConsoleText-plain-syntax">        docs</span>
+<span class="ConsoleText-plain-syntax">        docs/docs-assets</span>
+<span class="ConsoleText-plain-syntax">        docs/front</span>
+<span class="ConsoleText-plain-syntax">        docs/back</span>
+<span class="ConsoleText-plain-syntax">        docs/inventory</span>
+<span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make them by hand, or run again with -creating set</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note a subtle change here: once Inweb thinks in terms of a colony, it defaults
 to weaving output into a directory called <code>docs</code>. (This is to follow the convention
 used by GitHub when serving web pages associated with a repository.) We can
 change that, of course:</p>
-<pre><code>inweb weave -to my/funny/area
-the weave would require these 7 directories to exist:
-	my
-	my/funny
-	my/funny/area
-	my/funny/area/docs-assets
-	my/funny/area/front
-	my/funny/area/back
-	my/funny/area/inventory
-inweb: fatal error: giving up: either make them by hand, or run again with -creating set
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">minweb</span><span class="ConsoleText-plain-syntax"> weave</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my/funny/area</span>
+<span class="ConsoleText-plain-syntax">    the weave would require these 7 directories to exist:</span>
+<span class="ConsoleText-plain-syntax">        my</span>
+<span class="ConsoleText-plain-syntax">        my/funny</span>
+<span class="ConsoleText-plain-syntax">        my/funny/area</span>
+<span class="ConsoleText-plain-syntax">        my/funny/area/docs-assets</span>
+<span class="ConsoleText-plain-syntax">        my/funny/area/front</span>
+<span class="ConsoleText-plain-syntax">        my/funny/area/back</span>
+<span class="ConsoleText-plain-syntax">        my/funny/area/inventory</span>
+<span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make them by hand, or run again with -creating set</span>
+</pre>
+<div class="lsmarkdown">
 <p>But on second thoughts, <code>docs</code> wasn't such a bad idea, so:</p>
-<pre><code>$ inweb weave -creating
-(created directory 'docs')
-(created directory 'docs/docs-assets')
-(created directory 'docs/front')
-(created directory 'docs/back')
-(created directory 'docs/inventory')
-(Weave 1 of 3: front)
-weaving web &quot;The Front Office&quot; (Python program in MarkdownCode notation) as GitHubPages (based on HTML)
-	[docs/front/invh.html] [sales] [promo]
-	[index]
-	11 files copied to: docs/docs-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'docs')</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'docs/docs-assets')</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'docs/front')</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'docs/back')</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'docs/inventory')</span>
+<span class="ConsoleText-plain-syntax">    (Weave 1 of 3: front)</span>
+<span class="ConsoleText-plain-syntax">    weaving web "The Front Office" (Python program in MarkdownCode notation) as GitHubPages (based on HTML)</span>
+<span class="ConsoleText-plain-syntax">        [docs/front/invh.html] [sales] [promo]</span>
+<span class="ConsoleText-plain-syntax">        [index]</span>
+<span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>...and so on.</p>
 <h2>External members</h2>
 <p>So far, all of the members of the <code>retail</code> colony have been webs defined in
@@ -210,18 +231,18 @@ defined in another colony altogether.</p>
 <p>This is not as remote an idea as it sounds: all InC programs import code from
 the <code>foundation</code> module defined in the Inweb colony. The Intest program is in
 just that situation, and its colony deals with this by defining:</p>
-<pre><code>Colony {
-	default: pattern &quot;GitHubPages&quot; breadcrumbs &quot;Home: //overview//&quot;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
+	default: pattern "GitHubPages" breadcrumbs "Home: //overview//"
 
-	member:   &quot;overview&quot;   to &quot;index.html&quot; breadcrumbs &quot;&quot;
-	member:   &quot;intest&quot;     at &quot;&quot; to &quot;intest&quot;
-	member:   &quot;arch&quot;       at &quot;arch-module&quot; to &quot;arch-module&quot;
-	external: &quot;inweb&quot;      at &quot;../inweb&quot;
-	external: &quot;foundation&quot; at &quot;../inweb/foundation-module&quot;
+	member:   "overview"   to "index.html" breadcrumbs ""
+	member:   "intest"     at "" to "intest"
+	member:   "arch"       at "arch-module" to "arch-module"
+	external: "inweb"      at "../inweb"
+	external: "foundation" at "../inweb/foundation-module"
 
 	...
 }
-</code></pre>
+</span></pre>
 <p>Note the two <code>external:</code> declarations, which are just like <code>member:</code> ones,
 but tell Inweb that these members are remote from us. (Their file paths lead
 outside the Intest repository and assume that Intest and Inweb are sitting
@@ -235,14 +256,14 @@ other hand, colony links like <code>//foundation//</code> do reach them safely.<
 declaration: <code>Page</code> (text of a single-section web), <code>Web</code> (contents for a multi-section web),
 and <code>Navigation</code> (set of sidebar links).</p>
 <p>We can also write <code>Conventions</code>, like so:</p>
-<pre><code>Colony {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
 	...
 
 	Conventions {
 		sections are numbered sequentially
 	}
 }
-</code></pre>
+</span></pre>
 <p>This would apply the <code>sections are numbered sequentially</code> rule to all the webs
 in the colony (unless they individually override that: see <a href="2-cnv.html" class="internal">Conventions</a>).</p>
 <p>Then, too, we can place <code>Language</code> and <code>Notation</code> declarations inside a colony,
@@ -253,12 +274,12 @@ we could also redefine the C language (say) with our own redesigned version,
 and then members of the colony would use that declaration, not the built-in one.</p>
 <p>These declarations might become a little lengthy, and deserve to be stored
 elsewhere, rather than in the colony file itself. If so, adding this line:</p>
-<pre><code>Colony {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
 	...
-	using: &quot;my_declarations.inweb&quot;
+	using: "my_declarations.inweb"
 	...
 }
-</code></pre>
+</span></pre>
 <p>would tell Inweb to read declarations from the file <code>my_declarations.inweb</code>,
 and make anything inside (conventions, languages, notations, navigations, and
 such) available to the colony's members. There can be any number of <code>using:</code>

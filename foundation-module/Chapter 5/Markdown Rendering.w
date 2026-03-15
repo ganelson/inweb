@@ -131,11 +131,21 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 	WRITE("\n");
 
 @<Render an unordered list@> =
-	if (mode & TAGS_MDRMODE) HTML_OPEN("ul");
-	WRITE("\n");
-	@<Recurse through list@>;
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("ul");
-	WRITE("\n");
+	int skip_ul_rendering = FALSE;
+	if (MarkdownVariations::supports(variation, TEXT_AS_IMAGES_MARKDOWNFEATURE)) {
+		#ifdef LITERATE_MODULE
+		skip_ul_rendering = HTMLWeaving::render_ul_as_carousel(OUT, mode,
+			(weave_order *) state, md, variation);
+		#endif
+	}
+
+	if (skip_ul_rendering == FALSE) {
+		if (mode & TAGS_MDRMODE) HTML_OPEN("ul");
+		WRITE("\n");
+		@<Recurse through list@>;
+		if (mode & TAGS_MDRMODE) HTML_CLOSE("ul");
+		WRITE("\n");
+	}
 
 @<Recurse through list@> =
 	mode = mode & (~LOOSE_MDRMODE);

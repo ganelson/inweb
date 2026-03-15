@@ -32,11 +32,15 @@ classdef ls_holon in 100s {
 	struct ls_holon *addendum_to;
 	struct linked_list *addenda; /* of `ls_holon` */
 	int file_form;
+	struct text_stream *file_path; /* textual file path for holons tangled to files */
+	struct programming_language *holon_language;
 }
 
-ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, int file_form,
-	ls_holon_namespace *ns, int bitmap, ls_notation *ntn, programming_language *pl) {
+ls_holon *Holons::new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int addendum,
+	int file_form, text_stream *file_path, ls_holon_namespace *ns, int bitmap, ls_notation *ntn,
+	programming_language *pl) {
 	if (chunk == NULL) internal_error("loose holon");
+	if (bitmap & TANGLEDTOHOLON_LSNROBIT) file_form = TRUE;
 	ls_holon *holon = CREATE(ls_holon);
 	holon->main_holon = FALSE;
 	holon->top_level = TRUE;
@@ -58,6 +62,19 @@ ls_holon *Holons::new(ls_chunk *chunk, text_stream *holon_name, int addendum, in
 	holon->addendum_to = NULL;
 	holon->addenda = NEW_LINKED_LIST(ls_holon);
 	holon->file_form = file_form;
+	holon->file_path = NULL;
+	holon->holon_language = NULL;
+	if (file_form) {
+		if (Str::len(file_path) > 0)
+			holon->file_path = Str::duplicate(file_path);
+		else
+			holon->file_path = Str::duplicate(holon_name);
+	
+		filename *F = Filenames::in(NULL, holon->file_path);
+		holon->holon_language = Languages::guess_from_filename(W, F, 1);
+		if (holon->holon_language == NULL)
+			holon->holon_language = Languages::find(W, I"None");
+	}
 
 	if (bitmap & WEBWIDEHOLON_LSNROBIT)   { holon->webwide = TRUE; }
 	if (bitmap & VERYEARLYHOLON_LSNROBIT) { holon->placed_very_early = TRUE; holon->top_level = TRUE; }
@@ -140,6 +157,7 @@ void Holons::declare_in_namespace(ls_holon *holon, ls_holon_namespace *ns) {
 			if (holon->addendum == NOT_APPLICABLE) holon->addendum = TRUE;
 			if (holon->addendum) {
 				holon->addendum_to = existing;
+				holon->file_form = existing->file_form;
 				ADD_TO_LINKED_LIST(holon, ls_holon, existing->addenda);
 				@<Add to namespace@>;
 			} else {
@@ -281,7 +299,7 @@ ls_holon *Holons::find_holon(text_stream *name, ls_holon_namespace *ns,
 =
 text_stream *Holons::external_filename(ls_holon *holon) {
 	if ((holon == NULL) || (holon->file_form == FALSE)) return NULL;
-	return holon->holon_name;
+	return holon->file_path;
 }
 
 @ Named holons are used by being spliced into others. For example, if the code
@@ -537,4 +555,36 @@ void Holons::set_parent(ls_paragraph *of, ls_paragraph *to) {
 	if (of == NULL) internal_error("no paragraph");
 	if (to == of) internal_error("paragraph parent set to itself");
 	of->parent_paragraph = to;
+}
+
+@ This is used by `inweb inspect -tangle-files`:
+
+=
+void Holons::inspect_files(OUTPUT_STREAM, ls_web *W) {
+	textual_table *T = NULL;
+	ls_chapter *C;
+	ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections) {
+			for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par) {
+				if ((par->holon) && (par->holon->addendum == FALSE) && (par->holon->file_form)) {
+					if (T == NULL) {
+						T = TextualTables::new_table();
+						WRITE_TO(TextualTables::next_cell(T), "file");
+						WRITE_TO(TextualTables::next_cell(T), "holon name");
+						WRITE_TO(TextualTables::next_cell(T), "language");
+						WRITE_TO(TextualTables::next_cell(T), "where");
+					}
+					TextualTables::begin_row(T);
+					WRITE_TO(TextualTables::next_cell(T), "%S", par->holon->file_path);
+					WRITE_TO(TextualTables::next_cell(T), "%S", par->holon->holon_name);
+					WRITE_TO(TextualTables::next_cell(T), "%S", par->holon->holon_language->language_name);
+					text_stream *where = TextualTables::next_cell(T);
+					if (W->is_page == FALSE) WRITE_TO(where, "%S:", S->sect_range);
+					WRITE_TO(where, "%S", par->paragraph_number);
+				}
+			}
+		}
+	if (T) TextualTables::tabulate(STDOUT, T);
+	else WRITE("This web tangles only to its own program, and produces no sidekick files\n");
 }

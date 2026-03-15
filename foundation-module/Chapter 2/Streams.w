@@ -53,7 +53,7 @@ of `args` in the definition: that being the modern way, apparently.
 formatted text to the current stream, which could be either a string or a
 file. `PRINT` does the same but to `STDOUT`, and is thus essentially `printf`.
 
-= (early code)
+@<Variadic macro definitions@> (webwide and tangled early) =
 #define WRITE(args...) Writers::printf(OUT, args)
 
 #define PRINT(args...) Writers::printf(STDOUT, args)

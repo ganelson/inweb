@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -50,74 +50,89 @@
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> In very large webs, it can be useful to <em>tag</em> certain paragraphs.</p>
 <p>A tag is really just a textual label. Using our Markdown notation, tags can
 be applied by hand to paragraphs which have titles like so:</p>
-<pre><code>## Trigonometry ^&quot;mathematical&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Trigonometry ^"mathematical"
+</span></pre>
 <p>The effect of this heading is exactly like</p>
-<pre><code>## Trigonometry
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Trigonometry
+</span></pre>
 <p>except that the tag <code>mathematical</code> is now attached to the paragraph in
 question. <code>inweb inspect -tags</code> applied to this web will now show:</p>
-<pre><code>web &quot;Bezier&quot; (Python program in MarkdownCode notation): 8 paragraphs : 102 lines
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    web "Bezier" (Python program in MarkdownCode notation): 8 paragraphs : 102 lines</span>
 
-tag          | paragraphs tagged
------------- | -----------------
-mathematical | 4
-</code></pre>
+<span class="ConsoleText-plain-syntax">    tag          | paragraphs tagged</span>
+<span class="ConsoleText-plain-syntax">    ------------ | -----------------</span>
+<span class="ConsoleText-plain-syntax">    mathematical | 4</span>
+</pre>
+<div class="lsmarkdown">
 <p>This produces a concordance of the tags used in a web. Here there's not much to
 see since only one tag is used, and at the paragraph numbered §4 in a weave.
 In a slightly larger web you might see something like:</p>
-<pre><code>tag     | paragraphs tagged
-------- | -----------------------
-Figures | cim:3
-Tables  | tgs:2, rad:1.3, rad:1.4
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    tag     | paragraphs tagged</span>
+<span class="ConsoleText-plain-syntax">    ------- | -----------------------</span>
+<span class="ConsoleText-plain-syntax">    Figures | cim:3</span>
+<span class="ConsoleText-plain-syntax">    Tables  | tgs:2, rad:1.3, rad:1.4</span>
+</pre>
+<div class="lsmarkdown">
 <p>Here, <code>Tables</code> can be found in §2 of the section abbreviated <code>tgs</code>, and §§1.3
 and 1.4 of <code>rad</code>.</p>
 <p>In a really large web, this table can be very large. <code>-only</code> can be used to restrict its
 scope: <code>inweb inspect -tags -only 2</code>, for example, tabulates tags in Chapter 2,
 and <code>inweb inspect -tags -only rad</code> gives us:</p>
-<pre><code>tag     | paragraphs tagged
-------- | -----------------
-Tables  | rad:1.3, rad:1.4
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    tag     | paragraphs tagged</span>
+<span class="ConsoleText-plain-syntax">    ------- | -----------------</span>
+<span class="ConsoleText-plain-syntax">    Tables  | rad:1.3, rad:1.4</span>
+</pre>
+<div class="lsmarkdown">
 <p>If the web contains modules, then by default only its main module is scanned,
 but <code>-fuller</code> will cause the other modules to be included too.</p>
 <p>Nameless paragraphs, sometimes useful to force a paragraph break, can also
 be tagged:</p>
-<pre><code>During his 42 years at Renault, Pierre Bézier devised the idea of control
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">During his 42 years at Renault, Pierre Bézier devised the idea of control
 points to guide curves.
 
-## ^&quot;mathematical&quot;
+## ^"mathematical"
 
 In fact, though, his opposite number Paul de Casteljau at the Citroën
 works was responsible for the best algorithm for computing these curves,
 $$ B(t) = \sum_{i=0}^n \beta_i b_{i, n}(t). $$
-</code></pre>
+</span></pre>
 <p>Multiple tags can be applied to the same paragraph:</p>
-<pre><code>## Trigonometry ^&quot;mathematical&quot; ^&quot;eldritch&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Trigonometry ^"mathematical" ^"eldritch"
+</span></pre>
 <p>We could now, for example,</p>
-<pre><code>$ inweb weave bezier.py.md -only-tagged-as mathematical
-	generated: mathematical.html
-	8 files copied to: bezier-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave bezier.py.md</span><span class="ConsoleText-identifier-syntax"> -only-tagged-as</span><span class="ConsoleText-plain-syntax"> mathematical</span>
+<span class="ConsoleText-plain-syntax">        generated: mathematical.html</span>
+<span class="ConsoleText-plain-syntax">        8 files copied to: bezier-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>This makes a single stand-alone web page containing just those paragraphs
 from the web with the given tag. (Even if the web contains many sections, which
 would ordinarily weave to many HTML files, the extract here will just be one.)
 This can be very useful to view a cross-section of related material from across
 a large web.</p>
 <p>A warning is printed if no paragraphs in the web matched:</p>
-<pre><code>$ inweb weave bezier.py.md -only-tagged-as geometric
-	generated: geometric.html
-    warning: no paragraphs were tagged 'geometric', so weave was empty
-	8 files copied to: bezier-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave bezier.py.md</span><span class="ConsoleText-identifier-syntax"> -only-tagged-as</span><span class="ConsoleText-plain-syntax"> geometric</span>
+<span class="ConsoleText-plain-syntax">        generated: geometric.html</span>
+<span class="ConsoleText-plain-syntax">        warning: no paragraphs were tagged 'geometric', so weave was empty</span>
+<span class="ConsoleText-plain-syntax">        8 files copied to: bezier-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note that this is <em>not</em> an error, and is not issued at all in <code>-silent</code> mode.</p>
 <p>Tags can also be given a sort of memorandum field. If a tag text includes a
 colon <code>:</code>, then the tag as such is the part before the (first) colon, and
 anything after that is the memo. For example:</p>
-<pre><code>## Trigonometry ^&quot;mathematical: trig formulae&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Trigonometry ^"mathematical: trig formulae"
+</span></pre>
 <p>This tags the paragraph <code>mathematical</code>; the text <code>trig formulae</code> is not thrown
 away, though, and is used as a subheading in any woven page of the
 <code>mathematical</code>-tagged material in the web.</p>
@@ -125,12 +140,12 @@ away, though, and is used as a subheading in any woven page of the
 <p>If a web has a contents page, then an entire section can be given one or more
 tags on the relevant line of the contents page. For example, the <code>foundation-module</code>
 library used by Inweb includes this chapter in its contents:</p>
-<pre><code>Chapter 1: Setting Up
-&quot;Absolute basics.&quot;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Chapter 1: Setting Up
+"Absolute basics."
 	Foundation Module
-	POSIX Platforms ^&quot;ifdef-PLATFORM_POSIX&quot;
-	Windows Platform ^&quot;ifdef-PLATFORM_WINDOWS&quot;
-</code></pre>
+	POSIX Platforms ^"ifdef-PLATFORM_POSIX"
+	Windows Platform ^"ifdef-PLATFORM_WINDOWS"
+</span></pre>
 <p>The effect is that <em>every</em> paragraph in the section <code>POSIX Platforms</code> is tagged
 with <code>ifdef-PLATFORM_POSIX</code>, and similarly for <code>Windows Platform</code>.</p>
 <h2>Conditional compilation</h2>
@@ -138,10 +153,22 @@ with <code>ifdef-PLATFORM_POSIX</code>, and similarly for <code>Windows Platform
 compilation directives. If a tag takes the form <code>ifdef-SYMBOL</code>, then the holon
 in the paragraph (assuming there is one) is tangled in between the C directives
 <code>#ifdef SYMBOL</code> and <code>#endif</code>; and similarly for <code>ifndef-SYMBOL</code>. So for example:</p>
-<pre><code>## Test code. ^&quot;ifdef-DEBUG&quot;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Test code. ^"ifdef-DEBUG"
 
-## Production code. ^&quot;ifndef-DEBUG&quot;
-</code></pre>
+## Production code. ^"ifndef-DEBUG"
+</span></pre>
+<p>Note that such protections are also placed around code in a holon continuation.
+This:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">## Windows implementation ^"ifdef-PLATFORM_WINDOWS"
+
+{{Global variables}} +=
+int registry_found = FALSE;
+</span></pre>
+<p>in fact appends the following to <code>{{Global variables}}</code>:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">#ifdef PLATFORM_WINDOWS
+int registry_found = FALSE;
+#endif
+</span></pre>
 <h2>Automatic tagging</h2>
 <p>Inweb silently tags paragraphs itself with certain built-in tags:</p>
 <table>
@@ -197,14 +224,17 @@ in the paragraph (assuming there is one) is tangled in between the C directives
 <p>Inweb uses its ability to tag <code>Outlinks</code> (which is provided only when
 commentary is in Markdown notation) to spot all external links from a
 website it might be weaving. <code>inweb inspect -links</code> will tabulate these:</p>
-<pre><code>inweb inspect -links smorgasbord
-web &quot;Sorting Smorgasbord&quot; (Python program in MarkdownCode notation): 2 sections : 11 paragraphs : 123 lines
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    inweb inspect -links smorgasbord</span>
+<span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 11 paragraphs : 123 lines</span>
 
-from   | external URL
------- | ----------------------------------------------
-cnsr:1 | https://en.wikipedia.org/wiki/Harold_H._Seward
-qcsr:1 | https://www.google.com
-</code></pre>
+<span class="ConsoleText-plain-syntax">    from   | external URL</span>
+<span class="ConsoleText-plain-syntax">    ------ | ----------------------------------------------</span>
+<span class="ConsoleText-plain-syntax">    cnsr:1 | https://en.wikipedia.org/wiki/Harold_H._Seward</span>
+<span class="ConsoleText-plain-syntax">    qcsr:1 | https://www.google.com</span>
+</pre>
+<div class="lsmarkdown">
 <p>Such URLs might occur in links like <code>[google](https://www.google.com)</code>, or
 in image addresses on the wider web, or in Inweb links like <code>//this one -&gt; https://en.wikipedia.org/wiki/Harold_H._Seward</code>.</p>
 </div>

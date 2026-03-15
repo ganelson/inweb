@@ -28,13 +28,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -118,26 +117,26 @@ They are off by default, and must be enabled by making <code>Conventions</code>.
 </li>
 </ol>
 <p>So, then, Inweb's definition of C includes:</p>
-<pre><code>Conventions {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
 	...
 	standard library #includes are tangled early in the program
 	typedefs are tangled early in the program
 	typedef structs are tangled early and reordered logically
 	function predeclarations are tangled automatically
 }
-</code></pre>
+</span></pre>
 <p>Because the C definition includes the property <code>C-Like: true</code>, these four
 features are potentially available, but without those conventions being made
 as well, they would not take effect. Any web written in C can then render
 them ineffective again, by making one or more of the following conventions:</p>
-<pre><code>Conventions {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
 	...
 	standard library #includes are treated like any other code
 	typedefs are treated like any other code
 	typedef structs are treated like any other code
 	functions are treated like any other code
 }
-</code></pre>
+</span></pre>
 <p>With those changes made, the language really is regular C, with all its
 charms and frustrations. Although the better function/struct scans mentioned
 in (1) above still happen, they then affect only weaving.</p>
@@ -155,7 +154,7 @@ make simple typedefs not involving structures, like <code>typedef unsigned long 
 <li>
 <p><code>typedef structs are tangled early and reordered logically</code> is best explained
 by example. Suppose the program contains:</p>
-<pre><code>cake birthday_cake;
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">cake birthday_cake;
 ...
 typedef struct cake {
     struct filling f;
@@ -164,7 +163,7 @@ typedef struct cake {
 typedef struct filling {
     int jam;
 } filling;
-</code></pre>
+</span></pre>
 <p>This will fail to compile for two reasons: <code>cake</code> is unknown at the time
 <code>cake birthday_cake</code> is read, because the compiler has not yet reached
 the typedef of <code>cake</code>; and <code>struct filling</code> needs to be fully declared
@@ -176,23 +175,23 @@ into the right order to avoid them.</p>
 <li>
 <p><code>function predeclarations are tangled automatically</code> avoids the need for
 functions to be predeclared before use. For example, suppose:</p>
-<pre><code>void first(void) {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">void first(void) {
     second();
 }
 void second(void) {
-    printf(&quot;Hello, there.\n&quot;);
+    printf("Hello, there.\n");
 }
-</code></pre>
+</span></pre>
 <p>This will fail to compile because <code>second</code> is unknown when <code>first</code> is compiled.
 Often by means of header files, C programmers overcome this with predeclarations:</p>
-<pre><code>void second(void); /* predeclaration */
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">void second(void); /* predeclaration */
 void first(void) {
     second();
 }
 void second(void) {
-    printf(&quot;Hello, there.\n&quot;);
+    printf("Hello, there.\n");
 }
-</code></pre>
+</span></pre>
 <p>This is a nuisance, and if <code>function predeclarations are tangled automatically</code>
 then Inweb will automatically tangle predeclarations of all functions.</p>
 </li>
@@ -208,9 +207,8 @@ the following limitations currently exist:</p>
 <li>InC can only be used literately, i.e., with Inweb. There is no freestanding
 &quot;InC compiler&quot;. InC is tangled down to ANSI C, and the result can then be
 compiled with <code>clang</code> or <code>gcc</code>.</li>
-<li>InC programs must be multi-file webs, not single-file.</li>
-<li>They must all import the <code>foundation</code> module (included with Inweb).</li>
-<li>They must be written in <code>InwebClassic</code> notation.</li>
+<li>InC programs must import the <code>foundation</code> module (included with Inweb).</li>
+<li>InC programs must be written in <code>InwebClassic</code> notation.</li>
 </ul>
 <p>With that said, InC is a stable design which has been used on a variety
 of tools by the Inform project for many years now. Anyone is welcome to use it.</p>
@@ -252,20 +250,61 @@ This needs to be remembered if working with a debugger on the resulting program.
 </ol>
 <p>The sections of an InC program, which must be written in <code>InwebClassic</code> notation,
 open with a titling line. If it takes the form:</p>
-<pre><code>[Namespace::] Actual Title.
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[Namespace::] Actual Title.
+</span></pre>
 <p>...then the namespace given is the one for the section, which all its functions
 must live in. For example:</p>
-<pre><code>[WebNotation::] Web Notations.
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[WebNotation::] Web Notations.
+</span></pre>
+<hr />
+<p>The <code>foundation</code> module provides a system for allocating structures in memory.
+Full details are best left to the <code>foundation</code> documentation, but briefly,
+to use this one must first <code>typedef</code> a suitable <code>struct</code>, then ensure it
+contains some members needed by the memory manager for book-keeping, and
+then create an enumerated ID to distinguish this memory block from others.</p>
+<p>This can indeed be done by hand:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ Somewhat like so...
+
+@e manual_CLASS
+
+=
+DECLARE_CLASS(manual)
+
+typedef struct manual {
+	int x;
+	CLASS_DEFINITION
+} manual;
+</span></pre>
+<p>But that makes a lot of tiresome boilerplate code, so InC provides this
+abbreviation:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ Somewhat like so...
+
+=
+classdef automatic {
+	int x;
+}
+</span></pre>
+<p>These are not really classes in the sense of an object-oriented programming
+language: the keyword <code>classdef</code> was chosen to emphasise that it's a concept
+which is as much <code>typedef struct</code> as class.</p>
+<p>The memory manager can be instructed to make slightly more lightweight objects
+which are allocated in bulk, for speed: that involves some trade-offs in how
+they can be used. The notation for this is:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">classdef profuse in 1000s {
+	int y;
+}
+</span></pre>
+<p>The <code>in 1000s</code> means that the memory manager should allocate these in blocks
+of 1000 as needed. (Of course, this means that if 1006 are needed, 2000 will
+be allocated.)</p>
 <hr />
 <p>As noted above, InC webs all have to import the <code>foundation</code> modules. One of
 its services is a system for extensible strings of Unicode text, called
 &quot;text streams&quot; (since text file output is handled by the same mechanism,
 unifying files and strings to some extent). InC provides a new sort of literal
 for this type:</p>
-<pre><code>text_stream *S = I&quot;alpha beta gamma delta&quot;;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">text_stream *S = I"alpha beta gamma delta";
+</span></pre>
 <p>This syntax is intended to extend existing C syntax, which already has
 several different sorts of string literal identified by an initial letter:</p>
 <table>
@@ -301,17 +340,17 @@ by the string-manipulation functions in <code>foundation</code>.</p>
 to write &quot;Preform&quot;, a set of grammar productions for its language. This is not
 the place to document that: see the <code>words</code> module in the Inform code base.</p>
 <p>But for example the following is legal InC code:</p>
-<pre><code>&lt;declaration&gt; ::=
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;declaration&gt; ::=
 	declare &lt;dominion&gt; independent	==&gt;	{ R[1], - }
 
 &lt;dominion&gt; ::=
 	canada |
 	india |
 	malaya
-</code></pre>
+</span></pre>
 <p>and <code>&lt;declaration&gt;</code> can then be used as if it were a function, in C terms:</p>
-<pre><code>if (&lt;declaration&gt;(W)) { ... }
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">if (&lt;declaration&gt;(W)) { ... }
+</span></pre>
 <p>Other programs in InC, such as Inweb and Intest, make no use of any of this.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">

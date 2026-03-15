@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -54,7 +54,7 @@ happens.</p>
 <p>In fact, nothing will ever happen unless the pattern for a weave has a
 declaration containing a <code>commands</code> block. The only pattern supplied with Inweb which does have
 <code>commands</code> is <code>PDFTeX</code>, whose declaration reads:</p>
-<pre><code>Pattern &quot;PDFTeX&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Pattern "PDFTeX" {
 	based on: TeX
 	initial extension: .tex
 	commands
@@ -64,7 +64,7 @@ declaration containing a <code>commands</code> block. The only pattern supplied 
 		rm WOVEN.console
 	end
 }
-</code></pre>
+</span></pre>
 <p>The conundrum here is this. <code>PDFTeX</code> wants to produce PDF documents. But Inweb
 can only produce TeX source code: for this to be turned into a PDF, it needs
 to be run through some external tools — not least some form of TeX. Inweb cannot
@@ -82,13 +82,16 @@ Inweb does is to scan through the output produced by TeX to see if there
 have been overfull hbox errors, count the number of pages, and such. So,
 really, it should be used only by the definition above.</p>
 <p>Here is the above post-weave system in action:</p>
-<pre><code>$ inweb weave pyramid.c.md -as PDFTeX
-weaving web &quot;Hilbert's Pyramid&quot; (C program in MarkdownCode notation) as PDFTeX (based on TeX)
-(pdftex -output-directory='.'  -interaction=scrollmode 'pyramid.tex'  &gt;'pyramid.console')
-(rm 'pyramid.log')
-(rm 'pyramid.console')
-	generated: pyramid.tex
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave pyramid.c.md</span><span class="ConsoleText-identifier-syntax"> -as</span><span class="ConsoleText-plain-syntax"> PDFTeX</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as PDFTeX (based on TeX)</span>
+<span class="ConsoleText-plain-syntax">    (pdftex -output-directory='.'  -interaction=scrollmode 'pyramid.tex'  &gt;'pyramid.console')</span>
+<span class="ConsoleText-plain-syntax">    (rm 'pyramid.log')</span>
+<span class="ConsoleText-plain-syntax">    (rm 'pyramid.console')</span>
+<span class="ConsoleText-plain-syntax">        generated: pyramid.tex</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note that <code>WOVENPATH</code> in one command has become <code>.</code> (the output directory
 happens to be the current working directory here), while each <code>WOVEN</code> has
 become <code>pyramid</code>. Note that <code>WOVEN</code> cannot begin with <code>-</code>, or contain any

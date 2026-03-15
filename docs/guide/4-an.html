@@ -47,13 +47,12 @@ MathJax = {
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -84,7 +83,7 @@ always obvious. Here is how it decides:</p>
 <li>
 <p>A web large enough to have a contents page can explicitly declare its notation,
 as in this example:</p>
-<pre><code>Title: Sorting Smorgasbord
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: MarkdownCode
 Language: Python
@@ -93,7 +92,7 @@ Version Number: 3.0.1
 Sections
 	Counting Sort
 	Quick Sort
-</code></pre>
+</span></pre>
 <p>Here the line <code>Notation: MarkdownCode</code> decides the matter. Note that every
 notation has its own name; that needs to be a resource visible from the web.
 (Note also that contents pages have the same syntax regardless of notation.)</p>
@@ -122,19 +121,22 @@ extension to indicate its notation:</p>
 easy to pick up, and also to have the convenience that a web using this
 notation renders well in a Markdown viewer — for example, if such a source
 code file is viewed at GitHub.</p>
-<p><code>InwebClassic</code> is a more traditional LP notation, and is something of a
-compromise between the Knuth syntax (filled with escape characters) and a
-more easily understood line-based, rather than stream-of-character-based, syntax.
-Until 2025, <code>InwebClassic</code> was the only notation Inweb could use; hence the name.
-At time of writing, many webs used by the Inform project are in <code>InwebClassic</code> notation.</p>
+<p><code>InwebClassic</code> is a more traditional LP notation, in that paragraph and code
+boundaries are explicitly marked. This increases the amount of markup needed,
+but some people find this clearer. It also provides for automated definitions
+and enumerations when coding in C-like languages, and for that reason is used
+by the Inform project. But since the commentary uses the same Markdown syntax as
+<code>MarkdownCode</code>, the two notations are not as different as they may appear at
+first sight.</p>
 <p><code>CWEB</code> is a partial compatibility mode with Knuth's CWEB tool. It is able to
-tangle, and to weave, at least some of his programs of the last forty years,
-more or less adequately.</p>
+tangle, and to weave to HTML, at least some of his programs of the last
+forty years, more or less adequately. Here, commentary uses TeX, not
+conventional Markdown.</p>
 <p><code>WEB</code> is an even more partial compatibility mode for Knuth's early WEB tool.
 It can only usefully weave, not tangle, and even then, quite imperfectly.
 WEB is used today only for the \INWEBMATH({\rm\TeX}\INWEBMATH) and Metafont source code, and there
 is little point in tangling these, since they are written in a long-obsolete
-form of Pascal.</p>
+form of Pascal. Again, commentary uses TeX.</p>
 <p>As we shall see, though, it's easy to create entirely new notations.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">

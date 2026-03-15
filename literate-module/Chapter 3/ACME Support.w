@@ -195,7 +195,8 @@ void ACMESupport::parse_functions(programming_language *self, ls_web *W) {
 			if (WebStructure::section_language(S) == WebStructure::web_language(W)) {
 				text_stream *line = lst->classification.operand1;
 				match_results mr = Regexp::create_mr();
-				if (Languages::match_regexp_set(&mr, line, WebStructure::web_language(W)->function_notation))
+				if (Languages::match_regexp_set(&mr, line,
+					WebStructure::section_language(S)->function_notation))
 					Functions::new_function(mr.exp[0], lst, S);
 				Regexp::dispose_of(&mr);
 			}

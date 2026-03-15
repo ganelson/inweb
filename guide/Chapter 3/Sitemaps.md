@@ -6,6 +6,7 @@ A command which makes sense only for colonies is `inweb map`, which prints out
 a sitemap of the website produced when all the webs in the colony have been woven.
 Here's what we get:
 
+``` ConsoleText
 	$ inweb map
 	colony declared in the file: colony.inweb
 	weave output to the directory: docs
@@ -15,6 +16,7 @@ Here's what we get:
 	front     | book | front-office     
 	inventory | book | inventory-module 
 	back      | page | back-office.py.md
+```
 
 Members are divided into "books", webs with multiple sections, and "pages",
 single-file webs with no contents page.
@@ -25,6 +27,7 @@ is, it won't be the same as the `at` fields in the declaration.
 
 Then we get some statistics:
 
+``` ConsoleText
 	member    | notation     | language | chapters | sections
 	--------- | ------------ | -------- | -------- | --------
 	front     | MarkdownCode | Python   | 1        | 2       
@@ -32,6 +35,7 @@ Then we get some statistics:
 	inventory | MarkdownCode | Python   | 1        | 2       
 	--------- | ------------ | -------- | -------- | --------
 	total: 3  | --           | --       | 3        | 5       
+```
 
 Note that this doesn't total up lines or paragraphs. That's because to do
 so would mean reading in the complete text of all the members of a colony, and
@@ -39,6 +43,7 @@ for a large colony of substantial programs, this takes several seconds. But
 Inweb will dutifully do so if asked for `inweb map -fuller`. For example,
 here's the fuller stats for the colony of the program Intest:
 
+``` ConsoleText
 	member     | notation     | language | modules | chapters | sections   | paragraphs   | lines         
 	---------- | ------------ | -------- | ------- | -------- | ---------- | ------------ | --------------
 	*overview  | InwebClassic | None     | --      | 1        | 1          | 0            | 16            
@@ -48,6 +53,7 @@ here's the fuller stats for the colony of the program Intest:
 	foundation | InwebClassic | InC      | --      | 8        | 50         | 991          | 28833         
 	---------- | ------------ | -------- | ------- | -------- | ---------- | ------------ | --------------
 	total: 5   | --           | --       | --      | 21       | 95         | 1621         | 42752         
+```
 
 The additions in brackets are to allow for the fact that, by using modules,
 some webs are sharing code. Numbers outside brackets are the unique contribution
@@ -57,20 +63,20 @@ importing 11 more chapters of 55 sections from the 2 modules it imports.
 
 Returning to our `retail` example, we then get the site map itself:
 
+``` ConsoleText
 	path         | leaf             | link-name | nav | crumbs | pattern
 	------------ | ---------------- | --------- | --- | ------ | -------
 	back/        | back-office.html | back      | --  |        | HTML   
 	docs-assets/ | --               | --        | --  | --     | --     
 	front/       | index.html       | front     | --  |        | HTML   
 	inventory/   | index.html       | inventory | --  |        | HTML   
+```
 
 This is meant to give a picture of the website which would emerge if each
 member of the colony were woven in an HTML format. The "path" and "leaf"
 combined give URLs within this website: so, if all this content were uploaded
 to a server providing `arachnidretail.com`, then the front office program's
-home page would be:
-
-	arachnidretail.com/front/index.html
+home page would be `arachnidretail.com/front/index.html`.
 
 And assets like images and CSS files would go into `docs-assets`. This last
 table is, again, only a top-level view: `inweb map -fuller` gives a more
@@ -104,12 +110,14 @@ if we rearrange the site map one day, all these links will remain unbroken.
 
 Suppose we don't want this arrangement:
 
+``` ConsoleText
 	path         | leaf             | link-name | nav | crumbs | pattern
 	------------ | ---------------- | --------- | --- | ------ | -------
 	back/        | back-office.html | back      | --  |        | HTML   
 	docs-assets/ | --               | --        | --  | --     | --     
 	front/       | index.html       | front     | --  |        | HTML   
 	inventory/   | index.html       | inventory | --  |        | HTML   
+```
 
 It seems asymmetric, somehow, that the URL for `front` is `front/index.html`
 whereas the one for `back` is `back/back-office.html`. This has happened
@@ -168,15 +176,18 @@ page at the top level of the website called `index.html` (rather than
 
 The table of materials now looks like so:
 
+``` ConsoleText
 	member    | type | source location          
 	--------- | ---- | -------------------------
 	front     | book | front-office             
 	inventory | book | inventory-module         
 	landing   | page | (material in Colony file)
 	back      | page | back-office.py.md        
+```
 
 And here's our sitemap:
 
+``` ConsoleText
 	path         | leaf       | link-name | nav | crumbs | pattern
 	------------ | ---------- | --------- | --- | ------ | -------
 				 | index.html | landing   | --  |        | HTML   
@@ -184,6 +195,7 @@ And here's our sitemap:
 	docs-assets/ | --         | --        | --  | --     | --     
 	front/       | index.html | front     | --  |        | HTML   
 	inventory/   | index.html | inventory | --  |        | HTML   
+```
 
 It's even possible to define a multi-section web from inside a colony, and
 this is occasionally useful to bunch together some files which were never
@@ -213,6 +225,7 @@ This makes a three-section web in which each section is pure commentary, and
 in effect collates some Markdown files into an area of our website. The bill
 of materials now looks like so:
 
+``` ConsoleText
 	member      | type | source location               
 	----------- | ---- | ------------------------------
 	front       | book | front-office                  
@@ -220,6 +233,7 @@ of materials now looks like so:
 	regulations | book | (contents list in Colony file)
 	landing     | page | (material in Colony file)     
 	back        | page | back-office.py.md             
+```
 
 ## Patterns
 
@@ -288,6 +302,7 @@ usual thing is to make use of `default:` again. So, for example:
 
 The site map now becomes:
 
+``` ConsoleText
 	path         | leaf       | link-name | nav | crumbs | pattern    
 	------------ | ---------- | --------- | --- | ------ | -----------
 				 | index.html | landing   | --  |        | GitHubPages
@@ -297,6 +312,7 @@ The site map now becomes:
 	inventory/   | index.html | inventory | --  | A      | GitHubPages
 
 	A = Home: //landing//
+```
 
 This provides something nice and simple: the landing page, at the top of
 the website, provides no breadcrumb links. The top page of `front` shows:
@@ -395,6 +411,7 @@ Images can be included in, or indeed entirely make up, the link text:
 
 The site map for our `retail` colony now looks like so:
 
+``` ConsoleText
 	path         | leaf       | link-name | nav        | crumbs | pattern    
 	------------ | ---------- | --------- | ---------- | ------ | -----------
 				 | index.html | landing   | (nameless) |        | GitHubPages
@@ -404,6 +421,7 @@ The site map for our `retail` colony now looks like so:
 	inventory/   | index.html | inventory | (nameless) | A      | GitHubPages
 
 	A = Home: //landing//
+```
 
 Note the "nav" column in this table: the four weaves all use the navigation
 element called `(nameless)`. We could actually have named it, and indeed, we

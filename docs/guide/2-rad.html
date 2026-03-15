@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -59,70 +59,73 @@ this seems a good point to set out some ground rules for declaring them.</p>
 <em>not</em> webs are given the filename extension <code>.inweb</code>. For example, if you were
 to create a custom programming language definition, say for the language
 Racket, you might call this <code>Racket.inweb</code>. And then:</p>
-<pre><code>$ inweb inspect Racket.inweb
-Language &quot;Racket&quot; at Racket.inweb, line 1
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect Racket.inweb</span>
+<span class="ConsoleText-plain-syntax">    Language "Racket" at Racket.inweb, line 1</span>
+</pre>
+<div class="lsmarkdown">
 <p>...and then some further output, which need not detain us here. In general,
 <code>inweb inspect</code> can be pointed at any file which Inweb understands, and will
 say what it appears to be.</p>
 <h2>Declarations</h2>
 <p>The general rule is that all Inweb files are a series of one or more <em>declarations</em>
 of <em>resources</em>, like this one:</p>
-<pre><code>Language &quot;Racket&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Racket" {
     ...
 }
-</code></pre>
+</span></pre>
 <p>Here the <em>type</em> of the resource is <code>Language</code>, and the <em>name</em> of the particular
 one created is <code>Racket</code>. (Names are optional in some cases: types never are.)
 Details about it then appear in the <code>...</code> position above. A file can contain
 multiple resources:</p>
-<pre><code>Language &quot;Racket&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Racket" {
     ...
 }
 
-Notation &quot;Homebrew&quot; {
+Notation "Homebrew" {
     ...
 }
-</code></pre>
+</span></pre>
 <p>Such a file is called a &quot;miscellany&quot;, even if all of its declarations have the
 same type as each other (unlike in this case).</p>
 <p>Resources can even, in some cases, be nested:</p>
-<pre><code>Colony {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
     ...
 
-    Language &quot;Racket&quot; {
+    Language "Racket" {
         ...
     }
 }
-</code></pre>
+</span></pre>
 <p>This is not a miscellany because the file contains just one declaration,
 a <code>Colony</code>. That has a second declaration, a <code>Language</code>, inside of it, but
 this is a private resource of its own, not visible from the outside.</p>
 <p>Outside of these declarations, comments can be included as lines which
 begin with <code>//</code>. For example, in:</p>
-<pre><code>// Something of a stopgap for now
-Language &quot;APL&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">// Something of a stopgap for now
+Language "APL" {
     ...
 }
-</code></pre>
+</span></pre>
 <p>the line <code>// Something of a stopgap for now</code> is simply discarded. Otherwise,
 nothing can appear outside of declarations except for white space.</p>
 <p>The rules on indentation and placing of the braces are strictly enforced here.
 This, for example, produces an error:</p>
-<pre><code>Language &quot;APL&quot; {  ...  }
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {  ...  }
+</span></pre>
 <p>as does:</p>
-<pre><code>Language &quot;APL&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {
     ...
     }
-</code></pre>
+</span></pre>
 <p>and so does:</p>
-<pre><code>Language &quot;APL&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {
         ...A...
     ...B...
         ...C...
 }
-</code></pre>
+</span></pre>
 <p>The material inside the braces should be indented by some amount (counting
 tab stops as four spaces), and the indentation used on the first line should
 be the minimum indentation used throughout. It's the <code>...B...</code> line which
@@ -141,7 +144,7 @@ read as the body of a <code>Web</code>;</li>
 </ul>
 <p>A <code>Web</code> declaration is a contents page. So, for example, a contents page
 <code>Contents.inweb</code> like so:</p>
-<pre><code>Title: Sorting Smorgasbord
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: MarkdownCode
 Language: Python
@@ -150,9 +153,9 @@ Version Number: 3.0.1
 Sections
 	Counting Sort.md
 	Quick Sort.md
-</code></pre>
+</span></pre>
 <p>is read exactly as if it had been declared thus:</p>
-<pre><code>Web {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Web {
 	Title: Sorting Smorgasbord
 	Author: Various Artists
 	Notation: MarkdownCode
@@ -163,7 +166,7 @@ Sections
 		Counting Sort.md
 		Quick Sort.md
 }
-</code></pre>
+</span></pre>
 <p>Properly speaking, Inweb always reads filenames case insensitively, so
 <code>Colony.INWEB</code> would be equivalent to <code>colony.inweb</code>. Similarly, trailing spaces
 after a filename extension are ignored, so <code>colony.inweb </code> also matches.</p>
@@ -173,15 +176,15 @@ the latter is used for a single-file web, and contains the actual text. But
 both create webs. A <code>Colony</code> is a whole collection of webs, and we'll come
 to that later on.</p>
 <p>For example, this tiny single-file web:</p>
-<pre><code># Pi
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Pi
 
 π is not part of the core of Python, but is defined in the `math` module:
 
     import math
     print (math.pi)
-</code></pre>
+</span></pre>
 <p>is read exactly as if it had been declared like this:</p>
-<pre><code>Page {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Page {
     # Pi
 
     π is not part of the core of Python, but is defined in the `math` module:
@@ -189,7 +192,7 @@ to that later on.</p>
         import math
         print (math.pi)
 }
-</code></pre>
+</span></pre>
 <p>In practice, it would be cumbersome and annoying to have to put webs inside
 these declaration braces, and this guide expects that users will never bother
 with them except when declaring a <code>Web</code> or <code>Page</code> inside a <code>Colony</code>.</p>
@@ -216,7 +219,7 @@ with them except when declaring a <code>Web</code> or <code>Page</code> inside a
 <tr>
 <td><code>Page</code></td>
 <td>text of a single-page web with no contents list</td>
-<td>nothing</td>
+<td>only a <code>Conventions</code></td>
 </tr>
 <tr>
 <td><code>Notation</code></td>

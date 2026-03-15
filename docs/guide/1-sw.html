@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -56,7 +56,7 @@ Still, here goes.</p>
 simplest (also most dubious) sorting algorithms: counting sort. This will be
 written in the simplest notation Inweb supports, Markdown, and the web is
 as follows:</p>
-<pre><code># Counting Sort
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Counting Sort
 
 This is a Python implementation of the counting sort algorithm. The following
 function takes an array of non-negative integers, sorts it, and returns the result:
@@ -79,8 +79,8 @@ function takes an array of non-negative integers, sorts it, and returns the resu
 And this code tests the function:
 
     A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-    print(&quot;Unsorted:&quot;, A)
-    print(&quot;Sorted:&quot;, countingSort(A))
+    print("Unsorted:", A)
+    print("Sorted:", countingSort(A))
 
 Here's what you should see when this runs:
 
@@ -88,7 +88,7 @@ Here's what you should see when this runs:
 Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
 Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
 ```
-</code></pre>
+</span></pre>
 <p>We store that as the text file <code>countsort.py.md</code>. Note that this filename has
 two filename extensions: the <code>.py</code> part marks this as a web for a program
 in the Python programming language, and the <code>.md</code> says it is written in Markdown
@@ -102,18 +102,24 @@ Markdown, Inweb takes a tab stop to be equivalent to four spaces.) Paragraph 3
 is pure commentary: note that the so-called fenced extract is not taken as part
 of the program.</p>
 <p>To reassure ourselves that this file makes sense to Inweb, we could try:</p>
-<pre><code>$ inweb inspect countsort.py.md
-web &quot;Counting Sort&quot; (Python program in MarkdownCode notation): 3 paragraphs : 33 lines
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.md</span>
+<span class="ConsoleText-plain-syntax">    web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 33 lines</span>
+</pre>
+<div class="lsmarkdown">
 <p>The title &quot;Counting Sort&quot; has been correctly extracted, and there are indeed 3 paras,
 so this is looking good.</p>
 <p>The notation is described as <code>MarkdownCode</code> rather than plain <code>Markdown</code> because
 Inweb can also read Markdown files which are straightforwardly documents, not
 containing a program at all. In fact, if we had called the exact same file
 <code>countsort.md</code>, not <code>countsort.py.md</code>, that's just what would have happened:</p>
-<pre><code>$ inweb inspect countsort.md
-web &quot;Counting Sort&quot; (Markdown notation): 1 paragraph : 33 lines
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.md</span>
+<span class="ConsoleText-plain-syntax">    web "Counting Sort" (Markdown notation): 1 paragraph : 33 lines</span>
+</pre>
+<div class="lsmarkdown">
 <p>Here the entire file would be a single paragraph, and all of it is commentary.
 Note that Inweb does not now say it is a <code>Python program</code>.</p>
 <p>It may seem precarious that Inweb reads the same file in quite different ways
@@ -121,21 +127,27 @@ depending only on its filename, but these are all just the <em>default</em> ways
 Inweb makes these decisions, when it hasn't been told any different.</p>
 <h2>Tangling</h2>
 <p>It's time to tangle the web to an actual program, and run it:</p>
-<pre><code>$ inweb tangle countsort.py.md
-tangling web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) to file 'countsort.py'
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span>
+<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span>
 
-$ python3 countsort.py
-Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
-</code></pre>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">python3</span><span class="ConsoleText-plain-syntax"> countsort.py</span>
+<span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span>
+<span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span>
+</pre>
+<div class="lsmarkdown">
 <p>As this demonstrates, the <code>python3</code> interpreter is only asked to run the tangled
 output file <code>countsort.py</code>.</p>
 <p>Inweb chose the filename <code>countsort.py</code> for the output file because that seemed
 the obvious way to express that Markdown formatting had been stripped from <code>countsort.py.md</code>.
 But this can be overridden with the <code>-to FILE</code> switch:</p>
-<pre><code>$ inweb tangle countsort.py.md -to tangled_stuff/mystery.py
-tangling web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) to file 'tangled_stuff/mystery.py'
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> tangled_stuff/mystery.py</span>
+<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'tangled_stuff/mystery.py'</span>
+</pre>
+<div class="lsmarkdown">
 <p>The special output file <code>-</code> can be used to mean &quot;print the result of tangling
 rather than saving it in a file&quot;: it doesn't create a file literally called <code>-</code>.
 Using this automatically engages <code>-silent</code> mode to suppress the heading, because
@@ -143,39 +155,51 @@ we wouldn't want the familiar &quot;tangling web...&quot; text to be mixed into 
 The main purpose of <code>-to -</code> is so that Inweb's tangled output can be decanted
 into a Unix pipe. Pipes are a feature of Unix-like operating systems in which
 the output printed by one tool becomes the input read by another. So, for example:</p>
-<pre><code>$ inweb tangle countsort.py.md -to - | python3
-Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span>
+<span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span>
+<span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span>
+</pre>
+<div class="lsmarkdown">
 <p>The pipe character <code>|</code> indicates that output from <code>inweb tangle countsort.py.md -to -</code>
 should be fed continuously into <code>python3</code> until it runs out. Since <code>python3</code>,
 the interpreter for the Python programming language, can read its program from
 so-called &quot;standard input&quot;, the result is that the program just runs. No file
 called <code>countsort.py</code> needed to be written at all, which seems tidy.</p>
 <p>This can also sometimes be used to inspect the tangled output. For example:</p>
-<pre><code>$ inweb tangle countsort.py.md -to - | more
-$ inweb tangle countsort.py.md -to - | bbedit
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | more</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | bbedit</span>
+</pre>
+<div class="lsmarkdown">
 <p>Here we pipe to either <code>more</code>, a standard Unix tool for displaying files which
 are too long to show on screen all at once, or to the MacOS text editor BBEdit.</p>
 <h2>Weaving</h2>
 <p>Weaving next:</p>
-<pre><code>$ inweb weave countsort.py.md
-weaving web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) as HTML
-the weave would require this directory to exist:
-    countsort2-assets
-inweb: fatal error: giving up: either make it by hand, or run again with -creating set
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave countsort.py.md</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">    the weave would require this directory to exist:</span>
+<span class="ConsoleText-plain-syntax">        countsort2-assets</span>
+<span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make it by hand, or run again with -creating set</span>
+</pre>
+<div class="lsmarkdown">
 <p>As this reply shows, Inweb is a little cautious about creating directories
 automatically: this one looks harmless enough, but for really large weaves,
 better safe than sorry. Typing <code>mkdir countsort2-assets</code> would make this go away,
 but instead why not take Inweb's advice:</p>
-<pre><code> $ inweb weave countsort.py.md -creating
-weaving web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) as HTML
-(created directory 'countsort2-assets')
-	generated: countsort2.html
-	10 files copied to: countsort2-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">     </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'countsort2-assets')</span>
+<span class="ConsoleText-plain-syntax">        generated: countsort2.html</span>
+<span class="ConsoleText-plain-syntax">        10 files copied to: countsort2-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>And now that the directory exists, we don't need to use <code>-creating</code> again.</p>
 <p>Depending on the format being woven, weaving is more complicated than tangling,
 and often generates multiple files, which have to be put somewhere. What the
@@ -186,14 +210,17 @@ new directory called <code>countsort-assets</code>.</p>
 <p>Larger webs, with multiple sections, produce more elaborate websites, and the
 reply from <code>inweb weave</code> is then longer. Here's the output from weaving a longer
 program:</p>
-<pre><code>weaving web &quot;longer&quot; (InC program) as GitHubPages (based on HTML)
-    [longer/docs/M-iti.html] [M-wtaw] [M-htwaw] [M-mwiw] [M-awwp] [M-spl] [M-tid] [M-rc]
-    [P-htpw]
-    [1-pc] [1-cnf] [1-ias] [1-iis] [1-ims] [1-ims2] [1-its] [1-its2] [1-iws]
-    [index]
-    18 files copied to: longer/docs/docs-assets
-    7 files copied to: longer/docs
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    weaving web "longer" (InC program) as GitHubPages (based on HTML)</span>
+<span class="ConsoleText-plain-syntax">        [longer/docs/M-iti.html] [M-wtaw] [M-htwaw] [M-mwiw] [M-awwp] [M-spl] [M-tid] [M-rc]</span>
+<span class="ConsoleText-plain-syntax">        [P-htpw]</span>
+<span class="ConsoleText-plain-syntax">        [1-pc] [1-cnf] [1-ias] [1-iis] [1-ims] [1-ims2] [1-its] [1-its2] [1-iws]</span>
+<span class="ConsoleText-plain-syntax">        [index]</span>
+<span class="ConsoleText-plain-syntax">        18 files copied to: longer/docs/docs-assets</span>
+<span class="ConsoleText-plain-syntax">        7 files copied to: longer/docs</span>
+</pre>
+<div class="lsmarkdown">
 <p>The filenames in square brackets are abbreviated for legibility: only the first
 filename is written in full, <code>longer/docs/M-iti.html</code>, and all subsequent files
 are understood to be in the same directory and with the same file extension

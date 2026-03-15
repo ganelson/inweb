@@ -5,8 +5,10 @@ git version control system, much like its system for generating //README Files//
 The command `inweb make-gitignore` works almost exactly like
 `inweb make-readme`, and once again generates a makefile from a script:
 
+``` ConsoleText
 	$ inweb make-gitignore smorgasbord
 	smorgasbord/smorgasbord.giscript -> smorgasbord/.gitignore
+```
 
 Note that this resulting file may be "hidden" in some operating systems, on
 account of the name beginning with a `.`: for example, it will usually not

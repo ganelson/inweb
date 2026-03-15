@@ -28,13 +28,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -48,10 +47,10 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#4">Chapter 4: Notations</a></li><li><b>Summary of Notations</b></li></ul></div>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> A notation declaration must be enclosed thus:</p>
-<pre><code>Notation &quot;NAME&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "NAME" {
 	...
 }
-</code></pre>
+</span></pre>
 <p>where the body <code>...</code> consists of blank lines, or of any of the following,
 given in any order:</p>
 <ul>
@@ -297,21 +296,21 @@ nameless holons there are indicated only by being indented blocks. But other
 notations do. For example, Knuth used the marker <code>@p</code> to mean &quot;go into Pascal
 mode&quot;, i.e., begin some code now, since he was using the Pascal language. This
 can be achieved thus:</p>
-<pre><code>@p RESIDUE      ==&gt; namelessholon
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@p RESIDUE      ==&gt; namelessholon
+</span></pre>
 <p>(Note the residue: Knuth had no qualms about writing code on the same line as
 the <code>@p</code> marker.)</p>
 <hr />
 <p><code>namedholon</code> means that a holon with a name is being declared on this line.
 The <code>MATERIAL</code> text should be its name, and that name should be non-empty.
 For example:</p>
-<pre><code>&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; =           ==&gt; namedholon
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; =           ==&gt; namedholon
+</span></pre>
 <hr />
 <p><code>fileholon</code> is for material to be tangled to a subsidiary file, where
 <code>MATERIAL</code> holds the filename. For example:</p>
-<pre><code>Write this to &quot;&lt;MATERIAL&gt;&quot;:                 ==&gt; fileholon
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Write this to "&lt;MATERIAL&gt;":                 ==&gt; fileholon
+</span></pre>
 <p>These are not really holons as such, since they do not form part of the program
 being tangled: instead they may be making a configuration file, say, or some
 other sidekick resource which needs to be in the source code even though it's
@@ -337,15 +336,15 @@ the actual source code fragment.</p>
 below). Again, the content should be put in <code>MATERIAL</code>. If Inweb can see
 from context that the line occurs in a holon, it will be recognised as <code>code</code>
 automatically. For example, in this piece of <code>InwebClassic</code> notation:</p>
-<pre><code>@ For example:						        classified as beginparagraph then commentary
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ For example:						        classified as beginparagraph then commentary
                                             classified as commentary
 =	                                        classified as namelessholon
 	@&lt;Here is a holon@&gt;;				    classified as extract
                         				    classified as extract
 @&lt;Here is a holon@&gt; =						classified as namedholon
     int k = 0;              				classified as extract
-    char *p = &quot;static text&quot;;				classified as extract
-</code></pre>
+    char *p = "static text";				classified as extract
+</span></pre>
 <p>all of the <code>extract</code> lines automatically become <code>code</code> because they occur
 inside of holons. Because of that, there's no need for the <code>InwebClassic</code>
 notation to distinguish between code and other extract matter: it can classify
@@ -388,11 +387,11 @@ somewhat contrary to the spirit of Inweb.</p>
 </ul>
 <p>Note that the replacements are not made in sequence, and that only one replacement
 is made at any given position. Thus:</p>
-<pre><code>process
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">process
 	f ==&gt; g
 	g ==&gt; f
 end
-</code></pre>
+</span></pre>
 <p>processes &quot;logoff&quot; into &quot;lofogg&quot;.</p>
 <p>All text is literal except that:</p>
 <ul>

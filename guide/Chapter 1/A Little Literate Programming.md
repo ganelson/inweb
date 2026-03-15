@@ -191,6 +191,24 @@ is, incorporated into other holons:
 
   results in an error (whether or not `{{alpha}}` or `{{beta}}` are used elsewhere).
 
+## Abbreviating holon names
+
+Suppose a holon has a lengthy name which is difficult to type:
+
+	{{Fail with an error message, deallocate memory, and return 1}} =
+
+This may make it annoying to refer to:
+
+		if (text) {{Fail with an error message, deallocate memory, and return 1}}
+
+So Inweb allows such references to be abbreviated:
+
+		if (text) {{Fail...}}
+
+The rule is that the text before `...`, in the case `Fail`, must be a prefix of
+the name of _exactly one_ holon defined in the current section; or, if it matches
+none in the current section, _exactly one_ holon defined webwide.
+
 ## Naming every holon
 
 Some LP purists may not approve of the way that Inweb normally reads a mix of
@@ -342,20 +360,27 @@ And then we can use `{{Disclaimer}}` anywhere needed.
 
 Webwide holons are, again, best used only when there's a good reason for it.
 
-## Abbreviating holon names
+## Extracting holon matter to files
 
-Suppose a holon has a lengthy name which is difficult to type:
+Another option which can be applied to a holon is to mark it as containing code
+which is not part of the main program, but is instead destined for an extraneous
+file of text or code. For example:
 
-	{{Fail with an error message, deallocate memory, and return 1}} =
+	{{Default preferences file}} (tangled to prefs.txt) =
 
-This may make it annoying to refer to:
+This holon is tangled like any other, but into the sidekick file `prefs.txt`.
 
-		if (text) {{Fail with an error message, deallocate memory, and return 1}}
+The command `inweb inspect -tangle-files` can be used to find which files like
+this are actually written in a tangle:
 
-So Inweb allows such references to be abbreviated:
+``` ConsoleText
+	$ inweb inspect -tangle-files inform/inform7
+	web "inform7" (InC program in InwebClassic notation): 27 modules : 146 chapters : 796 sections : 12576 paragraphs : 285331 lines
+	file           | holon name       | language | where  
+	-------------- | ---------------- | -------- | -------
+	inform7_clib.h | C library header | None     | 5/fnc:8
+	inform7_clib.c | C library code   | C        | 5/fnc:9
+```
 
-		if (text) {{Fail...}}
-
-The rule is that the text before `...`, in the case `Fail`, must be a prefix of
-the name of _exactly one_ holon defined in the current section; or, if it matches
-none in the current section, _exactly one_ holon defined webwide.
+(The languages used in these files are inferred from their filename extensions:
+Inweb recognises `.c` here but not `.h`.)

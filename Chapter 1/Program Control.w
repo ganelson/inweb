@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 @ We keep global settings to a minimum. Note that the installation path can
 only be set after the command-line switches are read, since they can change it.
 
-= (early code)
+@<Global variable definitions@> +=
 pathname *path_to_inweb = NULL; /* where we are installed */
 int no_inweb_errors = 0;
 int verbose_mode = FALSE, silent_mode = FALSE;

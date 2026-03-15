@@ -14,6 +14,7 @@ The inweb inspect subcommand describes a web or other resource without changing 
 @e CONVENTIONS_CLSW
 @e TAGS_CLSW
 @e LINKS_CLSW
+@e TANGLE_FILES_CLSW
 @e CLIKE_CLSG
 
 =
@@ -43,6 +44,8 @@ void InwebInspect::cli(void) {
 		U"show the paragraph tags used in this web");
 	CommandLine::declare_switch(LINKS_CLSW, U"links", 1,
 		U"show the external Internet links used in this web");
+	CommandLine::declare_switch(TANGLE_FILES_CLSW, U"tangle-files", 1,
+		U"show the tangled files written by this web");
 	CommandLine::declare_switch(SCAN_CLSW, U"scan", 1,
 		U"parse the web and display its syntax tree (can produce lots of output)");
 	CommandLine::end_group();
@@ -62,6 +65,7 @@ typedef struct inweb_inspect_settings {
 	int resources_switch; /* `-resources`: show WCL objects in scope */
 	int tags_switch; /* `-tags`: show paragraph tags used */
 	int links_switch; /* `-links`: show http(s) links used */
+	int tangle_files_switch; /* `-tangle-files`: show sidekick files written */
 	int fuller_switch;    /* `-fuller`: give further details */
 } inweb_inspect_settings;
 
@@ -74,6 +78,7 @@ void InwebInspect::initialise(inweb_inspect_settings *iis) {
 	iis->resources_switch = FALSE;
 	iis->tags_switch = FALSE;
 	iis->links_switch = FALSE;
+	iis->tangle_files_switch = FALSE;
 	iis->fuller_switch = FALSE;
 }
 
@@ -87,6 +92,7 @@ int InwebInspect::switch(inweb_instructions *ins, int id, int val, text_stream *
 		case CONVENTIONS_CLSW: iis->conventions_switch = val; return TRUE;
 		case TAGS_CLSW: iis->tags_switch = val; return TRUE;
 		case LINKS_CLSW: iis->links_switch = val; return TRUE;
+		case TANGLE_FILES_CLSW: iis->tangle_files_switch = val; return TRUE;
 		case RESOURCES_CLSW: iis->resources_switch = val; return TRUE;
 		case FULLER_CLSW: iis->fuller_switch = val; return TRUE;
 	}
@@ -131,6 +137,8 @@ void InwebInspect::run(inweb_instructions *ins) {
 			ParagraphTags::tabulate_links(STDOUT, op.W, iis->subset.range, iis->fuller_switch);
 			if ((iis->fuller_switch == FALSE) && (modular))
 				PRINT("\n(main module only: use '-fuller' for all modules)\n");
+		} else if (iis->tangle_files_switch) {
+			Holons::inspect_files(STDOUT, op.W);
 		} else if (iis->conventions_switch) {
 			Conventions::show(STDOUT, op.W, iis->fuller_switch);
 		} else {

@@ -7,11 +7,13 @@ to change them.
 
 The currently applicable conventions can be seen using `inweb inspect -conventions`:
 
+``` ConsoleText
 	$ inweb inspect -conventions smorgasbord
 	web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 114 lines
 	(generic)  paragraph numbers are visible
 	(generic)  namespaces are unenforced
 	(generic)  sections are not numbered sequentially
+```
 
 ...and so forth. For example, `paragraph numbers are visible` is a convention.
 `(generic)` means that it applies because this generically applies to every web,
@@ -37,11 +39,13 @@ Note that conventions appear after the contents rundown, and in braces. (That's
 because this is technically a _declaration_: see //Resources and Declarations//.)
 We then see:
 
+``` ConsoleText
 	$ inweb inspect -conventions smorgasbord
 	web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 114 lines
 	(generic)  paragraph numbers are visible
 	(generic)  namespaces are unenforced
 	(web)      sections are numbered sequentially
+```
 
 ...and so on. Note that `(web)`, showing that the web makes the convention this
 time. (For the effect this change actually has, see below.)

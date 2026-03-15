@@ -37,6 +37,7 @@ MathJax = {
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -47,13 +48,12 @@ MathJax = {
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -78,30 +78,39 @@ the course of his work on <em>The Art of Computer Programming</em>.</p>
 C programs. For example, Knuth wrote a web called <code>backpdi.w</code> which computes
 every integer which is equal to the sum of the \INWEBMATH(m\INWEBMATH)-th powers of its digits.
 Renaming this <code>backpdi.c.cweb</code>, we obtain:</p>
-<pre><code>$ inweb inspect back-pdi.c.cweb
-web &quot;Untitled&quot; (C program in CWEB notation): 22 paragraphs : 367 lines
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect back-pdi.c.cweb</span>
+<span class="ConsoleText-plain-syntax">    web "Untitled" (C program in CWEB notation): 22 paragraphs : 367 lines</span>
+</pre>
+<div class="lsmarkdown">
 <p>CWEB has no concept of metadata such as titling: hence, &quot;Untitled&quot;. The rest
 looks correct, though, and:</p>
-<pre><code>$ inweb weave back-pdi.c.cweb
-weaving web &quot;Untitled&quot; (C program in CWEB notation) as HTML
-	generated: back-pdi.html
-	11 files copied to: docs/docs-assets
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave back-pdi.c.cweb</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Untitled" (C program in CWEB notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">        generated: back-pdi.html</span>
+<span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span>
 
-$ inweb tangle back-pdi.c.cweb -using CWEB.inweb
-tangling web &quot;Untitled&quot; (C program in CWEB notation) to file 'back-pdi.c'
-</code></pre>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle back-pdi.c.cweb</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> CWEB.inweb</span>
+<span class="ConsoleText-plain-syntax">    tangling web "Untitled" (C program in CWEB notation) to file 'back-pdi.c'</span>
+</pre>
+<div class="lsmarkdown">
 <p>This code is written in an antique dialect of C, so:</p>
-<pre><code>$ clang -std=c89 back-pdi.c -o back-pdi
-$ ./back-pdi 3
-1: 7400-&gt;0407
-2: 7310-&gt;0371
-3: 7300-&gt;0370
-4: 5310-&gt;0153
-5: 1000-&gt;0001
-6: 0000-&gt;0000
-Altogether 6 solutions for m=3 (110 nodes, 4662 mems).
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-identifier-syntax"> -std</span><span class="ConsoleText-plain-syntax">=c89 back-pdi.c</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> back-pdi</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./back-pdi</span><span class="ConsoleText-plain-syntax"> 3</span>
+<span class="ConsoleText-plain-syntax">    1: 7400-&gt;0407</span>
+<span class="ConsoleText-plain-syntax">    2: 7310-&gt;0371</span>
+<span class="ConsoleText-plain-syntax">    3: 7300-&gt;0370</span>
+<span class="ConsoleText-plain-syntax">    4: 5310-&gt;0153</span>
+<span class="ConsoleText-plain-syntax">    5: 1000-&gt;0001</span>
+<span class="ConsoleText-plain-syntax">    6: 0000-&gt;0000</span>
+<span class="ConsoleText-plain-syntax">    Altogether 6 solutions for m=3 (110 nodes, 4662 mems).</span>
+</pre>
+<div class="lsmarkdown">
 <p>And indeed \INWEBMATH(4^3 + 0^3 + 7^3 = 64 + 0 + 343 = 407\INWEBMATH), so score one for Professor Knuth:
 the solutions are 407, 371, 370, 153, 1 and 0.</p>
 <p>Support for <code>CWEB</code> remains limited, nevertheless. The following are not implemented:</p>
@@ -124,11 +133,14 @@ they are called <code>WEB</code>. These were tied to a form of Pascal no longer 
 and are difficult to emulate without essentially porting them wholesale.</p>
 <p>Inweb has even more limited support for reading <code>WEB</code> files. Currently, it can
 parse <code>WEAVE</code> and <code>TANGLE</code> successfully:</p>
-<pre><code>$ inweb weave weave.pas.web
-weaving web &quot;Untitled&quot; (Pascal program in WEB notation) as HTML
-	generated: weave.html
-	10 files copied to: weave-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave weave.pas.web</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Untitled" (Pascal program in WEB notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">        generated: weave.html</span>
+<span class="ConsoleText-plain-syntax">        10 files copied to: weave-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note that a WEB file must be filenamed <code>NAME.pas.web</code> in order for Inweb to
 pick up its notation. As yet, <code>tex.pas.web</code> does not parse: it contains some
 direly convoluted syntax. More work may or may not be done on this.</p>

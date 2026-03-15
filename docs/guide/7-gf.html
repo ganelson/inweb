@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -51,9 +51,12 @@
 git version control system, much like its system for generating <a href="7-rf.html" class="internal">README Files</a>.
 The command <code>inweb make-gitignore</code> works almost exactly like
 <code>inweb make-readme</code>, and once again generates a makefile from a script:</p>
-<pre><code>$ inweb make-gitignore smorgasbord
-smorgasbord/smorgasbord.giscript -&gt; smorgasbord/.gitignore
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-gitignore smorgasbord</span>
+<span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.giscript -&gt; smorgasbord/.gitignore</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note that this resulting file may be &quot;hidden&quot; in some operating systems, on
 account of the name beginning with a <code>.</code>: for example, it will usually not
 be displayed by the Finder in MacOS.</p>

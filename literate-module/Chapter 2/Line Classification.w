@@ -628,6 +628,8 @@ exhaust the content completely, or there's an error.
 	}
 	if (OR->outcome.outcome_ID == NAMEDHOLON_LSNROID) {
 		if (bitmap & CONTINUATION_LSNROBIT)   res.cf.minor = ADDENDUM_MINLC;
+		if (bitmap & TANGLEDTOHOLON_LSNROBIT)
+			res.cf.operand2 = Str::duplicate(wildcards[SECOND_LSWILDCARD]);
 	}
 	if (OR->outcome.outcome_ID == FILEHOLON_LSNROID) {
 		if (bitmap & CONTINUATION_LSNROBIT)   res.cf.minor = FILE_ADDENDUM_MINLC;

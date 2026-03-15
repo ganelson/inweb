@@ -983,6 +983,7 @@ between them, but that's another story: see //Holons::scan//.
 @<Assign holons to chunks containing fragments of the target code@> =
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		TEMPORARY_TEXT(holon_name)
+		TEMPORARY_TEXT(holon_filename)
 		int addendum_flag = FALSE, file_holon_flag = FALSE, holon_bitmap = 0;
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			for (ls_line *line = chunk->first_line; line; line = line->next_line)
@@ -995,7 +996,9 @@ between them, but that's another story: see //Holons::scan//.
 					WebErrors::record_at(I"second fragment name declaration in one paragraph",
 						chunk->first_line);
 				Str::clear(holon_name);
+				Str::clear(holon_filename);
 				WRITE_TO(holon_name, "%S", chunk->first_line->classification.operand1);
+				WRITE_TO(holon_filename, "%S", chunk->first_line->classification.operand2);
 				if (((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
 						(chunk->chunk_type == HOLON_FILE_LSCT)) &&
 					(Str::ends_with(holon_name, I"...")) &&
@@ -1039,6 +1042,7 @@ between them, but that's another story: see //Holons::scan//.
 			WebErrors::record_at(I"no code fragment follows name declaration",
 				par->first_chunk->first_line);
 		DISCARD_TEXT(holon_name)
+		DISCARD_TEXT(holon_filename)
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
 			if ((chunk->chunk_type == HOLON_DECLARATION_LSCT) ||
 				(chunk->chunk_type == HOLON_FILE_LSCT) ||
@@ -1051,7 +1055,8 @@ between them, but that's another story: see //Holons::scan//.
 @<Assign a holon to this chunk@> =
 	TEMPORARY_TEXT(sanitised)
 	Holons::sanitise_name(sanitised, holon_name);
-	chunk->holon = Holons::new(chunk, sanitised, addendum_flag, file_holon_flag,
+	chunk->holon = Holons::new(lsu->context, chunk, sanitised, addendum_flag,
+		file_holon_flag, holon_filename,
 		lsu->local_holon_namespace, holon_bitmap, lsu->unit_notation, lsu->language);
 	DISCARD_TEXT(sanitised)
 	if (chunk->owner->holon)

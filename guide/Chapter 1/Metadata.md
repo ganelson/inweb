@@ -2,12 +2,15 @@
 
 Recall that `inweb inspect` will tell us what a file seems to be:
 
+``` ConsoleText
 	$ inweb inspect countsort.py.md
 	web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 33 lines
+```
 
 When the file is a web, adding the `-metadata` switch will give a more
 comprehensive view of the "metadata" for a web:
 
+``` ConsoleText
 	$ inweb inspect -metadata countsort.py.md
 	web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 33 lines
 	
@@ -15,6 +18,7 @@ comprehensive view of the "metadata" for a web:
 	Author: Anonymous
 	Language: Python
 	Notation: MarkdownCode
+```
 
 Inweb is all about treating webs as if they were literary texts like books,
 and what we see here is like the bibliographic data on a published book, which
@@ -33,6 +37,7 @@ We could give this program an author by rewriting that first line:
 
 whereupon:
 
+``` ConsoleText
 	$ inweb inspect -metadata countsort.py.md
 	web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 33 lines
 	
@@ -40,6 +45,7 @@ whereupon:
 	Author: Harold H. Seward
 	Language: Python
 	Notation: MarkdownCode
+```
 
 It's also possible to specify a version number:
 
@@ -47,20 +53,24 @@ It's also possible to specify a version number:
 
 resulting in:
 
+``` ConsoleText
 	Title: Counting Sort
 	Author: Harold H. Seward
 	Language: Python
 	Notation: MarkdownCode
 	Version Number: 1954.2
+```
 
 The version number must conform to the semver standard in its format, and
 can include prerelease and build numbers. For example, placing `(v1954.2-beta3+1B16)`
 in the title line, rather than simply `(v1954.2)`, adds the following metadata:
 
+``` ConsoleText
 	Build Number: +1B16
 	Prerelease: -beta3
 	Semantic Version Number: 1954.2-beta3+1B16
 	Version Number: 1954.2
+```
 
 In fact, the previous version also had `Build Number` (blank), `Prerelease` (blank),
 and `Semantic Version Number` (same as the ordinary `Version Number`) in existence,
@@ -83,6 +93,7 @@ a blank line.
 
 That being so, we then find:
 
+``` ConsoleText
 	$ inweb inspect -metadata countsort.py.md
 	web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 41 lines
 	
@@ -92,6 +103,7 @@ That being so, we then find:
 	Language: Python
 	Notation: MarkdownCode
 	Version Number: 1954.2
+```
 
 This completes the suite of metadata which a single-file Markdown-notation web
 can provide.
@@ -108,9 +120,11 @@ amend the code testing our sorting program:
 
 And now, when this is run, we would see:
 
+``` ConsoleText
 	Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
 	Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
 	So sayeth Harold H. Seward.
+```
 
 What happened here is that `[[Author]]` in the double-quoted Python string
 `"So sayeth [[Author]]."` was automatically replaced by the value of `Author`
@@ -127,4 +141,6 @@ web:
 
 tangles to a Python program whose sole act is to print
 
+``` ConsoleText
 	Ludwig van der Blonk brings you Contrivance, in version 3.14.
+```

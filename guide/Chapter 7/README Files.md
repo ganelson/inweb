@@ -13,8 +13,10 @@ inside it, reading:
 
 As part of the build process for the program, we can include this command:
 
+``` ConsoleText
 	$ inweb make-readme smorgasbord
 	smorgasbord/smorgasbord.rmscript -> smorgasbord/README.md
+```
 
 And this will create the `README.md` with contents such as:
 
@@ -33,10 +35,12 @@ an error. If `-to` is not specified, Inweb assumes `README.md` in the web (or
 colony) directory. If `-to` is set to `-`, Inweb writes to standard output
 instead of to a file:
 
+``` ConsoleText
 	$ inweb make-readme smorgasbord -to -
 	# Sorting Smorgasbord
 	
 	This is version 1-early-beta+1A02, dated 21 December 2025.
+```
 
 Mostly, whatever is in the script copies directly through into the output, but
 three characters have special rules:

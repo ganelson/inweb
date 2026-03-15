@@ -18,6 +18,8 @@ Notation "InwebClassic" {
 	
 		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedholon
 		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS) = ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS)=  ==> namedholon
 		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
 		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
 	
@@ -36,6 +38,28 @@ Notation "InwebClassic" {
 		>> MATERIAL                                 ==> quotation if not in extract context
 	end
 	
+	options of namedholon
+		webwide                                     ==> webwideholonoption
+		tangled to SECOND							==> tangledtoholonoption
+		tangled very early                          ==> veryearlyholonoption
+		tangled early                               ==> earlyholonoption
+		tangled late                                ==> lateholonoption
+		tangled very late                           ==> verylateholonoption
+		webwide, OPTIONS                            ==> webwideholonoption
+		tangled to SECOND, OPTIONS    				==> tangledtoholonoption
+		tangled very early, OPTIONS                 ==> veryearlyholonoption
+		tangled early, OPTIONS                      ==> earlyholonoption
+		tangled late, OPTIONS                       ==> lateholonoption
+		tangled very late, OPTIONS                  ==> verylateholonoption
+		webwide and OPTIONS                         ==> webwideholonoption
+		tangled to SECOND and OPTIONS    			==> tangledtoholonoption
+		tangled very early and OPTIONS              ==> veryearlyholonoption
+		tangled early and OPTIONS                   ==> earlyholonoption
+		tangled late and OPTIONS                    ==> lateholonoption
+		tangled very late and OPTIONS               ==> verylateholonoption
+		MATERIAL                                    ==> error "unknown holon option(s)"
+	end
+
 	residue of beginparagraph
 		RESIDUE <OPENTAG>MATERIAL<CLOSETAG>         ==> paragraphtag if paragraph tags supported
 		<OPENTAG>MATERIAL<CLOSETAG>                 ==> paragraphtag if paragraph tags supported
@@ -158,16 +182,19 @@ Notation "MarkdownCode" {
 	
 	options of namedholon
 		webwide                                     ==> webwideholonoption
+		tangled to SECOND							==> tangledtoholonoption
 		tangled very early                          ==> veryearlyholonoption
 		tangled early                               ==> earlyholonoption
 		tangled late                                ==> lateholonoption
 		tangled very late                           ==> verylateholonoption
 		webwide, OPTIONS                            ==> webwideholonoption
+		tangled to SECOND, OPTIONS    				==> tangledtoholonoption
 		tangled very early, OPTIONS                 ==> veryearlyholonoption
 		tangled early, OPTIONS                      ==> earlyholonoption
 		tangled late, OPTIONS                       ==> lateholonoption
 		tangled very late, OPTIONS                  ==> verylateholonoption
 		webwide and OPTIONS                         ==> webwideholonoption
+		tangled to SECOND and OPTIONS    			==> tangledtoholonoption
 		tangled very early and OPTIONS              ==> veryearlyholonoption
 		tangled early and OPTIONS                   ==> earlyholonoption
 		tangled late and OPTIONS                    ==> lateholonoption

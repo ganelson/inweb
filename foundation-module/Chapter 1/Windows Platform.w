@@ -14,7 +14,7 @@ on a POSIX operating system.
 @d SHELL_QUOTE_CHARACTER '\"'
 @d INFORM_FOLDER_RELATIVE_TO_HOME ""
 
-= (very early code)
+@<Windows early declarations@> (tangled very early) =
 #include <dirent.h>
 #include <errno.h>
 #include <io.h>
@@ -42,7 +42,7 @@ int Platform::is_folder_separator(inchar32_t c) {
 
 @h Environment variables.
 
-= (very early code)
+@<Windows early declarations@> +=
 char *Platform::getenv(const char *name) {
 	char *env = getenv(name);
 	if (env == 0) {
@@ -93,7 +93,7 @@ void Platform::where_am_i(inchar32_t *p, size_t length) {
 
 @h Shell commands.
 
-= (very early code)
+@<Windows early declarations@> +=
 /* Check the first element of the command: if it has path separators in
    it, we assume we are running one of our commands, otherwise it is a
    Unix style command. */
@@ -409,7 +409,7 @@ void Platform::configure_terminal(void) {
 
 @h Concurrency.
 
-= (very early code)
+@<Windows early declarations@> +=
 typedef HANDLE foundation_thread;
 typedef struct Win32_Thread_Attrs
 {
@@ -515,5 +515,5 @@ off_t Platform::size(char *transcoded_filename) {
 	LeaveCriticalSection(&(name.crit));
 }
 
-= (very early code)
+@<Windows early declarations@> +=
 struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };

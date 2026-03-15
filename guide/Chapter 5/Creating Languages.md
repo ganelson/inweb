@@ -33,6 +33,7 @@ And the other file will be the new language definition, `rust.inweb`:
 
 Kicking the tyres:
 
+``` ConsoleText
 	$ inweb inspect sample.rust.md -using rust.inweb
 	web "Traces of Corrosion" (Rust program in MarkdownCode notation): 1 paragraph : 11 lines
 
@@ -48,6 +49,7 @@ Kicking the tyres:
 			 n += 1;
 		}
 	}
+```
 
 As can be seen, a minimal language definition can be minimal indeed. Even
 the `recognise` line is optional — a "language" defined just to syntax-colour
@@ -77,10 +79,12 @@ contain `Conventions` settings; if present, this must come at the end.
 So it's time to give the Rust definition some substance. If we try weaving
 with the almost empty definition so far:
 
+``` ConsoleText
 	$ inweb weave sample.rust.md -creating
 	weaving web "Traces of Corrosion" (MarkdownCode notation) as HTML
 		generated: sample.html
 		10 files copied to: sample-assets
+```
 
 ...then we will see a web page where the Rust code is really quite strangely
 syntax-coloured. The literal numbers, `1` and `10`, are coloured differently
@@ -323,6 +327,7 @@ on Rust, of which there are annoyingly many.
 
 How can we test this definition? One convenience is the command `inweb test-language`:
 
+``` ConsoleText
 	$ inweb tangle sample.rust.md -using rust.inweb
 	tangling web "Traces of Corrosion" (Rust program in MarkdownCode notation) to file 'sample.rust'
 	
@@ -351,6 +356,7 @@ How can we test this definition? One convenience is the command `inweb test-lang
 	ppppmmmmmmmmpsssssssssssssssssssssssssppnnnnppnnnnnpp
 	ppppmmmmmmmmpsssssssssssssssssssssssssssssssssppnnniiiippnnnnnniiiipp
 	p
+```
 
 So the command `inweb test-language -called X -on Y` syntax-colours the file `Y`
 according to the definition of the language `X`, and prints out a sort of

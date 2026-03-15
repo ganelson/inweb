@@ -33,7 +33,7 @@ what it needs in the way of memory allocation.
 @h Basic definitions.
 These inclusion files are all from the ANSI C standard library.
 
-= (very early code)
+@<Platform interface basics@> (tangled very early) =
 #include <ctype.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -45,7 +45,7 @@ These inclusion files are all from the ANSI C standard library.
 
 typedef uint32_t inchar32_t;
 
-@ =
+@<Global variable definitions@> (webwide and tangled early) =
 text_stream *DL = NULL; /* Current destination of debugging text: kept `NULL` until opened */
 
 @ We'll use three truth states, the third of which can also mean "unknown".

@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -51,9 +51,12 @@
 to be used by the Unix utility <code>make</code>, much like its system for generating
 <a href="7-rf.html" class="internal">README Files</a>. The command <code>inweb make-makefile</code> works almost exactly like
 <code>inweb make-readme</code>, and once again generates a makefile from a script:</p>
-<pre><code>$ inweb make-makefile smorgasbord
-smorgasbord/smorgasbord.mkscript -&gt; smorgasbord/smorgasbord.mk
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-makefile smorgasbord</span>
+<span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.mkscript -&gt; smorgasbord/smorgasbord.mk</span>
+</pre>
+<div class="lsmarkdown">
 <p>A new switch, <code>-platform X</code>, allows the platform (i.e. operating system)
 being targeted to be changed: by default, this is whatever Inweb is running
 on, but with <code>-platform windows</code>, Inweb on MacOS can cosplay.</p>
@@ -95,16 +98,16 @@ missing then nothing changes.</p>
 <p>For example, the following needs to compile something twice, once for each
 CPU architecture; if <code>TO</code> is, say, <code>binary.o</code>, then as modified this will be
 <code>binary_x86.o</code> and <code>binary_arm.o</code>.</p>
-<pre><code>{define: compile to: TO from: FROM ?options: OPTS}
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{define: compile to: TO from: FROM ?options: OPTS}
     clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSX) -g {OPTS} -o {modify-filenames original: {TO} suffix: _x86} {FROM}
     clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSA) -g {OPTS} -o {modify-filenames original: {TO} suffix: _arm} {FROM}
 {end-define}
-</code></pre>
+</span></pre>
 </li>
 </ul>
 <p>For example, here's a minimal script capable of incrementally tangling and
 recompiling a C program:</p>
-<pre><code>{platform-settings}
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{platform-settings}
 
 {identity-settings}
 
@@ -120,7 +123,7 @@ define make-me
 	{compile from: $(ME)/Tangled/$(MYNAME).c   to:   $(ME)/Tangled/$(MYNAME).o}
 	{link from:    $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
 endef
-</code></pre>
+</span></pre>
 <p>Note that the macros <code>{compile ...}</code> and <code>{link ...}</code> are defined in the platform
 settings, as is <code>EXEEXTENSION</code> (it's <code>.exe</code> on Windows and blank on most other
 platforms), whereas <code>ME</code> and <code>MYNAME</code> are set in the identity settings.</p>
@@ -132,8 +135,8 @@ Inweb provides a couple of macros to help manage that.</p>
 <li>
 <p><code>{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}</code>
 declares one of the &quot;component&quot; webs which might need to be built. For example:</p>
-<pre><code>{component type: module symbol: WORDS webname: words path: services/words-module set: modules}
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{component type: module symbol: WORDS webname: words path: services/words-module set: modules}
+</span></pre>
 <p>tells Inweb that it needs to know about the module whose name in the colony is
 <code>words</code>, but which will be identified in this makefile using the symbol <code>WORDS</code>,
 and so on.</p>

@@ -41,12 +41,14 @@ really, it should be used only by the definition above.
 
 Here is the above post-weave system in action:
 
+``` ConsoleText
 	$ inweb weave pyramid.c.md -as PDFTeX
 	weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as PDFTeX (based on TeX)
 	(pdftex -output-directory='.'  -interaction=scrollmode 'pyramid.tex'  >'pyramid.console')
 	(rm 'pyramid.log')
 	(rm 'pyramid.console')
 		generated: pyramid.tex
+```
 
 Note that `WOVENPATH` in one command has become `.` (the output directory
 happens to be the current working directory here), while each `WOVEN` has

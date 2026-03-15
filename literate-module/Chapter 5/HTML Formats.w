@@ -33,7 +33,6 @@ classdef HTML_render_state {
 	struct colour_scheme *colours;
 	int EPUB_flag;
 	int popup_counter;
-	int carousel_number;
 	int slide_number;
 	int slide_of;
 	struct ls_paragraph *para_to_open;
@@ -51,7 +50,6 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.wv = wv;
 	hrs.EPUB_flag = EPUB_mode;
 	hrs.popup_counter = 1;
-	hrs.carousel_number = 1;
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
 	hrs.para_to_open = NULL;
@@ -61,6 +59,7 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
 
 	wv->current_weave_file = into;
+	wv->carousel_number = 1;
 
 	return hrs;
 }
@@ -355,61 +354,15 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Render extract@> =
 	weave_extract_node *C = RETRIEVE_POINTER_weave_extract_node(N->content);
-	filename *F = Filenames::in(
-		Pathnames::down(hrs->wv->weave_web->path_to_web, I"HTML"),
-		C->extract);
-	HTML_OPEN_WITH("div", "class=\"inweb-extract\"");
-	FILE *B = BinaryFiles::try_to_open_for_reading(F);
-	if (B == NULL) {
-		WebErrors::issue_at(I"Unable to find this HTML extract",
-			hrs->wv->current_weave_line);
-	} else {
-		while (TRUE) {
-			int c = getc(B);
-			if (c == EOF) break;
-			PUT((inchar32_t) c);
-		}
-		BinaryFiles::close(B);
-	}
-	HTML_CLOSE("div");
-	WRITE("\n");
+	HTMLWeaving::render_HTML_extract(OUT, hrs->wv, C->extract);
 
 @<Render audio clip@> =
 	weave_audio_node *C = RETRIEVE_POINTER_weave_audio_node(N->content);
-	filename *F = Filenames::in(
-		Pathnames::down(hrs->wv->weave_web->path_to_web, I"Audio"),
-		C->audio_name);
-	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
-	HTML_OPEN_WITH("p", "class=\"center-p\"");
-	WRITE("<audio controls>\n");
-	WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", C->audio_name);
-	WRITE("Your browser does not support the audio element.\n");
-	WRITE("</audio>\n");
-	HTML_CLOSE("p");
-	WRITE("\n");
+	HTMLWeaving::render_HTML_player(OUT, hrs->wv, C->audio_name, TRUE, 0, 0);
 
 @<Render video clip@> =
 	weave_video_node *C = RETRIEVE_POINTER_weave_video_node(N->content);
-	filename *F = Filenames::in(
-		Pathnames::down(hrs->wv->weave_web->path_to_web, I"Video"),
-		C->video_name);
-	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
-	HTML_OPEN_WITH("p", "class=\"center-p\"");
-	if ((C->w > 0) && (C->h > 0))
-		WRITE("<video width=\"%d\" height=\"%d\" controls>", C->w, C->h);
-	else if (C->w > 0)
-		WRITE("<video width=\"%d\" controls>", C->w);
-	else if (C->h > 0)
-		WRITE("<video height=\"%d\" controls>", C->h);
-	else
-		WRITE("<video controls>");
-	WRITE("<source src=\"%S\" type=\"video/mp4\">\n", C->video_name);
-	WRITE("Your browser does not support the video tag.\n");
-	WRITE("</video>\n");
-	HTML_CLOSE("p");
-	WRITE("\n");
+	HTMLWeaving::render_HTML_player(OUT, hrs->wv, C->video_name, FALSE, C->w, C->h);
 
 @<Render download@> =
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
@@ -550,26 +503,7 @@ that service uses to identify the video/audio in question.
 
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	text_stream *CH = I"405";
-	text_stream *CW = I"720";
-	if (C->w > 0) { Str::clear(CW); WRITE_TO(CW, "%d", C->w); }
-	if (C->h > 0) { Str::clear(CH); WRITE_TO(CH, "%d", C->h); }
-	TEMPORARY_TEXT(embed_leaf)
-	WRITE_TO(embed_leaf, "%S.html", C->service);
-	filename *F = Patterns::find_file_in_subdirectory(hrs->wv->weave_web, hrs->wv->pattern, I"Embedding", embed_leaf);
-	DISCARD_TEXT(embed_leaf)
-	if (F == NULL) {
-		WebErrors::issue_at(I"This is not a supported service", hrs->wv->current_weave_line);
-	} else {
-		Bibliographic::set_datum(hrs->wv->weave_web, I"Content ID", C->ID);
-		Bibliographic::set_datum(hrs->wv->weave_web, I"Content Width", CW);
-		Bibliographic::set_datum(hrs->wv->weave_web, I"Content Height", CH);
-		HTML_OPEN_WITH("p", "class=\"center-p\"");
-		Collater::for_web_and_pattern(OUT, hrs->wv->weave_web, hrs->wv->pattern,
-			F, hrs->into_file, hrs->wv->weave_colony, hrs->wv->reportage);
-		HTML_CLOSE("p");
-		WRITE("\n");
-	}
+	HTMLWeaving::render_embedding(OUT, hrs->wv, C->ID, C->service, C->w, C->h, hrs->into_file);
 
 @<Render holon usage@> =
 	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
@@ -647,19 +581,6 @@ that service uses to identify the video/audio in question.
 
 @<Render carousel slide@> =
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
-	Swarm::ensure_plugin(hrs->wv, I"Carousel");
-	TEMPORARY_TEXT(carousel_id)
-	TEMPORARY_TEXT(carousel_dots_id)
-	text_stream *caption_class = NULL;
-	text_stream *slide_count_class = I"carousel-number";
-	if ((Str::len(C->caption) == 0) || (C->positioning == 0))
-		caption_class = I"carousel-caption";
-	else if (C->positioning > 0)
-		caption_class = I"carousel-caption-above";
-	else if (C->positioning < 0)
-		caption_class = I"carousel-caption-below";
-	WRITE_TO(carousel_id, "carousel-no-%d", hrs->carousel_number);
-	WRITE_TO(carousel_dots_id, "carousel-dots-no-%d", hrs->carousel_number);
 	if (hrs->slide_number == -1) {
 		hrs->slide_number = 1;
 		hrs->slide_of = 0;
@@ -668,53 +589,18 @@ that service uses to identify the video/audio in question.
 		hrs->slide_number++;
 		if (hrs->slide_number > hrs->slide_of) internal_error("miscounted slides");
 	}
-	if (hrs->slide_number == 1) {
-		WRITE("<div class=\"carousel-container\" id=\"%S\">\n", carousel_id);
-	}
-	WRITE("<div class=\"carousel-slide fading-slide\"");
-	if (hrs->slide_number == 1) WRITE(" style=\"display: block;\"");
-	else WRITE(" style=\"display: none;\"");
-	WRITE(">\n");
-	if (C->positioning > 0) @<Place caption here@>;
-	WRITE("<div class=\"%S\">%d / %d</div>\n",
-		slide_count_class, hrs->slide_number, hrs->slide_of);
-	WRITE("<div class=\"carousel-content\">");
+	TEMPORARY_TEXT(carousel_id)
+	TEMPORARY_TEXT(carousel_dots_id)
+	HTMLWeaving::render_carousel_top(OUT, hrs->wv, hrs->slide_number, hrs->slide_of, carousel_id, carousel_dots_id, C->caption, C->positioning);
 	@<Recurse the renderer through children nodes@>;
-	WRITE("</div>\n");
-	if (C->positioning <= 0) @<Place caption here@>;
-	WRITE("</div>\n");
-	if (hrs->slide_number == hrs->slide_of) {
-		WRITE("<a class=\"carousel-prev-button\" ");
-		WRITE("onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, -1)\"",
-			carousel_id, carousel_dots_id);
-		WRITE(">&#10094;</a>\n");
-		WRITE("<a class=\"carousel-next-button\" ");
-		WRITE("onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, 1)\"",
-			carousel_id, carousel_dots_id);
-		WRITE(">&#10095;</a>\n");
-		WRITE("</div>\n");
-		WRITE("<div class=\"carousel-dots-container\" id=\"%S\">\n", carousel_dots_id);
-		for (int i=1; i<=hrs->slide_of; i++) {
-			if (i == 1)
-				WRITE("<span class=\"carousel-dot carousel-dot-active\" ");
-			else
-				WRITE("<span class=\"carousel-dot\" ");
-			WRITE("onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, %d)\"",
-				carousel_id, carousel_dots_id, i-1);
-			WRITE("></span>\n");
-		}
-		WRITE("</div>\n");
-		hrs->slide_number = -1;
-		hrs->slide_of = -1;
-		hrs->carousel_number++;
-	}
+	HTMLWeaving::render_carousel_bottom(OUT, hrs->wv, hrs->slide_number, hrs->slide_of, carousel_id, carousel_dots_id, C->caption, C->positioning);
 	DISCARD_TEXT(carousel_id)
 	DISCARD_TEXT(carousel_dots_id)
+	if (hrs->slide_number == hrs->slide_of) {
+		hrs->slide_number = -1;
+		hrs->slide_of = -1;
+	}
 	return FALSE;
-
-@<Place caption here@> =
-	if (Str::len(C->caption) > 0)
-		WRITE("<div class=\"%S\">%S</div>\n", caption_class, C->caption);
 
 @<Render toc@> =
 	HTML_OPEN_WITH("ul", "class=\"toc\"");
@@ -1229,6 +1115,66 @@ int HTMLWeaving::render_text_as_image(OUTPUT_STREAM, int mode, weave_order *wv,
 		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
+	if (Str::eq_insensitive(desc, I"HTML")) {
+		HTMLWeaving::render_HTML_extract(OUT, wv, path);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if (Str::eq(desc, I"video")) {
+		HTMLWeaving::render_HTML_player(OUT, wv, path, FALSE, 0, 0);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if (Regexp::match(&mr, desc, U"video at (%d+) by (%d+)")) {
+		int w = Str::atoi(mr.exp[0], 0), h = Str::atoi(mr.exp[1], 0);
+		HTMLWeaving::render_HTML_player(OUT, wv, path, FALSE, w, h);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if (Regexp::match(&mr, desc, U"video at width (%d+)")) {
+		int w = Str::atoi(mr.exp[0], 0);
+		HTMLWeaving::render_HTML_player(OUT, wv, path, FALSE, w, 0);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if (Regexp::match(&mr, desc, U"video at height (%d+)")) {
+		int h = Str::atoi(mr.exp[0], 0);
+		HTMLWeaving::render_HTML_player(OUT, wv, path, FALSE, 0, h);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio")) ||
+		(Regexp::match(&mr, desc, U"embedded (%c+) video"))) {
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], 0, 0, wv->current_weave_file);
+ 		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio at (%d+) by (%d+)")) ||
+		(Regexp::match(&mr, desc, U"embedded (%c+) video at (%d+) by (%d+)"))) {
+		int w = Str::atoi(mr.exp[1], 0), h = Str::atoi(mr.exp[2], 0);
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h, wv->current_weave_file);
+ 		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio at height (%d+)")) ||
+		(Regexp::match(&mr, desc, U"embedded (%c+) video at height (%d+)"))) {
+		int w = 0, h = Str::atoi(mr.exp[1], 0);
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h, wv->current_weave_file);
+ 		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio at width (%d+)")) ||
+		(Regexp::match(&mr, desc, U"embedded (%c+) video at width (%d+)"))) {
+		int w = Str::atoi(mr.exp[1], 0), h = 0;
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h, wv->current_weave_file);
+ 		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
+	if (Str::eq(desc, I"audio")) {
+		HTMLWeaving::render_HTML_player(OUT, wv, path, TRUE, 0, 0);
+		Regexp::dispose_of(&mr);
+		return TRUE;
+	}
 	Regexp::dispose_of(&mr);
 	return FALSE;
 }
@@ -1282,6 +1228,212 @@ void HTMLWeaving::render_download(OUTPUT_STREAM, weave_order *wv, text_stream *d
 	if (y > 0) WRITE_TO(size, ".%d", y);
 	WRITE_TO(size, "%S", unit);
 	WRITE_TO(size, ")");
+
+@ =
+void HTMLWeaving::render_HTML_extract(OUTPUT_STREAM, weave_order *wv, text_stream *leafname) {
+	filename *F = Filenames::in(
+		Pathnames::down(wv->weave_web->path_to_web, I"HTML"), leafname);
+	HTML_OPEN_WITH("div", "class=\"inweb-extract\"");
+	FILE *B = BinaryFiles::try_to_open_for_reading(F);
+	if (B == NULL) {
+		WebErrors::issue_at(I"Unable to find this HTML extract", wv->current_weave_line);
+	} else {
+		while (TRUE) {
+			int c = getc(B);
+			if (c == EOF) break;
+			PUT((inchar32_t) c);
+		}
+		BinaryFiles::close(B);
+	}
+	HTML_CLOSE("div");
+	WRITE("\n");
+}
+
+void HTMLWeaving::render_HTML_player(OUTPUT_STREAM, weave_order *wv, text_stream *name, int audio, int w, int h) {
+	text_stream *subdir = (audio)?I"Audio":I"Video";
+	filename *F = Filenames::in(Pathnames::down(wv->weave_web->path_to_web, subdir), name);
+	asset_rule *R = Assets::new_rule(NULL, I"", I"privately copy", NULL);
+	Assets::include_asset(OUT, R, wv->weave_web, F, NULL,
+		wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
+	HTML_OPEN_WITH("p", "class=\"center-p\"");
+	if (audio) {
+		WRITE("<audio controls>\n");
+		WRITE("<source src=\"%S\" type=\"audio/mpeg\">\n", name);
+		WRITE("Your browser does not support the audio element.\n");
+		WRITE("</audio>\n");
+	} else {
+		if ((w > 0) && (h > 0))
+			WRITE("<video width=\"%d\" height=\"%d\" controls>", w, h);
+		else if (w > 0)
+			WRITE("<video width=\"%d\" controls>", w);
+		else if (h > 0)
+			WRITE("<video height=\"%d\" controls>", h);
+		else
+			WRITE("<video controls>");
+		WRITE("<source src=\"%S\" type=\"video/mp4\">\n", name);
+		WRITE("Your browser does not support the video tag.\n");
+		WRITE("</video>\n");
+	}
+	HTML_CLOSE("p");
+	WRITE("\n");
+}
+	
+void HTMLWeaving::render_embedding(OUTPUT_STREAM, weave_order *wv, text_stream *ID,
+	text_stream *service, int w, int h, filename *into_file) {
+	if (w == 0) w = 720;
+	if (h == 0) h = 405;
+	TEMPORARY_TEXT(CW)
+	TEMPORARY_TEXT(CH)
+	WRITE_TO(CW, "%d", w); WRITE_TO(CH, "%d", h);
+	TEMPORARY_TEXT(embed_leaf)
+	WRITE_TO(embed_leaf, "%S.html", service);
+	filename *F = Patterns::find_file_in_subdirectory(wv->weave_web, wv->pattern, I"Embedding", embed_leaf);
+	DISCARD_TEXT(embed_leaf)
+	if (F == NULL) {
+		WebErrors::issue_at(I"This is not a supported service", wv->current_weave_line);
+	} else {
+		Bibliographic::set_datum(wv->weave_web, I"Content ID", ID);
+		Bibliographic::set_datum(wv->weave_web, I"Content Width", CW);
+		Bibliographic::set_datum(wv->weave_web, I"Content Height", CH);
+		HTML_OPEN_WITH("p", "class=\"center-p\"");
+		Collater::for_web_and_pattern(OUT, wv->weave_web, wv->pattern,
+			F, into_file, wv->weave_colony, wv->reportage);
+		HTML_CLOSE("p");
+		WRITE("\n");
+	}
+	DISCARD_TEXT(CW)
+	DISCARD_TEXT(CH)
+}
+
+int HTMLWeaving::caption(match_results *mr, markdown_item *item, int *pos) {
+	if ((item->type == UNORDERED_LIST_ITEM_MIT) &&
+		(item->down) &&
+		(item->down->type == PARAGRAPH_MIT) &&
+		(Regexp::match(mr, item->down->stashed, U"%(carousel%)"))) {
+		if (pos) *pos = 0;
+		return TRUE;
+	}
+	if ((item->type == UNORDERED_LIST_ITEM_MIT) &&
+		(item->down) &&
+		(item->down->type == PARAGRAPH_MIT) &&
+		(Regexp::match(mr, item->down->stashed, U"%(carousel \"(%c+)\"%)"))) {
+		if (pos) *pos = 0;
+		return TRUE;
+	}
+	if ((item->type == UNORDERED_LIST_ITEM_MIT) &&
+		(item->down) &&
+		(item->down->type == PARAGRAPH_MIT) &&
+		(Regexp::match(mr, item->down->stashed, U"%(carousel \"(%c+)\" captioned below%)"))) {
+		if (pos) *pos = -1;
+		return TRUE;
+	}
+	if ((item->type == UNORDERED_LIST_ITEM_MIT) &&
+		(item->down) &&
+		(item->down->type == PARAGRAPH_MIT) &&
+		(Regexp::match(mr, item->down->stashed, U"%(carousel \"(%c+)\" captioned above%)"))) {
+		if (pos) *pos = 1;
+		return TRUE;
+	}
+	return FALSE;
+}
+
+int HTMLWeaving::render_ul_as_carousel(OUTPUT_STREAM, int mode, weave_order *wv,
+	markdown_item *md, markdown_variation *variation) {
+	match_results mr = Regexp::create_mr();
+	int not = FALSE, of = 0;
+	for (markdown_item *item = md->down; item; item = item->next) {
+		if (HTMLWeaving::caption(&mr, item, NULL) == FALSE) {
+			not = TRUE;
+			break;
+		}
+		of++;
+	}
+	if (not) {
+		Regexp::dispose_of(&mr);
+		return FALSE;
+	}
+	
+	int count = 1;
+	for (markdown_item *item = md->down; item; item = item->next) {
+		int positioning = 0;
+		HTMLWeaving::caption(&mr, item, &positioning);
+		TEMPORARY_TEXT(carousel_id)
+		TEMPORARY_TEXT(carousel_dots_id)
+		HTMLWeaving::render_carousel_top(OUT, wv, count, of, carousel_id, carousel_dots_id, mr.exp[0], positioning);
+		int m = mode | LOOSE_MDRMODE;
+		for (markdown_item *c = item->down->next; c; c = c->next) {
+			MDRenderer::recurse(OUT, (void *) wv, c, m, variation);
+			m = m & (~EXISTING_PAR_MDRMODE);
+		}
+		HTMLWeaving::render_carousel_bottom(OUT, wv, count, of, carousel_id, carousel_dots_id, mr.exp[0], positioning);
+		DISCARD_TEXT(carousel_id)
+		DISCARD_TEXT(carousel_dots_id)
+		count++;
+	}
+	return TRUE;
+}
+ 
+void HTMLWeaving::render_carousel_top(OUTPUT_STREAM, weave_order *wv, int slide_number, int slide_of,
+	text_stream *carousel_id, text_stream *carousel_dots_id, text_stream *caption, int positioning) {
+	int N = wv->carousel_number;
+	Swarm::ensure_plugin(wv, I"Carousel");
+	text_stream *caption_class = NULL;
+	if ((Str::len(caption) == 0) || (positioning == 0)) caption_class = I"carousel-caption";
+	else if (positioning > 0) caption_class = I"carousel-caption-above";
+	else if (positioning < 0) caption_class = I"carousel-caption-below";
+	text_stream *slide_count_class = I"carousel-number";
+	WRITE_TO(carousel_id, "carousel-no-%d", N);
+	WRITE_TO(carousel_dots_id, "carousel-dots-no-%d", N);
+	if (slide_number == 1) {
+		WRITE("<div class=\"carousel-container\" id=\"%S\">\n", carousel_id);
+	}
+	WRITE("<div class=\"carousel-slide fading-slide\"");
+	if (slide_number == 1) WRITE(" style=\"display: block;\"");
+	else WRITE(" style=\"display: none;\"");
+	WRITE(">\n");
+	if (positioning > 0) @<Place caption here@>;
+	WRITE("<div class=\"%S\">%d / %d</div>\n",
+		slide_count_class, slide_number, slide_of);
+	WRITE("<div class=\"carousel-content\">");
+}
+
+void HTMLWeaving::render_carousel_bottom(OUTPUT_STREAM, weave_order *wv, int slide_number, int slide_of,
+	text_stream *carousel_id, text_stream *carousel_dots_id, text_stream *caption, int positioning) {
+	text_stream *caption_class = NULL;
+	if ((Str::len(caption) == 0) || (positioning == 0)) caption_class = I"carousel-caption";
+	else if (positioning > 0) caption_class = I"carousel-caption-above";
+	else if (positioning < 0) caption_class = I"carousel-caption-below";
+	WRITE("</div>\n");
+	if (positioning <= 0) @<Place caption here@>;
+	WRITE("</div>\n");
+	if (slide_number == slide_of) {
+		WRITE("<a class=\"carousel-prev-button\" ");
+		WRITE("onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, -1)\"",
+			carousel_id, carousel_dots_id);
+		WRITE(">&#10094;</a>\n");
+		WRITE("<a class=\"carousel-next-button\" ");
+		WRITE("onclick=\"carouselMoveSlide(&quot;%S&quot;, &quot;%S&quot;, 1)\"",
+			carousel_id, carousel_dots_id);
+		WRITE(">&#10095;</a>\n");
+		WRITE("</div>\n");
+		WRITE("<div class=\"carousel-dots-container\" id=\"%S\">\n", carousel_dots_id);
+		for (int i=1; i<=slide_of; i++) {
+			if (i == 1)
+				WRITE("<span class=\"carousel-dot carousel-dot-active\" ");
+			else
+				WRITE("<span class=\"carousel-dot\" ");
+			WRITE("onclick=\"carouselSetSlide(&quot;%S&quot;, &quot;%S&quot;, %d)\"",
+				carousel_id, carousel_dots_id, i-1);
+			WRITE("></span>\n");
+		}
+		WRITE("</div>\n");
+		wv->carousel_number++;
+	}
+}
+
+@<Place caption here@> =
+	if (Str::len(caption) > 0)
+		WRITE("<div class=\"%S\">%S</div>\n", caption_class, caption);
 
 @h EPUB-only methods.
 

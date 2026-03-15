@@ -6,12 +6,11 @@ of this guide. The differences are:
 
 - Paragraph boundaries are explicitly marked with `@` or `@h`.
 - Code boundaries are explicitly marked with `=`.
+- Named holons are written `@<Like this@>` not `{{Like this}}`.
 - In C-like languages, definitions and enumerations can be made with `@d` and `@e`.
-- Commentary has additional notations for embedding video, carousels, and such.
 
 `InwebClassic` is a little heavier on the eye, then, but reads easily enough
-with practice, and does have some advantages. The source code of Inweb is
-itself written in `InwebClassic` notation.
+with practice. The source code of Inweb is itself written in `InwebClassic` notation.
 
 ## Example
 
@@ -210,12 +209,6 @@ As in `MarkdownCode`, holons can be continued:
 	@<Previously defined holon@> +=
 		...
 
-Early code is written like so:
-
-	= (early code)
-
-and similarly for `= (very early code)`, `= (late code)` and `= (very late code)`.
-
 So for example here is a paragraph under a subheading, and which contains all
 three possible segments:
 
@@ -229,98 +222,23 @@ three possible segments:
 		return ENDED_SAFELY;
 	}
 
-## Commentary syntax
-
-A similar notation can be used to include a variety of gadgets into the
-commentary segment of a paragraph. These all use the `=` marker, but with
-different bracketed explanations. Some of these are stand-alone, and are
-better demonstrated by examples than with specifications. We can put audio
-and video players into the woven commentary which will play files included
-in a web:
-
-	= (audio SP014.mp3)
-
-	= (video DW014.mp4)
-
-Or we can put in embedded audio or video players calling on external resources:
-
-	= (embedded YouTube video GR3aImy7dWw)
-
-	= (embedded Vimeo video 204519)
-
-	= (embedded SoundCloud audio 42803139)
-
-	= (embedded Vimeo video 204519 at 400 by 300)
-
-	= (embedded SoundCloud audio 42803139 at height 200)
-
-The latter sets just the height (of the displayed waveform, that is —
-arguably music has width and not height, but SoundCloud thinks otherwise).
-
-This splices in some HTML code from a file in the web's `HTML` subdirectory,
-assuming it has one. (Single-file webs cannot use this feature.)
-
-	= (html fireworks.html)
-
-A carousel is a slide-show of (usually but not always) figures; there's a
-set of slides with captions, only one of which is visible at a time.
-
-	= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
-	![The Royal Albert Hall at night.](rah.jpg)
-	= (carousel "Brighton Beach")
-	![Brighton beach by day.](brighton.jpg)
-	= (figure brighton.jpg)
-	![Roman amphitheatre in a bay.](pula.jpg)
-	= (carousel "St Mark's Basilica, Venice")
-	![St Mark's Basilica.](venice.jpg)
-	= (carousel end)
-
-That carousel contained only figures, but almost any material can go into the
-slides, paragraph breaks excepted. For example:
-
-	= (carousel "Stage 1 - Raw tree" above)
-	``` BoxArt
-		ROOT ---> DOCUMENT
-	```
-	= (carousel "Stage 2 - Developed tree" above)
-	``` BoxArt
-		ROOT ---> DOCUMENT
-					|
-				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
-	```
-	= (carousel "Stage 3 - Completed tree" above)
-	``` BoxArt
-		ROOT ---> DOCUMENT
-					|
-				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
-					|            |            |
-				  text 1       text 2       text 3  ...
-	```
-	= (carousel end)
-
-This carousel has differently placed captions, too: that's because the
-slide lines were typed as:
-
-	= (carousel "Stage 2 - Developed tree" above)
-
-and the like. By default, a caption overlaps slightly with the content; but
-it can also be `above` or `below`. A slide can also have no caption at all:
-
-	= (carousel)
-	![A faceless figure.](anonymous.jpg)
-	= (carousel)
-	![A figure with back turned.](furtive.jpg)
-	= (carousel end)
-
 ## Mildly deprecated syntaxes
 
-For reasons going back to earlier versions of Inweb, the notation also provides
-a way to impose images:
+Until 2026, webs written in this notation made heavy use of annotated forms of
+the equals-sign marker. For example, code to be tangled early could be written
+like so:
 
-	= (figure MATERIAL "SECOND")
-	= (figure MATERIAL)
+	= (early code)
 
-To embed an image, we write like so:
+and similarly for `= (very early code)`, `= (late code)` and `= (very late code)`.
+While this is still implemented, its use is no longer recommended (it is now
+better to use holons marked as tangled early), and all instances have been
+withdrawn from the Inform code-base. The same goes for all of the other forms
+of `=` below, some of which did _not_ introduce code but instead placed
+gadgets into the commentary. (This conflation of two different sorts of usage
+is one reason the syntax is now deprecated.)
+
+For example, this is a way to impose images:
 
 	= (figure Wotsit.jpg)
 
@@ -328,33 +246,13 @@ To embed an image, we write like so:
 
 	= (figure Something.jpg at height 2cm)
 
-Dimensions given in cm are scaled at 72 times dimensions given without a
-measurement; in practice, rendering to TeX produces roughly the number of
-centimeters asked for, and rendering to HTML makes the image width or height
-correspond. If you really want to monkey with the aspect ratio,
-
 	= (figure Whatever.jpg at 20 by 100)
 
-But note that these figures can all be achieved with (more or less) regular
-Markdown just as easily:
+All of these all be achieved with (more or less) regular Markdown just as easily:
 
 	![This is a doohickey.](Wotsit.jpg)
 
 	![This is a rescaled doohickey.](Wotsit.jpg@20x100)
-
-That is, the same conventions used for images in `MarkdownCode` work just
-as well here.
-
-Inweb historically provided this syntax:
-
-	>> You sit on the veranda drinking tea and your ducklings swim on the pond,
-	and everything smells good... and there are gooseberries. (Anton Chekhov)
-
-for a block quotation; but the more standard Markdown syntax should now be
-used, with leading `>` signs on each line:
-
-	> You sit on the veranda drinking tea and your ducklings swim on the pond,
-	> and everything smells good... and there are gooseberries. (Anton Chekhov)
 
 Similarly, there are some now-redundant syntaxes for incorporating blocks
 of quoted code which are not part of the program. This:
@@ -366,7 +264,8 @@ of quoted code which are not part of the program. This:
 	}
 	=
 
-is equivalent to an indented Markdown code extract, like so:
+(note the second `=`, used as an end-marker) is equivalent to an indented
+Markdown code extract, like so:
 
 	Consider the following code sample:
 
@@ -423,3 +322,57 @@ Downloads were likewise historically written like so:
 but this is now preferred:
 
 	![download: certificate file](alice.crt)
+
+Similarly:
+
+	= (html fireworks.html)
+	= (audio SP014.mp3)
+	= (video DW014.mp4)
+	= (embedded YouTube video GR3aImy7dWw)
+	= (embedded Vimeo video 204519)
+	= (embedded SoundCloud audio 42803139)
+	= (embedded Vimeo video 204519 at 400 by 300)
+	= (embedded SoundCloud audio 42803139 at height 200)
+
+would now be written:
+
+	![HTML](fireworks.html)
+	![audio](SP014.mp3)
+	![video](DW014.mp4)
+	![embedded YouTube video](GR3aImy7dWw?si=GZidlSyeX-BUFWJ8)
+	![embedded Vimeo video](204519)
+	![embedded SoundCloud audio](42803139)
+	![embedded Vimeo video at 400 by 300](204519)
+	![embedded SoundCloud audio at height 200](42803139)
+
+Lastly, carousels used to be thus:
+
+	= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+	![The Royal Albert Hall at night.](rah.jpg)
+	= (carousel "Brighton Beach")
+	![Brighton beach by day.](brighton.jpg)
+	= (carousel "Pula")
+	![Roman amphitheatre in a bay.](pula.jpg)
+	= (carousel "St Mark's Basilica, Venice")
+	![St Mark's Basilica.](venice.jpg)
+	= (carousel end)
+
+There is now no need for `= (carousel end)`, and the slides are instead
+written as a Markdown list. See //Commentary in Markdown//. Captions like:
+
+	= (carousel "Stage 2 - Developed tree" above)
+
+are now written:
+
+	* (carousel "Stage 2 - Developed tree" captioned above)
+
+Another syntax now deprecated is `>>` to introduce a block quotation, like so:
+
+	>> You sit on the veranda drinking tea and your ducklings swim on the pond,
+	and everything smells good... and there are gooseberries. (Anton Chekhov)
+
+The standard Markdown syntax should now be used instead, with leading `>` signs
+on each line:
+
+	> You sit on the veranda drinking tea and your ducklings swim on the pond,
+	> and everything smells good... and there are gooseberries. (Anton Chekhov)

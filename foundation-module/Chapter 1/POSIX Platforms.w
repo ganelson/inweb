@@ -21,7 +21,7 @@ operating system, and the other one on Windows.
 @d FOLDER_SEPARATOR '/'
 @d SHELL_QUOTE_CHARACTER '\''
 
-= (very early code)
+@<POSIX early declarations@> (tangled very early) =
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <errno.h>
@@ -45,7 +45,7 @@ Unix-based system.
 @d PLATFORM_STRING "unix"
 @d INFORM_FOLDER_RELATIVE_TO_HOME ""
 
-= (very early code)
+@<POSIX early declarations@> +=
 #include <strings.h>
 
 @h Linux. ^"ifdef-PLATFORM_LINUX"
@@ -57,7 +57,7 @@ Unix-based system.
 @d PLATFORM_STRING "linux"
 @d INFORM_FOLDER_RELATIVE_TO_HOME ""
 
-= (very early code)
+@<POSIX early declarations@> +=
 #include <strings.h>
 
 @h Android. ^"ifdef-PLATFORM_ANDROID"
@@ -67,7 +67,7 @@ These settings are used for Nathan Summers's Android versions.
 @d SUPPRESS_MAIN
 @d INFORM_FOLDER_RELATIVE_TO_HOME ""
 
-= (very early code)
+@<POSIX early declarations@> +=
 #include <strings.h>
 
 @h Folder separator.
@@ -139,8 +139,8 @@ string.
 
 @ And now the Mac version: ^"ifdef-PLATFORM_MACOS"
  
-= (very early code)
-int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
+@<POSIX early declarations@> +=
+/* from MacOS */ int _NSGetExecutablePath(char* buf, uint32_t* bufsize);
 
 void Platform::where_am_i(inchar32_t *p, size_t length) {
     char relative_path[4 * PATH_MAX + 1];
@@ -411,7 +411,7 @@ void Platform::configure_terminal(void) {
 The following abstracts the pthread library, so that it can all be done
 differently on Windows.
 
-= (very early code)
+@<POSIX early declarations@> +=
 typedef pthread_t foundation_thread;
 typedef pthread_attr_t foundation_thread_attributes;
 
@@ -446,7 +446,7 @@ It's not easy to find a function which reliably does this on all POSIX platforms
 On Linux we can use `sys/sysinfo.h`, but this header is a POSIX extension which
 MacOS does not support.
 
-= (very early code)
+@<POSIX early declarations@> +=
 #include <sys/sysinfo.h>
 
 @ ^"ifdef-PLATFORM_LINUX"
@@ -460,7 +460,7 @@ int Platform::get_core_count(void) {
 @ ^"ifdef-PLATFORM_MACOS"
 While MacOS lacks `sysinfo.h`, it does have `sysctl.h`:
 
-= (very early code)
+@<POSIX early declarations@> +=
 #include <sys/sysctl.h>
 
 @ ^"ifdef-PLATFORM_MACOS"

@@ -146,15 +146,14 @@ void Languages::show(OUTPUT_STREAM, ls_web *W) {
 	WCL::write_sorted_list_of_resources(OUT, W, LANGUAGE_WCLTYPE);
 }
 
-@ Here we take a guess from a filename in the form `leaf.language.notation`:
+@ Here we take a guess from a filename in the form `leaf.notation` or
+`leaf.language.notation` (depending on whether `N` is 1 or 2):
 
 =
-programming_language *Languages::guess_from_filename(ls_web *W, filename *F) {
-	if ((F == NULL) || (W->single_file == NULL)) return NULL;
+programming_language *Languages::guess_from_filename(ls_web *W, filename *F, int N) {
 	TEMPORARY_TEXT(extension)
-	Filenames::write_penultimate_extension(extension, F);
-//	PRINT("Guessing L from '%S' (%f)\n", extension, F);
-
+	if (N == 1) Filenames::write_extension(extension, F);
+	else Filenames::write_penultimate_extension(extension, F);
 	programming_language *result = NULL;
 	linked_list *L = WCL::list_resources(W?(W->declaration):NULL, LANGUAGE_WCLTYPE, NULL);
 	wcl_declaration *D;

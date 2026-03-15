@@ -37,14 +37,19 @@ commands like `inweb inspect countsort.pl.md`, where `countsort.pl.md`
 was the single file of a small web. When referring to a multi-file web,
 we can _either_ give its contents page:
 
+``` ConsoleText
 	$ inweb inspect smorgasbord/Contents.inweb
+```
 
 _or_, equivalently and more conveniently, just give the directory name:
 
+``` ConsoleText
 	$ inweb inspect smorgasbord
+```
 
 Either way, the reply is:
 
+``` ConsoleText
 	web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines
 	
 	Contents:
@@ -52,6 +57,7 @@ Either way, the reply is:
 	------ | ------------- | -----
 	cnsr   | Counting Sort | 77   
 	qcsr   | Quick Sort    | 62
+```
 
 New output has appeared here: a contents rundown. The `abbrev` column is because
 Inweb sometimes needs a way to refer to sections briefly but unambiguously: it
@@ -73,11 +79,13 @@ the output is written, by default, to different places:
 
 So, for example:
 
+``` ConsoleText
 	$ inweb weave smorgasbord  
 	weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML
     [smorgasbord/Woven/cnsr.html] [qcsr] 
     [index] 
     10 files copied to: smorgasbord/Woven/assets
+```
 
 Note the reappearance of the two abbreviations mentioned above: each section has
 become an HTML file called `cnsr.html` or `qcsr.html`, rather than the more
@@ -88,6 +96,7 @@ Inweb is just a little more cautious about creating directories on behalf of the
 user if the command-line switch `-to` is used, but it's not sure what that refers
 to. For example:
 
+``` ConsoleText
 	$ inweb weave smorgasbord -to my_website
 	weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML
 	inweb: fatal error: this is neither an existing file nor directory: my_website
@@ -99,6 +108,7 @@ to. For example:
 		[my_website/cnsr.html] [qcsr] 
 		[index] 
 		10 files copied to: my_website/assets
+```
 
 ## Contents entries
 
@@ -120,14 +130,14 @@ have looked to see if the web had a `Sections` subdirectory, because some
 medium-sized webs like to store their section files in a subdirectory called
 `Sections`. So in fact it tries quite a few possibilities:
 
-	Counting Sort
-	Counting Sort.md
-	Counting Sort.w
-	Counting Sort.i6t
-	Sections/Counting Sort
-	Sections/Counting Sort.md
-	Sections/Counting Sort.w
-	Sections/Counting Sort.i6t
+* `Counting Sort`
+* `Counting Sort.md`
+* `Counting Sort.w`
+* `Counting Sort.i6t`
+* `Sections/Counting Sort`
+* `Sections/Counting Sort.md`
+* `Sections/Counting Sort.w`
+* `Sections/Counting Sort.i6t`
 
 and takes the first match, that is, the first which exists as a file.
 
@@ -204,6 +214,7 @@ And that's all. Note that if chapters are used at all, then the subheading
 `Sections` can't be used: a web is either chaptered or it is not. Inspecting
 Inblorb, we now see:
 
+``` ConsoleText
 	abbrev | chapter   | section                   | lines
 	------ | --------- | ------------------------- | -----
 	1/bsc  | Chapter 1 | Basics                    | 55   
@@ -218,6 +229,7 @@ Inblorb, we now see:
 	3/tmp  | Chapter 3 | Templates                 | 123  
 	3/wm   | Chapter 3 | Website Maker             | 1031 
 	3/bs6  | Chapter 3 | Base64                    | 80 
+```
 
 Note that the abbreviations now have a numerical part: `3/sd` abbreviates
 `Solution Deviser` from `Chapter 3`. The chapter itself has an abbreviation,

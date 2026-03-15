@@ -13,7 +13,9 @@ weaves which are a little bland.
 Inweb aims to allow quite a wide variety of programming languages, but needs
 the user to brief it on any language it does not already know. Running:
 
+``` ConsoleText
 	$ inweb inspect -resources
+```
 
 lists all Inweb's built-in resources, and at time of writing only 24 of them
 are languages: since quite a few are obscure (for reasons to do with the needs

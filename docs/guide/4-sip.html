@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -60,7 +60,7 @@ tidily set out (using ACME assembly language for the 6502 microprocessor), and
 is taken from Toby Nelson's excellent commentary. So there is content worth
 reading. But it is not in any obvious way a literate program able to be run
 through Inweb:</p>
-<pre><code>; ***************************************************************************************
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; ***************************************************************************************
 ;
 ;   VDU 1       Send next byte to printer only
 ;
@@ -84,7 +84,7 @@ through Inweb:</p>
 	EOR #$FF                                            ; invert value
 	CMP #$F2                                            ; if (VDU number &gt; 13) then clear carry
 	EOR #$FF                                            ; re-invert value back again
-</code></pre>
+</span></pre>
 <p>Of course, there's a lot more of that: the MOS occupied a 16K ROM, and was a
 masterpiece of design for its time.</p>
 <p>Suppose we take that material and put it into a file called <code>vdu.a.mossy</code>. The
@@ -92,7 +92,7 @@ masterpiece of design for its time.</p>
 knows how to syntax-colour, as it happens. The <code>.mossy</code> part indicates the
 notation — we will create a new notation called &quot;Mossy&quot;, just for the MOS.</p>
 <p>And really, there's nothing to it. Here is <code>mossy.inweb</code>:</p>
-<pre><code>Notation &quot;Mossy&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Mossy" {
 	recognise .mossy
 	recognise .*.mossy
 
@@ -104,7 +104,7 @@ notation — we will create a new notation called &quot;Mossy&quot;, just for th
 		MATERIAL			==&gt; code
 	end
 }
-</code></pre>
+</span></pre>
 <p>Even this tiny definition gets things well under way. The basic split is that
 lines with <code>;</code> in column 1 are comments, and other lines are code. But within
 the comment, we also want to clear out those fences of asterisks. Note the
@@ -114,12 +114,15 @@ reading code, it ignores the asterisks completely — that's because, although
 the line is classified as <code>commentary</code>, nothing was put into <code>MATERIAL</code>, so
 no actual content got through.</p>
 <p>And now we're off to the races:</p>
-<pre><code>inweb weave vdu.a.mossy -using mossy.inweb -creating
-weaving web &quot;Untitled&quot; (ACME program in Mossy notation) as HTML
-(created directory 'vdu-assets')
-	generated: vdu.html
-	11 files copied to: vdu-assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave vdu.a.mossy</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> mossy.inweb</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Untitled" (ACME program in Mossy notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'vdu-assets')</span>
+<span class="ConsoleText-plain-syntax">        generated: vdu.html</span>
+<span class="ConsoleText-plain-syntax">        11 files copied to: vdu-assets</span>
+</pre>
+<div class="lsmarkdown">
 <p>So much for a single fragment of code. More ambitiously, the next task is to
 present a slew of assembly files, which will become the sections of a multi-file web.</p>
 <p>For simplicity, we'll suppose just two source files, called <code>star.a</code> and <code>vdu.a</code>,
@@ -127,7 +130,7 @@ and put them in a directory called <code>mos</code>. That will be the web direct
 no need now to tack <code>.mossy</code> onto the filenames, because the contents page will
 see to all that. The contents page will be called <code>Contents.inweb</code>, and will look
 like this:</p>
-<pre><code>Title: MOS
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: MOS
 Author: Acorn Computers
 Notation: Mossy
 Language: ACME
@@ -135,10 +138,10 @@ Purpose: The operating system used by the 1982 BBC Micro.
 Version Number: 1.2
 
 Sections
-	&quot;VDU&quot; at &quot;vdu.a&quot;
-	&quot;Star commands&quot; at &quot;star.a&quot;
+	"VDU" at "vdu.a"
+	"Star commands" at "star.a"
 
-Notation &quot;Mossy&quot; {
+Notation "Mossy" {
 	recognise .mossy
 	recognise .*.mossy
 
@@ -151,25 +154,28 @@ Notation &quot;Mossy&quot; {
 		MATERIAL				==&gt; code
 	end
 }
-</code></pre>
+</span></pre>
 <p>Note that it <em>contains</em> the definition of <code>Mossy</code>, so there's no need now for a
 sidekick file called <code>mossy.inweb</code>, and no need to keep saying <code>-using mossy.inweb</code>
 in commands about the <code>mos</code> web: the web sees this definition all by itself.</p>
 <p>Another plus of having a contents page is that it gives the web some metadata:</p>
-<pre><code>$ inweb inspect mos -metadata
-web &quot;MOS&quot; (ACME program in Mossy notation): 2 sections : 9 paragraphs : 179 lines
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect mos</span><span class="ConsoleText-identifier-syntax"> -metadata</span>
+<span class="ConsoleText-plain-syntax">    web "MOS" (ACME program in Mossy notation): 2 sections : 9 paragraphs : 179 lines</span>
 
-Title: MOS
-Author: Acorn Computers
-Purpose: The operating system used by the 1982 BBC Micro.
-Language: ACME
-Notation: Mossy
-Semantic Version Number: 1.2
-Version Number: 1.2
-</code></pre>
+<span class="ConsoleText-plain-syntax">    Title: MOS</span>
+<span class="ConsoleText-plain-syntax">    Author: Acorn Computers</span>
+<span class="ConsoleText-plain-syntax">    Purpose: The operating system used by the 1982 BBC Micro.</span>
+<span class="ConsoleText-plain-syntax">    Language: ACME</span>
+<span class="ConsoleText-plain-syntax">    Notation: Mossy</span>
+<span class="ConsoleText-plain-syntax">    Semantic Version Number: 1.2</span>
+<span class="ConsoleText-plain-syntax">    Version Number: 1.2</span>
+</pre>
+<div class="lsmarkdown">
 <p>The source files, here <code>vdu.a</code> and <code>star.a</code>, are longer now. Suppose they start
 like this:</p>
-<pre><code>; ***************************************************************************************
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; ***************************************************************************************
 ; ***************************************************************************************
 ;
 ; Chapter: Star commands
@@ -183,41 +189,44 @@ like this:</p>
 ;
 ; The data required by the OSFILE call is stored at .osfileBlockStart, is 18 bytes long, and
 ; is as follows:
-</code></pre>
+</span></pre>
 <p>...and so on. We want to pick the chapter headings out, which is why the notation
 slipped in an extra classification line:</p>
-<pre><code>		; Chapter: MATERIAL     ==&gt; title
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		; Chapter: MATERIAL     ==&gt; title
+</span></pre>
 <p>This means Inweb reads the section <code>star.a</code> as having the title &quot;Star commands&quot;.</p>
 <p>Because of Inweb's rule that the contents page must always agree with the section
 files themselves about what the titles of the sections are, we have to write
 the contents like this:</p>
-<pre><code>Sections
-	&quot;VDU&quot; at &quot;vdu.a&quot;
-	&quot;Star commands&quot; at &quot;star.a&quot;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
+	"VDU" at "vdu.a"
+	"Star commands" at "star.a"
+</span></pre>
 <p>rather than like this:</p>
-<pre><code>Sections
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
 	vdu.a
 	star.a
-</code></pre>
+</span></pre>
 <p>(If we wrote the latter, Inweb would complain that the section entitled &quot;star.a&quot;
 seemed actually to be called &quot;Star commands&quot;.)</p>
 <p>Setting up the contents page was a little fuss, but now we get a neat little
 website as the reward:</p>
-<pre><code>inweb weave mos -creating
-weaving web &quot;MOS&quot; (ACME program in Mossy notation) as HTML
-(created directory 'mos/Woven/assets')
-	[mos/Woven/vd.html] [stcm]
-	[index]
-	10 files copied to: mos/Woven/assets
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave mos</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<span class="ConsoleText-plain-syntax">    weaving web "MOS" (ACME program in Mossy notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">    (created directory 'mos/Woven/assets')</span>
+<span class="ConsoleText-plain-syntax">        [mos/Woven/vd.html] [stcm]</span>
+<span class="ConsoleText-plain-syntax">        [index]</span>
+<span class="ConsoleText-plain-syntax">        10 files copied to: mos/Woven/assets</span>
+</pre>
+<div class="lsmarkdown">
 <h2>Example: Semiliterate C</h2>
 <p>An alternative use case now: taking a non-literate program, adding comments to
 it in a particular format, and making it &quot;semiliterate&quot; — that is, able to
 be woven attractively, but with no need for it to be tangled.</p>
 <p>This time the program will be:</p>
-<pre><code>/// # Getting started
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">/// # Getting started
 
 #include&lt;stdio.h&gt;
 
@@ -242,19 +251,22 @@ double compute_e(void) {
 /// And we wrap that in the usual C interface.
 
 int main(int argc, char *argv[]) {
-	printf(&quot;e = %.10g\n&quot;, compute_e());
+	printf("e = %.10g\n", compute_e());
 	return 0;       /* this is **very important** to ensure a clean exit */
 }
-</code></pre>
+</span></pre>
 <p>Note that this is a valid ANSI C program, and requires no tangling to run:</p>
-<pre><code>$ cd jasmine
-$ clang main.c
-$ ./a.out
-e = 2.718281828
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> jasmine</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-plain-syntax"> main.c</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./a.out</span>
+<span class="ConsoleText-plain-syntax">    e = 2.718281828</span>
+</pre>
+<div class="lsmarkdown">
 <p>(which, despite the crudeness of the method, is the right answer). So there
 is no point in tangling: but if we supply also the following contents page —</p>
-<pre><code>Title: Jasmine
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Jasmine
 Author: Graham Nelson
 Notation: SemiliterateC
 Language: C
@@ -263,7 +275,7 @@ Purpose: Exemplary.
 Sections
 	main.c
 
-Notation &quot;SemiliterateC&quot; {
+Notation "SemiliterateC" {
 	classify
 		/// # MATERIAL      ==&gt; beginparagraph
 		/// MATERIAL        ==&gt; commentary
@@ -275,16 +287,17 @@ Notation &quot;SemiliterateC&quot; {
 		comments can contain styling
 	}
 }
-</code></pre>
+</span></pre>
 <p>then we can weave the program directly to a website which contains mathematical
 formulae, headings, a contents page, and so on:</p>
-<pre><code>inweb weave jasmine -creating
-weaving web &quot;Jasmine&quot; (C program in SemiliterateC notation) as HTML
-	[jasmine/Woven/mn.html]
-	[index]
-	11 files copied to: jasmine/Woven/assets
-</code></pre>
 </div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave jasmine</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Jasmine" (C program in SemiliterateC notation) as HTML</span>
+<span class="ConsoleText-plain-syntax">        [jasmine/Woven/mn.html]</span>
+<span class="ConsoleText-plain-syntax">        [index]</span>
+<span class="ConsoleText-plain-syntax">        11 files copied to: jasmine/Woven/assets</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="4-cn.html">&#10094;</a></li><li class="progresschapter"><a href="1-gs.html">1</a></li><li class="progresschapter"><a href="2-cp.html">2</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresssection"><a href="4-an.html">an</a></li><li class="progresssection"><a href="4-in.html">in</a></li><li class="progresssection"><a href="4-wac.html">wac</a></li><li class="progresssection"><a href="4-cn.html">cn</a></li><li class="progresscurrent">sip</li><li class="progresssection"><a href="4-son.html">son</a></li><li class="progresschapter"><a href="5-al.html">5</a></li><li class="progresschapter"><a href="6-ap.html">6</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="4-son.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->

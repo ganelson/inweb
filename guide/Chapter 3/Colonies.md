@@ -32,16 +32,20 @@ directory called `retail`. So, we create a file `colony.inweb`, also inside
 
 So at this point, assuming `retail` is the current working directory:
 
+``` ConsoleText
 	$ ls
 	back-office.py.md   colony.inweb    front-office    inventory-module
+```
 
 ## Member names
 
 Each member has a _name_. These names can be used as a shorthand when typing
 commands. For example:
 
+``` ConsoleText
 	$ inweb inspect ::back
 	web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines
+```
 
 Here `inweb inspect ::back` achieved the same result as `inweb inspect back-office.py.md`.
 And in general, `COLONY::MEMBER` can be used on the Inweb command line to mean
@@ -49,11 +53,13 @@ the web which is the member named `MEMBER` of the colony `COLONY`. If we don't
 specify `COLONY`, it's taken to be the colony file in the current working directory,
 which is why `::back` works from inside `retail`. If we stepped up one level:
 
+``` ConsoleText
 	$ cd ..
 	$ ls
 	retail
 	$ inweb inspect retail::back
 	web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines
+```
 
 The `COLONY` part of `COLONY::MEMBER` can either give the filename of the colony
 file, or can just give a directory name, in which case Inweb looks for a file
@@ -126,6 +132,7 @@ for tangling. If our current working directory contains a `colony.inweb` file,
 then we don't even need to indicate what `COLONY` we mean: Inweb will see it
 automatically. Thus, in the above `retail` example, we can tangle:
 
+``` ConsoleText
 	$ inweb tangle
 	(Tangle 1 of 3: front)
 	tangling web "The Front Office" (Python program in MarkdownCode notation) to file 'front-office/Tangled/The Front Office.py'
@@ -135,10 +142,12 @@ automatically. Thus, in the above `retail` example, we can tangle:
 	
 	(Tangle 3 of 3: inventory)
 	tangling web "inventory-module" (Python program in MarkdownCode notation) to file 'inventory-module/Tangled/inventory-module.py'
+```
 
 When we weave, it's clear at once that a skeleton of directories will be needed
 in order to hold all the HTML generated:
 
+``` ConsoleText
 	$ inweb weave
 	the weave would require these 5 directories to exist:
 		docs
@@ -147,13 +156,15 @@ in order to hold all the HTML generated:
 		docs/back
 		docs/inventory
 	inweb: fatal error: giving up: either make them by hand, or run again with -creating set
+```
 
 Note a subtle change here: once Inweb thinks in terms of a colony, it defaults
 to weaving output into a directory called `docs`. (This is to follow the convention
 used by GitHub when serving web pages associated with a repository.) We can 
 change that, of course:
 
-	inweb weave -to my/funny/area
+``` ConsoleText
+	$ minweb weave -to my/funny/area
 	the weave would require these 7 directories to exist:
 		my
 		my/funny
@@ -163,9 +174,11 @@ change that, of course:
 		my/funny/area/back
 		my/funny/area/inventory
 	inweb: fatal error: giving up: either make them by hand, or run again with -creating set
+```
 
 But on second thoughts, `docs` wasn't such a bad idea, so:
 
+``` ConsoleText
 	$ inweb weave -creating
 	(created directory 'docs')
 	(created directory 'docs/docs-assets')
@@ -177,6 +190,7 @@ But on second thoughts, `docs` wasn't such a bad idea, so:
 		[docs/front/invh.html] [sales] [promo] 
 		[index] 
 		11 files copied to: docs/docs-assets
+```
 
 ...and so on.
 

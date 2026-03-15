@@ -21,10 +21,12 @@ A minimal declaration can be minimal indeed. Here's just enough for
 
 And now:
 
+``` ConsoleText
 	$ inweb weave pyramid.c.w -as Tapestry -using Tapestry
 	weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as Tapestry
 		generated: sample.html
 		10 files copied to: sample-assets
+```
 
 Any pattern can be based on any (one) other pattern, which doesn't have to be
 one of those built into Inweb. So it would be quite feasible to create one

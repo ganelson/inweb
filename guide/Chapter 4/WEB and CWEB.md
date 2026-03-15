@@ -16,12 +16,15 @@ C programs. For example, Knuth wrote a web called `backpdi.w` which computes
 every integer which is equal to the sum of the $m$-th powers of its digits.
 Renaming this `backpdi.c.cweb`, we obtain:
 
+``` ConsoleText
 	$ inweb inspect back-pdi.c.cweb
 	web "Untitled" (C program in CWEB notation): 22 paragraphs : 367 lines
+```
 
 CWEB has no concept of metadata such as titling: hence, "Untitled". The rest
 looks correct, though, and:
 
+``` ConsoleText
 	$ inweb weave back-pdi.c.cweb
 	weaving web "Untitled" (C program in CWEB notation) as HTML
     	generated: back-pdi.html
@@ -29,9 +32,11 @@ looks correct, though, and:
 
 	$ inweb tangle back-pdi.c.cweb -using CWEB.inweb
 	tangling web "Untitled" (C program in CWEB notation) to file 'back-pdi.c'
+```
 
 This code is written in an antique dialect of C, so:
 
+``` ConsoleText
 	$ clang -std=c89 back-pdi.c -o back-pdi
 	$ ./back-pdi 3
 	1: 7400->0407
@@ -41,6 +46,7 @@ This code is written in an antique dialect of C, so:
 	5: 1000->0001
 	6: 0000->0000
 	Altogether 6 solutions for m=3 (110 nodes, 4662 mems).
+```
 
 And indeed $4^3 + 0^3 + 7^3 = 64 + 0 + 343 = 407$, so score one for Professor Knuth:
 the solutions are 407, 371, 370, 153, 1 and 0.
@@ -69,10 +75,12 @@ and are difficult to emulate without essentially porting them wholesale.
 Inweb has even more limited support for reading `WEB` files. Currently, it can
 parse `WEAVE` and `TANGLE` successfully:
 
+``` ConsoleText
 	$ inweb weave weave.pas.web
 	weaving web "Untitled" (Pascal program in WEB notation) as HTML
 		generated: weave.html
 		10 files copied to: weave-assets
+```
 
 Note that a WEB file must be filenamed `NAME.pas.web` in order for Inweb to
 pick up its notation. As yet, `tex.pas.web` does not parse: it contains some

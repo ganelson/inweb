@@ -16,8 +16,10 @@ _not_ webs are given the filename extension `.inweb`. For example, if you were
 to create a custom programming language definition, say for the language
 Racket, you might call this `Racket.inweb`. And then:
 
+``` ConsoleText
     $ inweb inspect Racket.inweb
     Language "Racket" at Racket.inweb, line 1
+```
 
 ...and then some further output, which need not detain us here. In general,
 `inweb inspect` can be pointed at any file which Inweb understands, and will

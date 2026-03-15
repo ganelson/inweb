@@ -14,20 +14,24 @@ The effect of this heading is exactly like
 except that the tag `mathematical` is now attached to the paragraph in
 question. `inweb inspect -tags` applied to this web will now show:
 
+``` ConsoleText
 	web "Bezier" (Python program in MarkdownCode notation): 8 paragraphs : 102 lines
 
 	tag          | paragraphs tagged                                                                 
 	------------ | -----------------
 	mathematical | 4
+```
 
 This produces a concordance of the tags used in a web. Here there's not much to
 see since only one tag is used, and at the paragraph numbered §4 in a weave.
 In a slightly larger web you might see something like:
 
+``` ConsoleText
 	tag     | paragraphs tagged  
 	------- | -----------------------
 	Figures | cim:3              
 	Tables  | tgs:2, rad:1.3, rad:1.4
+```
 
 Here, `Tables` can be found in §2 of the section abbreviated `tgs`, and §§1.3
 and 1.4 of `rad`.
@@ -36,9 +40,11 @@ In a really large web, this table can be very large. `-only` can be used to rest
 scope: `inweb inspect -tags -only 2`, for example, tabulates tags in Chapter 2,
 and `inweb inspect -tags -only rad` gives us:
 
+``` ConsoleText
 	tag     | paragraphs tagged  
 	------- | -----------------
 	Tables  | rad:1.3, rad:1.4
+```
 
 If the web contains modules, then by default only its main module is scanned,
 but `-fuller` will cause the other modules to be included too.
@@ -61,9 +67,11 @@ Multiple tags can be applied to the same paragraph:
 
 We could now, for example,
 
+``` ConsoleText
 	$ inweb weave bezier.py.md -only-tagged-as mathematical
 		generated: mathematical.html
 		8 files copied to: bezier-assets
+```
 
 This makes a single stand-alone web page containing just those paragraphs
 from the web with the given tag. (Even if the web contains many sections, which
@@ -73,10 +81,12 @@ a large web.
 
 A warning is printed if no paragraphs in the web matched:
 
+``` ConsoleText
 	$ inweb weave bezier.py.md -only-tagged-as geometric
 		generated: geometric.html
 	    warning: no paragraphs were tagged 'geometric', so weave was empty
 		8 files copied to: bezier-assets
+```
 
 Note that this is _not_ an error, and is not issued at all in `-silent` mode.
 
@@ -116,6 +126,20 @@ in the paragraph (assuming there is one) is tangled in between the C directives
 
 	## Production code. ^"ifndef-DEBUG"
 
+Note that such protections are also placed around code in a holon continuation.
+This:
+
+	## Windows implementation ^"ifdef-PLATFORM_WINDOWS"
+
+	{{Global variables}} +=
+	int registry_found = FALSE;
+
+in fact appends the following to `{{Global variables}}`:
+
+	#ifdef PLATFORM_WINDOWS
+	int registry_found = FALSE;
+	#endif
+
 ## Automatic tagging
 
 Inweb silently tags paragraphs itself with certain built-in tags:
@@ -137,6 +161,7 @@ Inweb uses its ability to tag `Outlinks` (which is provided only when
 commentary is in Markdown notation) to spot all external links from a
 website it might be weaving. `inweb inspect -links` will tabulate these:
 
+``` ConsoleText
 	inweb inspect -links smorgasbord
 	web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 11 paragraphs : 123 lines
 	
@@ -144,6 +169,7 @@ website it might be weaving. `inweb inspect -links` will tabulate these:
 	------ | ----------------------------------------------
 	cnsr:1 | https://en.wikipedia.org/wiki/Harold_H._Seward
 	qcsr:1 | https://www.google.com     
+```
 
 Such URLs might occur in links like `[google](https://www.google.com)`, or
 in image addresses on the wider web, or in Inweb links like `//this one -> https://en.wikipedia.org/wiki/Harold_H._Seward`.

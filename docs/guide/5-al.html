@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -58,8 +58,11 @@ nothing about the language, then they end up feature-poor, and produce
 weaves which are a little bland.</p>
 <p>Inweb aims to allow quite a wide variety of programming languages, but needs
 the user to brief it on any language it does not already know. Running:</p>
-<pre><code>$ inweb inspect -resources
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -resources</span>
+</pre>
+<div class="lsmarkdown">
 <p>lists all Inweb's built-in resources, and at time of writing only 24 of them
 are languages: since quite a few are obscure (for reasons to do with the needs
 of the Inform project, which Inweb spun out of), an Inweb user is quite likely
@@ -75,29 +78,29 @@ a tangle. But in the woven form of the web, they need to look right.</p>
 (in HTML output) CSS styling to make a chunk of C look different from a chunk
 of console output, for example. But in order to do that, in needs to be told
 what each chunk is. For example (in <code>MarkdownCode</code> notation):</p>
-<pre><code>This is a basic tangling command:
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a basic tangling command:
 
 ``` ConsoleText
 $ inweb tangle countsort.py.md
-tangling web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) to file 'countsort.py'
+tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'
 ```
-</code></pre>
+</span></pre>
 <p>Here the displayed material, inside a Markdown &quot;fence&quot; provided by the backticks,
 is declared as being <code>ConsoleText</code>.</p>
 <p>This is in fact a &quot;language&quot;, as far as Inweb is concerned. (It's one of the ones
 supplied with Inweb.) Inweb doesn't distinguish between languages you might want
 to program in, and schemes for colouring up text being displayed in a weave. As
 a pretty extreme example:</p>
-<pre><code>Language &quot;VowelsExample&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "VowelsExample" {
 	colour !vowel like !function
 	colouring
 		=&gt; !plain
-		characters in &quot;AEIOUaeiou&quot; {
+		characters in "AEIOUaeiou" {
 			=&gt; !vowel
 		}
 	end
 }
-</code></pre>
+</span></pre>
 <p>This language is evidently just a colouring scheme (it takes plain text and
 highlights the English vowels in it), not something to write programs in.</p>
 <p>All of this is to say that an Inweb language is a combination of a few notes

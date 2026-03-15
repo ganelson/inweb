@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -52,18 +52,21 @@ a web is woven, tangled, or simply read in. There are relatively few of these,
 and the generic values are usually sensible, so most webs will never need
 to change them.</p>
 <p>The currently applicable conventions can be seen using <code>inweb inspect -conventions</code>:</p>
-<pre><code>$ inweb inspect -conventions smorgasbord
-web &quot;Sorting Smorgasbord&quot; (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 114 lines
-(generic)  paragraph numbers are visible
-(generic)  namespaces are unenforced
-(generic)  sections are not numbered sequentially
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -conventions</span><span class="ConsoleText-plain-syntax"> smorgasbord</span>
+<span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 114 lines</span>
+<span class="ConsoleText-plain-syntax">    (generic)  paragraph numbers are visible</span>
+<span class="ConsoleText-plain-syntax">    (generic)  namespaces are unenforced</span>
+<span class="ConsoleText-plain-syntax">    (generic)  sections are not numbered sequentially</span>
+</pre>
+<div class="lsmarkdown">
 <p>...and so forth. For example, <code>paragraph numbers are visible</code> is a convention.
 <code>(generic)</code> means that it applies because this generically applies to every web,
 unless Inweb is given any instructions to the contrary.</p>
 <p>Conventions can be specified on the contents page of a web. For example, we could
 rewrite <code>Contents.inweb</code> for <code>smorgasbord</code> to read:</p>
-<pre><code>Title: Sorting Smorgasbord
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: MarkdownCode
 Language: Python
@@ -75,16 +78,19 @@ Sections
 Conventions {
 	sections are numbered sequentially
 }
-</code></pre>
+</span></pre>
 <p>Note that conventions appear after the contents rundown, and in braces. (That's
 because this is technically a <em>declaration</em>: see <a href="2-rad.html" class="internal">Resources and Declarations</a>.)
 We then see:</p>
-<pre><code>$ inweb inspect -conventions smorgasbord
-web &quot;Sorting Smorgasbord&quot; (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 114 lines
-(generic)  paragraph numbers are visible
-(generic)  namespaces are unenforced
-(web)      sections are numbered sequentially
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -conventions</span><span class="ConsoleText-plain-syntax"> smorgasbord</span>
+<span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 114 lines</span>
+<span class="ConsoleText-plain-syntax">    (generic)  paragraph numbers are visible</span>
+<span class="ConsoleText-plain-syntax">    (generic)  namespaces are unenforced</span>
+<span class="ConsoleText-plain-syntax">    (web)      sections are numbered sequentially</span>
+</pre>
+<div class="lsmarkdown">
 <p>...and so on. Note that <code>(web)</code>, showing that the web makes the convention this
 time. (For the effect this change actually has, see below.)</p>
 <p>Conventions can be made, in fact, in five ways:</p>
@@ -102,11 +108,11 @@ shows exactly how this trail is resolved.)</p>
 common preferences for, or if you want to set preferences for a single-file web
 which has no contents page, the best way is probably to create a standalone preferences
 file — called, say, <code>prefs.inweb</code>. This could for example read:</p>
-<pre><code>Conventions {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
 	namespaces are enforced
 	holon names are written between ▶️ and ◀️
 }
-</code></pre>
+</span></pre>
 <p>Whereupon <code>inweb weave program.c.md -using prefs.inweb</code> would have these
 conventions applied, but <code>inweb weave program.c.md</code> would not.</p>
 <p>On the other hand, if you want to apply some conventions across a set of programs
@@ -125,7 +131,10 @@ So it can be the case that <code>commentary uses Markdown markup</code>, even
 if the notation is not <code>MarkdownCode</code>. Older Inweb webs have traditionally
 used <code>commentary uses simplified markup</code>, which as the name suggests, is
 more restricted. At present, <code>commentary uses TeX markup</code> is experimental
-and not fully working. Generically, <code>commentary uses simplified markup</code>.</p>
+and not fully working. Generically, <code>commentary uses simplified markup</code>,
+but both of the main notations supplied with Inweb now specify that
+<code>commentary uses Markdown markup</code>, so in practice that's what users will
+see unless they make a choice otherwise.</p>
 </li>
 <li>
 <p><code>a summary under the title is read as the purpose</code>,
@@ -151,13 +160,13 @@ cannot. <code>holon names can be abbreviated even at declarations</code> enables
 freer use of abbreviations customary in Knuth's original literate programming
 tools, which is just a little risqué for Inweb's more conservative tastes.
 For example, it allows:</p>
-<pre><code>{{Start up}} =
-    print(&quot;Welcome.&quot;)
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Start up}} =
+    print("Welcome.")
     {{Initialise all the variables and allocate memory}}
 
 {{Init...}} =
     x = 1
-</code></pre>
+</span></pre>
 <p>...which Inweb would ordinarily reject.</p>
 </li>
 <li>
@@ -182,25 +191,25 @@ mathematical programs might benefit from changing this.</p>
 being used so that holon names are delimited by whatever characters you give
 in the strings <code>LEFT</code> and <code>RIGHT</code>. You might want to do this just to change
 the aesthetics. For example,</p>
-<pre><code>holon names are written between ⟨ and ⟩
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">holon names are written between ⟨ and ⟩
 holon names are written between (* and *)
-</code></pre>
+</span></pre>
 <p>Or you might need to make a change because the language you're programming
 in clashes against your preferred notation. It is also possible to remove
 the ability to name holons altogether:</p>
-<pre><code>holons are not named
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">holons are not named
+</span></pre>
 <p>Generically, <code>holon names are written between {{ and }}</code>.</p>
 </li>
 <li>
 <p><code>paragraph tags are written between LEFT and RIGHT</code>. This changes the notation
 being used so that tags attached to certain paragraphs are written in a
 different way. For example,</p>
-<pre><code>paragraph tags are written between (TAG: and )
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">paragraph tags are written between (TAG: and )
+</span></pre>
 <p>It is also possible to remove the ability to to tag paragraphs altogether:</p>
-<pre><code>paragraph tags are not recognised
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">paragraph tags are not recognised
+</span></pre>
 <p>Generically, <code>paragraph tags are not recognised</code>, but</p>
 </li>
 <li>
@@ -240,11 +249,11 @@ If <code>sections are numbered sequentially</code> is used, sections are instead
 <p><code>metadata in strings are written between LEFT and RIGHT</code>. This changes the notation
 being used when metadata like <code>Author</code> need to be expanded inside strings
 within holons. For example,</p>
-<pre><code>metadata in strings are written between &lt;substitute: and &gt;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">metadata in strings are written between &lt;substitute: and &gt;
+</span></pre>
 <p>It is also possible to remove this feature altogether:</p>
-<pre><code>metadata in strings are not recognised
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">metadata in strings are not recognised
+</span></pre>
 <p>Generically, in fact, <code>metadata in strings are not recognised</code>, but the
 notations mostly used by Inweb say that <code>metadata in strings are written between [[ and ]]</code>,
 so in practice this is the default.</p>

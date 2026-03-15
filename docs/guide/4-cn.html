@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -56,7 +56,7 @@ this section offers a tutorial.</p>
 minimum of literate programming: it recognises indented lines as code, and
 unindented lines as Markdown commentary. As a test case for that, here's
 <code>countsort.py.simp</code>:</p>
-<pre><code>This is a Python implementation of the counting sort algorithm. The following
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a Python implementation of the counting sort algorithm. The following
 function takes an array of non-negative integers, sorts it, and returns the result:
 
 	def countingSort(unsorted):
@@ -73,8 +73,8 @@ function takes an array of non-negative integers, sorts it, and returns the resu
 And this code tests the function:
 
 	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-	print(&quot;Unsorted:&quot;, A)
-	print(&quot;Sorted:&quot;, countingSort(A))
+	print("Unsorted:", A)
+	print("Sorted:", countingSort(A))
 
 Here's what you should see when this runs:
 
@@ -82,10 +82,10 @@ Here's what you should see when this runs:
 Unsorted array: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
 Sorted array: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
 ```
-</code></pre>
+</span></pre>
 <p>So now we need to define <code>Simple</code>, and tell Inweb to recognise <code>.simp</code> files
 as using it. The following definition will do:</p>
-<pre><code>Notation &quot;Simple&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Simple" {
 	recognise .simp
 	recognise .*.simp
 
@@ -94,23 +94,26 @@ as using it. The following definition will do:</p>
 		MATERIAL				==&gt; commentary
 	end
 }
-</code></pre>
+</span></pre>
 <p>This can be placed in, say, the file <code>simple.inweb</code>.</p>
 <p>Everything seems to work nicely:</p>
-<pre><code>$ inweb inspect countsort.py.simp -using simple.inweb
-web &quot;Untitled&quot; (Python program in Simple notation): 3 paragraphs : 31 lines
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span>
+<span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 31 lines</span>
 
-$ inweb tangle countsort.py.simp -using simple.inweb -to - | python3
-Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
-</code></pre>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span>
+<span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span>
+<span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note the <code>-using simple.inweb</code> added to the Inweb commands here: these make
 declarations in the file <code>simple.inweb</code> available to Inweb. There are
 alternative ways to do that; for example, if the <code>countsort.py.simp</code> web
 were part of a colony, then the colony declaration could incorporate the
 <code>Simple</code> one; or, if the web were large enough for a contents page, that
 could do so —</p>
-<pre><code>Title: Sorting Smorgasbord
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: Simple
 Language: Python
@@ -120,7 +123,7 @@ Sections
 	Counting Sort
 	Quick Sort
 
-Notation &quot;Simple&quot; {
+Notation "Simple" {
 	recognise .simp
 	recognise .*.simp
 
@@ -129,29 +132,29 @@ Notation &quot;Simple&quot; {
 		MATERIAL				==&gt; commentary
 	end
 }
-</code></pre>
+</span></pre>
 <p>However it's done, though, Inweb can only use <code>Simple</code> if it can see the
 declaration somewhere.</p>
 <p>Looking back at the declaration, let's take it apart. Firstly, it declares
 a named resource of type <code>Notation</code> and with the name <code>Simple</code>, so it has
 the following shape:</p>
-<pre><code>Notation &quot;Simple&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Simple" {
 	...
 }
-</code></pre>
+</span></pre>
 <p>The contents of the definition begin like so:</p>
-<pre><code>	recognise .simp
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	recognise .simp
 	recognise .*.simp
-</code></pre>
+</span></pre>
 <p>This tells Inweb which filename extensions are a clue that a web might be
 written with this notation. Note the second line: this says that a double
 filename extension, where <code>*</code> represents an extension suggesting a programming
 language as well, is also allowed. (And this is what enables the filename
 <code>countsort.py.simp</code> to be recognised.)</p>
 <p>Any number of <code>recognise</code> lines are allowed, including none. For example,</p>
-<pre><code>	recognise .simple
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	recognise .simple
 	recognise .*.simple
-</code></pre>
+</span></pre>
 <p>could be added as alternatives.</p>
 <p>The critical part of a notation is the part telling Inweb how to classify
 its lines. Inweb reads literate source one line at a time — unlike some
@@ -160,11 +163,11 @@ as a stream of characters. Each line is then run through the classifier,
 which normally offers one or more possible readings: and Inweb accepts the
 first one which works.</p>
 <p>The classifier here offers two possible ways to read a line:</p>
-<pre><code>	classify
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
 		MATERIAL 	            ==&gt; code if in indented context
 		MATERIAL				==&gt; commentary
 	end
-</code></pre>
+</span></pre>
 <p>Each possibility takes the form of a textual pattern to match, then a <code>==&gt;</code>
 marker, and then the outcome if it does match, possibly with a condition attached.
 (White space either side of the <code>==&gt;</code> is ignored.)</p>
@@ -175,25 +178,25 @@ matches only <code>if in indented context</code>. This is a <em>condition</em>, 
 more than just saying that the line itself is indented: it has to be part
 of a run of indented lines, with white space either side. For example, on
 the following input:</p>
-<pre><code>You need to get through 30 whole sonnets of Philip Sidney's _Astrophel
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">You need to get through 30 whole sonnets of Philip Sidney's _Astrophel
 and Stella_ (1591) before you arrive at the good bit:
 
 	With how sad steps, oh Moon, thou climb'st the skies,
 	How silently, and with how wan a face.
 	What, may it be, that even in heav'nly place
 	That busy archer his sharp arrows tries?
-</code></pre>
+</span></pre>
 <p>Here the four lines of verse would be read <code>in indented context</code>, because
 they are part of just such an indented block. Reading this:</p>
-<pre><code>Oh grammar rules, oh now your virtues show
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Oh grammar rules, oh now your virtues show
 	So children still read you with awefull eyes,
 As my young dove may in your precepts wise
 	Her grant to me, by her own virtue know.
-</code></pre>
+</span></pre>
 <p>Inweb would not register any of the lines as <code>in indented context</code>, even
 though two are indented.</p>
 <p>So, then, the result of the above classifier is:</p>
-<pre><code>This is a Python implementation of the counting sort...		commentary
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a Python implementation of the counting sort...		commentary
 function takes an array of non-negative integers, so...		commentary
                                                             commentary
 	def countingSort(unsorted):                             code
@@ -210,36 +213,39 @@ function takes an array of non-negative integers, so...		commentary
 And this code tests the function:                           commentary
                                                             commentary
 	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]                   code
-	print(&quot;Unsorted:&quot;, A)                                   code
-	print(&quot;Sorted:&quot;, countingSort(A))                       code
-</code></pre>
+	print("Unsorted:", A)                                   code
+	print("Sorted:", countingSort(A))                       code
+</span></pre>
 <p>and so on. That can be verified using <code>inweb inspect -scan</code>:</p>
-<pre><code>$ inweb inspect countsort.py.simp -scan -using simple.inweb
-web &quot;Untitled&quot; (Python program in Simple notation): 3 paragraphs : 27 lines
-S1
-	C1: commentary
-		_______ This⏑is⏑a⏑Python⏑implementation⏑of⏑the⏑counting⏑sort⏑algorithm.⏑The⏑following
-		_______ function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns⏑the⏑result:
-	C2: holon (used sequentially)
-		0000004 def⏑countingSort(unsorted):
-		0000005 ⏑⏑⏑⏑sorted⏑=⏑[]
-		0000006 ⏑⏑⏑⏑if⏑unsorted:
-		0000007 ⏑⏑⏑⏑⏑⏑⏑⏑max_val⏑=⏑max(unsorted)
-		0000008 ⏑⏑⏑⏑⏑⏑⏑⏑counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)
-		0000009 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value⏑in⏑unsorted:
-		0000010 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑counts[value]⏑+=⏑1
-		0000011 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value,⏑count⏑in⏑enumerate(counts):
-		0000012 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)
-		0000013 ⏑⏑⏑⏑return⏑sorted
-S2
-	C1: commentary
-		_______ And⏑this⏑code⏑tests⏑the⏑function:
-	C2: holon (used sequentially)
-		0000017 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]
-		0000018 print(&quot;Unsorted:&quot;,⏑A)
-		0000019 print(&quot;Sorted:&quot;,⏑countingSort(A))
-...
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -scan -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span>
+<span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 27 lines</span>
+<span class="ConsoleText-plain-syntax">    S1</span>
+<span class="ConsoleText-plain-syntax">        C1: commentary</span>
+<span class="ConsoleText-plain-syntax">            _______ This⏑is⏑a⏑Python⏑implementation⏑of⏑the⏑counting⏑sort⏑algorithm.⏑The⏑following</span>
+<span class="ConsoleText-plain-syntax">            _______ function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns⏑the⏑result:</span>
+<span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span>
+<span class="ConsoleText-plain-syntax">            0000004 def⏑countingSort(unsorted):</span>
+<span class="ConsoleText-plain-syntax">            0000005 ⏑⏑⏑⏑sorted⏑=⏑[]</span>
+<span class="ConsoleText-plain-syntax">            0000006 ⏑⏑⏑⏑if⏑unsorted:</span>
+<span class="ConsoleText-plain-syntax">            0000007 ⏑⏑⏑⏑⏑⏑⏑⏑max_val⏑=⏑max(unsorted)</span>
+<span class="ConsoleText-plain-syntax">            0000008 ⏑⏑⏑⏑⏑⏑⏑⏑counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)</span>
+<span class="ConsoleText-plain-syntax">            0000009 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value⏑in⏑unsorted:</span>
+<span class="ConsoleText-plain-syntax">            0000010 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑counts[value]⏑+=⏑1</span>
+<span class="ConsoleText-plain-syntax">            0000011 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value,⏑count⏑in⏑enumerate(counts):</span>
+<span class="ConsoleText-plain-syntax">            0000012 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)</span>
+<span class="ConsoleText-plain-syntax">            0000013 ⏑⏑⏑⏑return⏑sorted</span>
+<span class="ConsoleText-plain-syntax">    S2</span>
+<span class="ConsoleText-plain-syntax">        C1: commentary</span>
+<span class="ConsoleText-plain-syntax">            _______ And⏑this⏑code⏑tests⏑the⏑function:</span>
+<span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span>
+<span class="ConsoleText-plain-syntax">            0000017 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]</span>
+<span class="ConsoleText-plain-syntax">            0000018 print("Unsorted:",⏑A)</span>
+<span class="ConsoleText-plain-syntax">            0000019 print("Sorted:",⏑countingSort(A))</span>
+<span class="ConsoleText-plain-syntax">    ...</span>
+</pre>
+<div class="lsmarkdown">
 <p>In these scan printouts, <code>S1</code>, <code>S2</code>, ..., are the paragraphs, which are internally
 divided into <em>chunks</em>, <code>C1</code>, <code>C2</code>, and so on. What has happened, then, is that
 Inweb has formed the commentary lines together into commentary chunks, and the
@@ -251,30 +257,30 @@ correctly.</p>
 <p>Adding a few further features should give a clearer idea of how classification
 works. First, let's add subheadings, using Markdown's customary <code>##</code> syntax.
 This can be done with a new possible match:</p>
-<pre><code>	classify
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
 		## MATERIAL             ==&gt; beginparagraph
 		MATERIAL 	            ==&gt; code if in indented context
 		MATERIAL				==&gt; commentary
 	end
-</code></pre>
+</span></pre>
 <p>So we have a new outcome, <code>beginparagraph</code>, which forces a paragraph break
 to occur at this point in the source. The <code>MATERIAL</code> becomes the subtitle
 for the paragraph.</p>
 <p>And what about a heading at the top of the file? A really full provision
 for that needs quite a run of fresh matches:</p>
-<pre><code>	classify
-		# &quot;MATERIAL&quot; by SECOND (vTHIRD)     ==&gt; title if on first line of only file
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
+		# "MATERIAL" by SECOND (vTHIRD)     ==&gt; title if on first line of only file
 		# MATERIAL by SECOND (vTHIRD)		==&gt; title if on first line of only file
 		# MATERIAL (vTHIRD)					==&gt; title if on first line of only file
-		# &quot;MATERIAL&quot; by SECOND				==&gt; title if on first line of only file
-		# &quot;MATERIAL&quot;						==&gt; title if on first line
+		# "MATERIAL" by SECOND				==&gt; title if on first line of only file
+		# "MATERIAL"						==&gt; title if on first line
 		# MATERIAL by SECOND				==&gt; title if on first line of only file
 		# MATERIAL							==&gt; title if on first line
 		## MATERIAL             			==&gt; beginparagraph
 		MATERIAL 	           				==&gt; code if in indented context
 		MATERIAL							==&gt; commentary
 	end
-</code></pre>
+</span></pre>
 <p>The outcome in all of those seven, count them, seven matches is <code>title</code>. Note
 the two new conditions here: <code>if on first line</code> means we are on the first line
 of the current file (remembering that larger webs have many sections, so that
@@ -282,22 +288,22 @@ this may be the title only of one section); <code>if on first line of only file<
 matches only for the top line of a single-file web. It's only in those cases
 where we look out for an author name and version number, which (if given)
 go into the new wildcards <code>SECOND</code> and <code>THIRD</code>. For example, matching</p>
-<pre><code>&quot;North by Northwest&quot; by Alfred Hitchcock (v2.1)
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">"North by Northwest" by Alfred Hitchcock (v2.1)
+</span></pre>
 <p>would fill <code>MATERIAL</code> with &quot;North by Northwest&quot;, <code>SECOND</code> with &quot;Alfred Hitchcock&quot;,
 and <code>THIRD</code> with &quot;2.1&quot;.</p>
 <p>Okay, so now for something more powerful: named holons. Combine this classification:</p>
-<pre><code>	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;     ==&gt; namedholon
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;     ==&gt; namedholon
+</span></pre>
 <p>with a new convention:</p>
-<pre><code>	Conventions {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Conventions {
 		holon names are written between &lt;[ and ]&gt;
 	}
-</code></pre>
+</span></pre>
 <p>(Conventions can be added at the end of pretty well all Inweb declarations:
 see <a href="2-rad.html" class="internal">Resources and Declarations</a> for the rules on all of that.)</p>
 <p>The effect is an eccentric new syntax, one which would read the following web:</p>
-<pre><code>In non-so-simple notation:
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">In non-so-simple notation:
 
 	def countingSort(unsorted):
 		sorted = []
@@ -325,21 +331,24 @@ see <a href="2-rad.html" class="internal">Resources and Declarations</a> for the
 Testing which:
 
 	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-	print(&quot;Unsorted:&quot;, A)
-	print(&quot;Sorted:&quot;, countingSort(A))
-</code></pre>
+	print("Unsorted:", A)
+	print("Sorted:", countingSort(A))
+</span></pre>
 <p>And then indeed:</p>
-<pre><code>$ inweb tangle countsort.py.nssimp -to - -using nssimple.inweb | python2
-('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])
-('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.nssimp</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> -</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> nssimple.inweb | python2</span>
+<span class="ConsoleText-plain-syntax">    ('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])</span>
+<span class="ConsoleText-plain-syntax">    ('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])</span>
+</pre>
+<div class="lsmarkdown">
 <p>Of course, this notation is only a little different from <code>MarkdownCode</code>. We
 are writing holons as <code>&lt;[Name]&gt;</code> rather than <code>{{Name}}</code>, and declaring them
 with <code>&lt;[Name]&gt; ~~&gt;</code> rather than <code>{{Name}} =</code>. All the same, it <em>is</em> different,
 and the full variation available to notations is pretty generous. We could
 also, say, add:</p>
-<pre><code>	Extend &lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;  ==&gt; namedholon with continuationoption
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Extend &lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;  ==&gt; namedholon with continuationoption
+</span></pre>
 <p>and now instead of the <code>MarkdownCode</code> syntax for extending a holon, <code>{{Name of holon}} +=</code>,
 we recognise <code>Extend &lt;[Name of holon]&gt; ~~&gt;</code>.</p>
 <p>So, then, here there were two new outcomes: <code>namedholon</code> and
@@ -351,45 +360,45 @@ made by the <code>holon names are written between ... and ...</code> convention.
 <h2>RESIDUE</h2>
 <p>Suppose we want to make a pilcrow sign ¶ begin a new paragraph, when it's found
 in the first column of a line. That seems easy enough:</p>
-<pre><code>	¶             			                    ==&gt; beginparagraph
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	¶             			                    ==&gt; beginparagraph
+</span></pre>
 <p>As far as it goes, that works fine; except that the following natural-looking
 commentary doesn't work —</p>
-<pre><code>¶ According to part 11(b) of the specification, an identifier name which
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ According to part 11(b) of the specification, an identifier name which
 begins with an underscore is reserved, but we are not obliged to reject it.
 Therefore...
-</code></pre>
+</span></pre>
 <p>The solution is this:</p>
-<pre><code>	¶             			                    ==&gt; beginparagraph
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	¶             			                    ==&gt; beginparagraph
 	¶ RESIDUE            			            ==&gt; beginparagraph
-</code></pre>
+</span></pre>
 <p><code>RESIDUE</code>, like <code>MATERIAL</code>, <code>SECOND</code> and <code>THIRD</code>, is another wildcard which
 can match any text. If Inweb classifies a line and finds anything in <code>RESIDUE</code>,
 it turns that material into a new line which immediately follows on, and
 then classifies that in turn. For example, Inweb reads this:</p>
-<pre><code>¶ According to part 11(b) of the specification, an identifier name which
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ According to part 11(b) of the specification, an identifier name which
+</span></pre>
 <p>and classifies it <code>beginparagraph</code>, with <code>RESIDUE</code> set to &quot;According to part
 11(b) of the specification, an identifier name which&quot;. Inweb then classifies
 the new line</p>
-<pre><code>According to part 11(b) of the specification, an identifier name which
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">According to part 11(b) of the specification, an identifier name which
+</span></pre>
 <p>and classifies it <code>commentary</code>. In effect, then, Inweb read the original text
 as two lines in succession:</p>
-<pre><code>¶
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶
 According to part 11(b) of the specification, an identifier name which
-</code></pre>
+</span></pre>
 <p>In fact, still more is possible. Suppose we want this to work:</p>
-<pre><code>¶ ^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ ^"specification" ^"ANSI" According to part 11(b), ...
+</span></pre>
 <p>...where we want to &quot;tag&quot; the paragraph with the keywords &quot;specification&quot; and &quot;ANSI&quot;.
 There can be any number of those tags, so the syntax isn't fixed. The trick now
 is to supply a whole new classifier:</p>
-<pre><code>residue of beginparagraph
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">residue of beginparagraph
 	RESIDUE &lt;OPENTAG&gt;MATERIAL&lt;CLOSETAG&gt;         ==&gt; paragraphtag
 	&lt;OPENTAG&gt;MATERIAL&lt;CLOSETAG&gt;                 ==&gt; paragraphtag
 end
-</code></pre>
+</span></pre>
 <p>This tells Inweb that if it finds anything in the <code>RESIDUE</code> after classifying
 a <code>beginparagraph</code>, it should then run that material through this classifier.
 So the sequence of events is:</p>
@@ -419,16 +428,16 @@ classifies as <code>commentary</code>.</p>
 <h2>OPTIONS</h2>
 <p>The <code>MarkdownCode</code> notation allowed for a whole range of qualifying notes to
 be added to a holon declaration. For example, in <code>MarkdownCode</code>, this was legal:</p>
-<pre><code>{{Grab bag}} (webwide and tangled very early) =
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide and tangled very early) =
+</span></pre>
 <p>Let's add an equivalent functionality to our example notation. Start with
 a new classification line:</p>
-<pre><code>	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; (OPTIONS) ~~&gt;   ==&gt; namedholon
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; (OPTIONS) ~~&gt;   ==&gt; namedholon
+</span></pre>
 <p>As before, this has the outcome <code>namedholon</code>. The only difference is that
 this time it fills a new wildcard called <code>OPTIONS</code>. So how do we deal with that?
 The answer is that we give it a whole new classification:</p>
-<pre><code>options of namedholon
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">options of namedholon
 	webwide                                     ==&gt; webwideholonoption
 	tangled very early                          ==&gt; veryearlyholonoption
 	tangled early                               ==&gt; earlyholonoption
@@ -444,41 +453,41 @@ The answer is that we give it a whole new classification:</p>
 	tangled early and OPTIONS                   ==&gt; earlyholonoption
 	tangled late and OPTIONS                    ==&gt; lateholonoption
 	tangled very late and OPTIONS               ==&gt; verylateholonoption
-	MATERIAL                                    ==&gt; error &quot;unknown holon option(s)&quot;
+	MATERIAL                                    ==&gt; error "unknown holon option(s)"
 end
-</code></pre>
+</span></pre>
 <p>This tells Inweb how it should deal with any material found in <code>OPTIONS</code> after
 it has classified a <code>namedholon</code>. So for example, in our bizarro syntax,
 suppose Inweb is parsing this line:</p>
-<pre><code>&lt;[Do something elegant]&gt; (tangled very early and webwide) ~~&gt;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;[Do something elegant]&gt; (tangled very early and webwide) ~~&gt;
+</span></pre>
 <p>The regular classification will diagnose this as a <code>namedholon</code> with
 <code>MATERIAL</code> set to the name, &quot;Do something elegant&quot;. The <code>OPTIONS</code>, though,
 will be set to &quot;tangled very early and webwide&quot;. Inweb then runs <em>that</em> text
 through the <code>options of namedholon</code> classifier, and matches it against</p>
-<pre><code>	tangled very early and OPTIONS              ==&gt; veryearlyholonoption
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	tangled very early and OPTIONS              ==&gt; veryearlyholonoption
+</span></pre>
 <p>This registers the <code>veryearlyholonoption</code> option, and reduces the <code>OPTIONS</code>
 text to &quot;webwide&quot;. This is still not empty, so Inweb classifies again, and
 this time matches against</p>
-<pre><code>	webwide                                     ==&gt; webwideholonoption
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	webwide                                     ==&gt; webwideholonoption
+</span></pre>
 <p>And so we end up with <code>namedholon</code> supplemented by two options,
 <code>veryearlyholonoption</code> and <code>webwideholonoption</code>.</p>
 <p>In practice, only a few outcomes support options, but when they are needed
 they do something which otherwise couldn't easily be done.</p>
 <h2>A farewell to NotSoSimple</h2>
 <p>To recap, then, this is the final version of what's now called &quot;NotSoSimple&quot;:</p>
-<pre><code>Notation &quot;NotSoSimple&quot; {
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "NotSoSimple" {
 	recognise .nssimp
 	recognise .*.nssimp
 
 	classify
-		# &quot;MATERIAL&quot; by SECOND (vTHIRD) 		    ==&gt; title if on first line of only file
+		# "MATERIAL" by SECOND (vTHIRD) 		    ==&gt; title if on first line of only file
 		# MATERIAL by SECOND (vTHIRD)				==&gt; title if on first line of only file
 		# MATERIAL (vTHIRD)							==&gt; title if on first line of only file
-		# &quot;MATERIAL&quot; by SECOND						==&gt; title if on first line of only file
-		# &quot;MATERIAL&quot;								==&gt; title if on first line
+		# "MATERIAL" by SECOND						==&gt; title if on first line of only file
+		# "MATERIAL"								==&gt; title if on first line
 		# MATERIAL by SECOND						==&gt; title if on first line of only file
 		# MATERIAL									==&gt; title if on first line
 		## MATERIAL             					==&gt; beginparagraph
@@ -512,19 +521,19 @@ they do something which otherwise couldn't easily be done.</p>
 		tangled early and OPTIONS                   ==&gt; earlyholonoption
 		tangled late and OPTIONS                    ==&gt; lateholonoption
 		tangled very late and OPTIONS               ==&gt; verylateholonoption
-		MATERIAL                                    ==&gt; error &quot;unknown holon option(s)&quot;
+		MATERIAL                                    ==&gt; error "unknown holon option(s)"
 	end
 
 	Conventions {
 		holon names are written between &lt;[ and ]&gt;
 	}
 }
-</code></pre>
+</span></pre>
 <h2>Processing</h2>
 <p>An entirely different mechanism, intended to be used only if really necessary,
 allows material in the web to be &quot;processed&quot; (read: rewritten).</p>
 <p>For example:</p>
-<pre><code>process commentary
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">process commentary
 	green ==&gt; blue
 	blue ==&gt; green
 end
@@ -532,26 +541,26 @@ end
 process code
 	green ==&gt; brown
 end
-</code></pre>
+</span></pre>
 <p>This looks a little like one of the classifiers above, but it's subtly different.
 It's hard to see why one would want to do this, but the result is that this web:</p>
-<pre><code>A greengrocer, once in a blue moon, might run this code:
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">A greengrocer, once in a blue moon, might run this code:
 
 	for (int green_bottles = 1; green_bottles &lt;= 10; green_bottles++)
-		printf(&quot;%d green bottles standing on a wall\n&quot;, green_bottles);
-</code></pre>
+		printf("%d green bottles standing on a wall\n", green_bottles);
+</span></pre>
 <p>would be read in as:</p>
-<pre><code>A bluegrocer, once in a green moon, might run this code:
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">A bluegrocer, once in a green moon, might run this code:
 
 	for (int brown_bottles = 1; brown_bottles &lt;= 10; brown_bottles++)
-		printf(&quot;%d brown bottles standing on a wall\n&quot;, brown_bottles);
-</code></pre>
+		printf("%d brown bottles standing on a wall\n", brown_bottles);
+</span></pre>
 <p>Those changes are made after classification, of course, which is how Inweb
 knows whether to apply its changes to code or commentary. But it is also
 possible to &quot;preprocess&quot; lines before classification, or &quot;postprocess&quot; them
 afterwards.</p>
 <p>For example:</p>
-<pre><code>preprocess
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">preprocess
 	@@  ==&gt; §real_at_character§
 	@+  ==&gt; &lt;SPACE&gt;
 	@&amp;  ==&gt; &lt;NOTHING&gt;
@@ -560,7 +569,7 @@ end
 postprocess
 	§real_at_character§ ==&gt; @
 end
-</code></pre>
+</span></pre>
 <p>Here the idea is that <code>@@</code> is notation for a literal <code>@</code> character which would
 not trigger any of the lines in the classification; we preprocess that into the
 text <code>§real_at_character§</code>, rendering it inactive, and then postprocess it back

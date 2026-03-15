@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -66,9 +66,12 @@ very little before getting started.</p>
 <p>Installation instructions are elsewhere, at <a href="https://github.com/ganelson/inweb">the project's GitHub page</a>.
 The software is provided as a command-line tool, and if your installation has
 been successful, you should be able to type Inweb to use it:</p>
-<pre><code>$ inweb
-inweb: a tool for literate programming. See 'inweb help' for more.
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span>
+<span class="ConsoleText-plain-syntax">    inweb: a tool for literate programming. See 'inweb help' for more.</span>
+</pre>
+<div class="lsmarkdown">
 <p>In this manual, the shell prompt is shown as <code>$</code>, so the command typed there was
 <code>inweb</code>, while the subsequent lines were printed by the program in reply.</p>
 <h2>Subcommands and help</h2>
@@ -81,14 +84,17 @@ or parameters needed by the command in question.</p>
 <p><code>inweb help</code> is just such a command. It does nothing except to print out a
 brief reminder of how to use Inweb at the command line. For every other
 command, for example <code>inweb tangle</code>, further help is also available:</p>
-<pre><code>$ inweb help tangle
-inweb tangle
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> help tangle</span>
+<span class="ConsoleText-plain-syntax">    inweb tangle</span>
 
-Usage: inweb tangle [WEB]
+<span class="ConsoleText-plain-syntax">    Usage: inweb tangle [WEB]</span>
 
-Tangling is one of the two fundamental operations of literate programming
-(for the other, see 'inweb help weave'). It strips out the markup in a web,
-</code></pre>
+<span class="ConsoleText-plain-syntax">    Tangling is one of the two fundamental operations of literate programming</span>
+<span class="ConsoleText-plain-syntax">    (for the other, see 'inweb help weave'). It strips out the markup in a web,</span>
+</pre>
+<div class="lsmarkdown">
 <p>... and so on: about a screenful is printed.</p>
 <h2>Switches</h2>
 <p>A command-line switch is an embellishment to a command which slightly changes
@@ -97,13 +103,19 @@ what it does. It's written with an initial <code>-</code>.</p>
 support different switches. For example, the <code>inweb tangle</code> command has the
 optional switch <code>-to FILE</code>, which changes where the tangled program is written to.
 Without the switch:</p>
-<pre><code>$ inweb tangle countsort.py.md
-tangling web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) to file 'countsort.py'
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span>
+<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span>
+</pre>
+<div class="lsmarkdown">
 <p>And with it:</p>
-<pre><code>$ inweb tangle countsort.py.md -to unexpected.py
-tangling web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) to file 'unexpected.py'
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> unexpected.py</span>
+<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'</span>
+</pre>
+<div class="lsmarkdown">
 <p>This overrode the default filename <code>countsort.py</code>, which would otherwise have been
 used, and it's typical of how switches change only the details of what is done.
 There is no switch which makes <code>inweb tangle</code> do anything other than perform a
@@ -112,11 +124,17 @@ tangle.</p>
 and can be ignored. (See <code>inweb help</code> for a complete list.) Two which are sometimes
 useful, though, control the amount of console output produced by Inweb.</p>
 <p>For the most part, replies like:</p>
-<pre><code>tangling web &quot;Counting Sort&quot; (Python program in MarkdownCode notation) to file 'countsort.py'
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span>
+</pre>
+<div class="lsmarkdown">
 <p>are a helpful reassurance. But users who prefer the customary Unix silence can add <code>-silent</code>:</p>
-<pre><code>$ inweb tangle countsort.py.md -silent
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -silent</span>
+</pre>
+<div class="lsmarkdown">
 <p>in which case nothing at all will be printed unless some error occurs. There is
 also an opposite extreme, <code>-verbose</code>, which gives a running narrative of what
 Inweb believes it is doing.</p>

@@ -681,6 +681,19 @@ void WebStructure::set_language(ls_web *W, programming_language *pl) {
 	W->web_language = pl;
 }
 
+programming_language *WebStructure::line_language(ls_line *L) {
+	ls_chunk *C = L->owning_chunk;
+	if ((C) && (C->holon)) {
+		ls_holon *H = C->holon;
+		if ((H) && (H->addendum_to)) H = H->addendum_to;
+		if ((H->file_form) && (H->holon_language))
+			return H->holon_language;
+	}
+	ls_section *S = LiterateSource::section_of_line(L);
+	if (S) return WebStructure::section_language(S);
+	return NULL;
+}
+
 @h Debugging.
 This is useful mainly for testing: it produces a verbose listing of everything
 in a web.

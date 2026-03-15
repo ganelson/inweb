@@ -102,8 +102,9 @@ It's also possible to have a numbered list:
 	   * Nested item 2.
 	3. Third item.
 
-...though a quaint feature of Markdown is that it ignores the numbers actually
-used in the text, and applied its own counting from 1.
+...though a quaint "feature" of Markdown is that it ignores the numbers actually
+used in the text, and applies its own counting from 1; so if you write a list
+numbered as 3, 4, 5, it will still come out as 1, 2, 3.
 
 1. First item.
 2. Second item.
@@ -173,10 +174,7 @@ Here the mathematics `$n$`, `$O(n\log n)$`, and such are written in ${\rm\TeX}$ 
 and sandwiched in between dollar signs `$`. This produces $n$, $O(n\log n)$ and so on,
 and will be rendered in HTML using the ${\rm\TeX}$ engine to produce a typeset fragment of
 a page which is then displayed as an image. Longer, centred-on-the-page, formulae
-can be displayed using doubled dollar signs `$$`, so:
-
-	$$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$
-
+can be displayed using doubled dollar signs `$$`, so `$$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$`
 types a formula for the gamma function:
 
 $$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$
@@ -309,6 +307,132 @@ images can place a downloadable file link into the woven output. For example:
 The alt-text in square brackets must begin `download:`, and then continue
 with the caption for the file, that is, the brief description presented to
 the reader saying what the file is.
+
+**Audio and video**. We can put audio and video players into the woven commentary
+which will play files included in a web:
+
+	![audio](example.mp3)
+
+	![video](sample.mp4)
+
+These filenames will be relative to the web's `Audio` and `Video` subdirectories
+respectively. The players can be rescaled:
+
+	![video at 200 by 150](sample.mp4)
+
+	![video at height 200](sample.mp4)
+
+Or we can put in embedded audio or video players calling on external resources.
+In that case, the bracketed "links" are media ID numbers at the service in
+question.
+
+	![embedded YouTube video](GR3aImy7dWw)
+	
+	![embedded Vimeo video](204519)
+	
+	![embedded SoundCloud audio](42803139)
+	
+	![embedded Vimeo video at 400 by 300](204519)
+	
+	![embedded SoundCloud audio at height 200](42803139)
+
+The latter sets just the height (of the displayed waveform, that is —
+arguably music has width and not height, but SoundCloud thinks otherwise).
+
+**Carousels**. A carousel is a slide-show of (usually but not always) figures;
+there's a set of slides with captions, only one of which is visible at a time.
+
+	* (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+	
+		![The Royal Albert Hall at night.](rah.jpg)
+	
+	* (carousel "Brighton Beach")
+	
+		![Brighton beach by day.](brighton.jpg)
+	
+	* (carousel "Pula")
+	
+		![Roman amphitheatre in a bay.](pula.jpg)
+	
+	* (carousel "St Mark's Basilica, Venice")
+	
+		![St Mark's Basilica.](venice.jpg)
+
+Note that this is an unordered list in Markdown notation (that's what the `*`
+bullets indicate): but if Inweb sees that _every_ item in an unordered list
+begins with a paragraph reading `(carousel "CAPTION HERE")`, then Inweb renders
+the list as a carousel rather than simply a list of images one after another.
+
+That carousel contained only figures, but almost any Markdown material can go
+into the slides. For example:
+
+	* (carousel "Stage 1 - Raw tree" captioned below)
+
+		``` BoxArt
+			ROOT ---> DOCUMENT
+		```
+
+	* (carousel "Stage 2 - Developed tree" captioned below)
+
+		``` BoxArt
+			ROOT ---> DOCUMENT
+						|
+					  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+		```
+
+	* (carousel "Stage 3 - Completed tree" captioned below)
+
+		``` BoxArt
+			ROOT ---> DOCUMENT
+						|
+					  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+						|            |            |
+					  text 1       text 2       text 3  ...
+		```
+
+Note the optional `captioned below`; `captioned above` is also allowed. By
+default, the caption for a carousel slide stylishly overlies the bottom of
+the content, but while that's good for pictures, it obstructs the view of
+diagrams like these. So:
+
+* (carousel "Stage 1 - Raw tree" captioned below)
+
+	``` BoxArt
+		ROOT ---> DOCUMENT
+	```
+
+* (carousel "Stage 2 - Developed tree" captioned below)
+
+	``` BoxArt
+		ROOT ---> DOCUMENT
+					|
+				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+	```
+
+* (carousel "Stage 3 - Completed tree" captioned below)
+
+	``` BoxArt
+		ROOT ---> DOCUMENT
+					|
+				  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+					|            |            |
+				  text 1       text 2       text 3  ...
+	```
+
+Carousels can also have slides with no caption at all:
+
+	* (carousel)
+
+		![A faceless figure.](anonymous.jpg)
+
+	* (carousel)
+
+		![A figure with back turned.](furtive.jpg)
+
+**Embedded HTML**. This splices in some raw HTML code from a file in the web's
+`HTML` subdirectory, assuming it has one:
+
+	![html](fireworks.html)
 
 **Footnotes**. These add a certain style to commentary,[1] and can be used to supply
 trivia.[2] That last sentence was typed as:

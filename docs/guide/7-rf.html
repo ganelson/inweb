@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -52,19 +52,22 @@ format, which describes what the program is, how to install it, and so on.</p>
 <p>Inweb provides a convenient way to keep such files up to date. Suppose we
 take our example web <code>smorgasbord</code>, and create a <em>script</em> <code>smorgasbord.rmscript</code>
 inside it, reading:</p>
-<pre><code># Sorting Smorgasbord
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Sorting Smorgasbord
 
 This is version {metadata: Semantic Version Number}, dated {metadata: Build Date}.
-</code></pre>
+</span></pre>
 <p>As part of the build process for the program, we can include this command:</p>
-<pre><code>$ inweb make-readme smorgasbord
-smorgasbord/smorgasbord.rmscript -&gt; smorgasbord/README.md
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-readme smorgasbord</span>
+<span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.rmscript -&gt; smorgasbord/README.md</span>
+</pre>
+<div class="lsmarkdown">
 <p>And this will create the <code>README.md</code> with contents such as:</p>
-<pre><code># Sorting Smorgasbord
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Sorting Smorgasbord
 
 This is version 1-early-beta+1A02, dated 21 December 2025.
-</code></pre>
+</span></pre>
 <p>Optional switches allow both the script and destination file to be changed:
 <code>inweb make-readme WEB -script S -to RM</code> creates a file <code>RM</code> from the script <code>S</code>
 in the context of the web <code>WEB</code>, and similarly for a colony instead of a web.</p>
@@ -74,11 +77,14 @@ which for this example is <code>smorgasbord</code>: if neither file exists, Inwe
 an error. If <code>-to</code> is not specified, Inweb assumes <code>README.md</code> in the web (or
 colony) directory. If <code>-to</code> is set to <code>-</code>, Inweb writes to standard output
 instead of to a file:</p>
-<pre><code>$ inweb make-readme smorgasbord -to -
-# Sorting Smorgasbord
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-readme smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> -</span>
+<span class="ConsoleText-plain-syntax">    # Sorting Smorgasbord</span>
 
-This is version 1-early-beta+1A02, dated 21 December 2025.
-</code></pre>
+<span class="ConsoleText-plain-syntax">    This is version 1-early-beta+1A02, dated 21 December 2025.</span>
+</pre>
+<div class="lsmarkdown">
 <p>Mostly, whatever is in the script copies directly through into the output, but
 three characters have special rules:</p>
 <ul>
@@ -115,63 +121,63 @@ a colony member.</p>
 <p><code>{set name: VARIABLE to: TEXT}</code> creates a new <em>variable</em> with the given
 context, and <code>{VARIABLE}</code> thereafter expands to its value. Variable names
 are always in full capitals, and contain no spaces. For example:</p>
-<pre><code>{set name: URL to: https://www.inform7.com}
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{set name: URL to: https://www.inform7.com}
 See [the project home page]({URL}) for more.
-</code></pre>
+</span></pre>
 <p>would expand to:</p>
-<pre><code>See [the project home page](https://www.inform7.com) for more.
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">See [the project home page](https://www.inform7.com) for more.
+</span></pre>
 </li>
 <li>
 <p><code>{repeat with VARIABLE in LIST}</code> followed in due course by <code>{end-repeat}</code>
 causes material to be generated over and over. For example,</p>
-<pre><code>{repeat with SEA in Black, Caspian}
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{repeat with SEA in Black, Caspian}
 Welcome to the {SEA} Sea.
 {end-repeat}
-</code></pre>
+</span></pre>
 <p>expands to</p>
-<pre><code>Welcome to the Black Sea.
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Welcome to the Black Sea.
 Welcome to the Caspian Sea.
-</code></pre>
+</span></pre>
 <p>and</p>
-<pre><code>Seas available:{repeat with SEA in Sargasso, Libyan} {SEA} Sea;{end-repeat}
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Seas available:{repeat with SEA in Sargasso, Libyan} {SEA} Sea;{end-repeat}
+</span></pre>
 <p>expands to</p>
-<pre><code>Seas available: Sargasso Sea; Libyan Sea;
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Seas available: Sargasso Sea; Libyan Sea;
+</span></pre>
 </li>
 <li>
 <p><code>{define: NAME}</code> or <code>{define: NAME ARGUMENTS}</code> followed in due course by <code>{end-define}</code>
 creates a new expansion. For example,</p>
-<pre><code>{define: describe content: STUFF}
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{define: describe content: STUFF}
 Also available here is {STUFF}.
 {end-define}
 {describe content: inbuild}
 {describe content: infix}
-</code></pre>
+</span></pre>
 <p>expands to</p>
-<pre><code>Also available here is inbuild.
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Also available here is inbuild.
 Also available here is infix.
-</code></pre>
+</span></pre>
 <p>Here the <code>NAME</code> is <code>describe</code> and the <code>ARGUMENTS</code> part is <code>content: STUFF</code>.
 There can be any number of arguments; if the argument name is preceded by <code>?</code>
 then it is optional.</p>
 </li>
 </ul>
 <p>So for example, this produces a table of all the webs in the current colony:</p>
-<pre><code>Title | Current version | Build date
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title | Current version | Build date
 ----- | --------------- | ----------
 {repeat with: W in: {list-of-webs}}
 {metadata: Title of: {W}} | {metadata: Semantic Version Number of: {W}} | {metadata: Build Date of: {W}}
 {end-repeat}
-</code></pre>
+</span></pre>
 <p>And this would be a script for a generic read-me file which could be used to
 make individual <code>README.md</code> files for multiple colony members:</p>
-<pre><code># {metadata: Title} version {metadata: Semantic Version Number}
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># {metadata: Title} version {metadata: Semantic Version Number}
 
 This is version {metadata: Semantic Version Number}, dated {metadata: Build Date}.
 It can be tangled with `inweb tangle ::{web}`.
-</code></pre>
+</span></pre>
 <h2>Conveniences for Inform</h2>
 <p>Two other expansions are available which are almost certainly useful only for
 the Inform project. <code>{version ...}</code> and <code>{date ...}</code> produce a version number

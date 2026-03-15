@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -57,51 +57,51 @@ by the Belgian computer scientist Pierre-Arnoul de Marneffe. A holon is &quot;a 
 of the whole&quot;, and for us it is a piece of the program being expressed by the web.</p>
 <p>As we've seen, when Inweb's Markdown notation is used, commentary and holons
 tend to alternate:</p>
-<pre><code>This is commentary text.
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is commentary text.
 
 And so is this.
 
 	thisIsAHolon = true
-	print(&quot;A holon is part of the whole.&quot;)
+	print("A holon is part of the whole.")
 
 Now back to commentary.
-</code></pre>
+</span></pre>
 <p>In short, the holons, or code fragments, are the runs of lines indented by one tab
 stop. The web above has just one holon, and it tangles to:</p>
-<pre><code>thisIsAHolon = true
-print(&quot;A holon is part of the whole.&quot;)
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">thisIsAHolon = true
+print("A holon is part of the whole.")
+</span></pre>
 <p>However, tangling can do more. The real strength of literate programming lies
 in the ability to divide the code into holons which have names. Consider this:</p>
-<pre><code>The program divides neatly:
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">The program divides neatly:
 
-	print(&quot;Begin.&quot;)
+	print("Begin.")
 	{{Phase one}}
 	{{Phase two}}
-	print(&quot;End.&quot;)
+	print("End.")
 
 {{Phase one}} =
 
-	print(&quot;This is phase one.&quot;)
+	print("This is phase one.")
 
 {{Phase two}} =
 
-	print(&quot;This is phase two.&quot;)
-</code></pre>
+	print("This is phase two.")
+</span></pre>
 <p>Now there are three holons. The first is nameless, while the second and third
 have the names <code>Phase one</code> and <code>Phase two</code> respectively. Now our web tangles to:</p>
-<pre><code>print(&quot;Begin.&quot;)
-print(&quot;This is phase one.&quot;)
-print(&quot;This is phase two.&quot;)
-print(&quot;End.&quot;)
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">print("Begin.")
+print("This is phase one.")
+print("This is phase two.")
+print("End.")
+</span></pre>
 <h2>A literate program</h2>
 <p>Literate programming can only make a case for itself when used to explain
 something which does actually call for explanation. So the following is a more
 whole-heartedly <em>literate</em> rewriting of the same counting-sort program used
 as an example before. This time we divide its critical code into three
 phases, each of which becomes a named holon.</p>
-<pre><code># Counting Sort by Harold H. Seward
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Counting Sort by Harold H. Seward
 
 _An implementation of the 1954 sort algorithm._
 
@@ -111,7 +111,7 @@ not make comparisons between items in the unsorted array. Indeed, there are no
 comparisons in the following function, only iteration.
 
 This function takes an array of non-negative integers, sorts it, and returns
-the result. The test `if unsorted` means &quot;if the unsorted array is not empty&quot;,
+the result. The test `if unsorted` means "if the unsorted array is not empty",
 and is needed because Python would otherwise handle this case badly: of course,
 if `unsorted` does equal `[]`, then so should `sorted`, and so the right answer
 is returned.
@@ -146,7 +146,7 @@ using only the incidence counts as a sort of program. We fill `sorted`
 with no `0`s, one `1`, three `2`s, and so on, producing `[1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]`.[1]
 
 [1] The unsorted array is no longer needed, in fact, and so we could easily make this
-algorithm &quot;sort in place&quot; by simply rewriting `unsorted`, rather than making
+algorithm "sort in place" by simply rewriting `unsorted`, rather than making
 a new array.
 
 {{construct the sorted array with the right number of each value}} =
@@ -157,8 +157,8 @@ a new array.
 And this code tests the function:
 
 	A = [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
-	print(&quot;Unsorted:&quot;, A)
-	print(&quot;Sorted:&quot;, countingSort(A))
+	print("Unsorted:", A)
+	print("Sorted:", countingSort(A))
 
 So how did we do? What makes count sort interesting is that it is not doomed
 to run at $O(n\log n)$ or worse speed, where $n$ is the size of the data set:
@@ -167,7 +167,7 @@ the data (called `max_val` above). With most data, $k$ is either enormous or
 at least unpredictable, so that speed and memory usage both spike. But for just
 a few applications, where $k$ is known to be within tight bounds, count sort
 is still used today and is exceptionally fast.
-</code></pre>
+</span></pre>
 <p>If literate programming works at all as an idea, then the above ought to be
 easier to understand (and to spot the flaws in) than the original. The woven
 form of this, converted for example into a web page, is still easier to read.</p>
@@ -226,17 +226,30 @@ is no definition of this.</p>
 </li>
 <li>
 <p>A holon cannot use itself, directly or indirectly. For example:</p>
-<pre><code>{{alpha}} =
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{alpha}} =
 
     {{beta}}
 
 {{beta}} =
 
     {{alpha}}
-</code></pre>
+</span></pre>
 <p>results in an error (whether or not <code>{{alpha}}</code> or <code>{{beta}}</code> are used elsewhere).</p>
 </li>
 </ul>
+<h2>Abbreviating holon names</h2>
+<p>Suppose a holon has a lengthy name which is difficult to type:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Fail with an error message, deallocate memory, and return 1}} =
+</span></pre>
+<p>This may make it annoying to refer to:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (text) {{Fail with an error message, deallocate memory, and return 1}}
+</span></pre>
+<p>So Inweb allows such references to be abbreviated:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (text) {{Fail...}}
+</span></pre>
+<p>The rule is that the text before <code>...</code>, in the case <code>Fail</code>, must be a prefix of
+the name of <em>exactly one</em> holon defined in the current section; or, if it matches
+none in the current section, <em>exactly one</em> holon defined webwide.</p>
 <h2>Naming every holon</h2>
 <p>Some LP purists may not approve of the way that Inweb normally reads a mix of
 nameless and named holons. Shouldn't every holon have a name? That was certainly
@@ -266,32 +279,32 @@ or <code>{{MAIN}}</code> would also work.</p>
 <h2>Continuations</h2>
 <p>This ability wasn't needed by the example above, but it's also possible to
 continue a holon from earlier. Suppose we write the holon:</p>
-<pre><code>{{Print diagnostics}} +=
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Print diagnostics}} +=
 
-	print(&quot;Total memory usage was &quot;, mem_usage)
-</code></pre>
+	print("Total memory usage was ", mem_usage)
+</span></pre>
 <p>Note the <code>+=</code> here, rather than just <code>=</code>. That makes this a continuation of
 the holon <code>{{Print diagnostics}}</code>, which must already have been defined.
 A holon can have any number of continuations; if it does, then the code it
 represents is a concatenation of its own lines with the lines in its
 continuations, in order of definition. So for example:</p>
-<pre><code>{{Print diagnostics}} =
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Print diagnostics}} =
 
-	print(&quot;Diagnostics:&quot;)
-
-{{Print diagnostics}} +=
-
-	print(&quot;Total time taken was &quot;, time_in_cs)
+	print("Diagnostics:")
 
 {{Print diagnostics}} +=
 
-	print(&quot;Total memory usage was &quot;, mem_usage)
-</code></pre>
+	print("Total time taken was ", time_in_cs)
+
+{{Print diagnostics}} +=
+
+	print("Total memory usage was ", mem_usage)
+</span></pre>
 <p>tangles <code>{{Print diagnostics}}</code> to:</p>
-<pre><code>print(&quot;Diagnostics:&quot;)
-print(&quot;Total time taken was &quot;, time_in_cs)
-print(&quot;Total memory usage was &quot;, mem_usage)
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">print("Diagnostics:")
+print("Total time taken was ", time_in_cs)
+print("Total memory usage was ", mem_usage)
+</span></pre>
 <p>Continuations are best used sparingly, and only when they actually clarify
 what is going on, rather than obscuring it.</p>
 <h2>Early and late holons</h2>
@@ -300,7 +313,7 @@ to avoid errors, and this is occasionally a nuisance to the literate programmer,
 because that isn't the clearest order in which to explain it.</p>
 <p>Inweb therefore allows holons to be marked as to be tangled either earlier or
 later than usual. For example, the following are all valid header lines:</p>
-<pre><code>{{Include header files}} (tangled very early) =
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Include header files}} (tangled very early) =
 
 {{Initialisation}} (tangled early) =
 
@@ -309,13 +322,13 @@ later than usual. For example, the following are all valid header lines:</p>
 {{Closing down}} (tangled late) =
 
 {{Check for undeclared symbols}} (tangled very late) =
-</code></pre>
+</span></pre>
 <p>Inweb will throw an error if code attempts to use an early or late holon. For
 example, this cannot work:</p>
-<pre><code>{{Do some business}} =
-	print(&quot;Starting up&quot;)
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Do some business}} =
+	print("Starting up")
 	{{Initialisation}}
-</code></pre>
+</span></pre>
 <p>because the <code>{{Initialisation}}</code> holon was marked as <code>tangled early</code>. So it
 can appear only once, and only in the early phase, not as part of another holon.</p>
 <p>This is probably a good time to say explicitly what tangling does:</p>
@@ -360,36 +373,44 @@ regular holon is much like that between a global and a local variable.)</p>
 <p>The main holon is automatically webwide if it exists. Otherwise,
 holons are only webwide if they are explicitly declared that way. For example,
 suppose we declare a holon like this in one section:</p>
-<pre><code>{{Grab bag}} (webwide) =
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide) =
+</span></pre>
 <p>We could then continue this in any subsequent section of the web, and not just
 in its own:</p>
-<pre><code>{{Grab bag}} +=
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} +=
+</span></pre>
 <p>It's legal for a holon to be both webwide and early/late: for example,</p>
-<pre><code>{{Grab bag}} (webwide and tangled very early) =
-</code></pre>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide and tangled very early) =
+</span></pre>
 <p>Similarly, a webwide holon can be used from outside its own section. We
 might, for example, declare this in the opening section of a web:</p>
-<pre><code>{{Disclaimer}} (webwide) =
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Disclaimer}} (webwide) =
 
-	print(&quot;This part of the program is not fully implemented yet.&quot;)
-</code></pre>
+	print("This part of the program is not fully implemented yet.")
+</span></pre>
 <p>And then we can use <code>{{Disclaimer}}</code> anywhere needed.</p>
 <p>Webwide holons are, again, best used only when there's a good reason for it.</p>
-<h2>Abbreviating holon names</h2>
-<p>Suppose a holon has a lengthy name which is difficult to type:</p>
-<pre><code>{{Fail with an error message, deallocate memory, and return 1}} =
-</code></pre>
-<p>This may make it annoying to refer to:</p>
-<pre><code>	if (text) {{Fail with an error message, deallocate memory, and return 1}}
-</code></pre>
-<p>So Inweb allows such references to be abbreviated:</p>
-<pre><code>	if (text) {{Fail...}}
-</code></pre>
-<p>The rule is that the text before <code>...</code>, in the case <code>Fail</code>, must be a prefix of
-the name of <em>exactly one</em> holon defined in the current section; or, if it matches
-none in the current section, <em>exactly one</em> holon defined webwide.</p>
+<h2>Extracting holon matter to files</h2>
+<p>Another option which can be applied to a holon is to mark it as containing code
+which is not part of the main program, but is instead destined for an extraneous
+file of text or code. For example:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Default preferences file}} (tangled to prefs.txt) =
+</span></pre>
+<p>This holon is tangled like any other, but into the sidekick file <code>prefs.txt</code>.</p>
+<p>The command <code>inweb inspect -tangle-files</code> can be used to find which files like
+this are actually written in a tangle:</p>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -tangle-files</span><span class="ConsoleText-plain-syntax"> inform/inform7</span>
+<span class="ConsoleText-plain-syntax">    web "inform7" (InC program in InwebClassic notation): 27 modules : 146 chapters : 796 sections : 12576 paragraphs : 285331 lines</span>
+<span class="ConsoleText-plain-syntax">    file           | holon name       | language | where</span>
+<span class="ConsoleText-plain-syntax">    -------------- | ---------------- | -------- | -------</span>
+<span class="ConsoleText-plain-syntax">    inform7_clib.h | C library header | None     | 5/fnc:8</span>
+<span class="ConsoleText-plain-syntax">    inform7_clib.c | C library code   | C        | 5/fnc:9</span>
+</pre>
+<div class="lsmarkdown">
+<p>(The languages used in these files are inferred from their filename extensions:
+Inweb recognises <code>.c</code> here but not <code>.h</code>.)</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="1-sw.html">&#10094;</a></li><li class="progresscurrentchapter">1</li><li class="progresssection"><a href="1-gs.html">gs</a></li><li class="progresssection"><a href="1-sw.html">sw</a></li><li class="progresscurrent">allp</li><li class="progresssection"><a href="1-cim.html">cim</a></li><li class="progresssection"><a href="1-mtd.html">mtd</a></li><li class="progresschapter"><a href="2-cp.html">2</a></li><li class="progresschapter"><a href="3-cln.html">3</a></li><li class="progresschapter"><a href="4-an.html">4</a></li><li class="progresschapter"><a href="5-al.html">5</a></li><li class="progresschapter"><a href="6-ap.html">6</a></li><li class="progresschapter"><a href="7-bn.html">7</a></li><li class="progressnext"><a href="1-cim.html">&#10095;</a></li></ul></div>

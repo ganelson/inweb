@@ -184,7 +184,7 @@ supplied <code>wildcards</code> array.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_classifier_context is accessed in 1/cln, 1/ws, 1/sw, 2/ls, 2/lc, 2/hs, 3/pl, 5/ts, 5/apacs, 6/rw, 6/bf and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_classifier_context is accessed in 1/cln, 1/ws, 1/sw, 2/ls, 2/lc, 2/hs, 5/ts, 5/apacs, 6/rw, 6/bf and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Conditions.</b>  The condition applied to a rule — for example, <code>if following title</code> — is
 turned into one of these:</p>
@@ -797,6 +797,8 @@ used to mean &quot;nothing matched&quot;.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">WEBWIDEHOLON_LSNROID</span> 
 </pre>
+<pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">TANGLEDTOHOLON_LSNROID</span> 
+</pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">VERYEARLYHOLON_LSNROID</span> 
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">enumerate</span> <span class="identifier-syntax">EARLYHOLON_LSNROID</span> 
@@ -870,6 +872,7 @@ used to mean &quot;nothing matched&quot;.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"undisplayedoption"</span><span class="plain-syntax">))    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">UNDISPLAYED_LSNROID</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"webwideholonoption"</span><span class="plain-syntax">))   </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">WEBWIDEHOLON_LSNROID</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"tangledtoholonoption"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TANGLEDTOHOLON_LSNROID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"veryearlyholonoption"</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">VERYEARLYHOLON_LSNROID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"earlyholonoption"</span><span class="plain-syntax">))     </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">EARLYHOLON_LSNROID</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">outcome</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"lateholonoption"</span><span class="plain-syntax">))      </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">LATEHOLON_LSNROID</span><span class="plain-syntax">;</span>
@@ -906,39 +909,39 @@ equal a valid outcome ID, but at present we make no use of this fact.</p>
 </pre>
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">WEBWIDEHOLON_LSNROBIT</span> <span class="constant-syntax">0x000400</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VERYEARLYHOLON_LSNROBIT</span> <span class="constant-syntax">0x000800</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">TANGLEDTOHOLON_LSNROBIT</span> <span class="constant-syntax">0x000800</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EARLYHOLON_LSNROBIT</span> <span class="constant-syntax">0x001000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VERYEARLYHOLON_LSNROBIT</span> <span class="constant-syntax">0x001000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LATEHOLON_LSNROBIT</span> <span class="constant-syntax">0x002000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">EARLYHOLON_LSNROBIT</span> <span class="constant-syntax">0x002000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VERYLATEHOLON_LSNROBIT</span> <span class="constant-syntax">0x004000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LATEHOLON_LSNROBIT</span> <span class="constant-syntax">0x004000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CONTINUATION_LSNROBIT</span> <span class="constant-syntax">0x008000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">VERYLATEHOLON_LSNROBIT</span> <span class="constant-syntax">0x008000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SUPERHEADING_LSNROBIT</span> <span class="constant-syntax">0x010000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CONTINUATION_LSNROBIT</span> <span class="constant-syntax">0x010000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL1_LSNROBIT</span> <span class="constant-syntax">0x020000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SUPERHEADING_LSNROBIT</span> <span class="constant-syntax">0x020000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL2_LSNROBIT</span> <span class="constant-syntax">0x040000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL1_LSNROBIT</span> <span class="constant-syntax">0x040000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL3_LSNROBIT</span> <span class="constant-syntax">0x080000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL2_LSNROBIT</span> <span class="constant-syntax">0x080000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL4_LSNROBIT</span> <span class="constant-syntax">0x100000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL3_LSNROBIT</span> <span class="constant-syntax">0x100000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL5_LSNROBIT</span> <span class="constant-syntax">0x200000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL4_LSNROBIT</span> <span class="constant-syntax">0x200000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SILENT_LSNROBIT</span> <span class="constant-syntax">0x400000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">LEVEL5_LSNROBIT</span> <span class="constant-syntax">0x400000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">WITHPURPOSE_LSNROBIT</span> <span class="constant-syntax">0x800000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">SILENT_LSNROBIT</span> <span class="constant-syntax">0x800000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">WITHPURPOSE_LSNROBIT</span> <span class="constant-syntax">0x800000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">WITHPURPOSE_LSNROBIT</span> <span class="constant-syntax">0x1000000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CAPTIONABOVE_LSNROBIT</span> <span class="constant-syntax">0x1000000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CAPTIONABOVE_LSNROBIT</span> <span class="constant-syntax">0x2000000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CAPTIONBELOW_LSNROBIT</span> <span class="constant-syntax">0x2000000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">CAPTIONBELOW_LSNROBIT</span> <span class="constant-syntax">0x4000000</span>
 </pre>
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DEFAULT_LSNROBIT</span> <span class="constant-syntax">0x4000000</span>
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="identifier-syntax">DEFAULT_LSNROBIT</span> <span class="constant-syntax">0x8000000</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LineClassifiers::option_bit</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">LineClassifiers::option_bit</span></span>:<br/><a href="2-lc2.html#SP13">&#167;13</a><br/>Line Classification - <a href="2-lc.html#SP19_2_3_1">&#167;19.2.3.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">O</span><span class="plain-syntax">) {</span>
@@ -947,6 +950,7 @@ equal a valid outcome ID, but at present we make no use of this fact.</p>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNDISPLAYED_LSNROID:</span><span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">UNDISPLAYED_LSNROBIT</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">WEBWIDEHOLON_LSNROID:</span><span class="plain-syntax">   </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">WEBWIDEHOLON_LSNROBIT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">TANGLEDTOHOLON_LSNROID:</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">TANGLEDTOHOLON_LSNROBIT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERYEARLYHOLON_LSNROID:</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">VERYEARLYHOLON_LSNROBIT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">EARLYHOLON_LSNROID:</span><span class="plain-syntax">     </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">EARLYHOLON_LSNROBIT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">LATEHOLON_LSNROID:</span><span class="plain-syntax">      </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">LATEHOLON_LSNROBIT</span><span class="plain-syntax">;</span>

@@ -211,6 +211,8 @@ from the given file; we generate this automatically.
 =
 VOID_METHOD_TYPE(INSERT_LINE_MARKER_TAN_MTID, programming_language *pl, text_stream *OUT, ls_line *lst)
 void LanguageMethods::insert_line_marker(OUTPUT_STREAM, programming_language *pl, ls_line *lst) {
+	programming_language *override = WebStructure::line_language(lst);
+	if (override) pl = override;
 	VOID_METHOD_CALL(pl, INSERT_LINE_MARKER_TAN_MTID, OUT, lst);
 }
 

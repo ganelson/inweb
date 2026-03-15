@@ -18,6 +18,7 @@
 <script src="../docs-assets/Bigfoot.js"></script>
 <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
 	<body class="commentary-font">
@@ -28,13 +29,12 @@
 <li><a href="../foundation-module/index.html">foundation</a></li>
 <li><a href="../foundation-test/index.html">foundation-test</a></li>
 <li><a href="../literate-module/index.html">literate</a></li>
-<li><a href="../literate-test/index.html">literate-test</a></li>
 </ul><h2>Documentation</h2><ul>
 <li><a href="index.html"><span class="selectedlink">guide</span></a></li>
 </ul><h2>Example Webs</h2><ul>
 <li><a href="../goldbach/index.html">goldbach</a></li>
 <li><a href="../twinprimes/twinprimes.html">twinprimes</a></li>
-<li><a href="../eastertide/index.html">eastertide</a></li>
+<li><a href="../eastertide/eastertide.html">eastertide</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inweb"><img src="../docs-assets/github.png" height=0> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -47,18 +47,24 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#6">Chapter 6: Patterns</a></li><li><b>About Patterns</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Every weave is makes use of a <em>pattern</em>. The same web can look very different
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Every weave makes use of a <em>pattern</em>. The same web can look very different
 when woven with two different patterns; and a pattern can, in principle, be
 used with many different webs.</p>
 <p>Like languages and notations, patterns are resources identified by their names.
 The default pattern is called <code>HTML</code>:</p>
-<pre><code>$ inweb weave pyramid.c.w
-weaving web &quot;Hilbert's Pyramid&quot; (C program in MarkdownCode notation) as HTML
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave pyramid.c.w</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as HTML</span>
+</pre>
+<div class="lsmarkdown">
 <p>Note the <code>as HTML</code> at the end of that line. Whereas:</p>
-<pre><code>$ inweb weave pyramid.c.w -as GitHubPages
-weaving web &quot;Hilbert's Pyramid&quot; (C program in MarkdownCode notation) as GitHubPages
-</code></pre>
+</div>
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave pyramid.c.w</span><span class="ConsoleText-identifier-syntax"> -as</span><span class="ConsoleText-plain-syntax"> GitHubPages</span>
+<span class="ConsoleText-plain-syntax">    weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as GitHubPages</span>
+</pre>
+<div class="lsmarkdown">
 <p>That's to say, running the <code>inweb weave</code> command with the switch <code>-as NAME</code>
 tells Inweb to use the pattern called <code>NAME</code>.</p>
 <p>Creating a whole new pattern is not as major an undertaking as it may first
