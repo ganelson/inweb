@@ -18,21 +18,21 @@ file: equiv/equiv.html
     <html>
     	<head>
     		<title>Syntax Colouring Equivalency</title>
+    <link href="equiv-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		<meta name="viewport" content="width=device-width initial-scale=1">
     		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     		<meta http-equiv="Content-Language" content="en-gb">
 
     <link href="equiv-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="equiv-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="equiv-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="equiv-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="equiv-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="equiv-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="equiv-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="equiv-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="equiv-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"
     	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
     <script src="equiv-assets/Bigfoot.js"></script>
-    <link href="equiv-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="equiv-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="equiv-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="equiv-assets/Preform-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">

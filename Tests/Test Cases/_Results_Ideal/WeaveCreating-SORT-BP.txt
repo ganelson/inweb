@@ -253,15 +253,15 @@ file: smorgasbord/Woven/cnsr.html
     <html>
     	<head>
     		<title>Counting Sort</title>
+    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		<meta name="viewport" content="width=device-width initial-scale=1">
     		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     		<meta http-equiv="Content-Language" content="en-gb">
 
     <link href="assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script>
     MathJax = {
@@ -282,11 +282,11 @@ file: smorgasbord/Woven/cnsr.html
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
+    <link href="assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"
     	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
     <script src="assets/Bigfoot.js"></script>
-    <link href="assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		
     	</head>
@@ -401,15 +401,15 @@ file: smorgasbord/Woven/index.html
     <html>
     	<head>
     		<title>Sorting Smorgasbord 1</title>
+    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		<meta name="viewport" content="width=device-width initial-scale=1">
     		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     		<meta http-equiv="Content-Language" content="en-gb">
 
     <link href="assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		
     	</head>
     	<body class="commentary-font">
@@ -443,15 +443,15 @@ file: smorgasbord/Woven/qcsr.html
     <html>
     	<head>
     		<title>Quick Sort</title>
+    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		<meta name="viewport" content="width=device-width initial-scale=1">
     		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     		<meta http-equiv="Content-Language" content="en-gb">
 
     <link href="assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script>
     MathJax = {
@@ -472,11 +472,11 @@ file: smorgasbord/Woven/qcsr.html
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
+    <link href="assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"
     	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
     <script src="assets/Bigfoot.js"></script>
-    <link href="assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		
     	</head>

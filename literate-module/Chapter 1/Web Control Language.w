@@ -598,9 +598,9 @@ wcl_declaration *WCL::global_resources(void) {
 =
 void WCL::make_resources_at_path_global(pathname *P) {
 	if (WCL::make_potential_pattern_global(P)) return;
-	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories::next(D, leafname)) {
+	linked_list *L = Directories::listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames::in(P, leafname);
 			WCL::make_resources_at_file_global(F);
@@ -610,29 +610,27 @@ void WCL::make_resources_at_path_global(pathname *P) {
 			Str::delete_last_character(subdir);
 			pathname *Q = Pathnames::down(P, subdir);
 			WCL::make_potential_pattern_global(Q);
+			DISCARD_TEXT(subdir)
 		}
 	}
-	DISCARD_TEXT(leafname)
-	Directories::close(D);
 }
 
 int WCL::make_potential_pattern_global(pathname *P) {
 	text_stream *dirname = Pathnames::directory_name(P);
 	if (Str::eq_insensitive(dirname, I"Patterns")) {
 		int n = 0;
-		scan_directory *D = Directories::open(P);
-		TEMPORARY_TEXT(leafname)
-		while (Directories::next(D, leafname)) {
+		linked_list *L = Directories::listing(P);
+		text_stream *leafname;
+		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 			if (Platform::is_folder_separator(Str::get_last_char(leafname))) {
 				TEMPORARY_TEXT(subdir)
 				Str::copy(subdir, leafname);
 				Str::delete_last_character(subdir);
 				pathname *Q = Pathnames::down(P, subdir);
 				if (WCL::make_potential_pattern_global(Q)) n++;
+				DISCARD_TEXT(subdir)
 			}
 		}
-		DISCARD_TEXT(leafname)
-		Directories::close(D);
 		if (n > 0) return TRUE;
 	}
 	TEMPORARY_TEXT(name)
@@ -813,17 +811,13 @@ void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) 
 }
 
 @<Merge from P@> =
-	scan_directory *D = Directories::open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories::next(D, leafname)) {
-			if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
-				filename *F = Filenames::in(P, leafname);
-				@<Merge from F@>;
-			}
+	linked_list *L = Directories::listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames::in(P, leafname);
+			@<Merge from F@>;
 		}
-		DISCARD_TEXT(leafname)
-		Directories::close(D);
 	}
 
 @<Merge from patterns P@> =

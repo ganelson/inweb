@@ -99,22 +99,18 @@ void Assets::include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
 	dictionary *leaves_gathered = Dictionaries::new(128, TRUE);
 	for (ls_pattern *p = pattern; p; p = Patterns::basis(W->declaration, p)) {
 		pathname *P = Pathnames::down(p->pattern_location, wp->plugin_name);
-		scan_directory *D = Directories::open(P);
-		if (D) {
-			TEMPORARY_TEXT(leafname)
-			while (Directories::next(D, leafname)) {
-				if ((Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) &&
-					(Str::get_first_char(leafname) != '.')) {
-					if (Dictionaries::find(leaves_gathered, leafname) == NULL) {
-						WRITE_TO(Dictionaries::create_text(leaves_gathered, leafname), "y");
-						filename *F = Filenames::in(P, leafname);
-						Assets::include_asset(OUT, NULL, W, F, NULL, pattern, from, R, context);
-						finds++;
-					}
+		linked_list *L = Directories::listing(P);
+		text_stream *leafname;
+		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+			if ((Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) &&
+				(Str::get_first_char(leafname) != '.')) {
+				if (Dictionaries::find(leaves_gathered, leafname) == NULL) {
+					WRITE_TO(Dictionaries::create_text(leaves_gathered, leafname), "y");
+					filename *F = Filenames::in(P, leafname);
+					Assets::include_asset(OUT, NULL, W, F, NULL, pattern, from, R, context);
+					finds++;
 				}
 			}
-			DISCARD_TEXT(leafname)
-			Directories::close(D);	
 		}
 	}
 	if (finds == 0) {

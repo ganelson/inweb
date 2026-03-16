@@ -2940,7 +2940,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define PARAGRAPH_TAGS_NTNMARKER 4
 
     
-#line 534 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 532 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define INWEB_REWRITE_FSMEVENT 2
 
     
@@ -3086,59 +3086,59 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define IMPORTANT_NS_INDEX_END_FSMEVENT 28
 
     
-#line 510 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 508 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define WHOLE_LINE_CRULE_RUN -1 
 
     
-#line 511 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 509 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define CHARACTERS_CRULE_RUN -2 
 
     
-#line 512 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 510 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define CHARACTERS_IN_CRULE_RUN -3 
 
     
-#line 513 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 511 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define INSTANCES_CRULE_RUN -4 
 
     
-#line 514 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 512 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define MATCHES_CRULE_RUN -5 
 
     
-#line 515 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 513 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define BRACKETS_CRULE_RUN -6 
 
     
-#line 550 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 548 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define NOT_A_RULE_PREFIX 1 
 
     
-#line 551 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 549 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define UNSPACED_RULE_PREFIX 2 
 
     
-#line 552 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 550 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define SPACED_RULE_PREFIX 3 
 
     
-#line 553 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 551 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define OPTIONALLY_SPACED_RULE_PREFIX 4 
 
     
-#line 554 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 552 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define UNSPACED_RULE_SUFFIX 5 
 
     
-#line 555 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 553 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define SPACED_RULE_SUFFIX 6 
 
     
-#line 556 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 554 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define OPTIONALLY_SPACED_RULE_SUFFIX 7 
 
     
-#line 797 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 795 "inweb/literate-module/Chapter 3/Programming Languages.w"
     #define MAX_ILDF_REGEXP_LENGTH 64
 
     
@@ -3493,19 +3493,19 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define SWARM_SECTIONS_SWM 3
 
     
-#line 161 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 157 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
     #define EMBED_ASSET_METHOD 1
 
     
-#line 162 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 158 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
     #define COPY_ASSET_METHOD 2
 
     
-#line 163 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 159 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
     #define PRIVATE_COPY_ASSET_METHOD 3
 
     
-#line 164 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 160 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
     #define COLLATE_ASSET_METHOD 4
 
     
@@ -3953,7 +3953,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define NO_DEFINED_SWM_VALUES 4
 
     
-#line 164 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 160 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
     #define NO_DEFINED_METHOD_VALUES 4
 
     
@@ -5336,13 +5336,13 @@ typedef struct ls_notation {
 	struct notation_rewriting_machine *p_stanza;
 	CLASS_DEFINITION
 } ls_notation;
-#line 519 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 517 "inweb/literate-module/Chapter 2/Web Notations.w"
 typedef struct notation_rewriting_machine {
 	struct finite_state_machine *fsm;
 	struct fsm_state *base_state;
 	CLASS_DEFINITION
 } notation_rewriting_machine;
-#line 537 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 535 "inweb/literate-module/Chapter 2/Web Notations.w"
 typedef struct notation_rewriter {
 	struct text_stream *from;
 	struct text_stream *to;
@@ -5481,7 +5481,7 @@ typedef struct programming_language {
 	struct method_set *methods;
 	CLASS_DEFINITION
 } programming_language;
-#line 255 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 253 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct language_reader_state {
 	struct programming_language *defining;
 	struct colouring_language_block *current_block;
@@ -5489,7 +5489,7 @@ typedef struct language_reader_state {
 	int properties_block;
 	CLASS_DEFINITION
 } language_reader_state;
-#line 518 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 516 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct colouring_language_block {
 	struct linked_list *rules; /* of `colouring_rule` */
 	struct colouring_language_block *parent; /* or `NULL` for the topmost one */
@@ -5502,7 +5502,7 @@ typedef struct colouring_language_block {
 	struct match_results mr; /* of a regular expression */
 	CLASS_DEFINITION
 } colouring_language_block;
-#line 559 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 557 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct colouring_rule {
 	/* the premiss: */
 	int sense; /* `FALSE` to negate the condition */
@@ -5525,13 +5525,13 @@ typedef struct colouring_rule {
 	struct match_results mr; /* of a regular expression */
 	CLASS_DEFINITION
 } colouring_rule;
-#line 682 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 680 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct reserved_word {
 	struct text_stream *word;
 	int colour;
 	CLASS_DEFINITION
 } reserved_word;
-#line 800 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 798 "inweb/literate-module/Chapter 3/Programming Languages.w"
 typedef struct pl_regexp_set {
 	inchar32_t expression[MAX_ILDF_REGEXP_LENGTH + 1];
 	struct pl_regexp_set *alternate;
@@ -5798,7 +5798,7 @@ typedef struct colour_scheme {
 	int last_included_in_round;
 	CLASS_DEFINITION
 } colour_scheme;
-#line 167 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 163 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 typedef struct asset_rule {
 	struct text_stream *applies_to;
 	int method; /* one of the `*_ASSET_METHOD` values above */
@@ -5807,7 +5807,7 @@ typedef struct asset_rule {
 	int transform_names;
 	CLASS_DEFINITION
 } asset_rule;
-#line 354 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 350 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 typedef struct css_file_transformation {
 	struct text_stream *OUT;
 	struct text_stream *trans;
@@ -8496,49 +8496,49 @@ void  WCL__make_global(wcl_declaration *resources) ;
 wcl_declaration * WCL__global_resources(void) ;
 #line 599 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__make_resources_at_path_global(pathname *P) ;
-#line 619 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 618 "inweb/literate-module/Chapter 1/Web Control Language.w"
 int  WCL__make_potential_pattern_global(pathname *P) ;
-#line 652 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 650 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__make_resources_at_file_global(filename *F) ;
-#line 664 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 662 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__search_scope(wcl_declaration *D) ;
-#line 681 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 679 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__resolve_resource(wcl_declaration *D, int type, text_stream *name) ;
-#line 691 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 689 "inweb/literate-module/Chapter 1/Web Control Language.w"
 linked_list * WCL__list_resources(wcl_declaration *D, int type, text_stream *name) ;
-#line 701 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 699 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__resolve_resource_inner(wcl_declaration *D, int type, text_stream *name, 	wcl_declaration **result, linked_list *results) ;
-#line 730 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 728 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__write_sorted_list_of_resources(OUTPUT_STREAM, ls_web *W, int type) ;
-#line 734 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 732 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__write_sorted_list_of_declaration_resources(OUTPUT_STREAM, wcl_declaration *OD, int type) ;
-#line 778 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 776 "inweb/literate-module/Chapter 1/Web Control Language.w"
 int  WCL__compare_names(const void *ent1, const void *ent2) ;
-#line 796 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 794 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) ;
-#line 860 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 854 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__read_inner(pathname *P, filename *F, int presumed, int checking) ;
-#line 881 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 875 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__read_just_one(filename *F, int presumed) ;
-#line 889 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 883 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__read_anything(filename *F) ;
-#line 896 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 890 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__read_presumption(filename *F, int presumed) ;
-#line 912 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 906 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__read_web_or_halt(pathname *P, filename *F, wcl_declaration *D) ;
-#line 927 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 921 "inweb/literate-module/Chapter 1/Web Control Language.w"
 int  WCL__contents_page_file(filename *F) ;
-#line 939 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 933 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration * WCL__read_web(pathname *P, filename *F) ;
-#line 984 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 978 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__simple_read_line(text_stream *line, text_file_position *tfp, void *v_state) ;
-#line 996 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 990 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__write(OUTPUT_STREAM, wcl_declaration *D) ;
-#line 1000 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 994 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__write_briefly(OUTPUT_STREAM, wcl_declaration *D) ;
-#line 1004 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 998 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__write_r(OUTPUT_STREAM, wcl_declaration *D, int briefly) ;
-#line 1047 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 1041 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void  WCL__summarise(OUTPUT_STREAM, wcl_declaration *D) ;
 #line 57 "inweb/literate-module/Chapter 1/Colonies.w"
 ls_colony_member * Colonies__new_member(text_stream *name, ls_colony *C, int ext) ;
@@ -9028,23 +9028,23 @@ int  WebNotation__commentary_markup(ls_web *W) ;
 markdown_variation * WebNotation__commentary_variation(ls_web *W) ;
 #line 306 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__read_definitions(pathname *P) ;
-#line 322 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 320 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__read_definition(filename *F) ;
-#line 338 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 336 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__parse_declaration(wcl_declaration *D) ;
-#line 379 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 377 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) ;
-#line 396 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 394 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__apply_definition_line(ls_notation *ntn, text_stream *cmd) ;
-#line 510 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 508 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__resolve_declaration(wcl_declaration *D) ;
-#line 524 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 522 "inweb/literate-module/Chapter 2/Web Notations.w"
 notation_rewriting_machine * WebNotation__new_machine(void) ;
-#line 545 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 543 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machine *nrm, 	text_stream *from, text_stream *to) ;
-#line 580 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 578 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) ;
-#line 599 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 597 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__postprocess(text_stream *text, ls_notation *ntn) ;
 #line 39 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon * Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int addendum, 	int file_form, text_stream *file_path, ls_holon_namespace *ns, int bitmap, ls_notation *ntn, 	programming_language *pl) ;
@@ -9136,49 +9136,49 @@ programming_language * Languages__guess_from_filename(ls_web *W, filename *F, in
 text_stream * Languages__canonical_file_extension(programming_language *pl) ;
 #line 188 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__read_definitions(pathname *P) ;
-#line 204 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 202 "inweb/literate-module/Chapter 3/Programming Languages.w"
 programming_language * Languages__read_definition(filename *F) ;
-#line 216 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 214 "inweb/literate-module/Chapter 3/Programming Languages.w"
 programming_language * Languages__parse_declaration(wcl_declaration *D) ;
-#line 262 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 260 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__error(language_reader_state *state, text_stream *msg, 	text_file_position *tfp) ;
-#line 292 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 290 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) ;
-#line 502 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 500 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__resolve_declaration(wcl_declaration *D) ;
-#line 531 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 529 "inweb/literate-module/Chapter 3/Programming Languages.w"
 colouring_language_block * Languages__new_block(colouring_language_block *within, int r) ;
-#line 582 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 580 "inweb/literate-module/Chapter 3/Programming Languages.w"
 colouring_rule * Languages__new_rule(colouring_language_block *within) ;
-#line 606 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 604 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__parse_rule(language_reader_state *state, text_stream *premiss, 	text_stream *action, text_file_position *tfp) ;
-#line 687 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 685 "inweb/literate-module/Chapter 3/Programming Languages.w"
 reserved_word * Languages__reserved(language_reader_state *state, 	programming_language *pl, text_stream *W, inchar32_t C, 	text_file_position *tfp) ;
-#line 708 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 706 "inweb/literate-module/Chapter 3/Programming Languages.w"
 inchar32_t  Languages__colour(language_reader_state *state, text_stream *T, text_file_position *tfp) ;
-#line 723 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 721 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__boolean(language_reader_state *state, text_stream *T, text_file_position *tfp) ;
-#line 737 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 735 "inweb/literate-module/Chapter 3/Programming Languages.w"
 text_stream * Languages__text_oq(language_reader_state *state, text_stream *T, text_file_position *tfp) ;
-#line 743 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 741 "inweb/literate-module/Chapter 3/Programming Languages.w"
 text_stream * Languages__text(language_reader_state *state, text_stream *T, text_file_position *tfp, int allow) ;
-#line 805 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 803 "inweb/literate-module/Chapter 3/Programming Languages.w"
 pl_regexp_set * Languages__new_regexp_set(void) ;
-#line 812 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 810 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__match_regexp_set(match_results *mr, text_stream *text, pl_regexp_set *rs) ;
-#line 822 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 820 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__match_regexp_set_from(match_results *mr, text_stream *text, pl_regexp_set *rs, int i) ;
-#line 833 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 831 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__nonempty_regexp_set(pl_regexp_set *rs) ;
-#line 838 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 836 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__add_to_regexp_set(pl_regexp_set *rs, inchar32_t expression[]) ;
-#line 849 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 847 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__regexp_to(language_reader_state *state, pl_regexp_set *rs, text_stream *T, text_file_position *tfp) ;
-#line 855 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 853 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void  Languages__regexp(language_reader_state *state, inchar32_t *write_to, text_stream *T, text_file_position *tfp) ;
-#line 914 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 912 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__add_to_regexp(inchar32_t *write_to, int i, inchar32_t c) ;
-#line 919 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 917 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__add_escape_to_regexp(inchar32_t *write_to, int i, inchar32_t c) ;
 #line 35 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__initialise_analysis_details(ls_web *W) ;
@@ -9562,35 +9562,35 @@ ls_pattern * Patterns__find(wcl_declaration *D, text_stream *name) ;
 void  Patterns__impose(ls_web *W, ls_pattern *wp) ;
 #line 66 "inweb/literate-module/Chapter 5/Patterns.w"
 wcl_declaration * Patterns__parse_directory(pathname *P) ;
-#line 107 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 103 "inweb/literate-module/Chapter 5/Patterns.w"
 void  Patterns__parse_declaration(wcl_declaration *D) ;
-#line 163 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 159 "inweb/literate-module/Chapter 5/Patterns.w"
 int  Patterns__html_based(wcl_declaration *D, ls_pattern *wp) ;
-#line 171 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 167 "inweb/literate-module/Chapter 5/Patterns.w"
 void  Patterns__resolve_declaration(wcl_declaration *D) ;
-#line 174 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 170 "inweb/literate-module/Chapter 5/Patterns.w"
 weave_format * Patterns__get_format(ls_web *W, ls_pattern *wp) ;
-#line 183 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 179 "inweb/literate-module/Chapter 5/Patterns.w"
 text_stream * Patterns__get_default_range(ls_web *W, ls_pattern *wp) ;
-#line 193 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 189 "inweb/literate-module/Chapter 5/Patterns.w"
 text_stream * Patterns__get_mathematics_plugin(ls_web *W, ls_pattern *wp) ;
-#line 202 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 198 "inweb/literate-module/Chapter 5/Patterns.w"
 text_stream * Patterns__get_footnotes_plugin(ls_web *W, ls_pattern *wp) ;
-#line 211 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 207 "inweb/literate-module/Chapter 5/Patterns.w"
 ls_pattern * Patterns__basis(wcl_declaration *D, ls_pattern *wp) ;
-#line 222 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 218 "inweb/literate-module/Chapter 5/Patterns.w"
 void  Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, void *X) ;
-#line 305 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 301 "inweb/literate-module/Chapter 5/Patterns.w"
 int  Patterns__yes_or_no(text_stream *arg, text_file_position *tfp) ;
-#line 312 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 308 "inweb/literate-module/Chapter 5/Patterns.w"
 text_stream * Patterns__plugin_name(text_stream *arg, text_file_position *tfp) ;
-#line 329 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 325 "inweb/literate-module/Chapter 5/Patterns.w"
 void  Patterns__post_process(ls_pattern *pattern, weave_order *wv) ;
-#line 374 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 370 "inweb/literate-module/Chapter 5/Patterns.w"
 filename * Patterns__find_template(ls_web *W, ls_pattern *pattern, text_stream *leafname) ;
-#line 389 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 385 "inweb/literate-module/Chapter 5/Patterns.w"
 filename * Patterns__find_file_in_subdirectory(ls_web *W, ls_pattern *pattern, 	text_stream *dirname, text_stream *leafname) ;
-#line 400 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 396 "inweb/literate-module/Chapter 5/Patterns.w"
 void  Patterns__include_plugins(OUTPUT_STREAM, ls_web *W, ls_pattern *pattern, 	filename *from, weave_reporting *R, ls_colony *context) ;
 #line 18 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 weave_plugin * Assets__new(text_stream *name) ;
@@ -9600,21 +9600,21 @@ colour_scheme * Assets__find_colour_scheme(ls_web *W, ls_pattern *pattern, 	text
 void  Assets__include_relevant_plugins(text_stream *OUT, ls_pattern *pattern, 	ls_web *W, weave_order *wv, filename *from, ls_colony *context, weave_reporting *R) ;
 #line 93 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void  Assets__include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp, 	ls_pattern *pattern, filename *from, weave_reporting *R, ls_colony *context) ;
-#line 134 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 130 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void  Assets__include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs, 	ls_pattern *pattern, filename *from, weave_reporting *R, ls_colony *context) ;
-#line 182 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 178 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 linked_list * Assets__new_asset_rules_list(void) ;
-#line 192 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 188 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void  Assets__add_asset_rule(linked_list *L, text_stream *ext, text_stream *line, 	text_file_position *tfp) ;
-#line 198 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 194 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 asset_rule * Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line, 	text_file_position *tfp) ;
-#line 253 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 249 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 asset_rule * Assets__applicable_rule(wcl_declaration *D, ls_pattern *pattern, filename *F) ;
-#line 275 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 271 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 pathname * Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filename *F, 	text_stream *trans, ls_pattern *pattern, filename *from, weave_reporting *WR, ls_colony *context) ;
-#line 359 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 355 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void  Assets__transform(text_stream *OUT, filename *F, text_stream *trans) ;
-#line 367 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 363 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void  Assets__transformer(text_stream *line, text_file_position *tfp, void *X) ;
 #line 19 "inweb/literate-module/Chapter 5/The Collater.w"
 void  Collater__for_web_and_pattern(text_stream *OUT, ls_web *W, 	ls_pattern *pattern, filename *F, filename *into, ls_colony *context, 	weave_reporting *R) ;
@@ -41873,9 +41873,9 @@ wcl_declaration *WCL__global_resources(void) {
 #line 599 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__make_resources_at_path_global(pathname *P) {
 	if (WCL__make_potential_pattern_global(P)) return;
-	scan_directory *D = Directories__open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories__next(D, leafname)) {
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames__in(P, leafname);
 			WCL__make_resources_at_file_global(F);
@@ -41885,29 +41885,27 @@ void WCL__make_resources_at_path_global(pathname *P) {
 			Str__delete_last_character(subdir);
 			pathname *Q = Pathnames__down(P, subdir);
 			WCL__make_potential_pattern_global(Q);
+			DISCARD_TEXT(subdir)
 		}
 	}
-	DISCARD_TEXT(leafname)
-	Directories__close(D);
 }
 
 int WCL__make_potential_pattern_global(pathname *P) {
 	text_stream *dirname = Pathnames__directory_name(P);
 	if (Str__eq_insensitive(dirname, TL_IS_3838)) {
 		int n = 0;
-		scan_directory *D = Directories__open(P);
-		TEMPORARY_TEXT(leafname)
-		while (Directories__next(D, leafname)) {
+		linked_list *L = Directories__listing(P);
+		text_stream *leafname;
+		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 			if (Platform__is_folder_separator(Str__get_last_char(leafname))) {
 				TEMPORARY_TEXT(subdir)
 				Str__copy(subdir, leafname);
 				Str__delete_last_character(subdir);
 				pathname *Q = Pathnames__down(P, subdir);
 				if (WCL__make_potential_pattern_global(Q)) n++;
+				DISCARD_TEXT(subdir)
 			}
 		}
-		DISCARD_TEXT(leafname)
-		Directories__close(D);
 		if (n > 0) return TRUE;
 	}
 	TEMPORARY_TEXT(name)
@@ -41921,14 +41919,14 @@ int WCL__make_potential_pattern_global(pathname *P) {
 	return FALSE;
 }
 
-#line 652 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 650 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__make_resources_at_file_global(filename *F) {
 	wcl_declaration *D = WCL__read_anything(F);
 	if (D) WCL__make_global(D);
 	return D;
 }
 
-#line 664 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 662 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__search_scope(wcl_declaration *D) {
 	if ((D->scope == NULL) && (D->declaration_type == WEB_WCLTYPE)) {
 		ls_colony_member *CM = Colonies__find_ls_colony_member(RETRIEVE_POINTER_ls_web(D->object_declared));
@@ -41937,28 +41935,28 @@ wcl_declaration *WCL__search_scope(wcl_declaration *D) {
 	return D->scope;
 }
 
-#line 681 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 679 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__resolve_resource(wcl_declaration *D, int type, text_stream *name) {
 	wcl_declaration *result = NULL;
 	WCL__resolve_resource_inner(D, type, name, &result, NULL);
 	return result;
 }
 
-#line 691 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 689 "inweb/literate-module/Chapter 1/Web Control Language.w"
 linked_list *WCL__list_resources(wcl_declaration *D, int type, text_stream *name) {
 	linked_list *results = NEW_LINKED_LIST(wcl_declaration);
 	WCL__resolve_resource_inner(D, type, name, NULL, results);
 	return results;
 }
 
-#line 701 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 699 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__resolve_resource_inner(wcl_declaration *D, int type, text_stream *name,
 	wcl_declaration **result, linked_list *results) {
 	wcl_declaration *S;
 	for (S = D; S; S = WCL__search_scope(S)) {
 		
 {
-#line 717 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 715 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *X;
 	LOOP_OVER_LINKED_LIST(X, wcl_declaration, S->declarations) {
 		if ((Str__len(name) == 0) || (Str__eq_insensitive(name, X->name)))
@@ -41969,7 +41967,7 @@ void WCL__resolve_resource_inner(wcl_declaration *D, int type, text_stream *name
 	}
 
 }
-#line 705 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 703 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
 		if ((S) && (S->declaration_type == WEB_WCLTYPE) && (S->associated_path) &&
 			(S->external_resources_loaded == FALSE)) {
@@ -41977,7 +41975,7 @@ void WCL__resolve_resource_inner(wcl_declaration *D, int type, text_stream *name
 			S->external_resources_loaded = TRUE;
 			
 {
-#line 717 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 715 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *X;
 	LOOP_OVER_LINKED_LIST(X, wcl_declaration, S->declarations) {
 		if ((Str__len(name) == 0) || (Str__eq_insensitive(name, X->name)))
@@ -41988,13 +41986,13 @@ void WCL__resolve_resource_inner(wcl_declaration *D, int type, text_stream *name
 	}
 
 }
-#line 710 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 708 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
 		}
 	}
 	S = WCL__global_resources(); 
 {
-#line 717 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 715 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *X;
 	LOOP_OVER_LINKED_LIST(X, wcl_declaration, S->declarations) {
 		if ((Str__len(name) == 0) || (Str__eq_insensitive(name, X->name)))
@@ -42005,11 +42003,11 @@ void WCL__resolve_resource_inner(wcl_declaration *D, int type, text_stream *name
 	}
 
 }
-#line 713 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 711 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
 }
 
-#line 730 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 728 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__write_sorted_list_of_resources(OUTPUT_STREAM, ls_web *W, int type) {
 	WCL__write_sorted_list_of_declaration_resources(OUT, W?(W->declaration):NULL, type);
 }
@@ -42057,7 +42055,7 @@ void WCL__write_sorted_list_of_declaration_resources(OUTPUT_STREAM, wcl_declarat
 	Memory__I7_free(sorted_table, ARRAY_SORTING_MREASON, N*((int) sizeof(wcl_declaration *)));
 }
 
-#line 778 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 776 "inweb/literate-module/Chapter 1/Web Control Language.w"
 int WCL__compare_names(const void *ent1, const void *ent2) {
 	const wcl_declaration *D1 = *((const wcl_declaration **) ent1);
 	const wcl_declaration *D2 = *((const wcl_declaration **) ent2);
@@ -42068,67 +42066,62 @@ int WCL__compare_names(const void *ent1, const void *ent2) {
 	return Str__cmp_insensitive(tx1, tx2);
 }
 
-#line 796 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 794 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) {
 	int presumption = MISCELLANY_WCLTYPE;
 	filename *F = Filenames__in(RP, TL_IS_3839);
 	if (TextFiles__exists(F)) 
 {
-#line 837 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 831 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *D = WCL__read_presumption(F, presumption);
 	if (D) {
 		if (flag) WCL__flag_as_inbuilt(D);
 		WCL__merge_within(D, M);
+	}
+
+}
+#line 797 "inweb/literate-module/Chapter 1/Web Control Language.w"
+;
+	pathname *P = Pathnames__down(RP, TL_IS_3840);
+	
+{
+#line 814 "inweb/literate-module/Chapter 1/Web Control Language.w"
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames__in(P, leafname);
+			
+{
+#line 831 "inweb/literate-module/Chapter 1/Web Control Language.w"
+	wcl_declaration *D = WCL__read_presumption(F, presumption);
+	if (D) {
+		if (flag) WCL__flag_as_inbuilt(D);
+		WCL__merge_within(D, M);
+	}
+
+}
+#line 819 "inweb/literate-module/Chapter 1/Web Control Language.w"
+;
+		}
 	}
 
 }
 #line 799 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
-	pathname *P = Pathnames__down(RP, TL_IS_3840);
-	
-{
-#line 816 "inweb/literate-module/Chapter 1/Web Control Language.w"
-	scan_directory *D = Directories__open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories__next(D, leafname)) {
-			if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
-				filename *F = Filenames__in(P, leafname);
-				
-{
-#line 837 "inweb/literate-module/Chapter 1/Web Control Language.w"
-	wcl_declaration *D = WCL__read_presumption(F, presumption);
-	if (D) {
-		if (flag) WCL__flag_as_inbuilt(D);
-		WCL__merge_within(D, M);
-	}
-
-}
-#line 822 "inweb/literate-module/Chapter 1/Web Control Language.w"
-;
-			}
-		}
-		DISCARD_TEXT(leafname)
-		Directories__close(D);
-	}
-
-}
-#line 801 "inweb/literate-module/Chapter 1/Web Control Language.w"
-;
 	presumption = LANGUAGE_WCLTYPE;
 	P = Pathnames__down(RP, TL_IS_3841);
 	
 {
-#line 816 "inweb/literate-module/Chapter 1/Web Control Language.w"
-	scan_directory *D = Directories__open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories__next(D, leafname)) {
-			if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
-				filename *F = Filenames__in(P, leafname);
-				
+#line 814 "inweb/literate-module/Chapter 1/Web Control Language.w"
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames__in(P, leafname);
+			
 {
-#line 837 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 831 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *D = WCL__read_presumption(F, presumption);
 	if (D) {
 		if (flag) WCL__flag_as_inbuilt(D);
@@ -42136,62 +42129,54 @@ void WCL__merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) 
 	}
 
 }
-#line 822 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 819 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
-			}
 		}
-		DISCARD_TEXT(leafname)
-		Directories__close(D);
+	}
+
+}
+#line 802 "inweb/literate-module/Chapter 1/Web Control Language.w"
+;
+	P = Pathnames__down(RP, TL_IS_3842);
+	
+{
+#line 814 "inweb/literate-module/Chapter 1/Web Control Language.w"
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames__in(P, leafname);
+			
+{
+#line 831 "inweb/literate-module/Chapter 1/Web Control Language.w"
+	wcl_declaration *D = WCL__read_presumption(F, presumption);
+	if (D) {
+		if (flag) WCL__flag_as_inbuilt(D);
+		WCL__merge_within(D, M);
+	}
+
+}
+#line 819 "inweb/literate-module/Chapter 1/Web Control Language.w"
+;
+		}
 	}
 
 }
 #line 804 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
-	P = Pathnames__down(RP, TL_IS_3842);
-	
-{
-#line 816 "inweb/literate-module/Chapter 1/Web Control Language.w"
-	scan_directory *D = Directories__open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories__next(D, leafname)) {
-			if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
-				filename *F = Filenames__in(P, leafname);
-				
-{
-#line 837 "inweb/literate-module/Chapter 1/Web Control Language.w"
-	wcl_declaration *D = WCL__read_presumption(F, presumption);
-	if (D) {
-		if (flag) WCL__flag_as_inbuilt(D);
-		WCL__merge_within(D, M);
-	}
-
-}
-#line 822 "inweb/literate-module/Chapter 1/Web Control Language.w"
-;
-			}
-		}
-		DISCARD_TEXT(leafname)
-		Directories__close(D);
-	}
-
-}
-#line 806 "inweb/literate-module/Chapter 1/Web Control Language.w"
-;
 	presumption = NOTATION_WCLTYPE;
 	P = Pathnames__down(RP, TL_IS_3843);
 	
 {
-#line 816 "inweb/literate-module/Chapter 1/Web Control Language.w"
-	scan_directory *D = Directories__open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories__next(D, leafname)) {
-			if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
-				filename *F = Filenames__in(P, leafname);
-				
+#line 814 "inweb/literate-module/Chapter 1/Web Control Language.w"
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
+			filename *F = Filenames__in(P, leafname);
+			
 {
-#line 837 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 831 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *D = WCL__read_presumption(F, presumption);
 	if (D) {
 		if (flag) WCL__flag_as_inbuilt(D);
@@ -42199,22 +42184,19 @@ void WCL__merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) 
 	}
 
 }
-#line 822 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 819 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
-			}
 		}
-		DISCARD_TEXT(leafname)
-		Directories__close(D);
 	}
 
 }
-#line 809 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 807 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
 	presumption = PATTERN_WCLTYPE;
 	P = Pathnames__down(RP, TL_IS_3844);
 	
 {
-#line 830 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 824 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	wcl_declaration *PM = Patterns__parse_directory(P);
 	if (PM) {
 		if (flag) WCL__flag_as_inbuilt(PM);
@@ -42222,11 +42204,11 @@ void WCL__merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) 
 	}
 
 }
-#line 812 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 810 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
 }
 
-#line 860 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 854 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__read_inner(pathname *P, filename *F, int presumed, int checking) {
 	wcl_declaration *D = WCL__read_for_type_only(F, presumed);
 	if (D == NULL) return NULL;
@@ -42245,22 +42227,22 @@ wcl_declaration *WCL__read_inner(pathname *P, filename *F, int presumed, int che
 	return D;
 }
 
-#line 881 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 875 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__read_just_one(filename *F, int presumed) {
 	return WCL__read_inner(NULL, F, presumed, TRUE);
 }
 
-#line 889 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 883 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__read_anything(filename *F) {
 	return WCL__read_presumption(F, MISCELLANY_WCLTYPE);
 }
 
-#line 896 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 890 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__read_presumption(filename *F, int presumed) {
 	return WCL__read_inner(NULL, F, presumed, FALSE);
 }
 
-#line 912 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 906 "inweb/literate-module/Chapter 1/Web Control Language.w"
 wcl_declaration *WCL__read_web_or_halt(pathname *P, filename *F, wcl_declaration *D) {
 	if (D) {
 		WCL__parse_declarations_throwing_errors(D);
@@ -42312,7 +42294,7 @@ wcl_declaration *WCL__read_web(pathname *P, filename *F) {
 	} else {
 		
 {
-#line 967 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 961 "inweb/literate-module/Chapter 1/Web Control Language.w"
 	D = WCL__new(WEB_WCLTYPE);
 	D->modifier = PAGE_WCLMODIFIER;
 	D->associated_file = F;
@@ -42326,13 +42308,13 @@ wcl_declaration *WCL__read_web(pathname *P, filename *F) {
 	if (WCL__is_incorrect(D)) D = NULL;
 
 }
-#line 961 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 955 "inweb/literate-module/Chapter 1/Web Control Language.w"
 ;
 	}
 	return D;
 }
 
-#line 984 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 978 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__simple_read_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	wcl_scanner *scanner = (wcl_scanner *) v_state;
 	linked_list *list = scanner->D->declaration_lines;
@@ -42340,7 +42322,7 @@ void WCL__simple_read_line(text_stream *line, text_file_position *tfp, void *v_s
 		ADD_TO_LINKED_LIST(Str__duplicate(line), text_stream, list);
 }
 
-#line 996 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 990 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__write(OUTPUT_STREAM, wcl_declaration *D) {
 	WCL__write_r(OUT, D, FALSE);
 }
@@ -42389,7 +42371,7 @@ void WCL__write_r(OUTPUT_STREAM, wcl_declaration *D, int briefly) {
 	OUTDENT;
 }
 
-#line 1047 "inweb/literate-module/Chapter 1/Web Control Language.w"
+#line 1041 "inweb/literate-module/Chapter 1/Web Control Language.w"
 void WCL__summarise(OUTPUT_STREAM, wcl_declaration *D) {
 	if (D == NULL) { WRITE("Null declaration\n"); return; }
 	WCL__write_type(OUT, D->declaration_type);
@@ -49654,32 +49636,30 @@ markdown_variation *WebNotation__commentary_variation(ls_web *W) {
 
 #line 306 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__read_definitions(pathname *P) {
-	scan_directory *D = Directories__open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories__next(D, leafname)) {
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames__in(P, leafname);
 			WebNotation__read_definition(F);
 		}
 	}
-	DISCARD_TEXT(leafname)
-	Directories__close(D);
 }
 
-#line 322 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 320 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__read_definition(filename *F) {
 	wcl_declaration *D = WCL__read_just_one(F, NOTATION_WCLTYPE);
 	if (D == NULL) return NULL;
 	return RETRIEVE_POINTER_ls_notation(D->object_declared);
 }
 
-#line 338 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 336 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__parse_declaration(wcl_declaration *D) {
 	ls_notation *ntn = WebNotation__new(TL_IS_4098);
 	ntn->declaration = D;
 	
 {
-#line 363 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 361 "inweb/literate-module/Chapter 2/Web Notations.w"
 	text_file_position tfp = D->body_position;
 	text_stream *L;
 	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
@@ -49694,7 +49674,7 @@ ls_notation *WebNotation__parse_declaration(wcl_declaration *D) {
 	}
 
 }
-#line 341 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 339 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	D->object_declared = STORE_POINTER_ls_notation(ntn);
 	if (Str__eq(ntn->name, TL_IS_4099)) {
@@ -49716,7 +49696,7 @@ ls_notation *WebNotation__parse_declaration(wcl_declaration *D) {
 	return ntn;
 }
 
-#line 379 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 377 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	ls_notation *ntn = (ls_notation *) v_state;
 	Str__trim_white_space(line);
@@ -49724,33 +49704,33 @@ void WebNotation__read_definition_line(text_stream *line, text_file_position *tf
 	if (Str__len(error) > 0) WCL__error(ntn->declaration, tfp, error);
 }
 
-#line 396 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 394 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *cmd) {
 	text_stream *error = NULL;
 	match_results mr = Regexp__create_mr();
 	if (Str__is_whitespace(cmd)) 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 399 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 397 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	if ((ntn->c_stanza) || (ntn->p_stanza)) {
 		
 {
-#line 474 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 472 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"end")) {
 		ntn->c_stanza = NULL; ntn->p_stanza = NULL;
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 476 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 474 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->c_stanza) {
@@ -49764,12 +49744,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 487 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 485 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->p_stanza) {
@@ -49781,104 +49761,104 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 496 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 494 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 401 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 399 "inweb/literate-module/Chapter 2/Web Notations.w"
 
 	} else {
 		
 {
-#line 413 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 411 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"preprocess")) {
 		ntn->p_stanza = ntn->preprocessor; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 414 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 412 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess")) {
 		ntn->p_stanza = ntn->postprocessor; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 417 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 415 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"process code")) {
 		ntn->p_stanza = ntn->code_preprocessor; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 420 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 418 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess code")) {
 		ntn->p_stanza = ntn->code_postprocessor; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 423 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 421 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"process commentary")) {
 		ntn->p_stanza = ntn->commentary_preprocessor; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 426 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 424 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess commentary")) {
 		ntn->p_stanza = ntn->commentary_postprocessor; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 429 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 427 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 403 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 401 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 		
 {
-#line 433 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 431 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"classify")) {
 		ntn->c_stanza = ntn->main_classifier; 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 434 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 432 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"residue of (%C+)")) {
@@ -49891,12 +49871,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 444 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 442 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"options of (%C+)")) {
@@ -49909,30 +49889,30 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 454 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 452 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 404 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 402 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 		
 {
-#line 458 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 456 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"name \"(%C+)\"")) {
 		ntn->name = Str__duplicate(mr.exp[0]); 
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 459 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 457 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"recognise (.%C+)")) {
@@ -49940,45 +49920,45 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		ADD_TO_LINKED_LIST(ext, text_stream, ntn->recognised_filename_extensions);
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 464 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 462 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"end")) {
 		error = TL_IS_4101;
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 468 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 466 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 405 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 403 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	error = Str__new();
 	WRITE_TO(error, "unknown inweb notation command '%S'", cmd);
 	
 {
-#line 502 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 409 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 407 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 }
 
-#line 510 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 508 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__resolve_declaration(wcl_declaration *D) {
 	Conventions__set_level(D, NOTATION_LSCONVENTIONLEVEL);
 }
@@ -49987,7 +49967,7 @@ void WebNotation__resolve_declaration(wcl_declaration *D) {
 
 
 
-#line 523 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 521 "inweb/literate-module/Chapter 2/Web Notations.w"
 
 notation_rewriting_machine *WebNotation__new_machine(void) {
 	notation_rewriting_machine *nrm = CREATE(notation_rewriting_machine);
@@ -50001,7 +49981,7 @@ notation_rewriting_machine *WebNotation__new_machine(void) {
 
 
 
-#line 545 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 543 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream *WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machine *nrm,
 	text_stream *from, text_stream *to) {
 	if (nrm == NULL) internal_error("no fsm");
@@ -50034,7 +50014,7 @@ text_stream *WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machi
 	return error;
 }
 
-#line 580 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 578 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) {
 	FSM__reset_machine(nrm->fsm);
 	for (int i=0; i<Str__len(text); i++) {
@@ -50051,7 +50031,7 @@ void WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_m
 	}
 }
 
-#line 599 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 597 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__postprocess(text_stream *text, ls_notation *ntn) {
 	if (Str__len(text) == 0) return;
 	TEMPORARY_TEXT(processed)
@@ -52738,19 +52718,17 @@ text_stream *Languages__canonical_file_extension(programming_language *pl) {
 
 #line 188 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void Languages__read_definitions(pathname *P) {
-	scan_directory *D = Directories__open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories__next(D, leafname)) {
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 		if (Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames__in(P, leafname);
 			Languages__read_definition(F);
 		}
 	}
-	DISCARD_TEXT(leafname)
-	Directories__close(D);
 }
 
-#line 204 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 202 "inweb/literate-module/Chapter 3/Programming Languages.w"
 programming_language *Languages__read_definition(filename *F) {
 	wcl_declaration *D = WCL__read_just_one(F, LANGUAGE_WCLTYPE);
 	if (D == NULL) return NULL;
@@ -52758,14 +52736,14 @@ programming_language *Languages__read_definition(filename *F) {
 	return RETRIEVE_POINTER_programming_language(D->object_declared);
 }
 
-#line 216 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 214 "inweb/literate-module/Chapter 3/Programming Languages.w"
 programming_language *Languages__parse_declaration(wcl_declaration *D) {
 	programming_language *pl = Languages__new();
 	pl->declaration = D;
 	D->object_declared = STORE_POINTER_programming_language(pl);
 	
 {
-#line 268 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 266 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	language_reader_state lrs;
 	lrs.defining = pl;
 	lrs.current_block = NULL;
@@ -52788,7 +52766,7 @@ programming_language *Languages__parse_declaration(wcl_declaration *D) {
 		Languages__error(&lrs, TL_IS_4157, &tfp);
 
 }
-#line 220 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 218 "inweb/literate-module/Chapter 3/Programming Languages.w"
 ;
 	if (Str__len(pl->language_name) == 0)
 		pl->language_name = Str__duplicate(D->name);
@@ -52802,13 +52780,13 @@ programming_language *Languages__parse_declaration(wcl_declaration *D) {
 	
 	
 {
-#line 244 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 242 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if (pl->C_like) CLike__make_c_like(pl);
 	if (Str__eq(pl->language_name, TL_IS_4154)) InCSupport__add_features(pl);
 	ACMESupport__add_fallbacks(pl);
 
 }
-#line 231 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 229 "inweb/literate-module/Chapter 3/Programming Languages.w"
 ;
 	return pl;
 }
@@ -52819,14 +52797,14 @@ programming_language *Languages__parse_declaration(wcl_declaration *D) {
 
 
 
-#line 261 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 259 "inweb/literate-module/Chapter 3/Programming Languages.w"
 
 void Languages__error(language_reader_state *state, text_stream *msg,
 	text_file_position *tfp) {
 	WCL__error(state->defining->declaration, tfp, msg);
 }
 
-#line 292 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 290 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void Languages__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	language_reader_state *state = (language_reader_state *) v_state;
 	programming_language *pl = state->defining;
@@ -52837,14 +52815,14 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	match_results mr = Regexp__create_mr();
 	if (state->properties_block) 
 {
-#line 348 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 346 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if (Str__eq(line, TL_IS_4166)) {
 		state->properties_block = FALSE;
 	} else if (Regexp__match(&mr, line, U"(%c+) *: *(%c+?)")) {
 		text_stream *key = mr.exp[0], *value = Str__duplicate(mr.exp[1]);
 		
 {
-#line 358 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 356 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if (Str__eq(key, TL_IS_4168)) pl->language_name = Languages__text_oq(state, value, tfp);
 	else if (Str__eq(key, TL_IS_4169))
 		pl->language_details = Languages__text_oq(state, value, tfp);
@@ -52909,18 +52887,18 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	}
 
 }
-#line 352 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 350 "inweb/literate-module/Chapter 3/Programming Languages.w"
 ;
 	} else {
 		Languages__error(state, TL_IS_4167, tfp);
 	}
 
 }
-#line 300 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 298 "inweb/literate-module/Chapter 3/Programming Languages.w"
 
 	else if (state->keywords_block_colour != NOT_A_COLOUR) 
 {
-#line 484 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 482 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if (Str__eq(line, TL_IS_4203)) {
 		state->keywords_block_colour = NOT_A_COLOUR;
 	} else {
@@ -52935,11 +52913,11 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	}
 
 }
-#line 301 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 299 "inweb/literate-module/Chapter 3/Programming Languages.w"
 
 	else if (state->current_block) 
 {
-#line 426 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 424 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if (Str__eq(line, TL_IS_4199)) {
 		state->current_block = state->current_block->parent;
 	} else if (Str__eq(line, TL_IS_4200)) {
@@ -52998,11 +52976,11 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	}
 
 }
-#line 302 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 300 "inweb/literate-module/Chapter 3/Programming Languages.w"
 
 	else 
 {
-#line 311 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 309 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if ((Str__eq(line, TL_IS_4158)) || (Str__eq(line, TL_IS_4159))) {
 		if (pl->program) Languages__error(state, TL_IS_4160, tfp);
 		pl->program = Languages__new_block(NULL, WHOLE_LINE_CRULE_RUN);
@@ -53040,12 +53018,12 @@ void Languages__read_definition_line(text_stream *line, text_file_position *tfp,
 	}
 
 }
-#line 303 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 301 "inweb/literate-module/Chapter 3/Programming Languages.w"
 ;
 	Regexp__dispose_of(&mr);
 }
 
-#line 502 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 500 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void Languages__resolve_declaration(wcl_declaration *D) {
 	Conventions__set_level(D, LANGUAGE_LSCONVENTIONLEVEL);
 }
@@ -53062,7 +53040,7 @@ void Languages__resolve_declaration(wcl_declaration *D) {
 
 
 
-#line 531 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 529 "inweb/literate-module/Chapter 3/Programming Languages.w"
 colouring_language_block *Languages__new_block(colouring_language_block *within, int r) {
 	colouring_language_block *block = CREATE(colouring_language_block);
 	block->rules = NEW_LINKED_LIST(colouring_rule);
@@ -53097,7 +53075,7 @@ colouring_language_block *Languages__new_block(colouring_language_block *within,
 
 
 
-#line 582 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 580 "inweb/literate-module/Chapter 3/Programming Languages.w"
 colouring_rule *Languages__new_rule(colouring_language_block *within) {
 	if (within == NULL) internal_error("rule outside block");
 	colouring_rule *rule = CREATE(colouring_rule);
@@ -53121,7 +53099,7 @@ colouring_rule *Languages__new_rule(colouring_language_block *within) {
 	return rule;
 }
 
-#line 606 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 604 "inweb/literate-module/Chapter 3/Programming Languages.w"
 void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 	text_stream *action, text_file_position *tfp) {
 	match_results mr = Regexp__create_mr();
@@ -53129,7 +53107,7 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 	Str__trim_white_space(premiss); Str__trim_white_space(action);
 	
 {
-#line 617 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 615 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	while (Regexp__match(&mr, premiss, U"not (%c+)")) {
 		rule->sense = (rule->sense)?FALSE:TRUE;
 		Str__clear(premiss); Str__copy(premiss, mr.exp[0]);
@@ -53172,11 +53150,11 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 	}
 
 }
-#line 611 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 609 "inweb/literate-module/Chapter 3/Programming Languages.w"
 ;
 	
 {
-#line 659 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 657 "inweb/literate-module/Chapter 3/Programming Languages.w"
 	if (Str__eq(action, TL_IS_4205)) {
 		rule->execute_block =
 			Languages__new_block(state->current_block, WHOLE_LINE_CRULE_RUN);
@@ -53197,7 +53175,7 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 	}
 
 }
-#line 612 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 610 "inweb/literate-module/Chapter 3/Programming Languages.w"
 ;
 	Regexp__dispose_of(&mr);
 }
@@ -53206,7 +53184,7 @@ void Languages__parse_rule(language_reader_state *state, text_stream *premiss,
 
 
 
-#line 686 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 684 "inweb/literate-module/Chapter 3/Programming Languages.w"
 
 reserved_word *Languages__reserved(language_reader_state *state,
 	programming_language *pl, text_stream *W, inchar32_t C,
@@ -53224,7 +53202,7 @@ reserved_word *Languages__reserved(language_reader_state *state,
 	return rw;
 }
 
-#line 708 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 706 "inweb/literate-module/Chapter 3/Programming Languages.w"
 inchar32_t Languages__colour(language_reader_state *state, text_stream *T, text_file_position *tfp) {
 	inchar32_t C = Painter__colour(state->defining->custom_colours, T);
 	if (C == NOT_A_COLOUR) {
@@ -53237,7 +53215,7 @@ inchar32_t Languages__colour(language_reader_state *state, text_stream *T, text_
 	return C;
 }
 
-#line 723 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 721 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int Languages__boolean(language_reader_state *state, text_stream *T, text_file_position *tfp) {
 	if (Str__eq(T, TL_IS_4211)) return TRUE;
 	else if (Str__eq(T, TL_IS_4212)) return FALSE;
@@ -53247,7 +53225,7 @@ int Languages__boolean(language_reader_state *state, text_stream *T, text_file_p
 	}
 }
 
-#line 737 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 735 "inweb/literate-module/Chapter 3/Programming Languages.w"
 text_stream *Languages__text_oq(language_reader_state *state, text_stream *T, text_file_position *tfp) {
 	if ((Str__len(T) > 1) && (Str__get_first_char(T) == '"') && (Str__get_last_char(T) == '"'))
 		return Languages__text(state, T, tfp, TRUE);
@@ -53310,7 +53288,7 @@ text_stream *Languages__text(language_reader_state *state, text_stream *T, text_
 
 
 
-#line 804 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 802 "inweb/literate-module/Chapter 3/Programming Languages.w"
 
 pl_regexp_set *Languages__new_regexp_set(void) {
 	pl_regexp_set *rs = CREATE(pl_regexp_set);
@@ -58518,47 +58496,43 @@ void Patterns__impose(ls_web *W, ls_pattern *wp) {
 wcl_declaration *Patterns__parse_directory(pathname *P) {
 	wcl_declaration *M = WCL__new(MISCELLANY_WCLTYPE);
 	M->associated_path = P;
-	scan_directory *D = Directories__open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories__next(D, leafname)) {
-			if (Platform__is_folder_separator(Str__get_last_char(leafname))) {
-				TEMPORARY_TEXT(name)
-				WRITE_TO(name, "%S", leafname);
-				Str__delete_last_character(name);
-				pathname *Q = Pathnames__down(P, name);
-				TEMPORARY_TEXT(inner)
-				WRITE_TO(inner, "%S", leafname);
-				Str__delete_last_character(inner);
-				WRITE_TO(inner, ".inweb");
-				filename *pattern_file = Filenames__in(Q, inner);
+	linked_list *L = Directories__listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform__is_folder_separator(Str__get_last_char(leafname))) {
+			TEMPORARY_TEXT(name)
+			WRITE_TO(name, "%S", leafname);
+			Str__delete_last_character(name);
+			pathname *Q = Pathnames__down(P, name);
+			TEMPORARY_TEXT(inner)
+			WRITE_TO(inner, "%S", leafname);
+			Str__delete_last_character(inner);
+			WRITE_TO(inner, ".inweb");
+			filename *pattern_file = Filenames__in(Q, inner);
+			if (TextFiles__exists(pattern_file) == FALSE) {
+				filename *pattern_file = Filenames__in(Q, TL_IS_4319);
 				if (TextFiles__exists(pattern_file) == FALSE) {
-					filename *pattern_file = Filenames__in(Q, TL_IS_4319);
-					if (TextFiles__exists(pattern_file) == FALSE) {
-						pattern_file = Filenames__in(Q, TL_IS_4320);
-						if (TextFiles__exists(pattern_file))
-							WRITE_TO(STDERR,
-								"Warning: pattern at %p out of date: still has a pattern.txt file\n", Q);
-						continue;
-					}
+					pattern_file = Filenames__in(Q, TL_IS_4320);
+					if (TextFiles__exists(pattern_file))
+						WRITE_TO(STDERR,
+							"Warning: pattern at %p out of date: still has a pattern.txt file\n", Q);
+					continue;
 				}
-				wcl_declaration *D = WCL__read_just_one(pattern_file, PATTERN_WCLTYPE);
-				if (D) WCL__place_within(D, M);
-				DISCARD_TEXT(name)
 			}
+			wcl_declaration *D = WCL__read_just_one(pattern_file, PATTERN_WCLTYPE);
+			if (D) WCL__place_within(D, M);
+			DISCARD_TEXT(name)
 		}
-		DISCARD_TEXT(leafname)
-		Directories__close(D);
 	}
 	return M;
 }
 
-#line 107 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 103 "inweb/literate-module/Chapter 5/Patterns.w"
 void Patterns__parse_declaration(wcl_declaration *D) {
 	ls_pattern *wp = CREATE(ls_pattern);
 	
 {
-#line 114 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 110 "inweb/literate-module/Chapter 5/Patterns.w"
 	wp->declaration = D;
 	wp->pattern_format = NULL;
 	wp->pattern_name = NULL;
@@ -58580,11 +58554,11 @@ void Patterns__parse_declaration(wcl_declaration *D) {
 	wp->pending_lines = 0;
 
 }
-#line 109 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 105 "inweb/literate-module/Chapter 5/Patterns.w"
 ;
 	
 {
-#line 135 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 131 "inweb/literate-module/Chapter 5/Patterns.w"
 	text_file_position tfp = D->body_position;
 	text_stream *L;
 	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
@@ -58613,11 +58587,11 @@ void Patterns__parse_declaration(wcl_declaration *D) {
 	DISCARD_TEXT(name)
 
 }
-#line 110 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 106 "inweb/literate-module/Chapter 5/Patterns.w"
 ;
 }
 
-#line 163 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 159 "inweb/literate-module/Chapter 5/Patterns.w"
 int Patterns__html_based(wcl_declaration *D, ls_pattern *wp) {
 	while (wp) {
 		if (Str__eq_insensitive(wp->pattern_name, TL_IS_4323)) return TRUE;
@@ -58672,7 +58646,7 @@ ls_pattern *Patterns__basis(wcl_declaration *D, ls_pattern *wp) {
 	return NULL;
 }
 
-#line 222 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 218 "inweb/literate-module/Chapter 5/Patterns.w"
 void Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, void *X) {
 	ls_pattern *wp = (ls_pattern *) X;
 
@@ -58755,7 +58729,7 @@ void Patterns__scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	Regexp__dispose_of(&mr);
 }
 
-#line 305 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 301 "inweb/literate-module/Chapter 5/Patterns.w"
 int Patterns__yes_or_no(text_stream *arg, text_file_position *tfp) {
 	if (Str__eq(arg, TL_IS_4342)) return TRUE;
 	if (Str__eq(arg, TL_IS_4343)) return FALSE;
@@ -58775,7 +58749,7 @@ text_stream *Patterns__plugin_name(text_stream *arg, text_file_position *tfp) {
 	return Str__duplicate(arg);
 }
 
-#line 329 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 325 "inweb/literate-module/Chapter 5/Patterns.w"
 void Patterns__post_process(ls_pattern *pattern, weave_order *wv) {
 	text_stream *T;
 	LOOP_OVER_LINKED_LIST(T, text_stream, pattern->post_commands) {
@@ -58813,7 +58787,7 @@ void Patterns__post_process(ls_pattern *pattern, weave_order *wv) {
 	}
 }
 
-#line 374 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 370 "inweb/literate-module/Chapter 5/Patterns.w"
 filename *Patterns__find_template(ls_web *W, ls_pattern *pattern, text_stream *leafname) {
 	for (ls_pattern *wp = pattern; wp; wp = Patterns__basis(W->declaration, wp)) {
 		text_stream *T;
@@ -58826,7 +58800,7 @@ filename *Patterns__find_template(ls_web *W, ls_pattern *pattern, text_stream *l
 	return NULL;
 }
 
-#line 389 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 385 "inweb/literate-module/Chapter 5/Patterns.w"
 filename *Patterns__find_file_in_subdirectory(ls_web *W, ls_pattern *pattern,
 	text_stream *dirname, text_stream *leafname) {
 	for (ls_pattern *wp = pattern; wp; wp = Patterns__basis(W->declaration, wp)) {
@@ -58837,7 +58811,7 @@ filename *Patterns__find_file_in_subdirectory(ls_web *W, ls_pattern *pattern,
 	return NULL;
 }
 
-#line 400 "inweb/literate-module/Chapter 5/Patterns.w"
+#line 396 "inweb/literate-module/Chapter 5/Patterns.w"
 void Patterns__include_plugins(OUTPUT_STREAM, ls_web *W, ls_pattern *pattern,
 	filename *from, weave_reporting *R, ls_colony *context) {
 	for (ls_pattern *p = pattern; p; p = Patterns__basis(W->declaration, p)) {
@@ -58918,22 +58892,18 @@ void Assets__include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
 	dictionary *leaves_gathered = Dictionaries__new(128, TRUE);
 	for (ls_pattern *p = pattern; p; p = Patterns__basis(W->declaration, p)) {
 		pathname *P = Pathnames__down(p->pattern_location, wp->plugin_name);
-		scan_directory *D = Directories__open(P);
-		if (D) {
-			TEMPORARY_TEXT(leafname)
-			while (Directories__next(D, leafname)) {
-				if ((Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) &&
-					(Str__get_first_char(leafname) != '.')) {
-					if (Dictionaries__find(leaves_gathered, leafname) == NULL) {
-						WRITE_TO(Dictionaries__create_text(leaves_gathered, leafname), "y");
-						filename *F = Filenames__in(P, leafname);
-						Assets__include_asset(OUT, NULL, W, F, NULL, pattern, from, R, context);
-						finds++;
-					}
+		linked_list *L = Directories__listing(P);
+		text_stream *leafname;
+		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+			if ((Platform__is_folder_separator(Str__get_last_char(leafname)) == FALSE) &&
+				(Str__get_first_char(leafname) != '.')) {
+				if (Dictionaries__find(leaves_gathered, leafname) == NULL) {
+					WRITE_TO(Dictionaries__create_text(leaves_gathered, leafname), "y");
+					filename *F = Filenames__in(P, leafname);
+					Assets__include_asset(OUT, NULL, W, F, NULL, pattern, from, R, context);
+					finds++;
 				}
 			}
-			DISCARD_TEXT(leafname)
-			Directories__close(D);
 		}
 	}
 	if (finds == 0) {
@@ -58943,7 +58913,7 @@ void Assets__include_plugin(OUTPUT_STREAM, ls_web *W, weave_plugin *wp,
 	}
 }
 
-#line 134 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 130 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void Assets__include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
 	ls_pattern *pattern, filename *from, weave_reporting *R, ls_colony *context) {
 	if (cs->last_included_in_round == current_inclusion_round) return;
@@ -58973,14 +58943,14 @@ void Assets__include_colour_scheme(OUTPUT_STREAM, ls_web *W, colour_scheme *cs,
 
 
 
-#line 182 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 178 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 linked_list *Assets__new_asset_rules_list(void) {
 	linked_list *L = NEW_LINKED_LIST(asset_rule);
 	Assets__add_asset_rule(L, TL_IS_4352, TL_IS_4353, NULL);
 	return L;
 }
 
-#line 192 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 188 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 void Assets__add_asset_rule(linked_list *L, text_stream *ext, text_stream *line,
 	text_file_position *tfp) {
 	asset_rule *R = Assets__new_rule(L, ext, line, tfp);
@@ -58995,7 +58965,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 			if (Str__eq_insensitive(R->applies_to, ext)) {
 				
 {
-#line 221 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 217 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	text_stream *cmd = line;
 	text_stream *detail = NULL;
 	match_results mr = Regexp__create_mr();
@@ -59006,7 +58976,31 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 	if (Str__eq(cmd, TL_IS_4354)) {
 		
 {
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+	R->method = COPY_ASSET_METHOD;
+ 	R->pre = Str__new();
+ 	R->post = Str__new();
+ 	R->transform_names = FALSE;
+
+}
+#line 225 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+; R->method = COPY_ASSET_METHOD;
+	} else if (Str__eq(cmd, TL_IS_4355)) {
+		
+{
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+	R->method = COPY_ASSET_METHOD;
+ 	R->pre = Str__new();
+ 	R->post = Str__new();
+ 	R->transform_names = FALSE;
+
+}
+#line 227 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+; R->method = PRIVATE_COPY_ASSET_METHOD;
+	} else if (Str__eq(cmd, TL_IS_4356)) {
+		
+{
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	R->method = COPY_ASSET_METHOD;
  	R->pre = Str__new();
  	R->post = Str__new();
@@ -59014,11 +59008,11 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 
 }
 #line 229 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-; R->method = COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_4355)) {
+; R->method = EMBED_ASSET_METHOD;
+	} else if (Str__eq(cmd, TL_IS_4357)) {
 		
 {
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	R->method = COPY_ASSET_METHOD;
  	R->pre = Str__new();
  	R->post = Str__new();
@@ -59026,30 +59020,6 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 
 }
 #line 231 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-; R->method = PRIVATE_COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_4356)) {
-		
-{
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-	R->method = COPY_ASSET_METHOD;
- 	R->pre = Str__new();
- 	R->post = Str__new();
- 	R->transform_names = FALSE;
-
-}
-#line 233 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-; R->method = EMBED_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_4357)) {
-		
-{
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-	R->method = COPY_ASSET_METHOD;
- 	R->pre = Str__new();
- 	R->post = Str__new();
- 	R->transform_names = FALSE;
-
-}
-#line 235 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ; R->method = COLLATE_ASSET_METHOD;
 	} else if (Str__eq(cmd, TL_IS_4358)) {
 		R->pre = Str__duplicate(detail);
@@ -59064,7 +59034,7 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 	Regexp__dispose_of(&mr);
 
 }
-#line 204 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 200 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ;
 				return R;
 			}
@@ -59072,18 +59042,18 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 	R->applies_to = Str__duplicate(ext);
 	
 {
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	R->method = COPY_ASSET_METHOD;
  	R->pre = Str__new();
  	R->post = Str__new();
  	R->transform_names = FALSE;
 
 }
-#line 209 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 205 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ;
  	
 {
-#line 221 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 217 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	text_stream *cmd = line;
 	text_stream *detail = NULL;
 	match_results mr = Regexp__create_mr();
@@ -59094,7 +59064,31 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 	if (Str__eq(cmd, TL_IS_4354)) {
 		
 {
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+	R->method = COPY_ASSET_METHOD;
+ 	R->pre = Str__new();
+ 	R->post = Str__new();
+ 	R->transform_names = FALSE;
+
+}
+#line 225 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+; R->method = COPY_ASSET_METHOD;
+	} else if (Str__eq(cmd, TL_IS_4355)) {
+		
+{
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+	R->method = COPY_ASSET_METHOD;
+ 	R->pre = Str__new();
+ 	R->post = Str__new();
+ 	R->transform_names = FALSE;
+
+}
+#line 227 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+; R->method = PRIVATE_COPY_ASSET_METHOD;
+	} else if (Str__eq(cmd, TL_IS_4356)) {
+		
+{
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	R->method = COPY_ASSET_METHOD;
  	R->pre = Str__new();
  	R->post = Str__new();
@@ -59102,11 +59096,11 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 
 }
 #line 229 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-; R->method = COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_4355)) {
+; R->method = EMBED_ASSET_METHOD;
+	} else if (Str__eq(cmd, TL_IS_4357)) {
 		
 {
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 211 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	R->method = COPY_ASSET_METHOD;
  	R->pre = Str__new();
  	R->post = Str__new();
@@ -59114,30 +59108,6 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 
 }
 #line 231 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-; R->method = PRIVATE_COPY_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_4356)) {
-		
-{
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-	R->method = COPY_ASSET_METHOD;
- 	R->pre = Str__new();
- 	R->post = Str__new();
- 	R->transform_names = FALSE;
-
-}
-#line 233 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-; R->method = EMBED_ASSET_METHOD;
-	} else if (Str__eq(cmd, TL_IS_4357)) {
-		
-{
-#line 215 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
-	R->method = COPY_ASSET_METHOD;
- 	R->pre = Str__new();
- 	R->post = Str__new();
- 	R->transform_names = FALSE;
-
-}
-#line 235 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ; R->method = COLLATE_ASSET_METHOD;
 	} else if (Str__eq(cmd, TL_IS_4358)) {
 		R->pre = Str__duplicate(detail);
@@ -59152,12 +59122,12 @@ asset_rule *Assets__new_rule(linked_list *L, text_stream *ext, text_stream *line
 	Regexp__dispose_of(&mr);
 
 }
-#line 210 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 206 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ;
  	return R;
 }
 
-#line 253 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 249 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 asset_rule *Assets__applicable_rule(wcl_declaration *D, ls_pattern *pattern, filename *F) {
 	TEMPORARY_TEXT(ext)
 	Filenames__write_extension(ext, F);
@@ -59175,7 +59145,7 @@ asset_rule *Assets__applicable_rule(wcl_declaration *D, ls_pattern *pattern, fil
 	return NULL;
 }
 
-#line 275 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 271 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filename *F,
 	text_stream *trans, ls_pattern *pattern, filename *from, weave_reporting *WR, ls_colony *context) {
 	if (R == NULL) R = Assets__applicable_rule(W->declaration, pattern, F);
@@ -59187,7 +59157,7 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	pathname *result = NULL;
 	if (Str__len(R->pre) > 0) 
 {
-#line 297 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 293 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	for (int i=0; i<Str__len(R->pre); i++) {
 		if (Str__includes_at(R->pre, i, TL_IS_4362)) {
 			WRITE("%S", url);
@@ -59197,21 +59167,21 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	WRITE("\n");
 
 }
-#line 284 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 280 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ;
 	switch (R->method) {
 		case EMBED_ASSET_METHOD: 
 {
-#line 306 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 302 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	Swarm__report_embedding(WR, F);
 	Assets__transform(OUT, F, trans);
 
 }
-#line 286 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 282 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ; break;
 		case COPY_ASSET_METHOD: 
 {
-#line 310 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 306 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	pathname *H = WeavingDetails__get_redirect_weaves_to(W);
 	if ((H == NULL) && (W->single_file == FALSE)) H = WebStructure__woven_folder(W, 1);
 	if ((AP) && (R->method != PRIVATE_COPY_ASSET_METHOD)) H = AP;
@@ -59238,11 +59208,11 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	}
 
 }
-#line 287 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 283 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ; break;
 		case PRIVATE_COPY_ASSET_METHOD: 
 {
-#line 310 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 306 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	pathname *H = WeavingDetails__get_redirect_weaves_to(W);
 	if ((H == NULL) && (W->single_file == FALSE)) H = WebStructure__woven_folder(W, 1);
 	if ((AP) && (R->method != PRIVATE_COPY_ASSET_METHOD)) H = AP;
@@ -59269,21 +59239,21 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	}
 
 }
-#line 288 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 284 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ; break;
 		case COLLATE_ASSET_METHOD: 
 {
-#line 336 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 332 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	Swarm__report_collation(WR, F);
 	Collater__for_web_and_pattern(OUT, W, pattern, F, from, context, WR);
 
 }
-#line 289 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 285 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ; break;
 	}
 	if (Str__len(R->post) > 0) 
 {
-#line 340 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 336 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 	for (int i=0; i<Str__len(R->post); i++) {
 		if (Str__includes_at(R->post, i, TL_IS_4363)) {
 			WRITE("%S", url);
@@ -59293,7 +59263,7 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 	WRITE("\n");
 
 }
-#line 291 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 287 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 ;
 	DISCARD_TEXT(url)
 	return result;
@@ -59303,7 +59273,7 @@ pathname *Assets__include_asset(OUTPUT_STREAM, asset_rule *R, ls_web *W, filenam
 
 
 
-#line 358 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
+#line 354 "inweb/literate-module/Chapter 5/Assets, Plugins and Colour Schemes.w"
 
 void Assets__transform(text_stream *OUT, filename *F, text_stream *trans) {
 	css_file_transformation cft;

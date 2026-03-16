@@ -186,16 +186,14 @@ We can read in a whole directory of these...
 
 =
 void Languages::read_definitions(pathname *P) {
-	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(leafname)
-	while (Directories::next(D, leafname)) {
+	linked_list *L = Directories::listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(leafname)) == FALSE) {
 			filename *F = Filenames::in(P, leafname);
 			Languages::read_definition(F);
 		}
 	}
-	DISCARD_TEXT(leafname)
-	Directories::close(D);
 }
 
 @ ...or just a single file:

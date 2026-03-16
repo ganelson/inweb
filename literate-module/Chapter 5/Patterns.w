@@ -66,37 +66,33 @@ void Patterns::impose(ls_web *W, ls_pattern *wp) {
 wcl_declaration *Patterns::parse_directory(pathname *P) {
 	wcl_declaration *M = WCL::new(MISCELLANY_WCLTYPE);
 	M->associated_path = P;
-	scan_directory *D = Directories::open(P);
-	if (D) {
-		TEMPORARY_TEXT(leafname)
-		while (Directories::next(D, leafname)) {
-			if (Platform::is_folder_separator(Str::get_last_char(leafname))) {
-				TEMPORARY_TEXT(name)
-				WRITE_TO(name, "%S", leafname);
-				Str::delete_last_character(name);
-				pathname *Q = Pathnames::down(P, name);
-				TEMPORARY_TEXT(inner)
-				WRITE_TO(inner, "%S", leafname);
-				Str::delete_last_character(inner);
-				WRITE_TO(inner, ".inweb");
-				filename *pattern_file = Filenames::in(Q, inner);
-				if (TextFiles::exists(pattern_file) == FALSE) {				
-					filename *pattern_file = Filenames::in(Q, I"pattern.inweb");
-					if (TextFiles::exists(pattern_file) == FALSE) {
-						pattern_file = Filenames::in(Q, I"pattern.txt");
-						if (TextFiles::exists(pattern_file))
-							WRITE_TO(STDERR,
-								"Warning: pattern at %p out of date: still has a pattern.txt file\n", Q);
-						continue;
-					}
+	linked_list *L = Directories::listing(P);
+	text_stream *leafname;
+	LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(leafname))) {
+			TEMPORARY_TEXT(name)
+			WRITE_TO(name, "%S", leafname);
+			Str::delete_last_character(name);
+			pathname *Q = Pathnames::down(P, name);
+			TEMPORARY_TEXT(inner)
+			WRITE_TO(inner, "%S", leafname);
+			Str::delete_last_character(inner);
+			WRITE_TO(inner, ".inweb");
+			filename *pattern_file = Filenames::in(Q, inner);
+			if (TextFiles::exists(pattern_file) == FALSE) {				
+				filename *pattern_file = Filenames::in(Q, I"pattern.inweb");
+				if (TextFiles::exists(pattern_file) == FALSE) {
+					pattern_file = Filenames::in(Q, I"pattern.txt");
+					if (TextFiles::exists(pattern_file))
+						WRITE_TO(STDERR,
+							"Warning: pattern at %p out of date: still has a pattern.txt file\n", Q);
+					continue;
 				}
-				wcl_declaration *D = WCL::read_just_one(pattern_file, PATTERN_WCLTYPE);
-				if (D) WCL::place_within(D, M);
-				DISCARD_TEXT(name)
 			}
+			wcl_declaration *D = WCL::read_just_one(pattern_file, PATTERN_WCLTYPE);
+			if (D) WCL::place_within(D, M);
+			DISCARD_TEXT(name)
 		}
-		DISCARD_TEXT(leafname)
-		Directories::close(D);
 	}
 	return M;
 }

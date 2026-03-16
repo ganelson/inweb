@@ -93,21 +93,21 @@ file: rusty/sample.html
     <html>
     	<head>
     		<title>Traces of Corrosion</title>
+    <link href="sample-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		<meta name="viewport" content="width=device-width initial-scale=1">
     		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     		<meta http-equiv="Content-Language" content="en-gb">
 
     <link href="sample-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="sample-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="sample-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="sample-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <link href="sample-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="sample-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="sample-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="sample-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="sample-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"
     	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
     <script src="sample-assets/Bigfoot.js"></script>
-    <link href="sample-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <link href="sample-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
     		
     	</head>
