@@ -17,6 +17,10 @@ classdef filename {
 @h Creation.
 A filename is made by supplying a pathname and a leafname.
 
+This should ideally not be used on the empty text, or equivalently on a
+path like `way/to/go/`, as it will produce the empty filename. But we don't
+want to crash or do anything drastic in that case.
+
 =
 filename *Filenames::in(pathname *P, text_stream *file_name) {
 	return Filenames::primitive(file_name, 0, Str::len(file_name), P);
@@ -25,12 +29,14 @@ filename *Filenames::in(pathname *P, text_stream *file_name) {
 filename *Filenames::primitive(text_stream *S, int from, int to, pathname *P) {
 	filename *F = CREATE(filename);
 	F->pathname_of_location = P;
-	if (to-from <= 0)
-		internal_error("empty intermediate pathname");
-	F->leafname = Str::new_with_capacity(to-from+1);
-	string_position pos = Str::at(S, from);
-	for (int i = from; i < to; i++, pos = Str::forward(pos))
-		PUT_TO(F->leafname, Str::get(pos));
+	if (to-from <= 0) {
+		F->leafname = Str::duplicate(I"__empty_filename");
+	} else {
+		F->leafname = Str::new_with_capacity(to-from+1);
+		string_position pos = Str::at(S, from);
+		for (int i = from; i < to; i++, pos = Str::forward(pos))
+			PUT_TO(F->leafname, Str::get(pos));
+	}
 	return F;
 }
 
