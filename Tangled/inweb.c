@@ -9072,15 +9072,15 @@ text_stream * Holons__external_filename(ls_holon *holon) ;
 void  Holons__scan(ls_holon_namespace *ns) ;
 #line 381 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__vet_usage(ls_unit *lsu) ;
-#line 435 "inweb/literate-module/Chapter 2/Holons.w"
+#line 434 "inweb/literate-module/Chapter 2/Holons.w"
 int  Holons__traverse_terminated_safely(ls_holon *holon, ls_holon *forbidden, int depth) ;
-#line 451 "inweb/literate-module/Chapter 2/Holons.w"
+#line 450 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__number_paragraphs(ls_unit *lsu) ;
-#line 543 "inweb/literate-module/Chapter 2/Holons.w"
+#line 542 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__settle_paragraph_number(ls_paragraph *par) ;
-#line 554 "inweb/literate-module/Chapter 2/Holons.w"
+#line 553 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__set_parent(ls_paragraph *of, ls_paragraph *to) ;
-#line 563 "inweb/literate-module/Chapter 2/Holons.w"
+#line 562 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__inspect_files(OUTPUT_STREAM, ls_web *W) ;
 #line 28 "inweb/literate-module/Chapter 2/Holon Syntax.w"
 finite_state_machine * HolonSyntax__get(ls_notation *ntn, programming_language *pl) ;
@@ -18783,11 +18783,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C07";
+			char *svn = "9.0-beta+1C08";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "15 March 2026";
+			char *d = "16 March 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -50464,7 +50464,6 @@ void Holons__vet_usage(ls_unit *lsu) {
 	ls_holon *holon;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list) {
 		if ((holon->top_level == FALSE) &&
-			(LinkedLists__len(holon->holon_usages) == 0) &&
 			(holon->addendum_to == NULL)) {
 			if (Holons__traverse_terminated_safely(holon, holon, 0) == FALSE) {
 				text_stream *message = Str__new();
@@ -50480,7 +50479,7 @@ void Holons__vet_usage(ls_unit *lsu) {
 	Holons__number_paragraphs(lsu);
 }
 
-#line 435 "inweb/literate-module/Chapter 2/Holons.w"
+#line 434 "inweb/literate-module/Chapter 2/Holons.w"
 int Holons__traverse_terminated_safely(ls_holon *holon, ls_holon *forbidden, int depth) {
 	if ((depth > 0) && (holon == forbidden)) return FALSE;
 	holon_usage *hu;
@@ -50493,13 +50492,13 @@ int Holons__traverse_terminated_safely(ls_holon *holon, ls_holon *forbidden, int
 	return TRUE;
 }
 
-#line 451 "inweb/literate-module/Chapter 2/Holons.w"
+#line 450 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__number_paragraphs(ls_unit *lsu) {
 	if ((lsu->context) &&
 		(Conventions__get_int(lsu->context, PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION)))
 		
 {
-#line 466 "inweb/literate-module/Chapter 2/Holons.w"
+#line 465 "inweb/literate-module/Chapter 2/Holons.w"
 	int N = 0;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		N++;
@@ -50508,16 +50507,16 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 	}
 
 }
-#line 454 "inweb/literate-module/Chapter 2/Holons.w"
+#line 453 "inweb/literate-module/Chapter 2/Holons.w"
 
 	else
 		
 {
-#line 482 "inweb/literate-module/Chapter 2/Holons.w"
+#line 481 "inweb/literate-module/Chapter 2/Holons.w"
 	linked_list *holon_list = lsu->local_holon_namespace->holons;
 	
 {
-#line 490 "inweb/literate-module/Chapter 2/Holons.w"
+#line 489 "inweb/literate-module/Chapter 2/Holons.w"
 	ls_holon *holon;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list) {
 		if ((holon->top_level == FALSE) && (holon->addendum_to == NULL)) {
@@ -50533,11 +50532,11 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 	}
 
 }
-#line 483 "inweb/literate-module/Chapter 2/Holons.w"
+#line 482 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 505 "inweb/literate-module/Chapter 2/Holons.w"
+#line 504 "inweb/literate-module/Chapter 2/Holons.w"
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		if (par->parent_paragraph == NULL)
 			for (ls_paragraph *par2 = par; par2; par2 = par2->next_par)
@@ -50548,22 +50547,22 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 				}
 
 }
-#line 484 "inweb/literate-module/Chapter 2/Holons.w"
+#line 483 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 515 "inweb/literate-module/Chapter 2/Holons.w"
+#line 514 "inweb/literate-module/Chapter 2/Holons.w"
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		par->paragraph_number = Str__new();
 		par->next_child_number = 0;
 	}
 
 }
-#line 485 "inweb/literate-module/Chapter 2/Holons.w"
+#line 484 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 525 "inweb/literate-module/Chapter 2/Holons.w"
+#line 524 "inweb/literate-module/Chapter 2/Holons.w"
 	int top_level = 1;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		if (par->parent_paragraph == NULL) {
@@ -50573,24 +50572,24 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 			Str__clear(par->paragraph_number);
 
 }
-#line 486 "inweb/literate-module/Chapter 2/Holons.w"
+#line 485 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 534 "inweb/literate-module/Chapter 2/Holons.w"
+#line 533 "inweb/literate-module/Chapter 2/Holons.w"
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		Holons__settle_paragraph_number(par);
 
 }
-#line 487 "inweb/literate-module/Chapter 2/Holons.w"
+#line 486 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 
 }
-#line 456 "inweb/literate-module/Chapter 2/Holons.w"
+#line 455 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 }
 
-#line 543 "inweb/literate-module/Chapter 2/Holons.w"
+#line 542 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__settle_paragraph_number(ls_paragraph *par) {
 	if (Str__len(par->paragraph_number) > 0) return;
 	WRITE_TO(par->paragraph_number, "X"); 
@@ -50608,7 +50607,7 @@ void Holons__set_parent(ls_paragraph *of, ls_paragraph *to) {
 	of->parent_paragraph = to;
 }
 
-#line 563 "inweb/literate-module/Chapter 2/Holons.w"
+#line 562 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__inspect_files(OUTPUT_STREAM, ls_web *W) {
 	textual_table *T = NULL;
 	ls_chapter *C;
@@ -57713,7 +57712,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 15 March 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 16 March 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"

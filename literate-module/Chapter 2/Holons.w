@@ -421,7 +421,6 @@ the top level of the program, and that means they are used.
 	ls_holon *holon;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list) {
 		if ((holon->top_level == FALSE) &&
-			(LinkedLists::len(holon->holon_usages) == 0) &&
 			(holon->addendum_to == NULL)) {
 			if (Holons::traverse_terminated_safely(holon, holon, 0) == FALSE) {
 				text_stream *message = Str::new();
