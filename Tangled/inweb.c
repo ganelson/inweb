@@ -9364,31 +9364,31 @@ void  ACMESupport__before_holon_expansion(programming_language *pl, tangle_docke
 void  ACMESupport__after_holon_expansion(programming_language *pl, tangle_docket *docket, 	OUTPUT_STREAM, ls_paragraph *par) ;
 #line 105 "inweb/literate-module/Chapter 3/ACME Support.w"
 int  ACMESupport__start_definition(programming_language *pl, text_stream *OUT, 	text_stream *term, ls_code_excerpt *body, ls_section *S, ls_line *lst, tangle_docket *docket) ;
-#line 117 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 118 "inweb/literate-module/Chapter 3/ACME Support.w"
 int  ACMESupport__prolong_definition(programming_language *pl, 	text_stream *OUT, text_stream *more, ls_section *S, ls_line *lst, tangle_docket *docket) ;
-#line 126 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 128 "inweb/literate-module/Chapter 3/ACME Support.w"
 int  ACMESupport__end_definition(programming_language *pl, 	text_stream *OUT, ls_section *S, ls_line *lst, tangle_docket *docket) ;
-#line 133 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 137 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__I6_open_ifdef(programming_language *pl, 	text_stream *OUT, text_stream *symbol, int sense) ;
-#line 139 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 143 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__I6_close_ifdef(programming_language *pl, 	text_stream *OUT, text_stream *symbol, int sense) ;
-#line 145 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 149 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__insert_line_marker(programming_language *pl, 	text_stream *OUT, ls_line *lst) ;
-#line 151 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 155 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__comment(programming_language *pl, 	text_stream *OUT, text_stream *comm) ;
-#line 170 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 174 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__parse_types(programming_language *self, ls_web *W) ;
-#line 190 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 194 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__parse_functions(programming_language *self, ls_web *W) ;
-#line 215 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 219 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__post_analysis(programming_language *self, ls_web *W) ;
-#line 249 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 253 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__analyse_code(programming_language *self, ls_web *W) ;
-#line 266 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 270 "inweb/literate-module/Chapter 3/ACME Support.w"
 void  ACMESupport__begin_weave(programming_language *pl, ls_section *S, weave_order *wv) ;
-#line 275 "inweb/literate-module/Chapter 3/ACME Support.w"
-void  ACMESupport__reset_syntax_colouring(programming_language *pl) ;
 #line 279 "inweb/literate-module/Chapter 3/ACME Support.w"
+void  ACMESupport__reset_syntax_colouring(programming_language *pl) ;
+#line 283 "inweb/literate-module/Chapter 3/ACME Support.w"
 int  ACMESupport__syntax_colour(programming_language *pl, 	weave_order *wv, ls_line *lst, text_stream *matter, text_stream *colouring) ;
 #line 9 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__make_c_like(programming_language *pl) ;
@@ -55405,8 +55405,9 @@ int ACMESupport__start_definition(programming_language *pl, text_stream *OUT,
 		Tangler__tangle_code_excerpt(OUT, header, body, pl->end_definition, TL_IS_4274, docket, TL_IS_4275);
 		DISCARD_TEXT(header)
 		WRITE("\n");
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 int ACMESupport__prolong_definition(programming_language *pl,
@@ -55414,15 +55415,18 @@ int ACMESupport__prolong_definition(programming_language *pl,
 	if (LanguageMethods__supports_definitions(pl)) {
 		ACMESupport__expand(OUT, pl->prolong_definition, NULL, -1, NULL);
 		Tangler__tangle_literate_code_fragment(OUT, more, docket, lst);
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 int ACMESupport__end_definition(programming_language *pl,
 	text_stream *OUT, ls_section *S, ls_line *lst, tangle_docket *docket) {
-	if (LanguageMethods__supports_definitions(pl))
+	if (LanguageMethods__supports_definitions(pl)) {
 		ACMESupport__expand(OUT, pl->end_definition, NULL, -1, NULL);
-	return TRUE;
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void ACMESupport__I6_open_ifdef(programming_language *pl,
@@ -55459,7 +55463,7 @@ void ACMESupport__comment(programming_language *pl,
 	}
 }
 
-#line 170 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 174 "inweb/literate-module/Chapter 3/ACME Support.w"
 void ACMESupport__parse_types(programming_language *self, ls_web *W) {
 	if (Languages__nonempty_regexp_set(WebStructure__web_language(W)->type_notation)) {
 		ls_chapter *C;
@@ -55477,7 +55481,7 @@ void ACMESupport__parse_types(programming_language *self, ls_web *W) {
 	}
 }
 
-#line 190 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 194 "inweb/literate-module/Chapter 3/ACME Support.w"
 void ACMESupport__parse_functions(programming_language *self, ls_web *W) {
 	if (Languages__nonempty_regexp_set(WebStructure__web_language(W)->function_notation)) {
 		ls_chapter *C;
@@ -55495,7 +55499,7 @@ void ACMESupport__parse_functions(programming_language *self, ls_web *W) {
 	}
 }
 
-#line 215 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 219 "inweb/literate-module/Chapter 3/ACME Support.w"
 void ACMESupport__post_analysis(programming_language *self, ls_web *W) {
 	int check_namespaces = Conventions__get_int(W, NAMESPACES_ENFORCED_LSCONVENTION);
 	language_function *fn;
@@ -55526,7 +55530,7 @@ void ACMESupport__post_analysis(programming_language *self, ls_web *W) {
 	}
 }
 
-#line 249 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 253 "inweb/literate-module/Chapter 3/ACME Support.w"
 void ACMESupport__analyse_code(programming_language *self, ls_web *W) {
 	language_function *fn;
 	LOOP_OVER_LINKED_LIST(fn, language_function, CodeAnalysis__language_functions_list(W))
@@ -55541,14 +55545,14 @@ void ACMESupport__analyse_code(programming_language *self, ls_web *W) {
 					elt->element_name, TRUE);
 }
 
-#line 266 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 270 "inweb/literate-module/Chapter 3/ACME Support.w"
 void ACMESupport__begin_weave(programming_language *pl, ls_section *S, weave_order *wv) {
 	reserved_word *rw;
 	LOOP_OVER_LINKED_LIST(rw, reserved_word, pl->reserved_words)
 		CodeAnalysis__mark_reserved_word_for_section(S, rw->word, rw->colour);
 }
 
-#line 275 "inweb/literate-module/Chapter 3/ACME Support.w"
+#line 279 "inweb/literate-module/Chapter 3/ACME Support.w"
 void ACMESupport__reset_syntax_colouring(programming_language *pl) {
 	Painter__reset_syntax_colouring(pl);
 }
@@ -74519,7 +74523,7 @@ void Inweb_InC_register_I_literals(void) {
     TL_IS_4267 = Str__literal(U"plain-syntax");
     TL_IS_4268 = Str__literal(U"extract-syntax");
     TL_IS_4269 = Str__literal(U"comment-syntax");
-    TL_IS_4270 = Str__literal(U"this programming language does not support @d");
+    TL_IS_4270 = Str__literal(U"this programming language does not support defined constants");
     TL_IS_4271 = Str__literal(U"this programming language does not support multiline @d");
     TL_IS_4272 = Str__literal(U"Preform");
     TL_IS_4273 = Str__literal(U"Preform");

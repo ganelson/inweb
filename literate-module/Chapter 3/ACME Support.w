@@ -110,8 +110,9 @@ int ACMESupport::start_definition(programming_language *pl, text_stream *OUT,
 		Tangler::tangle_code_excerpt(OUT, header, body, pl->end_definition, I"\\", docket, I"    ");
 		DISCARD_TEXT(header)
 		WRITE("\n");
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 int ACMESupport::prolong_definition(programming_language *pl,
@@ -119,15 +120,18 @@ int ACMESupport::prolong_definition(programming_language *pl,
 	if (LanguageMethods::supports_definitions(pl)) {
 		ACMESupport::expand(OUT, pl->prolong_definition, NULL, -1, NULL);
 		Tangler::tangle_literate_code_fragment(OUT, more, docket, lst);
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 int ACMESupport::end_definition(programming_language *pl,
 	text_stream *OUT, ls_section *S, ls_line *lst, tangle_docket *docket) {
-	if (LanguageMethods::supports_definitions(pl))
+	if (LanguageMethods::supports_definitions(pl)) {
 		ACMESupport::expand(OUT, pl->end_definition, NULL, -1, NULL);
-	return TRUE;
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void ACMESupport::I6_open_ifdef(programming_language *pl,

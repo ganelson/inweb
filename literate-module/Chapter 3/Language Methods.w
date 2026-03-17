@@ -143,7 +143,7 @@ void LanguageMethods::start_definition(OUTPUT_STREAM, programming_language *pl,
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, pl, START_DEFN_TAN_MTID, OUT, term, body, S, lst, docket);
 	if (rv == FALSE)
-		WebErrors::issue_at(I"this programming language does not support @d", lst);
+		WebErrors::issue_at(I"this programming language does not support defined constants", lst);
 }
 
 void LanguageMethods::prolong_definition(OUTPUT_STREAM, programming_language *pl,
