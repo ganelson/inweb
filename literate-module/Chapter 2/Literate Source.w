@@ -1350,22 +1350,30 @@ int LiterateSource::par_has_visible_number(ls_paragraph *par) {
 
 int LiterateSource::par_contains_early_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_early;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_early;
 }
 
 int LiterateSource::par_contains_very_early_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_very_early;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_very_early;
 }
 
 int LiterateSource::par_contains_late_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_late;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_late;
 }
 
 int LiterateSource::par_contains_very_late_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_very_late;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_very_late;
 }
 
 int LiterateSource::par_contains_named_holon(ls_paragraph *par) {

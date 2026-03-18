@@ -61,10 +61,14 @@ takes care of it automatically.
 			match_results mr = Regexp::create_mr();
 
 			if (Regexp::match(&mr, line, U"typedef struct (%i+) *")) {
-				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				if (LiterateSource::par_contains_very_early_code(L_par) == FALSE) {
+					current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				}
 				ParagraphTags::tag(L_par, I"Structures");
 			} else if (Regexp::match(&mr, line, U"typedef struct (%i+) %c*{%c*")) {
-				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				if (LiterateSource::par_contains_very_early_code(L_par) == FALSE) {
+					current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				}
 				ParagraphTags::tag(L_par, I"Structures");
 			} else if (Regexp::match(&mr, line, U"classdef (%i+) *{%c*")) {
 				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
@@ -466,7 +470,7 @@ a structure: for example `typedef unsigned int uint;` would be a simple typedef.
 	LOOP_WITHIN_CODE(C, S, TangleTargets::primary_target(W)) {
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
 		text_stream *line = lst->text;
-		if (L->part_of_typedef) {
+		if ((L->part_of_typedef) && (lst->suppress_tangling == FALSE)) {
 			IfdefTags::open_ifdefs(OUT, LiterateSource::par_of_line(lst));
 			LanguageMethods::tangle_line(OUT, WebStructure::web_language(W), line);
 			WRITE("\n");

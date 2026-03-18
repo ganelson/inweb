@@ -3382,11 +3382,11 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define SHARE_ELEMENT_ANA_MTID 35
 
     
-#line 258 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 262 "inweb/literate-module/Chapter 3/C-Like Languages.w"
     #define MAX_CONDITIONAL_COMPILATION_STACK 8
 
     
-#line 367 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 371 "inweb/literate-module/Chapter 3/C-Like Languages.w"
     #define MAX_ARG_LINES 32 
 
     
@@ -5216,7 +5216,7 @@ typedef struct ls_chunk {
 	struct ls_line *last_line;
 
 } ls_chunk;
-#line 1428 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1436 "inweb/literate-module/Chapter 2/Literate Source.w"
 typedef struct ls_footnote {
 	int footnote_cue_number;
 	int footnote_text_number;
@@ -6303,18 +6303,6 @@ typedef struct inweb_operand {
 	struct pathname *P;
 } inweb_operand;
 typedef uintptr_t pointer_sized_int;
-#ifdef PLATFORM_POSIX
-typedef pthread_t foundation_thread;
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_POSIX
-typedef pthread_attr_t foundation_thread_attributes;
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_WINDOWS
-typedef HANDLE foundation_thread;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-typedef struct Win32_Thread_Attrs
-#endif /* PLATFORM_WINDOWS */
 typedef void (*writer_function)(text_stream *, char *, void *);
 typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
@@ -6337,12 +6325,6 @@ char * Platform__getenv(const char *name) ;
 #line 116 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__where_am_i(inchar32_t *p, size_t length) ;
 #endif /* PLATFORM_LINUX */
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_MACOS
-#ifdef PLATFORM_POSIX
-#line 145 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void  Platform__where_am_i(inchar32_t *p, size_t length) ;
-#endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_UNIX
 #ifdef PLATFORM_POSIX
@@ -6479,20 +6461,8 @@ int  Platform__get_core_count(void) ;
 int  Platform__is_folder_separator(inchar32_t c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 46 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-char * Platform__getenv(const char *name) ;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
 #line 71 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__where_am_i(inchar32_t *p, size_t length) ;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-#line 100 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-int  Platform__Win32_is_unix_cmd(const char* cmd) ;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-#line 116 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-int  Platform__system(const char *cmd) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 170 "inweb/foundation-module/Chapter 1/Windows Platform.w"
@@ -8870,39 +8840,39 @@ text_stream * LiterateSource__par_ornament(ls_paragraph *par) ;
 int  LiterateSource__par_has_visible_number(ls_paragraph *par) ;
 #line 1351 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__par_contains_early_code(ls_paragraph *par) ;
-#line 1356 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1358 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__par_contains_very_early_code(ls_paragraph *par) ;
-#line 1361 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1365 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__par_contains_late_code(ls_paragraph *par) ;
-#line 1366 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1372 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__par_contains_very_late_code(ls_paragraph *par) ;
-#line 1371 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1379 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__par_contains_named_holon(ls_paragraph *par) ;
-#line 1380 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1388 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__is_code_chunk(ls_chunk *chunk) ;
-#line 1385 "inweb/literate-module/Chapter 2/Literate Source.w"
-int  LiterateSource__is_text_extract_chunk(ls_chunk *chunk) ;
 #line 1393 "inweb/literate-module/Chapter 2/Literate Source.w"
+int  LiterateSource__is_text_extract_chunk(ls_chunk *chunk) ;
+#line 1401 "inweb/literate-module/Chapter 2/Literate Source.w"
 text_stream * LiterateSource__line_weaving_matter(ls_line *line) ;
-#line 1406 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1414 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_section * LiterateSource__section_of_par(ls_paragraph *par) ;
-#line 1411 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1419 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_paragraph * LiterateSource__par_of_line(ls_line *line) ;
-#line 1416 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1424 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_unit * LiterateSource__unit_of_line(ls_line *line) ;
-#line 1421 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1429 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_section * LiterateSource__section_of_line(ls_line *line) ;
-#line 1486 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1494 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__detect_footnote(ls_notation *ntn, 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) ;
-#line 1527 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1535 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_footnote * LiterateSource__find_footnote_in_para(ls_paragraph *par, text_stream *cue) ;
-#line 1540 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1548 "inweb/literate-module/Chapter 2/Literate Source.w"
 void  LiterateSource__process_chunk(ls_chunk *chunk, notation_rewriting_machine *nrm) ;
-#line 1549 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1557 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__chunk_is_whitespace(ls_chunk *chunk) ;
-#line 1560 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1568 "inweb/literate-module/Chapter 2/Literate Source.w"
 void  LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) ;
-#line 1773 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1781 "inweb/literate-module/Chapter 2/Literate Source.w"
 void  LiterateSource__write_code(OUTPUT_STREAM, ls_line *line, text_stream *text, int from, int to) ;
 #line 15 "inweb/literate-module/Chapter 2/Paragraph Tags.w"
 void  ParagraphTags__tag_with_caption(ls_paragraph *par, text_stream *tag, text_stream *caption) ;
@@ -9394,19 +9364,19 @@ int  ACMESupport__syntax_colour(programming_language *pl, 	weave_order *wv, ls_l
 void  CLike__make_c_like(programming_language *pl) ;
 #line 24 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__parse_types(programming_language *self, ls_web *W) ;
-#line 224 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 228 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__define_classdef_constants(OUTPUT_STREAM, tangle_target *target, 	programming_language *lang, tangle_docket *docket, ls_web *W) ;
-#line 235 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 239 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__define_classdef_macros(OUTPUT_STREAM, tangle_docket *docket, ls_web *W) ;
-#line 264 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 268 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__parse_functions(programming_language *self, ls_web *W) ;
-#line 394 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 398 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__subcategorise_line(programming_language *self, ls_line *lst) ;
-#line 425 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 429 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__additional_early_matter(programming_language *self, 	text_stream *OUT, ls_web *W, tangle_target *target, tangle_docket *docket) ;
-#line 450 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 454 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__additional_predeclarations(programming_language *self, text_stream *OUT, 	tangle_docket *docket, ls_web *W) ;
-#line 496 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 500 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void  CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, language_type *str) ;
 #line 10 "inweb/literate-module/Chapter 3/InC Support.w"
 void  InCSupport__add_features(programming_language *pl) ;
@@ -18785,11 +18755,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C09";
+			char *svn = "9.0-beta+1C10";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "17 March 2026";
+			char *d = "18 March 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -47202,7 +47172,7 @@ void LiterateSource__complete_unit(ls_unit *lsu) {
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		
 {
-#line 1436 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1444 "inweb/literate-module/Chapter 2/Literate Source.w"
 	int next_footnote_in_para = 1;
 	ls_footnote *current_text = NULL;
 	TEMPORARY_TEXT(before)
@@ -47224,7 +47194,7 @@ void LiterateSource__complete_unit(ls_unit *lsu) {
 					if ((w < 4) && (this_is_a_cue == FALSE))
 						
 {
-#line 1464 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1472 "inweb/literate-module/Chapter 2/Literate Source.w"
 	ls_footnote *F = CREATE(ls_footnote);
 	F->footnote_cue_number = Str__atoi(cue, 0);
 	if (F->footnote_cue_number != next_footnote_in_para) {
@@ -47245,7 +47215,7 @@ void LiterateSource__complete_unit(ls_unit *lsu) {
 	current_text = F;
 
 }
-#line 1455 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1463 "inweb/literate-module/Chapter 2/Literate Source.w"
 ;
 				}
 				line->footnote_text = current_text;
@@ -47575,22 +47545,30 @@ int LiterateSource__par_has_visible_number(ls_paragraph *par) {
 
 int LiterateSource__par_contains_early_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_early;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_early;
 }
 
 int LiterateSource__par_contains_very_early_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_very_early;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_very_early;
 }
 
 int LiterateSource__par_contains_late_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_late;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_late;
 }
 
 int LiterateSource__par_contains_very_late_code(ls_paragraph *par) {
 	if ((par == NULL) || (par->holon == NULL)) return FALSE;
-	return par->holon->placed_very_late;
+	ls_holon *holon = par->holon;
+	while (holon->addendum_to) holon = holon->addendum_to;
+	return holon->placed_very_late;
 }
 
 int LiterateSource__par_contains_named_holon(ls_paragraph *par) {
@@ -47599,7 +47577,7 @@ int LiterateSource__par_contains_named_holon(ls_paragraph *par) {
 	return FALSE;
 }
 
-#line 1380 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1388 "inweb/literate-module/Chapter 2/Literate Source.w"
 int LiterateSource__is_code_chunk(ls_chunk *chunk) {
 	if ((chunk) && (chunk->chunk_type == EXTRACT_LSCT) && (chunk->holon)) return TRUE;
 	return FALSE;
@@ -47610,7 +47588,7 @@ int LiterateSource__is_text_extract_chunk(ls_chunk *chunk) {
 	return FALSE;
 }
 
-#line 1393 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1401 "inweb/literate-module/Chapter 2/Literate Source.w"
 text_stream *LiterateSource__line_weaving_matter(ls_line *line) {
 	if (line == NULL) return NULL;
 	if ((line->classification.operand1) &&
@@ -47621,7 +47599,7 @@ text_stream *LiterateSource__line_weaving_matter(ls_line *line) {
 	return line->text;
 }
 
-#line 1406 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1414 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_section *LiterateSource__section_of_par(ls_paragraph *par) {
 	if (par == NULL) return NULL;
 	if (par->owning_unit == NULL) return NULL;
@@ -47648,7 +47626,7 @@ ls_section *LiterateSource__section_of_line(ls_line *line) {
 
 
 
-#line 1486 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1494 "inweb/literate-module/Chapter 2/Literate Source.w"
 int LiterateSource__detect_footnote(ls_notation *ntn,
 	text_stream *matter, text_stream *before, text_stream *cue, text_stream *after) {
 	if (ntn->footnotes_in_commentary) {
@@ -47700,7 +47678,7 @@ ls_footnote *LiterateSource__find_footnote_in_para(ls_paragraph *par, text_strea
 	return NULL;
 }
 
-#line 1540 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1548 "inweb/literate-module/Chapter 2/Literate Source.w"
 void LiterateSource__process_chunk(ls_chunk *chunk, notation_rewriting_machine *nrm) {
 	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
 		text_stream *before = line->classification.operand1;
@@ -47717,7 +47695,7 @@ int LiterateSource__chunk_is_whitespace(ls_chunk *chunk) {
 	return TRUE;
 }
 
-#line 1560 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1568 "inweb/literate-module/Chapter 2/Literate Source.w"
 void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	if (lsu == NULL) {
 		WRITE("(no literate source)\n");
@@ -47761,7 +47739,7 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 			WRITE("C%d: ", cc);
 			if (chunk->holon) 
 {
-#line 1618 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1626 "inweb/literate-module/Chapter 2/Literate Source.w"
 	WRITE("holon");
 	ls_holon *holon = chunk->holon;
 	if (Str__len(holon->holon_name) > 0) WRITE(" '%S'", holon->holon_name);
@@ -47813,11 +47791,11 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	OUTDENT
 
 }
-#line 1601 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1609 "inweb/literate-module/Chapter 2/Literate Source.w"
 
 			else 
 {
-#line 1669 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1677 "inweb/literate-module/Chapter 2/Literate Source.w"
 	switch (chunk->chunk_type) {
 		case COMMENTARY_LSCT: WRITE("commentary\n"); break;
 		case QUOTATION_LSCT: WRITE("quotation\n"); break;
@@ -47922,7 +47900,7 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	OUTDENT;
 
 }
-#line 1602 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1610 "inweb/literate-module/Chapter 2/Literate Source.w"
 ;
 			if ((chunk == par->first_chunk) && (chunk->prev_chunk))
 				WRITE("*** first chunk but has prev_chunk set\n");
@@ -47938,7 +47916,7 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	}
 }
 
-#line 1773 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1781 "inweb/literate-module/Chapter 2/Literate Source.w"
 void LiterateSource__write_code(OUTPUT_STREAM, ls_line *line, text_stream *text, int from, int to) {
 	if (line) WRITE("%07d ", line->origin.line_count);
 	for (int i=from; i<=to; i++) {
@@ -55591,10 +55569,14 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 			match_results mr = Regexp__create_mr();
 
 			if (Regexp__match(&mr, line, U"typedef struct (%i+) *")) {
-				current_str = Functions__new_struct(W, mr.exp[0], S, L_par, lst);
+				if (LiterateSource__par_contains_very_early_code(L_par) == FALSE) {
+					current_str = Functions__new_struct(W, mr.exp[0], S, L_par, lst);
+				}
 				ParagraphTags__tag(L_par, TL_IS_4278);
 			} else if (Regexp__match(&mr, line, U"typedef struct (%i+) %c*{%c*")) {
-				current_str = Functions__new_struct(W, mr.exp[0], S, L_par, lst);
+				if (LiterateSource__par_contains_very_early_code(L_par) == FALSE) {
+					current_str = Functions__new_struct(W, mr.exp[0], S, L_par, lst);
+				}
 				ParagraphTags__tag(L_par, TL_IS_4279);
 			} else if (Regexp__match(&mr, line, U"classdef (%i+) *{%c*")) {
 				current_str = Functions__new_struct(W, mr.exp[0], S, L_par, lst);
@@ -55625,13 +55607,13 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 			} else if ((current_str) && (current_str->typedef_ends == NULL)) {
 				
 {
-#line 129 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 133 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	TEMPORARY_TEXT(p)
 	Str__copy(p, lst->text);
 	Str__trim_white_space(p);
 	
 {
-#line 151 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 155 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	inchar32_t *modifier_patterns[] = {
 		U"(struct )(%C%c*)", U"(signed )(%C%c*)", U"(unsigned )(%C%c*)",
 		U"(short )(%C%c*)", U"(long )(%C%c*)", U"(static )(%C%c*)", NULL };
@@ -55647,39 +55629,39 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 	}
 
 }
-#line 132 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 136 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 	string_position pos = Str__start(p);
 	if ((Str__get(pos) != '{') && (Str__get(pos) != '/')) {
 		
 {
-#line 169 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 173 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	while ((Str__get(pos)) && (Characters__is_space_or_tab(Str__get(pos)) == FALSE))
 		pos = Str__forward(pos);
 
 }
-#line 135 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 139 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 		
 {
-#line 175 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 179 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	while ((Characters__is_space_or_tab(Str__get(pos))) || (Str__get(pos) == '*') ||
 		(Str__get(pos) == '(') || (Str__get(pos) == ')')) pos = Str__forward(pos);
 
 }
-#line 136 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 140 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 		if (Str__in_range(pos)) {
 			match_results mr = Regexp__create_mr();
 			TEMPORARY_TEXT(elname)
 			
 {
-#line 182 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 186 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	Str__substr(elname, pos, Str__end(p));
 	if (Regexp__match(&mr, elname, U"(%i+)%c*")) Str__copy(elname, mr.exp[0]);
 
 }
-#line 140 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 144 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 			Functions__new_element(current_str, elname, lst, S);
 			DISCARD_TEXT(elname)
@@ -55689,7 +55671,7 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 	DISCARD_TEXT(p)
 
 }
-#line 96 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 100 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 			} else if ((Regexp__match(&mr, line, U"typedef %c+")) &&
 				(Regexp__match(&mr, line, U"%c+##%c+") == FALSE)) {
@@ -55705,7 +55687,7 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 ;
 	
 {
-#line 201 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 205 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	language_type *current_str;
 	LOOP_OVER_LINKED_LIST(current_str, language_type, CodeAnalysis__language_types_list(W)) {
 		for (ls_line *lst = current_str->structure_header_at;
@@ -55715,7 +55697,7 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 			if (Regexp__match(&mr, lst->text, U" struct (%i+) %i%c*"))
 				
 {
-#line 214 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 218 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	text_stream *used_structure = mr.exp[0];
 	language_type *str;
 	LOOP_OVER_LINKED_LIST(str, language_type, CodeAnalysis__language_types_list(W))
@@ -55724,7 +55706,7 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 			ADD_TO_LINKED_LIST(str, language_type, current_str->incorporates);
 
 }
-#line 208 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 212 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 			Regexp__dispose_of(&mr);
 		}
@@ -55735,7 +55717,7 @@ void CLike__parse_types(programming_language *self, ls_web *W) {
 ;
 }
 
-#line 224 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 228 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void CLike__define_classdef_constants(OUTPUT_STREAM, tangle_target *target,
 	programming_language *lang, tangle_docket *docket, ls_web *W) {
 	if (W->analysis_ref) {
@@ -55761,7 +55743,7 @@ void CLike__define_classdef_macros(OUTPUT_STREAM, tangle_docket *docket, ls_web 
 	}
 }
 
-#line 261 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 265 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 int cc_sp = 0;
 ls_line *cc_stack[MAX_CONDITIONAL_COMPILATION_STACK];
 
@@ -55773,7 +55755,7 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 		text_stream *line = lst->text;
 		
 {
-#line 278 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 282 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	match_results mr = Regexp__create_mr();
 	if ((Regexp__match(&mr, line, U" *#ifn*def %c+")) ||
 		(Regexp__match(&mr, line, U" *#IFN*DEF %c+"))) {
@@ -55791,18 +55773,18 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 	}
 
 }
-#line 270 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 274 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 		
 {
-#line 306 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 310 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	if (!(Characters__is_space_or_tab(Str__get_first_char(line)))) {
 		TEMPORARY_TEXT(qualifiers)
 		TEMPORARY_TEXT(modified)
 		Str__copy(modified, line);
 		
 {
-#line 333 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 337 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	inchar32_t *modifier_patterns[] = {
 		U"(signed )(%C%c*)", U"(unsigned )(%C%c*)",
 		U"(short )(%C%c*)", U"(long )(%C%c*)", U"(static )(%C%c*)", NULL };
@@ -55820,7 +55802,7 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 	}
 
 }
-#line 310 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 314 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 		match_results mr = Regexp__create_mr();
 		if (Regexp__match(&mr, modified, U"(%i+) (%**)(%i+)%((%c*)")) {
@@ -55830,10 +55812,10 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 			TEMPORARY_TEXT(arguments) Str__copy(arguments, mr.exp[3]);
 			
 {
-#line 350 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 354 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	
 {
-#line 370 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 374 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	ls_line *A_lst = lst;
 	int arg_lc = 1;
 	while ((A_lst) && (arg_lc <= MAX_ARG_LINES) && (Regexp__find_open_brace(arguments) == -1)) {
@@ -55853,7 +55835,7 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 	if (n >= 0) Str__truncate(arguments, n);
 
 }
-#line 350 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 354 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 	language_function *fn = Functions__new_function(fname, lst, S);
 	fn->function_arguments = Str__duplicate(arguments);
@@ -55863,7 +55845,7 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 	for (int i=0; i<cc_sp; i++) fn->within_conditionals[i] = cc_stack[i];
 
 }
-#line 317 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 321 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 			DISCARD_TEXT(ftype)
 			DISCARD_TEXT(asts)
@@ -55876,14 +55858,14 @@ void CLike__parse_functions(programming_language *self, ls_web *W) {
 	}
 
 }
-#line 271 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 275 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 	}
 	if (cc_sp > 0)
 		WebErrors__issue_at(TL_IS_4284, NULL);
 }
 
-#line 394 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 398 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void CLike__subcategorise_line(programming_language *self, ls_line *lst) {
 	ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
 	match_results mr = Regexp__create_mr();
@@ -55903,7 +55885,7 @@ void CLike__subcategorise_line(programming_language *self, ls_line *lst) {
 	Regexp__dispose_of(&mr);
 }
 
-#line 425 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 429 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void CLike__additional_early_matter(programming_language *self,
 	text_stream *OUT, ls_web *W, tangle_target *target, tangle_docket *docket) {
 	if (Conventions__get_int_from(docket->conventions, LIBRARY_INCLUDES_EARLY_LSCONVENTION)) {
@@ -55922,13 +55904,13 @@ void CLike__additional_early_matter(programming_language *self,
 	}
 }
 
-#line 450 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 454 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void CLike__additional_predeclarations(programming_language *self, text_stream *OUT,
 	tangle_docket *docket, ls_web *W) {
 	if (Conventions__get_int_from(docket->conventions, TYPEDEF_STRUCTS_EARLY_LSCONVENTION))
 		
 {
-#line 487 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 491 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	language_type *str;
 	LOOP_OVER_LINKED_LIST(str, language_type, CodeAnalysis__language_types_list(W))
 		str->tangled = FALSE;
@@ -55936,18 +55918,18 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 		CLike__tangle_structure(OUT, self, str);
 
 }
-#line 453 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 457 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 	if (Conventions__get_int_from(docket->conventions, TYPEDEFS_EARLY_LSCONVENTION))
 		
 {
-#line 464 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 468 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_WITHIN_CODE(C, S, TangleTargets__primary_target(W)) {
 		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
 		text_stream *line = lst->text;
-		if (L->part_of_typedef) {
+		if ((L->part_of_typedef) && (lst->suppress_tangling == FALSE)) {
 			IfdefTags__open_ifdefs(OUT, LiterateSource__par_of_line(lst));
 			LanguageMethods__tangle_line(OUT, WebStructure__web_language(W), line);
 			WRITE("\n");
@@ -55957,12 +55939,12 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 	}
 
 }
-#line 455 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 459 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 	if (Conventions__get_int_from(docket->conventions, FUNCTION_PREDECLARATIONS_LSCONVENTION))
 		
 {
-#line 548 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 552 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_WITHIN_CODE(C, S, TangleTargets__primary_target(W)) {
@@ -56001,11 +55983,11 @@ void CLike__additional_predeclarations(programming_language *self, text_stream *
 	}
 
 }
-#line 457 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 461 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 ;
 }
 
-#line 496 "inweb/literate-module/Chapter 3/C-Like Languages.w"
+#line 500 "inweb/literate-module/Chapter 3/C-Like Languages.w"
 void CLike__tangle_structure(OUTPUT_STREAM, programming_language *self, language_type *str) {
 	if (str->tangled != FALSE) return;
 	str->tangled = NOT_APPLICABLE;
@@ -57723,7 +57705,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 17 March 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 18 March 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
