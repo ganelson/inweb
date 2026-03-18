@@ -60,7 +60,10 @@ takes care of it automatically.
 		if (Str::len(L_chunk->extract_to) == 0) {
 			match_results mr = Regexp::create_mr();
 
-			if (Regexp::match(&mr, line, U"typedef struct (%i+) %c*{%c*")) {
+			if (Regexp::match(&mr, line, U"typedef struct (%i+) *")) {
+				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
+				ParagraphTags::tag(L_par, I"Structures");
+			} else if (Regexp::match(&mr, line, U"typedef struct (%i+) %c*{%c*")) {
 				current_str = Functions::new_struct(W, mr.exp[0], S, L_par, lst);
 				ParagraphTags::tag(L_par, I"Structures");
 			} else if (Regexp::match(&mr, line, U"classdef (%i+) *{%c*")) {
@@ -101,13 +104,26 @@ takes care of it automatically.
 	}
 
 @ At this point we're reading a line within the structure's definition; for
-the sake of an illustrative example, let's suppose that line is:
+the sake of an illustrative example, let's suppose that line is the one in
+the middle of:
 
 ``` None
-	unsigned long long int *val;
+	typedef struct typicalstructure {
+		unsigned long long int *val;
+	}
 ```
 
 We need to extract the element name, `val`, and make a note of it.
+But we don't want to be fooled by the `{` line or the comment in:
+
+``` None
+	typedef struct otherbracingstyled
+	{
+		int x;
+		// and let's have `y` too, since we have `x`
+		int y;
+	}
+```
 
 @<Work through a line in the structure definition@> =
 	TEMPORARY_TEXT(p)
@@ -115,7 +131,7 @@ We need to extract the element name, `val`, and make a note of it.
 	Str::trim_white_space(p);
 	@<Remove C type modifiers from the front of p@>;
 	string_position pos = Str::start(p);
-	if (Str::get(pos) != '/') { /* a slash must introduce a comment here */
+	if ((Str::get(pos) != '{') && (Str::get(pos) != '/')) {
 		@<Move pos past the type name@>;
 		@<Move pos past any typographical type modifiers@>;
 		if (Str::in_range(pos)) {
