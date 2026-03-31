@@ -80,7 +80,7 @@ licences:
 	$(LBUILD)/Tangled/licence-build -from $(ME)/Materials/licenses.json >$(ME)/foundation-module/Chapter\ 7/SPDX\ Licences.w	
 
 define make-me-once-tangled
-	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
+	clang -O2 -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g  -o $(ME)/Tangled/$(ME).o $(ME)/Tangled/$(ME).c
 	clang $(CCOPTS) -Wl,--stack,0x8000000 -g -o $(ME)/Tangled/$(ME)$(EXEEXTENSION) $(ME)/Tangled/$(ME).o 
 endef
 
