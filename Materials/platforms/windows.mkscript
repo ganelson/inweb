@@ -61,7 +61,7 @@ INWEB = inweb/Tangled/inweb
 # and one for linking those *.o files into an executable.
 
 {define: compile to: TO from: FROM ?options: OPTS}
-	clang -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
+	clang -O2 -std=c11 -c $(MANYWARNINGS) $(CCOPTS) -g {OPTS} -o {TO} {FROM}
 {end-define}
 
 {define: compile-indulgently to: TO from: FROM ?options: OPTS}
