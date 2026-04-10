@@ -222,6 +222,7 @@ The following guesses the file format from its file extension:
 @d FORMAT_PERHAPS_ZCODE 9
 @d FORMAT_PERHAPS_SVG 10
 @d FORMAT_PERHAPS_GIF 11
+@d FORMAT_PERHAPS_MP3 12
 @d FORMAT_UNRECOGNISED 0
 
 =
@@ -249,6 +250,7 @@ int Filenames::guess_format(filename *F) {
 	else if (Str::eq_wide_string(NORMALISED, U".mod")) verdict = FORMAT_PERHAPS_MOD;
 	else if (Str::eq_wide_string(NORMALISED, U".svg")) verdict = FORMAT_PERHAPS_SVG;
 	else if (Str::eq_wide_string(NORMALISED, U".gif")) verdict = FORMAT_PERHAPS_GIF;
+	else if (Str::eq_wide_string(NORMALISED, U".mp3")) verdict = FORMAT_PERHAPS_MP3;
 	else if (Str::len(NORMALISED) > 0) {
 		if ((Str::get(Str::at(NORMALISED, 0)) == '.') &&
 			(Str::get(Str::at(NORMALISED, 1)) == 'z') &&

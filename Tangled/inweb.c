@@ -1217,6 +1217,10 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
     
 #line 225 "inweb/foundation-module/Chapter 3/Filenames.w"
+    #define FORMAT_PERHAPS_MP3 12
+
+    
+#line 226 "inweb/foundation-module/Chapter 3/Filenames.w"
     #define FORMAT_UNRECOGNISED 0
 
     
@@ -7030,25 +7034,25 @@ filename * Filenames__set_extension(filename *F, text_stream *extension) ;
 void  Filenames__write_final_extension(OUTPUT_STREAM, filename *F) ;
 #line 197 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__write_penultimate_extension(OUTPUT_STREAM, filename *F) ;
-#line 228 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 229 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__guess_format(filename *F) ;
-#line 272 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 274 "inweb/foundation-module/Chapter 3/Filenames.w"
 FILE * Filenames__fopen(filename *F, char *usage) ;
-#line 281 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 283 "inweb/foundation-module/Chapter 3/Filenames.w"
 FILE * Filenames__fopen_caseless(filename *F, char *usage) ;
-#line 296 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 298 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__eq(filename *F1, filename *F2) ;
-#line 308 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 310 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__eq_insensitive(filename *F1, filename *F2) ;
-#line 323 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 325 "inweb/foundation-module/Chapter 3/Filenames.w"
 time_t  Filenames__timestamp(filename *F) ;
-#line 333 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 335 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__size(filename *F) ;
-#line 348 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 350 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__rename(filename *F, text_stream *new_name) ;
-#line 373 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 375 "inweb/foundation-module/Chapter 3/Filenames.w"
 void  Filenames__copy_file(filename *from, filename *to) ;
-#line 390 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 392 "inweb/foundation-module/Chapter 3/Filenames.w"
 int  Filenames__move_file(filename *from, filename *to) ;
 #ifdef PLATFORM_POSIX
 #line 51 "inweb/foundation-module/Chapter 3/Case-Insensitive Filenames.w"
@@ -18755,11 +18759,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C10";
+			char *svn = "9.0-beta+1C13";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "18 March 2026";
+			char *d = "7 April 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -19437,7 +19441,7 @@ void Filenames__write_penultimate_extension(OUTPUT_STREAM, filename *F) {
 	DISCARD_TEXT(EXT)
 }
 
-#line 228 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 229 "inweb/foundation-module/Chapter 3/Filenames.w"
 int Filenames__guess_format(filename *F) {
 	TEMPORARY_TEXT(EXT)
 	Filenames__write_extension(EXT, F);
@@ -19462,6 +19466,7 @@ int Filenames__guess_format(filename *F) {
 	else if (Str__eq_wide_string(NORMALISED, U".mod")) verdict = FORMAT_PERHAPS_MOD;
 	else if (Str__eq_wide_string(NORMALISED, U".svg")) verdict = FORMAT_PERHAPS_SVG;
 	else if (Str__eq_wide_string(NORMALISED, U".gif")) verdict = FORMAT_PERHAPS_GIF;
+	else if (Str__eq_wide_string(NORMALISED, U".mp3")) verdict = FORMAT_PERHAPS_MP3;
 	else if (Str__len(NORMALISED) > 0) {
 		if ((Str__get(Str__at(NORMALISED, 0)) == '.') &&
 			(Str__get(Str__at(NORMALISED, 1)) == 'z') &&
@@ -19475,7 +19480,7 @@ int Filenames__guess_format(filename *F) {
 	return verdict;
 }
 
-#line 272 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 274 "inweb/foundation-module/Chapter 3/Filenames.w"
 FILE *Filenames__fopen(filename *F, char *usage) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(FN)
@@ -19494,7 +19499,7 @@ FILE *Filenames__fopen_caseless(filename *F, char *usage) {
 	return CIFilingSystem__fopen(transcoded_pathname, usage);
 }
 
-#line 296 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 298 "inweb/foundation-module/Chapter 3/Filenames.w"
 int Filenames__eq(filename *F1, filename *F2) {
 	if (F1 == F2) return TRUE;
 	TEMPORARY_TEXT(T1)
@@ -19519,7 +19524,7 @@ int Filenames__eq_insensitive(filename *F1, filename *F2) {
 	return rv;
 }
 
-#line 323 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 325 "inweb/foundation-module/Chapter 3/Filenames.w"
 time_t Filenames__timestamp(filename *F) {
 	char transcoded_pathname[4*MAX_FILENAME_LENGTH];
 	TEMPORARY_TEXT(FN)
@@ -19540,7 +19545,7 @@ int Filenames__size(filename *F) {
 	return t;
 }
 
-#line 348 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 350 "inweb/foundation-module/Chapter 3/Filenames.w"
 int Filenames__rename(filename *F, text_stream *new_name) {
 	text_stream *old_name = Filenames__get_leafname(F);
 	if (Str__eq(old_name, new_name)) return TRUE;
@@ -19563,7 +19568,7 @@ int Filenames__rename(filename *F, text_stream *new_name) {
 	return rv;
 }
 
-#line 373 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 375 "inweb/foundation-module/Chapter 3/Filenames.w"
 void Filenames__copy_file(filename *from, filename *to) {
 	TEMPORARY_TEXT(from_path)
 	TEMPORARY_TEXT(to_path)
@@ -19578,7 +19583,7 @@ void Filenames__copy_file(filename *from, filename *to) {
 	DISCARD_TEXT(to_path)
 }
 
-#line 390 "inweb/foundation-module/Chapter 3/Filenames.w"
+#line 392 "inweb/foundation-module/Chapter 3/Filenames.w"
 int Filenames__move_file(filename *from, filename *to) {
 	TEMPORARY_TEXT(from_path)
 	TEMPORARY_TEXT(to_path)
@@ -57705,7 +57710,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 18 March 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 7 April 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"

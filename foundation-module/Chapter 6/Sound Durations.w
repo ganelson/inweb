@@ -217,7 +217,7 @@ int SoundFiles::get_MIDI_information(FILE *pFile, unsigned int *pType,
     /* Read the MIDI type: 0,1 or 2 */
     /*   0 means one track containing up to 16 channels to make a single tune */
     /*   1 means one or more tracks, commonly each with a single channel, making up a single tune */
-    /*   2 means one or more tracks, where each is a separate tune in it's own right */
+    /*   2 means one or more tracks, where each is a separate tune in its own right */
     if (!BinaryFiles::read_int16(pFile, pType)) return FALSE;
 
     /* Read the number of tracks */
