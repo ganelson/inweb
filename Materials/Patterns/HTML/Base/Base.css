@@ -345,3 +345,58 @@ div.lsmarkdown img {
 	display: block;
 	margin: auto;
 }
+
+/* To support alerts in GH-flavored Markdown */
+
+:root {
+	--gh-alert-note-colour: #0e6ad1;
+	--gh-alert-tip-colour: #1a8130;
+	--gh-alert-important-colour: #8253dd;
+	--gh-alert-warning-colour: #9a6903;
+	--gh-alert-caution-colour: #ce2528;
+}
+
+div.lsmarkdown blockquote.alertnote {
+	border-left: 3px solid var(--gh-alert-note-colour);
+	margin: 0.4em 20px;
+	padding: 0em 10px;
+}
+div.lsmarkdown blockquote.alertnote p.alertheading {
+	color: var(--gh-alert-note-colour);
+}
+
+div.lsmarkdown blockquote.alerttip {
+	border-left: 3px solid var(--gh-alert-tip-colour);
+	margin: 0.4em 20px;
+	padding: 0em 10px;
+}
+div.lsmarkdown blockquote.alerttip p.alertheading {
+	color: var(--gh-alert-tip-colour);
+}
+
+div.lsmarkdown blockquote.alertimportant {
+	border-left: 3px solid var(--gh-alert-important-colour);
+	margin: 0.4em 20px;
+	padding: 0em 10px;
+}
+div.lsmarkdown blockquote.alertimportant p.alertheading {
+	color: var(--gh-alert-important-colour);
+}
+
+div.lsmarkdown blockquote.alertwarning {
+	border-left: 3px solid var(--gh-alert-warning-colour);
+	margin: 0.4em 20px;
+	padding: 0em 10px;
+}
+div.lsmarkdown blockquote.alertwarning p.alertheading {
+	color: var(--gh-alert-warning-colour);
+}
+
+div.lsmarkdown blockquote.alertcaution {
+	border-left: 3px solid var(--gh-alert-caution-colour);
+	margin: 0.4em 20px;
+	padding: 0em 10px;
+}
+div.lsmarkdown blockquote.alertcaution p.alertheading {
+	color: var(--gh-alert-caution-colour);
+}

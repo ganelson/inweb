@@ -233,6 +233,45 @@ was produced by:
 Note the running `>` marks, which are essential on each line. The quotation
 marks `"` at the start and end here were on the other hand optional.
 
+These are called _block quotations_, and they can contain all sorts of content:
+lists, tables, multiple paragraphs, and so on.
+
+**Tips and warnings**. Inweb supports the GitHub convention on _alerts_, which
+are a special form of block quotation for informational notices. They look
+like this:
+
+> [!NOTE]
+> Useful information that users should know, even when skimming content.
+
+> [!TIP]
+> Helpful advice for doing things better or more easily.
+
+> [!IMPORTANT]
+> Key information users need to know to achieve their goal.
+
+> [!WARNING]
+> Urgent info that needs immediate user attention to avoid problems.
+
+> [!CAUTION]
+> Advises about risks or negative outcomes of certain actions.
+
+and are produced by this:
+
+	> [!NOTE]
+	> Useful information that users should know, even when skimming content.
+	
+	> [!TIP]
+	> Helpful advice for doing things better or more easily.
+	
+	> [!IMPORTANT]
+	> Key information users need to know to achieve their goal.
+	
+	> [!WARNING]
+	> Urgent info that needs immediate user attention to avoid problems.
+	
+	> [!CAUTION]
+	> Advises about risks or negative outcomes of certain actions.
+
 **Ruled lines**. Feel free to draw a line:
 
 --- ---

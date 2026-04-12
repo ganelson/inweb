@@ -283,6 +283,7 @@ other containers (though not `DOCUMENT_MIT`) or leaf blocks. An `ORDERED_LIST_MI
 can only contain `ORDERED_LIST_ITEM_MIT` blocks, and similarly for unordered lists.
 
 @e BLOCK_QUOTE_MIT
+@e ALERT_MIT
 @e UNORDERED_LIST_MIT
 @e ORDERED_LIST_MIT
 @e UNORDERED_LIST_ITEM_MIT
@@ -405,6 +406,7 @@ void Markdown::create_item_types(void) {
 	Markdown::new_container_block_type(FILE_MIT, I"FILE");
 
 	Markdown::new_container_block_type(BLOCK_QUOTE_MIT, I"BLOCK_QUOTE");
+	Markdown::new_container_block_type(ALERT_MIT, I"ALERT");
 	Markdown::new_container_block_type(UNORDERED_LIST_MIT, I"UNORDERED_LIST");
 	Markdown::new_container_block_type(ORDERED_LIST_MIT, I"ORDERED_LIST");
 	Markdown::new_container_block_type(UNORDERED_LIST_ITEM_MIT, I"UNORDERED_LIST_ITEM");
@@ -738,6 +740,26 @@ void Markdown::set_item_number_and_flavour(markdown_item *md, int L, inchar32_t 
 	if (md->type == FOOTNOTE_BODY_MIT) {
 		md->details = L;
 	}
+}
+
+@ The `ALERT_MIT` item, and no other, has an "alert type" which is at least 1.
+
+@e NOTE_GHALERTFORM from 1
+@e TIP_GHALERTFORM
+@e IMPORTANT_GHALERTFORM
+@e WARNING_GHALERTFORM
+@e CAUTION_GHALERTFORM
+
+=
+int Markdown::get_alert_type(markdown_item *md) {
+	if ((md == NULL) || (md->type != ALERT_MIT)) return 0;
+	return md->details;
+}
+
+void Markdown::set_alert_type(markdown_item *md, int L) {
+	if ((md == NULL) || (md->type != ALERT_MIT)) internal_error("not an alert");
+	if (L < 1) internal_error("bad alert");
+	md->details = L;
 }
 
 @ Markdown uses backslash as an escape character, with double-backslash meaning

@@ -217,6 +217,7 @@ since these have been added with more prudent syntax.
 @e TASK_LIST_ITEMS_MARKDOWNFEATURE
 @e EXTENDED_AUTOLINKS_MARKDOWNFEATURE
 @e DISALLOWED_RAW_HTML_MARKDOWNFEATURE
+@e ALERTS_MARKDOWNFEATURE
 
 =
 markdown_feature *strikethrough_Markdown_feature = NULL;
@@ -224,6 +225,7 @@ markdown_feature *tables_Markdown_feature = NULL;
 markdown_feature *task_list_items_Markdown_feature = NULL;
 markdown_feature *extended_autolinks_Markdown_feature = NULL;
 markdown_feature *disallowed_raw_HTML_Markdown_feature = NULL;
+markdown_feature *alerts_Markdown_feature = NULL;
 
 void MarkdownVariations::define_GFM(void) {
 	strikethrough_Markdown_feature =       MarkdownVariations::new_feature(I"strikethrough",       STRIKETHROUGH_MARKDOWNFEATURE);
@@ -231,6 +233,7 @@ void MarkdownVariations::define_GFM(void) {
 	task_list_items_Markdown_feature =     MarkdownVariations::new_feature(I"task list items",     TASK_LIST_ITEMS_MARKDOWNFEATURE);
 	extended_autolinks_Markdown_feature =  MarkdownVariations::new_feature(I"extended autolinks",  EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
 	disallowed_raw_HTML_Markdown_feature = MarkdownVariations::new_feature(I"disallowed raw HTML", DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
+	alerts_Markdown_feature =              MarkdownVariations::new_feature(I"alerts",              ALERTS_MARKDOWNFEATURE);
 
 	GitHub_flavored_Markdown_variation = MarkdownVariations::new(I"GitHub-flavored Markdown 0.29");
 	MarkdownVariations::make_GitHub_features_active(GitHub_flavored_Markdown_variation);
@@ -242,6 +245,59 @@ void MarkdownVariations::make_GitHub_features_active(markdown_variation *variati
 	MarkdownVariations::add_feature(variation, TASK_LIST_ITEMS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
+	MarkdownVariations::add_feature(variation, ALERTS_MARKDOWNFEATURE);
+	METHOD_ADD(alerts_Markdown_feature, POST_PHASE_I_MARKDOWN_MTID,
+		MarkdownVariations::GH_intervene_after_Phase_I);
+}
+
+@ =
+void MarkdownVariations::GH_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_item *md, md_links_dictionary *link_references) {
+	MarkdownVariations::find_alerts_r(md);
+}
+
+void MarkdownVariations::find_alerts_r(markdown_item *md) {
+	for (markdown_item *ch = md->down; ch; ch=ch->next) {
+		if ((ch->type == BLOCK_QUOTE_MIT) && (ch->down->type == PARAGRAPH_MIT)) {
+			TEMPORARY_TEXT(opener)
+			text_stream *t = ch->down->stashed;
+			int i = 0, phase = 1, succeeded = TRUE;
+			for (; i<Str::len(t); i++) {
+				inchar32_t c = Str::get_at(t, i);
+				if (c == '\n') {
+					if (phase == 1) succeeded = FALSE;
+					i++; break;
+				}
+				if (Characters::is_whitespace(c)) {
+					if (phase == 2) phase = 3;
+				} else {
+					if (phase == 1) { phase = 2; PUT_TO(opener, c); }
+					else if (phase == 2) PUT_TO(opener, c);
+					else { succeeded = FALSE; break; }
+				}
+			}
+			if (succeeded) {
+				int form = -1;
+				if (Str::eq(opener, I"[!NOTE]"))      form = NOTE_GHALERTFORM;
+				if (Str::eq(opener, I"[!TIP]"))       form = TIP_GHALERTFORM;
+				if (Str::eq(opener, I"[!IMPORTANT]")) form = IMPORTANT_GHALERTFORM;
+				if (Str::eq(opener, I"[!WARNING]"))   form = WARNING_GHALERTFORM;
+				if (Str::eq(opener, I"[!CAUTION]"))   form = CAUTION_GHALERTFORM;
+				if (form != -1) {
+					ch->type = ALERT_MIT;
+					Markdown::set_alert_type(ch, form);
+					if (i<Str::len(t)) {
+						for (int j=0; i+j <= Str::len(t); j++)
+							Str::put_at(ch->down->stashed, j, Str::get_at(ch->down->stashed, i+j));
+					} else {
+						ch->down = ch->down->next;
+					}
+				}
+			}		
+			DISCARD_TEXT(opener)
+		}
+		MarkdownVariations::find_alerts_r(ch);
+	}
 }
 
 @h Inweb extensions to GFM.

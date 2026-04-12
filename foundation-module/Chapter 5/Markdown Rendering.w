@@ -48,6 +48,7 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 									    @<Recurse@>;
 									    if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
 								        break;
+		case ALERT_MIT:                 @<Render an alert@>; break;
 
 		case PARAGRAPH_MIT:             if ((mode & TAGS_MDRMODE) && ((mode & EXISTING_PAR_MDRMODE) == 0)) HTML_OPEN("p");
 										mode = mode & (~EXISTING_PAR_MDRMODE);
@@ -171,6 +172,32 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 		}
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("li");
 	WRITE("\n");
+
+@<Render an alert@> =
+	int type = Markdown::get_alert_type(md);
+	if (mode & TAGS_MDRMODE) {
+		switch (type) {
+			case NOTE_GHALERTFORM:      HTML_OPEN_WITH("blockquote", "class=\"alertnote\""); break;
+			case TIP_GHALERTFORM:       HTML_OPEN_WITH("blockquote", "class=\"alerttip\""); break;
+			case IMPORTANT_GHALERTFORM: HTML_OPEN_WITH("blockquote", "class=\"alertimportant\""); break;
+			case WARNING_GHALERTFORM:   HTML_OPEN_WITH("blockquote", "class=\"alertwarning\""); break;
+			case CAUTION_GHALERTFORM:   HTML_OPEN_WITH("blockquote", "class=\"alertcaution\""); break;
+		}
+	}
+	WRITE("\n");
+	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("p", "class=\"alertheading\"");
+	switch (type) {
+		case NOTE_GHALERTFORM:      WRITE("%c Note", 0x24D8); break;
+		case TIP_GHALERTFORM:       WRITE("%c Tip", 0x2602); break;
+		case IMPORTANT_GHALERTFORM: WRITE("%c Important", 0x261E); break;
+		case WARNING_GHALERTFORM:   WRITE("%c Warning", 0x26A0); break;
+		case CAUTION_GHALERTFORM:   WRITE("%c Caution", 0x26A0); break;
+	}
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
+		
+	@<Recurse@>;
+	if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
+	break;
 
 @<Render a tickbox@> =
 	if (mode & TAGS_MDRMODE) {

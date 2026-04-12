@@ -3,15 +3,15 @@
 	<head>
 		<title>Commentary in Markdown</title>
 <link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<meta http-equiv="Content-Language" content="en-gb">
 
 <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 MathJax = {
     options: {
@@ -33,11 +33,11 @@ MathJax = {
 
 <link href="../docs-assets/Carousel.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="../docs-assets/Carousel.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script src="http://code.jquery.com/jquery-1.12.4.min.js"
 	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
 <script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -344,6 +344,47 @@ long voyages by sea.&quot;</p>
 </span></pre>
 <p>Note the running <code>&gt;</code> marks, which are essential on each line. The quotation
 marks <code>&quot;</code> at the start and end here were on the other hand optional.</p>
+<p>These are called <em>block quotations</em>, and they can contain all sorts of content:
+lists, tables, multiple paragraphs, and so on.</p>
+<p><strong>Tips and warnings</strong>. Inweb supports the GitHub convention on <em>alerts</em>, which
+are a special form of block quotation for informational notices. They look
+like this:</p>
+<blockquote class="alertnote">
+<p class="alertheading">ⓘ Note</p>
+<p>Useful information that users should know, even when skimming content.</p>
+</blockquote>
+<blockquote class="alerttip">
+<p class="alertheading">☂ Tip</p>
+<p>Helpful advice for doing things better or more easily.</p>
+</blockquote>
+<blockquote class="alertimportant">
+<p class="alertheading">☞ Important</p>
+<p>Key information users need to know to achieve their goal.</p>
+</blockquote>
+<blockquote class="alertwarning">
+<p class="alertheading">⚠ Warning</p>
+<p>Urgent info that needs immediate user attention to avoid problems.</p>
+</blockquote>
+<blockquote class="alertcaution">
+<p class="alertheading">⚠ Caution</p>
+<p>Advises about risks or negative outcomes of certain actions.</p>
+</blockquote>
+<p>and are produced by this:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; [!NOTE]
+&gt; Useful information that users should know, even when skimming content.
+
+&gt; [!TIP]
+&gt; Helpful advice for doing things better or more easily.
+
+&gt; [!IMPORTANT]
+&gt; Key information users need to know to achieve their goal.
+
+&gt; [!WARNING]
+&gt; Urgent info that needs immediate user attention to avoid problems.
+
+&gt; [!CAUTION]
+&gt; Advises about risks or negative outcomes of certain actions.
+</span></pre>
 <p><strong>Ruled lines</strong>. Feel free to draw a line:</p>
 <hr />
 <p>by means of:</p>
