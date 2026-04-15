@@ -136,7 +136,7 @@ void cli_switch(int id, int val, text_stream *arg, void *state) {
 @ To make this a little more gratuitous, we'll give calendar files some
 syntax. The following function is called on each line in turn; we're going
 to trim white space, ignore blank lines, and also ignore any line beginning
-withn a `#` as being a comment.
+within a `#` as being a comment.
 
 =
 void calendar_line(text_stream *line, text_file_position *tfp, void *state) {
