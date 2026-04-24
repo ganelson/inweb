@@ -334,11 +334,18 @@ void Painter::syntax_colour_inner(programming_language *pl,
 						base = 10; pass = TRUE;
 					}
 					break;
-				case 2: if ((c == '0') || (c == '1')) pass = TRUE; break;
-				case 8: if ((Characters::isdigit(c)) &&
-							(c != '8') && (c != '9')) pass = TRUE; break;
-				case 10: if (Characters::isdigit(c)) pass = TRUE; break;
-				case 16: if (Characters::isdigit(c)) pass = TRUE;
+				case 2:
+					if ((c == '0') || (c == '1')) pass = TRUE;
+					break;
+				case 8:
+					if ((Characters::isdigit(c)) &&
+						(c != '8') && (c != '9')) pass = TRUE;
+					break;
+				case 10:
+					if (Characters::isdigit(c)) pass = TRUE;
+					break;
+				case 16:
+					if (Characters::isdigit(c)) pass = TRUE;
 					inchar32_t d = Characters::tolower(c);
 					if ((d == 'a') || (d == 'b') || (d == 'c') ||
 						(d == 'd') || (d == 'e') || (d == 'f')) pass = TRUE;

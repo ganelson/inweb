@@ -3270,27 +3270,27 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define NOT_A_COLOUR ' '
 
     
-#line 486 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 493 "inweb/literate-module/Chapter 3/The Painter.w"
     #define UNSPACED_RULE_PREFIX 2 
 
     
-#line 487 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 494 "inweb/literate-module/Chapter 3/The Painter.w"
     #define SPACED_RULE_PREFIX 3 
 
     
-#line 488 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 495 "inweb/literate-module/Chapter 3/The Painter.w"
     #define OPTIONALLY_SPACED_RULE_PREFIX 4 
 
     
-#line 489 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 496 "inweb/literate-module/Chapter 3/The Painter.w"
     #define UNSPACED_RULE_SUFFIX 5 
 
     
-#line 490 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 497 "inweb/literate-module/Chapter 3/The Painter.w"
     #define SPACED_RULE_SUFFIX 6 
 
     
-#line 491 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 498 "inweb/literate-module/Chapter 3/The Painter.w"
     #define OPTIONALLY_SPACED_RULE_SUFFIX 7 
 
     
@@ -6339,18 +6339,6 @@ typedef struct inweb_operand {
 	struct pathname *P;
 } inweb_operand;
 typedef uintptr_t pointer_sized_int;
-#ifdef PLATFORM_POSIX
-typedef pthread_t foundation_thread;
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_POSIX
-typedef pthread_attr_t foundation_thread_attributes;
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_WINDOWS
-typedef HANDLE foundation_thread;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-typedef struct Win32_Thread_Attrs
-#endif /* PLATFORM_WINDOWS */
 typedef void (*writer_function)(text_stream *, char *, void *);
 typedef void (*writer_function_I)(text_stream *, char *, int);
 typedef void (*log_function)(text_stream *, void *);
@@ -6373,12 +6361,6 @@ char * Platform__getenv(const char *name) ;
 #line 116 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
 void  Platform__where_am_i(inchar32_t *p, size_t length) ;
 #endif /* PLATFORM_LINUX */
-#endif /* PLATFORM_POSIX */
-#ifdef PLATFORM_MACOS
-#ifdef PLATFORM_POSIX
-#line 145 "inweb/foundation-module/Chapter 1/POSIX Platforms.w"
-void  Platform__where_am_i(inchar32_t *p, size_t length) ;
-#endif /* PLATFORM_MACOS */
 #endif /* PLATFORM_POSIX */
 #ifdef PLATFORM_UNIX
 #ifdef PLATFORM_POSIX
@@ -6515,20 +6497,8 @@ int  Platform__get_core_count(void) ;
 int  Platform__is_folder_separator(inchar32_t c) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
-#line 46 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-char * Platform__getenv(const char *name) ;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
 #line 71 "inweb/foundation-module/Chapter 1/Windows Platform.w"
 void  Platform__where_am_i(inchar32_t *p, size_t length) ;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-#line 100 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-int  Platform__Win32_is_unix_cmd(const char* cmd) ;
-#endif /* PLATFORM_WINDOWS */
-#ifdef PLATFORM_WINDOWS
-#line 116 "inweb/foundation-module/Chapter 1/Windows Platform.w"
-int  Platform__system(const char *cmd) ;
 #endif /* PLATFORM_WINDOWS */
 #ifdef PLATFORM_WINDOWS
 #line 170 "inweb/foundation-module/Chapter 1/Windows Platform.w"
@@ -9314,23 +9284,23 @@ inchar32_t  Painter__flatten(programming_language *pl, inchar32_t col) ;
 int  Painter__syntax_colour(programming_language *pl, 	hash_table *HT, text_stream *matter, text_stream *colouring, int with_comments, 	int flatten) ;
 #line 206 "inweb/literate-module/Chapter 3/The Painter.w"
 void  Painter__syntax_colour_inner(programming_language *pl, 	hash_table *HT, text_stream *matter, text_stream *colouring, int from, int to) ;
-#line 364 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 371 "inweb/literate-module/Chapter 3/The Painter.w"
 int  Painter__identifier_at(programming_language *pl, 	text_stream *matter, text_stream *colouring, int i) ;
-#line 397 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 404 "inweb/literate-module/Chapter 3/The Painter.w"
 void  Painter__execute(hash_table *HT, colouring_language_block *block, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 478 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 485 "inweb/literate-module/Chapter 3/The Painter.w"
 void  Painter__execute_rule(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 494 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 501 "inweb/literate-module/Chapter 3/The Painter.w"
 int  Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to, int N) ;
-#line 558 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 565 "inweb/literate-module/Chapter 3/The Painter.w"
 void  Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter, 	text_stream *colouring, int from, int to) ;
-#line 585 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 592 "inweb/literate-module/Chapter 3/The Painter.w"
 linked_list * Painter__lines(filename *F) ;
-#line 607 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 614 "inweb/literate-module/Chapter 3/The Painter.w"
 void  Painter__text_file_helper(text_stream *text, text_file_position *tfp, void *state) ;
-#line 612 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 619 "inweb/literate-module/Chapter 3/The Painter.w"
 void  Painter__colour_file(programming_language *pl, filename *F, text_stream *to, text_stream *coloured) ;
-#line 644 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 651 "inweb/literate-module/Chapter 3/The Painter.w"
 int  Painter__parse_comment(programming_language *pl, 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) ;
 #line 32 "inweb/literate-module/Chapter 3/Language Methods.w"
 void  LanguageMethods__parse_types(ls_web *W, programming_language *pl) ;
@@ -18836,11 +18806,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C14";
+			char *svn = "9.0-beta+1C15";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "10 April 2026";
+			char *d = "12 April 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -54857,11 +54827,18 @@ void Painter__syntax_colour_inner(programming_language *pl,
 						base = 10; pass = TRUE;
 					}
 					break;
-				case 2: if ((c == '0') || (c == '1')) pass = TRUE; break;
-				case 8: if ((Characters__isdigit(c)) &&
-							(c != '8') && (c != '9')) pass = TRUE; break;
-				case 10: if (Characters__isdigit(c)) pass = TRUE; break;
-				case 16: if (Characters__isdigit(c)) pass = TRUE;
+				case 2:
+					if ((c == '0') || (c == '1')) pass = TRUE;
+					break;
+				case 8:
+					if ((Characters__isdigit(c)) &&
+						(c != '8') && (c != '9')) pass = TRUE;
+					break;
+				case 10:
+					if (Characters__isdigit(c)) pass = TRUE;
+					break;
+				case 16:
+					if (Characters__isdigit(c)) pass = TRUE;
 					inchar32_t d = Characters__tolower(c);
 					if ((d == 'a') || (d == 'b') || (d == 'c') ||
 						(d == 'd') || (d == 'e') || (d == 'f')) pass = TRUE;
@@ -54883,7 +54860,7 @@ void Painter__syntax_colour_inner(programming_language *pl,
 ;
 	
 {
-#line 388 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 395 "inweb/literate-module/Chapter 3/The Painter.w"
 	if (pl->program)
 		Painter__execute(HT, pl->program, matter, colouring, from, to, painter_count++);
 
@@ -54892,7 +54869,7 @@ void Painter__syntax_colour_inner(programming_language *pl,
 ;
 }
 
-#line 364 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 371 "inweb/literate-module/Chapter 3/The Painter.w"
 int Painter__identifier_at(programming_language *pl,
 	text_stream *matter, text_stream *colouring, int i) {
 	inchar32_t c = Str__get_at(matter, i);
@@ -54913,7 +54890,7 @@ int Painter__identifier_at(programming_language *pl,
 	return FALSE;
 }
 
-#line 397 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 404 "inweb/literate-module/Chapter 3/The Painter.w"
 void Painter__execute(hash_table *HT, colouring_language_block *block, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (block == NULL) internal_error("no block");
@@ -54992,14 +54969,14 @@ void Painter__execute(hash_table *HT, colouring_language_block *block, text_stre
 	DISCARD_TEXT(colouring_at_start)
 }
 
-#line 478 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 485 "inweb/literate-module/Chapter 3/The Painter.w"
 void Painter__execute_rule(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (Painter__satisfies(HT, rule, matter, colouring, from, to, N) == rule->sense)
 		Painter__follow(HT, rule, matter, colouring, from, to);
 }
 
-#line 494 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 501 "inweb/literate-module/Chapter 3/The Painter.w"
 int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to, int N) {
 	if (rule->number > 0) {
@@ -55061,14 +55038,14 @@ int Painter__satisfies(hash_table *HT, colouring_rule *rule, text_stream *matter
 	return TRUE;
 }
 
-#line 558 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 565 "inweb/literate-module/Chapter 3/The Painter.w"
 void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	text_stream *colouring, int from, int to) {
 	if (rule->execute_block)
 		Painter__execute(HT, rule->execute_block, matter, colouring, from, to, 0);
 	else if (rule->debug) 
 {
-#line 574 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 581 "inweb/literate-module/Chapter 3/The Painter.w"
 	PRINT("[%d, %d] text: ", from, to);
 	for (int i=from; i<=to; i++)
 		PUT_TO(STDOUT, Str__get_at(matter, i));
@@ -55078,7 +55055,7 @@ void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	PRINT("\n");
 
 }
-#line 562 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 569 "inweb/literate-module/Chapter 3/The Painter.w"
 
 	else {
 		if (rule->set_to_colour != NOT_A_COLOUR)
@@ -55090,7 +55067,7 @@ void Painter__follow(hash_table *HT, colouring_rule *rule, text_stream *matter,
 	}
 }
 
-#line 585 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 592 "inweb/literate-module/Chapter 3/The Painter.w"
 linked_list *Painter__lines(filename *F) {
 	linked_list *L = NEW_LINKED_LIST(text_stream);
 	TextFiles__read(F, FALSE, "unable to read file of textual extract", TRUE,
@@ -55145,7 +55122,7 @@ void Painter__colour_file(programming_language *pl, filename *F, text_stream *to
 	if (c > 0) { PUT_TO(to, '\n'); PUT_TO(coloured, NEWLINE_COLOUR); }
 }
 
-#line 644 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 651 "inweb/literate-module/Chapter 3/The Painter.w"
 int Painter__parse_comment(programming_language *pl,
 	text_stream *line, text_stream *part_before_comment, text_stream *part_within_comment) {
 	int q_mode = 0, c_mode = 0, non_white_space = FALSE, c_position = -1, c_end = -1;
@@ -55154,11 +55131,11 @@ int Painter__parse_comment(programming_language *pl,
 		switch (c_mode) {
 			case 0: 
 {
-#line 678 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 685 "inweb/literate-module/Chapter 3/The Painter.w"
 	switch (q_mode) {
 		case 0: 
 {
-#line 685 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 692 "inweb/literate-module/Chapter 3/The Painter.w"
 	if (!(Characters__is_whitespace(c))) non_white_space = TRUE;
 	if (c == Str__get_first_char(pl->string_literal)) q_mode = 2;
 	else if (c == Str__get_first_char(pl->character_literal)) q_mode = 1;
@@ -55181,52 +55158,52 @@ int Painter__parse_comment(programming_language *pl,
 	}
 
 }
-#line 679 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 686 "inweb/literate-module/Chapter 3/The Painter.w"
 ; break;
 		case 1: 
 {
-#line 707 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 714 "inweb/literate-module/Chapter 3/The Painter.w"
 	if (!(Characters__is_whitespace(c))) non_white_space = TRUE;
 	if (c == Str__get_first_char(pl->character_literal_escape)) i += 1;
 	if (c == Str__get_first_char(pl->character_literal)) q_mode = 0;
 	q_mode = 0;
 
 }
-#line 680 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 687 "inweb/literate-module/Chapter 3/The Painter.w"
 ; break;
 		case 2: 
 {
-#line 713 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 720 "inweb/literate-module/Chapter 3/The Painter.w"
 	if (!(Characters__is_whitespace(c))) non_white_space = TRUE;
 	if (c == Str__get_first_char(pl->string_literal_escape)) i += 1;
 	if (c == Str__get_first_char(pl->string_literal)) q_mode = 0;
 	q_mode = 0;
 
 }
-#line 681 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 688 "inweb/literate-module/Chapter 3/The Painter.w"
 ; break;
 	}
 
 }
-#line 650 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 657 "inweb/literate-module/Chapter 3/The Painter.w"
 ; break;
 			case 1: 
 {
-#line 675 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 682 "inweb/literate-module/Chapter 3/The Painter.w"
 	;
 
 }
-#line 651 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 658 "inweb/literate-module/Chapter 3/The Painter.w"
 ; break;
 			case 2: 
 {
-#line 670 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 677 "inweb/literate-module/Chapter 3/The Painter.w"
 	if (Str__includes_at(line, i, pl->multiline_comment_close)) {
 		c_mode = 0; c_end = i; i += Str__len(pl->multiline_comment_close) - 1;
 	}
 
 }
-#line 652 "inweb/literate-module/Chapter 3/The Painter.w"
+#line 659 "inweb/literate-module/Chapter 3/The Painter.w"
 ; break;
 		}
 	}
@@ -57897,7 +57874,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 10 April 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 12 April 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
