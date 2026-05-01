@@ -421,7 +421,8 @@ are not rendered here, they never will be.)
 
 @<Render Markdown@> =
 	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
-	MDRenderer::render_extended(OUT, (void *) trs->wv, C->content, C->variation, 0);
+	WRITE("%S", C->content);
+	//MDRenderer::render_extended(OUT, (void *) trs->wv, C->content, C->variation, 0);
 
 @<Render index@> =
 	if ((trs->wv) && (trs->wv->weave_web)) {
@@ -577,7 +578,7 @@ or DVI, only the middle one is.
 =
 void TeXWeaving::para_macro(text_stream *OUT, weave_order *wv, ls_paragraph *par, int defn) {
 	if (defn)
-		WRITE("|\\pdfdest num %d fit ",
+		WRITE("\\pdfdest num %d fit ",
 			par->allocation_id + 100);
 	else
 		WRITE("|\\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num %d ",
@@ -589,7 +590,7 @@ void TeXWeaving::para_macro(text_stream *OUT, weave_order *wv, ls_paragraph *par
 	TeXWeaving::change_colour_PDF(OUT, PLAIN_COLOUR, FALSE);
 	WRITE("$\\rangle$ ");
 	if (defn)
-		WRITE("$\\equiv$|");
+		WRITE("$\\equiv$");
 	else
 		WRITE("\\pdfendlink|");
 }
