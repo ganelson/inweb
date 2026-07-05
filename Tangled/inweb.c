@@ -18964,11 +18964,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C20";
+			char *svn = "9.0-beta+1C21";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "9 June 2026";
+			char *d = "5 July 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -58164,7 +58164,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 9 June 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 5 July 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
@@ -58642,11 +58642,11 @@ weave_order *Swarm__weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	weave_order *wv = NULL;
 	if (WebStructure__has_errors(W) == FALSE) {
 		CodeAnalysis__analyse_code(W);
+		wv = Swarm__order(context, CM, W, range, tag, pattern, R);
 		if (Conventions__get_int(W, SEARCH_ON_BODY_PAGES_LSCONVENTION)) {
 			text_stream *plugin_name = Patterns__get_search_plugin(wv->weave_web, wv->pattern);
 			if (Str__len(plugin_name) > 0) Swarm__ensure_plugin(wv, plugin_name);
 		}
-		wv = Swarm__order(context, CM, W, range, tag, pattern, R);
 		Swarm__order_destination(wv, to, into);
 		Weaver__weave(wv);
 		Patterns__post_process(wv->pattern, wv);

@@ -457,11 +457,11 @@ weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	weave_order *wv = NULL;
 	if (WebStructure::has_errors(W) == FALSE) {
 		CodeAnalysis::analyse_code(W);
+		wv = Swarm::order(context, CM, W, range, tag, pattern, R);
 		if (Conventions::get_int(W, SEARCH_ON_BODY_PAGES_LSCONVENTION)) {
 			text_stream *plugin_name = Patterns::get_search_plugin(wv->weave_web, wv->pattern);
 			if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
 		}
-		wv = Swarm::order(context, CM, W, range, tag, pattern, R);
 		Swarm::order_destination(wv, to, into);
 		Weaver::weave(wv);
 		Patterns::post_process(wv->pattern, wv);
