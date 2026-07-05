@@ -53,13 +53,11 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.slide_number = -1;
 	hrs.slide_of = -1;
 	hrs.para_to_open = NULL;
-	hrs.copy_rule = Assets::new_rule(NULL, I"", I"privately copy", NULL);
+	hrs.copy_rule = Assets::simple_private_copy();
 
 	Swarm::ensure_plugin(wv, I"Base");
 	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
-
-	wv->current_weave_file = into;
-	wv->carousel_number = 1;
+	Swarm::begin_file(wv, into);
 
 	return hrs;
 }
@@ -71,6 +69,7 @@ ePub respectively:
 void HTMLWeaving::render(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
 	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
 	HTML::declare_as_HTML(OUT, FALSE);
+	C->wv->current_insertion_points[BODY_WEAVEINSCRIPTION] = Str::len(OUT);
 	HTML_render_state hrs = HTMLWeaving::initial_state(OUT, C->wv, FALSE, C->wv->weave_to);
 	Trees::traverse_from(tree->root, &HTMLWeaving::render_visit, (void *) &hrs, 0);
 	HTML::completed(OUT);
@@ -164,33 +163,42 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	if (hrs->EPUB_flag == FALSE) {
 		weave_section_header_node *C =
 			RETRIEVE_POINTER_weave_section_header_node(N->content);
-		Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
-		HTML_OPEN_WITH("div", "class=\"breadcrumbs\"");
-		HTML_OPEN_WITH("ul", "class=\"crumbs\"");
-		Colonies::drop_initial_breadcrumbs(OUT, hrs->wv->weave_colony,
-			hrs->wv->weave_to, hrs->wv->breadcrumbs);
-		text_stream *bct = Bibliographic::get_datum(hrs->wv->weave_web, I"Title");
-		if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title")) > 0)
-			bct = Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title");
-		if (hrs->wv->self_contained == FALSE) {
-			Colonies::write_breadcrumb(OUT, bct, hrs->wv->home_leaf);
-			if (hrs->wv->weave_web->chaptered) {
-				TEMPORARY_TEXT(chapter_link)
-				WRITE_TO(chapter_link, "%S#%s%S",
-					hrs->wv->home_leaf,
-					(WeavingDetails::get_as_ebook(hrs->wv->weave_web))?"C":"",
-					C->sect->owning_chapter->ch_range);
-				Colonies::write_breadcrumb(OUT,
-					C->sect->owning_chapter->ch_title, chapter_link);
-				DISCARD_TEXT(chapter_link)
-			}
-			Colonies::write_breadcrumb(OUT, C->sect->sect_title, NULL);
-		} else {
-			Colonies::write_breadcrumb(OUT, bct, NULL);
-		}
-		HTML_CLOSE("ul");
-		HTML_CLOSE("div");
+		@<Render breadcrumb trail@>;
+		@<Render search box@>;
 	}
+
+@<Render breadcrumb trail@> =
+	Swarm::ensure_plugin(hrs->wv, I"Breadcrumbs");
+	HTML_OPEN_WITH("div", "class=\"breadcrumbs\"");
+	HTML_OPEN_WITH("ul", "class=\"crumbs\"");
+	Colonies::drop_initial_breadcrumbs(OUT, hrs->wv->weave_colony,
+		hrs->wv->weave_to, hrs->wv->breadcrumbs);
+	text_stream *bct = Bibliographic::get_datum(hrs->wv->weave_web, I"Title");
+	if (Str::len(Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title")) > 0)
+		bct = Bibliographic::get_datum(hrs->wv->weave_web, I"Short Title");
+	if (hrs->wv->self_contained == FALSE) {
+		Colonies::write_breadcrumb(OUT, bct, hrs->wv->home_leaf);
+		if (hrs->wv->weave_web->chaptered) {
+			TEMPORARY_TEXT(chapter_link)
+			WRITE_TO(chapter_link, "%S#%s%S",
+				hrs->wv->home_leaf,
+				(WeavingDetails::get_as_ebook(hrs->wv->weave_web))?"C":"",
+				C->sect->owning_chapter->ch_range);
+			Colonies::write_breadcrumb(OUT,
+				C->sect->owning_chapter->ch_title, chapter_link);
+			DISCARD_TEXT(chapter_link)
+		}
+		Colonies::write_breadcrumb(OUT, C->sect->sect_title, NULL);
+	} else {
+		Colonies::write_breadcrumb(OUT, bct, NULL);
+	}
+	HTML_CLOSE("ul");
+	HTML_CLOSE("div");
+
+@ This in fact marks the position where a search box is normally placed:
+
+@<Render search box@> =
+	hrs->wv->current_insertion_points[SEARCH_BOX_WEAVEINSCRIPTION] = Str::len(OUT);
 
 @<Render footer@> =
 	weave_section_footer_node *C =
@@ -354,8 +362,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	filename *RF = Filenames::from_text(C->figname);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	HTML::image_to_dimensions(OUT, RF, C->alt_text, C->w, C->h);
-	Assets::include_asset(OUT, hrs->copy_rule, hrs->wv->weave_web, F, NULL,
-		hrs->wv->pattern, hrs->wv->weave_to, hrs->wv->reportage, hrs->wv->weave_colony);
+	Assets::include_asset(OUT, hrs->copy_rule, F, NULL, hrs->wv);
 	HTML_CLOSE("p");
 	WRITE("\n");
 
@@ -373,7 +380,7 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 
 @<Render download@> =
 	weave_download_node *C = RETRIEVE_POINTER_weave_download_node(N->content);
-	HTMLWeaving::render_download(OUT, hrs->wv, C->download_name, C->filetype, hrs->into_file);
+	HTMLWeaving::render_download(OUT, hrs->wv, C->download_name, C->filetype);
 
 @<Render material@> =
 	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
@@ -510,7 +517,7 @@ that service uses to identify the video/audio in question.
 
 @<Render embed@> =
 	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	HTMLWeaving::render_embedding(OUT, hrs->wv, C->ID, C->service, C->w, C->h, hrs->into_file);
+	HTMLWeaving::render_embedding(OUT, hrs->wv, C->ID, C->service, C->w, C->h);
 
 @<Render holon usage@> =
 	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
@@ -889,9 +896,8 @@ void HTMLWeaving::notify_image(weave_order *wv, text_stream *image) {
 	filename *F = Filenames::in(
 		Pathnames::down(wv->weave_web->path_to_web, I"Figures"),
 		image);
-	Assets::include_asset(NULL, Assets::new_rule(NULL, I"", I"privately copy", NULL),
-		wv->weave_web, F, NULL,
-		wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
+	asset_rule *R = Assets::simple_private_copy();
+	Assets::include_asset(NULL, R, F, NULL, wv);
 }
 
 @ The necessary escapes for the use of the MathJax plugin.
@@ -1118,7 +1124,7 @@ int HTMLWeaving::render_text_as_image(OUTPUT_STREAM, int mode, weave_order *wv,
 		return TRUE;
 	}
 	if (Regexp::match(&mr, desc, U"download: (%c+)")) {
-		HTMLWeaving::render_download(OUT, wv, path, mr.exp[0], wv->current_weave_file);
+		HTMLWeaving::render_download(OUT, wv, path, mr.exp[0]);
 		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
@@ -1152,28 +1158,28 @@ int HTMLWeaving::render_text_as_image(OUTPUT_STREAM, int mode, weave_order *wv,
 	}
 	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio")) ||
 		(Regexp::match(&mr, desc, U"embedded (%c+) video"))) {
- 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], 0, 0, wv->current_weave_file);
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], 0, 0);
  		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
 	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio at (%d+) by (%d+)")) ||
 		(Regexp::match(&mr, desc, U"embedded (%c+) video at (%d+) by (%d+)"))) {
 		int w = Str::atoi(mr.exp[1], 0), h = Str::atoi(mr.exp[2], 0);
- 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h, wv->current_weave_file);
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h);
  		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
 	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio at height (%d+)")) ||
 		(Regexp::match(&mr, desc, U"embedded (%c+) video at height (%d+)"))) {
 		int w = 0, h = Str::atoi(mr.exp[1], 0);
- 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h, wv->current_weave_file);
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h);
  		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
 	if ((Regexp::match(&mr, desc, U"embedded (%c+) audio at width (%d+)")) ||
 		(Regexp::match(&mr, desc, U"embedded (%c+) video at width (%d+)"))) {
 		int w = Str::atoi(mr.exp[1], 0), h = 0;
- 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h, wv->current_weave_file);
+ 		HTMLWeaving::render_embedding(OUT, wv, path, mr.exp[0], w, h);
  		Regexp::dispose_of(&mr);
 		return TRUE;
 	}
@@ -1187,7 +1193,7 @@ int HTMLWeaving::render_text_as_image(OUTPUT_STREAM, int mode, weave_order *wv,
 }
 
 void HTMLWeaving::render_download(OUTPUT_STREAM, weave_order *wv, text_stream *download_name,
-	text_stream *filetype, filename *into_file) {
+	text_stream *filetype) {
 	pathname *P = Pathnames::down(wv->weave_web->path_to_web, I"Downloads");
 	filename *F = Filenames::in(P, download_name);
 	filename *TF = Patterns::find_file_in_subdirectory(wv->weave_web, wv->pattern, I"Embedding",
@@ -1196,10 +1202,8 @@ void HTMLWeaving::render_download(OUTPUT_STREAM, weave_order *wv, text_stream *d
 		WebErrors::issue_at(I"Downloads are not supported", wv->current_weave_line);
 	} else {
 		Swarm::ensure_plugin(wv, I"Downloads");
-		asset_rule *R = Assets::new_rule(NULL, I"", I"privately copy", NULL);
-		pathname *TOP =
-			Assets::include_asset(OUT, R, wv->weave_web, F, NULL,
-				wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
+		asset_rule *R = Assets::simple_private_copy();
+		pathname *TOP = Assets::include_asset(OUT, R, F, NULL, wv);
 		if (TOP == NULL) TOP = Filenames::up(F);
 		TEMPORARY_TEXT(url)
 		TEMPORARY_TEXT(size)
@@ -1214,8 +1218,7 @@ void HTMLWeaving::render_download(OUTPUT_STREAM, weave_order *wv, text_stream *d
 			Filenames::get_leafname(D));
 		Bibliographic::set_datum(wv->weave_web, I"File URL", url);
 		Bibliographic::set_datum(wv->weave_web, I"File Details", size);
-		Collater::for_web_and_pattern(OUT, wv->weave_web, wv->pattern,
-			TF, into_file, wv->weave_colony, wv->reportage);
+		Collater::collate(OUT, wv, TF);
 		WRITE("\n");
 		DISCARD_TEXT(url)
 		DISCARD_TEXT(size)
@@ -1259,9 +1262,8 @@ void HTMLWeaving::render_HTML_extract(OUTPUT_STREAM, weave_order *wv, text_strea
 void HTMLWeaving::render_HTML_player(OUTPUT_STREAM, weave_order *wv, text_stream *name, int audio, int w, int h) {
 	text_stream *subdir = (audio)?I"Audio":I"Video";
 	filename *F = Filenames::in(Pathnames::down(wv->weave_web->path_to_web, subdir), name);
-	asset_rule *R = Assets::new_rule(NULL, I"", I"privately copy", NULL);
-	Assets::include_asset(OUT, R, wv->weave_web, F, NULL,
-		wv->pattern, wv->weave_to, wv->reportage, wv->weave_colony);
+	asset_rule *R = Assets::simple_private_copy();
+	Assets::include_asset(OUT, R, F, NULL, wv);
 	HTML_OPEN_WITH("p", "class=\"center-p\"");
 	if (audio) {
 		WRITE("<audio controls>\n");
@@ -1286,7 +1288,7 @@ void HTMLWeaving::render_HTML_player(OUTPUT_STREAM, weave_order *wv, text_stream
 }
 	
 void HTMLWeaving::render_embedding(OUTPUT_STREAM, weave_order *wv, text_stream *ID,
-	text_stream *service, int w, int h, filename *into_file) {
+	text_stream *service, int w, int h) {
 	if (w == 0) w = 720;
 	if (h == 0) h = 405;
 	TEMPORARY_TEXT(CW)
@@ -1303,8 +1305,7 @@ void HTMLWeaving::render_embedding(OUTPUT_STREAM, weave_order *wv, text_stream *
 		Bibliographic::set_datum(wv->weave_web, I"Content Width", CW);
 		Bibliographic::set_datum(wv->weave_web, I"Content Height", CH);
 		HTML_OPEN_WITH("p", "class=\"center-p\"");
-		Collater::for_web_and_pattern(OUT, wv->weave_web, wv->pattern,
-			F, into_file, wv->weave_colony, wv->reportage);
+		Collater::collate(OUT, wv, F);
 		HTML_CLOSE("p");
 		WRITE("\n");
 	}

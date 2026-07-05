@@ -574,8 +574,8 @@ void JSON::encode(OUTPUT_STREAM, JSON_value *J) {
 	}
 }
 
-@ Note that we elect not to escape the slash character, or any Unicode code
-points above 32.
+@ Note that we escape quotation marks and backslashes, but otherwise escape
+as few characters as possible above 32.
 
 =
 void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
@@ -588,6 +588,7 @@ void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
 			case 10: WRITE("\\n"); break;
 			case 12: WRITE("\\f"); break;
 			case 13: WRITE("\\r"); break;
+			case '"': WRITE("\\\""); break;
 			default:
 				if (Characters::iscntrl(c)) WRITE("\\u%04x", (int)c);
 				else PUT(c);

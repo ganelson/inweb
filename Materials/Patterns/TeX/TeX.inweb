@@ -2,6 +2,6 @@ Pattern "TeX" {
 	format: TeX
 	plugin: Base
 	assets
-		embed .tex files
+		.tex files: embed file
 	end
 }

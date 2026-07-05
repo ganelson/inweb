@@ -2,24 +2,24 @@
 <html>
 	<head>
 		<title>Conventions</title>
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
 
-<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+    <script src="../docs-assets/Bigfoot.js"></script>
+    <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
@@ -241,6 +241,18 @@ might be abbreviated <code>cim</code>. This affects leafnames of HTML files gene
 weaving, and also how some commands like <code>inweb weave guide -only cim</code> are read.
 If <code>sections are numbered sequentially</code> is used, sections are instead abbreviated
 <code>s1</code>, <code>s2</code>, <code>s3</code> and so on. Generically, <code>sections are not numbered sequentially</code>.</p>
+</li>
+<li>
+<p><code>search box on section pages</code> or <code>no search box on section pages</code>.
+Affects only weaving, and only if the pattern provides a search plugin (as <code>HTML</code>,
+and all patterns derived from it, do). This places a search box on every page of
+woven code, just under the breadcrumbs. Generically, <code>no search box on section pages</code>.</p>
+</li>
+<li>
+<p><code>search box on index page</code> or <code>no search box on index page</code>.
+Affects only weaving, and only if the pattern provides a search plugin (as <code>HTML</code>,
+and all patterns derived from it, do). This places a search box on the index (i.e.,
+contents) page of a web, just under the breadcrumbs. Generically, <code>search box on index page</code>.</p>
 </li>
 </ul>
 <h2>Conventions affecting tangling</h2>

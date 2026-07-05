@@ -21,6 +21,7 @@ classdef ls_pattern {
 
 	struct text_stream *mathematics_plugin; /* name only, not a `ls_pattern *` */
 	struct text_stream *footnotes_plugin; /* name only, not a `ls_pattern *` */
+	struct text_stream *search_plugin; /* name only, not a `ls_pattern *` */
 
 	struct text_stream *initial_extension; /* filename extension, that is */
 	struct linked_list *post_commands; /* of `text_stream` */
@@ -33,7 +34,7 @@ classdef ls_pattern {
 	
 	int assets_mode;
 	int commands_mode;
-	struct text_stream *pending;
+	struct asset_rule *pending_rule;
 	struct text_stream *pending_command;
 	int pending_lines;
 }
@@ -114,16 +115,17 @@ void Patterns::parse_declaration(wcl_declaration *D) {
 	wp->plugins = NEW_LINKED_LIST(weave_plugin);
 	wp->colour_schemes = NEW_LINKED_LIST(colour_scheme);
 	wp->based_on_name = NULL;
-	wp->asset_rules = Assets::new_asset_rules_list();
+	wp->asset_rules = NEW_LINKED_LIST(asset_rule);
 	wp->footnotes_plugin = NULL;
 	wp->mathematics_plugin = NULL;
+	wp->search_plugin = NULL;
 	wp->default_range = NULL;
 	wp->initial_extension = NULL;
 	wp->post_commands = NEW_LINKED_LIST(text_stream);
 	wp->blocked_templates = NEW_LINKED_LIST(text_stream);
 	wp->assets_mode = FALSE;
 	wp->commands_mode = FALSE;
-	wp->pending = NULL;
+	wp->pending_rule = NULL;
 	wp->pending_command = NULL;
 	wp->pending_lines = 0;
 
@@ -204,6 +206,15 @@ text_stream *Patterns::get_footnotes_plugin(ls_web *W, ls_pattern *wp) {
 	return wp->footnotes_plugin;
 }
 
+text_stream *Patterns::get_search_plugin(ls_web *W, ls_pattern *wp) {
+	if (wp == NULL) return NULL;
+	if (Str::len(wp->search_plugin) == 0) {
+		ls_pattern *basis = Patterns::basis(W->declaration, wp);
+		if (basis) return Patterns::get_search_plugin(W, basis);
+	}
+	return wp->search_plugin;
+}
+
 ls_pattern *Patterns::basis(wcl_declaration *D, ls_pattern *wp) {
 	if ((wp) && (Str::len(wp->based_on_name) > 0))
 		return Patterns::find(D, wp->based_on_name);
@@ -224,8 +235,26 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	match_results mr = Regexp::create_mr();
 	if (wp->pending_command) {
 		if (Str::eq_insensitive(line, I"}")) {
-			Assets::add_asset_rule(wp->asset_rules, wp->pending, wp->pending_command, tfp);
+			if (Assets::add_text_to_rule(wp->pending_rule, wp->pending_command) == FALSE)
+				Errors::in_text_file("unexpected braced text in asset rule", tfp);
+			wp->pending_rule = NULL;
 			wp->pending_command = NULL;
+		} else if (Regexp::match(&mr, line, U"} and (%c+) {")) {
+			if (Assets::add_text_to_rule(wp->pending_rule, wp->pending_command) == FALSE)
+				Errors::in_text_file("unexpected braced text in asset rule", tfp);
+			wp->pending_command = NULL;
+			int blocky = TRUE;
+			asset_disposition *D = wp->pending_rule->disposition;
+			text_stream *to_do = mr.exp[0];
+			@<Parse into disposition@>;
+		} else if (Regexp::match(&mr, line, U"} and (%c+)")) {
+			if (Assets::add_text_to_rule(wp->pending_rule, wp->pending_command) == FALSE)
+				Errors::in_text_file("unexpected braced text in asset rule", tfp);
+			wp->pending_command = NULL;
+			int blocky = FALSE;
+			asset_disposition *D = wp->pending_rule->disposition;
+			text_stream *to_do = mr.exp[0];
+			@<Parse into disposition@>;
 		} else {
 			if (wp->pending_lines++ > 0) WRITE_TO(wp->pending_command, "\n");
 			WRITE_TO(wp->pending_command, "%S", line);
@@ -234,23 +263,21 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 		if (Str::eq_insensitive(line, I"end")) {
 			wp->assets_mode = FALSE;
 		} else {
+			int blocky = NOT_APPLICABLE;
 			match_results mr2 = Regexp::create_mr();
-			if (Regexp::match(&mr2, line, U"(%c+) (.%C+?) files")) {
-				Assets::add_asset_rule(wp->asset_rules, mr2.exp[1], mr2.exp[0], tfp);
-			} else if (Regexp::match(&mr2, line, U"for each (.%C+?) file (%c+) {")) {
-				wp->pending = Str::duplicate(mr2.exp[0]);
-				wp->pending_command = Str::new();
-				if (Str::eq_insensitive(mr2.exp[1], I"prefix")) 
-					WRITE_TO(wp->pending_command, "prefix = ");
-				if (Str::eq_insensitive(mr2.exp[1], I"suffix")) 
-					WRITE_TO(wp->pending_command, "suffix = ");
-				if (Str::eq_insensitive(mr2.exp[1], I"embed")) 
-					WRITE_TO(wp->pending_command, "prefix = ");
-				if (Str::len(wp->pending_command) == 0)
-					Errors::in_text_file("action must be 'prefix', 'suffix' or 'embed'", tfp);
-				wp->pending_lines = 0;
-			} else {
-				Errors::in_text_file("line in assets block not recognised", tfp);
+			if (Regexp::match(&mr2, line, U"(%c+) *: *(%c+) {")) blocky = TRUE;
+			else if (Regexp::match(&mr2, line, U"(%c+) *: *(%c+)")) blocky = FALSE;
+			else Errors::in_text_file("assets rule must take the form 'selector: disposition'", tfp);
+			if (blocky != NOT_APPLICABLE) {
+				asset_selector *S = Assets::parse_selector(mr2.exp[0], tfp);
+				text_stream *to_do = mr2.exp[1];
+				if (S) {
+					asset_disposition *D = Assets::new_disposition();
+					asset_rule *R = Assets::new_rule(S, D);
+					Assets::add_asset_rule(wp->asset_rules, R, tfp);
+					@<Parse into disposition@>;
+					if (blocky) wp->pending_rule = R;
+				}
 			}
 			Regexp::dispose_of(&mr2);
 		}
@@ -283,6 +310,8 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 				wp->initial_extension = Str::duplicate(value);
 			} else if (Str::eq_insensitive(key, I"mathematics plugin")) {
 				wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
+			} else if (Str::eq_insensitive(key, I"search plugin")) {
+				wp->search_plugin = Patterns::plugin_name(value, tfp);
 			} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
 				wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
 			} else if (Str::eq_insensitive(key, I"block template")) {
@@ -296,6 +325,22 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 	}
 	Regexp::dispose_of(&mr);
 }
+
+@<Parse into disposition@> =
+	TEMPORARY_TEXT(actions)
+	WRITE_TO(actions, "%S", to_do);
+	match_results mr3 = Regexp::create_mr();
+	while (Regexp::match(&mr3, actions, U"(%c+?) and (%c+)")) {
+		Assets::parse_disposition(D, mr3.exp[0], tfp);
+		Str::clear(actions);
+		WRITE_TO(actions, "%S", mr3.exp[1], tfp);
+	}
+	Regexp::dispose_of(&mr3);
+	Assets::parse_disposition(D, actions, tfp);
+	if (blocky) {
+		wp->pending_command = Str::new();
+		wp->pending_lines = 0;
+	}
 
 @ =
 int Patterns::yes_or_no(text_stream *arg, text_file_position *tfp) {
@@ -393,14 +438,13 @@ filename *Patterns::find_file_in_subdirectory(ls_web *W, ls_pattern *pattern,
 }
 
 @ =
-void Patterns::include_plugins(OUTPUT_STREAM, ls_web *W, ls_pattern *pattern,
-	filename *from, weave_reporting *R, ls_colony *context) {
-	for (ls_pattern *p = pattern; p; p = Patterns::basis(W->declaration, p)) {
+void Patterns::include_plugins(OUTPUT_STREAM, weave_order *wv) {
+	for (ls_pattern *p = wv->pattern; p; p = Patterns::basis(wv->weave_web->declaration, p)) {
 		weave_plugin *wp;
 		LOOP_OVER_LINKED_LIST(wp, weave_plugin, p->plugins)
-			Assets::include_plugin(OUT, W, wp, pattern, from, R, context);
+			Assets::include_plugin(OUT, wp, wv);
 		colour_scheme *cs;
 		LOOP_OVER_LINKED_LIST(cs, colour_scheme, p->colour_schemes)
-			Assets::include_colour_scheme(OUT, W, cs, pattern, from, R, context);
+			Assets::include_colour_scheme(OUT, cs, wv);
 	}
 }

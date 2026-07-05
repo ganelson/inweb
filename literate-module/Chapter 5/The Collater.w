@@ -13,31 +13,32 @@ fact, except for the slightly unusual way that loop variables provide context
 by changing the subject of what is discussed rather than by being accessed
 directly.
 
-For convenience, we provide three ways to call:
+Collation always takes place under the umbrella of a specific weave order, and
+begins with a call to this front-end: the content in `template_filename` is
+collated into `OUT` in the context of `wv`. The output material will eventually
+be used in the file `wv->current_weave_file`, and we need that to be known so
+that any links used can correctly be directed.
 
 =
-void Collater::for_web_and_pattern(text_stream *OUT, ls_web *W,
-	ls_pattern *pattern, filename *F, filename *into, ls_colony *context,
-	weave_reporting *R) {
-	Collater::collate(OUT, W, I"", F, NULL, pattern, NULL, NULL, NULL, into, context, R);
+void Collater::collate(text_stream *OUT, weave_order *wv, filename *template_filename) {
+	if (wv == NULL) internal_error("collation without weave order");
+	if (wv->current_weave_file == NULL) internal_error("weave order has no file context");
+	Collater::collate_r(OUT, wv, template_filename, NULL);
 }
 
-void Collater::for_order(text_stream *OUT, weave_order *wv,
-	filename *F, filename *into, ls_colony *context, weave_reporting *R) {
-	Collater::collate(OUT, wv->weave_web, wv->weave_range, F, NULL, wv->pattern,
-		wv->navigation, wv->breadcrumbs, wv, into, context, R);
-}
+@ That then makes recursive use of this function, which should not otherwise
+be called. Note that it can take input either from a template file, or from a
+WCL declaration (an ability we need in order to collate Navigation links).
 
-void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
-	filename *template_filename, wcl_declaration *template_wcl,
-	ls_pattern *pattern, wcl_declaration *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context,
-	weave_reporting *R) {
-	collater_state actual_ies =
-		Collater::initial_state(W, range, template_filename, template_wcl, pattern, 
-			nav_file, crumbs, wv, into, context, R);
-	collater_state *ies = &actual_ies;
-	Collater::process(OUT, ies);
+=
+void Collater::collate_r(text_stream *OUT, weave_order *wv,
+	filename *template_filename, wcl_declaration *template_wcl) {
+	int inps = 0;
+	if (template_filename) inps++;
+	if (template_wcl) inps++;
+	if (inps != 1) internal_error("exactly one input source should be supplied");
+	collater_state state = Collater::initial_state(template_filename, template_wcl, wv);
+	Collater::process(OUT, &state);
 }
 
 @ The current state of the processor is recorded in the following.
@@ -49,8 +50,7 @@ void Collater::collate(text_stream *OUT, ls_web *W, text_stream *range,
 
 =
 classdef collater_state {
-	struct ls_colony *context;
-	struct ls_web *for_web;
+	struct weave_order *wv;
 	struct text_stream *tlines[MAX_TEMPLATE_LINES];
 	int no_tlines;
 	int repeat_stack_level[CI_STACK_CAPACITY];
@@ -58,16 +58,10 @@ classdef collater_state {
 	struct linked_list_item *repeat_stack_threshold[CI_STACK_CAPACITY];
 	int repeat_stack_startpos[CI_STACK_CAPACITY];
 	int sp; /* And this is our stack pointer for tracking of loops */
-	struct text_stream *restrict_to_range;
-	struct ls_pattern *nav_pattern;
-	struct wcl_declaration *nav_file;
-	struct linked_list *crumbs;
 	int inside_navigation_submenu;
 	struct filename *errors_at;
-	struct weave_order *wv;
 	struct filename *into_file;
 	struct linked_list *modules; /* of `ls_module` */
-	struct weave_reporting *reportage;
 } collater_state;
 
 @ Note the unfortunate maximum size limit on the template file. It means
@@ -75,29 +69,17 @@ that really humungous Javascript files in plugins might have trouble, though
 if so, they can always be subdivided.
 
 =
-collater_state Collater::initial_state(ls_web *W, text_stream *range,
-	filename *template_filename, wcl_declaration *template_wcl,
-	ls_pattern *pattern, wcl_declaration *nav_file,
-	linked_list *crumbs, weave_order *wv, filename *into, ls_colony *context,
-	weave_reporting *R) {
+collater_state Collater::initial_state(filename *template_filename, wcl_declaration *template_wcl,
+	weave_order *wv) {
 	collater_state cls;
+	cls.wv = wv;
 	cls.no_tlines = 0;
-	cls.restrict_to_range = Str::duplicate(range);
 	cls.sp = 0;
 	cls.inside_navigation_submenu = FALSE;
-	cls.for_web = W;
-	cls.nav_pattern = pattern;
-	cls.nav_file = nav_file;
-	cls.crumbs = crumbs;
 	cls.errors_at = template_filename;
-	cls.wv = wv;
-	cls.into_file = into;
 	cls.modules = NEW_LINKED_LIST(ls_module);
-	cls.context = context;
-	cls.reportage = R;
-	if ((context == NULL) && (wv)) cls.context = wv->weave_colony;
-	if (W) {
-		int c = LinkedLists::len(W->main_module->dependencies);
+	if (wv->weave_web) {
+		int c = LinkedLists::len(wv->weave_web->main_module->dependencies);
 		if (c > 0) @<Form the list of imported modules@>;
 	}
 	if (template_wcl) @<Read in the WCL declaration as lines@>
@@ -109,9 +91,9 @@ collater_state Collater::initial_state(ls_web *W, text_stream *range,
 	ls_module **module_array = 
 		Memory::calloc(c, sizeof(ls_module *), ARRAY_SORTING_MREASON);
 	ls_module *M; int d=0;
-	LOOP_OVER_LINKED_LIST(M, ls_module, W->main_module->dependencies)
+	LOOP_OVER_LINKED_LIST(M, ls_module, wv->weave_web->main_module->dependencies)
 		module_array[d++] = M;
-	Collater::sort_web(W);
+	Collater::sort_web(wv->weave_web);
 	qsort(module_array, (size_t) c, sizeof(ls_module *), Collater::sort_comparison);
 	for (int d=0; d<c; d++) ADD_TO_LINKED_LIST(module_array[d], ls_module, cls.modules);
 	Memory::I7_free(module_array, ARRAY_SORTING_MREASON, c*((int) sizeof(ls_module *)));
@@ -209,14 +191,14 @@ chapter as its value during the sole iteration.
 	if (Regexp::match(&mr, command, U"Select (%c*)")) {
 		ls_chapter *C;
 		ls_section *S;
-		LOOP_OVER_LINKED_LIST(C, ls_chapter, cls->for_web->chapters)
+		LOOP_OVER_LINKED_LIST(C, ls_chapter, cls->wv->weave_web->chapters)
 			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 				if (Str::eq(WebRanges::of(S), mr.exp[0])) {
 					Collater::start_CI_loop(cls, SECTION_LEVEL, S_item, S_item, lpos);
 					Regexp::dispose_of(&mr);
 					goto CYCLE;
 				}
-		LOOP_OVER_LINKED_LIST(C, ls_chapter, cls->for_web->chapters)
+		LOOP_OVER_LINKED_LIST(C, ls_chapter, cls->wv->weave_web->chapters)
 			if (Str::eq(C->ch_range, mr.exp[0])) {
 				Collater::start_CI_loop(cls, CHAPTER_LEVEL, C_item, C_item, lpos);
 				Regexp::dispose_of(&mr);
@@ -235,14 +217,14 @@ chapter as its value during the sole iteration.
 		text_stream *condition = mr.exp[0];
 		int level = IF_FALSE_LEVEL;
 		if (Str::eq(condition, I"Chapters")) {
-			if (cls->for_web->chaptered) level = IF_TRUE_LEVEL;
+			if (cls->wv->weave_web->chaptered) level = IF_TRUE_LEVEL;
 		} else if (Str::eq(condition, I"Modules")) {
 			if (LinkedLists::len(cls->modules) > 0)
 				level = IF_TRUE_LEVEL;
 		} else if (Str::eq(condition, I"Module Page")) {
 			ls_module *M = CONTENT_IN_ITEM(
 				Collater::heading_topmost_on_stack(cls, MODULE_LEVEL), ls_module);
-			if ((M) && (Colonies::find(cls->context, M->module_name)))
+			if ((M) && (Colonies::find(cls->wv->weave_colony, M->module_name)))
 				level = IF_TRUE_LEVEL;
 		} else if (Str::eq(condition, I"Module Purpose")) {
 			ls_module *M = CONTENT_IN_ITEM(
@@ -265,7 +247,7 @@ chapter as its value during the sole iteration.
 				Collater::heading_topmost_on_stack(cls, SECTION_LEVEL), ls_section);
 			if (Str::len(LiterateSource::unit_purpose(S->literate_source)) > 0) level = IF_TRUE_LEVEL;
 		} else if (Str::eq(condition, I"Navigation")) {
-			if (cls->nav_file) level = IF_TRUE_LEVEL;
+			if (cls->wv->navigation) level = IF_TRUE_LEVEL;
 		} else {
 			Errors::at_position("don't recognise the condition",
 				cls->errors_at, lpos);
@@ -304,7 +286,7 @@ chapter as its value during the sole iteration.
 	if (Regexp::match(&mr, command, U"Repeat Section")) loop_level = SECTION_LEVEL;
 	if (loop_level != 0) {
 		linked_list_item *from = NULL, *to = NULL;
-		linked_list_item *CI = FIRST_ITEM_IN_LINKED_LIST(chapter, cls->for_web->chapters);
+		linked_list_item *CI = FIRST_ITEM_IN_LINKED_LIST(chapter, cls->wv->weave_web->chapters);
 		while ((CI) && (CONTENT_IN_ITEM(CI, ls_chapter)->imported))
 			CI = NEXT_ITEM_IN_LINKED_LIST(CI, ls_chapter);
 		if (loop_level == MODULE_LEVEL) @<Begin a module repeat@>;
@@ -320,11 +302,11 @@ chapter as its value during the sole iteration.
 
 @<Begin a chapter repeat@> =
 	from = CI;
-	to = LAST_ITEM_IN_LINKED_LIST(chapter, cls->for_web->chapters);
-	if (Str::eq_wide_string(cls->restrict_to_range, U"0") == FALSE) {
+	to = LAST_ITEM_IN_LINKED_LIST(chapter, cls->wv->weave_web->chapters);
+	if (Str::eq(cls->wv->weave_range, I"0") == FALSE) {
 		ls_chapter *C;
-		LOOP_OVER_LINKED_LIST(C, ls_chapter, cls->for_web->chapters)
-			if (Str::eq(C->ch_range, cls->restrict_to_range)) {
+		LOOP_OVER_LINKED_LIST(C, ls_chapter, cls->wv->weave_web->chapters)
+			if (Str::eq(C->ch_range, cls->wv->weave_range)) {
 				from = C_item; to = from;
 				break;
 			}
@@ -339,7 +321,7 @@ chapter as its value during the sole iteration.
 			ls_chapter *C = CONTENT_IN_ITEM(CI, ls_chapter);
 			from = FIRST_ITEM_IN_LINKED_LIST(ls_section, C->sections);
 		}
-		ls_chapter *LC = LAST_IN_LINKED_LIST(ls_chapter, cls->for_web->chapters);
+		ls_chapter *LC = LAST_IN_LINKED_LIST(ls_chapter, cls->wv->weave_web->chapters);
 		if (LC) to = LAST_ITEM_IN_LINKED_LIST(ls_section, LC->sections);
 	} else {
 		from = FIRST_ITEM_IN_LINKED_LIST(ls_section, within_chapter->sections);
@@ -495,12 +477,16 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 		Str::substr(tail, Str::at(tl, spos+slen), Str::end(tl));
 
 		match_results mr = Regexp::create_mr();
-		if (Bibliographic::data_exists(cls->for_web, varname)) {
-			WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->for_web, varname));
+		if (Bibliographic::data_exists(cls->wv->weave_web, varname)) {
+			if (Str::eq(varname, I"Weave Content")) 
+				cls->wv->weave_content_position = Str::len(rewritten) + Str::len(OUT);
+			WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->wv->weave_web, varname));
 		} else if (Regexp::match(&mr, varname, U"Navigation")) {
 			@<Substitute Navigation@>;
 		} else if (Regexp::match(&mr, varname, U"Breadcrumbs")) {
 			@<Substitute Breadcrumbs@>;
+		} else if (Regexp::match(&mr, varname, U"Search Box")) {
+			@<Substitute Search Box@>;
 		} else if (Str::eq_wide_string(varname, U"Plugins")) {
 			@<Substitute Plugins@>;
 		} else if (Regexp::match(&mr, varname, U"Complete (%c+)")) {
@@ -550,9 +536,8 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 			@<Look for icon text@>;
 			@<Substitute a home Item@>;
 		} else if (Regexp::match(&mr, varname, U"Optional (%c+)")) {
-			if (Bibliographic::data_exists(cls->for_web, mr.exp[0])) {
-				WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->for_web, mr.exp[0]));
-			}
+			if (Bibliographic::data_exists(cls->wv->weave_web, mr.exp[0]))
+				WRITE_TO(substituted, "%S", Bibliographic::get_datum(cls->wv->weave_web, mr.exp[0]));
 		} else {
 			WRITE_TO(substituted, "%S", varname);
 			if (Regexp::match(&mr, varname, U"%i+%c*"))
@@ -574,10 +559,8 @@ used by the HTML renderer, would cause a modest-sized explosion on some pages.
 this will recursively call The Collater, in fact.
 
 @<Substitute Navigation@> =
-	if (cls->nav_file) {
-		Collater::collate(substituted, cls->for_web, cls->restrict_to_range,
-			NULL, cls->nav_file, cls->nav_pattern, NULL, NULL, cls->wv, cls->into_file,
-			cls->context, cls->reportage);
+	if (cls->wv->navigation) {
+		Collater::collate_r(substituted, cls->wv, NULL, cls->wv->navigation);
 	} else {
 		PRINT("Warning: no sidebar links will be generated, as -navigation is unset");
 	}
@@ -585,19 +568,21 @@ this will recursively call The Collater, in fact.
 @ A trail of breadcrumbs, used for overhead navigation in web pages.
 
 @<Substitute Breadcrumbs@> =
-	Colonies::drop_initial_breadcrumbs(substituted, cls->context, cls->into_file,
-		cls->crumbs);
+	Colonies::drop_initial_breadcrumbs(substituted,
+		cls->wv->weave_colony, cls->wv->current_weave_file, cls->wv->breadcrumbs);
+
+@<Substitute Search Box@> =
+	WRITE("%S", cls->wv->current_inscriptions[SEARCH_BOX_WEAVEINSCRIPTION]);
 
 @<Substitute Plugins@> =
-	Assets::include_relevant_plugins(OUT, cls->nav_pattern, cls->for_web,
-		cls->wv, cls->into_file, cls->context, cls->reportage);
+	Assets::include_relevant_plugins(substituted, cls->wv);
 
 @ We store little about the complete-web-in-one-file PDF:
 
 @<Substitute a detail about the complete PDF@> =
 	if (swarm_leader)
 		if (WeavingFormats::substitute_post_processing_data(substituted,
-			swarm_leader, detail, cls->nav_pattern) == FALSE)
+			swarm_leader, detail, cls->wv->pattern) == FALSE)
 			WRITE_TO(substituted, "%S for complete web", detail);
 
 @ And here for Modules:
@@ -612,12 +597,12 @@ this will recursively call The Collater, in fact.
 
 @<Substitute a detail about the currently selected Module@> =
 	if (Str::eq_wide_string(detail, U"Title")) {
-		text_stream *owner = Collater::module_owner(M, cls->for_web);
+		text_stream *owner = Collater::module_owner(M, cls->wv->weave_web);
 		if (Str::len(owner) > 0) WRITE_TO(substituted, "%S/", owner);
 		WRITE_TO(substituted, "%S", M->module_name);
 	} else if (Str::eq_wide_string(detail, U"Page")) {
-		if (Colonies::find(cls->context, M->module_name))
-			Colonies::reference_URL(substituted, cls->context, M->module_name, cls->into_file);
+		if (Colonies::find(cls->wv->weave_colony, M->module_name))
+			Colonies::reference_URL(substituted, cls->wv->weave_colony, M->module_name, cls->wv->current_weave_file);
 	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		TEMPORARY_TEXT(url)
 		WRITE_TO(url, "%p", M->module_location);
@@ -645,7 +630,7 @@ this will recursively call The Collater, in fact.
 	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		Str::copy(substituted, C->rubric);
 	} else if (WeavingFormats::substitute_post_processing_data(substituted,
-		WeavingDetails::get_ch_weave(C), detail, cls->nav_pattern)) {
+		WeavingDetails::get_ch_weave(C), detail, cls->wv->pattern)) {
 		;
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, C->ch_title);
@@ -681,7 +666,7 @@ this will recursively call The Collater, in fact.
 		if (denom == 0) denom = 1;
 		WRITE_TO(substituted, "%d", S->sect_extent/denom);
 	} else if (WeavingFormats::substitute_post_processing_data(substituted,
-		WeavingDetails::get_sect_weave(S), detail, cls->nav_pattern)) {
+		WeavingDetails::get_sect_weave(S), detail, cls->wv->pattern)) {
 		;
 	} else {
 		WRITE_TO(substituted, "%S for %S", varname, S->sect_title);
@@ -692,22 +677,22 @@ navigation purposes.
 
 @<Substitute a Docs@> =
 	Pathnames::relative_URL(substituted,
-		Filenames::up(cls->into_file), Colonies::home(cls->context));
+		Filenames::up(cls->wv->current_weave_file), Colonies::home(cls->wv->weave_colony));
 
 @<Substitute an Assets@> =
-	pathname *P = Colonies::assets_path(cls->context, cls->for_web);
-	if (P == NULL) P = Filenames::up(cls->into_file);
+	pathname *P = Colonies::assets_path(cls->wv->weave_colony, cls->wv->weave_web);
+	if (P == NULL) P = Filenames::up(cls->wv->current_weave_file);
 	Pathnames::relative_URL(substituted,
-		Filenames::up(cls->into_file), P);
+		Filenames::up(cls->wv->current_weave_file), P);
 
 @<Substitute a URL@> =
 	Pathnames::relative_URL(substituted,
-		Filenames::up(cls->into_file),
+		Filenames::up(cls->wv->current_weave_file),
 		Pathnames::from_text(link_text));
 
 @<Substitute a Link@> =
 	WRITE_TO(substituted, "<a href=\"");
-	Colonies::reference_URL(substituted, cls->context, link_text, cls->into_file);
+	Colonies::reference_URL(substituted, cls->wv->weave_colony, link_text, cls->wv->current_weave_file);
 	WRITE_TO(substituted, "\">");
 
 @<Substitute a Menu@> =
@@ -730,14 +715,14 @@ navigation purposes.
 
 @<Substitute a member Item@> =
 	TEMPORARY_TEXT(url)
-	Colonies::reference_URL(url, cls->context, link_text, cls->into_file);
+	Colonies::reference_URL(url, cls->wv->weave_colony, link_text, cls->wv->current_weave_file);
 	@<Substitute an item at this URL@>;
 	DISCARD_TEXT(url)
 
 @<Substitute a general Item@> =
 	TEMPORARY_TEXT(url)
 	@<Vet the link text@>;
-	Colonies::link_URL(url, cls->context, link_text, cls->into_file);
+	Colonies::link_URL(url, cls->wv->weave_colony, link_text, cls->wv->current_weave_file);
 	@<Substitute an item at this URL@>;
 	DISCARD_TEXT(url)
 
@@ -745,7 +730,7 @@ navigation purposes.
 	WRITE_TO(substituted, "<h1>");
 	WRITE_TO(substituted, "<a href=\"");
 	@<Vet the link text@>;
-	Colonies::link_URL(substituted, cls->context, link_text, cls->into_file);
+	Colonies::link_URL(substituted, cls->wv->weave_colony, link_text, cls->wv->current_weave_file);
 	WRITE_TO(substituted, "\">");
 	@<Substitute icon and name@>;
 	WRITE_TO(substituted, "</a>");
@@ -771,7 +756,7 @@ navigation purposes.
 	if (cls->inside_navigation_submenu == FALSE) WRITE_TO(substituted, "<ul>");
 	cls->inside_navigation_submenu = TRUE;
 	WRITE_TO(substituted, "<li>");
-	if (Str::eq(url, Filenames::get_leafname(cls->into_file))) {
+	if (Str::eq(url, Filenames::get_leafname(cls->wv->current_weave_file))) {
 		WRITE_TO(substituted, "<span class=\"unlink\">");
 		@<Substitute icon and name@>;
 		WRITE_TO(substituted, "</span>");
@@ -791,8 +776,8 @@ navigation purposes.
 @<Substitute icon and name@> =
 	if (Str::len(icon_text) > 0) {
 		WRITE_TO(substituted, "<img src=\"");
-		pathname *I = Colonies::assets_path(cls->context, cls->for_web);
-		Pathnames::relative_URL(substituted, Filenames::up(cls->into_file), I);
+		pathname *I = Colonies::assets_path(cls->wv->weave_colony, cls->wv->weave_web);
+		Pathnames::relative_URL(substituted, Filenames::up(cls->wv->current_weave_file), I);
 		WRITE_TO(substituted, "%S\" height=%d> ", icon_text, icon_size);
 	}
 	WRITE_TO(substituted, "%S", item_name);

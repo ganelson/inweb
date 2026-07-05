@@ -2,50 +2,50 @@
 <html>
 	<head>
 		<title>Colonies</title>
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
 
-<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
+    <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script>
+    function togglePopup(material_id) {
+      var popup = document.getElementById(material_id);
+      popup.classList.toggle("show");
+    }
+    </script>
 
-<script>
-MathJax = {
-    options: {
-    	skipHtmlTags: {'[-]': ['pre']},
-    	processHtmlClass: 'mathjax_process'
-    },
-	loader: {load: ['[tex]/texhtml']},
-  	tex: {
-		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
-    	packages: {'[+]': ['texhtml']},
-    	allowTexHTML: true
-	},
-	svg: {
-		fontCache: 'global'
-	}
-};
-</script>
-<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
+    <script>
+    MathJax = {
+        options: {
+        	skipHtmlTags: {'[-]': ['pre']},
+        	processHtmlClass: 'mathjax_process'
+        },
+    	loader: {load: ['[tex]/texhtml']},
+      	tex: {
+    		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
+        	packages: {'[+]': ['texhtml']},
+        	allowTexHTML: true
+    	},
+    	svg: {
+    		fontCache: 'global'
+    	}
+    };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
 
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+    <script src="../docs-assets/Bigfoot.js"></script>
+    <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
@@ -486,7 +486,7 @@ object from it.</p>
 <span class="plain-syntax">    </span><a href="1-cnv.html#SP8" class="function-link"><span class="function-syntax">Conventions::set_level</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">D</span><span class="plain-syntax">, </span><span class="constant-syntax">COLONY_LSCONVENTIONLEVEL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure colony_reader_state is accessed in 1/wcl, 2/lc2, 5/ts, 5/tc, 5/fm, 5/hf and here.</li></ul>
+<ul class="endnotetexts"><li>The structure colony_reader_state is accessed in 1/wcl, 2/lc2, 5/ts, 5/ptt, 5/apacs, 5/tc, 5/fm, 5/hf and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. </b>  Lines from the colony file are fed, one by one, into:</p>
 </div>
@@ -595,7 +595,7 @@ the page, and this requests one.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">BR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span></span>:<br/>The Collater - <a href="5-tc.html#SP5_1_11_2">&#167;5.1.11.2</a><br/>HTML Formats - <a href="5-hf.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">Colonies::drop_initial_breadcrumbs</span></span>:<br/>The Collater - <a href="5-tc.html#SP6_1_11_2">&#167;6.1.11.2</a><br/>HTML Formats - <a href="5-hf.html#SP5_2_1">&#167;5.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">breadcrumb_request</span><span class="plain-syntax"> *</span><span class="identifier-syntax">BR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">BR</span><span class="plain-syntax">, </span><span class="type-syntax">breadcrumb_request</span><span class="plain-syntax">, </span><span class="identifier-syntax">crumbs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
@@ -605,7 +605,7 @@ the page, and this requests one.</p>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::write_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Colonies::write_breadcrumb</span></span>:<br/>HTML Formats - <a href="5-hf.html#SP5_2">&#167;5.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::write_breadcrumb</span><button class="popup" onclick="togglePopup('usagePopup18')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup18">Usage of <span class="code-font"><span class="function-syntax">Colonies::write_breadcrumb</span></span>:<br/>HTML Formats - <a href="5-hf.html#SP5_2_1">&#167;5.2.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">link</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML_OPEN</span><span class="plain-syntax">(</span><span class="string-syntax">"li"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">HTML::begin_link</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">link</span><span class="plain-syntax">);</span>
@@ -637,7 +637,7 @@ the page, and this requests one.</p>
 first we find.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">ls_colony_member</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::find</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Colonies::find</span></span>:<br/><a href="1-cln.html#SP14_2">&#167;14.2</a>, <a href="1-cln.html#SP14_3">&#167;14.3</a>, <a href="1-cln.html#SP16">&#167;16</a><br/>The Collater - <a href="5-tc.html#SP5_1_3">&#167;5.1.3</a>, <a href="5-tc.html#SP5_1_11_5_1">&#167;5.1.11.5.1</a><br/>Readme Writeme - <a href="6-rw.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">ls_colony_member</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::find</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Colonies::find</span></span>:<br/><a href="1-cln.html#SP14_2">&#167;14.2</a>, <a href="1-cln.html#SP14_3">&#167;14.3</a>, <a href="1-cln.html#SP16">&#167;16</a><br/>The Collater - <a href="5-tc.html#SP6_1_3">&#167;6.1.3</a>, <a href="5-tc.html#SP6_1_11_6_1">&#167;6.1.11.6.1</a><br/>Readme Writeme - <a href="6-rw.html#SP2_1">&#167;2.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">T</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="type-syntax">ls_colony_member</span><span class="plain-syntax"> *</span><span class="identifier-syntax">CM</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">CM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony_member</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">members</span><span class="plain-syntax">)</span>
@@ -699,7 +699,7 @@ have; but if not, we read it in.</p>
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. </b>  Finally:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::home</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Colonies::home</span></span>:<br/><a href="1-cln.html#SP13">&#167;13</a><br/>The Collater - <a href="5-tc.html#SP5_1_11_8">&#167;5.1.11.8</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::home</span><button class="popup" onclick="togglePopup('usagePopup23')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup23">Usage of <span class="code-font"><span class="function-syntax">Colonies::home</span></span>:<br/><a href="1-cln.html#SP13">&#167;13</a><br/>The Collater - <a href="5-tc.html#SP6_1_11_9">&#167;6.1.11.9</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">redirect</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">redirect</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::from_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">home</span><span class="plain-syntax">);</span>
@@ -736,7 +736,7 @@ have; but if not, we read it in.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Pathnames::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">H</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"assets"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::assets_path</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">Colonies::assets_path</span></span>:<br/><a href="1-cln.html#SP16_3">&#167;16.3</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP12">&#167;12</a><br/>The Collater - <a href="5-tc.html#SP5_1_11_9">&#167;5.1.11.9</a>, <a href="5-tc.html#SP5_1_11_16_1">&#167;5.1.11.16.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="type-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">Colonies::assets_path</span><button class="popup" onclick="togglePopup('usagePopup25')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup25">Usage of <span class="code-font"><span class="function-syntax">Colonies::assets_path</span></span>:<br/><a href="1-cln.html#SP16_3">&#167;16.3</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP13">&#167;13</a><br/>The Collater - <a href="5-tc.html#SP6_1_11_10">&#167;6.1.11.10</a>, <a href="5-tc.html#SP6_1_11_17_1">&#167;6.1.11.17.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="type-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="1-cln.html#SP12" class="function-link"><span class="function-syntax">Colonies::assets_path_wrt</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><a href="1-cln.html#SP12" class="function-link"><span class="function-syntax">Colonies::home</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">}</span>
 
@@ -1051,7 +1051,7 @@ make is that modules of the current web will be woven alongside the main one.</p
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. URL management.</b> </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup30')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup30">Usage of <span class="code-font"><span class="function-syntax">Colonies::link_URL</span></span>:<br/><a href="1-cln.html#SP8">&#167;8</a><br/>The Collater - <a href="5-tc.html#SP5_1_11_15">&#167;5.1.11.15</a>, <a href="5-tc.html#SP5_1_11_16">&#167;5.1.11.16</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::link_URL</span><button class="popup" onclick="togglePopup('usagePopup30')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup30">Usage of <span class="code-font"><span class="function-syntax">Colonies::link_URL</span></span>:<br/><a href="1-cln.html#SP8">&#167;8</a><br/>The Collater - <a href="5-tc.html#SP6_1_11_16">&#167;6.1.11.16</a>, <a href="5-tc.html#SP6_1_11_17">&#167;6.1.11.17</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">match_results</span><span class="plain-syntax"> </span><span class="identifier-syntax">mr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Regexp::create_mr</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Regexp::match</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">U</span><span class="string-syntax">" *//(%c+)// *"</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><a href="1-cln.html#SP16" class="function-link"><span class="function-syntax">Colonies::reference_URL</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">mr</span><span class="plain-syntax">.</span><span class="identifier-syntax">exp</span><span class="plain-syntax">[0], </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
@@ -1060,7 +1060,7 @@ make is that modules of the current web will be woven alongside the main one.</p
 <span class="plain-syntax">    </span><span class="identifier-syntax">Regexp::dispose_of</span><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">mr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::reference_URL</span><button class="popup" onclick="togglePopup('usagePopup31')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup31">Usage of <span class="code-font"><span class="function-syntax">Colonies::reference_URL</span></span>:<br/>The Collater - <a href="5-tc.html#SP5_1_11_5_1">&#167;5.1.11.5.1</a>, <a href="5-tc.html#SP5_1_11_11">&#167;5.1.11.11</a>, <a href="5-tc.html#SP5_1_11_14">&#167;5.1.11.14</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::reference_URL</span><button class="popup" onclick="togglePopup('usagePopup31')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup31">Usage of <span class="code-font"><span class="function-syntax">Colonies::reference_URL</span></span>:<br/>The Collater - <a href="5-tc.html#SP6_1_11_6_1">&#167;6.1.11.6.1</a>, <a href="5-tc.html#SP6_1_11_12">&#167;6.1.11.12</a>, <a href="5-tc.html#SP6_1_11_15">&#167;6.1.11.15</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_colony</span><span class="plain-syntax"> *</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">title</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="1-cln.html#SP14" class="function-link"><span class="function-syntax">Colonies::resolve_reference_in_weave</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">context</span><span class="plain-syntax">, </span><span class="identifier-syntax">url</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">link_text</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
@@ -1071,7 +1071,7 @@ make is that modules of the current web will be woven alongside the main one.</p
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">url</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::section_URL</span><button class="popup" onclick="togglePopup('usagePopup32')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup32">Usage of <span class="code-font"><span class="function-syntax">Colonies::section_URL</span></span>:<br/><a href="1-cln.html#SP14_6_1">&#167;14.6.1</a>, <a href="1-cln.html#SP14_6_2">&#167;14.6.2</a>, <a href="1-cln.html#SP16_3">&#167;16.3</a><br/>The Collater - <a href="5-tc.html#SP5_1_11_7_1">&#167;5.1.11.7.1</a><br/>HTML Formats - <a href="5-hf.html#SP5_3">&#167;5.3</a>, <a href="5-hf.html#SP5_3_1">&#167;5.3.1</a>, <a href="5-hf.html#SP5_3_2">&#167;5.3.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::section_URL</span><button class="popup" onclick="togglePopup('usagePopup32')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup32">Usage of <span class="code-font"><span class="function-syntax">Colonies::section_URL</span></span>:<br/><a href="1-cln.html#SP14_6_1">&#167;14.6.1</a>, <a href="1-cln.html#SP14_6_2">&#167;14.6.2</a>, <a href="1-cln.html#SP16_3">&#167;16.3</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP14_1">&#167;14.1</a><br/>The Collater - <a href="5-tc.html#SP6_1_11_8_1">&#167;6.1.11.8.1</a><br/>HTML Formats - <a href="5-hf.html#SP5_3">&#167;5.3</a>, <a href="5-hf.html#SP5_3_1">&#167;5.3.1</a>, <a href="5-hf.html#SP5_3_2">&#167;5.3.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">S</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unwoven section"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="5-wd.html#SP5" class="function-link"><span class="function-syntax">WeavingDetails::get_section_weave_to</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax">) {</span>
@@ -1107,7 +1107,7 @@ make is that modules of the current web will be woven alongside the main one.</p
 <span class="plain-syntax">    </span><a href="1-cln.html#SP16" class="function-link"><span class="function-syntax">Colonies::paragraph_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">par</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_anchor</span><button class="popup" onclick="togglePopup('usagePopup34')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup34">Usage of <span class="code-font"><span class="function-syntax">Colonies::paragraph_anchor</span></span>:<br/>HTML Formats - <a href="5-hf.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Colonies::paragraph_anchor</span><button class="popup" onclick="togglePopup('usagePopup34')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup34">Usage of <span class="code-font"><span class="function-syntax">Colonies::paragraph_anchor</span></span>:<br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP14_1_1">&#167;14.1.1</a><br/>HTML Formats - <a href="5-hf.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">par</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no para"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><a href="2-ls.html#SP8_15" class="function-link"><span class="function-syntax">LiterateSource::par_ornament</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">par</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"P"</span><span class="plain-syntax">);</span>

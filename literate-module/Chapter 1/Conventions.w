@@ -21,6 +21,8 @@ And the individual conventions are also enumerated:
 @e NAMESPACES_ENFORCED_LSCONVENTION
 @e SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION
 @e PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION
+@e SEARCH_ON_BODY_PAGES_LSCONVENTION
+@e SEARCH_ON_INDEX_PAGES_LSCONVENTION
 @e TEX_NOTATION_LSCONVENTION
 @e FOOTNOTES_LSCONVENTION
 @e HOLON_NAME_SYNTAX_LSCONVENTION
@@ -63,6 +65,8 @@ int Conventions::type(int conv) {
 		case NAMESPACES_ENFORCED_LSCONVENTION:
 		case SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
 		case PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
+		case SEARCH_ON_BODY_PAGES_LSCONVENTION:
+		case SEARCH_ON_INDEX_PAGES_LSCONVENTION:
 		case TEX_NOTATION_LSCONVENTION:
 		case FOOTNOTES_LSCONVENTION:
 		case HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION:
@@ -130,6 +134,14 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 		case SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
 			if (iv) WRITE("sections are numbered sequentially");
 			else WRITE("sections are not numbered sequentially");
+			break;
+		case SEARCH_ON_BODY_PAGES_LSCONVENTION:
+			if (iv) WRITE("search box on section pages");
+			else WRITE("no search box on section pages");
+			break;
+		case SEARCH_ON_INDEX_PAGES_LSCONVENTION:
+			if (iv) WRITE("search box on index page");
+			else WRITE("no search box on index page");
 			break;
 		case PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION:
 			if (iv) WRITE("paragraphs are numbered sequentially");
@@ -399,6 +411,14 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 		conv = PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION; iv = TRUE;
 	} else if (Regexp::match(&mr, line, U" *paragraphs are numbered hierarchically *")) {
 		conv = PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *search box on section pages *")) {
+		conv = SEARCH_ON_BODY_PAGES_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *no search box on section pages *")) {
+		conv = SEARCH_ON_BODY_PAGES_LSCONVENTION; iv = FALSE;
+	} else if (Regexp::match(&mr, line, U" *search box on index page *")) {
+		conv = SEARCH_ON_INDEX_PAGES_LSCONVENTION; iv = TRUE;
+	} else if (Regexp::match(&mr, line, U" *no search box on index page *")) {
+		conv = SEARCH_ON_INDEX_PAGES_LSCONVENTION; iv = FALSE;
 	} else if (Regexp::match(&mr, line, U" *metadata key-value pairs are allowed at the top of single-file webs *")) {
 		conv = SINGLE_FILE_METADATA_PAIRS_LSCONVENTION; iv = TRUE;
 	} else if (Regexp::match(&mr, line, U" *metadata key-value pairs are not allowed at the top of single-file webs *")) {
@@ -623,6 +643,9 @@ ls_conventions *Conventions::generic(void) {
 		Conventions::set_int(generic, NAMESPACES_ENFORCED_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, SECTIONS_NUMBERED_SEQUENTIALLY_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, SEARCH_ON_BODY_PAGES_LSCONVENTION, FALSE);
+		Conventions::set_int(generic, SEARCH_ON_INDEX_PAGES_LSCONVENTION, TRUE);
+
 		Conventions::set_int(generic, SINGLE_FILE_METADATA_PAIRS_LSCONVENTION, TRUE);
 		Conventions::set_int(generic, HOLONS_ARE_TRIMMED_ABOVE_LSCONVENTION, FALSE);
 		Conventions::set_int(generic, HOLONS_ARE_TRIMMED_BELOW_LSCONVENTION, FALSE);

@@ -39,70 +39,142 @@ As in the tapestry-logo case above, Inweb does not need to be given explicit
 instructions on how to include assets. If nothing has been said, then it copies
 a file verbatim into the assets directory for the weave. For the `gobelins.jpg`,
 that was exactly what was wanted. But (for example) CSS and Javascript files
-need more delicate handling. Here is the `assets` portion of the `HTML` pattern
+need more delicate handling. Here is (part of) the `assets` portion of the `HTML` pattern
 declaration:
 
 	Pattern "HTML" {
 		...
 		assets
-			collate .html files
-			copy .js files
-			for each .js file embed {
+			...
+			.html files: collate
+			.js files: copy and embed {
 				<script src="URL"></script>
 			}
-			copy .css files
-			for each .css file embed {
+			.css files: copy and transform names and embed {
 				<link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
 			}
-			transform names in .css files
 		end
 	}
 
-As this may suggest, Inweb decides how to include an asset based on its filename
-extension, which is assumed to indicate what kind of contents it has. For any
-given extension, four methods of inclusion are possible:
+The `assets` portion consists of a list of _rules_, each of which consists of
+a _selector_, then a colon, then a _disposition_. A selector says which files
+should be handled by the rule:
 
-1.	`copy .WHATEVER files`. This is default, and means a file is copied over
-	directly into the assets directory for the weave.
+Selector                      | selects for
+----------------------------- | -----------
+`all files`                   | everything
+`.html files`                 | files with the `.html` file extension (case insensitively)
+`README.md file`              | files with the leafname `README.md` (case insensitively)
 
-2. 	`privately copy .WHATEVER files`. The same, but never put into the shared
-	assets directory: it's always copied alongside the woven files for the web.
+In addition, a selector can optionally end with `in` and the name of a plugin.
+Thus `all files in Bigfoot` matches all asset files in the plugin `Bigfoot`.
 
-3.	`embed .WHATEVER files`. The file is not copied. Instead, its entire contents
-	are pasted into the woven file itself, when the `[[Plugins]]` placeholder in
-	the template is expanded (see //Collation//). Do not use this for binary files.
+When Inweb tries to match an asset file against these rules, it chooses only the
+first one in the pattern which matches. If that fails, and the pattern is based
+on another pattern, Inweb tries to match the rules for that pattern instead, and
+so on. If nothing at all works, it falls back on the rule:
 
-4.	`collate .WHATEVER files`. Like a `copy`, but the file collated into place
-	rather than being copied over: which means that placeholders in it will be
-	expanded. (See //Collation//.) Do not use this for binary files.
+	all files: copy
 
-In addition, text (presumably code of some kind, but Inweb doesn't
-distinguish) can be pasted into the embedded text in `[[Plugins]]` for each
-copied or embedded asset. This:
+which, as noted above, means that it copies the asset file unmodified into the
+assets directory for the weave.
 
-			for each .js file embed {
-				<script src="URL"></script>
-			}
+Because, within each pattern, Inweb matches only the first rule to match, the
+following would make no sense:
 
-says that whenever a Javascript file is copied, a corresponding line should be
-pasted in to `[[Plugins]]`. The `URL` is replaced by the relative URL from the
-file being woven to the copied file in the assets directory. In the `HTML`
-template file `template-body.html`, the `[[Plugins]]` content is then
-collated into the `<head>` of the web page.
+		assets
+			.html files: collate
+			exception.html file: copy
+		end
 
-An alternative strategy would be:
+An asset called `exception.html` would match the first rule anyway, so the second
+rule can never be reached. To catch these accidents, Inweb produces an error if
+a rule is placed where it can never have any effect. Instead, this is intended:
 
-		embed .js files
-		for each .js file prefix {
+		assets
+			exception.html file: copy
+			.html files: collate
+		end
+
+In other words, always handle exceptional cases first.
+
+So much for selectors. Dispositions are instructions for what to do with the
+file. There can be multiple sub-instructions, in which case they are separated with
+the word `and`. (Not with commas.) The possible instructions are:
+
+1.	`ignore`. The main action is to do nothing with the asset file.
+
+2.	`copy`. The main action is to copy the file directly into the shared
+	assets directory for the weave. (This is the default main action.)
+
+3. 	`privately copy`. The main action is to copy, but not into the shared
+	assets directory: the copy does alongside the woven files for the web.
+
+4.	`embed file`. The main action is to paste the entire contents of the asset file
+	into the woven file itself, at the position where the `[[Plugins]]` placeholder in
+	the template is expanded (see //Collation//). This will typically be in the
+	`<head>` of an HTML file. Do not use this for binary files.
+
+5.	`collate`. The main action is to collate the entire contents of the asset file
+	into the woven file itself, at the position where the `[[Plugins]]` placeholder in
+	the template is expanded (see //Collation//). This will typically be in the
+	`<head>` of an HTML file. Do not use this for binary files.
+	(The difference between `collate` and `embed file` is that any further placeholders
+	in the asset text are expanded, too.)
+
+In addition, the following variations are allowed:
+
+1.	`collate to head`: same as `collate`.
+
+2.	`collate to body`: same as `collate`, but the matter is placed into the
+	top of the `<body>` of an HTML file, not the `<head>`.
+
+3.	`collate to search box`: same as `collate`, but the matter is placed into a
+	natural place for a search box within the `<body>` of an HTML file.
+
+4.	`transform names`: see the note below on the Colouring Exception.
+
+5.	`add data`: during a `copy`, look out for the placeholder `SEARCHDATA`
+	and replace it with Inweb-generated search data for the plugin `SeekLocateDisplay`
+	to make use of.
+
+6.	`embed {`, followed by one or more lines, followed by `}`: as well as
+	the main action, place this material into the woven file at the `[[Plugins]]`
+	position. See below.
+
+7.	`prefix {`, followed by one or more lines, followed by `}`: if the main
+	action is `embed file`, embed this text first.
+
+8.	`suffix {`, followed by one or more lines, followed by `}`: if the main
+	action is `embed file`, embed this text afterwards.
+
+For example, consider this rule:
+
+		.js files: embed file and prefix {
 			<script>
-		}
-		for each .js file suffix {
+		} and suffix {
 			</script>
 		}
 
-Now the Javascript files are not copied: they are written into the `[[Plugins]]`
-placeholder. But the `prefix` text appears before each one, and the `suffix`
-one after each one.
+This says that any Javascript files should be embedded into the `<head>` of
+an HTML file, but inside `<script>` ... `</script>` tags. Similarly, CSS
+could be handled like so:
+
+		.css files: embed file and transform names and prefix {
+			<style type="text/css">
+		} and suffix {
+			</style>
+		}
+
+Alternatively (and this is what `HTML` does), Javascript files could be copied
+over, but then loaded from within `<head>`. This is done thus:
+
+			.js files: copy and embed {
+				<script src="URL"></script>
+			}
+
+Note that the `URL` is replaced by the relative URL from the file being woven to
+the copied file in the assets directory.
 
 ## The Colouring Exception
 
@@ -124,8 +196,9 @@ Rust, then Inweb might need to use both `Colours.css` (for C) and
 theory that could cause problems, because they will have rival definitions
 of the CSS class `span.identifier-syntax` (for example). However, Inweb
 renames them automatically so that this does not happen, and that is
-because of the previously enigmatic line
+because of the previously enigmatic `transform names` instruction in the
+following asset rule in the `HTML` pattern:
 
-			transform names in .css files
-
-in the `assets` rules for `HTML`, shown above.
+	.css files: copy and transform names and embed {
+		<link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
+	}

@@ -2,31 +2,31 @@
 <html>
 	<head>
 		<title>Weaving Details</title>
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
 
-<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
+    <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script>
+    function togglePopup(material_id) {
+      var popup = document.getElementById(material_id);
+      popup.classList.toggle("show");
+    }
+    </script>
 
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+    <script src="../docs-assets/Bigfoot.js"></script>
+    <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
@@ -119,7 +119,7 @@ LP source trees to enable weaving.</p>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. </b>  Here are the semantics for a web:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">ebook</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_as_ebook</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_as_ebook</span></span>:<br/>The Swarm - <a href="5-ts.html#SP12">&#167;12</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP12_3">&#167;12.3</a><br/>HTML Formats - <a href="5-hf.html#SP4">&#167;4</a>, <a href="5-hf.html#SP5_2">&#167;5.2</a>, <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">ebook</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_as_ebook</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_as_ebook</span></span>:<br/>The Swarm - <a href="5-ts.html#SP11">&#167;11</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP13_3">&#167;13.3</a><br/>HTML Formats - <a href="5-hf.html#SP4">&#167;4</a>, <a href="5-hf.html#SP5_2_1">&#167;5.2.1</a>, <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ((</span><span class="type-syntax">ls_web_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">as_ebook</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -127,7 +127,7 @@ LP source trees to enable weaving.</p>
 <span class="plain-syntax">    ((</span><span class="type-syntax">ls_web_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">as_ebook</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_redirect_weaves_to</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_redirect_weaves_to</span></span>:<br/>Colonies - <a href="1-cln.html#SP12">&#167;12</a><br/>The Swarm - <a href="5-ts.html#SP8">&#167;8</a>, <a href="5-ts.html#SP10_2">&#167;10.2</a>, <a href="5-ts.html#SP12">&#167;12</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP12_3">&#167;12.3</a><br/>HTML Formats - <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_redirect_weaves_to</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_redirect_weaves_to</span></span>:<br/>Colonies - <a href="1-cln.html#SP12">&#167;12</a><br/>The Swarm - <a href="5-ts.html#SP8">&#167;8</a>, <a href="5-ts.html#SP11">&#167;11</a>, <a href="5-ts.html#SP12">&#167;12</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP13_3">&#167;13.3</a><br/>HTML Formats - <a href="5-hf.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_web</span><span class="plain-syntax"> *</span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ((</span><span class="type-syntax">ls_web_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">W</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">redirect_weaves_to</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -139,7 +139,7 @@ LP source trees to enable weaving.</p>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. </b>  And for a chapter:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_ch_weave</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_ch_weave</span></span>:<br/>The Collater - <a href="5-tc.html#SP5_1_11_6_1">&#167;5.1.11.6.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_ch_weave</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_ch_weave</span></span>:<br/>The Collater - <a href="5-tc.html#SP6_1_11_7_1">&#167;6.1.11.7.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_chapter</span><span class="plain-syntax"> *</span><span class="identifier-syntax">C</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ((</span><span class="type-syntax">ls_chapter_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">C</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">ch_weave</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -151,7 +151,7 @@ LP source trees to enable weaving.</p>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. </b>  And lastly for a section.</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_sect_weave</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_sect_weave</span></span>:<br/>The Collater - <a href="5-tc.html#SP5_1_11_7_1">&#167;5.1.11.7.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">weave_order</span><span class="plain-syntax"> *</span><span class="function-syntax">WeavingDetails::get_sect_weave</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::get_sect_weave</span></span>:<br/>The Collater - <a href="5-tc.html#SP6_1_11_8_1">&#167;6.1.11.8.1</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ((</span><span class="type-syntax">ls_section_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">sect_weave</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -164,7 +164,7 @@ LP source trees to enable weaving.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> ((</span><span class="type-syntax">ls_section_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">sect_weave_to</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WeavingDetails::set_section_weave_to</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::set_section_weave_to</span></span>:<br/>The Swarm - <a href="5-ts.html#SP10_2">&#167;10.2</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WeavingDetails::set_section_weave_to</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">WeavingDetails::set_section_weave_to</span></span>:<br/>The Swarm - <a href="5-ts.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_section</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    ((</span><span class="type-syntax">ls_section_weaving_details</span><span class="plain-syntax"> *) (</span><span class="identifier-syntax">S</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">weaving_ref</span><span class="plain-syntax">))-&gt;</span><span class="element-syntax">sect_weave_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>

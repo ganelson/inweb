@@ -58,6 +58,13 @@ of rendering instructions, then create a file to write its content to. Note
 that we are therefore assuming there will be only a single file of output
 corresponding to a single weave tree.
 
+This is also where we finally merge material into its insertion points. That
+material is placed at character positions, where position $n$ means "before
+the $n$-th character". Those positions are set during the process of expanding
+the "Weave Content" placeholder in the collater, which means they are relative
+not to the start of the file, but to the material in that placeholder; and so
+we add `wv->weave_content_position` to the positions to make them absolute.
+
 =
 void WeavingFormats::render(weave_order *wv, heterogeneous_tree *weave_tree) {
 	filename *F = wv->weave_to;
@@ -65,7 +72,21 @@ void WeavingFormats::render(weave_order *wv, heterogeneous_tree *weave_tree) {
 	text_stream *OUT = &TO_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("unable to write woven file", F);
-	WeavingFormats::render_to(OUT, weave_tree, F);
+	TEMPORARY_TEXT(buffer)
+	WeavingFormats::render_to(buffer, weave_tree, F);
+	for (int p=0; p<NO_DEFINED_WEAVEINSCRIPTION_VALUES; p++)
+		if (wv->current_insertion_points[p] >= 0)
+			wv->current_insertion_points[p] += wv->weave_content_position;
+	for (int i=0; i<Str::len(buffer); i++) {
+		for (int p=0; p<NO_DEFINED_WEAVEINSCRIPTION_VALUES; p++)
+			if (wv->current_insertion_points[p] == i)
+				WRITE("%S", wv->current_inscriptions[p]);
+		PUT(Str::get_at(buffer, i));				
+	}
+	for (int p=0; p<NO_DEFINED_WEAVEINSCRIPTION_VALUES; p++)
+		if (wv->current_insertion_points[p] == Str::len(buffer))
+			WRITE("%S", wv->current_inscriptions[p]);
+	DISCARD_TEXT(buffer)
 	STREAM_CLOSE(OUT);
 }
 
@@ -118,7 +139,7 @@ void WeavingFormats::render_to(text_stream *OUT, heterogeneous_tree *tree, filen
 	TEMPORARY_TEXT(interior)
 	VOID_METHOD_CALL(wf, RENDER_FOR_MTID, interior, tree);
 	Bibliographic::set_datum(C->wv->weave_web, I"Weave Content", interior);
-	if (F) Collater::for_order(OUT, C->wv, F, into, C->wv->weave_colony, C->wv->reportage);
+	if (F) Collater::collate(OUT, C->wv, F);
 	else WRITE("%S", interior);
 	DISCARD_TEXT(interior)
 	DISCARD_TEXT(template)

@@ -196,6 +196,16 @@ weaving, and also how some commands like `inweb weave guide -only cim` are read.
 If `sections are numbered sequentially` is used, sections are instead abbreviated
 `s1`, `s2`, `s3` and so on. Generically, `sections are not numbered sequentially`.
 
+* `search box on section pages` or `no search box on section pages`.
+Affects only weaving, and only if the pattern provides a search plugin (as `HTML`,
+and all patterns derived from it, do). This places a search box on every page of
+woven code, just under the breadcrumbs. Generically, `no search box on section pages`.
+
+* `search box on index page` or `no search box on index page`.
+Affects only weaving, and only if the pattern provides a search plugin (as `HTML`,
+and all patterns derived from it, do). This places a search box on the index (i.e.,
+contents) page of a web, just under the breadcrumbs. Generically, `search box on index page`.
+
 ## Conventions affecting tangling
 
 * `metadata in strings are written between LEFT and RIGHT`. This changes the notation

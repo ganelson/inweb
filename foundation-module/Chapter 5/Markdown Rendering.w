@@ -22,6 +22,7 @@ through the tree: it's a bitmap composed of the following.
 @d TOLOWER_MDRMODE  0x0080     /* Force letters to lower case */
 @d EXAMPLE_BODIES_MDRMODE  0x0100  /* Render interiors of examples */
 @d EXISTING_PAR_MDRMODE 0x200  /* Render onto an existing paragraph */
+@d SUPERPLAIN_MDRMODE 0x400    /* For very plain text rendering in search dictionaries */
 
 =
 void MDRenderer::render_extended(OUTPUT_STREAM, void *state, markdown_item *md,
@@ -135,8 +136,9 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 	int skip_ul_rendering = FALSE;
 	if (MarkdownVariations::supports(variation, TEXT_AS_IMAGES_MARKDOWNFEATURE)) {
 		#ifdef LITERATE_MODULE
-		skip_ul_rendering = HTMLWeaving::render_ul_as_carousel(OUT, mode,
-			(weave_order *) state, md, variation);
+		if ((mode & SUPERPLAIN_MDRMODE) == 0)
+			skip_ul_rendering = HTMLWeaving::render_ul_as_carousel(OUT, mode,
+				(weave_order *) state, md, variation);
 		#endif
 	}
 
@@ -264,7 +266,10 @@ been taken out at the parsing stage.)
 
 	if (MarkdownVariations::supports(variation, INWEB_SYNTAX_COLOURING_MARKDOWNFEATURE)) {
 		#ifdef LITERATE_MODULE
-		HTMLWeaving::render_code_block(OUT, mode, (weave_order *) state, md->stashed, language_rendered);
+		if ((mode & SUPERPLAIN_MDRMODE) == 0)
+			HTMLWeaving::render_code_block(OUT, mode, (weave_order *) state, md->stashed, language_rendered);
+		else
+			@<Render a code block the default way@>;
 		#endif
 		
 		#ifndef LITERATE_MODULE
@@ -412,24 +417,26 @@ been taken out at the parsing stage.)
 
 @<Render Inweb link@> =
 	#ifdef LITERATE_MODULE
-	TEMPORARY_TEXT(address)
-	MDRenderer::recurse(address, state, md->down, RAW_MDRMODE, variation);
-	TEMPORARY_TEXT(url)
-	TEMPORARY_TEXT(title)
-	int ext = FALSE;
-	if (Colonies::resolve_reference_in_weave_order((weave_order *) state,
-		url, title, address, &ext)) {
-		HTML::begin_link_with_class(OUT, (ext)?I"external":I"internal", url);
-		WRITE("%S", title);
-		HTML::end_link(OUT);
-	} else {
-		HTML_OPEN("b");
-		WRITE("[Unresolved link: %S]", address);
-		HTML_CLOSE("b");
+	if ((mode & SUPERPLAIN_MDRMODE) == 0) {
+		TEMPORARY_TEXT(address)
+		MDRenderer::recurse(address, state, md->down, RAW_MDRMODE, variation);
+		TEMPORARY_TEXT(url)
+		TEMPORARY_TEXT(title)
+		int ext = FALSE;
+		if (Colonies::resolve_reference_in_weave_order((weave_order *) state,
+			url, title, address, &ext)) {
+			HTML::begin_link_with_class(OUT, (ext)?I"external":I"internal", url);
+			WRITE("%S", title);
+			HTML::end_link(OUT);
+		} else {
+			HTML_OPEN("b");
+			WRITE("[Unresolved link: %S]", address);
+			HTML_CLOSE("b");
+		}
+		DISCARD_TEXT(url)
+		DISCARD_TEXT(title)
+		DISCARD_TEXT(address)
 	}
-	DISCARD_TEXT(url)
-	DISCARD_TEXT(title)
-	DISCARD_TEXT(address)
 	#endif
 
 @<Render image@> =
@@ -449,7 +456,9 @@ been taken out at the parsing stage.)
 	int skip_image_rendering = FALSE;
 	if (MarkdownVariations::supports(variation, TEXT_AS_IMAGES_MARKDOWNFEATURE)) {
 		#ifdef LITERATE_MODULE
-		skip_image_rendering = HTMLWeaving::render_text_as_image(OUT, mode, (weave_order *) state, alt, URI);
+		if ((mode & SUPERPLAIN_MDRMODE) == 0)
+			skip_image_rendering =
+				HTMLWeaving::render_text_as_image(OUT, mode, (weave_order *) state, alt, URI);
 		#endif
 	}
 
@@ -480,7 +489,8 @@ been taken out at the parsing stage.)
 				}
 			}
 			#ifdef LITERATE_MODULE
-			HTMLWeaving::notify_image((weave_order *) state, URI);
+			if ((mode & SUPERPLAIN_MDRMODE) == 0)
+				HTMLWeaving::notify_image((weave_order *) state, URI);
 			#endif
 		}
 		if (Str::len(title) > 0) {
@@ -532,8 +542,9 @@ been taken out at the parsing stage.)
 		}
 	}
 	#ifdef LITERATE_MODULE
-	HTMLWeaving::render_maths(OUT, (weave_order *) state, TEX, FALSE,
-		(md->type == DISPLAYED_TEX_MIT)?TRUE:FALSE);
+	if ((mode & SUPERPLAIN_MDRMODE) == 0)
+		HTMLWeaving::render_maths(OUT, (weave_order *) state, TEX, FALSE,
+			(md->type == DISPLAYED_TEX_MIT)?TRUE:FALSE);
 	#endif
 	DISCARD_TEXT(TEX)
 

@@ -4,16 +4,18 @@ Pattern "HTML" {
 	plugin: Base
 	mathematics plugin: MathJax3
 	footnotes plugin: Bigfoot
+	search plugin: SeekLocateDisplay
 	assets
-		collate .html files
-		copy .js files
-		for each .js file embed {
+		seek_locate_display.html file in SeekLocateDisplay: collate to search box
+		sld_data.js file in SeekLocateDisplay: copy and add data and embed {
 			<script src="URL"></script>
 		}
-		copy .css files
-		for each .css file embed {
+		.html files: collate
+		.js files: copy and embed {
+			<script src="URL"></script>
+		}
+		.css files: copy and transform names and embed {
 			<link href="URL" rel="stylesheet" rev="stylesheet" type="text/css">
 		}
-		transform names in .css files
 	end
 }

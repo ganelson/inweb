@@ -457,7 +457,12 @@ weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	weave_order *wv = NULL;
 	if (WebStructure::has_errors(W) == FALSE) {
 		CodeAnalysis::analyse_code(W);
-		@<Compile a set of instructions for the weaver@>;
+		if (Conventions::get_int(W, SEARCH_ON_BODY_PAGES_LSCONVENTION)) {
+			text_stream *plugin_name = Patterns::get_search_plugin(wv->weave_web, wv->pattern);
+			if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
+		}
+		wv = Swarm::order(context, CM, W, range, tag, pattern, R);
+		Swarm::order_destination(wv, to, into);
 		Weaver::weave(wv);
 		Patterns::post_process(wv->pattern, wv);
 		WeavingFormats::post_process_weave(wv, open_afterwards);
@@ -466,11 +471,51 @@ weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	return wv;
 }
 
+@ After every swarm, we rebuild the index:
+
+=
+void Swarm::weave_index_templates(ls_colony *C, ls_colony_member *CM, ls_web *W,
+	text_stream *range, ls_pattern *pattern, pathname *into, weave_reporting *R) {
+	if (!(Bibliographic::data_exists(W, I"Version Number")))
+		Bibliographic::set_datum(W, I"Version Number", I" ");
+	filename *INF = Patterns::find_template(W, pattern, I"template-index.html");
+	if (INF) {
+		pathname *H = WeavingDetails::get_redirect_weaves_to(W);
+		if ((H == NULL) && (W->single_file == FALSE)) H = WebStructure::woven_folder(W, 4);
+		filename *Contents = Filenames::in(H, (CM)?(CM->home_leaf):I"index.html");
+		text_stream TO_struct; text_stream *OUT = &TO_struct;
+		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
+			Errors::fatal_with_file("unable to write contents file", Contents);
+		if (WeavingDetails::get_as_ebook(W))
+			Epub::note_page(WeavingDetails::get_as_ebook(W), Contents, I"Index", I"index");
+		Swarm::report_woven_file(R, Contents, NULL);
+
+		wcl_declaration *nav;
+		linked_list *crumbs;
+		if (CM) {
+			nav = CM->navigation;
+			crumbs = CM->breadcrumb_tail;
+		} else {
+			nav = NULL;
+			crumbs = NEW_LINKED_LIST(breadcrumb_request);
+		}
+		weave_order *wv = Swarm::order(C, CM, W, NULL, NULL, pattern, R);
+		if (Conventions::get_int(W, SEARCH_ON_INDEX_PAGES_LSCONVENTION)) {
+			text_stream *plugin_name = Patterns::get_search_plugin(wv->weave_web, wv->pattern);
+			if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
+		}
+		Swarm::begin_file(wv, Contents);
+		Collater::collate(OUT, wv, INF);
+		STREAM_CLOSE(OUT);
+	}
+}
+
 @ Each individual weave generates one of the following sets of instructions:
 
 =
 classdef weave_order {
 	struct ls_colony *weave_colony; /* wider context for the weave, relevant to cross-links */
+	struct ls_colony_member *weave_membership;
 	struct ls_web *weave_web; /* which web we weave */
 	struct text_stream *weave_range; /* which parts of the web in this weave */
 	struct text_stream *theme_match; /* pick out only paragraphs with this theme */
@@ -491,12 +536,17 @@ classdef weave_order {
 	/* used for workspace during an actual weave: */
 	struct ls_line *current_weave_line;
 	struct filename *current_weave_file;
+	struct text_stream *current_inscriptions[NO_DEFINED_WEAVEINSCRIPTION_VALUES];
+	int current_insertion_points[NO_DEFINED_WEAVEINSCRIPTION_VALUES];
+	int weave_content_position;
 	int carousel_number;
 }
 
-@<Compile a set of instructions for the weaver@> =
-	wv = CREATE(weave_order);
+weave_order *Swarm::order(ls_colony *context, ls_colony_member *CM, ls_web *W,
+	text_stream *range, text_stream *tag, ls_pattern *pattern, weave_reporting *R) {
+	weave_order *wv = CREATE(weave_order);
 	wv->weave_colony = context;
+	wv->weave_membership = CM;
 	wv->weave_web = W;
 	wv->weave_range = Str::duplicate(range);
 	wv->pattern = pattern;
@@ -505,6 +555,7 @@ classdef weave_order {
 	wv->format = Patterns::get_format(W, pattern);
 	wv->post_processing_results = NULL;
 	wv->self_contained = FALSE;
+	wv->weave_to = NULL;
 	if (CM) {
 		wv->navigation = CM->navigation;
 		wv->breadcrumbs = CM->breadcrumb_tail;
@@ -520,20 +571,12 @@ classdef weave_order {
 	wv->reportage = R;
 	wv->paragraphs_woven = 0;
 	
-	wv->current_weave_line = NULL;
-	wv->current_weave_file = NULL;
-	wv->carousel_number = 1;
+	Swarm::begin_file(wv, NULL);
+	return wv;
+}
 
-	int has_content = FALSE;
-	ls_chapter *C;
-	ls_section *S;
-	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
-			if (WebRanges::is_within(WebRanges::of(S), wv->weave_range))
-				has_content = TRUE;
-	if (has_content == FALSE)
-		Errors::fatal("no sections match that range");
-
+void Swarm::order_destination(weave_order *wv, filename *to, pathname *into) {
+	ls_web *W = wv->weave_web;
 	TEMPORARY_TEXT(leafname)
 	@<Translate the subweb range into details of what to weave@>;
 	pathname *H = WeavingDetails::get_redirect_weaves_to(W);
@@ -550,13 +593,23 @@ classdef weave_order {
 	} else {
 		wv->weave_to = Filenames::in(H, leafname);
 	}
-	if (Str::len(pattern->initial_extension) > 0)
-		wv->weave_to = Filenames::set_extension(wv->weave_to, pattern->initial_extension);
-	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
-		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
-			if (WebRanges::is_within(WebRanges::of(S), wv->weave_range))
-				WeavingDetails::set_section_weave_to(S, wv->weave_to);
+	if (Str::len(wv->pattern->initial_extension) > 0)
+		wv->weave_to = Filenames::set_extension(wv->weave_to, wv->pattern->initial_extension);
+	if (Str::len(wv->weave_range) > 0) {
+		int has_content = FALSE;
+		ls_chapter *C;
+		ls_section *S;
+		LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
+			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+				if (WebRanges::is_within(WebRanges::of(S), wv->weave_range)) {
+					WeavingDetails::set_section_weave_to(S, wv->weave_to);
+					has_content = TRUE;
+				}
+		if (has_content == FALSE)
+			Errors::fatal("no sections match that range");
+	}
 	DISCARD_TEXT(leafname)
+}
 
 @ From the range and the theme, we work out the weave title, the leafname,
 and details of any cover-sheet to use.
@@ -566,13 +619,13 @@ and details of any cover-sheet to use.
 	match_results mr = Regexp::create_mr();
 	if (W->single_file) {
 		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
-		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
+		if (wv->weave_membership) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
 		else Filenames::write_unextended_leafname(leafname, W->single_file);
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
 	} else if ((W->is_page) || (wv->self_contained)) {
 		wv->booklet_title = Str::duplicate(Bibliographic::get_datum(W, I"Title"));
-		if (CM) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
+		if (wv->weave_membership) { WRITE_TO(leafname, "%S", wv->home_leaf); extend = FALSE; }
 		else WRITE_TO(leafname, "%S", W->declaration->name);
 		if (Str::len(leafname) == 0)
 			WRITE_TO(leafname, "%S", WebStructure::range_of_first_section(W));
@@ -581,30 +634,30 @@ and details of any cover-sheet to use.
 		}
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
-	} else if (Str::eq_wide_string(range, U"0")) {
+	} else if (Str::eq_wide_string(wv->weave_range, U"0")) {
 		wv->booklet_title = Str::new_from_wide_string(U"Complete Program");
 		WRITE_TO(leafname, "Complete");
 		if (Str::len(wv->theme_match) > 0)
 			@<Change the titling and leafname to match the tagged theme@>;
-	} else if (Regexp::match(&mr, range, U"%d+")) {
+	} else if (Regexp::match(&mr, wv->weave_range, U"%d+")) {
 		Str::clear(wv->booklet_title);
-		WRITE_TO(wv->booklet_title, "Chapter %S", range);
+		WRITE_TO(wv->booklet_title, "Chapter %S", wv->weave_range);
 		Str::copy(leafname, wv->booklet_title);
-	} else if (Regexp::match(&mr, range, U"%[A-O]")) {
+	} else if (Regexp::match(&mr, wv->weave_range, U"%[A-O]")) {
 		Str::clear(wv->booklet_title);
-		WRITE_TO(wv->booklet_title, "Appendix %S", range);
+		WRITE_TO(wv->booklet_title, "Appendix %S", wv->weave_range);
 		Str::copy(leafname, wv->booklet_title);
-	} else if (Str::eq_wide_string(range, U"P")) {
+	} else if (Str::eq_wide_string(wv->weave_range, U"P")) {
 		wv->booklet_title = Str::new_from_wide_string(U"Preliminaries");
 		Str::copy(leafname, wv->booklet_title);
-	} else if (Str::eq_wide_string(range, U"M")) {
+	} else if (Str::eq_wide_string(wv->weave_range, U"M")) {
 		wv->booklet_title = Str::new_from_wide_string(U"Manual");
 		Str::copy(leafname, wv->booklet_title);
 	} else {
-		ls_section *S = WebRanges::to_section(W, range);
+		ls_section *S = WebRanges::to_section(W, wv->weave_range);
 		if (S) Str::copy(wv->booklet_title, S->sect_title);
-		else Str::copy(wv->booklet_title, range);
-		Str::copy(leafname, range);
+		else Str::copy(wv->booklet_title, wv->weave_range);
+		Str::copy(leafname, wv->weave_range);
 	}
 	Bibliographic::set_datum(W, I"Booklet Title", wv->booklet_title);
 	LOOP_THROUGH_TEXT(P, leafname)
@@ -618,7 +671,23 @@ and details of any cover-sheet to use.
 	WRITE_TO(wv->booklet_title, "Extracts: %S", wv->theme_match);
 	Str::copy(leafname, wv->theme_match);
 
-@ =
+@ The "inscriptions" are optional excerpts of material (for example, HTML tags)
+to be placed into the weave at certain positions. This mechanism exists to solve
+otherwise intractable timing issues: where e.g. the use of some device late in
+an HTML file means that a Javascript file needs to have been imported by its head.
+
+=
+void Swarm::begin_file(weave_order *wv, filename *F) {
+	wv->current_weave_file = F;
+	wv->carousel_number = 1;
+	for (int i=0; i<NO_DEFINED_WEAVEINSCRIPTION_VALUES; i++) {
+		wv->current_inscriptions[i] = Str::new();
+		wv->current_insertion_points[i] = -1;
+	}
+	wv->weave_content_position = 0;
+	wv->current_weave_line = NULL;
+}
+
 void Swarm::ensure_plugin(weave_order *wv, text_stream *name) {
 	weave_plugin *existing;
 	LOOP_OVER_LINKED_LIST(existing, weave_plugin, wv->plugins)
@@ -648,45 +717,11 @@ colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 	return cs;
 }
 
-void Swarm::include_plugins(OUTPUT_STREAM, ls_web *W, weave_order *wv, filename *from) {
+void Swarm::include_plugins(OUTPUT_STREAM, weave_order *wv) {
 	weave_plugin *wp;
 	LOOP_OVER_LINKED_LIST(wp, weave_plugin, wv->plugins)
-		Assets::include_plugin(OUT, W, wp, wv->pattern, from, wv->reportage, wv->weave_colony);
+		Assets::include_plugin(OUT, wp, wv);
 	colour_scheme *cs;
 	LOOP_OVER_LINKED_LIST(cs, colour_scheme, wv->colour_schemes)
-		Assets::include_colour_scheme(OUT, W, cs, wv->pattern, from, wv->reportage, wv->weave_colony);
-}
-
-@ After every swarm, we rebuild the index:
-
-=
-void Swarm::weave_index_templates(ls_colony *context, ls_colony_member *CM, ls_web *W,
-	text_stream *range, ls_pattern *pattern, pathname *into, weave_reporting *R) {
-	if (!(Bibliographic::data_exists(W, I"Version Number")))
-		Bibliographic::set_datum(W, I"Version Number", I" ");
-	filename *INF = Patterns::find_template(W, pattern, I"template-index.html");
-	if (INF) {
-		pathname *H = WeavingDetails::get_redirect_weaves_to(W);
-		if ((H == NULL) && (W->single_file == FALSE)) H = WebStructure::woven_folder(W, 4);
-		filename *Contents = Filenames::in(H, (CM)?(CM->home_leaf):I"index.html");
-		text_stream TO_struct; text_stream *OUT = &TO_struct;
-		if (STREAM_OPEN_TO_FILE(OUT, Contents, ISO_ENC) == FALSE)
-			Errors::fatal_with_file("unable to write contents file", Contents);
-		if (WeavingDetails::get_as_ebook(W))
-			Epub::note_page(WeavingDetails::get_as_ebook(W), Contents, I"Index", I"index");
-		Swarm::report_woven_file(R, Contents, NULL);
-
-		wcl_declaration *nav;
-		linked_list *crumbs;
-		if (CM) {
-			nav = CM->navigation;
-			crumbs = CM->breadcrumb_tail;
-		} else {
-			nav = NULL;
-			crumbs = NEW_LINKED_LIST(breadcrumb_request);
-		}
-
-		Collater::collate(OUT, W, range, INF, NULL, pattern, nav, crumbs, NULL, Contents, context, R);
-		STREAM_CLOSE(OUT);
-	}
+		Assets::include_colour_scheme(OUT, cs, wv);
 }

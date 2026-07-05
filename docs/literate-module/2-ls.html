@@ -2,31 +2,31 @@
 <html>
 	<head>
 		<title>Literate Source</title>
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
 
-<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script>
-function togglePopup(material_id) {
-  var popup = document.getElementById(material_id);
-  popup.classList.toggle("show");
-}
-</script>
+    <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Popups.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script>
+    function togglePopup(material_id) {
+      var popup = document.getElementById(material_id);
+      popup.classList.toggle("show");
+    }
+    </script>
 
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+    <script src="../docs-assets/Bigfoot.js"></script>
+    <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
@@ -98,7 +98,7 @@ which is a list of <code>ls_chunk</code>, which is a list of <code>ls_line</code
 
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_unit is accessed in 1/wcl, 1/ws, 1/wcp, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/lm, 4/tt, 4/tt2, 5/tc, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_unit is accessed in 1/wcl, 1/ws, 1/wcp, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/lm, 4/tt, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  To parse source text into an <code>ls_unit</code>, begin by calling this to produce
 an empty one, ready for parsing. Note that <code>S</code>, the section, can be <code>NULL</code>,
@@ -644,7 +644,7 @@ altogether, so that nobody uses it by mistake.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_child_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* how many sub-paras we've had so far */</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_paragraph is accessed in 1/cln, 1/ws, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/cc, 3/taf, 3/lm, 3/cl, 3/is, 4/tt, 4/tt2, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_paragraph is accessed in 1/cln, 1/ws, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/cc, 3/taf, 3/lm, 3/cl, 3/is, 4/tt, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_5_3" class="paragraph-anchor"></a><b>&#167;8.5.3. </b>  The new paragraph is appended to the list of paras in the unit, and assigned
 a temporary paragraph number. (This may be replaced later by better numbers,
@@ -743,7 +743,7 @@ following:</p>
 
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_chunk is accessed in 1/wcl, 1/cln, 1/ws, 2/we, 2/hln, 2/ce, 3/ca, 3/lm, 3/cl, 3/is, 4/tt, 4/tt2, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_chunk is accessed in 1/wcl, 1/cln, 1/ws, 2/we, 2/hln, 2/ce, 3/ca, 3/lm, 3/cl, 3/is, 4/tt, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_5_5" class="paragraph-anchor"></a><b>&#167;8.5.5. </b>  When created, a chunk contains a single line:</p>
 </div>
@@ -1464,7 +1464,7 @@ to a single nameless holon.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">LiterateSource::unit_purpose</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">LiterateSource::unit_purpose</span></span>:<br/>The Collater - <a href="5-tc.html#SP5_1_3">&#167;5.1.3</a>, <a href="5-tc.html#SP5_1_11_7_1">&#167;5.1.11.7.1</a><br/>The Weaver - <a href="5-tw.html#SP2_7_1">&#167;2.7.1</a><br/>Plain Text Format - <a href="5-ptf.html#SP2_1">&#167;2.1</a><br/>TeX Format - <a href="5-tf.html#SP4_3">&#167;4.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_unit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lsu</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">LiterateSource::unit_purpose</span><button class="popup" onclick="togglePopup('usagePopup17')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup17">Usage of <span class="code-font"><span class="function-syntax">LiterateSource::unit_purpose</span></span>:<br/>The Collater - <a href="5-tc.html#SP6_1_3">&#167;6.1.3</a>, <a href="5-tc.html#SP6_1_11_8_1">&#167;6.1.11.8.1</a><br/>The Weaver - <a href="5-tw.html#SP2_7_1">&#167;2.7.1</a><br/>Plain Text Format - <a href="5-ptf.html#SP2_1">&#167;2.1</a><br/>TeX Format - <a href="5-tf.html#SP4_3">&#167;4.3</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_unit</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lsu</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">lsu</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">lsu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">purpose</span><span class="plain-syntax">.</span><span class="element-syntax">minor</span><span class="plain-syntax"> == </span><span class="constant-syntax">PURPOSE_MINLC</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">lsu</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">purpose</span><span class="plain-syntax">.</span><span class="element-syntax">operand1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -1501,7 +1501,7 @@ to a single nameless holon.</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">1000</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">LiterateSource::par_ornament</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">LiterateSource::par_ornament</span></span>:<br/><a href="2-ls.html#SP11">&#167;11</a>, <a href="2-ls.html#SP11_1">&#167;11.1</a><br/>Colonies - <a href="1-cln.html#SP16">&#167;16</a><br/>The Weaver - <a href="5-tw.html#SP6">&#167;6</a><br/>Plain Text Format - <a href="5-ptf.html#SP2_10">&#167;2.10</a>, <a href="5-ptf.html#SP2_31">&#167;2.31</a><br/>TeX Format - <a href="5-tf.html#SP4_37">&#167;4.37</a>, <a href="5-tf.html#SP5">&#167;5</a><br/>HTML Formats - <a href="5-hf.html#SP5_27">&#167;5.27</a>, <a href="5-hf.html#SP5_40">&#167;5.40</a>, <a href="5-hf.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">LiterateSource::par_ornament</span><button class="popup" onclick="togglePopup('usagePopup22')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup22">Usage of <span class="code-font"><span class="function-syntax">LiterateSource::par_ornament</span></span>:<br/><a href="2-ls.html#SP11">&#167;11</a>, <a href="2-ls.html#SP11_1">&#167;11.1</a><br/>Colonies - <a href="1-cln.html#SP16">&#167;16</a><br/>Assets, Plugins and Colour Schemes - <a href="5-apacs.html#SP14_1_2">&#167;14.1.2</a><br/>The Weaver - <a href="5-tw.html#SP6">&#167;6</a><br/>Plain Text Format - <a href="5-ptf.html#SP2_10">&#167;2.10</a>, <a href="5-ptf.html#SP2_31">&#167;2.31</a><br/>TeX Format - <a href="5-tf.html#SP4_37">&#167;4.37</a>, <a href="5-tf.html#SP5">&#167;5</a><br/>HTML Formats - <a href="5-hf.html#SP5_27">&#167;5.27</a>, <a href="5-hf.html#SP5_40">&#167;5.40</a>, <a href="5-hf.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_paragraph</span><span class="plain-syntax"> *</span><span class="identifier-syntax">par</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="string-syntax">"S"</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 

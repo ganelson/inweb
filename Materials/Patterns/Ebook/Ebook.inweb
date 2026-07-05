@@ -4,20 +4,15 @@ Pattern "Ebook" {
 	footnotes plugin: None
 	mathematics plugin: None
 	assets
-		embed .js files
-		for each .js file prefix {
+		.js files: embed file and prefix {
 			<script>
-		}
-		for each .js file suffix {
+		} and suffix {
 			</script>
 		}
-		embed .css files
-		for each .css file prefix {
+		.css files: embed file and transform names and prefix {
 			<style type="text/css">
-		}
-		for each .css file suffix {
+		} and suffix {
 			</style>
 		}
-		transform names in .css files
 	end
 }

@@ -2,23 +2,23 @@
 <html>
 	<head>
 		<title>Asset Management</title>
-<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<meta http-equiv="Content-Language" content="en-gb">
+		<link href="../docs-assets/Breadcrumbs.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    		<meta name="viewport" content="width=device-width initial-scale=1">
+    		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    		<meta http-equiv="Content-Language" content="en-gb">
 
-<link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <link href="../docs-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"
+    	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 
-<script src="../docs-assets/Bigfoot.js"></script>
-<link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
-		
+    <script src="../docs-assets/Bigfoot.js"></script>
+    <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
+
 	</head>
 	<body class="commentary-font">
 		<nav role="navigation">
@@ -85,71 +85,162 @@ so that the copy will be made just once.</p>
 instructions on how to include assets. If nothing has been said, then it copies
 a file verbatim into the assets directory for the weave. For the <code>gobelins.jpg</code>,
 that was exactly what was wanted. But (for example) CSS and Javascript files
-need more delicate handling. Here is the <code>assets</code> portion of the <code>HTML</code> pattern
+need more delicate handling. Here is (part of) the <code>assets</code> portion of the <code>HTML</code> pattern
 declaration:</p>
 <pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Pattern "HTML" {
 	...
 	assets
-		collate .html files
-		copy .js files
-		for each .js file embed {
+		...
+		.html files: collate
+		.js files: copy and embed {
 			&lt;script src="URL"&gt;&lt;/script&gt;
 		}
-		copy .css files
-		for each .css file embed {
+		.css files: copy and transform names and embed {
 			&lt;link href="URL" rel="stylesheet" rev="stylesheet" type="text/css"&gt;
 		}
-		transform names in .css files
 	end
 }
 </span></pre>
-<p>As this may suggest, Inweb decides how to include an asset based on its filename
-extension, which is assumed to indicate what kind of contents it has. For any
-given extension, four methods of inclusion are possible:</p>
+<p>The <code>assets</code> portion consists of a list of <em>rules</em>, each of which consists of
+a <em>selector</em>, then a colon, then a <em>disposition</em>. A selector says which files
+should be handled by the rule:</p>
+<table>
+<thead>
+<tr>
+<th>Selector</th>
+<th>selects for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>all files</code></td>
+<td>everything</td>
+</tr>
+<tr>
+<td><code>.html files</code></td>
+<td>files with the <code>.html</code> file extension (case insensitively)</td>
+</tr>
+<tr>
+<td><code>README.md file</code></td>
+<td>files with the leafname <code>README.md</code> (case insensitively)</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, a selector can optionally end with <code>in</code> and the name of a plugin.
+Thus <code>all files in Bigfoot</code> matches all asset files in the plugin <code>Bigfoot</code>.</p>
+<p>When Inweb tries to match an asset file against these rules, it chooses only the
+first one in the pattern which matches. If that fails, and the pattern is based
+on another pattern, Inweb tries to match the rules for that pattern instead, and
+so on. If nothing at all works, it falls back on the rule:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">all files: copy
+</span></pre>
+<p>which, as noted above, means that it copies the asset file unmodified into the
+assets directory for the weave.</p>
+<p>Because, within each pattern, Inweb matches only the first rule to match, the
+following would make no sense:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	assets
+		.html files: collate
+		exception.html file: copy
+	end
+</span></pre>
+<p>An asset called <code>exception.html</code> would match the first rule anyway, so the second
+rule can never be reached. To catch these accidents, Inweb produces an error if
+a rule is placed where it can never have any effect. Instead, this is intended:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	assets
+		exception.html file: copy
+		.html files: collate
+	end
+</span></pre>
+<p>In other words, always handle exceptional cases first.</p>
+<p>So much for selectors. Dispositions are instructions for what to do with the
+file. There can be multiple sub-instructions, in which case they are separated with
+the word <code>and</code>. (Not with commas.) The possible instructions are:</p>
 <ol>
 <li>
-<p><code>copy .WHATEVER files</code>. This is default, and means a file is copied over
-directly into the assets directory for the weave.</p>
+<p><code>ignore</code>. The main action is to do nothing with the asset file.</p>
 </li>
 <li>
-<p><code>privately copy .WHATEVER files</code>. The same, but never put into the shared
-assets directory: it's always copied alongside the woven files for the web.</p>
+<p><code>copy</code>. The main action is to copy the file directly into the shared
+assets directory for the weave. (This is the default main action.)</p>
 </li>
 <li>
-<p><code>embed .WHATEVER files</code>. The file is not copied. Instead, its entire contents
-are pasted into the woven file itself, when the <code>[[Plugins]]</code> placeholder in
-the template is expanded (see <a href="6-cll.html" class="internal">Collation</a>). Do not use this for binary files.</p>
+<p><code>privately copy</code>. The main action is to copy, but not into the shared
+assets directory: the copy does alongside the woven files for the web.</p>
 </li>
 <li>
-<p><code>collate .WHATEVER files</code>. Like a <code>copy</code>, but the file collated into place
-rather than being copied over: which means that placeholders in it will be
-expanded. (See <a href="6-cll.html" class="internal">Collation</a>.) Do not use this for binary files.</p>
+<p><code>embed file</code>. The main action is to paste the entire contents of the asset file
+into the woven file itself, at the position where the <code>[[Plugins]]</code> placeholder in
+the template is expanded (see <a href="6-cll.html" class="internal">Collation</a>). This will typically be in the
+<code>&lt;head&gt;</code> of an HTML file. Do not use this for binary files.</p>
+</li>
+<li>
+<p><code>collate</code>. The main action is to collate the entire contents of the asset file
+into the woven file itself, at the position where the <code>[[Plugins]]</code> placeholder in
+the template is expanded (see <a href="6-cll.html" class="internal">Collation</a>). This will typically be in the
+<code>&lt;head&gt;</code> of an HTML file. Do not use this for binary files.
+(The difference between <code>collate</code> and <code>embed file</code> is that any further placeholders
+in the asset text are expanded, too.)</p>
 </li>
 </ol>
-<p>In addition, text (presumably code of some kind, but Inweb doesn't
-distinguish) can be pasted into the embedded text in <code>[[Plugins]]</code> for each
-copied or embedded asset. This:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		for each .js file embed {
-			&lt;script src="URL"&gt;&lt;/script&gt;
-		}
-</span></pre>
-<p>says that whenever a Javascript file is copied, a corresponding line should be
-pasted in to <code>[[Plugins]]</code>. The <code>URL</code> is replaced by the relative URL from the
-file being woven to the copied file in the assets directory. In the <code>HTML</code>
-template file <code>template-body.html</code>, the <code>[[Plugins]]</code> content is then
-collated into the <code>&lt;head&gt;</code> of the web page.</p>
-<p>An alternative strategy would be:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	embed .js files
-	for each .js file prefix {
+<p>In addition, the following variations are allowed:</p>
+<ol>
+<li>
+<p><code>collate to head</code>: same as <code>collate</code>.</p>
+</li>
+<li>
+<p><code>collate to body</code>: same as <code>collate</code>, but the matter is placed into the
+top of the <code>&lt;body&gt;</code> of an HTML file, not the <code>&lt;head&gt;</code>.</p>
+</li>
+<li>
+<p><code>collate to search box</code>: same as <code>collate</code>, but the matter is placed into a
+natural place for a search box within the <code>&lt;body&gt;</code> of an HTML file.</p>
+</li>
+<li>
+<p><code>transform names</code>: see the note below on the Colouring Exception.</p>
+</li>
+<li>
+<p><code>add data</code>: during a <code>copy</code>, look out for the placeholder <code>SEARCHDATA</code>
+and replace it with Inweb-generated search data for the plugin <code>SeekLocateDisplay</code>
+to make use of.</p>
+</li>
+<li>
+<p><code>embed {</code>, followed by one or more lines, followed by <code>}</code>: as well as
+the main action, place this material into the woven file at the <code>[[Plugins]]</code>
+position. See below.</p>
+</li>
+<li>
+<p><code>prefix {</code>, followed by one or more lines, followed by <code>}</code>: if the main
+action is <code>embed file</code>, embed this text first.</p>
+</li>
+<li>
+<p><code>suffix {</code>, followed by one or more lines, followed by <code>}</code>: if the main
+action is <code>embed file</code>, embed this text afterwards.</p>
+</li>
+</ol>
+<p>For example, consider this rule:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	.js files: embed file and prefix {
 		&lt;script&gt;
-	}
-	for each .js file suffix {
+	} and suffix {
 		&lt;/script&gt;
 	}
 </span></pre>
-<p>Now the Javascript files are not copied: they are written into the <code>[[Plugins]]</code>
-placeholder. But the <code>prefix</code> text appears before each one, and the <code>suffix</code>
-one after each one.</p>
+<p>This says that any Javascript files should be embedded into the <code>&lt;head&gt;</code> of
+an HTML file, but inside <code>&lt;script&gt;</code> ... <code>&lt;/script&gt;</code> tags. Similarly, CSS
+could be handled like so:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	.css files: embed file and transform names and prefix {
+		&lt;style type="text/css"&gt;
+	} and suffix {
+		&lt;/style&gt;
+	}
+</span></pre>
+<p>Alternatively (and this is what <code>HTML</code> does), Javascript files could be copied
+over, but then loaded from within <code>&lt;head&gt;</code>. This is done thus:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		.js files: copy and embed {
+			&lt;script src="URL"&gt;&lt;/script&gt;
+		}
+</span></pre>
+<p>Note that the <code>URL</code> is replaced by the relative URL from the file being woven to
+the copied file in the assets directory.</p>
 <h2>The Colouring Exception</h2>
 <p>Inweb has a special tweak to handle the plugin <code>Colouring</code>, found in <code>HTML</code>.
 This contains a single asset: the file <code>Colours.css</code>, which specifies the
@@ -167,10 +258,12 @@ Rust, then Inweb might need to use both <code>Colours.css</code> (for C) and
 theory that could cause problems, because they will have rival definitions
 of the CSS class <code>span.identifier-syntax</code> (for example). However, Inweb
 renames them automatically so that this does not happen, and that is
-because of the previously enigmatic line</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		transform names in .css files
+because of the previously enigmatic <code>transform names</code> instruction in the
+following asset rule in the <code>HTML</code> pattern:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">.css files: copy and transform names and embed {
+	&lt;link href="URL" rel="stylesheet" rev="stylesheet" type="text/css"&gt;
+}
 </span></pre>
-<p>in the <code>assets</code> rules for <code>HTML</code>, shown above.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Collation</span><a href="6-cll.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 6: Patterns</span>6<li class="progresssection"><span class="fullname-popup">About Patterns</span><a href="6-ap.html">ap</a></li><li class="progresssection"><span class="fullname-popup">Creating Patterns</span><a href="6-cp.html">cp</a></li><li class="progresssection"><span class="fullname-popup">Collation</span><a href="6-cll.html">cll</a></li><li class="progresscurrent"><span class="current-fullname-popup">Asset Management</span>am</li><li class="progresssection"><span class="fullname-popup">The Post-Weave</span><a href="6-tp.html">tp</a></li><li class="progresssection"><span class="fullname-popup">Summary of Patterns</span><a href="6-sop.html">sop</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">The Post-Weave</span><a href="6-tp.html">&#10095;</a></li></ul></div>
