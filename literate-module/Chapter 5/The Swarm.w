@@ -458,10 +458,7 @@ weave_order *Swarm::weave_subset_inner(ls_colony *context, ls_colony_member *CM,
 	if (WebStructure::has_errors(W) == FALSE) {
 		CodeAnalysis::analyse_code(W);
 		wv = Swarm::order(context, CM, W, range, tag, pattern, R);
-		if (Conventions::get_int(W, SEARCH_ON_BODY_PAGES_LSCONVENTION)) {
-			text_stream *plugin_name = Patterns::get_search_plugin(wv->weave_web, wv->pattern);
-			if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
-		}
+		Swarm::ensure_search(wv, W, SEARCH_ON_BODY_PAGES_LSCONVENTION);
 		Swarm::order_destination(wv, to, into);
 		Weaver::weave(wv);
 		Patterns::post_process(wv->pattern, wv);
@@ -500,13 +497,25 @@ void Swarm::weave_index_templates(ls_colony *C, ls_colony_member *CM, ls_web *W,
 			crumbs = NEW_LINKED_LIST(breadcrumb_request);
 		}
 		weave_order *wv = Swarm::order(C, CM, W, NULL, NULL, pattern, R);
-		if (Conventions::get_int(W, SEARCH_ON_INDEX_PAGES_LSCONVENTION)) {
-			text_stream *plugin_name = Patterns::get_search_plugin(wv->weave_web, wv->pattern);
-			if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
-		}
+		Swarm::ensure_search(wv, W, SEARCH_ON_INDEX_PAGES_LSCONVENTION);
 		Swarm::begin_file(wv, Contents);
 		Collater::collate(OUT, wv, INF);
 		STREAM_CLOSE(OUT);
+	}
+}
+
+@ Ensuring the search plugin where needed:
+
+=
+void Swarm::ensure_search(weave_order *wv, ls_web *W, int aspect) {
+	if ((Conventions::get_int(W, SEARCH_ON_BODY_PAGES_LSCONVENTION)) ||
+		(Conventions::get_int(W, SEARCH_ON_INDEX_PAGES_LSCONVENTION))) {
+		text_stream *plugin_name = Patterns::get_search_highlight_plugin(wv->weave_web, wv->pattern);
+		if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
+	}
+	if (Conventions::get_int(W, aspect)) {
+		text_stream *plugin_name = Patterns::get_search_plugin(wv->weave_web, wv->pattern);
+		if (Str::len(plugin_name) > 0) Swarm::ensure_plugin(wv, plugin_name);
 	}
 }
 

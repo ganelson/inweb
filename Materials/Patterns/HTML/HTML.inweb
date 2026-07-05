@@ -5,9 +5,10 @@ Pattern "HTML" {
 	mathematics plugin: MathJax3
 	footnotes plugin: Bigfoot
 	search plugin: SeekLocateDisplay
+	search highlight plugin: SeekLocateDisplayHighlight
 	assets
 		seek_locate_display.html file in SeekLocateDisplay: collate to search box
-		sld_data.js file in SeekLocateDisplay: copy and add data and embed {
+		sld_data.js file in SeekLocateDisplay: privately copy and add data and embed {
 			<script src="URL"></script>
 		}
 		.html files: collate

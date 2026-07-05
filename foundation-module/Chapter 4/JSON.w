@@ -519,6 +519,14 @@ rule for code points between `0x10000` and `0x10fff`.
 
 =
 void JSON::encode(OUTPUT_STREAM, JSON_value *J) {
+	JSON::encode_with_options(OUT, J, FALSE);
+}
+
+void JSON::encode_to_ASCII(OUTPUT_STREAM, JSON_value *J) {
+	JSON::encode_with_options(OUT, J, TRUE);
+}
+
+void JSON::encode_with_options(OUTPUT_STREAM, JSON_value *J, int ASCII) {
 	if (J == NULL) internal_error("no JSON value supplied");
 	switch (J->JSON_type) {
 		case ERROR_JSONTYPE:
@@ -530,7 +538,7 @@ void JSON::encode(OUTPUT_STREAM, JSON_value *J) {
 			WRITE("%g", J->if_double);
 			break;
 		case STRING_JSONTYPE:
-			WRITE("\""); JSON::encode_string(OUT, J->if_string); WRITE("\"");
+			WRITE("\""); JSON::encode_string_with_options(OUT, J->if_string, ASCII); WRITE("\"");
 			break;
 		case BOOLEAN_JSONTYPE:
 			if (J->if_boolean == TRUE) WRITE("true");
@@ -544,7 +552,7 @@ void JSON::encode(OUTPUT_STREAM, JSON_value *J) {
 			LOOP_OVER_LINKED_LIST(E, JSON_value, J->if_list) {
 				if (count++ > 0) WRITE(",");
 				WRITE(" ");
-				JSON::encode(OUT, E);
+				JSON::encode_with_options(OUT, E, ASCII);
 			}
 			if (count > 0) WRITE(" ");
 			WRITE("]");
@@ -559,9 +567,9 @@ void JSON::encode(OUTPUT_STREAM, JSON_value *J) {
 				JSON_value *E = Dictionaries::read_value(J->dictionary_if_object, key);
 				if (E == NULL) internal_error("broken JSON object dictionary");
 				WRITE("\"");
-				JSON::encode_string(OUT, key);
+				JSON::encode_string_with_options(OUT, key, ASCII);
 				WRITE("\": ");
-				JSON::encode(OUT, E);
+				JSON::encode_with_options(OUT, E, ASCII);
 			}
 			if (count > 0) WRITE("\n");
 			OUTDENT; WRITE("}");
@@ -579,6 +587,14 @@ as few characters as possible above 32.
 
 =
 void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
+	JSON::encode_string_with_options(OUT, T, FALSE);
+}
+
+void JSON::encode_string_to_ASCII(OUTPUT_STREAM, text_stream *T) {
+	JSON::encode_string_with_options(OUT, T, TRUE);
+}
+
+void JSON::encode_string_with_options(OUTPUT_STREAM, text_stream *T, int ASCII) {
 	LOOP_THROUGH_TEXT(pos, T) {
 		inchar32_t c = Str::get(pos);
 		switch (c) {
@@ -590,7 +606,8 @@ void JSON::encode_string(OUTPUT_STREAM, text_stream *T) {
 			case 13: WRITE("\\r"); break;
 			case '"': WRITE("\\\""); break;
 			default:
-				if (Characters::iscntrl(c)) WRITE("\\u%04x", (int)c);
+				if ((Characters::iscntrl(c)) ||
+					((ASCII) && (c >= 0x7e))) WRITE("\\u%04x", (int)c);
 				else PUT(c);
 				break;
 		}

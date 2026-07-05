@@ -22,6 +22,7 @@ classdef ls_pattern {
 	struct text_stream *mathematics_plugin; /* name only, not a `ls_pattern *` */
 	struct text_stream *footnotes_plugin; /* name only, not a `ls_pattern *` */
 	struct text_stream *search_plugin; /* name only, not a `ls_pattern *` */
+	struct text_stream *search_highlight_plugin; /* name only, not a `ls_pattern *` */
 
 	struct text_stream *initial_extension; /* filename extension, that is */
 	struct linked_list *post_commands; /* of `text_stream` */
@@ -119,6 +120,7 @@ void Patterns::parse_declaration(wcl_declaration *D) {
 	wp->footnotes_plugin = NULL;
 	wp->mathematics_plugin = NULL;
 	wp->search_plugin = NULL;
+	wp->search_highlight_plugin = NULL;
 	wp->default_range = NULL;
 	wp->initial_extension = NULL;
 	wp->post_commands = NEW_LINKED_LIST(text_stream);
@@ -213,6 +215,15 @@ text_stream *Patterns::get_search_plugin(ls_web *W, ls_pattern *wp) {
 		if (basis) return Patterns::get_search_plugin(W, basis);
 	}
 	return wp->search_plugin;
+}
+
+text_stream *Patterns::get_search_highlight_plugin(ls_web *W, ls_pattern *wp) {
+	if (wp == NULL) return NULL;
+	if (Str::len(wp->search_highlight_plugin) == 0) {
+		ls_pattern *basis = Patterns::basis(W->declaration, wp);
+		if (basis) return Patterns::get_search_highlight_plugin(W, basis);
+	}
+	return wp->search_highlight_plugin;
 }
 
 ls_pattern *Patterns::basis(wcl_declaration *D, ls_pattern *wp) {
@@ -312,6 +323,8 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 				wp->mathematics_plugin = Patterns::plugin_name(value, tfp);
 			} else if (Str::eq_insensitive(key, I"search plugin")) {
 				wp->search_plugin = Patterns::plugin_name(value, tfp);
+			} else if (Str::eq_insensitive(key, I"search highlight plugin")) {
+				wp->search_highlight_plugin = Patterns::plugin_name(value, tfp);
 			} else if (Str::eq_insensitive(key, I"footnotes plugin")) {
 				wp->footnotes_plugin = Patterns::plugin_name(value, tfp);
 			} else if (Str::eq_insensitive(key, I"block template")) {

@@ -412,6 +412,7 @@ pathname *Assets::dispose_of_asset(OUTPUT_STREAM, asset_disposition *D, filename
 	filename *from = wv->current_weave_file;
 	TEMPORARY_TEXT(url)
 	pathname *AP = Colonies::assets_path(wv->weave_colony, wv->weave_web);
+	if (D->method == PRIVATE_COPY_ASSET_METHOD) AP = Filenames::up(wv->current_weave_file);
 	if (AP) Pathnames::relative_URL(url, Filenames::up(from), AP);
 	WRITE_TO(url, "%S", Filenames::get_leafname(F));
 	if (D->transform_names == FALSE) trans = NULL;
@@ -546,9 +547,13 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 	sd_file_transformation *sd = (sd_file_transformation *) X;
 	text_stream *OUT = sd->OUT;
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, line, U"(%c*?)SEARCHDATA(%c*?)")) {
+	if (Regexp::match(&mr, line, U"(%c*?)%[%[Search Data%]%](%c*?)")) {
 		WRITE("%S\n", mr.exp[0]);
 		@<Splice in search data@>;
+		WRITE("%S\n", mr.exp[1]);
+	} else if (Regexp::match(&mr, line, U"(%c*?)%[%[Search Text%]%](%c*?)")) {
+		WRITE("%S", mr.exp[0]);
+		WRITE("Search %S...", Bibliographic::get_datum(sd->W, I"Title"));
 		WRITE("%S\n", mr.exp[1]);
 	} else {
 		WRITE("%S\n", line);
@@ -584,7 +589,7 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 			JSON::add_to_array(pages, entry);
 		}
 	
-	JSON::encode(OUT, pages);
+	JSON::encode_to_ASCII(OUT, pages);
 
 @<The ID field is the anchor@> =
 	TEMPORARY_TEXT(id)
