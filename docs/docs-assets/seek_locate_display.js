@@ -4,6 +4,11 @@
  * Indexes sections by heading + body text; renders a search UI
  * with results grouped by page and click-to-navigate to anchors.
  *
+ * Styles live in the companion stylesheet sld.css (they used
+ * to be injected from here). Link it in the page <head>, after Colours.css:
+ *   <link rel="stylesheet" href="Colours.css">
+ *   <link rel="stylesheet" href="sld.css">
+ *
  * Usage:
  *   const sld = new SeekLocateDisplay({
  *     container: '#my-search-box',
@@ -61,73 +66,20 @@
     excerptLength: 140,
     headingWeight: 4,      // multiplier vs body text
     onNavigate: null,      // fn(url) — default: window.location.href
-    styles: true,          // inject built-in CSS
     noResultsText: 'No results found.',
     debounceMs: 120,
     persist: true,         // remember query (URL) + scroll position (sessionStorage) across navigation
     persistParam: 'q',     // URL query-string param name used to store the search text
     highlightOnNavigate: true, // append the search query to result links so destination pages can highlight matches
-    highlightParam: 'ls-hl',   // URL query-string param name carrying the query for highlighting on the destination page
+    highlightParam: 'sld-hl',   // URL query-string param name carrying the query for highlighting on the destination page
   };
-
-  /* ─── CSS ───────────────────────────────────────────────────── */
-
-  const CSS = `
-.ls-wrap *{box-sizing:border-box;margin:0;padding:0}
-.ls-bar{display:flex;align-items:center;gap:8px;padding:0 12px;height:44px;
-  border:1px solid #ccc;border-radius:8px;background:#fff}
-.ls-bar:focus-within{border-color:#4a90e2;box-shadow:0 0 0 3px rgba(74,144,226,.2)}
-.ls-icon{width:18px;height:18px;flex-shrink:0;fill:none;stroke:#888;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.ls-input{flex:1;border:none;background:transparent;font-size:15px;outline:none;color:inherit}
-.ls-input::-webkit-search-cancel-button,
-.ls-input::-webkit-search-decoration{
-  -webkit-appearance:none;
-  appearance:none;
-}
-.ls-input::placeholder{color:#aaa}
-.ls-clear{background:none;border:none;cursor:pointer;color:#aaa;padding:4px;border-radius:4px;line-height:1;flex-shrink:0}
-.ls-clear:hover{color:#555}
-.ls-clear svg{display:block}
-.ls-stats{font-size:12px;color:#888;margin:10px 2px 6px}
-.ls-page{margin-bottom:10px;border:1px solid #e2e2e2;border-radius:8px;overflow:hidden}
-.ls-page-header{padding:8px 14px;background:#f5f5f5;font-size:13px;font-weight:600;
-  color:#555;display:flex;align-items:center;gap:6px}
-.ls-page-url{margin-left:auto;font-weight:400;color:#aaa;font-size:11px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
-.ls-hit{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;
-  cursor:pointer;border-top:1px solid #eee;transition:background .1s}
-.ls-hit:hover,.ls-hit:focus{background:#f0f6ff;outline:none}
-.ls-hit-body{flex:1;min-width:0}
-.ls-hit-title{font-size:14px;font-weight:600;margin-bottom:3px;color:#222;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ls-hit-snippet{font-size:13px;color:#666;line-height:1.55}
-.ls-hit-snippet mark{background:transparent;color:#1a6fc4;font-weight:600}
-.ls-sep{color:#ccc;font-weight:400;margin:0 2px}
-.ls-hit-anchor{font-size:11px;color:#4a90e2;margin-top:4px;display:block}
-.ls-empty{padding:2rem;text-align:center;color:#aaa;font-size:14px}
-.ls-hit-icon{width:14px;height:14px;flex-shrink:0;margin-top:3px;stroke:#bbb;
-  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
-@media(prefers-color-scheme:dark){
-  .ls-bar{background:#1e1e1e;border-color:#444}
-  .ls-input{color:#eee}
-  .ls-clear:hover{color:#ddd}
-  .ls-page-header{background:#2a2a2a;color:#bbb}
-  .ls-page{border-color:#333}
-  .ls-hit:hover,.ls-hit:focus{background:#1a2a3a}
-  .ls-hit-title{color:#eee}
-  .ls-hit-snippet{color:#999}
-  .ls-hit-snippet mark{color:#72b3f5}
-  .ls-sep{color:#555}
-  .ls-hit+.ls-hit{border-top-color:#333}
-}
-`;
 
   /* ─── SVG icons (inline, no font dependency) ────────────────── */
 
-  const ICON_SEARCH = `<svg viewBox="0 0 24 24" class="ls-icon" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
-  const ICON_CLOSE  = `<svg viewBox="0 0 24 24" class="ls-icon" style="width:14px;height:14px" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
-  const ICON_FILE   = `<svg viewBox="0 0 24 24" class="ls-icon" style="stroke:#aaa" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
-  const ICON_HASH   = `<svg viewBox="0 0 24 24" class="ls-hit-icon" aria-hidden="true"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>`;
+  const ICON_SEARCH = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" class="sld-icon" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`;
+  const ICON_CLOSE  = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" class="sld-icon" style="width:14px;height:14px" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
+  const ICON_FILE   = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" class="sld-icon" style="stroke:#aaa" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+  const ICON_HASH   = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" class="sld-hit-icon" aria-hidden="true"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>`;
 
   /* ─── Helpers ───────────────────────────────────────────────── */
 
@@ -180,14 +132,6 @@
     // after navigation already wrote the final value synchronously.
     debounced.cancel = () => clearTimeout(timer);
     return debounced;
-  }
-
-  function injectStyles(css) {
-    if (document.getElementById('ls-styles')) return;
-    const el = document.createElement('style');
-    el.id = 'ls-styles';
-    el.textContent = css;
-    document.head.appendChild(el);
   }
 
   /* ─── Persistence: query in URL, scroll position in sessionStorage ───
@@ -503,7 +447,7 @@
     // Split off any fragment already present in the configured page URL.
     // Query params must be inserted BEFORE the '#' — checking only for
     // '?' meant a config like url:'guide.html#top' produced
-    // 'guide.html#top?ls-hl=...#id', burying the param inside the
+    // 'guide.html#top?sld-hl=...#id', burying the param inside the
     // fragment where the destination page's highlighter never sees it.
     const hashIdx = pageUrl.indexOf('#');
     let base = hashIdx === -1 ? pageUrl : pageUrl.slice(0, hashIdx);
@@ -563,7 +507,7 @@
       // No spans landed in body (match was heading-only) — show first paragraph
       return escapeHtml(paragraphs[0].slice(0, excerptLen)) + (paragraphs[0].length > excerptLen ? '…' : '');
     }
-    return pieces.join(' <span class="ls-sep">|</span> ');
+    return pieces.join(' <span class="sld-sep">|</span> ');
   }
 
   function excerptFromSpans(text, spans, len) {
@@ -583,25 +527,25 @@
     const total  = results.length;
 
     if (parsed.error) {
-      return `<div class="ls-empty" style="color:#c0392b">${escapeHtml(parsed.error)}</div>`;
+      return `<div class="sld-empty" style="color:#c0392b">${escapeHtml(parsed.error)}</div>`;
     }
     if (!total) {
-      return `<div class="ls-empty">${escapeHtml(opts.noResultsText)}</div>`;
+      return `<div class="sld-empty">${escapeHtml(opts.noResultsText)}</div>`;
     }
 
-    let html = `<div class="ls-stats">${total} result${total !== 1 ? 's' : ''} across ${groups.length} page${groups.length !== 1 ? 's' : ''}</div>`;
+    let html = `<div class="sld-stats">${total} result${total !== 1 ? 's' : ''} across ${groups.length} page${groups.length !== 1 ? 's' : ''}</div>`;
 
     groups.forEach(g => {
-      html += `<div class="ls-page">`;
-      html += `<div class="ls-page-header">${ICON_FILE}${escapeHtml(g.pageTitle)}<span class="ls-page-url">${escapeHtml(g.url)}</span></div>`;
+      html += `<div class="sld-page">`;
+      html += `<div class="sld-page-header">${ICON_FILE}${escapeHtml(g.pageTitle)}<span class="sld-page-url">${escapeHtml(g.url)}</span></div>`;
       g.hits.forEach(hit => {
         const dest = buildDestUrl(hit.url, hit.sectionId, parsed.raw, opts);
-        html += `<div class="ls-hit" role="link" tabindex="0" data-dest="${escapeHtml(dest)}" aria-label="${escapeHtml(hit.heading)} — ${escapeHtml(g.pageTitle)}">
+        html += `<div class="sld-hit" role="link" tabindex="0" data-dest="${escapeHtml(dest)}" aria-label="${escapeHtml(hit.heading)} — ${escapeHtml(g.pageTitle)}">
           ${ICON_HASH}
-          <div class="ls-hit-body">
-            <div class="ls-hit-title">${renderHeading(hit.heading, hit._hSpans)}</div>
-            <div class="ls-hit-snippet">${renderSnippet(hit.text, hit._bSpans, opts.excerptLength)}</div>
-            <span class="ls-hit-anchor">${escapeHtml(dest)}</span>
+          <div class="sld-hit-body">
+            <div class="sld-hit-title">${renderHeading(hit.heading, hit._hSpans)}</div>
+            <div class="sld-hit-snippet">${renderSnippet(hit.text, hit._bSpans, opts.excerptLength)}</div>
+            <span class="sld-hit-anchor">${escapeHtml(dest)}</span>
           </div>
         </div>`;
       });
@@ -618,28 +562,26 @@
     this._opts = opts;
     this._index = buildIndex(opts.pages);
 
-    if (opts.styles) injectStyles(CSS);
-
     const root = typeof opts.container === 'string'
       ? document.querySelector(opts.container)
       : opts.container;
 
     if (!root) throw new Error('SeekLocateDisplay: container not found: ' + opts.container);
 
-    root.classList.add('ls-wrap');
+    root.classList.add('sld-wrap');
     root.innerHTML = `
-      <div class="ls-bar" role="search">
+      <div class="sld-bar" role="search">
         ${ICON_SEARCH}
-        <input class="ls-input" type="search" placeholder="${escapeHtml(opts.placeholder)}"
+        <input class="sld-input" type="search" placeholder="${escapeHtml(opts.placeholder)}"
                autocorrect="off" autocomplete="off" aria-label="${escapeHtml(opts.placeholder)}" />
-        <button class="ls-clear" type="button" aria-label="Clear search" style="display:none">${ICON_CLOSE}</button>
+        <button class="sld-clear" type="button" aria-label="Clear search" style="display:none">${ICON_CLOSE}</button>
       </div>
-      <div class="ls-results" aria-live="polite" aria-atomic="true"></div>
+      <div class="sld-results" aria-live="polite" aria-atomic="true"></div>
     `;
 
-    this._input    = root.querySelector('.ls-input');
-    this._clearBtn = root.querySelector('.ls-clear');
-    this._results  = root.querySelector('.ls-results');
+    this._input    = root.querySelector('.sld-input');
+    this._clearBtn = root.querySelector('.sld-clear');
+    this._results  = root.querySelector('.sld-results');
 
     this._scrollKey = storageKey(containerKeyFor(opts.container));
 
@@ -695,13 +637,13 @@
     });
 
     this._results.addEventListener('click', e => {
-      const hit = e.target.closest('.ls-hit');
+      const hit = e.target.closest('.sld-hit');
       if (hit) this._navigate(hit.dataset.dest);
     });
 
     this._results.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
-      const hit = e.target.closest('.ls-hit');
+      const hit = e.target.closest('.sld-hit');
       if (hit) { e.preventDefault(); this._navigate(hit.dataset.dest); }
     });
 

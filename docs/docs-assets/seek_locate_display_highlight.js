@@ -3,12 +3,12 @@
  * Companion script for SeekLocateDisplay.js destination pages.
  *
  * When a SeekLocateDisplay search result is clicked, the destination URL carries
- * the original query in a URL param (default: ?ls-hl=...). Include this
+ * the original query in a URL param (default: ?sld-hl=...). Include this
  * script on every page that can be a SeekLocateDisplay search target, and it will:
  *
  *   1. Read the query from the URL
  *   2. Walk the page's visible text nodes
- *   3. Wrap matches in <mark class="ls-page-highlight">
+ *   3. Wrap matches in <mark class="sld-page-highlight">
  *   4. Scroll to the first match WITHIN the #section the user navigated
  *      to (if present), not just the first match anywhere on the page.
  *      If the section has no match inside it, stay at the section itself
@@ -24,7 +24,7 @@
  *
  * Or with options:
  *   <script>
- *     window.SeekLocateDisplayHighlightOptions = { param: 'ls-hl', scroll: true };
+ *     window.SeekLocateDisplayHighlightOptions = { param: 'sld-hl', scroll: true };
  *   </script>
  *   <script src="seek_locate_display_highlight.js"></script>
  *
@@ -42,13 +42,13 @@
   'use strict';
 
   const DEFAULTS = {
-    param: 'ls-hl',         // URL query param carrying the search query
+    param: 'sld-hl',         // URL query param carrying the search query
     scroll: true,           // auto-scroll to the first match
     scrollBehavior: 'smooth',
     scrollOffset: 80,        // px gap above the highlighted match (sticky headers etc.)
     cleanUrl: false,          // leave the param in the URL so reload/back re-highlights; set true to strip it (tidier URLs, but highlights are lost on reload)
-    markClassName: 'ls-page-highlight',
-    activeClassName: 'ls-page-highlight-active', // applied to the first/scrolled-to match
+    markClassName: 'sld-page-highlight',
+    activeClassName: 'sld-page-highlight-active', // applied to the first/scrolled-to match
     skipTags: ['script', 'style', 'noscript', 'textarea', 'input', 'select', 'option', 'svg', 'mark', 'mjx-container'],
     minTextLength: 1,
   };
@@ -487,9 +487,9 @@
   }
 
   function injectDefaultStyles() {
-    if (document.getElementById('ls-highlight-styles')) return;
+    if (document.getElementById('sld-highlight-styles')) return;
     const style = document.createElement('style');
-    style.id = 'ls-highlight-styles';
+    style.id = 'sld-highlight-styles';
     style.textContent = `
       mark.${opts.markClassName} {
         background: #fff3a3;

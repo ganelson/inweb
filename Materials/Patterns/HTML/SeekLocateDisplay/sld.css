@@ -1,0 +1,130 @@
+/* Styles for the seek_locate_display.js local search widget.
+
+   Link this from the page <head>:
+
+       <link rel="stylesheet" href="sld.css">
+
+   Everything is scoped under the .sld-wrap element the widget adds to its
+   host container, so none of it leaks into the surrounding page. */
+
+/* ---------- */
+/* The widget */
+/* ---------- */
+
+/* Reset the box model inside the widget only: */
+
+.sld-wrap * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* The search bar: the rounded box holding the icon, input and clear button. */
+
+.sld-bar {
+	display: flex; align-items: center; gap: 8px;
+	padding: 0 12px; height: 44px;
+	border: 1px solid #cccccc; border-radius: 8px; background: #ffffff;
+}
+.sld-bar:focus-within {
+	border-color: #4a90e2; box-shadow: 0 0 0 3px rgba(74, 144, 226, .2);
+}
+
+/* The magnifier / close SVG icons sitting in the bar: */
+
+.sld-icon {
+	width: 18px; height: 18px; flex-shrink: 0;
+	fill: none; stroke: #888888; stroke-width: 2;
+	stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* The text field itself (a type="search" input): */
+
+.sld-input {
+	flex: 1; border: none; background: transparent;
+	font-size: 15px; outline: none; color: inherit;
+}
+.sld-input::-webkit-search-cancel-button,
+.sld-input::-webkit-search-decoration {
+	-webkit-appearance: none; appearance: none;
+}
+.sld-input::placeholder { color: #aaaaaa; }
+
+/* The clear (x) button, shown only while there is a query: */
+
+.sld-clear {
+	background: none; border: none; cursor: pointer;
+	color: #aaaaaa; padding: 4px; border-radius: 4px;
+	line-height: 1; flex-shrink: 0;
+}
+.sld-clear:hover { color: #555555; }
+.sld-clear svg  { display: block; }
+
+/* ------- */
+/* Results */
+/* ------- */
+
+/* The "N results across M pages" line above the list: */
+
+.sld-stats { font-size: 12px; color: #888888; margin: 10px 2px 6px; }
+
+/* Each page's matches are a bordered group with a header then its hits: */
+
+.sld-page {
+	margin-bottom: 10px; border: 1px solid #e2e2e2;
+	border-radius: 8px; overflow: hidden;
+}
+.sld-page-header {
+	padding: 8px 14px; background: #f5f5f5;
+	font-size: 13px; font-weight: 600; color: #555555;
+	display: flex; align-items: center; gap: 6px;
+}
+.sld-page-url {
+	margin-left: auto; font-weight: 400; color: #aaaaaa; font-size: 11px;
+	white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+	max-width: 180px;
+}
+
+/* Each hit is one matched section, click- or keyboard-navigable: */
+
+.sld-hit {
+	display: flex; align-items: flex-start; gap: 10px;
+	padding: 10px 14px; cursor: pointer;
+	border-top: 1px solid #eeeeee; transition: background .1s;
+}
+.sld-hit:hover, .sld-hit:focus { background: #f0f6ff; outline: none; }
+.sld-hit-body { flex: 1; min-width: 0; }
+.sld-hit-title {
+	font-size: 14px; font-weight: 600; margin-bottom: 3px; color: #222222;
+	white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sld-hit-snippet      { font-size: 13px; color: #666666; line-height: 1.55; }
+.sld-hit-snippet mark { background: transparent; color: #1a6fc4; font-weight: 600; }   /* highlighted match */
+.sld-sep        { color: #cccccc; font-weight: 400; margin: 0 2px; }   /* the " | " between paragraphs */
+.sld-hit-anchor { font-size: 11px; color: #4a90e2; margin-top: 4px; display: block; }
+.sld-hit-icon {
+	width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px;
+	stroke: #bbbbbb; stroke-width: 2;
+	stroke-linecap: round; stroke-linejoin: round; fill: none;
+}
+
+/* Shown when a query matches nothing: */
+
+.sld-empty { padding: 2rem; text-align: center; color: #aaaaaa; font-size: 14px; }
+
+/* --------- */
+/* Dark mode */
+/* --------- */
+
+@media (prefers-color-scheme: dark) {
+
+	.sld-bar         { background: #1e1e1e; border-color: #444444; }
+	.sld-input       { color: #eeeeee; }
+	.sld-clear:hover { color: #dddddd; }
+
+	.sld-page        { border-color: #333333; }
+	.sld-page-header { background: #2a2a2a; color: #bbbbbb; }
+
+	.sld-hit:hover, .sld-hit:focus { background: #1a2a3a; }
+	.sld-hit-title        { color: #eeeeee; }
+	.sld-hit-snippet      { color: #999999; }
+	.sld-hit-snippet mark { color: #72b3f5; }
+	.sld-sep              { color: #555555; }
+	.sld-hit + .sld-hit   { border-top-color: #333333; }
+}
