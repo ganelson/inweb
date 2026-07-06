@@ -599,7 +599,9 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 
 @<The HEADING field is taken from the paragraph titling, if any@> =
 	TEMPORARY_TEXT(sht)
-	WRITE_TO(sht, "%S%S", LiterateSource::par_ornament(P), P->paragraph_number);
+	text_stream *S = LiterateSource::par_ornament(P);
+	if (Str::eq(S, I"S")) { S = Str::new(); PUT_TO(S, (inchar32_t) 0xA7); }
+	WRITE_TO(sht, "%S%S", S, P->paragraph_number);
 	if (Str::len(P->titling.operand1) > 0) WRITE_TO(sht, ". %S", P->titling.operand1);
 	else if (Str::len(nh) > 0) WRITE_TO(sht, " (under %S)", nh);
 	JSON::add_to_object(subhead, I"heading", JSON::new_string(sht));

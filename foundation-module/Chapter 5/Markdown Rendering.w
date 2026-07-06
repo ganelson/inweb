@@ -659,7 +659,7 @@ ways to render characters: they all agree on ASCII digits and letters.
 =
 void MDRenderer::char(OUTPUT_STREAM, inchar32_t c, int mode) {
 	if (mode & TOLOWER_MDRMODE) c = Characters::tolower(c);
-	if (mode & RAW_MDRMODE) {
+	if ((mode & RAW_MDRMODE) || (mode & SUPERPLAIN_MDRMODE)) {
 		PUT(c);
 	} else if (mode & URI_MDRMODE) {
 		if (c >= 0x10000) {
