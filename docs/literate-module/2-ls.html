@@ -100,7 +100,7 @@ which is a list of <code>ls_chunk</code>, which is a list of <code>ls_line</code
 
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_unit is accessed in 1/wcl, 1/ws, 1/wcp, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/lm, 4/tt, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_unit is accessed in 1/wcl, 1/ws, 1/wcp, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/lm, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. </b>  To parse source text into an <code>ls_unit</code>, begin by calling this to produce
 an empty one, ready for parsing. Note that <code>S</code>, the section, can be <code>NULL</code>,
@@ -373,7 +373,7 @@ Note that these all increment the line count, just as that does:</p>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_line is accessed in 1/ws, 2/lc, 2/we, 2/ce, 2/wi, 3/ca, 3/taf, 3/lm, 3/as, 3/cl, 3/is, 4/tt, 4/tt2, 4/cs, 5/tw, 5/twot, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_line is accessed in 1/ws, 2/lc, 2/we, 2/ce, 2/wi, 3/ca, 3/taf, 3/lm, 3/as, 3/cl, 3/is, 4/tt2, 4/cs, 5/tw, 5/twot, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. </b>  With the raw parsing done, the fun can really begin. At this point all the lines
 have been read in, but they sit inside the unit only as a doubly-linked list.
@@ -646,7 +646,7 @@ altogether, so that nobody uses it by mistake.</p>
 <span class="plain-syntax">    </span><span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_child_number</span><span class="plain-syntax">; </span><span class="comment-syntax">/* how many sub-paras we've had so far */</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_paragraph is accessed in 1/cln, 1/ws, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/cc, 3/taf, 3/lm, 3/cl, 3/is, 4/tt, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_paragraph is accessed in 1/cln, 1/ws, 2/pt, 2/we, 2/hln, 2/wi, 3/ca, 3/cc, 3/taf, 3/lm, 3/cl, 3/is, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_5_3" class="paragraph-anchor"></a><b>&#167;8.5.3. </b>  The new paragraph is appended to the list of paras in the unit, and assigned
 a temporary paragraph number. (This may be replaced later by better numbers,
@@ -745,7 +745,7 @@ following:</p>
 
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure ls_chunk is accessed in 1/wcl, 1/cln, 1/ws, 2/we, 2/hln, 2/ce, 3/ca, 3/lm, 3/cl, 3/is, 4/tt, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
+<ul class="endnotetexts"><li>The structure ls_chunk is accessed in 1/wcl, 1/cln, 1/ws, 2/we, 2/hln, 3/ca, 3/lm, 3/cl, 3/is, 4/tt2, 5/apacs, 5/tw, 5/wt, 5/ptf, 5/tf, 5/hf, 5/df and here.</li></ul>
 <div class="lsmarkdown">
 <p class="commentary firstcommentary"><a id="SP8_5_5" class="paragraph-anchor"></a><b>&#167;8.5.5. </b>  When created, a chunk contains a single line:</p>
 </div>
@@ -1556,7 +1556,7 @@ to a single nameless holon.</p>
 <p class="commentary firstcommentary"><a id="SP8_16" class="paragraph-anchor"></a><b>&#167;8.16. </b>  Chunks:</p>
 </div>
 <pre class="displayed-code all-displayed-code code-font">
-<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LiterateSource::is_code_chunk</span><button class="popup" onclick="togglePopup('usagePopup29')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup29">Usage of <span class="code-font"><span class="function-syntax">LiterateSource::is_code_chunk</span></span>:<br/>Language Methods - <a href="3-lm.html#SP5">&#167;5</a><br/>Tangle Targets - <a href="4-tt.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_chunk</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">) {</span>
+<span class="type-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LiterateSource::is_code_chunk</span><button class="popup" onclick="togglePopup('usagePopup29')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup29">Usage of <span class="code-font"><span class="function-syntax">LiterateSource::is_code_chunk</span></span>:<br/>Code Analysis - <a href="3-ca.html#SP6">&#167;6</a><br/>Language Methods - <a href="3-lm.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="type-syntax">ls_chunk</span><span class="plain-syntax"> *</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">chunk_type</span><span class="plain-syntax"> == </span><span class="constant-syntax">EXTRACT_LSCT</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">chunk</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">holon</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>

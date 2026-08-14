@@ -137,13 +137,22 @@ void CodeAnalysis::analyse_code(ls_web *W) {
 
 	ls_chapter *C;
 	ls_section *S;
-	LOOP_WITHIN_CODE_AND_DEFINITIONS(C, S, TangleTargets::primary_target(W)) {
-		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-		if (L->preform_grammar) @<Perform analysis on productions in a Preform grammar@>
-		else if ((L_chunk->chunk_type == DEFINITION_LSCT) && (L_chunk->first_line == lst))
-			CodeAnalysis::analyse_as_code(W, lst, lst->classification.operand2, ANY_USAGE, 0);
-		else
-			CodeAnalysis::analyse_as_code(W, lst, lst->text, ANY_USAGE, 0);
+	LOOP_OVER_TARGET_CHUNKS(C, S, TangleTargets::primary_target(W)) {
+		if ((LiterateSource::is_code_chunk(L_chunk)) &&
+			((L_chunk->holon == NULL) || (L_chunk->holon->file_form == FALSE))) {
+			holon_splice *hs;
+			LOOP_OVER_CODE_EXCERPT(hs, L_chunk->code_excerpt)
+				if (hs->type == CODE_LSHST) {
+					ls_line_analysis *L = (ls_line_analysis *) hs->line->analysis_ref;
+					if (L->preform_grammar) @<Perform analysis on productions in a Preform grammar@>;
+					CodeAnalysis::analyse_as_code(W, hs->line, hs->texts[0], ANY_USAGE, 0);
+				}
+		} else {
+			if (L_chunk->chunk_type == DEFINITION_LSCT) {
+				CodeAnalysis::analyse_as_code(W, L_chunk->first_line,
+					L_chunk->first_line->classification.operand2, ANY_USAGE, 0);
+			}
+		}
 	}
 
 	LanguageMethods::late_preweave_analysis(WebStructure::web_language(W), W);
@@ -163,6 +172,7 @@ and then some C code to deal with a match. The code is subjected to analysis
 just as any other code would be.
 
 @<Perform analysis on productions in a Preform grammar@> =
+	ls_line *lst = hs->line;
 	CodeAnalysis::analyse_as_code(W, lst, lst->classification.operand2,
 		ANY_USAGE, 0);
 	CodeAnalysis::analyse_as_code(W, lst, lst->classification.operand1,

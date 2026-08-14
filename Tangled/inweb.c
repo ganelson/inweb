@@ -5652,7 +5652,7 @@ typedef struct ls_line_analysis {
 	int preform_grammar;
 	int C_inclusion;
 } ls_line_analysis;
-#line 298 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 308 "inweb/literate-module/Chapter 3/Code Analysis.w"
 typedef struct hash_table_entry_usage {
 	struct ls_paragraph *usage_recorded_at;
 	int form_of_usage; /* bitmap of the `*_USAGE` constants defined above */
@@ -9299,27 +9299,27 @@ ls_paragraph_analysis * CodeAnalysis__paragraph_details(ls_line *lst) ;
 void  CodeAnalysis__analyse_web(ls_web *W, int tangling, int weaving) ;
 #line 131 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__analyse_code(ls_web *W) ;
-#line 218 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 228 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, int mask, int transf) ;
-#line 257 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 267 "inweb/literate-module/Chapter 3/Code Analysis.w"
 hash_table_entry * CodeAnalysis__find_hash_entry_for_section(ls_section *S, text_stream *text, 	int create) ;
-#line 262 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 272 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__mark_reserved_word_for_section(ls_section *S, text_stream *p, int e) ;
-#line 266 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 276 "inweb/literate-module/Chapter 3/Code Analysis.w"
 hash_table_entry * CodeAnalysis__mark_reserved_word_at_line(ls_line *lst, text_stream *p, int e) ;
-#line 274 "inweb/literate-module/Chapter 3/Code Analysis.w"
-int  CodeAnalysis__is_reserved_word_for_section(ls_section *S, text_stream *p, int e) ;
-#line 278 "inweb/literate-module/Chapter 3/Code Analysis.w"
-ls_line * CodeAnalysis__get_defn_line(ls_section *S, text_stream *p, int e) ;
 #line 284 "inweb/literate-module/Chapter 3/Code Analysis.w"
+int  CodeAnalysis__is_reserved_word_for_section(ls_section *S, text_stream *p, int e) ;
+#line 288 "inweb/literate-module/Chapter 3/Code Analysis.w"
+ls_line * CodeAnalysis__get_defn_line(ls_section *S, text_stream *p, int e) ;
+#line 294 "inweb/literate-module/Chapter 3/Code Analysis.w"
 language_function * CodeAnalysis__get_function(ls_section *S, text_stream *p, int e) ;
-#line 306 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 316 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__analyse_find(ls_web *W, ls_line *lst, text_stream *identifier, int u) ;
-#line 328 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 338 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__analyse_definitions(ls_web *W, int tangling) ;
-#line 355 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 365 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__write_makefile(ls_web *W, filename *F, text_stream *platform, 	pathname *path_to_inweb_materials) ;
-#line 371 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 381 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__write_gitignore(ls_web *W, filename *F, 	pathname *path_to_inweb_materials) ;
 #line 13 "inweb/literate-module/Chapter 3/Conditional Compilation.w"
 int  IfdefTags__ifdef_valency(text_stream *tag) ;
@@ -18952,11 +18952,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C22";
+			char *svn = "9.0-beta+1C23";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "6 July 2026";
+			char *d = "14 August 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -53989,7 +53989,7 @@ void CodeAnalysis__analyse_code(ls_web *W) {
 
 	
 {
-#line 158 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 167 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	LanguageMethods__early_preweave_analysis(WebStructure__web_language(W), W);
 
 }
@@ -53998,29 +53998,39 @@ void CodeAnalysis__analyse_code(ls_web *W) {
 
 	ls_chapter *C;
 	ls_section *S;
-	LOOP_WITHIN_CODE_AND_DEFINITIONS(C, S, TangleTargets__primary_target(W)) {
-		ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-		if (L->preform_grammar) 
+	LOOP_OVER_TARGET_CHUNKS(C, S, TangleTargets__primary_target(W)) {
+		if ((LiterateSource__is_code_chunk(L_chunk)) &&
+			((L_chunk->holon == NULL) || (L_chunk->holon->file_form == FALSE))) {
+			holon_splice *hs;
+			LOOP_OVER_CODE_EXCERPT(hs, L_chunk->code_excerpt)
+				if (hs->type == CODE_LSHST) {
+					ls_line_analysis *L = (ls_line_analysis *) hs->line->analysis_ref;
+					if (L->preform_grammar) 
 {
-#line 166 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 175 "inweb/literate-module/Chapter 3/Code Analysis.w"
+	ls_line *lst = hs->line;
 	CodeAnalysis__analyse_as_code(W, lst, lst->classification.operand2,
 		ANY_USAGE, 0);
 	CodeAnalysis__analyse_as_code(W, lst, lst->classification.operand1,
 		PREFORM_IN_CODE_USAGE, PREFORM_IN_GRAMMAR_USAGE);
 
 }
-#line 142 "inweb/literate-module/Chapter 3/Code Analysis.w"
-
-		else if ((L_chunk->chunk_type == DEFINITION_LSCT) && (L_chunk->first_line == lst))
-			CodeAnalysis__analyse_as_code(W, lst, lst->classification.operand2, ANY_USAGE, 0);
-		else
-			CodeAnalysis__analyse_as_code(W, lst, lst->text, ANY_USAGE, 0);
+#line 147 "inweb/literate-module/Chapter 3/Code Analysis.w"
+;
+					CodeAnalysis__analyse_as_code(W, hs->line, hs->texts[0], ANY_USAGE, 0);
+				}
+		} else {
+			if (L_chunk->chunk_type == DEFINITION_LSCT) {
+				CodeAnalysis__analyse_as_code(W, L_chunk->first_line,
+					L_chunk->first_line->classification.operand2, ANY_USAGE, 0);
+			}
+		}
 	}
 
 	LanguageMethods__late_preweave_analysis(WebStructure__web_language(W), W);
 	
 {
-#line 172 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 182 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
@@ -54032,18 +54042,18 @@ void CodeAnalysis__analyse_code(ls_web *W) {
 					 		if (Str__ne(chunk->symbol_value, TL_IS_4232))
 					 			
 {
-#line 184 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 194 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	hash_table *ht = &(TangleTargets__of_section(S)->symbols);
 	hash_table_entry *hte = ReservedWords__find_hash_entry(ht, chunk->symbol_value, FALSE);
 	if (hte) {
 		
 {
-#line 202 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 212 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	hash_table_entry *shte = ReservedWords__find_hash_entry(ht, chunk->symbol_defined, TRUE);
 	shte->language_reserved_word = hte->language_reserved_word;
 
 }
-#line 187 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 197 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 	} else {
 		programming_language *pl = WebStructure__section_language(S);
@@ -54051,12 +54061,12 @@ void CodeAnalysis__analyse_code(ls_web *W) {
 		if (hte) {
 			
 {
-#line 202 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 212 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	hash_table_entry *shte = ReservedWords__find_hash_entry(ht, chunk->symbol_defined, TRUE);
 	shte->language_reserved_word = hte->language_reserved_word;
 
 }
-#line 192 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 202 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 		} else {
 			text_stream *err = Str__new();
@@ -54067,15 +54077,15 @@ void CodeAnalysis__analyse_code(ls_web *W) {
 	}
 
 }
-#line 181 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 191 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 
 }
-#line 150 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 159 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 }
 
-#line 218 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 228 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void CodeAnalysis__analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, int mask, int transf) {
 	int start_at = -1, element_follows = FALSE;
 	for (int i = 0; i < Str__len(text); i++) {
@@ -54085,7 +54095,7 @@ void CodeAnalysis__analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, i
 		} else {
 			if (start_at != -1) 
 {
-#line 239 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 249 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	int u = MISC_USAGE;
 	if (element_follows) u = ELEMENT_ACCESS_USAGE;
 	else if (Str__get_at(text, i) == '(') u = FCALL_USAGE;
@@ -54102,7 +54112,7 @@ void CodeAnalysis__analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, i
 	start_at = -1; element_follows = FALSE;
 
 }
-#line 225 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 235 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 			if (Str__get_at(text, i) == '.') element_follows = TRUE;
 			else if ((Str__get_at(text, i) == '-') && (Str__get_at(text, i+1) == '>')) {
@@ -54114,7 +54124,7 @@ void CodeAnalysis__analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, i
 		int i = Str__len(text);
 		
 {
-#line 239 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 249 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	int u = MISC_USAGE;
 	if (element_follows) u = ELEMENT_ACCESS_USAGE;
 	else if (Str__get_at(text, i) == '(') u = FCALL_USAGE;
@@ -54131,12 +54141,12 @@ void CodeAnalysis__analyse_as_code(ls_web *W, ls_line *lst, text_stream *text, i
 	start_at = -1; element_follows = FALSE;
 
 }
-#line 234 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 244 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 	}
 }
 
-#line 257 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 267 "inweb/literate-module/Chapter 3/Code Analysis.w"
 hash_table_entry *CodeAnalysis__find_hash_entry_for_section(ls_section *S, text_stream *text,
 	int create) {
 	return ReservedWords__find_hash_entry(&(TangleTargets__of_section(S)->symbols), text, create);
@@ -54175,7 +54185,7 @@ language_function *CodeAnalysis__get_function(ls_section *S, text_stream *p, int
 
 
 
-#line 306 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 316 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void CodeAnalysis__analyse_find(ls_web *W, ls_line *lst, text_stream *identifier, int u) {
 	hash_table_entry *hte =
 		CodeAnalysis__find_hash_entry_for_section(LiterateSource__section_of_line(lst), identifier, FALSE);
@@ -54194,7 +54204,7 @@ void CodeAnalysis__analyse_find(ls_web *W, ls_line *lst, text_stream *identifier
 	hteu->form_of_usage |= u;
 }
 
-#line 328 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 338 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void CodeAnalysis__analyse_definitions(ls_web *W, int tangling) {
 	ls_chapter *C;
 	ls_section *S;
@@ -54206,7 +54216,7 @@ void CodeAnalysis__analyse_definitions(ls_web *W, int tangling) {
 						if (lst->classification.major == DEFINITION_MAJLC)
 							
 {
-#line 341 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 351 "inweb/literate-module/Chapter 3/Code Analysis.w"
 	if ((lst->classification.minor == ENUMERATE_COMMAND_MINLC) && (tangling)) {
 		text_stream *from = chunk->symbol_value;
 		chunk->symbol_value = Str__new();
@@ -54217,11 +54227,11 @@ void CodeAnalysis__analyse_definitions(ls_web *W, int tangling) {
 	Ctags__note_defined_constant(lst, chunk->symbol_defined, W);
 
 }
-#line 337 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 347 "inweb/literate-module/Chapter 3/Code Analysis.w"
 ;
 }
 
-#line 355 "inweb/literate-module/Chapter 3/Code Analysis.w"
+#line 365 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void CodeAnalysis__write_makefile(ls_web *W, filename *F, text_stream *platform,
 	pathname *path_to_inweb_materials) {
 	pathname *P = W->path_to_web;
@@ -58194,7 +58204,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 6 July 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 14 August 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
