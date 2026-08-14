@@ -1,0 +1,13 @@
+! Edge case found in testing
+* Yes
+
+> No.
+! Solution
+<ul>
+<li>Yes</li>
+</ul>
+<blockquote>
+<p>No.</p>
+</blockquote>
+! End
+

@@ -1668,79 +1668,79 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define MAX_MARKDOWN_CONTAINER_DEPTH 128 
 
     
-#line 1599 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1624 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define NO_MDINTERPRETATIONS 12 
 
     
-#line 1601 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1626 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define WHITESPACE_MDINTERPRETATION 1
 
     
-#line 1602 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1627 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define THEMATIC_MDINTERPRETATION 2
 
     
-#line 1603 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1628 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define ATX_HEADING_MDINTERPRETATION 3
 
     
-#line 1604 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1629 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define SETEXT_UNDERLINE_MDINTERPRETATION 4
 
     
-#line 1605 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1630 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define HTML_MDINTERPRETATION 5
 
     
-#line 1606 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1631 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define CODE_FENCE_OPEN_MDINTERPRETATION 6
 
     
-#line 1607 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1632 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define CODE_FENCE_CLOSE_MDINTERPRETATION 7
 
     
-#line 1608 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1633 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define CODE_BLOCK_MDINTERPRETATION 8
 
     
-#line 1609 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1634 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define FENCED_CODE_BLOCK_MDINTERPRETATION 9
 
     
-#line 1610 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1635 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define HTML_CONTINUATION_MDINTERPRETATION 10
 
     
-#line 1611 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1636 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define LAZY_CONTINUATION_MDINTERPRETATION 11
 
     
-#line 1781 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1806 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define PRE_MDHTMLC 1
 
     
-#line 1782 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1807 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define COMMENT_MDHTMLC 2
 
     
-#line 1783 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1808 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define QUERY_MDHTMLC 3
 
     
-#line 1784 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1809 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define PLING_MDHTMLC 4
 
     
-#line 1785 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1810 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define CDATA_MDHTMLC 5
 
     
-#line 1786 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1811 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define MISCSINGLE_MDHTMLC 6
 
     
-#line 1787 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1812 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define MISCPAIR_MDHTMLC 7
 
     
@@ -3945,11 +3945,11 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define NO_DEFINED_GHALERTFORM_VALUES 5
 
     
-#line 1611 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1636 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define NO_DEFINED_MDINTERPRETATION_VALUES 11
 
     
-#line 1787 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1812 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define NO_DEFINED_MDHTMLC_VALUES 7
 
     
@@ -8215,35 +8215,37 @@ int  MDBlockParser__marker_is_list_entry(positional_marker *marker) ;
 int  MDBlockParser__marker_is_new_list_entry(positional_marker *marker) ;
 #line 684 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__marker_is_new_footnote_body(positional_marker *marker) ;
-#line 701 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 692 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+int  MDBlockParser__marker_is_new_block_quote(positional_marker *marker) ;
+#line 709 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__change_type(md_doc_state *state, markdown_item *block, int t) ;
-#line 719 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 727 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__mark_block_with_ws(md_doc_state *state, markdown_item *block) ;
-#line 734 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
-void  MDBlockParser__open_block(md_doc_state *state, markdown_item *block) ;
 #line 742 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+void  MDBlockParser__open_block(md_doc_state *state, markdown_item *block) ;
+#line 750 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__close_block(md_doc_state *state, markdown_item *at) ;
-#line 765 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 773 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__turn_over_a_new_leaf(md_doc_state *state, markdown_item *block) ;
-#line 776 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 784 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__container_will_change(md_doc_state *state) ;
-#line 809 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 817 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) ;
-#line 1614 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1639 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line, 	int indentation, int content_index, int which, text_stream *text_details, int *int_detail) ;
-#line 2031 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2056 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__advance_past_spacing(text_stream *tag, int i) ;
-#line 2049 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2074 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at) ;
-#line 2215 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2240 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__count_cells(text_stream *line, int is_delimiter_row, 	markdown_item *table_item) ;
-#line 2301 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2326 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__gather_lists(md_doc_state *state, markdown_item *at) ;
-#line 2320 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2345 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int  MDBlockParser__in_same_list(markdown_item *A, markdown_item *B) ;
-#line 2334 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2359 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__propagate_white_space_follows(md_doc_state *state, markdown_item *at) ;
-#line 2354 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2379 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void  MDBlockParser__task_list_items(md_doc_state *state, markdown_item *at) ;
 #line 14 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 void  MDInlineParser__inline_recursion(markdown_variation *variation, 	md_links_dictionary *link_refs, markdown_item *at) ;
@@ -18950,11 +18952,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C21";
+			char *svn = "9.0-beta+1C22";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "5 July 2026";
+			char *d = "6 July 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -31716,7 +31718,15 @@ int MDBlockParser__marker_is_new_footnote_body(positional_marker *marker) {
 	return FALSE;
 }
 
-#line 701 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+int MDBlockParser__marker_is_new_block_quote(positional_marker *marker) {
+	if ((marker) &&
+		(marker->item_type == BLOCK_QUOTE_MIT) &&
+		(marker->continues_from_earlier_line == FALSE))
+		return TRUE;
+	return FALSE;
+}
+
+#line 709 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__change_type(md_doc_state *state, markdown_item *block, int t) {
 	if (block == NULL) internal_error("no block");
 	if (tracing_Markdown_parser) {
@@ -31730,7 +31740,7 @@ void MDBlockParser__change_type(md_doc_state *state, markdown_item *block, int t
 	}
 }
 
-#line 719 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 727 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__mark_block_with_ws(md_doc_state *state, markdown_item *block) {
 	if (block) {
 		if (tracing_Markdown_parser) {
@@ -31740,7 +31750,7 @@ void MDBlockParser__mark_block_with_ws(md_doc_state *state, markdown_item *block
 	}
 }
 
-#line 734 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 742 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__open_block(md_doc_state *state, markdown_item *block) {
 	if (block->open == NOT_APPLICABLE) {
 		block->open = TRUE;
@@ -31766,13 +31776,13 @@ void MDBlockParser__close_block(md_doc_state *state, markdown_item *at) {
 	MDBlockParser__remove_link_references(state, at);
 }
 
-#line 765 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 773 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__turn_over_a_new_leaf(md_doc_state *state, markdown_item *block) {
 	MDBlockParser__open_block(state, block);
 	Markdown__add_to(block, state->containers[state->container_sp-1]);
 }
 
-#line 776 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 784 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int MDBlockParser__container_will_change(md_doc_state *state) {
 	if (state->marker_sp > state->container_sp) return TRUE;
 	for (int sp = 1; sp<state->marker_sp; sp++) {
@@ -31784,7 +31794,7 @@ int MDBlockParser__container_will_change(md_doc_state *state) {
 	return FALSE;
 }
 
-#line 809 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 817 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	if (tracing_Markdown_parser) {
 		PRINT("=======\nAdding '%S' to tree:\n", line);
@@ -31800,28 +31810,28 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	tabbed_string_iterator line_scanner = TabbedStr__new(line, 4);
 	
 {
-#line 838 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 846 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	state->marker_sp = MDBlockParser__parse_positional_markers(state, &line_scanner);
 
 }
-#line 822 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 830 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	int indentation = FALSE;
 	
 {
-#line 841 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 849 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	ReparseIntervening: ;
 	positional_marker *innermost = MDBlockParser__innermost_marker(state);
 	
 {
-#line 878 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 886 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (TabbedStr__blank_from_here(&line_scanner))
 		if ((innermost) && (innermost->continues_from_earlier_line))
 			TabbedStr__seek(&line_scanner, innermost->at + innermost->indent);
 
 }
-#line 843 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 851 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	int intervening_space_width = TabbedStr__spaces_available(&line_scanner);
@@ -31830,7 +31840,7 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 		(MarkdownVariations__supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE)))
 		
 {
-#line 889 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 897 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	indentation = TRUE; intervening_space_width = 4;
 	if ((MDBlockParser__marker_is_new_list_entry(innermost)) ||
 		(MDBlockParser__marker_is_new_footnote_body(innermost))) {
@@ -31842,14 +31852,14 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 849 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 857 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	if (TabbedStr__blank_from_here(&line_scanner)) {
 		if (MDBlockParser__marker_is_new_list_entry(innermost))
 			
 {
-#line 911 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 919 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (tracing_Markdown_parser) {
 		PRINT("Opening line is empty rule applies, and sets pos indent[%d] = %d\n",
 			state->marker_sp, innermost->width + 1);
@@ -31858,12 +31868,12 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	innermost->blank_counts = 1;
 
 }
-#line 853 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 861 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 
 		else if (MDBlockParser__marker_is_list_entry(innermost))
 			
 {
-#line 938 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 946 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (innermost->blank_counts > 0) {
 		if (tracing_Markdown_parser) {
 			PRINT("Blank after blank opening rule applies\n");
@@ -31874,14 +31884,14 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 855 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 863 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	}
 
 	TabbedStr__eat_spaces(intervening_space_width, &line_scanner);
 
 }
-#line 825 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 833 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	if (tracing_Markdown_parser) {
@@ -31893,7 +31903,7 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 
 	
 {
-#line 958 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 966 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int content_index = TabbedStr__get_index(&line_scanner);
 
 	if (tracing_Markdown_parser) {
@@ -31907,14 +31917,14 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	int interpretations[NO_MDINTERPRETATIONS], details[NO_MDINTERPRETATIONS];
 	
 {
-#line 982 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 990 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	for (int which=0; which<NO_MDINTERPRETATIONS; which++)
 		interpretations[which] =
 			MDBlockParser__can_interpret_as(state, line, indentation, content_index,
 				which, NULL, &(details[which]));
 	
 {
-#line 1060 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1068 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((MDBlockParser__latest_paragraph(state)) &&
 		(MDBlockParser__container_will_change(state) == FALSE)) {
 		int lazy = TRUE;
@@ -31934,7 +31944,7 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 		interpretations[SETEXT_UNDERLINE_MDINTERPRETATION] = FALSE;
 
 }
-#line 986 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 994 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	if (tracing_Markdown_parser) {
@@ -31964,27 +31974,27 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 969 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 977 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	if (interpretations[LAZY_CONTINUATION_MDINTERPRETATION])
 		
 {
-#line 1087 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1095 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int sp = state->marker_sp;
 	state->marker_sp = marker_sp_left_over_from_last_line;
 
 	if ((sp == state->container_sp) && (interpretations[SETEXT_UNDERLINE_MDINTERPRETATION]))
 		
 {
-#line 1285 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1310 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	inchar32_t c = Str__get_at(line, content_index);
 	markdown_item *headb = MDBlockParser__latest_paragraph(state);
 	if (headb) {
 		MDBlockParser__remove_link_references(state, headb);
 		if (headb->type == EMPTY_MIT) 
 {
-#line 1582 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1607 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *parb = Markdown__new_item(PARAGRAPH_MIT);
 	parb->stashed = Str__new();
 	MDBlockParser__turn_over_a_new_leaf(state, parb);
@@ -31993,7 +32003,7 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1289 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1314 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		MDBlockParser__change_type(state, headb, HEADING_MIT);
 		if (c == '=') Markdown__set_heading_level(headb, 1);
@@ -32003,11 +32013,11 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1091 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1099 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1300 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1325 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *parb = MDBlockParser__latest_paragraph(state);
 	if ((parb) && (parb->type == PARAGRAPH_MIT)) {
 		WRITE_TO(parb->stashed, "\n");
@@ -32019,16 +32029,16 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1092 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1100 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 }
-#line 972 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 980 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 
 	else
 		
 {
-#line 1106 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1114 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (MDBlockParser__latest_paragraph(state))
 		MDBlockParser__close_block(state, MDBlockParser__latest_paragraph(state));
 	if ((MDBlockParser__latest_code_block(state)) &&
@@ -32038,19 +32048,29 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 
 	
 {
-#line 1134 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1142 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int wipe_down_to_pos;
 	
 {
-#line 1174 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1182 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int min_sp = state->marker_sp, max_sp = state->marker_sp;
 	if (state->container_sp < min_sp) min_sp = state->container_sp;
 	if (state->container_sp > max_sp) max_sp = state->container_sp;
 	wipe_down_to_pos = min_sp;
+	if (tracing_Markdown_parser) {
+		PRINT("state->container_sp = %d, state->marker_sp = %d\n", state->container_sp, state->marker_sp);
+	}
 	for (int sp = 1; sp<min_sp; sp++) {
 		positional_marker *marker = MDBlockParser__marker_at(state, sp);
 		if ((MDBlockParser__marker_is_new_list_entry(marker) == TRUE)  ||
 			(MDBlockParser__marker_is_new_footnote_body(marker) == TRUE)) {
+			wipe_down_to_pos = sp; break;
+		}
+		int x = state->containers[sp]->type, y = marker->item_type;
+		if (tracing_Markdown_parser) {
+			PRINT("sp = %d; container %d, marker %d\n", sp, x, y);
+		}
+		if (x != y) {
 			wipe_down_to_pos = sp; break;
 		}
 	}
@@ -32070,11 +32090,11 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 1135 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1143 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1207 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1225 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	for (int sp = state->container_sp-1; sp >= wipe_down_to_pos; sp--) {
 		MDBlockParser__close_block(state, state->containers[sp]);
 		state->containers[sp] = NULL;
@@ -32084,25 +32104,25 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 		if (state->fencing.material != 0) {
 			
 {
-#line 1363 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1388 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	MDBlockParser__clear_fencing_data(state);
 	MDBlockParser__lift_marker_limit(state);
 
 }
-#line 1214 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1232 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 			interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION] = FALSE;
 		} else if (state->HTML_end_condition) {
 			
 {
-#line 1547 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1572 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	MDBlockParser__clear_HTML_data(state);
 	MDBlockParser__lift_marker_limit(state);
 	if (latest) MDBlockParser__close_block(state, latest);
 
 }
-#line 1217 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1235 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 			interpretations[HTML_CONTINUATION_MDINTERPRETATION] = FALSE;
 		}
@@ -32110,11 +32130,18 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 1136 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1144 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1227 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1245 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+	if (tracing_Markdown_parser) {
+		PRINT("Pre-opening container stack (wdtp = %d, scsp = %d, smsp = %d):", wipe_down_to_pos, state->container_sp, state->marker_sp);
+		for (int sp = 0; sp<state->container_sp; sp++) {
+			PRINT(" -> "); Markdown__debug_item(STDOUT, state->containers[sp]);
+		}
+		PRINT("\n");
+	}
 	for (int sp = wipe_down_to_pos; sp<state->marker_sp; sp++) {
 		positional_marker *marker = MDBlockParser__marker_at(state, sp);
 		markdown_item *newbq = Markdown__new_item(marker->item_type);
@@ -32126,7 +32153,7 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 1137 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1145 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (tracing_Markdown_parser) {
 		PRINT("Container stack:");
@@ -32137,29 +32164,29 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 1113 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1121 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	if (interpretations[HTML_CONTINUATION_MDINTERPRETATION]) 
 {
-#line 1317 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1342 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	if (latest == NULL) 
 {
-#line 1547 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1572 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	MDBlockParser__clear_HTML_data(state);
 	MDBlockParser__lift_marker_limit(state);
 	if (latest) MDBlockParser__close_block(state, latest);
 
 }
-#line 1318 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1343 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 
 	else {
 		int ends = FALSE;
 		
 {
-#line 1507 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1532 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (MDBlockParser__latest_HTML_block(state) == NULL) {
 		if (tracing_Markdown_parser) {
 			PRINT("HTML forcibly ended by closure of container\n");
@@ -32200,14 +32227,14 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 1321 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1346 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		if ((latest) && (!((ends) &&
 			((state->HTML_end_condition == MISCSINGLE_MDHTMLC) ||
 				(state->HTML_end_condition == MISCPAIR_MDHTMLC)))))
 			
 {
-#line 1497 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1522 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	int from = content_index;
 	if (state->temporary_marker_limit == 1) from = 0;
@@ -32218,28 +32245,28 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	PUT_TO(latest->stashed, '\n');
 
 }
-#line 1325 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1350 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		if (ends) 
 {
-#line 1547 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1572 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	MDBlockParser__clear_HTML_data(state);
 	MDBlockParser__lift_marker_limit(state);
 	if (latest) MDBlockParser__close_block(state, latest);
 
 }
-#line 1326 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1351 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 
 		return;
 	}
 
 }
-#line 1115 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1123 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[CODE_FENCE_OPEN_MDINTERPRETATION])   
 {
-#line 1337 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1362 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int post_count = details[CODE_FENCE_OPEN_MDINTERPRETATION];
 	text_stream *info_string = Str__new();
 	MDBlockParser__can_interpret_as(state, line, indentation, content_index,
@@ -32258,28 +32285,28 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1116 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1124 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[CODE_FENCE_CLOSE_MDINTERPRETATION])  
 {
-#line 1359 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1384 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	
 {
-#line 1363 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1388 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	MDBlockParser__clear_fencing_data(state);
 	MDBlockParser__lift_marker_limit(state);
 
 }
-#line 1359 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1384 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	return;
 
 }
-#line 1117 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1125 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[FENCED_CODE_BLOCK_MDINTERPRETATION]) 
 {
-#line 1375 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1400 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *code_block = state->fencing.fenced_code;
 	if ((state->fencing.left_margin >= 0) &&
 		(state->fencing.left_margin < TabbedStr__get_position(&line_scanner)))
@@ -32296,11 +32323,11 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1118 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1126 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[WHITESPACE_MDINTERPRETATION])        
 {
-#line 1413 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1438 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int sp = state->container_sp-1;
 	if (state->markers[sp].continues_from_earlier_line) {
 		if (state->containers[sp]->down) {
@@ -32321,11 +32348,11 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1119 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1127 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[ATX_HEADING_MDINTERPRETATION])       
 {
-#line 1444 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1469 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int hash_count = details[ATX_HEADING_MDINTERPRETATION];
 	markdown_item *headb = Markdown__new_item(HEADING_MIT);
 	Markdown__set_heading_level(headb, hash_count);
@@ -32352,21 +32379,21 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1120 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1128 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[THEMATIC_MDINTERPRETATION])          
 {
-#line 1473 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1498 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *themb = Markdown__new_item(THEMATIC_MIT);
 	MDBlockParser__turn_over_a_new_leaf(state, themb);
 	return;
 
 }
-#line 1121 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1129 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[HTML_MDINTERPRETATION])              
 {
-#line 1482 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1507 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	state->HTML_end_condition = details[HTML_MDINTERPRETATION];
 	if (tracing_Markdown_parser) {
 		PRINT("enter HTML with end_condition = %d\n", state->HTML_end_condition);
@@ -32377,7 +32404,7 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	MDBlockParser__impose_marker_limit(state, state->container_sp);
 	
 {
-#line 1497 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1522 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	int from = content_index;
 	if (state->temporary_marker_limit == 1) from = 0;
@@ -32388,12 +32415,12 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	PUT_TO(latest->stashed, '\n');
 
 }
-#line 1490 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1515 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	int ends = FALSE;
 	
 {
-#line 1507 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1532 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (MDBlockParser__latest_HTML_block(state) == NULL) {
 		if (tracing_Markdown_parser) {
 			PRINT("HTML forcibly ended by closure of container\n");
@@ -32434,27 +32461,27 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	}
 
 }
-#line 1492 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1517 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (ends) 
 {
-#line 1547 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1572 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_HTML_block(state);
 	MDBlockParser__clear_HTML_data(state);
 	MDBlockParser__lift_marker_limit(state);
 	if (latest) MDBlockParser__close_block(state, latest);
 
 }
-#line 1493 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1518 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	return;
 
 }
-#line 1122 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1130 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	if (interpretations[CODE_BLOCK_MDINTERPRETATION])        
 {
-#line 1556 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1581 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *latest = MDBlockParser__latest_code_block(state);
 	if (latest) {
 		WRITE_TO(latest->stashed, "%S", state->blank_matter_after_receiver);
@@ -32478,11 +32505,11 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1123 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1131 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1582 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1607 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	markdown_item *parb = Markdown__new_item(PARAGRAPH_MIT);
 	parb->stashed = Str__new();
 	MDBlockParser__turn_over_a_new_leaf(state, parb);
@@ -32491,36 +32518,36 @@ void MDBlockParser__add_to_document(md_doc_state *state, text_stream *line) {
 	return;
 
 }
-#line 1124 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1132 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 }
-#line 974 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 982 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 }
-#line 834 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 842 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 }
 
-#line 1614 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1639 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	int indentation, int content_index, int which, text_stream *text_details, int *int_detail) {
 	switch (which) {
 		case WHITESPACE_MDINTERPRETATION:        
 {
-#line 1633 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1658 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	for (int i=content_index; i<Str__len(line); i++)
 		if ((Str__get_at(line, i) != ' ') && (Str__get_at(line, i) != '\t'))
 			return FALSE;
 	return TRUE;
 
 }
-#line 1617 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1642 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case THEMATIC_MDINTERPRETATION:          
 {
-#line 1642 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1667 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((MarkdownVariations__supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
 		&& (indentation)) return FALSE;
 	if (MarkdownVariations__supports(state->variation, THEMATIC_MARKERS_MARKDOWNFEATURE))
@@ -32528,11 +32555,11 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	return FALSE;
 
 }
-#line 1618 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1643 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case ATX_HEADING_MDINTERPRETATION:       
 {
-#line 1653 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1678 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((MarkdownVariations__supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
 		&& (indentation)) return FALSE;
 	if (MarkdownVariations__supports(state->variation, ATX_HEADINGS_MARKDOWNFEATURE)) {
@@ -32549,11 +32576,11 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	return FALSE;
 
 }
-#line 1619 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1644 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case SETEXT_UNDERLINE_MDINTERPRETATION:  
 {
-#line 1673 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1698 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (MDBlockParser__latest_paragraph(state) == NULL) return FALSE;
 	if ((MarkdownVariations__supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
 		&& (indentation)) return FALSE;
@@ -32577,12 +32604,12 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	return FALSE;
 
 }
-#line 1620 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1645 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case CODE_FENCE_OPEN_MDINTERPRETATION:
 		case CODE_FENCE_CLOSE_MDINTERPRETATION:  
 {
-#line 1713 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1738 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((MarkdownVariations__supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
 		&& (indentation)) return FALSE;
 	if (MarkdownVariations__supports(state->variation, FENCED_CODE_BLOCKS_MARKDOWNFEATURE)) {
@@ -32607,7 +32634,7 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 					(post_count < state->fencing.width)) return FALSE;
 				
 {
-#line 1749 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1774 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int ambiguous = FALSE, count = 0, escaped = FALSE;
 	for (; j<Str__len(line); j++) {
 		inchar32_t d = Str__get_at(line, j);
@@ -32628,7 +32655,7 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	}
 
 }
-#line 1735 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1760 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 			}
 		}
@@ -32636,11 +32663,11 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	return FALSE;
 
 }
-#line 1622 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1647 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case HTML_MDINTERPRETATION:              
 {
-#line 1790 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1815 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((MarkdownVariations__supports(state->variation, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE))
 		&& (indentation)) return FALSE;
 	if (MarkdownVariations__supports(state->variation, HTML_BLOCKS_MARKDOWNFEATURE) == FALSE)
@@ -32660,7 +32687,7 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 
 	
 {
-#line 1837 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1862 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((Str__eq_insensitive(tag, TL_IS_2363)) ||
 		(Str__eq_insensitive(tag, TL_IS_2364)) ||
 		(Str__eq_insensitive(tag, TL_IS_2365)) ||
@@ -32669,47 +32696,47 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	}
 
 }
-#line 1807 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1832 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1845 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1870 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (Str__begins_with(tag, TL_IS_2367)) {
 		condition_type = COMMENT_MDHTMLC; goto HTML_Start_Found;
 	}
 
 }
-#line 1808 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1833 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1850 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1875 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (Str__begins_with(tag, TL_IS_2368)) {
 		condition_type = QUERY_MDHTMLC; goto HTML_Start_Found;
 	}
 
 }
-#line 1809 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1834 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1855 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1880 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (Str__begins_with(tag, TL_IS_2369)) {
 		condition_type = CDATA_MDHTMLC; goto HTML_Start_Found;
 	}
 
 }
-#line 1810 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1835 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1860 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1885 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (Str__begins_with(tag, TL_IS_2370)) {
 		condition_type = PLING_MDHTMLC; goto HTML_Start_Found;
 	}
 
 }
-#line 1811 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1836 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	if (Str__get_first_char(tag) == '/') Str__delete_first_character(tag);
@@ -32724,7 +32751,7 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 
 	
 {
-#line 1865 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1890 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((Str__eq_insensitive(tag, TL_IS_2371)) ||
 		(Str__eq_insensitive(tag, TL_IS_2372)) ||
 		(Str__eq_insensitive(tag, TL_IS_2373)) ||
@@ -32791,11 +32818,11 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	}
 
 }
-#line 1823 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1848 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	
 {
-#line 1936 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1961 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	Str__clear(tag);
 	WRITE_TO(tag, "%S", line);
 	Str__trim_white_space(tag);
@@ -32871,7 +32898,7 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	}
 
 }
-#line 1824 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1849 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 	HTML_Start_Found: ;
@@ -32885,43 +32912,43 @@ int MDBlockParser__can_interpret_as(md_doc_state *state, text_stream *line,
 	return FALSE;
 
 }
-#line 1623 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1648 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case CODE_BLOCK_MDINTERPRETATION:        
 {
-#line 2014 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2039 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (MDBlockParser__latest_paragraph(state)) return FALSE;
 	if (indentation) return TRUE;
 	return FALSE;
 
 }
-#line 1624 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1649 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case FENCED_CODE_BLOCK_MDINTERPRETATION: 
 {
-#line 2019 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2044 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if (state->fencing.material != 0) return TRUE;
 	return FALSE;
 
 }
-#line 1625 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1650 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case HTML_CONTINUATION_MDINTERPRETATION: 
 {
-#line 2023 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2048 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	if ((MDBlockParser__latest_HTML_block(state)) &&
 		(state->HTML_end_condition != 0)) return TRUE;
 	return FALSE;
 
 }
-#line 1626 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 1651 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		case LAZY_CONTINUATION_MDINTERPRETATION: return FALSE;
 		default: return FALSE;
 	}
 }
 
-#line 2031 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2056 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int MDBlockParser__advance_past_spacing(text_stream *tag, int i) {
 	int newlines = 0;
 	inchar32_t c = Str__get_at(tag, i);
@@ -32934,7 +32961,7 @@ int MDBlockParser__advance_past_spacing(text_stream *tag, int i) {
 	return i;
 }
 
-#line 2049 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2074 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at) {
 	if (at->type == PARAGRAPH_MIT) {
 		int matched_to = 0;
@@ -32943,7 +32970,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 			text_stream *X = at->stashed;
 			
 {
-#line 2071 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2096 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	int i = 0;
 	while ((Str__get_at(X, i) == ' ') || (Str__get_at(X, i) == '\t')) i++;
 	if (Str__get_at(X, i) == '[') {
@@ -32952,7 +32979,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 		TEMPORARY_TEXT(label)
 		
 {
-#line 2099 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2124 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	for (; i<Str__len(X); i++) {
 		inchar32_t c = Str__get_at(X, i);
 		if ((c == '\\') && (Characters__is_ASCII_punctuation(Str__get_at(X, i+1)))) {
@@ -32965,7 +32992,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 	}
 
 }
-#line 2077 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2102 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 		if ((Str__get_at(X, i) == ':') && (count <= 999) && (ws_count < count)) {
 			i++;
@@ -32977,7 +33004,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 			TEMPORARY_TEXT(title)
 			
 {
-#line 2111 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2136 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	inchar32_t c = Str__get_at(X, i);
 	if (c == '<') {
 		i++; c = Str__get_at(X, i);
@@ -33028,7 +33055,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 	if ((valid == FALSE) && (stop_here >= 0)) { valid = TRUE; i = stop_here+1; }
 
 }
-#line 2086 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2111 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 
 			if (valid) {
@@ -33042,7 +33069,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 	}
 
 }
-#line 2055 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2080 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 			if (matched_to > 0) {
 				Str__delete_n_characters(at->stashed, matched_to);
@@ -33055,7 +33082,7 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 		if (MarkdownVariations__supports(state->variation, TABLES_MARKDOWNFEATURE))
 			
 {
-#line 2177 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2202 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	text_stream *X = at->stashed;
 	TEMPORARY_TEXT(line1)
 	TEMPORARY_TEXT(line2)
@@ -33094,13 +33121,13 @@ int MDBlockParser__remove_link_references(md_doc_state *state, markdown_item *at
 	DISCARD_TEXT(line2)
 
 }
-#line 2065 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2090 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	}
 	return FALSE;
 }
 
-#line 2215 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2240 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 int MDBlockParser__count_cells(text_stream *line, int is_delimiter_row,
 	markdown_item *table_item) {
 	int col_count = 0;
@@ -33130,7 +33157,7 @@ int MDBlockParser__count_cells(text_stream *line, int is_delimiter_row,
 				else cell_count++;
 				
 {
-#line 2265 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2290 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	Str__trim_white_space(cell);
 	int from = 0, to = Str__len(cell) - 1, alignment = 0;
 	if (is_delimiter_row) {
@@ -33160,7 +33187,7 @@ int MDBlockParser__count_cells(text_stream *line, int is_delimiter_row,
 	cell_number++;
 
 }
-#line 2242 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2267 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 				Str__clear(cell);
 			} else {
@@ -33172,7 +33199,7 @@ int MDBlockParser__count_cells(text_stream *line, int is_delimiter_row,
 	}
 	
 {
-#line 2265 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2290 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 	Str__trim_white_space(cell);
 	int from = 0, to = Str__len(cell) - 1, alignment = 0;
 	if (is_delimiter_row) {
@@ -33202,7 +33229,7 @@ int MDBlockParser__count_cells(text_stream *line, int is_delimiter_row,
 	cell_number++;
 
 }
-#line 2251 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2276 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 ;
 	DISCARD_TEXT(cell)
 	if ((cell_count == 0) && (edge_pipes == 2)) cell_count = 1;
@@ -33216,7 +33243,7 @@ int MDBlockParser__count_cells(text_stream *line, int is_delimiter_row,
 	return cell_count;
 }
 
-#line 2301 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2326 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__gather_lists(md_doc_state *state, markdown_item *at) {
 	if (at == NULL) return;
 	for (markdown_item *c = at->down; c; c = c->next)
@@ -33244,7 +33271,7 @@ int MDBlockParser__in_same_list(markdown_item *A, markdown_item *B) {
 	return FALSE;
 }
 
-#line 2334 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2359 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__propagate_white_space_follows(md_doc_state *state, markdown_item *at) {
 	if (at == NULL) return;
 	for (markdown_item *c = at->down; c; c = c->next)
@@ -33254,7 +33281,7 @@ void MDBlockParser__propagate_white_space_follows(md_doc_state *state, markdown_
 			MDBlockParser__mark_block_with_ws(state, at);
 }
 
-#line 2354 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
+#line 2379 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 void MDBlockParser__task_list_items(md_doc_state *state, markdown_item *at) {
 	if (at == NULL) return;
 	if ((at->type == ORDERED_LIST_ITEM_MIT) || (at->type == UNORDERED_LIST_ITEM_MIT)) {
@@ -58167,7 +58194,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 5 July 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 6 July 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"

@@ -689,6 +689,14 @@ int MDBlockParser::marker_is_new_footnote_body(positional_marker *marker) {
 	return FALSE;
 }
 
+int MDBlockParser::marker_is_new_block_quote(positional_marker *marker) {
+	if ((marker) &&
+		(marker->item_type == BLOCK_QUOTE_MIT) &&
+		(marker->continues_from_earlier_line == FALSE))
+		return TRUE;
+	return FALSE;
+}
+
 @h Containers.
 Enough on markers: we also need some preparatory work on container and leaf blocks.
 
@@ -1175,10 +1183,20 @@ to become:
 	if (state->container_sp < min_sp) min_sp = state->container_sp;
 	if (state->container_sp > max_sp) max_sp = state->container_sp;
 	wipe_down_to_pos = min_sp;
+	if (tracing_Markdown_parser) {
+		PRINT("state->container_sp = %d, state->marker_sp = %d\n", state->container_sp, state->marker_sp);
+	}
 	for (int sp = 1; sp<min_sp; sp++) {
 		positional_marker *marker = MDBlockParser::marker_at(state, sp);
 		if ((MDBlockParser::marker_is_new_list_entry(marker) == TRUE)  ||
 			(MDBlockParser::marker_is_new_footnote_body(marker) == TRUE)) {
+			wipe_down_to_pos = sp; break;
+		}
+		int x = state->containers[sp]->type, y = marker->item_type;
+		if (tracing_Markdown_parser) {
+			PRINT("sp = %d; container %d, marker %d\n", sp, x, y);
+		}
+		if (x != y) {
 			wipe_down_to_pos = sp; break;
 		}
 	}	
@@ -1224,6 +1242,13 @@ ending line.
 outermost document item.
 
 @<Open new containers as needed from that point to match the further markers@> =
+	if (tracing_Markdown_parser) {
+		PRINT("Pre-opening container stack (wdtp = %d, scsp = %d, smsp = %d):", wipe_down_to_pos, state->container_sp, state->marker_sp);
+		for (int sp = 0; sp<state->container_sp; sp++) {
+			PRINT(" -> "); Markdown::debug_item(STDOUT, state->containers[sp]);
+		}
+		PRINT("\n");
+	}
 	for (int sp = wipe_down_to_pos; sp<state->marker_sp; sp++) {
 		positional_marker *marker = MDBlockParser::marker_at(state, sp);
 		markdown_item *newbq = Markdown::new_item(marker->item_type);

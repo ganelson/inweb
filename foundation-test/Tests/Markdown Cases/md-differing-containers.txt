@@ -1,0 +1,5 @@
+! Edge case found in testing
+* Yes
+
+> No.
+! End
