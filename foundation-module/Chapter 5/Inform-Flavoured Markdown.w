@@ -93,7 +93,7 @@ into two Markdown items, not one.
 
 @ =
 void InformFlavouredMarkdown::OIH_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
@@ -115,7 +115,7 @@ void InformFlavouredMarkdown::OIH_intervene_after_Phase_I(markdown_feature *feat
 		Regexp::dispose_of(&mr);
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown::OIH_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown::OIH_intervene_after_Phase_I(feature, variation, ch, link_references);
 	}
 }
 
@@ -144,7 +144,7 @@ as level 2.
 
 @ =
 void InformFlavouredMarkdown::Inform_headings_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown::Inform_headings_r(tree);
 }
 
@@ -325,7 +325,7 @@ where the colon can equally be a hyphen, and with optional space either side.
 
 =
 void InformFlavouredMarkdown::EE_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	int example_number = 0;
 	InformFlavouredMarkdown::detect_embedded_examples_r(tree, &example_number);
 	InformFlavouredMarkdown::regroup_examples_r(tree, &example_number);
@@ -580,7 +580,7 @@ the Inform `html` module, so this isn't really of general application.
 
 @ =
 void InformFlavouredMarkdown::paste_buttons_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown::pbiapi_r(tree);
 }
 
@@ -641,7 +641,7 @@ void InformFlavouredMarkdown::pbiapi_r(markdown_item *md) {
 
 @ =
 void InformFlavouredMarkdown::PD_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	markdown_item *last_section = NULL;
 	InformFlavouredMarkdown::PD_r(md, &last_section);
 }
@@ -761,7 +761,7 @@ metadata not passing through into rendering.
 
 @ =
 void InformFlavouredMarkdown::HM_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	if ((md->type == HEADING_MIT) && (Markdown::get_heading_level(md) <= 2)) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
@@ -775,7 +775,7 @@ void InformFlavouredMarkdown::HM_intervene_after_Phase_I(markdown_feature *featu
 		Str::trim_white_space(line);
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown::HM_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown::HM_intervene_after_Phase_I(feature, variation, ch, link_references);
 	}
 }
 
@@ -798,7 +798,7 @@ only on some platforms and not others: it's conditional compilation for text.
 
 @ =
 void InformFlavouredMarkdown::PG_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp::create_mr();
@@ -815,7 +815,7 @@ void InformFlavouredMarkdown::PG_intervene_after_Phase_I(markdown_feature *featu
 		Regexp::dispose_of(&mr);
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown::PG_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown::PG_intervene_after_Phase_I(feature, variation, ch, link_references);
 	}
 }
 

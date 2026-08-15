@@ -744,12 +744,6 @@ void Markdown::set_item_number_and_flavour(markdown_item *md, int L, inchar32_t 
 
 @ The `ALERT_MIT` item, and no other, has an "alert type" which is at least 1.
 
-@e NOTE_GHALERTFORM from 1
-@e TIP_GHALERTFORM
-@e IMPORTANT_GHALERTFORM
-@e WARNING_GHALERTFORM
-@e CAUTION_GHALERTFORM
-
 =
 int Markdown::get_alert_type(markdown_item *md) {
 	if ((md == NULL) || (md->type != ALERT_MIT)) return 0;

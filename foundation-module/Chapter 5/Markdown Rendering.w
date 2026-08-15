@@ -177,23 +177,23 @@ void MDRenderer::recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 
 @<Render an alert@> =
 	int type = Markdown::get_alert_type(md);
+	text_stream *name = MarkdownVariations::get_alert_form_name(variation, type);
+	inchar32_t icon = MarkdownVariations::get_alert_form_icon(variation, type);
 	if (mode & TAGS_MDRMODE) {
-		switch (type) {
-			case NOTE_GHALERTFORM:      HTML_OPEN_WITH("blockquote", "class=\"alertnote\""); break;
-			case TIP_GHALERTFORM:       HTML_OPEN_WITH("blockquote", "class=\"alerttip\""); break;
-			case IMPORTANT_GHALERTFORM: HTML_OPEN_WITH("blockquote", "class=\"alertimportant\""); break;
-			case WARNING_GHALERTFORM:   HTML_OPEN_WITH("blockquote", "class=\"alertwarning\""); break;
-			case CAUTION_GHALERTFORM:   HTML_OPEN_WITH("blockquote", "class=\"alertcaution\""); break;
-		}
+		TEMPORARY_TEXT(cl)
+		WRITE_TO(cl, "alert");
+		for (int i=0; i<Str::len(name); i++) PUT_TO(cl, Characters::tolower(Str::get_at(name, i)));
+		HTML_OPEN_WITH("blockquote", "class=\"%S\"", cl);
+		DISCARD_TEXT(cl)
 	}
 	WRITE("\n");
 	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("p", "class=\"alertheading\"");
-	switch (type) {
-		case NOTE_GHALERTFORM:      WRITE("%c Note", 0x24D8); break;
-		case TIP_GHALERTFORM:       WRITE("%c Tip", 0x2602); break;
-		case IMPORTANT_GHALERTFORM: WRITE("%c Important", 0x261E); break;
-		case WARNING_GHALERTFORM:   WRITE("%c Warning", 0x26A0); break;
-		case CAUTION_GHALERTFORM:   WRITE("%c Caution", 0x26A0); break;
+	if (icon) { PUT(icon); PUT(' '); }
+	if (Str::len(name) > 0) {
+		PUT(Str::get_at(name, 0));
+		for (int i=1; i<Str::len(name); i++) PUT(Characters::tolower(Str::get_at(name, i)));
+	} else {
+		WRITE("Alert");
 	}
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 		

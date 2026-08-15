@@ -58,6 +58,7 @@ one of the CommonMark ones.
 classdef markdown_variation {
 	struct text_stream *name;
 	int active_built_in_features[NO_DEFINED_MARKDOWNFEATURE_VALUES];
+	struct linked_list *alerts; /* of `markdown_alert` */
 	struct method_set *methods;
 }
 
@@ -65,9 +66,11 @@ markdown_variation *MarkdownVariations::new(text_stream *name) {
 	markdown_variation *variation = CREATE(markdown_variation);
 	variation->name = Str::duplicate(name);
 	variation->methods = Methods::new_set();
+	variation->alerts = NEW_LINKED_LIST(markdown_alert);
 	for (int i=0; i<NO_DEFINED_MARKDOWNFEATURE_VALUES; i++)
 		variation->active_built_in_features[i] = FALSE;
 	MarkdownVariations::make_baseline_features_active(variation);
+	MarkdownVariations::add_standard_alerts(variation);
 	return variation;
 }
 
@@ -82,6 +85,24 @@ void MarkdownVariations::remove_feature(markdown_variation *variation, int featu
 void MarkdownVariations::copy_features_of(markdown_variation *to, markdown_variation *from) {
 	for (int i=0; i<NO_DEFINED_MARKDOWNFEATURE_VALUES; i++)
 		to->active_built_in_features[i] = from->active_built_in_features[i];
+}
+
+@ Note that this performs only a shallow copy of the methods, so that the
+duplicated variation cannot be allowed to have different methods from the
+original:
+
+=
+markdown_variation *MarkdownVariations::duplicate(markdown_variation *old_var) {
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%S (modified)", old_var->name);
+	markdown_variation *new_var = MarkdownVariations::new(name);
+	DISCARD_TEXT(name)
+	MarkdownVariations::copy_features_of(new_var, old_var);
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, old_var->alerts)
+		ADD_TO_LINKED_LIST(alert, markdown_alert, new_var->alerts);
+	new_var->methods = old_var->methods;
+	return new_var;
 }
 
 @ A "feature" is an aspect of Markdown syntax or behaviour; any given variation
@@ -111,6 +132,67 @@ an object to represent the same feature was to make this function quick.
 =
 int MarkdownVariations::supports(markdown_variation *variation, int feature_id) {
 	return variation->active_built_in_features[feature_id];
+}
+
+@ GitHub flavored Markdown has "alerts", with five standard forms of cautionary
+notice, but we want to generalise that:
+
+=
+classdef markdown_alert {
+	struct text_stream *name;
+	inchar32_t icon;
+}
+
+markdown_alert *MarkdownVariations::new_alert(text_stream *name, inchar32_t icon) {
+	markdown_alert *alert = CREATE(markdown_alert);
+	alert->name = Str::duplicate(name);
+	alert->icon = icon;
+	return alert;
+}
+
+void MarkdownVariations::add_alert(markdown_variation *variation, markdown_alert *alert) {
+	ADD_TO_LINKED_LIST(alert, markdown_alert, variation->alerts);
+}
+
+int MarkdownVariations::get_alert_form(markdown_variation *variation, text_stream *name) {
+	int form = 1;
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, variation->alerts) {
+		if (Str::eq(name, alert->name)) return form;
+		form++;
+	}
+	return -1;
+}
+
+text_stream *MarkdownVariations::get_alert_form_name(markdown_variation *variation, int form) {
+	int c = 1;
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, variation->alerts) {
+		if (c == form) return alert->name;
+		c++;
+	}
+	return NULL;
+}
+
+inchar32_t MarkdownVariations::get_alert_form_icon(markdown_variation *variation, int form) {
+	int c = 1;
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, variation->alerts) {
+		if (c == form) return alert->icon;
+		c++;
+	}
+	return (inchar32_t) 0;
+}
+
+@ These are the GitHub Five, with suitable Unicode pictographs as icons:
+
+=
+void MarkdownVariations::add_standard_alerts(markdown_variation *variation) {
+	MarkdownVariations::add_alert(variation, MarkdownVariations::new_alert(I"NOTE", (inchar32_t) 0x24D8));
+	MarkdownVariations::add_alert(variation, MarkdownVariations::new_alert(I"TIP", (inchar32_t) 0x2602));
+	MarkdownVariations::add_alert(variation, MarkdownVariations::new_alert(I"IMPORTANT", (inchar32_t) 0x261E));
+	MarkdownVariations::add_alert(variation, MarkdownVariations::new_alert(I"WARNING", (inchar32_t) 0x26A0));
+	MarkdownVariations::add_alert(variation, MarkdownVariations::new_alert(I"CAUTION", (inchar32_t) 0x26A0));
 }
 
 @h The CommonMark variation.
@@ -247,16 +329,16 @@ void MarkdownVariations::make_GitHub_features_active(markdown_variation *variati
 	MarkdownVariations::add_feature(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
 	MarkdownVariations::add_feature(variation, ALERTS_MARKDOWNFEATURE);
 	METHOD_ADD(alerts_Markdown_feature, POST_PHASE_I_MARKDOWN_MTID,
-		MarkdownVariations::GH_intervene_after_Phase_I);
+		MarkdownVariations::alerts_intervene_after_Phase_I);
 }
 
 @ =
-void MarkdownVariations::GH_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
-	MarkdownVariations::find_alerts_r(md);
+void MarkdownVariations::alerts_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
+	MarkdownVariations::find_alerts_r(md, variation);
 }
 
-void MarkdownVariations::find_alerts_r(markdown_item *md) {
+void MarkdownVariations::find_alerts_r(markdown_item *md, markdown_variation *variation) {
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
 		if ((ch->type == BLOCK_QUOTE_MIT) && (ch->down->type == PARAGRAPH_MIT)) {
 			TEMPORARY_TEXT(opener)
@@ -276,13 +358,14 @@ void MarkdownVariations::find_alerts_r(markdown_item *md) {
 					else { succeeded = FALSE; break; }
 				}
 			}
-			if (succeeded) {
-				int form = -1;
-				if (Str::eq(opener, I"[!NOTE]"))      form = NOTE_GHALERTFORM;
-				if (Str::eq(opener, I"[!TIP]"))       form = TIP_GHALERTFORM;
-				if (Str::eq(opener, I"[!IMPORTANT]")) form = IMPORTANT_GHALERTFORM;
-				if (Str::eq(opener, I"[!WARNING]"))   form = WARNING_GHALERTFORM;
-				if (Str::eq(opener, I"[!CAUTION]"))   form = CAUTION_GHALERTFORM;
+			if ((succeeded) &&
+				(Str::get_at(opener, 0) == '[') &&
+				(Str::get_at(opener, 1) == '!') &&
+				(Str::get_at(opener, Str::len(opener)-1) == ']')) {
+				Str::delete_first_character(opener);
+				Str::delete_first_character(opener);
+				Str::delete_last_character(opener);
+				int form = MarkdownVariations::get_alert_form(variation, opener);
 				if (form != -1) {
 					ch->type = ALERT_MIT;
 					Markdown::set_alert_type(ch, form);
@@ -296,7 +379,7 @@ void MarkdownVariations::find_alerts_r(markdown_item *md) {
 			}		
 			DISCARD_TEXT(opener)
 		}
-		MarkdownVariations::find_alerts_r(ch);
+		MarkdownVariations::find_alerts_r(ch, variation);
 	}
 }
 
@@ -434,15 +517,15 @@ block tree produced by Phase I parsing; similarly `POST_PHASE_II_MARKDOWN_MTID`.
 
 =
 VOID_METHOD_TYPE(POST_PHASE_I_MARKDOWN_MTID, markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references)
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references)
 VOID_METHOD_TYPE(POST_PHASE_II_MARKDOWN_MTID, markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references)
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references)
 void MarkdownVariations::intervene_after_Phase_I(markdown_variation *variation,
 	markdown_item *tree, md_links_dictionary *link_references) {
 	markdown_feature *feature;
 	LOOP_OVER(feature, markdown_feature) {
 		if (MarkdownVariations::supports(variation, feature->feature_ID)) {
-			VOID_METHOD_CALL(feature, POST_PHASE_I_MARKDOWN_MTID, tree, link_references);
+			VOID_METHOD_CALL(feature, POST_PHASE_I_MARKDOWN_MTID, variation, tree, link_references);
 		}
 	}
 }
@@ -451,7 +534,7 @@ void MarkdownVariations::intervene_after_Phase_II(markdown_variation *variation,
 	markdown_feature *feature;
 	LOOP_OVER(feature, markdown_feature) {
 		if (MarkdownVariations::supports(variation, feature->feature_ID)) {
-			VOID_METHOD_CALL(feature, POST_PHASE_II_MARKDOWN_MTID, tree, link_references);
+			VOID_METHOD_CALL(feature, POST_PHASE_II_MARKDOWN_MTID, variation, tree, link_references);
 		}
 	}
 }

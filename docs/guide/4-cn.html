@@ -531,6 +531,32 @@ they do something which otherwise couldn't easily be done.</p>
 	}
 }
 </span></pre>
+<h2>Custom alerts</h2>
+<p>Commentary inside a web is styled with some dialect of Markdown, depending
+on the convention settings. If GitHub-flavored Markdown features are available
+(as they are by default) then this will include so-called <em>alerts</em>.
+See [Commentary in Markdown] for examples.</p>
+<p>GitHub Markdown provides five forms of alert, cued as <code>[!NOTE]</code>, <code>[!TIP]</code>,
+<code>[!IMPORTANT]</code>, <code>[!WARNING]</code>, and <code>[!CAUTION]</code>. A notation can however add
+new ones, with a declaration like this:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">alerts
+	♨︎ HOT
+	&gt; SYNTAX
+end
+</span></pre>
+<p>This adds two new sorts of alert, which might be used as follows:</p>
+<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; [!HOT]
+&gt; Use of this feature may cause CPU temperatures to exceed 102 centigrade.
+
+&gt; [!SYNTAX]
+&gt; - **GO** _direction_
+&gt; - **GO BACK** _direction_
+</span></pre>
+<p>When woven to HTML, these alerts will become blockquotes, just as for <code>[!NOTE]</code>
+and so on; the blockquotes will have the class names <code>alerthot</code> and <code>alertsyntax</code>,
+matching the conventions used for <code>alertnote</code>, <code>alertwarning</code> and so on. They
+can then be styled in suitable colour schemes, have boxes drawn around them, or
+whatever, by means of CSS: see [Creating Patterns].</p>
 <h2>Processing</h2>
 <p>An entirely different mechanism, intended to be used only if really necessary,
 allows material in the web to be &quot;processed&quot; (read: rewritten).</p>

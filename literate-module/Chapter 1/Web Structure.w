@@ -26,6 +26,7 @@ classdef ls_web {
 	struct linked_list *conventions; /* of `ls_conventions` */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_notation *web_notation; /* which version syntax the sections will have */
+	struct markdown_variation *variation; /* and which Markdown variation its commentary will use */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct ls_index *index;
 
@@ -80,6 +81,7 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	}
 	W->version_number = VersionNumbers::null();
 	W->web_notation = NULL;
+	W->variation = NULL;
 	W->chaptered = FALSE;
 	W->index = WebIndexing::new_index();
 	W->chapters = NEW_LINKED_LIST(ls_chapter);

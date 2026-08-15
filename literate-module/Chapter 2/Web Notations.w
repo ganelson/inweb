@@ -27,6 +27,7 @@ classdef ls_notation {
 	struct ls_classifier *main_classifier;
 	struct ls_classifier *residue_classifier[NO_DEFINED_LSNROID_VALUES];
 	struct ls_classifier *options_classifier[NO_DEFINED_LSNROID_VALUES];
+	struct linked_list *alerts; /* of `markdown_alert` */
 
 	/* how index entries are read from the web source */
 	struct finite_state_machine *indexing_machine;
@@ -42,6 +43,7 @@ classdef ls_notation {
 	/* temporarily needed in parsing notation files */
 	struct ls_classifier *c_stanza;
 	struct notation_rewriting_machine *p_stanza;
+	int a_stanza;
 }
 
 @ =
@@ -64,6 +66,7 @@ ls_notation *WebNotation::new(text_stream *name) {
 		ntn->residue_classifier[i] = LineClassifiers::new();
 		ntn->options_classifier[i] = LineClassifiers::new();
 	}
+	ntn->alerts = NEW_LINKED_LIST(markdown_alert);	
 
 	ntn->indexing_machine = NULL;
 
@@ -76,6 +79,7 @@ ls_notation *WebNotation::new(text_stream *name) {
 
 	ntn->c_stanza = NULL;
 	ntn->p_stanza = NULL;
+	ntn->a_stanza = FALSE;
 	return ntn;
 }
 
@@ -270,6 +274,14 @@ int WebNotation::supports_paragraph_tags(ls_notation *ntn) {
 	return WebNotation::has_nonempty_markers(ntn, PARAGRAPH_TAGS_NTNMARKER);
 }
 
+@h Alerts.
+A simple list of non-standard Markdown alerts is kept:
+
+=
+void WebNotation::add_alert(ls_notation *ntn, markdown_alert *alert) {
+	ADD_TO_LINKED_LIST(alert, markdown_alert, ntn->alerts);	
+}
+
 @h Commentary markup.
 This is entirely decided by conventions, which is why it isn't explicitly
 visible in the `ls_notation` structure. If a notation's declaration says
@@ -287,16 +299,28 @@ int WebNotation::commentary_markup(ls_web *W) {
 }
 
 markdown_variation *WebNotation::commentary_variation(ls_web *W) {
-	int markup = WebNotation::commentary_markup(W);
-	switch (markup) {
-		case SIMPLIFIED_COMMENTARY_MARKUPCHOICE:
-			return MarkdownVariations::simplified_Inweb_flavoured_Markdown();
-		case MARKDOWN_COMMENTARY_MARKUPCHOICE:
-			return MarkdownVariations::Inweb_flavoured_Markdown();
-		case TEX_COMMENTARY_MARKUPCHOICE:
-			return MarkdownVariations::TeX_flavoured_Markdown();
+	if (W->variation == NULL) {
+		int markup = WebNotation::commentary_markup(W);
+		switch (markup) {
+			case SIMPLIFIED_COMMENTARY_MARKUPCHOICE:
+				W->variation = MarkdownVariations::simplified_Inweb_flavoured_Markdown();
+				break;
+			case MARKDOWN_COMMENTARY_MARKUPCHOICE:
+				W->variation = MarkdownVariations::Inweb_flavoured_Markdown();
+				break;
+			case TEX_COMMENTARY_MARKUPCHOICE:
+				W->variation = MarkdownVariations::TeX_flavoured_Markdown();
+				break;
+			default: internal_error("unsupported commentary variation");
+		}
+		if (LinkedLists::len(W->web_notation->alerts) > 0) {
+			W->variation = MarkdownVariations::duplicate(W->variation);
+			markdown_alert *alert;
+			LOOP_OVER_LINKED_LIST(alert, markdown_alert, W->web_notation->alerts)
+				MarkdownVariations::add_alert(W->variation, alert);
+		}
 	}
-	internal_error("unsupported commentary variation");
+	return W->variation;
 }
 
 @h Reading notation definitions.
@@ -367,7 +391,7 @@ ls_notation *WebNotation::parse_declaration(wcl_declaration *D) {
 		DISCARD_TEXT(line);
 		tfp.line_count++;
 	}
-	if ((ntn->c_stanza) || (ntn->p_stanza)) {
+	if ((ntn->c_stanza) || (ntn->p_stanza) || (ntn->a_stanza)) {
 		WCL::error(ntn->declaration, &tfp, I"notation ended without 'end'");
 	}
 
@@ -395,11 +419,12 @@ text_stream *WebNotation::apply_definition_line(ls_notation *ntn, text_stream *c
 	text_stream *error = NULL;
 	match_results mr = Regexp::create_mr();
 	if (Str::is_whitespace(cmd)) @<Setting done@>;
-	if ((ntn->c_stanza) || (ntn->p_stanza)) {
+	if ((ntn->c_stanza) || (ntn->p_stanza) || (ntn->a_stanza)) {
 		@<Inside stanzas@>
 	} else {
 		@<Entering processor stanzas@>;
 		@<Entering classifier stanzas@>;
+		@<Entering alert stanza@>;
 		@<Miscellaneous settings@>;
 	}
 	error = Str::new();
@@ -452,6 +477,12 @@ text_stream *WebNotation::apply_definition_line(ls_notation *ntn, text_stream *c
 		@<Setting done@>;
 	}
 
+@<Entering alert stanza@> =
+	if (Regexp::match(&mr, cmd, U"alerts")) {
+		ntn->a_stanza = TRUE;
+		@<Setting done@>;
+	}
+
 @<Miscellaneous settings@> =
 	if (Regexp::match(&mr, cmd, U"name \"(%C+)\"")) {
 		ntn->name = Str::duplicate(mr.exp[0]); @<Setting done@>;
@@ -470,7 +501,7 @@ text_stream *WebNotation::apply_definition_line(ls_notation *ntn, text_stream *c
 
 @<Inside stanzas@> =
 	if (Regexp::match(&mr, cmd, U"end")) {
-		ntn->c_stanza = NULL; ntn->p_stanza = NULL;
+		ntn->c_stanza = NULL; ntn->p_stanza = NULL;	ntn->a_stanza = FALSE;
 		@<Setting done@>;
 	}		
 	if (ntn->c_stanza) {
@@ -490,6 +521,17 @@ text_stream *WebNotation::apply_definition_line(ls_notation *ntn, text_stream *c
 		} else {
 			error = Str::new();
 			WRITE_TO(error, "not a process line: '%S'", cmd);
+		}
+		@<Setting done@>;
+	}
+	if (ntn->a_stanza) {
+		if (Regexp::match(&mr, cmd, U"(%c+) (%c+)")) {
+			markdown_alert *alert =
+				MarkdownVariations::new_alert(mr.exp[1], Str::get_first_char(mr.exp[0]));
+			WebNotation::add_alert(ntn, alert);
+		} else {
+			error = Str::new();
+			WRITE_TO(error, "not a valid alert line: '%S'", cmd);
 		}
 		@<Setting done@>;
 	}

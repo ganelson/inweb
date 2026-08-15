@@ -1644,26 +1644,6 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define FOOTNOTE_BODY_MIT 39
 
     
-#line 747 "inweb/foundation-module/Chapter 5/Markdown.w"
-    #define NOTE_GHALERTFORM 1
-
-    
-#line 748 "inweb/foundation-module/Chapter 5/Markdown.w"
-    #define TIP_GHALERTFORM 2
-
-    
-#line 749 "inweb/foundation-module/Chapter 5/Markdown.w"
-    #define IMPORTANT_GHALERTFORM 3
-
-    
-#line 750 "inweb/foundation-module/Chapter 5/Markdown.w"
-    #define WARNING_GHALERTFORM 4
-
-    
-#line 751 "inweb/foundation-module/Chapter 5/Markdown.w"
-    #define CAUTION_GHALERTFORM 5
-
-    
 #line 50 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
     #define MAX_MARKDOWN_CONTAINER_DEPTH 128 
 
@@ -1835,147 +1815,147 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define MAX_MARKDOWNFEATURES 256
 
     
-#line 119 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 201 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define BLOCK_QUOTES_MARKDOWNFEATURE 0
 
     
-#line 120 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 202 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ORDERED_LISTS_MARKDOWNFEATURE 1
 
     
-#line 121 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 203 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define UNORDERED_LISTS_MARKDOWNFEATURE 2
 
     
-#line 122 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 204 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define INDENTED_CODE_BLOCKS_MARKDOWNFEATURE 3
 
     
-#line 123 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 205 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define FENCED_CODE_BLOCKS_MARKDOWNFEATURE 4
 
     
-#line 124 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 206 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define HTML_BLOCKS_MARKDOWNFEATURE 5
 
     
-#line 125 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 207 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define THEMATIC_MARKERS_MARKDOWNFEATURE 6
 
     
-#line 126 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 208 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ATX_HEADINGS_MARKDOWNFEATURE 7
 
     
-#line 127 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 209 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define SETEXT_HEADINGS_MARKDOWNFEATURE 8
 
     
-#line 129 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 211 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define WEB_AUTOLINKS_MARKDOWNFEATURE 9
 
     
-#line 130 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 212 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define EMAIL_AUTOLINKS_MARKDOWNFEATURE 10
 
     
-#line 131 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 213 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define INLINE_HTML_MARKDOWNFEATURE 11
 
     
-#line 132 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 214 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define BACKTICKED_CODE_MARKDOWNFEATURE 12
 
     
-#line 133 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 215 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define LINKS_MARKDOWNFEATURE 13
 
     
-#line 134 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 216 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define IMAGES_MARKDOWNFEATURE 14
 
     
-#line 135 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 217 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ASTERISK_EMPHASIS_MARKDOWNFEATURE 15
 
     
-#line 136 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 218 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define UNDERSCORE_EMPHASIS_MARKDOWNFEATURE 16
 
     
-#line 138 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 220 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ENTITIES_MARKDOWNFEATURE 17
 
     
-#line 215 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 297 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define STRIKETHROUGH_MARKDOWNFEATURE 18
 
     
-#line 216 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 298 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define TABLES_MARKDOWNFEATURE 19
 
     
-#line 217 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 299 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define TASK_LIST_ITEMS_MARKDOWNFEATURE 20
 
     
-#line 218 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 300 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define EXTENDED_AUTOLINKS_MARKDOWNFEATURE 21
 
     
-#line 219 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 301 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define DISALLOWED_RAW_HTML_MARKDOWNFEATURE 22
 
     
-#line 220 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 302 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ALERTS_MARKDOWNFEATURE 23
 
     
-#line 306 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 389 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define TEX_MARKDOWNFEATURE 24
 
     
-#line 307 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 390 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ALT_TEX_MARKDOWNFEATURE 25
 
     
-#line 308 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 391 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define INWEB_LINKS_MARKDOWNFEATURE 26
 
     
-#line 309 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 392 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define ALT_INWEB_LINKS_MARKDOWNFEATURE 27
 
     
-#line 310 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 393 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define INWEB_SYNTAX_COLOURING_MARKDOWNFEATURE 28
 
     
-#line 311 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 394 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define TEXT_AS_IMAGES_MARKDOWNFEATURE 29
 
     
-#line 312 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 395 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define FOOTNOTES_MARKDOWNFEATURE 30
 
     
-#line 313 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 396 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define STROKED_CODE_MARKDOWNFEATURE 31
 
     
-#line 411 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 494 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define RENDER_MARKDOWN_MTID 2
 
     
-#line 432 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 515 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define POST_PHASE_I_MARKDOWN_MTID 3
 
     
-#line 433 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 516 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define POST_PHASE_II_MARKDOWN_MTID 4
 
     
-#line 464 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 547 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
     #define MULTIFILE_MARKDOWN_MTID 5
 
     
@@ -2984,27 +2964,27 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define DEFAULT_LSNROBIT 0x10000000
 
     
-#line 223 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 227 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define NAMED_HOLONS_NTNMARKER 0
 
     
-#line 224 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 228 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define FILE_NAMED_HOLONS_NTNMARKER 1
 
     
-#line 225 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 229 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define VERBATIM_CODE_NTNMARKER 2
 
     
-#line 226 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 230 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define METADATA_IN_STRINGS_NTNMARKER 3
 
     
-#line 227 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 231 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define PARAGRAPH_TAGS_NTNMARKER 4
 
     
-#line 532 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 574 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define INWEB_REWRITE_FSMEVENT 2
 
     
@@ -3898,7 +3878,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
     
 #line 25 "inweb/literate-module/Chapter 6/Build Files.w"
-    #define NO_DEFINED_CLASS_VALUES 204
+    #define NO_DEFINED_CLASS_VALUES 205
 
     
 #line 468 "inweb/foundation-module/Chapter 2/Memory.w"
@@ -3939,10 +3919,6 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     
 #line 787 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
     #define NO_DEFINED_MIT_VALUES 45
-
-    
-#line 751 "inweb/foundation-module/Chapter 5/Markdown.w"
-    #define NO_DEFINED_GHALERTFORM_VALUES 5
 
     
 #line 1636 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
@@ -4025,7 +4001,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define NO_DEFINED_LSNROID_VALUES 54
 
     
-#line 227 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 231 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define NO_DEFINED_NTNMARKER_VALUES 5
 
     
@@ -4098,164 +4074,165 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define md_emphasis_delimiter_CLASS 43
 #define markdown_variation_CLASS 44
 #define markdown_feature_CLASS 45
-#define IFM_example_CLASS 46
-#define ebook_CLASS 47
-#define ebook_datum_CLASS 48
-#define ebook_volume_CLASS 49
-#define ebook_chapter_CLASS 50
-#define ebook_page_CLASS 51
-#define ebook_mark_CLASS 52
-#define ebook_image_CLASS 53
-#define semantic_version_number_holder_CLASS 54
-#define semver_range_CLASS 55
-#define open_source_licence_CLASS 56
-#define wcl_declaration_CLASS 57
-#define wcl_error_CLASS 58
-#define wcl_scanner_CLASS 59
-#define ls_colony_CLASS 60
-#define ls_colony_member_CLASS 61
-#define colony_reader_state_CLASS 62
-#define breadcrumb_request_CLASS 63
-#define ls_web_CLASS 64
-#define ls_chapter_CLASS 65
-#define ls_section_CLASS 66
-#define web_bibliographic_datum_CLASS 67
-#define web_contents_state_CLASS 68
-#define sfw_reader_state_CLASS 69
-#define ls_module_CLASS 70
-#define module_search_CLASS 71
-#define ls_conventions_CLASS 72
-#define ls_unit_CLASS 73
-#define ls_line_CLASS 74
-#define ls_paragraph_CLASS 75
-#define ls_chunk_CLASS 76
-#define ls_footnote_CLASS 77
-#define literate_source_tagging_CLASS 78
-#define ls_class_CLASS 79
-#define ls_class_parsing_CLASS 80
-#define ls_classifier_CLASS 81
-#define ls_notation_rule_CLASS 82
-#define ls_classifier_context_CLASS 83
-#define ls_notation_rule_condition_CLASS 84
-#define ls_notation_rule_pattern_CLASS 85
-#define ls_srtoken_CLASS 86
-#define ls_notation_rule_outcome_CLASS 87
-#define ls_error_CLASS 88
-#define ls_notation_CLASS 89
-#define notation_rewriting_machine_CLASS 90
-#define notation_rewriter_CLASS 91
-#define ls_holon_CLASS 92
-#define ls_holon_namespace_CLASS 93
-#define holon_usage_CLASS 94
-#define ls_holon_scanner_CLASS 95
-#define ls_code_excerpt_CLASS 96
-#define holon_splice_CLASS 97
-#define ls_index_mark_CLASS 98
-#define ls_index_CLASS 99
-#define ls_index_lemma_CLASS 100
-#define programming_language_CLASS 101
-#define language_reader_state_CLASS 102
-#define colouring_language_block_CLASS 103
-#define colouring_rule_CLASS 104
-#define reserved_word_CLASS 105
-#define pl_regexp_set_CLASS 106
-#define ls_web_analysis_CLASS 107
-#define ls_paragraph_analysis_CLASS 108
-#define ls_line_analysis_CLASS 109
-#define hash_table_entry_usage_CLASS 110
-#define enumeration_set_CLASS 111
-#define language_type_CLASS 112
-#define structure_element_CLASS 113
-#define language_function_CLASS 114
-#define hash_table_CLASS 115
-#define hash_table_entry_CLASS 116
-#define custom_colour_CLASS 117
-#define preform_nonterminal_CLASS 118
-#define nonterminal_variable_CLASS 119
-#define text_literal_CLASS 120
-#define tangle_target_CLASS 121
-#define tangle_docket_CLASS 122
-#define tangle_external_file_CLASS 123
-#define defined_constant_CLASS 124
-#define ls_web_weaving_details_CLASS 125
-#define ls_chapter_weaving_details_CLASS 126
-#define ls_section_weaving_details_CLASS 127
-#define weave_reporting_CLASS 128
-#define weave_copy_record_CLASS 129
-#define weave_order_CLASS 130
-#define ls_pattern_CLASS 131
-#define ls_pattern_pair_CLASS 132
-#define weave_plugin_CLASS 133
-#define colour_scheme_CLASS 134
-#define asset_selector_CLASS 135
-#define asset_disposition_CLASS 136
-#define asset_rule_CLASS 137
-#define css_file_transformation_CLASS 138
-#define sd_file_transformation_CLASS 139
-#define collater_state_CLASS 140
-#define weaver_state_CLASS 141
-#define weave_document_node_CLASS 142
-#define weave_head_node_CLASS 143
-#define weave_body_node_CLASS 144
-#define weave_tail_node_CLASS 145
-#define weave_chapter_header_node_CLASS 146
-#define weave_chapter_footer_node_CLASS 147
-#define weave_section_header_node_CLASS 148
-#define weave_section_footer_node_CLASS 149
-#define weave_section_purpose_node_CLASS 150
-#define weave_subheading_node_CLASS 151
-#define weave_subsubheading_node_CLASS 152
-#define weave_bar_node_CLASS 153
-#define weave_pagebreak_node_CLASS 154
-#define weave_linebreak_node_CLASS 155
-#define weave_paragraph_heading_node_CLASS 156
-#define weave_endnote_node_CLASS 157
-#define weave_figure_node_CLASS 158
-#define weave_extract_node_CLASS 159
-#define weave_audio_node_CLASS 160
-#define weave_video_node_CLASS 161
-#define weave_download_node_CLASS 162
-#define weave_material_node_CLASS 163
-#define weave_embed_node_CLASS 164
-#define weave_holon_usage_node_CLASS 165
-#define weave_tangler_command_node_CLASS 166
-#define weave_holon_declaration_node_CLASS 167
-#define weave_vskip_node_CLASS 168
-#define weave_chapter_node_CLASS 169
-#define weave_section_node_CLASS 170
-#define weave_code_line_node_CLASS 171
-#define weave_function_usage_node_CLASS 172
-#define weave_commentary_node_CLASS 173
-#define weave_carousel_slide_node_CLASS 174
-#define weave_toc_node_CLASS 175
-#define weave_toc_line_node_CLASS 176
-#define weave_chapter_title_page_node_CLASS 177
-#define weave_defn_node_CLASS 178
-#define weave_inline_node_CLASS 179
-#define weave_locale_node_CLASS 180
-#define weave_source_code_node_CLASS 181
-#define weave_comment_in_holon_node_CLASS 182
-#define weave_url_node_CLASS 183
-#define weave_footnote_cue_node_CLASS 184
-#define weave_begin_footnote_text_node_CLASS 185
-#define weave_display_line_node_CLASS 186
-#define weave_function_defn_node_CLASS 187
-#define weave_item_node_CLASS 188
-#define weave_grammar_index_node_CLASS 189
-#define weave_maths_node_CLASS 190
-#define weave_markdown_node_CLASS 191
-#define weave_verbatim_node_CLASS 192
-#define weave_index_marker_node_CLASS 193
-#define weave_format_CLASS 194
-#define PlainText_render_state_CLASS 195
-#define TeX_render_state_CLASS 196
-#define HTML_render_state_CLASS 197
-#define debugging_render_state_CLASS 198
-#define tex_results_CLASS 199
-#define makefile_specifics_CLASS 200
-#define inweb_reference_data_CLASS 201
-#define writeme_asset_CLASS 202
-#define build_file_data_CLASS 203
+#define markdown_alert_CLASS 46
+#define IFM_example_CLASS 47
+#define ebook_CLASS 48
+#define ebook_datum_CLASS 49
+#define ebook_volume_CLASS 50
+#define ebook_chapter_CLASS 51
+#define ebook_page_CLASS 52
+#define ebook_mark_CLASS 53
+#define ebook_image_CLASS 54
+#define semantic_version_number_holder_CLASS 55
+#define semver_range_CLASS 56
+#define open_source_licence_CLASS 57
+#define wcl_declaration_CLASS 58
+#define wcl_error_CLASS 59
+#define wcl_scanner_CLASS 60
+#define ls_colony_CLASS 61
+#define ls_colony_member_CLASS 62
+#define colony_reader_state_CLASS 63
+#define breadcrumb_request_CLASS 64
+#define ls_web_CLASS 65
+#define ls_chapter_CLASS 66
+#define ls_section_CLASS 67
+#define web_bibliographic_datum_CLASS 68
+#define web_contents_state_CLASS 69
+#define sfw_reader_state_CLASS 70
+#define ls_module_CLASS 71
+#define module_search_CLASS 72
+#define ls_conventions_CLASS 73
+#define ls_unit_CLASS 74
+#define ls_line_CLASS 75
+#define ls_paragraph_CLASS 76
+#define ls_chunk_CLASS 77
+#define ls_footnote_CLASS 78
+#define literate_source_tagging_CLASS 79
+#define ls_class_CLASS 80
+#define ls_class_parsing_CLASS 81
+#define ls_classifier_CLASS 82
+#define ls_notation_rule_CLASS 83
+#define ls_classifier_context_CLASS 84
+#define ls_notation_rule_condition_CLASS 85
+#define ls_notation_rule_pattern_CLASS 86
+#define ls_srtoken_CLASS 87
+#define ls_notation_rule_outcome_CLASS 88
+#define ls_error_CLASS 89
+#define ls_notation_CLASS 90
+#define notation_rewriting_machine_CLASS 91
+#define notation_rewriter_CLASS 92
+#define ls_holon_CLASS 93
+#define ls_holon_namespace_CLASS 94
+#define holon_usage_CLASS 95
+#define ls_holon_scanner_CLASS 96
+#define ls_code_excerpt_CLASS 97
+#define holon_splice_CLASS 98
+#define ls_index_mark_CLASS 99
+#define ls_index_CLASS 100
+#define ls_index_lemma_CLASS 101
+#define programming_language_CLASS 102
+#define language_reader_state_CLASS 103
+#define colouring_language_block_CLASS 104
+#define colouring_rule_CLASS 105
+#define reserved_word_CLASS 106
+#define pl_regexp_set_CLASS 107
+#define ls_web_analysis_CLASS 108
+#define ls_paragraph_analysis_CLASS 109
+#define ls_line_analysis_CLASS 110
+#define hash_table_entry_usage_CLASS 111
+#define enumeration_set_CLASS 112
+#define language_type_CLASS 113
+#define structure_element_CLASS 114
+#define language_function_CLASS 115
+#define hash_table_CLASS 116
+#define hash_table_entry_CLASS 117
+#define custom_colour_CLASS 118
+#define preform_nonterminal_CLASS 119
+#define nonterminal_variable_CLASS 120
+#define text_literal_CLASS 121
+#define tangle_target_CLASS 122
+#define tangle_docket_CLASS 123
+#define tangle_external_file_CLASS 124
+#define defined_constant_CLASS 125
+#define ls_web_weaving_details_CLASS 126
+#define ls_chapter_weaving_details_CLASS 127
+#define ls_section_weaving_details_CLASS 128
+#define weave_reporting_CLASS 129
+#define weave_copy_record_CLASS 130
+#define weave_order_CLASS 131
+#define ls_pattern_CLASS 132
+#define ls_pattern_pair_CLASS 133
+#define weave_plugin_CLASS 134
+#define colour_scheme_CLASS 135
+#define asset_selector_CLASS 136
+#define asset_disposition_CLASS 137
+#define asset_rule_CLASS 138
+#define css_file_transformation_CLASS 139
+#define sd_file_transformation_CLASS 140
+#define collater_state_CLASS 141
+#define weaver_state_CLASS 142
+#define weave_document_node_CLASS 143
+#define weave_head_node_CLASS 144
+#define weave_body_node_CLASS 145
+#define weave_tail_node_CLASS 146
+#define weave_chapter_header_node_CLASS 147
+#define weave_chapter_footer_node_CLASS 148
+#define weave_section_header_node_CLASS 149
+#define weave_section_footer_node_CLASS 150
+#define weave_section_purpose_node_CLASS 151
+#define weave_subheading_node_CLASS 152
+#define weave_subsubheading_node_CLASS 153
+#define weave_bar_node_CLASS 154
+#define weave_pagebreak_node_CLASS 155
+#define weave_linebreak_node_CLASS 156
+#define weave_paragraph_heading_node_CLASS 157
+#define weave_endnote_node_CLASS 158
+#define weave_figure_node_CLASS 159
+#define weave_extract_node_CLASS 160
+#define weave_audio_node_CLASS 161
+#define weave_video_node_CLASS 162
+#define weave_download_node_CLASS 163
+#define weave_material_node_CLASS 164
+#define weave_embed_node_CLASS 165
+#define weave_holon_usage_node_CLASS 166
+#define weave_tangler_command_node_CLASS 167
+#define weave_holon_declaration_node_CLASS 168
+#define weave_vskip_node_CLASS 169
+#define weave_chapter_node_CLASS 170
+#define weave_section_node_CLASS 171
+#define weave_code_line_node_CLASS 172
+#define weave_function_usage_node_CLASS 173
+#define weave_commentary_node_CLASS 174
+#define weave_carousel_slide_node_CLASS 175
+#define weave_toc_node_CLASS 176
+#define weave_toc_line_node_CLASS 177
+#define weave_chapter_title_page_node_CLASS 178
+#define weave_defn_node_CLASS 179
+#define weave_inline_node_CLASS 180
+#define weave_locale_node_CLASS 181
+#define weave_source_code_node_CLASS 182
+#define weave_comment_in_holon_node_CLASS 183
+#define weave_url_node_CLASS 184
+#define weave_footnote_cue_node_CLASS 185
+#define weave_begin_footnote_text_node_CLASS 186
+#define weave_display_line_node_CLASS 187
+#define weave_function_defn_node_CLASS 188
+#define weave_item_node_CLASS 189
+#define weave_grammar_index_node_CLASS 190
+#define weave_maths_node_CLASS 191
+#define weave_markdown_node_CLASS 192
+#define weave_verbatim_node_CLASS 193
+#define weave_index_marker_node_CLASS 194
+#define weave_format_CLASS 195
+#define PlainText_render_state_CLASS 196
+#define TeX_render_state_CLASS 197
+#define HTML_render_state_CLASS 198
+#define debugging_render_state_CLASS 199
+#define tex_results_CLASS 200
+#define makefile_specifics_CLASS 201
+#define inweb_reference_data_CLASS 202
+#define writeme_asset_CLASS 203
+#define build_file_data_CLASS 204
 #line 43 "inweb/foundation-module/Chapter 2/Debugging Log.w"
 typedef struct debugging_aspect {
 	struct text_stream *hyphenated_name; /* e.g., "memory-usage" */
@@ -4740,17 +4717,17 @@ typedef struct markdown_item {
 	int cycle_count; /* used only for tracing the tree when debugging */
 	int id;          /* used only for tracing the tree when debugging */
 } markdown_item;
-#line 876 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 870 "inweb/foundation-module/Chapter 5/Markdown.w"
 typedef struct md_charpos {
 	struct markdown_item *md;
 	int at;
 } md_charpos;
-#line 1101 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1095 "inweb/foundation-module/Chapter 5/Markdown.w"
 typedef struct md_links_dictionary {
 	struct dictionary *dict;
 	CLASS_DEFINITION
 } md_links_dictionary;
-#line 1105 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1099 "inweb/foundation-module/Chapter 5/Markdown.w"
 typedef struct md_link_dictionary_entry {
 	struct text_stream *destination;
 	struct text_stream *title;
@@ -4826,16 +4803,23 @@ typedef struct md_emphasis_delimiter {
 typedef struct markdown_variation {
 	struct text_stream *name;
 	int active_built_in_features[NO_DEFINED_MARKDOWNFEATURE_VALUES];
+	struct linked_list *alerts; /* of `markdown_alert` */
 	struct method_set *methods;
 	CLASS_DEFINITION
 } markdown_variation;
-#line 91 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 112 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 typedef struct markdown_feature {
 	struct text_stream *name;
 	int feature_ID;
 	struct method_set *methods;
 	CLASS_DEFINITION
 } markdown_feature;
+#line 141 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+typedef struct markdown_alert {
+	struct text_stream *name;
+	inchar32_t icon;
+	CLASS_DEFINITION
+} markdown_alert;
 #line 422 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 typedef struct IFM_example {
 	struct text_stream *name;
@@ -5040,6 +5024,7 @@ typedef struct ls_web {
 	struct linked_list *conventions; /* of `ls_conventions` */
 	struct semantic_version_number version_number; /* as deduced from bibliographic data */
 	struct ls_notation *web_notation; /* which version syntax the sections will have */
+	struct markdown_variation *variation; /* and which Markdown variation its commentary will use */
 	int chaptered; /* has the author explicitly divided it into named chapters? */
 	struct ls_index *index;
 
@@ -5059,7 +5044,7 @@ typedef struct ls_web {
 	void *analysis_ref;
 	CLASS_DEFINITION
 } ls_web;
-#line 312 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 314 "inweb/literate-module/Chapter 1/Web Structure.w"
 typedef struct ls_chapter {
 	struct ls_web *owning_web;
 	struct ls_module *owning_module;
@@ -5080,7 +5065,7 @@ typedef struct ls_chapter {
 	void *analysis_ref;
 	CLASS_DEFINITION
 } ls_chapter;
-#line 367 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 369 "inweb/literate-module/Chapter 1/Web Structure.w"
 typedef struct ls_section {
 	struct ls_chapter *owning_chapter;
 
@@ -5413,6 +5398,7 @@ typedef struct ls_notation {
 	struct ls_classifier *main_classifier;
 	struct ls_classifier *residue_classifier[NO_DEFINED_LSNROID_VALUES];
 	struct ls_classifier *options_classifier[NO_DEFINED_LSNROID_VALUES];
+	struct linked_list *alerts; /* of `markdown_alert` */
 
 	/* how index entries are read from the web source */
 	struct finite_state_machine *indexing_machine;
@@ -5428,15 +5414,16 @@ typedef struct ls_notation {
 	/* temporarily needed in parsing notation files */
 	struct ls_classifier *c_stanza;
 	struct notation_rewriting_machine *p_stanza;
+	int a_stanza;
 	CLASS_DEFINITION
 } ls_notation;
-#line 517 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 559 "inweb/literate-module/Chapter 2/Web Notations.w"
 typedef struct notation_rewriting_machine {
 	struct finite_state_machine *fsm;
 	struct fsm_state *base_state;
 	CLASS_DEFINITION
 } notation_rewriting_machine;
-#line 535 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 577 "inweb/literate-module/Chapter 2/Web Notations.w"
 typedef struct notation_rewriter {
 	struct text_stream *from;
 	struct text_stream *to;
@@ -8079,89 +8066,89 @@ int  Markdown__get_item_number(markdown_item *md) ;
 inchar32_t  Markdown__get_item_flavour(markdown_item *md) ;
 #line 730 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__set_item_number_and_flavour(markdown_item *md, int L, inchar32_t f) ;
-#line 754 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 748 "inweb/foundation-module/Chapter 5/Markdown.w"
 int  Markdown__get_alert_type(markdown_item *md) ;
-#line 759 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 753 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__set_alert_type(markdown_item *md, int L) ;
-#line 773 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 767 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t  Markdown__get_unescaped(md_charpos pos, int offset) ;
-#line 786 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 780 "inweb/foundation-module/Chapter 5/Markdown.w"
 int  Markdown__unescaped_run(md_charpos pos, inchar32_t of) ;
-#line 796 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 790 "inweb/foundation-module/Chapter 5/Markdown.w"
 markdown_item * Markdown__new_volume_marker(text_stream *title) ;
-#line 802 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 796 "inweb/foundation-module/Chapter 5/Markdown.w"
 markdown_item * Markdown__new_file_marker(filename *F) ;
-#line 808 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 802 "inweb/foundation-module/Chapter 5/Markdown.w"
 filename * Markdown__get_filename(markdown_item *md) ;
-#line 820 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 814 "inweb/foundation-module/Chapter 5/Markdown.w"
 markdown_item * Markdown__new_slice(int type, text_stream *text, int from, int to) ;
-#line 834 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 828 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t  Markdown__get_at(markdown_item *md, int at) ;
-#line 845 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 839 "inweb/foundation-module/Chapter 5/Markdown.w"
 int  Markdown__width(markdown_item *md) ;
-#line 884 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 878 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__nowhere(void) ;
-#line 891 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 885 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__pos(markdown_item *md, int at) ;
-#line 899 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 893 "inweb/foundation-module/Chapter 5/Markdown.w"
 int  Markdown__somewhere(md_charpos pos) ;
-#line 907 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 901 "inweb/foundation-module/Chapter 5/Markdown.w"
 int  Markdown__pos_eq(md_charpos A, md_charpos B) ;
-#line 918 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 912 "inweb/foundation-module/Chapter 5/Markdown.w"
 int  Markdown__is_in(md_charpos pos, markdown_item *md) ;
-#line 930 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 924 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__left_edge_of(markdown_item *md) ;
-#line 940 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 934 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__advance(md_charpos pos) ;
-#line 953 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 947 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__advance_plainish_only(md_charpos pos) ;
-#line 965 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 959 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__advance_quasi_plainish_only(md_charpos pos) ;
-#line 977 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 971 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__advance_up_to(md_charpos pos, md_charpos end) ;
-#line 984 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 978 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__advance_up_to_plainish_only(md_charpos pos, md_charpos end) ;
-#line 991 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 985 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos  Markdown__advance_up_to_quasi_plainish_only(md_charpos pos, md_charpos end) ;
-#line 1001 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 995 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t  Markdown__get(md_charpos pos) ;
-#line 1005 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 999 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t  Markdown__get_offset(md_charpos pos, int by) ;
-#line 1010 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1004 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__put(md_charpos pos, inchar32_t c) ;
-#line 1014 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1008 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__put_offset(md_charpos pos, int by, inchar32_t c) ;
-#line 1027 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1021 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__cut_to_just_before(markdown_item *chain_from, md_charpos cut_point, 	markdown_item **left_segment, markdown_item **right_segment) ;
-#line 1057 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1051 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__cut_to_just_at(markdown_item *chain_from, md_charpos cut_point, 	markdown_item **left_segment, markdown_item **right_segment) ;
-#line 1087 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1081 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__cut_interval(markdown_item *chain_from, md_charpos A, md_charpos B, 	markdown_item **left_segment, markdown_item **middle_segment, markdown_item **right_segment) ;
-#line 1110 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1104 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_links_dictionary * Markdown__new_links_dictionary(void) ;
-#line 1123 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1117 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__create(md_links_dictionary *dict, text_stream *label, 	text_stream *destination, text_stream *title) ;
-#line 1146 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1140 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_link_dictionary_entry * Markdown__look_up(md_links_dictionary *dict, text_stream *label) ;
-#line 1167 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1161 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__normalise_link_label(text_stream *label) ;
-#line 1190 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1184 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_char(OUTPUT_STREAM, inchar32_t c) ;
-#line 1201 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1195 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_char_briefly(OUTPUT_STREAM, inchar32_t c) ;
-#line 1211 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1205 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_pos(OUTPUT_STREAM, md_charpos A) ;
-#line 1220 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1214 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_interval(OUTPUT_STREAM, md_charpos A, md_charpos B) ;
-#line 1235 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1229 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_item(OUTPUT_STREAM, markdown_item *md) ;
-#line 1283 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1277 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_subtree(OUTPUT_STREAM, markdown_item *md) ;
-#line 1288 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1282 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_chain(OUTPUT_STREAM, markdown_item *md) ;
-#line 1292 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1286 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_chain_label(OUTPUT_STREAM, markdown_item *md, text_stream *label) ;
-#line 1309 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1303 "inweb/foundation-module/Chapter 5/Markdown.w"
 void  Markdown__debug_item_r(OUTPUT_STREAM, markdown_item *md) ;
 #line 75 "inweb/foundation-module/Chapter 5/Markdown Phase I.w"
 md_doc_state * MDBlockParser__initialise(markdown_variation *variation, 	markdown_item *head, md_links_dictionary *dict) ;
@@ -8305,51 +8292,65 @@ markdown_variation * MarkdownVariations__Inweb_flavoured_Markdown(void) ;
 markdown_variation * MarkdownVariations__simplified_Inweb_flavoured_Markdown(void) ;
 #line 45 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 markdown_variation * MarkdownVariations__TeX_flavoured_Markdown(void) ;
-#line 64 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 65 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 markdown_variation * MarkdownVariations__new(text_stream *name) ;
-#line 74 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 77 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__add_feature(markdown_variation *variation, int feature_id) ;
-#line 78 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 81 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__remove_feature(markdown_variation *variation, int feature_id) ;
-#line 82 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 85 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__copy_features_of(markdown_variation *to, markdown_variation *from) ;
-#line 97 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 95 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+markdown_variation * MarkdownVariations__duplicate(markdown_variation *old_var) ;
+#line 118 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 markdown_feature * MarkdownVariations__new_feature(text_stream *name, int id) ;
-#line 112 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 133 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 int  MarkdownVariations__supports(markdown_variation *variation, int feature_id) ;
-#line 162 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 146 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+markdown_alert * MarkdownVariations__new_alert(text_stream *name, inchar32_t icon) ;
+#line 153 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+void  MarkdownVariations__add_alert(markdown_variation *variation, markdown_alert *alert) ;
+#line 157 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+int  MarkdownVariations__get_alert_form(markdown_variation *variation, text_stream *name) ;
+#line 167 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+text_stream * MarkdownVariations__get_alert_form_name(markdown_variation *variation, int form) ;
+#line 177 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+inchar32_t  MarkdownVariations__get_alert_form_icon(markdown_variation *variation, int form) ;
+#line 190 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+void  MarkdownVariations__add_standard_alerts(markdown_variation *variation) ;
+#line 244 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__define_CommonMark(void) ;
-#line 187 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 269 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__make_baseline_features_active(markdown_variation *variation) ;
-#line 230 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 312 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__define_GFM(void) ;
-#line 242 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 324 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__make_GitHub_features_active(markdown_variation *variation) ;
-#line 254 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
-void  MarkdownVariations__GH_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
-#line 259 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
-void  MarkdownVariations__find_alerts_r(markdown_item *md) ;
-#line 325 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 336 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+void  MarkdownVariations__alerts_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) ;
+#line 341 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+void  MarkdownVariations__find_alerts_r(markdown_item *md, markdown_variation *variation) ;
+#line 408 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__define_IWFM(void) ;
-#line 346 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 429 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__make_Inweb_features_active(markdown_variation *variation) ;
-#line 355 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 438 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__make_simplified_Inweb_features_active(markdown_variation *variation) ;
-#line 379 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 462 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__make_TeX_flavoured_Markdown_features_active(markdown_variation *variation) ;
-#line 416 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 499 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 int  MarkdownVariations__intervene_in_rendering(markdown_variation *variation, 	text_stream *OUT, markdown_item *md, int mode) ;
-#line 440 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 523 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__intervene_after_Phase_I(markdown_variation *variation, 	markdown_item *tree, md_links_dictionary *link_references) ;
-#line 449 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 532 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__intervene_after_Phase_II(markdown_variation *variation, 	markdown_item *tree, md_links_dictionary *link_references) ;
-#line 469 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 552 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 int  MarkdownVariations__multifile_mode(markdown_variation *variation, 	markdown_item *tree, md_links_dictionary *link_references) ;
-#line 487 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 570 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__assign_URLs_to_headings(markdown_item *tree, 	md_links_dictionary *link_references) ;
-#line 531 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 614 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void  MarkdownVariations__multifile_r(markdown_item *md, md_links_dictionary *link_references, 	markdown_item *headings[7], markdown_item *file_item) ;
-#line 583 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 666 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 text_stream * MarkdownVariations__URL_for_heading(markdown_item *md) ;
 #line 12 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 markdown_variation * InformFlavouredMarkdown__variation(void) ;
@@ -8358,9 +8359,9 @@ markdown_item * InformFlavouredMarkdown__error_item(text_stream *text) ;
 #line 58 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__render_errors(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
 #line 95 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__OIH_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__OIH_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) ;
 #line 146 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__Inform_headings_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__Inform_headings_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) ;
 #line 151 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__Inform_headings_r(markdown_item *md) ;
 #line 180 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
@@ -8374,7 +8375,7 @@ void  InformFlavouredMarkdown__find_s(markdown_item *md, text_stream *name, mark
 #line 262 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__render_descriptive_headings(markdown_feature *feature, 	text_stream *OUT, markdown_item *md, int mode) ;
 #line 327 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__EE_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__EE_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) ;
 #line 334 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__detect_embedded_examples_r(markdown_item *md, int *example_number) ;
 #line 372 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
@@ -8390,19 +8391,19 @@ int  InformFlavouredMarkdown__EE_render(markdown_feature *feature, 	text_stream 
 #line 478 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example *E, 	markdown_item *md) ;
 #line 582 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *tree, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) ;
 #line 587 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__pbiapi_r(markdown_item *md) ;
 #line 643 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) ;
 #line 649 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__PD_r(markdown_item *md, markdown_item **last_section) ;
 #line 708 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 int  InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *OUT, 	markdown_item *md, int mode) ;
 #line 763 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) ;
 #line 800 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
-void  InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature, 	markdown_item *md, md_links_dictionary *link_references) ;
+void  InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature, 	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) ;
 #line 822 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void  InformFlavouredMarkdown__expand_gate(markdown_item *md) ;
 #line 843 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
@@ -8735,79 +8736,79 @@ void  Colonies__paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from, 
 void  Colonies__paragraph_anchor(OUTPUT_STREAM, ls_paragraph *par) ;
 #line 998 "inweb/literate-module/Chapter 1/Colonies.w"
 void  Colonies__write_map(OUTPUT_STREAM, ls_colony *C, int fully) ;
-#line 48 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 49 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_web * WebStructure__new_ls_web(wcl_declaration *D) ;
-#line 100 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 102 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_web * WebStructure__from_declaration(wcl_declaration *D) ;
-#line 108 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 110 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_web * WebStructure__read_fully(ls_colony *C, wcl_declaration *D, 	int enumerating, int weaving, int verbosely) ;
-#line 134 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 136 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__parse_markdown(ls_web *W) ;
-#line 147 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 149 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__chapter_count(ls_web *W) ;
-#line 153 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 155 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__imported_chapter_count(ls_web *W) ;
-#line 161 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 163 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__section_count(ls_web *W) ;
-#line 169 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 171 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__imported_section_count(ls_web *W) ;
-#line 178 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 180 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__unimported_section_count(ls_web *W) ;
-#line 187 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 189 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__paragraph_count(ls_web *W) ;
-#line 197 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 199 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__imported_paragraph_count(ls_web *W) ;
-#line 208 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 210 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__line_count(ls_web *W) ;
-#line 216 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 218 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__imported_line_count(ls_web *W) ;
-#line 226 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 228 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__weave_has_only_one_section(ls_web *W) ;
-#line 231 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 233 "inweb/literate-module/Chapter 1/Web Structure.w"
 text_stream * WebStructure__range_of_first_section(ls_web *W) ;
-#line 240 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 242 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__has_errors(ls_web *W) ;
-#line 252 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 254 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__print_statistics(ls_web *W) ;
-#line 279 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 281 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__print_web_identity(ls_web *W) ;
-#line 298 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 300 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__write_literate_source(OUTPUT_STREAM, ls_web *W) ;
-#line 332 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 334 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_chapter * WebStructure__new_ls_chapter(ls_web *W, text_stream *range, text_stream *titling) ;
-#line 399 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 401 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_section * WebStructure__new_ls_section(ls_chapter *C, text_stream *titling, text_stream *at) ;
-#line 481 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 483 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__name_section(ls_section *S, text_stream *name) ;
-#line 496 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 498 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__paragraph_count_within_section(ls_section *S) ;
-#line 507 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 509 "inweb/literate-module/Chapter 1/Web Structure.w"
 pathname * WebStructure__woven_folder(ls_web *W, int n) ;
-#line 513 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 515 "inweb/literate-module/Chapter 1/Web Structure.w"
 pathname * WebStructure__tangled_folder(ls_web *W) ;
-#line 524 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 526 "inweb/literate-module/Chapter 1/Web Structure.w"
 int  WebStructure__directory_looks_like_a_web(pathname *P) ;
-#line 535 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 537 "inweb/literate-module/Chapter 1/Web Structure.w"
 filename * WebStructure__contents_filename(ls_web *W) ;
-#line 546 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 548 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_web * WebStructure__parse_declaration(wcl_declaration *D) ;
-#line 569 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 571 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals) ;
-#line 653 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 655 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, void *state) ;
-#line 707 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 709 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__resolve_declaration(wcl_declaration *D) ;
-#line 723 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 725 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__section_language(ls_section *S) ;
-#line 728 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 730 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__chapter_language(ls_chapter *C) ;
-#line 733 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 735 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__web_language(ls_web *W) ;
-#line 737 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 739 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__set_language(ls_web *W, programming_language *pl) ;
-#line 742 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 744 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__line_language(ls_line *L) ;
-#line 760 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 762 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__write_web(OUTPUT_STREAM, ls_web *W, text_stream *range) ;
 #line 29 "inweb/literate-module/Chapter 1/Bibliographic Data for Webs.w"
 int  Bibliographic__datum_can_be_declared(ls_web *W, text_stream *key) ;
@@ -9097,61 +9098,63 @@ void  WebErrors__issue_at(text_stream *message, ls_line *lst) ;
 void  WebErrors__issue_recorded(ls_error *error) ;
 #line 101 "inweb/literate-module/Chapter 2/Web Errors.w"
 void  WebErrors__issue_all_recorded(ls_web *W) ;
-#line 48 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 50 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__new(text_stream *name) ;
-#line 90 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 94 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__notation_by_name(ls_web *W, text_stream *name) ;
-#line 103 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 107 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__default(int embedded) ;
-#line 125 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 129 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__write_known_notations(OUTPUT_STREAM, ls_web *W) ;
-#line 133 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 137 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__guess_from_filename(ls_web *W, filename *F) ;
-#line 168 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 172 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__adopt_for_web(ls_web *W, ls_notation *ntn) ;
-#line 182 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 186 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__adapt_to_conventions(ls_notation *ntn, linked_list *C) ;
-#line 230 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 234 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__left(ls_notation *ntn, int feature) ;
-#line 236 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 240 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__right(ls_notation *ntn, int feature) ;
-#line 242 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 246 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__set_markers(ls_notation *ntn, int feature, text_stream *left, text_stream *right) ;
-#line 247 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 251 "inweb/literate-module/Chapter 2/Web Notations.w"
 int  WebNotation__has_nonempty_markers(ls_notation *ntn, int feature) ;
-#line 253 "inweb/literate-module/Chapter 2/Web Notations.w"
-int  WebNotation__supports_named_holons(ls_notation *ntn) ;
 #line 257 "inweb/literate-module/Chapter 2/Web Notations.w"
-int  WebNotation__supports_verbatim_material(ls_notation *ntn) ;
+int  WebNotation__supports_named_holons(ls_notation *ntn) ;
 #line 261 "inweb/literate-module/Chapter 2/Web Notations.w"
-int  WebNotation__supports_file_named_holons(ls_notation *ntn) ;
+int  WebNotation__supports_verbatim_material(ls_notation *ntn) ;
 #line 265 "inweb/literate-module/Chapter 2/Web Notations.w"
-int  WebNotation__supports_metadata_in_strings(ls_notation *ntn) ;
+int  WebNotation__supports_file_named_holons(ls_notation *ntn) ;
 #line 269 "inweb/literate-module/Chapter 2/Web Notations.w"
+int  WebNotation__supports_metadata_in_strings(ls_notation *ntn) ;
+#line 273 "inweb/literate-module/Chapter 2/Web Notations.w"
 int  WebNotation__supports_paragraph_tags(ls_notation *ntn) ;
-#line 284 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 281 "inweb/literate-module/Chapter 2/Web Notations.w"
+void  WebNotation__add_alert(ls_notation *ntn, markdown_alert *alert) ;
+#line 296 "inweb/literate-module/Chapter 2/Web Notations.w"
 int  WebNotation__commentary_markup(ls_web *W) ;
-#line 289 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 301 "inweb/literate-module/Chapter 2/Web Notations.w"
 markdown_variation * WebNotation__commentary_variation(ls_web *W) ;
-#line 306 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 330 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__read_definitions(pathname *P) ;
-#line 320 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 344 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__read_definition(filename *F) ;
-#line 336 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 360 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation * WebNotation__parse_declaration(wcl_declaration *D) ;
-#line 377 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 401 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) ;
-#line 394 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 418 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__apply_definition_line(ls_notation *ntn, text_stream *cmd) ;
-#line 508 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 550 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__resolve_declaration(wcl_declaration *D) ;
-#line 522 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 564 "inweb/literate-module/Chapter 2/Web Notations.w"
 notation_rewriting_machine * WebNotation__new_machine(void) ;
-#line 543 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 585 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machine *nrm, 	text_stream *from, text_stream *to) ;
-#line 578 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 620 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) ;
-#line 597 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 639 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__postprocess(text_stream *text, ls_notation *ntn) ;
 #line 39 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon * Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int addendum, 	int file_form, text_stream *file_path, ls_holon_namespace *ns, int bitmap, ls_notation *ntn, 	programming_language *pl) ;
@@ -16539,6 +16542,7 @@ DECLARE_CLASS(md_doc_state)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(md_emphasis_delimiter, 1000)
 DECLARE_CLASS(markdown_variation)
 DECLARE_CLASS(markdown_feature)
+DECLARE_CLASS(markdown_alert)
 DECLARE_CLASS(IFM_example)
 DECLARE_CLASS(ebook)
 DECLARE_CLASS(ebook_datum)
@@ -18954,11 +18958,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C23";
+			char *svn = "9.0-beta+1C24";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "14 August 2026";
+			char *d = "15 August 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -30741,7 +30745,7 @@ void Markdown__set_item_number_and_flavour(markdown_item *md, int L, inchar32_t 
 	}
 }
 
-#line 754 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 748 "inweb/foundation-module/Chapter 5/Markdown.w"
 int Markdown__get_alert_type(markdown_item *md) {
 	if ((md == NULL) || (md->type != ALERT_MIT)) return 0;
 	return md->details;
@@ -30753,7 +30757,7 @@ void Markdown__set_alert_type(markdown_item *md, int L) {
 	md->details = L;
 }
 
-#line 773 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 767 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t Markdown__get_unescaped(md_charpos pos, int offset) {
 	inchar32_t c = Markdown__get_offset(pos, offset);
 	int preceding_backslashes = 0;
@@ -30763,7 +30767,7 @@ inchar32_t Markdown__get_unescaped(md_charpos pos, int offset) {
 	return c;
 }
 
-#line 786 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 780 "inweb/foundation-module/Chapter 5/Markdown.w"
 int Markdown__unescaped_run(md_charpos pos, inchar32_t of) {
 	int count = 0;
 	while (Markdown__get_unescaped(pos, count) == of) count++;
@@ -30771,7 +30775,7 @@ int Markdown__unescaped_run(md_charpos pos, inchar32_t of) {
 	return count;
 }
 
-#line 796 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 790 "inweb/foundation-module/Chapter 5/Markdown.w"
 markdown_item *Markdown__new_volume_marker(text_stream *title) {
 	markdown_item *md = Markdown__new_item(VOLUME_MIT);
 	md->stashed = Str__duplicate(title);
@@ -30789,7 +30793,7 @@ filename *Markdown__get_filename(markdown_item *md) {
 	return RETRIEVE_POINTER_filename(md->user_state);
 }
 
-#line 820 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 814 "inweb/foundation-module/Chapter 5/Markdown.w"
 markdown_item *Markdown__new_slice(int type, text_stream *text, int from, int to) {
 	markdown_item *md = Markdown__new_item(type);
 	md->sliced_from = text;
@@ -30798,14 +30802,14 @@ markdown_item *Markdown__new_slice(int type, text_stream *text, int from, int to
 	return md;
 }
 
-#line 834 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 828 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t Markdown__get_at(markdown_item *md, int at) {
 	if (md == NULL) return 0;
 	if (Str__len(md->sliced_from) == 0) return 0;
 	return Str__get_at(md->sliced_from, at);
 }
 
-#line 845 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 839 "inweb/foundation-module/Chapter 5/Markdown.w"
 int Markdown__width(markdown_item *md) {
 	if (md) {
 		int width = 0;
@@ -30836,7 +30840,7 @@ int Markdown__width(markdown_item *md) {
 
 
 
-#line 884 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 878 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos Markdown__nowhere(void) {
 	md_charpos pos;
 	pos.md = NULL;
@@ -30857,14 +30861,14 @@ int Markdown__somewhere(md_charpos pos) {
 	return FALSE;
 }
 
-#line 907 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 901 "inweb/foundation-module/Chapter 5/Markdown.w"
 int Markdown__pos_eq(md_charpos A, md_charpos B) {
 	if ((A.md) && (A.md == B.md) && (A.at == B.at)) return TRUE;
 	if ((A.md == NULL) && (B.md == NULL)) return TRUE;
 	return FALSE;
 }
 
-#line 918 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 912 "inweb/foundation-module/Chapter 5/Markdown.w"
 int Markdown__is_in(md_charpos pos, markdown_item *md) {
 	if ((Markdown__somewhere(pos)) && (md)) {
 		if ((md->sliced_from) && (md->sliced_from == pos.md->sliced_from) &&
@@ -30873,13 +30877,13 @@ int Markdown__is_in(md_charpos pos, markdown_item *md) {
 	return FALSE;
 }
 
-#line 930 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 924 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos Markdown__left_edge_of(markdown_item *md) {
 	if (md == NULL) return Markdown__nowhere();
 	return Markdown__pos(md, md->from);
 }
 
-#line 940 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 934 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos Markdown__advance(md_charpos pos) {
 	if (Markdown__somewhere(pos)) {
 		if (pos.at < pos.md->to) { pos.at++; return pos; }
@@ -30890,7 +30894,7 @@ md_charpos Markdown__advance(md_charpos pos) {
 	return Markdown__nowhere();
 }
 
-#line 953 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 947 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos Markdown__advance_plainish_only(md_charpos pos) {
 	if (Markdown__somewhere(pos)) {
 		if (pos.at < pos.md->to) { pos.at++; return pos; }
@@ -30900,7 +30904,7 @@ md_charpos Markdown__advance_plainish_only(md_charpos pos) {
 	return Markdown__nowhere();
 }
 
-#line 965 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 959 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos Markdown__advance_quasi_plainish_only(md_charpos pos) {
 	if (Markdown__somewhere(pos)) {
 		if (pos.at < pos.md->to) { pos.at++; return pos; }
@@ -30910,7 +30914,7 @@ md_charpos Markdown__advance_quasi_plainish_only(md_charpos pos) {
 	return Markdown__nowhere();
 }
 
-#line 977 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 971 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_charpos Markdown__advance_up_to(md_charpos pos, md_charpos end) {
 	if ((Markdown__somewhere(end)) &&
 		(pos.md->sliced_from == end.md->sliced_from) && (pos.at >= end.at))
@@ -30932,7 +30936,7 @@ md_charpos Markdown__advance_up_to_quasi_plainish_only(md_charpos pos, md_charpo
 	return Markdown__advance_quasi_plainish_only(pos);
 }
 
-#line 1001 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 995 "inweb/foundation-module/Chapter 5/Markdown.w"
 inchar32_t Markdown__get(md_charpos pos) {
 	return Markdown__get_offset(pos, 0);
 }
@@ -30950,7 +30954,7 @@ void Markdown__put_offset(md_charpos pos, int by, inchar32_t c) {
 	if (Markdown__somewhere(pos)) Str__put_at(pos.md->sliced_from, pos.at + by, c);
 }
 
-#line 1027 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1021 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__cut_to_just_before(markdown_item *chain_from, md_charpos cut_point,
 	markdown_item **left_segment, markdown_item **right_segment) {
 	markdown_item *L = chain_from, *R = NULL;
@@ -30977,7 +30981,7 @@ void Markdown__cut_to_just_before(markdown_item *chain_from, md_charpos cut_poin
 	if (right_segment) *right_segment = R;
 }
 
-#line 1057 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1051 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__cut_to_just_at(markdown_item *chain_from, md_charpos cut_point,
 	markdown_item **left_segment, markdown_item **right_segment) {
 	markdown_item *L = chain_from, *R = NULL;
@@ -31004,7 +31008,7 @@ void Markdown__cut_to_just_at(markdown_item *chain_from, md_charpos cut_point,
 	if (right_segment) *right_segment = R;
 }
 
-#line 1087 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1081 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__cut_interval(markdown_item *chain_from, md_charpos A, md_charpos B,
 	markdown_item **left_segment, markdown_item **middle_segment, markdown_item **right_segment) {
 	markdown_item *interstitial = NULL;
@@ -31016,13 +31020,13 @@ void Markdown__cut_interval(markdown_item *chain_from, md_charpos A, md_charpos 
 
 
 
-#line 1104 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1098 "inweb/foundation-module/Chapter 5/Markdown.w"
 
 
 
 
 
-#line 1109 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1103 "inweb/foundation-module/Chapter 5/Markdown.w"
 
 md_links_dictionary *Markdown__new_links_dictionary(void) {
 	md_links_dictionary *dict = CREATE(md_links_dictionary);
@@ -31030,7 +31034,7 @@ md_links_dictionary *Markdown__new_links_dictionary(void) {
 	return dict;
 }
 
-#line 1123 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1117 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__create(md_links_dictionary *dict, text_stream *label,
 	text_stream *destination, text_stream *title) {
 	if (dict) {
@@ -31050,7 +31054,7 @@ void Markdown__create(md_links_dictionary *dict, text_stream *label,
 	}
 }
 
-#line 1146 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1140 "inweb/foundation-module/Chapter 5/Markdown.w"
 md_link_dictionary_entry *Markdown__look_up(md_links_dictionary *dict, text_stream *label) {
 	if (dict == NULL) return NULL;
 	if (Str__is_whitespace(label)) return NULL;
@@ -31063,7 +31067,7 @@ md_link_dictionary_entry *Markdown__look_up(md_links_dictionary *dict, text_stre
 	return NULL;
 }
 
-#line 1167 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1161 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__normalise_link_label(text_stream *label) {
 	TEMPORARY_TEXT(normal)
 	for (int i=0, ws = FALSE; i<Str__len(label); i++) {
@@ -31082,7 +31086,7 @@ void Markdown__normalise_link_label(text_stream *label) {
 	DISCARD_TEXT(normal)
 }
 
-#line 1190 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1184 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__debug_char(OUTPUT_STREAM, inchar32_t c) {
 	switch (c) {
 		case 0:    WRITE("NULL"); break;
@@ -31168,7 +31172,7 @@ void Markdown__debug_item(OUTPUT_STREAM, markdown_item *md) {
 	if (md->whitespace_follows) WRITE("+ws");
 }
 
-#line 1281 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1275 "inweb/foundation-module/Chapter 5/Markdown.w"
 int md_db_cycle_count = 1;
 
 void Markdown__debug_subtree(OUTPUT_STREAM, markdown_item *md) {
@@ -31194,7 +31198,7 @@ void Markdown__debug_chain_label(OUTPUT_STREAM, markdown_item *md, text_stream *
 	OUTDENT;
 }
 
-#line 1309 "inweb/foundation-module/Chapter 5/Markdown.w"
+#line 1303 "inweb/foundation-module/Chapter 5/Markdown.w"
 void Markdown__debug_item_r(OUTPUT_STREAM, markdown_item *md) {
 	if (md) {
 		Markdown__debug_item(OUT, md);
@@ -35436,23 +35440,23 @@ void MDRenderer__recurse(OUTPUT_STREAM, void *state, markdown_item *md, int mode
 {
 #line 179 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 	int type = Markdown__get_alert_type(md);
+	text_stream *name = MarkdownVariations__get_alert_form_name(variation, type);
+	inchar32_t icon = MarkdownVariations__get_alert_form_icon(variation, type);
 	if (mode & TAGS_MDRMODE) {
-		switch (type) {
-			case NOTE_GHALERTFORM:      HTML_OPEN_WITH("blockquote", "class=\"alertnote\""); break;
-			case TIP_GHALERTFORM:       HTML_OPEN_WITH("blockquote", "class=\"alerttip\""); break;
-			case IMPORTANT_GHALERTFORM: HTML_OPEN_WITH("blockquote", "class=\"alertimportant\""); break;
-			case WARNING_GHALERTFORM:   HTML_OPEN_WITH("blockquote", "class=\"alertwarning\""); break;
-			case CAUTION_GHALERTFORM:   HTML_OPEN_WITH("blockquote", "class=\"alertcaution\""); break;
-		}
+		TEMPORARY_TEXT(cl)
+		WRITE_TO(cl, "alert");
+		for (int i=0; i<Str__len(name); i++) PUT_TO(cl, Characters__tolower(Str__get_at(name, i)));
+		HTML_OPEN_WITH("blockquote", "class=\"%S\"", cl);
+		DISCARD_TEXT(cl)
 	}
 	WRITE("\n");
 	if (mode & TAGS_MDRMODE) HTML_OPEN_WITH("p", "class=\"alertheading\"");
-	switch (type) {
-		case NOTE_GHALERTFORM:      WRITE("%c Note", 0x24D8); break;
-		case TIP_GHALERTFORM:       WRITE("%c Tip", 0x2602); break;
-		case IMPORTANT_GHALERTFORM: WRITE("%c Important", 0x261E); break;
-		case WARNING_GHALERTFORM:   WRITE("%c Warning", 0x26A0); break;
-		case CAUTION_GHALERTFORM:   WRITE("%c Caution", 0x26A0); break;
+	if (icon) { PUT(icon); PUT(' '); }
+	if (Str__len(name) > 0) {
+		PUT(Str__get_at(name, 0));
+		for (int i=1; i<Str__len(name); i++) PUT(Characters__tolower(Str__get_at(name, i)));
+	} else {
+		WRITE("Alert");
 	}
 	if (mode & TAGS_MDRMODE) HTML_CLOSE("p");
 
@@ -36293,15 +36297,18 @@ markdown_variation *MarkdownVariations__TeX_flavoured_Markdown(void) {
 
 
 
-#line 63 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+
+#line 64 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 
 markdown_variation *MarkdownVariations__new(text_stream *name) {
 	markdown_variation *variation = CREATE(markdown_variation);
 	variation->name = Str__duplicate(name);
 	variation->methods = Methods__new_set();
+	variation->alerts = NEW_LINKED_LIST(markdown_alert);
 	for (int i=0; i<NO_DEFINED_MARKDOWNFEATURE_VALUES; i++)
 		variation->active_built_in_features[i] = FALSE;
 	MarkdownVariations__make_baseline_features_active(variation);
+	MarkdownVariations__add_standard_alerts(variation);
 	return variation;
 }
 
@@ -36318,12 +36325,26 @@ void MarkdownVariations__copy_features_of(markdown_variation *to, markdown_varia
 		to->active_built_in_features[i] = from->active_built_in_features[i];
 }
 
+#line 95 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+markdown_variation *MarkdownVariations__duplicate(markdown_variation *old_var) {
+	TEMPORARY_TEXT(name)
+	WRITE_TO(name, "%S (modified)", old_var->name);
+	markdown_variation *new_var = MarkdownVariations__new(name);
+	DISCARD_TEXT(name)
+	MarkdownVariations__copy_features_of(new_var, old_var);
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, old_var->alerts)
+		ADD_TO_LINKED_LIST(alert, markdown_alert, new_var->alerts);
+	new_var->methods = old_var->methods;
+	return new_var;
+}
 
 
 
 
 
-#line 96 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+
+#line 117 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 
 markdown_feature *MarkdownVariations__new_feature(text_stream *name, int id) {
 	markdown_feature *feature = CREATE(markdown_feature);
@@ -36336,12 +36357,68 @@ markdown_feature *MarkdownVariations__new_feature(text_stream *name, int id) {
 	return feature;
 }
 
-#line 112 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 133 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 int MarkdownVariations__supports(markdown_variation *variation, int feature_id) {
 	return variation->active_built_in_features[feature_id];
 }
 
-#line 141 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+
+
+
+
+#line 145 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+
+markdown_alert *MarkdownVariations__new_alert(text_stream *name, inchar32_t icon) {
+	markdown_alert *alert = CREATE(markdown_alert);
+	alert->name = Str__duplicate(name);
+	alert->icon = icon;
+	return alert;
+}
+
+void MarkdownVariations__add_alert(markdown_variation *variation, markdown_alert *alert) {
+	ADD_TO_LINKED_LIST(alert, markdown_alert, variation->alerts);
+}
+
+int MarkdownVariations__get_alert_form(markdown_variation *variation, text_stream *name) {
+	int form = 1;
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, variation->alerts) {
+		if (Str__eq(name, alert->name)) return form;
+		form++;
+	}
+	return -1;
+}
+
+text_stream *MarkdownVariations__get_alert_form_name(markdown_variation *variation, int form) {
+	int c = 1;
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, variation->alerts) {
+		if (c == form) return alert->name;
+		c++;
+	}
+	return NULL;
+}
+
+inchar32_t MarkdownVariations__get_alert_form_icon(markdown_variation *variation, int form) {
+	int c = 1;
+	markdown_alert *alert;
+	LOOP_OVER_LINKED_LIST(alert, markdown_alert, variation->alerts) {
+		if (c == form) return alert->icon;
+		c++;
+	}
+	return (inchar32_t) 0;
+}
+
+#line 190 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+void MarkdownVariations__add_standard_alerts(markdown_variation *variation) {
+	MarkdownVariations__add_alert(variation, MarkdownVariations__new_alert(TL_IS_2448, (inchar32_t) 0x24D8));
+	MarkdownVariations__add_alert(variation, MarkdownVariations__new_alert(TL_IS_2449, (inchar32_t) 0x2602));
+	MarkdownVariations__add_alert(variation, MarkdownVariations__new_alert(TL_IS_2450, (inchar32_t) 0x261E));
+	MarkdownVariations__add_alert(variation, MarkdownVariations__new_alert(TL_IS_2451, (inchar32_t) 0x26A0));
+	MarkdownVariations__add_alert(variation, MarkdownVariations__new_alert(TL_IS_2452, (inchar32_t) 0x26A0));
+}
+
+#line 223 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 markdown_feature *block_quotes_Markdown_feature = NULL;
 markdown_feature *ordered_lists_Markdown_feature = NULL;
 markdown_feature *unordered_lists_Markdown_feature = NULL;
@@ -36364,28 +36441,28 @@ markdown_feature *underscore_emphasis_Markdown_feature = NULL;
 markdown_feature *entities_Markdown_feature = NULL;
 
 void MarkdownVariations__define_CommonMark(void) {
-	block_quotes_Markdown_feature =         MarkdownVariations__new_feature(TL_IS_2448,         BLOCK_QUOTES_MARKDOWNFEATURE);
-	ordered_lists_Markdown_feature =        MarkdownVariations__new_feature(TL_IS_2449,        ORDERED_LISTS_MARKDOWNFEATURE);
-	unordered_lists_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2450,      UNORDERED_LISTS_MARKDOWNFEATURE);
-	indented_code_blocks_Markdown_feature = MarkdownVariations__new_feature(TL_IS_2451, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE);
-	fenced_code_blocks_Markdown_feature =   MarkdownVariations__new_feature(TL_IS_2452,   FENCED_CODE_BLOCKS_MARKDOWNFEATURE);
-	HTML_blocks_Markdown_feature =          MarkdownVariations__new_feature(TL_IS_2453,          HTML_BLOCKS_MARKDOWNFEATURE);
-	thematic_markers_Markdown_feature =     MarkdownVariations__new_feature(TL_IS_2454,     THEMATIC_MARKERS_MARKDOWNFEATURE);
-	ATX_headings_Markdown_feature =         MarkdownVariations__new_feature(TL_IS_2455,         ATX_HEADINGS_MARKDOWNFEATURE);
-	setext_headings_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2456,      SETEXT_HEADINGS_MARKDOWNFEATURE);
+	block_quotes_Markdown_feature =         MarkdownVariations__new_feature(TL_IS_2453,         BLOCK_QUOTES_MARKDOWNFEATURE);
+	ordered_lists_Markdown_feature =        MarkdownVariations__new_feature(TL_IS_2454,        ORDERED_LISTS_MARKDOWNFEATURE);
+	unordered_lists_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2455,      UNORDERED_LISTS_MARKDOWNFEATURE);
+	indented_code_blocks_Markdown_feature = MarkdownVariations__new_feature(TL_IS_2456, INDENTED_CODE_BLOCKS_MARKDOWNFEATURE);
+	fenced_code_blocks_Markdown_feature =   MarkdownVariations__new_feature(TL_IS_2457,   FENCED_CODE_BLOCKS_MARKDOWNFEATURE);
+	HTML_blocks_Markdown_feature =          MarkdownVariations__new_feature(TL_IS_2458,          HTML_BLOCKS_MARKDOWNFEATURE);
+	thematic_markers_Markdown_feature =     MarkdownVariations__new_feature(TL_IS_2459,     THEMATIC_MARKERS_MARKDOWNFEATURE);
+	ATX_headings_Markdown_feature =         MarkdownVariations__new_feature(TL_IS_2460,         ATX_HEADINGS_MARKDOWNFEATURE);
+	setext_headings_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2461,      SETEXT_HEADINGS_MARKDOWNFEATURE);
 
-	web_autolinks_Markdown_feature =        MarkdownVariations__new_feature(TL_IS_2457,        WEB_AUTOLINKS_MARKDOWNFEATURE);
-	email_autolinks_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2458,      EMAIL_AUTOLINKS_MARKDOWNFEATURE);
-	inline_HTML_Markdown_feature =          MarkdownVariations__new_feature(TL_IS_2459,          INLINE_HTML_MARKDOWNFEATURE);
-	backticked_code_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2460,      BACKTICKED_CODE_MARKDOWNFEATURE);
-	links_Markdown_feature =                MarkdownVariations__new_feature(TL_IS_2461,                LINKS_MARKDOWNFEATURE);
-	images_Markdown_feature =               MarkdownVariations__new_feature(TL_IS_2462,               IMAGES_MARKDOWNFEATURE);
-	asterisk_emphasis_Markdown_feature =    MarkdownVariations__new_feature(TL_IS_2463,             ASTERISK_EMPHASIS_MARKDOWNFEATURE);
-	underscore_emphasis_Markdown_feature =  MarkdownVariations__new_feature(TL_IS_2464,             UNDERSCORE_EMPHASIS_MARKDOWNFEATURE);
+	web_autolinks_Markdown_feature =        MarkdownVariations__new_feature(TL_IS_2462,        WEB_AUTOLINKS_MARKDOWNFEATURE);
+	email_autolinks_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2463,      EMAIL_AUTOLINKS_MARKDOWNFEATURE);
+	inline_HTML_Markdown_feature =          MarkdownVariations__new_feature(TL_IS_2464,          INLINE_HTML_MARKDOWNFEATURE);
+	backticked_code_Markdown_feature =      MarkdownVariations__new_feature(TL_IS_2465,      BACKTICKED_CODE_MARKDOWNFEATURE);
+	links_Markdown_feature =                MarkdownVariations__new_feature(TL_IS_2466,                LINKS_MARKDOWNFEATURE);
+	images_Markdown_feature =               MarkdownVariations__new_feature(TL_IS_2467,               IMAGES_MARKDOWNFEATURE);
+	asterisk_emphasis_Markdown_feature =    MarkdownVariations__new_feature(TL_IS_2468,             ASTERISK_EMPHASIS_MARKDOWNFEATURE);
+	underscore_emphasis_Markdown_feature =  MarkdownVariations__new_feature(TL_IS_2469,             UNDERSCORE_EMPHASIS_MARKDOWNFEATURE);
 
-	entities_Markdown_feature =             MarkdownVariations__new_feature(TL_IS_2465,             ENTITIES_MARKDOWNFEATURE);
+	entities_Markdown_feature =             MarkdownVariations__new_feature(TL_IS_2470,             ENTITIES_MARKDOWNFEATURE);
 
-	CommonMark_variation = MarkdownVariations__new(TL_IS_2466);
+	CommonMark_variation = MarkdownVariations__new(TL_IS_2471);
 }
 
 void MarkdownVariations__make_baseline_features_active(markdown_variation *variation) {
@@ -36411,7 +36488,7 @@ void MarkdownVariations__make_baseline_features_active(markdown_variation *varia
 	MarkdownVariations__add_feature(variation, ENTITIES_MARKDOWNFEATURE);
 }
 
-#line 223 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 305 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 markdown_feature *strikethrough_Markdown_feature = NULL;
 markdown_feature *tables_Markdown_feature = NULL;
 markdown_feature *task_list_items_Markdown_feature = NULL;
@@ -36420,14 +36497,14 @@ markdown_feature *disallowed_raw_HTML_Markdown_feature = NULL;
 markdown_feature *alerts_Markdown_feature = NULL;
 
 void MarkdownVariations__define_GFM(void) {
-	strikethrough_Markdown_feature =       MarkdownVariations__new_feature(TL_IS_2467,       STRIKETHROUGH_MARKDOWNFEATURE);
-	tables_Markdown_feature =              MarkdownVariations__new_feature(TL_IS_2468,              TABLES_MARKDOWNFEATURE);
-	task_list_items_Markdown_feature =     MarkdownVariations__new_feature(TL_IS_2469,     TASK_LIST_ITEMS_MARKDOWNFEATURE);
-	extended_autolinks_Markdown_feature =  MarkdownVariations__new_feature(TL_IS_2470,  EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
-	disallowed_raw_HTML_Markdown_feature = MarkdownVariations__new_feature(TL_IS_2471, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
-	alerts_Markdown_feature =              MarkdownVariations__new_feature(TL_IS_2472,              ALERTS_MARKDOWNFEATURE);
+	strikethrough_Markdown_feature =       MarkdownVariations__new_feature(TL_IS_2472,       STRIKETHROUGH_MARKDOWNFEATURE);
+	tables_Markdown_feature =              MarkdownVariations__new_feature(TL_IS_2473,              TABLES_MARKDOWNFEATURE);
+	task_list_items_Markdown_feature =     MarkdownVariations__new_feature(TL_IS_2474,     TASK_LIST_ITEMS_MARKDOWNFEATURE);
+	extended_autolinks_Markdown_feature =  MarkdownVariations__new_feature(TL_IS_2475,  EXTENDED_AUTOLINKS_MARKDOWNFEATURE);
+	disallowed_raw_HTML_Markdown_feature = MarkdownVariations__new_feature(TL_IS_2476, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
+	alerts_Markdown_feature =              MarkdownVariations__new_feature(TL_IS_2477,              ALERTS_MARKDOWNFEATURE);
 
-	GitHub_flavored_Markdown_variation = MarkdownVariations__new(TL_IS_2473);
+	GitHub_flavored_Markdown_variation = MarkdownVariations__new(TL_IS_2478);
 	MarkdownVariations__make_GitHub_features_active(GitHub_flavored_Markdown_variation);
 }
 
@@ -36439,16 +36516,16 @@ void MarkdownVariations__make_GitHub_features_active(markdown_variation *variati
 	MarkdownVariations__add_feature(variation, DISALLOWED_RAW_HTML_MARKDOWNFEATURE);
 	MarkdownVariations__add_feature(variation, ALERTS_MARKDOWNFEATURE);
 	METHOD_ADD(alerts_Markdown_feature, POST_PHASE_I_MARKDOWN_MTID,
-		MarkdownVariations__GH_intervene_after_Phase_I);
+		MarkdownVariations__alerts_intervene_after_Phase_I);
 }
 
-#line 254 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
-void MarkdownVariations__GH_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
-	MarkdownVariations__find_alerts_r(md);
+#line 336 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+void MarkdownVariations__alerts_intervene_after_Phase_I(markdown_feature *feature,
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
+	MarkdownVariations__find_alerts_r(md, variation);
 }
 
-void MarkdownVariations__find_alerts_r(markdown_item *md) {
+void MarkdownVariations__find_alerts_r(markdown_item *md, markdown_variation *variation) {
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
 		if ((ch->type == BLOCK_QUOTE_MIT) && (ch->down->type == PARAGRAPH_MIT)) {
 			TEMPORARY_TEXT(opener)
@@ -36468,13 +36545,14 @@ void MarkdownVariations__find_alerts_r(markdown_item *md) {
 					else { succeeded = FALSE; break; }
 				}
 			}
-			if (succeeded) {
-				int form = -1;
-				if (Str__eq(opener, TL_IS_2474))      form = NOTE_GHALERTFORM;
-				if (Str__eq(opener, TL_IS_2475))       form = TIP_GHALERTFORM;
-				if (Str__eq(opener, TL_IS_2476)) form = IMPORTANT_GHALERTFORM;
-				if (Str__eq(opener, TL_IS_2477))   form = WARNING_GHALERTFORM;
-				if (Str__eq(opener, TL_IS_2478))   form = CAUTION_GHALERTFORM;
+			if ((succeeded) &&
+				(Str__get_at(opener, 0) == '[') &&
+				(Str__get_at(opener, 1) == '!') &&
+				(Str__get_at(opener, Str__len(opener)-1) == ']')) {
+				Str__delete_first_character(opener);
+				Str__delete_first_character(opener);
+				Str__delete_last_character(opener);
+				int form = MarkdownVariations__get_alert_form(variation, opener);
 				if (form != -1) {
 					ch->type = ALERT_MIT;
 					Markdown__set_alert_type(ch, form);
@@ -36488,11 +36566,11 @@ void MarkdownVariations__find_alerts_r(markdown_item *md) {
 			}
 			DISCARD_TEXT(opener)
 		}
-		MarkdownVariations__find_alerts_r(ch);
+		MarkdownVariations__find_alerts_r(ch, variation);
 	}
 }
 
-#line 316 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 399 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 markdown_feature *TeX_Markdown_feature = NULL;
 markdown_feature *alt_TeX_Markdown_feature = NULL;
 markdown_feature *inweb_links_Markdown_feature = NULL;
@@ -36582,7 +36660,7 @@ void MarkdownVariations__make_TeX_flavoured_Markdown_features_active(markdown_va
 
 }
 
-#line 414 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 497 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 INT_METHOD_TYPE(RENDER_MARKDOWN_MTID, markdown_feature *feature, text_stream *OUT,
 	markdown_item *md, int mode)
 int MarkdownVariations__intervene_in_rendering(markdown_variation *variation,
@@ -36598,17 +36676,17 @@ int MarkdownVariations__intervene_in_rendering(markdown_variation *variation,
 	return FALSE;
 }
 
-#line 436 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 519 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 VOID_METHOD_TYPE(POST_PHASE_I_MARKDOWN_MTID, markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references)
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references)
 VOID_METHOD_TYPE(POST_PHASE_II_MARKDOWN_MTID, markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references)
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references)
 void MarkdownVariations__intervene_after_Phase_I(markdown_variation *variation,
 	markdown_item *tree, md_links_dictionary *link_references) {
 	markdown_feature *feature;
 	LOOP_OVER(feature, markdown_feature) {
 		if (MarkdownVariations__supports(variation, feature->feature_ID)) {
-			VOID_METHOD_CALL(feature, POST_PHASE_I_MARKDOWN_MTID, tree, link_references);
+			VOID_METHOD_CALL(feature, POST_PHASE_I_MARKDOWN_MTID, variation, tree, link_references);
 		}
 	}
 }
@@ -36617,12 +36695,12 @@ void MarkdownVariations__intervene_after_Phase_II(markdown_variation *variation,
 	markdown_feature *feature;
 	LOOP_OVER(feature, markdown_feature) {
 		if (MarkdownVariations__supports(variation, feature->feature_ID)) {
-			VOID_METHOD_CALL(feature, POST_PHASE_II_MARKDOWN_MTID, tree, link_references);
+			VOID_METHOD_CALL(feature, POST_PHASE_II_MARKDOWN_MTID, variation, tree, link_references);
 		}
 	}
 }
 
-#line 467 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 550 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 INT_METHOD_TYPE(MULTIFILE_MARKDOWN_MTID, markdown_feature *feature,
 	markdown_item *tree, md_links_dictionary *link_references)
 int MarkdownVariations__multifile_mode(markdown_variation *variation,
@@ -36684,7 +36762,7 @@ void MarkdownVariations__assign_URLs_to_headings(markdown_item *tree,
 	MarkdownVariations__multifile_r(tree->down, link_references, headings, NULL);
 }
 
-#line 531 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
+#line 614 "inweb/foundation-module/Chapter 5/Markdown Variations.w"
 void MarkdownVariations__multifile_r(markdown_item *md, md_links_dictionary *link_references,
 	markdown_item *headings[7], markdown_item *file_item) {
 	int non_heading_found = FALSE;
@@ -36915,7 +36993,7 @@ int InformFlavouredMarkdown__render_errors(markdown_feature *feature, text_strea
 
 #line 95 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__OIH_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp__create_mr();
@@ -36937,13 +37015,13 @@ void InformFlavouredMarkdown__OIH_intervene_after_Phase_I(markdown_feature *feat
 		Regexp__dispose_of(&mr);
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown__OIH_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown__OIH_intervene_after_Phase_I(feature, variation, ch, link_references);
 	}
 }
 
 #line 146 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__Inform_headings_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown__Inform_headings_r(tree);
 }
 
@@ -37095,7 +37173,7 @@ int InformFlavouredMarkdown__render_descriptive_headings(markdown_feature *featu
 
 #line 327 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__EE_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	int example_number = 0;
 	InformFlavouredMarkdown__detect_embedded_examples_r(tree, &example_number);
 	InformFlavouredMarkdown__regroup_examples_r(tree, &example_number);
@@ -37322,7 +37400,7 @@ void InformFlavouredMarkdown__render_example_heading(OUTPUT_STREAM, IFM_example 
 
 #line 582 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__paste_buttons_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	InformFlavouredMarkdown__pbiapi_r(tree);
 }
 
@@ -37369,7 +37447,7 @@ void InformFlavouredMarkdown__pbiapi_r(markdown_item *md) {
 
 #line 643 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__PD_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	markdown_item *last_section = NULL;
 	InformFlavouredMarkdown__PD_r(md, &last_section);
 }
@@ -37489,7 +37567,7 @@ int InformFlavouredMarkdown__PD_render(markdown_feature *feature, text_stream *O
 
 #line 763 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	if ((md->type == HEADING_MIT) && (Markdown__get_heading_level(md) <= 2)) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp__create_mr();
@@ -37503,13 +37581,13 @@ void InformFlavouredMarkdown__HM_intervene_after_Phase_I(markdown_feature *featu
 		Str__trim_white_space(line);
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown__HM_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown__HM_intervene_after_Phase_I(feature, variation, ch, link_references);
 	}
 }
 
 #line 800 "inweb/foundation-module/Chapter 5/Inform-Flavoured Markdown.w"
 void InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *md, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *md, md_links_dictionary *link_references) {
 	if (md->type == PARAGRAPH_MIT) {
 		text_stream *line = md->stashed;
 		match_results mr = Regexp__create_mr();
@@ -37526,7 +37604,7 @@ void InformFlavouredMarkdown__PG_intervene_after_Phase_I(markdown_feature *featu
 		Regexp__dispose_of(&mr);
 	}
 	for (markdown_item *ch = md->down; ch; ch=ch->next) {
-		InformFlavouredMarkdown__PG_intervene_after_Phase_I(feature, ch, link_references);
+		InformFlavouredMarkdown__PG_intervene_after_Phase_I(feature, variation, ch, link_references);
 	}
 }
 
@@ -44053,7 +44131,8 @@ void Colonies__write_map(OUTPUT_STREAM, ls_colony *C, int fully) {
 
 
 
-#line 47 "inweb/literate-module/Chapter 1/Web Structure.w"
+
+#line 48 "inweb/literate-module/Chapter 1/Web Structure.w"
 
 ls_web *WebStructure__new_ls_web(wcl_declaration *D) {
 	ls_web *W = CREATE(ls_web);
@@ -44090,6 +44169,7 @@ ls_web *WebStructure__new_ls_web(wcl_declaration *D) {
 	}
 	W->version_number = VersionNumbers__null();
 	W->web_notation = NULL;
+	W->variation = NULL;
 	W->chaptered = FALSE;
 	W->index = WebIndexing__new_index();
 	W->chapters = NEW_LINKED_LIST(ls_chapter);
@@ -44112,7 +44192,7 @@ ls_web *WebStructure__from_declaration(wcl_declaration *D) {
 	return RETRIEVE_POINTER_ls_web(D->object_declared);
 }
 
-#line 108 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 110 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_web *WebStructure__read_fully(ls_colony *C, wcl_declaration *D,
 	int enumerating, int weaving, int verbosely) {
 	ls_web *W = WebStructure__from_declaration(D);
@@ -44121,7 +44201,7 @@ ls_web *WebStructure__read_fully(ls_colony *C, wcl_declaration *D,
 	WebStructure__read_web_source(W, verbosely, weaving);
 	
 {
-#line 123 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 125 "inweb/literate-module/Chapter 1/Web Structure.w"
 	TEMPORARY_TEXT(IB)
 	WRITE_TO(IB, "9.0");
 	web_bibliographic_datum *bd = Bibliographic__preset_datum(W, TL_IS_3887, IB);
@@ -44129,7 +44209,7 @@ ls_web *WebStructure__read_fully(ls_colony *C, wcl_declaration *D,
 	DISCARD_TEXT(IB)
 
 }
-#line 114 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 116 "inweb/literate-module/Chapter 1/Web Structure.w"
 ;
 	CodeAnalysis__initialise_analysis_details(W);
 	WeavingDetails__initialise(W);
@@ -44138,7 +44218,7 @@ ls_web *WebStructure__read_fully(ls_colony *C, wcl_declaration *D,
 	return W;
 }
 
-#line 134 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 136 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__parse_markdown(ls_web *W) {
 	markdown_variation *variation = WebNotation__commentary_variation(W);
 	ls_chapter *Ch;
@@ -44149,7 +44229,7 @@ void WebStructure__parse_markdown(ls_web *W) {
 	WebErrors__issue_all_recorded(W);
 }
 
-#line 147 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 149 "inweb/literate-module/Chapter 1/Web Structure.w"
 int WebStructure__chapter_count(ls_web *W) {
 	int n = 0;
 	ls_chapter *C;
@@ -44252,7 +44332,7 @@ int WebStructure__has_errors(ls_web *W) {
 	return FALSE;
 }
 
-#line 252 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 254 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__print_statistics(ls_web *W) {
 	int s = 0, c = 0, n = 0, lc = 0;
 	ls_chapter *C;
@@ -44296,7 +44376,7 @@ void WebStructure__print_web_identity(ls_web *W) {
 	if (commented) PRINT(")");
 }
 
-#line 298 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 300 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__write_literate_source(OUTPUT_STREAM, ls_web *W) {
 	ls_chapter *C;
 	ls_section *S;
@@ -44324,7 +44404,7 @@ void WebStructure__write_literate_source(OUTPUT_STREAM, ls_web *W) {
 
 
 
-#line 331 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 333 "inweb/literate-module/Chapter 1/Web Structure.w"
 
 ls_chapter *WebStructure__new_ls_chapter(ls_web *W, text_stream *range, text_stream *titling) {
 	if (W == NULL) internal_error("no web for chapter");
@@ -44386,7 +44466,7 @@ ls_chapter *WebStructure__new_ls_chapter(ls_web *W, text_stream *range, text_str
 
 
 
-#line 398 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 400 "inweb/literate-module/Chapter 1/Web Structure.w"
 
 ls_section *WebStructure__new_ls_section(ls_chapter *C, text_stream *titling, text_stream *at) {
 	if (C == NULL) internal_error("no chapter for section");
@@ -44492,7 +44572,7 @@ int WebStructure__paragraph_count_within_section(ls_section *S) {
 	return n;
 }
 
-#line 507 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 509 "inweb/literate-module/Chapter 1/Web Structure.w"
 pathname *WebStructure__woven_folder(ls_web *W, int n) {
 	pathname *P = Pathnames__down(W->path_to_web, TL_IS_3891);
 	if (Pathnames__create_in_file_system(P) == FALSE)
@@ -44506,7 +44586,7 @@ pathname *WebStructure__tangled_folder(ls_web *W) {
 	return P;
 }
 
-#line 524 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 526 "inweb/literate-module/Chapter 1/Web Structure.w"
 int WebStructure__directory_looks_like_a_web(pathname *P) {
 	if (TextFiles__exists(Filenames__in(P, TL_IS_3893))) return TRUE;
 	if (TextFiles__exists(Filenames__in(P, TL_IS_3894))) return TRUE;
@@ -44514,12 +44594,12 @@ int WebStructure__directory_looks_like_a_web(pathname *P) {
 	return FALSE;
 }
 
-#line 535 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 537 "inweb/literate-module/Chapter 1/Web Structure.w"
 filename *WebStructure__contents_filename(ls_web *W) {
 	return W->contents_filename;
 }
 
-#line 546 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 548 "inweb/literate-module/Chapter 1/Web Structure.w"
 ls_web *WebStructure__parse_declaration(wcl_declaration *D) {
 	ls_web *W = WebStructure__new_ls_web(D);
 
@@ -44536,7 +44616,7 @@ ls_web *WebStructure__parse_declaration(wcl_declaration *D) {
 	return W;
 }
 
-#line 569 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 571 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals) {
 	ls_chapter *C;
 	ls_section *S;
@@ -44544,7 +44624,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			
 {
-#line 608 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 610 "inweb/literate-module/Chapter 1/Web Structure.w"
 	pathname *P = W->path_to_web;
 	ls_module *M = S->owning_chapter->owning_module;
 	if ((M) && (M->module_location))
@@ -44554,12 +44634,12 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 
 	if (W->is_page) 
 {
-#line 645 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 647 "inweb/literate-module/Chapter 1/Web Structure.w"
 	text_stream *purpose = Bibliographic__get_datum(W, TL_IS_3899);
 	if (Str__len(purpose) > 0) LiterateSource__add_purpose(S->literate_source, NULL, purpose);
 
 }
-#line 615 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 617 "inweb/literate-module/Chapter 1/Web Structure.w"
 ;
 
 	int cl = 0;
@@ -44590,7 +44670,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 	if (verbosely) PRINT("Read section: '%S' (%d lines)\n", S->sect_title, cl);
 
 }
-#line 574 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 576 "inweb/literate-module/Chapter 1/Web Structure.w"
 ;
 	int dc = 0, cc = 0;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
@@ -44624,7 +44704,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 	WCL__report_errors(W->declaration);
 }
 
-#line 653 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 655 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, void *state) {
 	ls_section *S = (ls_section *) state;
 	S->sect_extent++;
@@ -44636,7 +44716,7 @@ void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, 
 
 	if (S->partition_number > 0) 
 {
-#line 681 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 683 "inweb/literate-module/Chapter 1/Web Structure.w"
 	if (S->literate_source->partition_notation == NULL) {
 		S->literate_source->partition_notation =
 			WebNotation__notation_by_name(S->literate_source->context, TL_IS_3900);
@@ -44660,7 +44740,7 @@ void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, 
 	}
 
 }
-#line 662 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 664 "inweb/literate-module/Chapter 1/Web Structure.w"
 ;
 
 	ls_line *L = LiterateSource__feed_line(S->literate_source, tfp, line);
@@ -44679,7 +44759,7 @@ void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, 
 	}
 }
 
-#line 707 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 709 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__resolve_declaration(wcl_declaration *D) {
 	ls_web *W = RETRIEVE_POINTER_ls_web(D->object_declared);
 	text_stream *language_name = Bibliographic__get_datum(W, TL_IS_3902);
@@ -44728,7 +44808,7 @@ programming_language *WebStructure__line_language(ls_line *L) {
 	return NULL;
 }
 
-#line 760 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 762 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__write_web(OUTPUT_STREAM, ls_web *W, text_stream *range) {
 	ls_chapter *C = WebRanges__to_chapter(W, range);
 	if (C) {
@@ -49901,7 +49981,9 @@ void WebErrors__issue_all_recorded(ls_web *W) {
 
 
 
-#line 48 "inweb/literate-module/Chapter 2/Web Notations.w"
+
+
+#line 50 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__new(text_stream *name) {
 	ls_notation *ntn = CREATE(ls_notation);
 	ntn->declaration = NULL;
@@ -49921,6 +50003,7 @@ ls_notation *WebNotation__new(text_stream *name) {
 		ntn->residue_classifier[i] = LineClassifiers__new();
 		ntn->options_classifier[i] = LineClassifiers__new();
 	}
+	ntn->alerts = NEW_LINKED_LIST(markdown_alert);
 
 	ntn->indexing_machine = NULL;
 
@@ -49933,10 +50016,11 @@ ls_notation *WebNotation__new(text_stream *name) {
 
 	ntn->c_stanza = NULL;
 	ntn->p_stanza = NULL;
+	ntn->a_stanza = FALSE;
 	return ntn;
 }
 
-#line 90 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 94 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__notation_by_name(ls_web *W, text_stream *name) {
 	if (Str__eq(name, TL_IS_4104)) name = TL_IS_4105;
 	wcl_declaration *X = WCL__resolve_resource(W?(W->declaration):NULL, NOTATION_WCLTYPE, name);
@@ -49944,7 +50028,7 @@ ls_notation *WebNotation__notation_by_name(ls_web *W, text_stream *name) {
 	return NULL;
 }
 
-#line 103 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 107 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__default(int embedded) {
 	if (embedded) {
 		static ls_notation *default_embedded_notation = NULL;
@@ -49972,7 +50056,7 @@ void WebNotation__write_known_notations(OUTPUT_STREAM, ls_web *W) {
 	WCL__write_sorted_list_of_resources(OUT, W, NOTATION_WCLTYPE);
 }
 
-#line 133 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 137 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__guess_from_filename(ls_web *W, filename *F) {
 	TEMPORARY_TEXT(extension)
 	TEMPORARY_TEXT(penultimate_extension)
@@ -50001,7 +50085,7 @@ ls_notation *WebNotation__guess_from_filename(ls_web *W, filename *F) {
 	return result;
 }
 
-#line 168 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 172 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__adopt_for_web(ls_web *W, ls_notation *ntn) {
 	if (W->web_notation != ntn) {
 		W->web_notation = ntn;
@@ -50009,7 +50093,7 @@ void WebNotation__adopt_for_web(ls_web *W, ls_notation *ntn) {
 	}
 }
 
-#line 182 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 186 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__adapt_to_conventions(ls_notation *ntn, linked_list *C) {
 	WebNotation__set_markers(ntn, NAMED_HOLONS_NTNMARKER,
 		Conventions__get_textual_from(C, HOLON_NAME_SYNTAX_LSCONVENTION),
@@ -50045,7 +50129,7 @@ void WebNotation__adapt_to_conventions(ls_notation *ntn, linked_list *C) {
 	ntn->indexing_machine = WebIndexing__make_indexing_machine(C);
 }
 
-#line 230 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 234 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream *WebNotation__left(ls_notation *ntn, int feature) {
 	if ((feature < 0) || (feature >= NO_DEFINED_NTNMARKER_VALUES))
 		internal_error("feature out of range");
@@ -50089,26 +50173,43 @@ int WebNotation__supports_paragraph_tags(ls_notation *ntn) {
 	return WebNotation__has_nonempty_markers(ntn, PARAGRAPH_TAGS_NTNMARKER);
 }
 
-#line 284 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 281 "inweb/literate-module/Chapter 2/Web Notations.w"
+void WebNotation__add_alert(ls_notation *ntn, markdown_alert *alert) {
+	ADD_TO_LINKED_LIST(alert, markdown_alert, ntn->alerts);
+}
+
+#line 296 "inweb/literate-module/Chapter 2/Web Notations.w"
 int WebNotation__commentary_markup(ls_web *W) {
 	if (W == NULL) return SIMPLIFIED_COMMENTARY_MARKUPCHOICE;
 	return Conventions__get_int(W, COMMENTARY_MARKUP_LSCONVENTION);
 }
 
 markdown_variation *WebNotation__commentary_variation(ls_web *W) {
-	int markup = WebNotation__commentary_markup(W);
-	switch (markup) {
-		case SIMPLIFIED_COMMENTARY_MARKUPCHOICE:
-			return MarkdownVariations__simplified_Inweb_flavoured_Markdown();
-		case MARKDOWN_COMMENTARY_MARKUPCHOICE:
-			return MarkdownVariations__Inweb_flavoured_Markdown();
-		case TEX_COMMENTARY_MARKUPCHOICE:
-			return MarkdownVariations__TeX_flavoured_Markdown();
+	if (W->variation == NULL) {
+		int markup = WebNotation__commentary_markup(W);
+		switch (markup) {
+			case SIMPLIFIED_COMMENTARY_MARKUPCHOICE:
+				W->variation = MarkdownVariations__simplified_Inweb_flavoured_Markdown();
+				break;
+			case MARKDOWN_COMMENTARY_MARKUPCHOICE:
+				W->variation = MarkdownVariations__Inweb_flavoured_Markdown();
+				break;
+			case TEX_COMMENTARY_MARKUPCHOICE:
+				W->variation = MarkdownVariations__TeX_flavoured_Markdown();
+				break;
+			default: internal_error("unsupported commentary variation");
+		}
+		if (LinkedLists__len(W->web_notation->alerts) > 0) {
+			W->variation = MarkdownVariations__duplicate(W->variation);
+			markdown_alert *alert;
+			LOOP_OVER_LINKED_LIST(alert, markdown_alert, W->web_notation->alerts)
+				MarkdownVariations__add_alert(W->variation, alert);
+		}
 	}
-	internal_error("unsupported commentary variation");
+	return W->variation;
 }
 
-#line 306 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 330 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__read_definitions(pathname *P) {
 	linked_list *L = Directories__listing(P);
 	text_stream *leafname;
@@ -50120,20 +50221,20 @@ void WebNotation__read_definitions(pathname *P) {
 	}
 }
 
-#line 320 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 344 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__read_definition(filename *F) {
 	wcl_declaration *D = WCL__read_just_one(F, NOTATION_WCLTYPE);
 	if (D == NULL) return NULL;
 	return RETRIEVE_POINTER_ls_notation(D->object_declared);
 }
 
-#line 336 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 360 "inweb/literate-module/Chapter 2/Web Notations.w"
 ls_notation *WebNotation__parse_declaration(wcl_declaration *D) {
 	ls_notation *ntn = WebNotation__new(TL_IS_4110);
 	ntn->declaration = D;
 	
 {
-#line 361 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 385 "inweb/literate-module/Chapter 2/Web Notations.w"
 	text_file_position tfp = D->body_position;
 	text_stream *L;
 	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
@@ -50143,12 +50244,12 @@ ls_notation *WebNotation__parse_declaration(wcl_declaration *D) {
 		DISCARD_TEXT(line);
 		tfp.line_count++;
 	}
-	if ((ntn->c_stanza) || (ntn->p_stanza)) {
+	if ((ntn->c_stanza) || (ntn->p_stanza) || (ntn->a_stanza)) {
 		WCL__error(ntn->declaration, &tfp, TL_IS_4112);
 	}
 
 }
-#line 339 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 363 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	D->object_declared = STORE_POINTER_ls_notation(ntn);
 	if (Str__eq(ntn->name, TL_IS_4111)) {
@@ -50170,7 +50271,7 @@ ls_notation *WebNotation__parse_declaration(wcl_declaration *D) {
 	return ntn;
 }
 
-#line 377 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 401 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) {
 	ls_notation *ntn = (ls_notation *) v_state;
 	Str__trim_white_space(line);
@@ -50178,33 +50279,33 @@ void WebNotation__read_definition_line(text_stream *line, text_file_position *tf
 	if (Str__len(error) > 0) WCL__error(ntn->declaration, tfp, error);
 }
 
-#line 394 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 418 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *cmd) {
 	text_stream *error = NULL;
 	match_results mr = Regexp__create_mr();
 	if (Str__is_whitespace(cmd)) 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 397 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 421 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
-	if ((ntn->c_stanza) || (ntn->p_stanza)) {
+	if ((ntn->c_stanza) || (ntn->p_stanza) || (ntn->a_stanza)) {
 		
 {
-#line 472 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 503 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"end")) {
-		ntn->c_stanza = NULL; ntn->p_stanza = NULL;
+		ntn->c_stanza = NULL; ntn->p_stanza = NULL;	ntn->a_stanza = FALSE;
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 474 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 505 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->c_stanza) {
@@ -50218,12 +50319,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 485 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 516 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->p_stanza) {
@@ -50235,104 +50336,123 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 494 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 525 "inweb/literate-module/Chapter 2/Web Notations.w"
+;
+	}
+	if (ntn->a_stanza) {
+		if (Regexp__match(&mr, cmd, U"(%c+) (%c+)")) {
+			markdown_alert *alert =
+				MarkdownVariations__new_alert(mr.exp[1], Str__get_first_char(mr.exp[0]));
+			WebNotation__add_alert(ntn, alert);
+		} else {
+			error = Str__new();
+			WRITE_TO(error, "not a valid alert line: '%S'", cmd);
+		}
+		
+{
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+	Regexp__dispose_of(&mr);
+	return error;
+
+}
+#line 536 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 399 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 423 "inweb/literate-module/Chapter 2/Web Notations.w"
 
 	} else {
 		
 {
-#line 411 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 436 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"preprocess")) {
 		ntn->p_stanza = ntn->preprocessor; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 412 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 437 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess")) {
 		ntn->p_stanza = ntn->postprocessor; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 415 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 440 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"process code")) {
 		ntn->p_stanza = ntn->code_preprocessor; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 418 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 443 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess code")) {
 		ntn->p_stanza = ntn->code_postprocessor; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 421 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 446 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"process commentary")) {
 		ntn->p_stanza = ntn->commentary_preprocessor; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 424 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 449 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess commentary")) {
 		ntn->p_stanza = ntn->commentary_postprocessor; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 427 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 452 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 401 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 425 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 		
 {
-#line 431 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 456 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"classify")) {
 		ntn->c_stanza = ntn->main_classifier; 
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 432 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 457 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"residue of (%C+)")) {
@@ -50345,12 +50465,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 442 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 467 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"options of (%C+)")) {
@@ -50363,30 +50483,49 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 452 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 477 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 402 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 426 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 		
 {
-#line 456 "inweb/literate-module/Chapter 2/Web Notations.w"
-	if (Regexp__match(&mr, cmd, U"name \"(%C+)\"")) {
-		ntn->name = Str__duplicate(mr.exp[0]); 
+#line 481 "inweb/literate-module/Chapter 2/Web Notations.w"
+	if (Regexp__match(&mr, cmd, U"alerts")) {
+		ntn->a_stanza = TRUE;
+		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 457 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 483 "inweb/literate-module/Chapter 2/Web Notations.w"
+;
+	}
+
+}
+#line 427 "inweb/literate-module/Chapter 2/Web Notations.w"
+;
+		
+{
+#line 487 "inweb/literate-module/Chapter 2/Web Notations.w"
+	if (Regexp__match(&mr, cmd, U"name \"(%C+)\"")) {
+		ntn->name = Str__duplicate(mr.exp[0]); 
+{
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+	Regexp__dispose_of(&mr);
+	return error;
+
+}
+#line 488 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"recognise (.%C+)")) {
@@ -50394,45 +50533,45 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		ADD_TO_LINKED_LIST(ext, text_stream, ntn->recognised_filename_extensions);
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 462 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 493 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"end")) {
 		error = TL_IS_4113;
 		
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 466 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 497 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
 }
-#line 403 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 428 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	error = Str__new();
 	WRITE_TO(error, "unknown inweb notation command '%S'", cmd);
 	
 {
-#line 500 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 407 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 432 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 }
 
-#line 508 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 550 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__resolve_declaration(wcl_declaration *D) {
 	Conventions__set_level(D, NOTATION_LSCONVENTIONLEVEL);
 }
@@ -50441,7 +50580,7 @@ void WebNotation__resolve_declaration(wcl_declaration *D) {
 
 
 
-#line 521 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 563 "inweb/literate-module/Chapter 2/Web Notations.w"
 
 notation_rewriting_machine *WebNotation__new_machine(void) {
 	notation_rewriting_machine *nrm = CREATE(notation_rewriting_machine);
@@ -50455,7 +50594,7 @@ notation_rewriting_machine *WebNotation__new_machine(void) {
 
 
 
-#line 543 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 585 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream *WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machine *nrm,
 	text_stream *from, text_stream *to) {
 	if (nrm == NULL) internal_error("no fsm");
@@ -50488,7 +50627,7 @@ text_stream *WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machi
 	return error;
 }
 
-#line 578 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 620 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) {
 	FSM__reset_machine(nrm->fsm);
 	for (int i=0; i<Str__len(text); i++) {
@@ -50505,7 +50644,7 @@ void WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_m
 	}
 }
 
-#line 597 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 639 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__postprocess(text_stream *text, ls_notation *ntn) {
 	if (Str__len(text) == 0) return;
 	TEMPORARY_TEXT(processed)
@@ -58214,7 +58353,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 14 August 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 15 August 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
@@ -73577,37 +73716,37 @@ void Inweb_InC_register_I_literals(void) {
     TL_IS_2445 = Str__literal(U"http://");
     TL_IS_2446 = Str__literal(U"external");
     TL_IS_2447 = Str__literal(U"internal");
-    TL_IS_2448 = Str__literal(U"block quotes");
-    TL_IS_2449 = Str__literal(U"ordered lists");
-    TL_IS_2450 = Str__literal(U"unordered lists");
-    TL_IS_2451 = Str__literal(U"indented code blocks");
-    TL_IS_2452 = Str__literal(U"fenced code blocks");
-    TL_IS_2453 = Str__literal(U"HTML blocks");
-    TL_IS_2454 = Str__literal(U"thematic markers");
-    TL_IS_2455 = Str__literal(U"ATX headings");
-    TL_IS_2456 = Str__literal(U"setext headings");
-    TL_IS_2457 = Str__literal(U"web autolinks");
-    TL_IS_2458 = Str__literal(U"email autolinks");
-    TL_IS_2459 = Str__literal(U"inline HTML");
-    TL_IS_2460 = Str__literal(U"backticked code");
-    TL_IS_2461 = Str__literal(U"links");
-    TL_IS_2462 = Str__literal(U"images");
-    TL_IS_2463 = Str__literal(U"emphasis");
-    TL_IS_2464 = Str__literal(U"emphasis");
-    TL_IS_2465 = Str__literal(U"entities");
-    TL_IS_2466 = Str__literal(U"CommonMark 0.30");
-    TL_IS_2467 = Str__literal(U"strikethrough");
-    TL_IS_2468 = Str__literal(U"tables");
-    TL_IS_2469 = Str__literal(U"task list items");
-    TL_IS_2470 = Str__literal(U"extended autolinks");
-    TL_IS_2471 = Str__literal(U"disallowed raw HTML");
-    TL_IS_2472 = Str__literal(U"alerts");
-    TL_IS_2473 = Str__literal(U"GitHub-flavored Markdown 0.29");
-    TL_IS_2474 = Str__literal(U"[!NOTE]");
-    TL_IS_2475 = Str__literal(U"[!TIP]");
-    TL_IS_2476 = Str__literal(U"[!IMPORTANT]");
-    TL_IS_2477 = Str__literal(U"[!WARNING]");
-    TL_IS_2478 = Str__literal(U"[!CAUTION]");
+    TL_IS_2448 = Str__literal(U"NOTE");
+    TL_IS_2449 = Str__literal(U"TIP");
+    TL_IS_2450 = Str__literal(U"IMPORTANT");
+    TL_IS_2451 = Str__literal(U"WARNING");
+    TL_IS_2452 = Str__literal(U"CAUTION");
+    TL_IS_2453 = Str__literal(U"block quotes");
+    TL_IS_2454 = Str__literal(U"ordered lists");
+    TL_IS_2455 = Str__literal(U"unordered lists");
+    TL_IS_2456 = Str__literal(U"indented code blocks");
+    TL_IS_2457 = Str__literal(U"fenced code blocks");
+    TL_IS_2458 = Str__literal(U"HTML blocks");
+    TL_IS_2459 = Str__literal(U"thematic markers");
+    TL_IS_2460 = Str__literal(U"ATX headings");
+    TL_IS_2461 = Str__literal(U"setext headings");
+    TL_IS_2462 = Str__literal(U"web autolinks");
+    TL_IS_2463 = Str__literal(U"email autolinks");
+    TL_IS_2464 = Str__literal(U"inline HTML");
+    TL_IS_2465 = Str__literal(U"backticked code");
+    TL_IS_2466 = Str__literal(U"links");
+    TL_IS_2467 = Str__literal(U"images");
+    TL_IS_2468 = Str__literal(U"emphasis");
+    TL_IS_2469 = Str__literal(U"emphasis");
+    TL_IS_2470 = Str__literal(U"entities");
+    TL_IS_2471 = Str__literal(U"CommonMark 0.30");
+    TL_IS_2472 = Str__literal(U"strikethrough");
+    TL_IS_2473 = Str__literal(U"tables");
+    TL_IS_2474 = Str__literal(U"task list items");
+    TL_IS_2475 = Str__literal(U"extended autolinks");
+    TL_IS_2476 = Str__literal(U"disallowed raw HTML");
+    TL_IS_2477 = Str__literal(U"alerts");
+    TL_IS_2478 = Str__literal(U"GitHub-flavored Markdown 0.29");
     TL_IS_2479 = Str__literal(U"TeX");
     TL_IS_2480 = Str__literal(U"alt-TeX");
     TL_IS_2481 = Str__literal(U"inweb links");
