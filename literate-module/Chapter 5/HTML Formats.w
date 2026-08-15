@@ -994,7 +994,8 @@ void HTMLWeaving::paragraph_number(text_stream *OUT, ls_paragraph *par) {
 			par->paragraph_number);
 		WRITE(". ");
 		HTMLWeaving::escape_text(OUT, title);
-		if (Str::len(title) > 0) WRITE(".");
+		inchar32_t c = LiterateSource::par_title_punctuation(par);
+		if (c != 0) WRITE("%c", c);
 		HTML_CLOSE("b");
 		WRITE(" ");
 	}

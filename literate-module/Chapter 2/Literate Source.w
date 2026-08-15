@@ -1321,6 +1321,14 @@ text_stream *LiterateSource::par_title(ls_paragraph *par) {
 	return par->titling.operand1;
 }
 
+inchar32_t LiterateSource::par_title_punctuation(ls_paragraph *par) {
+	text_stream *title = LiterateSource::par_title(par);
+	if (Str::len(title) == 0) return (inchar32_t) 0;
+	inchar32_t last = Str::get_last_char(title);
+	if ((last == '?') || (last == '!') || (last == '.')) return (inchar32_t) 0;
+	return (inchar32_t) '.';
+}
+
 int LiterateSource::par_depth(ls_paragraph *par) {
 	if (Str::len(par->titling.operand1) > 0) {
 		int B = par->titling.options_bitmap;

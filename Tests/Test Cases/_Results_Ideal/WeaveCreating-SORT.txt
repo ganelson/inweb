@@ -2,4 +2,5 @@ weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as H
 (created directory 'smorgasbord/Woven/assets')
     [smorgasbord/Woven/cnsr.html] [qcsr] 
     [index] 
-    10 files copied to: smorgasbord/Woven/assets
+    14 files copied to: smorgasbord/Woven/assets
+    1 file copied to: smorgasbord/Woven
