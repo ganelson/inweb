@@ -616,6 +616,9 @@ Language "Python" {
 			matches of /[a-zA-Z_][0-9]+/ {
 				=> !identifier
 			}
+			runs of !identifier {
+				keyword of !reserved => !reserved
+			}
 		}
 	end
 
