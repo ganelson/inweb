@@ -534,7 +534,7 @@ To recap, then, this is the final version of what's now called "NotSoSimple":
 Commentary inside a web is styled with some dialect of Markdown, depending
 on the convention settings. If GitHub-flavored Markdown features are available
 (as they are by default) then this will include so-called _alerts_.
-See [Commentary in Markdown] for examples.
+See //Commentary in Markdown// for examples.
 
 GitHub Markdown provides five forms of alert, cued as `[!NOTE]`, `[!TIP]`,
 `[!IMPORTANT]`, `[!WARNING]`, and `[!CAUTION]`. A notation can however add
@@ -558,7 +558,7 @@ When woven to HTML, these alerts will become blockquotes, just as for `[!NOTE]`
 and so on; the blockquotes will have the class names `alerthot` and `alertsyntax`,
 matching the conventions used for `alertnote`, `alertwarning` and so on. They
 can then be styled in suitable colour schemes, have boxes drawn around them, or
-whatever, by means of CSS: see [Creating Patterns].
+whatever, by means of CSS: see //Creating Patterns//.
 
 ## Processing
 

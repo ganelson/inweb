@@ -73,6 +73,7 @@ void WeavingFormats::render(weave_order *wv, heterogeneous_tree *weave_tree) {
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE)
 		Errors::fatal_with_file("unable to write woven file", F);
 	TEMPORARY_TEXT(buffer)
+	Swarm::begin_file(wv, F);
 	WeavingFormats::render_to(buffer, weave_tree, F);
 	for (int p=0; p<NO_DEFINED_WEAVEINSCRIPTION_VALUES; p++)
 		if (wv->current_insertion_points[p] >= 0)

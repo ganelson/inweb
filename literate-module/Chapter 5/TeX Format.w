@@ -421,7 +421,7 @@ are not rendered here, they never will be.)
 
 @<Render Markdown@> =
 	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
-	MDRenderer::render_extended(OUT, (void *) trs->wv, C->content, C->variation, 0);
+	MDRenderer::render_extended(OUT, (void *) trs->wv, C->content, C->variation, SUPERPLAIN_MDRMODE);
 
 @<Render index@> =
 	if ((trs->wv) && (trs->wv->weave_web)) {

@@ -603,6 +603,21 @@ Language "Python" {
 		False finally for from global if import in is lambda match None nonlocal not or
 		pass raise return True try while with yield
 	end
+	
+	colour !number like !constant
+	colouring
+		runs of unquoted {
+			matches of /[0-9]+\.[0-9]+/ {
+				=> !number
+			}
+			matches of /[0-9]+/ {
+				=> !number
+			}
+			matches of /[a-zA-Z_][0-9]+/ {
+				=> !identifier
+			}
+		}
+	end
 
 	Conventions {
 		named holons are tangled between <SPACE> and <NEWLINE>

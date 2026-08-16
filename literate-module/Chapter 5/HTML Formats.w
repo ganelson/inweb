@@ -1057,8 +1057,11 @@ void HTMLWeaving::render_code_block(OUTPUT_STREAM, int mode, weave_order *wv, te
 		pl = Languages::find(wv->weave_web, language_rendered);
 	if (pl == NULL) {
 		WRITE_TO(STDERR, "warning: no language definition for '%S'\n", language_rendered);
+		if (Str::eq_insensitive(language_rendered, I"plain"))
+			WRITE_TO(STDERR, "(note that 'plain' is not normally a language: use 'none' instead)\n");
 		pl = Languages::find(wv->weave_web, I"None");
 	}
+	// WRITE("(%S) ", pl->language_name);
 	Painter::reset_syntax_colouring(pl);
 	TEMPORARY_TEXT(line)
 	TEMPORARY_TEXT(cols)
