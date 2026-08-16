@@ -406,11 +406,66 @@ against the source text.
 
 Partly for reasons of speed, the regular expression engine used by Inweb here
 is a limited one, compared to some of the behemoths available in many modern
-programming languages. It's probably wise to stick to the features used in
-these two examples. Note that Inweb does not have `^` (start of text marker)
-and `$` (end of text marker), because Inweb always requires the match to be
-from the start of the snippet to the end of the snippet. The text `red beachball`
-does _not_ match the regular expression `/beach/`. Only `beach` matches `/beach/`.
+programming languages. Briefly, the following features are available:
+
+-	Subexpressions in round brackets: thus `(broad)(band)` matches the
+	text `broadband`, putting `broad` into the first subexpression result
+	and `band` into the second
+
+-	Wildcards each match a single character:
+
+	wildcard | meaning                          
+	-------- | ---------------------------------
+	`.`      | any character at all
+	`\d`     | any digit, `0` to `9`
+	`\q`     | the double-quotation mark character `"` only
+	`\r`     | the newline character only
+	`\s`     | any whitespace character, meaning, space, newline or tab
+	`\S`     | any character _not_ matching `\s`
+	`\t`     | the tab character only
+
+-	Character ranges are like wildcards, but more general: `[aeiou]` means
+	"match `a`, `e`, `i`, `o` or `u`".
+	
+	If a hyphen is used between two characters in the range, then all
+	intervening characters are understood to be there. Thus `[e-h]` is
+	equivalent to `[efgh]`. So, for example, `\d` (any digit) is equivalent to
+	`[0123456789]` or, more concisely, `[0-9]`. If a hyphen occurs at the
+	start or end of the range, it just means a hyphen. Thus `[a-z-]`
+	matches _either_ a lower-case English letter _or_ `-`.
+
+	If a range begins with `^` then this character is not included, and
+	instead the match is against anything which is not one of those given.
+	Thus `[^xyz]` matches any single character which is _not_ `x`, `y`, or `z`.
+	A `^` character anywhere else in the range means itself in the normal
+	way. So `[~^]` matches either `~` or `^`, whereas `[^~]` matches any
+	character which isn't `~`.
+
+-	Repetition markers can be placed after a character or subexpression:
+
+	marker | meaning                           | example
+	------ | --------------------------------- | -----------------------------------------------------
+	`+`    | 1 or more                         | `(abc)+` matches `abc`, `abcabc`, `abcabcabc`, ... 
+	`*`    | 0 or more                         | `xy*z`   matches `xz`, `xyz`, `xyyz`, `xyyyz`, ...
+	`+?`   | 1 or more, but as few as possible | `(x+?)(.*)` matches `xxx` as `x` then `xx`
+	`*?`   | 0 or more, but as few as possible | `(x*?)(.*)` matches `xxx` as the empty text then `xxx`
+	`?`    | 0 or 1, and 0 if possible         | `(\d+)(e\d+)?` matches `32`, `1654` and `2e57`
+
+-	The various magic characters above can be stripped of their magical powers
+	with a backslash: e.g., `\*` matches `*`, a literal asterisk. `\` is itself
+	a magic character, so `\\` is needed to mean a literal backslash.
+
+Two popular regexp features _not_ supported by the colouring engine are:
+
+-	Positional markers such as `^` (start of text marker) and `$` (end of text
+	marker); Inweb always requires the match to be from the start of the snippet
+	to the end of the snippet. The text `red beachball` does _not_ match the
+	regular expression `/beach/`. Only `beach` matches `/beach/`. Similarly,
+	`\a` and `\z` cannot be used.
+
+-	Disjunction, that is, giving alternatives with `|`: for example, the
+	expression `(fish)|(fowl)` to match either `fish` or `fowl`. This isn't
+	allowed for reasons of efficiency: we want colouring to run quickly.
 
 ### The seven ways rules can apply
 

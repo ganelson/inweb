@@ -2313,7 +2313,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, {
         "id": "SP11_3",
         "heading": "\u00a711.3 (under A Worse PCRE)",
-        "text": "This is standard regular-expression notation, except that I haven't bothered\nto implement numeric repetition counts, which we won't need:\n\tif (chcl == WHITESPACE_CHARCLASS) {\n\t\trep_from = 1; rep_to = Str::len(text)-at.tpos;\n\t}\n\tif (pattern[at.ppos] == '+') {\n\t\trep_from = 1; rep_to = Str::len(text)-at.tpos; at.ppos++;\n\t} else if (pattern[at.ppos] == '*') {\n\t\trep_from = 0; rep_to = Str::len(text)-at.tpos; at.ppos++;\n\t}\n\tif (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }\n"
+        "text": "This is standard regular-expression notation, except that I haven't bothered\nto implement numeric repetition counts, which we won't need:\n\tif (chcl == WHITESPACE_CHARCLASS) {\n\t\trep_from = 1; rep_to = Str::len(text)-at.tpos;\n\t}\n\tif (pattern[at.ppos] == '+') {\n\t\trep_from = 1; rep_to = Str::len(text)-at.tpos; at.ppos++;\n\t\tif (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }\n\t} else if (pattern[at.ppos] == '*') {\n\t\trep_from = 0; rep_to = Str::len(text)-at.tpos; at.ppos++;\n\t\tif (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }\n\t} else if (pattern[at.ppos] == '?') {\n\t\trep_from = 0; rep_to = 1; greedy = FALSE; at.ppos++;\n\t}\n"
     }, {
         "id": "SP11_4",
         "heading": "\u00a711.4 (under A Worse PCRE)",

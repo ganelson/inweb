@@ -607,10 +607,22 @@ Language "Python" {
 	colour !number like !constant
 	colouring
 		runs of unquoted {
-			matches of /[0-9]+\.[0-9]+/ {
+			matches of /[+-]*\d+\.\d*[eE][+-]*\d+/ {
 				=> !number
 			}
-			matches of /[0-9]+/ {
+			matches of /[+-]*\.\d+[eE][+-]*\d+/ {
+				=> !number
+			}
+			matches of /[+-]*\d+[eE][+-]*\d+/ {
+				=> !number
+			}
+			matches of /[+-]*\d+\.\d*/ {
+				=> !number
+			}
+			matches of /[+-]*\.\d+/ {
+				=> !number
+			}
+			matches of /[+-]*\d+/ {
 				=> !number
 			}
 			matches of /[a-zA-Z_][0-9]+/ {

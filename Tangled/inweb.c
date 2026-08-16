@@ -1350,63 +1350,63 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define MATCH_TEXT_INITIAL_ALLOCATION 64
 
     
-#line 337 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 340 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define ANY_CHARCLASS 1
 
     
-#line 338 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 341 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define DIGIT_CHARCLASS 2
 
     
-#line 339 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 342 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define WHITESPACE_CHARCLASS 3
 
     
-#line 340 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 343 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define NONWHITESPACE_CHARCLASS 4
 
     
-#line 341 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 344 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define IDENTIFIER_CHARCLASS 5
 
     
-#line 342 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 345 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define PREFORM_CHARCLASS 6
 
     
-#line 343 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 346 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define PREFORMC_CHARCLASS 7
 
     
-#line 344 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 347 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define LITERAL_CHARCLASS 8
 
     
-#line 345 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 348 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define TAB_CHARCLASS 9
 
     
-#line 346 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 349 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define QUOTE_CHARCLASS 10
 
     
-#line 347 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 350 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define NEWLINE_CHARCLASS 11
 
     
-#line 348 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 351 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define BEGIN_CONTENT_CHARCLASS 12
 
     
-#line 349 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 352 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define END_CONTENT_CHARCLASS 13
 
     
-#line 433 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 436 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define REP_REPEATING 1
 
     
-#line 434 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 437 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
     #define REP_ATSTART 2
 
     
@@ -7654,11 +7654,11 @@ int  Regexp__match_from(match_results *mr, text_stream *text, inchar32_t *patter
 void  Regexp__prepare(match_results *mr) ;
 #line 207 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__match_r(match_results *mr, text_stream *text, inchar32_t *pattern, 	match_position *scan_from, int allow_partial) ;
-#line 352 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 355 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__get_cclass(inchar32_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) ;
-#line 385 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 388 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__test_cclass(inchar32_t c, int chcl, int range_from, int range_to, inchar32_t *drawn_from, int reverse) ;
-#line 437 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 440 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int  Regexp__replace(text_stream *text, inchar32_t *pattern, inchar32_t *replacement, int options) ;
 #line 47 "inweb/foundation-module/Chapter 4/JSON.w"
 void  JSON__write_type(OUTPUT_STREAM, int t) ;
@@ -18959,11 +18959,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C24";
+			char *svn = "9.0-beta+1C25";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "15 August 2026";
+			char *d = "16 August 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -25542,10 +25542,13 @@ int Regexp__match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 	}
 	if (pattern[at.ppos] == '+') {
 		rep_from = 1; rep_to = Str__len(text)-at.tpos; at.ppos++;
+		if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
 	} else if (pattern[at.ppos] == '*') {
 		rep_from = 0; rep_to = Str__len(text)-at.tpos; at.ppos++;
+		if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
+	} else if (pattern[at.ppos] == '?') {
+		rep_from = 0; rep_to = 1; greedy = FALSE; at.ppos++;
 	}
-	if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
 
 }
 #line 234 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
@@ -25554,7 +25557,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 		int reps = 0;
 		
 {
-#line 291 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 294 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	for (reps = 0; ((Str__get_at(text, at.tpos+reps)) && (reps < rep_to)); reps++)
 		if (Regexp__test_cclass(Str__get_at(text, at.tpos+reps), chcl,
 			range_from, range_to, pattern, reverse) == FALSE)
@@ -25569,7 +25572,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 		if (rep_from == reps) { at.tpos += reps; continue; }
 		
 {
-#line 297 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 300 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	int from = rep_from, to = reps, dj = 1, from_tpos = at.tpos;
 	if (greedy) { from = reps; to = rep_from; dj = -1; }
 	for (int j = from; j != to+dj; j += dj) {
@@ -25587,7 +25590,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 	}
 	
 {
-#line 306 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 309 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	if (mr) {
 		for (int i=0; i<at.bc; i++) {
 			Str__clear(mr->exp[i]);
@@ -25604,7 +25607,7 @@ int Regexp__match_r(match_results *mr, text_stream *text, inchar32_t *pattern,
 	return at.tpos;
 }
 
-#line 352 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 355 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__get_cclass(inchar32_t *pattern, int ppos, int *len, int *from, int *to, int *reverse) {
 	if (pattern[ppos] == '^') { ppos++; *reverse = TRUE; } else { *reverse = FALSE; }
 	switch (pattern[ppos]) {
@@ -25637,7 +25640,7 @@ int Regexp__get_cclass(inchar32_t *pattern, int ppos, int *len, int *from, int *
 	*len = 1; *from = ppos; *to = ppos; return LITERAL_CHARCLASS;
 }
 
-#line 385 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 388 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__test_cclass(inchar32_t c, int chcl, int range_from, int range_to, inchar32_t *drawn_from, int reverse) {
 	int match = FALSE;
 	switch (chcl) {
@@ -25676,7 +25679,7 @@ int Regexp__test_cclass(inchar32_t c, int chcl, int range_from, int range_to, in
 	return match;
 }
 
-#line 437 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 440 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 int Regexp__replace(text_stream *text, inchar32_t *pattern, inchar32_t *replacement, int options) {
 	TEMPORARY_TEXT(altered)
 	match_results mr = Regexp__create_mr();
@@ -25706,23 +25709,23 @@ int Regexp__replace(text_stream *text, inchar32_t *pattern, inchar32_t *replacem
 			L = Str__len(text); i = L-left-1;
 			if ((options & REP_REPEATING) == 0) { 
 {
-#line 476 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
-	for (i++; i<L; i++)
-		PUT_TO(altered, Str__get_at(text, i));
-
-}
-#line 464 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
-; break; }
-			continue;
-		} else PUT_TO(altered, Str__get_at(text, i));
-		if (options & REP_ATSTART) { 
-{
-#line 476 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+#line 479 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 	for (i++; i<L; i++)
 		PUT_TO(altered, Str__get_at(text, i));
 
 }
 #line 467 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+; break; }
+			continue;
+		} else PUT_TO(altered, Str__get_at(text, i));
+		if (options & REP_ATSTART) { 
+{
+#line 479 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
+	for (i++; i<L; i++)
+		PUT_TO(altered, Str__get_at(text, i));
+
+}
+#line 470 "inweb/foundation-module/Chapter 4/Pattern Matching.w"
 ; break; }
 	}
 	Regexp__dispose_of(&mr);
@@ -58354,7 +58357,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 15 August 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 16 August 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"

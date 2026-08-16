@@ -565,7 +565,7 @@ int Unit::boxed_quote_renderer(markdown_feature *feature, text_stream *OUT,
 }
 
 void Unit::paste_icons_intervene_after_Phase_I(markdown_feature *feature,
-	markdown_item *tree, md_links_dictionary *link_references) {
+	markdown_variation *variation, markdown_item *tree, md_links_dictionary *link_references) {
 	Unit::paiapi_r(tree);
 }
 

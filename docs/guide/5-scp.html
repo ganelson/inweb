@@ -499,11 +499,130 @@ which means the same thing as <code>[0-9]</code>: that is, a decimal digit.</li>
 against the source text.</p>
 <p>Partly for reasons of speed, the regular expression engine used by Inweb here
 is a limited one, compared to some of the behemoths available in many modern
-programming languages. It's probably wise to stick to the features used in
-these two examples. Note that Inweb does not have <code>^</code> (start of text marker)
-and <code>$</code> (end of text marker), because Inweb always requires the match to be
-from the start of the snippet to the end of the snippet. The text <code>red beachball</code>
-does <em>not</em> match the regular expression <code>/beach/</code>. Only <code>beach</code> matches <code>/beach/</code>.</p>
+programming languages. Briefly, the following features are available:</p>
+<ul>
+<li>
+<p>Subexpressions in round brackets: thus <code>(broad)(band)</code> matches the
+text <code>broadband</code>, putting <code>broad</code> into the first subexpression result
+and <code>band</code> into the second</p>
+</li>
+<li>
+<p>Wildcards each match a single character:</p>
+<table>
+<thead>
+<tr>
+<th>wildcard</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td>any character at all</td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td>any digit, <code>0</code> to <code>9</code></td>
+</tr>
+<tr>
+<td><code>\q</code></td>
+<td>the double-quotation mark character <code>&quot;</code> only</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>the newline character only</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td>any whitespace character, meaning, space, newline or tab</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td>any character <em>not</em> matching <code>\s</code></td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>the tab character only</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Character ranges are like wildcards, but more general: <code>[aeiou]</code> means
+&quot;match <code>a</code>, <code>e</code>, <code>i</code>, <code>o</code> or <code>u</code>&quot;.</p>
+<p>If a hyphen is used between two characters in the range, then all
+intervening characters are understood to be there. Thus <code>[e-h]</code> is
+equivalent to <code>[efgh]</code>. So, for example, <code>\d</code> (any digit) is equivalent to
+<code>[0123456789]</code> or, more concisely, <code>[0-9]</code>. If a hyphen occurs at the
+start or end of the range, it just means a hyphen. Thus <code>[a-z-]</code>
+matches <em>either</em> a lower-case English letter <em>or</em> <code>-</code>.</p>
+<p>If a range begins with <code>^</code> then this character is not included, and
+instead the match is against anything which is not one of those given.
+Thus <code>[^xyz]</code> matches any single character which is <em>not</em> <code>x</code>, <code>y</code>, or <code>z</code>.
+A <code>^</code> character anywhere else in the range means itself in the normal
+way. So <code>[~^]</code> matches either <code>~</code> or <code>^</code>, whereas <code>[^~]</code> matches any
+character which isn't <code>~</code>.</p>
+</li>
+<li>
+<p>Repetition markers can be placed after a character or subexpression:</p>
+<table>
+<thead>
+<tr>
+<th>marker</th>
+<th>meaning</th>
+<th>example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>1 or more</td>
+<td><code>(abc)+</code> matches <code>abc</code>, <code>abcabc</code>, <code>abcabcabc</code>, ...</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>0 or more</td>
+<td><code>xy*z</code>   matches <code>xz</code>, <code>xyz</code>, <code>xyyz</code>, <code>xyyyz</code>, ...</td>
+</tr>
+<tr>
+<td><code>+?</code></td>
+<td>1 or more, but as few as possible</td>
+<td><code>(x+?)(.*)</code> matches <code>xxx</code> as <code>x</code> then <code>xx</code></td>
+</tr>
+<tr>
+<td><code>*?</code></td>
+<td>0 or more, but as few as possible</td>
+<td><code>(x*?)(.*)</code> matches <code>xxx</code> as the empty text then <code>xxx</code></td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>0 or 1, and 0 if possible</td>
+<td><code>(\d+)(e\d+)?</code> matches <code>32</code>, <code>1654</code> and <code>2e57</code></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>The various magic characters above can be stripped of their magical powers
+with a backslash: e.g., <code>\*</code> matches <code>*</code>, a literal asterisk. <code>\</code> is itself
+a magic character, so <code>\\</code> is needed to mean a literal backslash.</p>
+</li>
+</ul>
+<p>Two popular regexp features <em>not</em> supported by the colouring engine are:</p>
+<ul>
+<li>
+<p>Positional markers such as <code>^</code> (start of text marker) and <code>$</code> (end of text
+marker); Inweb always requires the match to be from the start of the snippet
+to the end of the snippet. The text <code>red beachball</code> does <em>not</em> match the
+regular expression <code>/beach/</code>. Only <code>beach</code> matches <code>/beach/</code>. Similarly,
+<code>\a</code> and <code>\z</code> cannot be used.</p>
+</li>
+<li>
+<p>Disjunction, that is, giving alternatives with <code>|</code>: for example, the
+expression <code>(fish)|(fowl)</code> to match either <code>fish</code> or <code>fowl</code>. This isn't
+allowed for reasons of efficiency: we want colouring to run quickly.</p>
+</li>
+</ul>
 <h3>The seven ways rules can apply</h3>
 <p>Rules are the lines with a <code>=&gt;</code> in. As noted, they take the form &quot;if X, then
 Y&quot;. The following are the possibilities for X, the condition.</p>

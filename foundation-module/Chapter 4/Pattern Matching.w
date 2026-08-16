@@ -282,10 +282,13 @@ to implement numeric repetition counts, which we won't need:
 	}
 	if (pattern[at.ppos] == '+') {
 		rep_from = 1; rep_to = Str::len(text)-at.tpos; at.ppos++;
+		if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
 	} else if (pattern[at.ppos] == '*') {
 		rep_from = 0; rep_to = Str::len(text)-at.tpos; at.ppos++;
+		if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
+	} else if (pattern[at.ppos] == '?') {
+		rep_from = 0; rep_to = 1; greedy = FALSE; at.ppos++;
 	}
-	if (pattern[at.ppos] == '?') { greedy = FALSE; at.ppos++; }
 
 @<Count how many repetitions can be made here@> =
 	for (reps = 0; ((Str::get_at(text, at.tpos+reps)) && (reps < rep_to)); reps++)
