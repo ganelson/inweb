@@ -324,7 +324,7 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		} else {
 			TextWeaver::source_code_piece(tree, ap, matter, colouring, from, i);
 			TEMPORARY_TEXT(url)
-			Colonies::paragraph_URL(url, par, wv->weave_to, wv->weave_colony);
+			Colonies::paragraph_URL(url, par, NULL, wv->weave_to, wv->weave_colony);
 			tree_node *U = WeaveTree::function_usage(tree, url, fn);
 			Trees::make_child(U, ap);
 			i += Str::len(fname) - 1;

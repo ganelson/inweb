@@ -83,6 +83,27 @@ ls_holon *Holons::new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int a
 	if (bitmap & VERYLATEHOLON_LSNROBIT ) { holon->placed_very_late = TRUE; holon->top_level = TRUE; }
 
 	LiterateSource::process_chunk(chunk, ntn->code_preprocessor);
+	if (W) {
+		text_stream *regexp = Conventions::get_textual_from(W->conventions, LABELS_REGEXP_LSCONVENTION);
+		if (Str::len(regexp) > 0) {
+			if (W->label_pattern[0] == 0) {
+				text_stream *err = Languages::regexp(W->label_pattern, regexp, TRUE);
+				if (Str::len(err) > 0) {
+					text_stream *message = Str::new();
+					WRITE_TO(message, "bad pattern for labels: %S", err);
+					WebErrors::record_at(message, chunk->onset_line);
+				}
+			}
+			match_results mr = Regexp::create_mr();
+			for (ls_line *lst = holon->corresponding_chunk->first_line; lst; lst = lst->next_line) {
+				text_stream *code = CodeExcerpts::line_code(lst);
+				if (Regexp::match(&mr, code, W->label_pattern))
+					LineLabels::label_line(lst, mr.exp[0]);
+			}
+			Regexp::dispose_of(&mr);
+		}
+	}
+		
 	CodeExcerpts::parse(ns, holon->corresponding_chunk->code_excerpt,
 		holon->corresponding_chunk->first_line, NULL, ntn, pl);
 	Holons::declare_in_namespace(holon, ns);

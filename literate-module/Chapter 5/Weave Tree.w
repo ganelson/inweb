@@ -137,6 +137,7 @@ classdef weave_section_node {
 }
 
 classdef weave_code_line_node {
+	struct ls_line *line;
 }
 
 classdef weave_function_usage_node {
@@ -177,6 +178,7 @@ classdef weave_inline_node {
 
 classdef weave_locale_node {
 	struct ls_paragraph *par1;
+	struct ls_line *finer;
 	struct ls_paragraph *par2;
 	int distant;
 }
@@ -639,8 +641,9 @@ tree_node *WeaveTree::section(heterogeneous_tree *tree, ls_section *sect) {
 	return Trees::new_node(tree, weave_section_node_type, STORE_POINTER_weave_section_node(C));
 }
 
-tree_node *WeaveTree::code_line(heterogeneous_tree *tree) {
+tree_node *WeaveTree::code_line(heterogeneous_tree *tree, ls_line *line) {
 	weave_code_line_node *C = CREATE(weave_code_line_node);
+	C->line = line;
 	return Trees::new_node(tree, weave_code_line_node_type, STORE_POINTER_weave_code_line_node(C));
 }
 
@@ -823,9 +826,10 @@ tree_node *WeaveTree::inline(heterogeneous_tree *tree) {
 }
 
 tree_node *WeaveTree::locale(heterogeneous_tree *tree, ls_paragraph *par1,
-	ls_paragraph *par2, ls_section *from) {
+	ls_line *finer, ls_paragraph *par2, ls_section *from) {
 	weave_locale_node *C = CREATE(weave_locale_node);
 	C->par1 = par1;
+	C->finer = finer;
 	C->par2 = par2;
 	C->distant = FALSE;
 	if ((from) && (C->par1->owning_unit->owning_section) && (from != C->par1->owning_unit->owning_section))

@@ -757,6 +757,7 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	int external = FALSE;
 	
 	@<Is it an explicit URL?@>;
+	@<Is it a label name?@>;
 	@<Is it the name of a member of our colony?@>;
 	@<If it contains a colon, does this indicate a section in a colony member?@>;
 
@@ -823,6 +824,29 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	}
 	Regexp::dispose_of(&mr);
 
+@<Is it a label name?@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, text, U"#(%c*)")) {
+		ls_line_label *label = LineLabels::find(Wm, lst, mr.exp[0]);
+		if (label) {
+			ls_line *destination = LineLabels::destination(label);
+			Colonies::paragraph_URL(url,
+				LiterateSource::par_of_line(destination), destination, for_HTML_file, C);
+			WRITE_TO(title, "<span class=\"linelabel\">");
+			WRITE_TO(title, "%S", LineLabels::label_text(destination));
+			WRITE_TO(title, "</span>");
+			Regexp::dispose_of(&mr);
+			if (ext) *ext = FALSE;
+			return TRUE;
+		}
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "Can't find the label name '%S'", mr.exp[0]);
+		WebErrors::issue_at(err, lst);
+		DISCARD_TEXT(err)
+		return FALSE;
+	}
+	Regexp::dispose_of(&mr);
+
 @<Is it the name of a member of our colony?@> =	
 	search_CM = Colonies::find(C, text);
 	if (search_CM) {
@@ -856,7 +880,7 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	language_function *fn;
 	LOOP_OVER_LINKED_LIST(fn, language_function, CodeAnalysis::language_functions_list(Wm))
 		if (Str::eq_insensitive(fn->function_name, text)) {
-			Colonies::paragraph_URL(url, Functions::declaration_lsparagraph(fn),
+			Colonies::paragraph_URL(url, Functions::declaration_lsparagraph(fn), NULL,
 				for_HTML_file, C);
 			WRITE_TO(title, "%S", fn->function_name);
 			return TRUE;
@@ -866,7 +890,8 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	language_type *str;
 	LOOP_OVER(str, language_type) {
 		if (Str::eq_insensitive(str->structure_name, text)) {
-			Colonies::paragraph_URL(url, LiterateSource::par_of_line(str->structure_header_at),
+			Colonies::paragraph_URL(url,
+				LiterateSource::par_of_line(str->structure_header_at), NULL,
 				for_HTML_file, C);
 			WRITE_TO(title, "%S", str->structure_name);
 			return TRUE;
@@ -964,7 +989,8 @@ void Colonies::section_URL(OUTPUT_STREAM, ls_section *S) {
 	}
 }
 
-void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from, ls_colony *context) {
+void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, ls_line *finer,
+	filename *from, ls_colony *context) {
 	if (from == NULL) internal_error("no from file");
 	if (par == NULL) internal_error("no para");
 	ls_section *to_S = LiterateSource::section_of_par(par);
@@ -982,7 +1008,8 @@ void Colonies::paragraph_URL(OUTPUT_STREAM, ls_paragraph *par, filename *from, l
 	}
 	Colonies::section_URL(OUT, to_S);
 	WRITE("#");
-	Colonies::paragraph_anchor(OUT, par);
+	if (LineLabels::labelled(finer)) LineLabels::anchor(OUT, finer);
+	else Colonies::paragraph_anchor(OUT, par);
 }
 
 void Colonies::paragraph_anchor(OUTPUT_STREAM, ls_paragraph *par) {

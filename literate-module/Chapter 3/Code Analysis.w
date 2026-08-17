@@ -307,6 +307,7 @@ same paragraph of code.
 =
 classdef hash_table_entry_usage {
 	struct ls_paragraph *usage_recorded_at;
+	struct ls_line *finer_positioning;
 	int form_of_usage; /* bitmap of the `*_USAGE` constants defined above */
 }
 
@@ -326,6 +327,7 @@ void CodeAnalysis::analyse_find(ls_web *W, ls_line *lst, text_stream *identifier
 		hteu = CREATE(hash_table_entry_usage);
 		hteu->form_of_usage = 0;
 		hteu->usage_recorded_at = LiterateSource::par_of_line(lst);
+		hteu->finer_positioning = lst;
 		ADD_TO_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages);
 	}
 	hteu->form_of_usage |= u;

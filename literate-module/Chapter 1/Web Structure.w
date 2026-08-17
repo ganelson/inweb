@@ -40,6 +40,8 @@ classdef ls_web {
 	struct linked_list *header_filenames; /* of `filename` */
 
 	struct ls_holon_namespace *global_holon_namespace;
+	struct ls_label_namespace *global_label_namespace;
+	inchar32_t label_pattern[MAX_ILDF_REGEXP_LENGTH];
 
 	void *weaving_ref;
 	void *tangling_ref;
@@ -93,6 +95,8 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	W->header_filenames = NEW_LINKED_LIST(filename);
 	W->main_module = WebModules::create_main_module(W);
 	W->global_holon_namespace = Holons::new_namespace(W, NULL);
+	W->global_label_namespace = LineLabels::new_namespace(W, NULL);
+	W->label_pattern[0] = 0;
 	W->weaving_ref = NULL;
 	W->tangling_ref = NULL;
 	W->analysis_ref = NULL;

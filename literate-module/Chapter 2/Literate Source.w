@@ -26,6 +26,7 @@ classdef ls_unit {
 	struct ls_paragraph *last_par;
 	
 	struct ls_holon_namespace *local_holon_namespace;
+	struct ls_label_namespace *local_label_namespace;
 	
 	/* result of parsing */
 	int lines_read;
@@ -36,7 +37,7 @@ classdef ls_unit {
 	int eligible_to_have_implicit_purpose;
 	int window_for_implicit_purpose_open;
 	struct pathname *extracts_path;
-	struct ls_web *context; /* used only for finding language names */
+	struct ls_web *context;
 	struct ls_line *temp_first_line;
 	struct ls_line *temp_last_line;
 	struct ls_line *spool_point;
@@ -70,6 +71,7 @@ ls_unit *LiterateSource::begin_unit(ls_section *S, ls_notation *ntn,
 	lsu->last_par = NULL;
 	
 	lsu->local_holon_namespace = Holons::new_namespace(context, lsu);
+	lsu->local_label_namespace = LineLabels::new_namespace(context, lsu);
 
 	lsu->lines_read = 0;
 	lsu->errors = NEW_LINKED_LIST(ls_error);
@@ -272,6 +274,7 @@ classdef ls_line {
 	struct ls_footnote *footnote_text; /* which fn this is the text of, if it is at all */
 	int suppress_tangling; /* if e.g., lines are tangled out of order */
 	struct linked_list *index_marks; /* or `NULL` if there are none */
+	struct ls_line_label *label; /* or `NULL` if it has none */
 
 	/* how the line sits inside the wider source */
 	struct ls_chunk *owning_chunk; /* `NULL` until the unit has been divided up into chunks */
@@ -289,6 +292,7 @@ ls_line *LiterateSource::new_line(text_file_position *tfp, text_stream *text, ls
 	line->footnote_text = NULL;
 	line->suppress_tangling = FALSE;
 	line->index_marks = NULL;
+	line->label = NULL;
 	
 	line->owning_chunk = NULL;
 	line->prev_line = NULL;

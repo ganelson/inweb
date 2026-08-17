@@ -846,15 +846,18 @@ void Languages::add_to_regexp_set(pl_regexp_set *rs, inchar32_t expression[]) {
 
 void Languages::regexp_to(language_reader_state *state, pl_regexp_set *rs, text_stream *T, text_file_position *tfp) {
 	inchar32_t write_to[MAX_ILDF_REGEXP_LENGTH];
-	Languages::regexp(state, write_to, T, tfp);
+	text_stream *err = Languages::regexp(write_to, T, FALSE);
+	if (Str::len(err) > 0) Languages::error(state, err, tfp);
 	Languages::add_to_regexp_set(rs, write_to);
 }
 
-void Languages::regexp(language_reader_state *state, inchar32_t *write_to, text_stream *T, text_file_position *tfp) {
+text_stream *Languages::regexp(inchar32_t *write_to, text_stream *T, int wrap) {
 	if (write_to == NULL) internal_error("no buffer");
+	int x = 0;
 	write_to[0] = 0;
+	if (wrap) { write_to[x++] = '%'; write_to[x++] = 'c'; write_to[x++] = '*'; write_to[x++] = '?'; } 
 	if (Str::len(T) > 0) {
-		int from = 0, to = Str::len(T)-1, x = 0;
+		int from = 0, to = Str::len(T)-1;
 		if ((to > from) &&
 			(Str::get_at(T, from) == '/') && (Str::get_at(T, to) == '/')) {
 			from++; to--;
@@ -897,16 +900,20 @@ void Languages::regexp(language_reader_state *state, inchar32_t *write_to, text_
 				x = Languages::add_to_regexp(write_to, x, c);
 			}
 		} else {
-			Languages::error(state,
-				I"the expression to match must be in slashes '/'", tfp);
+			write_to[x] = 0;
+			return I"the expression to match must be in slashes '/'";
 		}
 		if (x >= MAX_ILDF_REGEXP_LENGTH) {
-			Languages::error(state,
-				I"the expression to match is too long", tfp);
 			x = MAX_ILDF_REGEXP_LENGTH - 1;
+		write_to[x] = 0;
+			return I"the expression to match is too long";
 		}
 		write_to[x] = 0;
 	}
+	if ((wrap) && (x+3 < MAX_ILDF_REGEXP_LENGTH)) {
+		write_to[x++] = '%'; write_to[x++] = 'c'; write_to[x++] = '*'; write_to[x++] = 0;
+	} 
+	return NULL;
 }
 
 int Languages::add_to_regexp(inchar32_t *write_to, int i, inchar32_t c) {

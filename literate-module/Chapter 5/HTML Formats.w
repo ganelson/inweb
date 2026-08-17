@@ -35,6 +35,7 @@ classdef HTML_render_state {
 	int popup_counter;
 	int slide_number;
 	int slide_of;
+	int max_label_width;
 	struct ls_paragraph *para_to_open;
 	struct asset_rule *copy_rule;
 } HTML_render_state;
@@ -54,6 +55,7 @@ HTML_render_state HTMLWeaving::initial_state(text_stream *OUT, weave_order *wv,
 	hrs.slide_of = -1;
 	hrs.para_to_open = NULL;
 	hrs.copy_rule = Assets::simple_private_copy();
+	hrs.max_label_width = 0;
 
 	Swarm::ensure_plugin(wv, I"Base");
 	hrs.colours = Swarm::ensure_colour_scheme(wv, I"Colours", I"");
@@ -474,7 +476,15 @@ int HTMLWeaving::render_visit(tree_node *N, void *state, int L) {
 	else WRITE_TO(cl, "displayed-code");
 	WRITE("<pre class=\"%S all-displayed-code code-font\">\n", cl);
 	DISCARD_TEXT(cl)
+	hrs->max_label_width = 0;
+	for (tree_node *M = N->child; M; M = M->next)
+		if (M->type == weave_code_line_node_type) {
+			weave_code_line_node *MC = RETRIEVE_POINTER_weave_code_line_node(M->content);
+			if ((MC->line) && (LineLabels::label_width(MC->line) > hrs->max_label_width))
+				hrs->max_label_width = LineLabels::label_width(MC->line);
+		}
 	@<Recurse the renderer through children nodes@>;
+	hrs->max_label_width = 0;
 	HTML_CLOSE("pre"); WRITE("\n");
 	if (Str::len(C->endnote) > 0) {
 		HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
@@ -523,7 +533,8 @@ that service uses to identify the video/audio in question.
 	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
 	TEMPORARY_TEXT(url)
-	Colonies::paragraph_URL(url, C->holon->corresponding_chunk->owner, hrs->wv->weave_to, hrs->wv->weave_colony);
+	Colonies::paragraph_URL(url, C->holon->corresponding_chunk->owner, NULL,
+		hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
 	DISCARD_TEXT(url)
 	HTML_OPEN_WITH("span", "class=\"named-paragraph\"");
@@ -561,6 +572,25 @@ that service uses to identify the video/audio in question.
 	LOG("It was %d\n", C->allocation_id);
 
 @<Render code line@> =
+	weave_code_line_node *C = RETRIEVE_POINTER_weave_code_line_node(N->content);
+	if (hrs->max_label_width > 0) {
+		WRITE("<span class=\"labelmargin\">");
+		int n = 0;
+		if (LineLabels::labelled(C->line)) {
+			WRITE("<a id=\"");
+			LineLabels::anchor(OUT, C->line);
+			WRITE("\" class=\"labelanchor\"></a><span class=\"linelabel\">%S</span>",
+				LineLabels::label_text(C->line));
+			n = LineLabels::label_width(C->line);
+		} else {
+			WRITE("<span class=\"nolinelabel\"> </span>");
+			n = 1;
+		}
+		WRITE("<span class=\"nolinelabel\">");
+		while (n++ < hrs->max_label_width+1) WRITE(" ");
+		WRITE("</span>");
+		WRITE("</span>");
+	}
 	@<Recurse the renderer through children nodes@>;
 	WRITE("\n");
 	return FALSE;
@@ -631,7 +661,7 @@ that service uses to identify the video/audio in question.
 @<Render toc line@> =
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
 	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_URL(TEMP, C->para, hrs->wv->weave_to, hrs->wv->weave_colony);
+	Colonies::paragraph_URL(TEMP, C->para, NULL, hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
 	int depth = LiterateSource::par_depth(C->para);
@@ -665,7 +695,8 @@ that service uses to identify the video/audio in question.
 	if (C->holon->addendum_to) {
 		label_holon = C->holon->addendum_to;
 		TEMPORARY_TEXT(url)
-		Colonies::paragraph_URL(url, label_holon->corresponding_chunk->owner, hrs->wv->weave_to, hrs->wv->weave_colony);
+		Colonies::paragraph_URL(url, label_holon->corresponding_chunk->owner, NULL,
+			hrs->wv->weave_to, hrs->wv->weave_colony);
 		HTML::begin_link_with_class(OUT, I"named-paragraph-link", url);
 		DISCARD_TEXT(url)
 	}
@@ -752,23 +783,31 @@ that service uses to identify the video/audio in question.
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	if ((Functions::used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
 		Swarm::ensure_plugin(hrs->wv, I"Popups");
+
 		HTMLWeaving::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 		WRITE("%S", C->fn->function_name);
-		WRITE("</span>");
+		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
+
 		WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
 			hrs->popup_counter);
+
 		HTMLWeaving::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
 		WRITE("?");
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
-		WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">Usage of ", hrs->popup_counter);
+
+		WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">", hrs->popup_counter);
+
+		WRITE("Usage of ");
 		HTML_OPEN_WITH("span", "class=\"code-font\"");
 		HTMLWeaving::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 		WRITE("%S", C->fn->function_name);
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
 		HTML_CLOSE("span");
 		WRITE(":<br/>"); 
+
 		@<Recurse the renderer through children nodes@>;
-		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
+		HTML_CLOSE("span");
+
 		WRITE("</button>");
 		hrs->popup_counter++;
 	} else {
@@ -797,7 +836,7 @@ that service uses to identify the video/audio in question.
 @<Render locale@> =
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
 	TEMPORARY_TEXT(TEMP)
-	Colonies::paragraph_URL(TEMP, C->par1, hrs->wv->weave_to, hrs->wv->weave_colony);
+	Colonies::paragraph_URL(TEMP, C->par1, C->finer, hrs->wv->weave_to, hrs->wv->weave_colony);
 	HTML::begin_link(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
 	if (C->distant) {
@@ -810,6 +849,8 @@ that service uses to identify the video/audio in question.
 		(Str::get_first_char(LiterateSource::par_ornament(C->par1)) == 'S')?"&#167;":"&para;",
 		C->par1->paragraph_number);
 	if (C->par2) WRITE("-%S", C->par2->paragraph_number);
+	if (LineLabels::labelled(C->finer))
+		WRITE("<span class=\"linelabel\">%S</span>", LineLabels::label_text(C->finer));
 	HTML::end_link(OUT);
 
 @<Render maths@> =

@@ -358,7 +358,7 @@ about breaking pages at chapters and sections fail to work. So:
 				state->line_break_pending = FALSE;
 			}
 			if (suppress == FALSE) {
-				tree_node *CL = WeaveTree::code_line(tree);
+				tree_node *CL = WeaveTree::code_line(tree, lst);
 				Trees::make_child(CL, state->ap);
 				if (Str::len(prefatory) > 0)
 					Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory, chunk->symbol_defined), CL);
@@ -443,7 +443,7 @@ void Weaver::weave_code_excerpt(heterogeneous_tree *tree, ls_code_excerpt *ex, t
 		if (LanguageMethods::skip_in_weaving(pl, wv, lst) == FALSE) {
 			if (current_lst != lst) {
 				current_lst = lst;
-				CL = WeaveTree::code_line(tree);
+				CL = WeaveTree::code_line(tree, lst);
 				Trees::make_child(CL, state->ap);
 			}
 			wv->current_weave_line = lst;
@@ -562,7 +562,7 @@ in the source is set indented in code style.
 		Str::copy(matter, mr.exp[1]);
 		TEMPORARY_TEXT(colouring)
 		for (int i=0; i<Str::len(original); i++) PUT_TO(colouring, PLAIN_COLOUR);
-		tree_node *CL = WeaveTree::code_line(tree);
+		tree_node *CL = WeaveTree::code_line(tree, lst);
 		Trees::make_child(CL, state->ap);
 		TextWeaver::source_code(tree, CL, original, colouring, chunk->hyperlinked);
 		DISCARD_TEXT(colouring)
@@ -601,7 +601,7 @@ usage is rendered differently.
 		if (FALSE) @<Extract any comment matter ending the line to be set in italic@>;
 		@<Give constant definition lines slightly fancier openings@>;
 
-		tree_node *CL = WeaveTree::code_line(tree);
+		tree_node *CL = WeaveTree::code_line(tree, lst);
 		Trees::make_child(CL, state->ap);
 		if (Str::len(prefatory) > 0)
 			Trees::make_child(WeaveTree::weave_defn_node(tree, prefatory, NULL), CL);
@@ -767,7 +767,7 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 					else TextWeaver::commentary_text(tree, ap, I" and ");
 				}
 				Trees::make_child(WeaveTree::locale(tree,
-					holon->corresponding_chunk->owner, NULL, we_are_in), ap);
+					holon->corresponding_chunk->owner, NULL, NULL, we_are_in), ap);
 				k++;
 			}
 		}
@@ -775,7 +775,7 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 			if (at > 0) TextWeaver::commentary_text(tree, ap, I", and ");
 			TextWeaver::commentary_text(tree, ap, I"a continuation of ");
 			Trees::make_child(WeaveTree::locale(tree,
-				par->holon->addendum_to->corresponding_chunk->owner, NULL, we_are_in), ap);
+				par->holon->addendum_to->corresponding_chunk->owner, NULL, NULL, we_are_in), ap);
 		} else if (ct == 0) {
 			if (par->holon->file_form) {
 				if (at > 0) TextWeaver::commentary_text(tree, ap, I", and ");
@@ -796,7 +796,7 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 					} else {
 						TextWeaver::commentary_text(tree, ap, I"used in ");
 					}
-					Trees::make_child(WeaveTree::locale(tree, mu->used_in_paragraph, NULL, we_are_in), ap);
+					Trees::make_child(WeaveTree::locale(tree, mu->used_in_paragraph, NULL, NULL, we_are_in), ap);
 					used_flag = TRUE; k++;
 					switch (mu->multiplicity) {
 						case 1: break;
@@ -921,7 +921,9 @@ void Weaver::show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 		else TextWeaver::commentary_text(tree, ap, I" - ");
 	}
 	if (count_under++ > 0) TextWeaver::commentary_text(tree, ap, I", ");
-	Trees::make_child(WeaveTree::locale(tree, hteu->usage_recorded_at, NULL, S), ap);
+	Trees::make_child(
+		WeaveTree::locale(tree, hteu->usage_recorded_at, hteu->finer_positioning, NULL, S),
+		ap);
 	last_cited_in = LiterateSource::section_of_par(hteu->usage_recorded_at);
 
 @h Non-paragraph subheadings.
