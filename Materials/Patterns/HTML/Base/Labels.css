@@ -1,0 +1,33 @@
+:root {
+	--line-label-colour: #E7DD98;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+span.labelmargin {
+}
+
+span.linelabel {
+	border-radius: 6px;
+	padding-top: 1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 1px;
+	background-color: var(--line-label-colour);
+	font-size: 75%;
+}
+
+span.nolinelabel {
+	border-radius: 6px;
+	padding-top: 1px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-bottom: 1px;
+	font-size: 75%;
+}
+
+a.labelanchor {
+	scroll-margin-top: 100px;
+}
