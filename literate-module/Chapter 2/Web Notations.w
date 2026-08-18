@@ -70,12 +70,12 @@ ls_notation *WebNotation::new(text_stream *name) {
 
 	ntn->indexing_machine = NULL;
 
-	ntn->preprocessor = WebNotation::new_machine();
-	ntn->postprocessor = WebNotation::new_machine();
-	ntn->code_preprocessor = WebNotation::new_machine();
-	ntn->code_postprocessor = WebNotation::new_machine();
-	ntn->commentary_preprocessor = WebNotation::new_machine();
-	ntn->commentary_postprocessor = WebNotation::new_machine();
+	ntn->preprocessor = NULL;
+	ntn->postprocessor = NULL;
+	ntn->code_preprocessor = NULL;
+	ntn->code_postprocessor = NULL;
+	ntn->commentary_preprocessor = NULL;
+	ntn->commentary_postprocessor = NULL;
 
 	ntn->c_stanza = NULL;
 	ntn->p_stanza = NULL;
@@ -434,21 +434,27 @@ text_stream *WebNotation::apply_definition_line(ls_notation *ntn, text_stream *c
 
 @<Entering processor stanzas@> =
 	if (Regexp::match(&mr, cmd, U"preprocess")) {
+		if (ntn->preprocessor == NULL) ntn->preprocessor = WebNotation::new_machine();
 		ntn->p_stanza = ntn->preprocessor; @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"postprocess")) {
+		if (ntn->postprocessor == NULL) ntn->postprocessor = WebNotation::new_machine();
 		ntn->p_stanza = ntn->postprocessor; @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"process code")) {
+		if (ntn->code_preprocessor == NULL) ntn->code_preprocessor = WebNotation::new_machine();
 		ntn->p_stanza = ntn->code_preprocessor; @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"postprocess code")) {
+		if (ntn->code_postprocessor == NULL) ntn->code_postprocessor = WebNotation::new_machine();
 		ntn->p_stanza = ntn->code_postprocessor; @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"process commentary")) {
+		if (ntn->commentary_preprocessor == NULL) ntn->commentary_preprocessor = WebNotation::new_machine();
 		ntn->p_stanza = ntn->commentary_preprocessor; @<Setting done@>;
 	}
 	if (Regexp::match(&mr, cmd, U"postprocess commentary")) {
+		if (ntn->commentary_postprocessor == NULL) ntn->commentary_postprocessor = WebNotation::new_machine();
 		ntn->p_stanza = ntn->commentary_postprocessor; @<Setting done@>;
 	}
 
@@ -618,18 +624,22 @@ text_stream *WebNotation::add_rewrite(ls_notation *ntn, notation_rewriting_machi
 
 =
 void WebNotation::rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) {
-	FSM::reset_machine(nrm->fsm);
-	for (int i=0; i<Str::len(text); i++) {
-		inchar32_t c = Str::get_at(text, i);
-		PUT(c);
-		int event = FSM::cycle_machine(nrm->fsm, c, NULL);
-		if (event == INWEB_REWRITE_FSMEVENT) {
-			general_pointer parameter = FSM::get_last_parameter(nrm->fsm);
-			notation_rewriter *nr = RETRIEVE_POINTER_notation_rewriter(parameter);
-			int backspace = Str::len(nr->from);
-			Str::truncate(OUT, Str::len(OUT) - backspace);
-			WRITE("%S", nr->to);
+	if (nrm) {
+		FSM::reset_machine(nrm->fsm);
+		for (int i=0; i<Str::len(text); i++) {
+			inchar32_t c = Str::get_at(text, i);
+			PUT(c);
+			int event = FSM::cycle_machine(nrm->fsm, c, NULL);
+			if (event == INWEB_REWRITE_FSMEVENT) {
+				general_pointer parameter = FSM::get_last_parameter(nrm->fsm);
+				notation_rewriter *nr = RETRIEVE_POINTER_notation_rewriter(parameter);
+				int backspace = Str::len(nr->from);
+				Str::truncate(OUT, Str::len(OUT) - backspace);
+				WRITE("%S", nr->to);
+			}
 		}
+	} else {
+		WRITE("%S", text);
 	}
 }
 
@@ -638,8 +648,10 @@ void WebNotation::rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_m
 =
 void WebNotation::postprocess(text_stream *text, ls_notation *ntn) {
 	if (Str::len(text) == 0) return;
-	TEMPORARY_TEXT(processed)
-	WebNotation::rewrite(processed, text, ntn->postprocessor);
-	if (Str::ne(processed, text)) { Str::clear(text); Str::copy(text, processed); }
-	DISCARD_TEXT(processed)
+	if (ntn->postprocessor) {
+		TEMPORARY_TEXT(processed)
+		WebNotation::rewrite(processed, text, ntn->postprocessor);
+		if (Str::ne(processed, text)) { Str::clear(text); Str::copy(text, processed); }
+		DISCARD_TEXT(processed)
+	}
 }

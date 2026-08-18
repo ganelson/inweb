@@ -1560,11 +1560,13 @@ ls_footnote *LiterateSource::find_footnote_in_para(ls_paragraph *par, text_strea
 
 =
 void LiterateSource::process_chunk(ls_chunk *chunk, notation_rewriting_machine *nrm) {
-	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
-		text_stream *before = line->classification.operand1;
-		text_stream *after = Str::new();
-		WebNotation::rewrite(after, before, nrm);
-		line->classification.operand1 = after;
+	if (nrm) {
+		for (ls_line *line = chunk->first_line; line; line = line->next_line) {
+			text_stream *before = line->classification.operand1;
+			text_stream *after = Str::new();
+			WebNotation::rewrite(after, before, nrm);
+			line->classification.operand1 = after;
+		}
 	}
 }
 

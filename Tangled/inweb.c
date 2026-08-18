@@ -2988,7 +2988,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define PARAGRAPH_TAGS_NTNMARKER 4
 
     
-#line 574 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 580 "inweb/literate-module/Chapter 2/Web Notations.w"
     #define INWEB_REWRITE_FSMEVENT 2
 
     
@@ -5440,13 +5440,13 @@ typedef struct ls_notation {
 	int a_stanza;
 	CLASS_DEFINITION
 } ls_notation;
-#line 559 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 565 "inweb/literate-module/Chapter 2/Web Notations.w"
 typedef struct notation_rewriting_machine {
 	struct finite_state_machine *fsm;
 	struct fsm_state *base_state;
 	CLASS_DEFINITION
 } notation_rewriting_machine;
-#line 577 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 583 "inweb/literate-module/Chapter 2/Web Notations.w"
 typedef struct notation_rewriter {
 	struct text_stream *from;
 	struct text_stream *to;
@@ -9033,11 +9033,11 @@ int  LiterateSource__detect_footnote(ls_notation *ntn, 	text_stream *matter, tex
 ls_footnote * LiterateSource__find_footnote_in_para(ls_paragraph *par, text_stream *cue) ;
 #line 1562 "inweb/literate-module/Chapter 2/Literate Source.w"
 void  LiterateSource__process_chunk(ls_chunk *chunk, notation_rewriting_machine *nrm) ;
-#line 1571 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1573 "inweb/literate-module/Chapter 2/Literate Source.w"
 int  LiterateSource__chunk_is_whitespace(ls_chunk *chunk) ;
-#line 1582 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1584 "inweb/literate-module/Chapter 2/Literate Source.w"
 void  LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) ;
-#line 1795 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1797 "inweb/literate-module/Chapter 2/Literate Source.w"
 void  LiterateSource__write_code(OUTPUT_STREAM, ls_line *line, text_stream *text, int from, int to) ;
 #line 15 "inweb/literate-module/Chapter 2/Paragraph Tags.w"
 void  ParagraphTags__tag_with_caption(ls_paragraph *par, text_stream *tag, text_stream *caption) ;
@@ -9191,15 +9191,15 @@ ls_notation * WebNotation__parse_declaration(wcl_declaration *D) ;
 void  WebNotation__read_definition_line(text_stream *line, text_file_position *tfp, void *v_state) ;
 #line 418 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__apply_definition_line(ls_notation *ntn, text_stream *cmd) ;
-#line 550 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 556 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__resolve_declaration(wcl_declaration *D) ;
-#line 564 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 570 "inweb/literate-module/Chapter 2/Web Notations.w"
 notation_rewriting_machine * WebNotation__new_machine(void) ;
-#line 585 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 591 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream * WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machine *nrm, 	text_stream *from, text_stream *to) ;
-#line 620 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 626 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) ;
-#line 639 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 649 "inweb/literate-module/Chapter 2/Web Notations.w"
 void  WebNotation__postprocess(text_stream *text, ls_notation *ntn) ;
 #line 39 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon * Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int addendum, 	int file_form, text_stream *file_path, ls_holon_namespace *ns, int bitmap, ls_notation *ntn, 	programming_language *pl) ;
@@ -19006,11 +19006,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C27";
+			char *svn = "9.0-beta+1C28";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "18 August 2026";
+			char *d = "19 August 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -48348,11 +48348,13 @@ ls_footnote *LiterateSource__find_footnote_in_para(ls_paragraph *par, text_strea
 
 #line 1562 "inweb/literate-module/Chapter 2/Literate Source.w"
 void LiterateSource__process_chunk(ls_chunk *chunk, notation_rewriting_machine *nrm) {
-	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
-		text_stream *before = line->classification.operand1;
-		text_stream *after = Str__new();
-		WebNotation__rewrite(after, before, nrm);
-		line->classification.operand1 = after;
+	if (nrm) {
+		for (ls_line *line = chunk->first_line; line; line = line->next_line) {
+			text_stream *before = line->classification.operand1;
+			text_stream *after = Str__new();
+			WebNotation__rewrite(after, before, nrm);
+			line->classification.operand1 = after;
+		}
 	}
 }
 
@@ -48363,7 +48365,7 @@ int LiterateSource__chunk_is_whitespace(ls_chunk *chunk) {
 	return TRUE;
 }
 
-#line 1582 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1584 "inweb/literate-module/Chapter 2/Literate Source.w"
 void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	if (lsu == NULL) {
 		WRITE("(no literate source)\n");
@@ -48407,7 +48409,7 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 			WRITE("C%d: ", cc);
 			if (chunk->holon) 
 {
-#line 1640 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1642 "inweb/literate-module/Chapter 2/Literate Source.w"
 	WRITE("holon");
 	ls_holon *holon = chunk->holon;
 	if (Str__len(holon->holon_name) > 0) WRITE(" '%S'", holon->holon_name);
@@ -48459,11 +48461,11 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	OUTDENT
 
 }
-#line 1623 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1625 "inweb/literate-module/Chapter 2/Literate Source.w"
 
 			else 
 {
-#line 1691 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1693 "inweb/literate-module/Chapter 2/Literate Source.w"
 	switch (chunk->chunk_type) {
 		case COMMENTARY_LSCT: WRITE("commentary\n"); break;
 		case QUOTATION_LSCT: WRITE("quotation\n"); break;
@@ -48568,7 +48570,7 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	OUTDENT;
 
 }
-#line 1624 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1626 "inweb/literate-module/Chapter 2/Literate Source.w"
 ;
 			if ((chunk == par->first_chunk) && (chunk->prev_chunk))
 				WRITE("*** first chunk but has prev_chunk set\n");
@@ -48584,7 +48586,7 @@ void LiterateSource__write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	}
 }
 
-#line 1795 "inweb/literate-module/Chapter 2/Literate Source.w"
+#line 1797 "inweb/literate-module/Chapter 2/Literate Source.w"
 void LiterateSource__write_code(OUTPUT_STREAM, ls_line *line, text_stream *text, int from, int to) {
 	if (line) WRITE("%07d ", line->origin.line_count);
 	for (int i=from; i<=to; i++) {
@@ -50212,12 +50214,12 @@ ls_notation *WebNotation__new(text_stream *name) {
 
 	ntn->indexing_machine = NULL;
 
-	ntn->preprocessor = WebNotation__new_machine();
-	ntn->postprocessor = WebNotation__new_machine();
-	ntn->code_preprocessor = WebNotation__new_machine();
-	ntn->code_postprocessor = WebNotation__new_machine();
-	ntn->commentary_preprocessor = WebNotation__new_machine();
-	ntn->commentary_postprocessor = WebNotation__new_machine();
+	ntn->preprocessor = NULL;
+	ntn->postprocessor = NULL;
+	ntn->code_preprocessor = NULL;
+	ntn->code_postprocessor = NULL;
+	ntn->commentary_preprocessor = NULL;
+	ntn->commentary_postprocessor = NULL;
 
 	ntn->c_stanza = NULL;
 	ntn->p_stanza = NULL;
@@ -50490,7 +50492,7 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 	match_results mr = Regexp__create_mr();
 	if (Str__is_whitespace(cmd)) 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
@@ -50500,17 +50502,17 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 	if ((ntn->c_stanza) || (ntn->p_stanza) || (ntn->a_stanza)) {
 		
 {
-#line 503 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 509 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"end")) {
 		ntn->c_stanza = NULL; ntn->p_stanza = NULL;	ntn->a_stanza = FALSE;
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 505 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 511 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->c_stanza) {
@@ -50524,12 +50526,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 516 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 522 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->p_stanza) {
@@ -50541,12 +50543,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 525 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 531 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (ntn->a_stanza) {
@@ -50560,12 +50562,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 536 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
@@ -50577,42 +50579,34 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 {
 #line 436 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"preprocess")) {
+		if (ntn->preprocessor == NULL) ntn->preprocessor = WebNotation__new_machine();
 		ntn->p_stanza = ntn->preprocessor; 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 437 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 438 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess")) {
+		if (ntn->postprocessor == NULL) ntn->postprocessor = WebNotation__new_machine();
 		ntn->p_stanza = ntn->postprocessor; 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 440 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 442 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"process code")) {
+		if (ntn->code_preprocessor == NULL) ntn->code_preprocessor = WebNotation__new_machine();
 		ntn->p_stanza = ntn->code_preprocessor; 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
-	Regexp__dispose_of(&mr);
-	return error;
-
-}
-#line 443 "inweb/literate-module/Chapter 2/Web Notations.w"
-;
-	}
-	if (Regexp__match(&mr, cmd, U"postprocess code")) {
-		ntn->p_stanza = ntn->code_postprocessor; 
-{
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
@@ -50620,26 +50614,40 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 #line 446 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
-	if (Regexp__match(&mr, cmd, U"process commentary")) {
-		ntn->p_stanza = ntn->commentary_preprocessor; 
+	if (Regexp__match(&mr, cmd, U"postprocess code")) {
+		if (ntn->code_postprocessor == NULL) ntn->code_postprocessor = WebNotation__new_machine();
+		ntn->p_stanza = ntn->code_postprocessor; 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 449 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 450 "inweb/literate-module/Chapter 2/Web Notations.w"
+;
+	}
+	if (Regexp__match(&mr, cmd, U"process commentary")) {
+		if (ntn->commentary_preprocessor == NULL) ntn->commentary_preprocessor = WebNotation__new_machine();
+		ntn->p_stanza = ntn->commentary_preprocessor; 
+{
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
+	Regexp__dispose_of(&mr);
+	return error;
+
+}
+#line 454 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"postprocess commentary")) {
+		if (ntn->commentary_postprocessor == NULL) ntn->commentary_postprocessor = WebNotation__new_machine();
 		ntn->p_stanza = ntn->commentary_postprocessor; 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 452 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 458 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
@@ -50648,16 +50656,16 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 ;
 		
 {
-#line 456 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 462 "inweb/literate-module/Chapter 2/Web Notations.w"
 	if (Regexp__match(&mr, cmd, U"classify")) {
 		ntn->c_stanza = ntn->main_classifier; 
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 457 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 463 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"residue of (%C+)")) {
@@ -50670,12 +50678,12 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 467 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 473 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"options of (%C+)")) {
@@ -50688,26 +50696,7 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		}
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
-	Regexp__dispose_of(&mr);
-	return error;
-
-}
-#line 477 "inweb/literate-module/Chapter 2/Web Notations.w"
-;
-	}
-
-}
-#line 426 "inweb/literate-module/Chapter 2/Web Notations.w"
-;
-		
-{
-#line 481 "inweb/literate-module/Chapter 2/Web Notations.w"
-	if (Regexp__match(&mr, cmd, U"alerts")) {
-		ntn->a_stanza = TRUE;
-		
-{
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
@@ -50717,20 +50706,39 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 	}
 
 }
-#line 427 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 426 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 		
 {
 #line 487 "inweb/literate-module/Chapter 2/Web Notations.w"
-	if (Regexp__match(&mr, cmd, U"name \"(%C+)\"")) {
-		ntn->name = Str__duplicate(mr.exp[0]); 
+	if (Regexp__match(&mr, cmd, U"alerts")) {
+		ntn->a_stanza = TRUE;
+		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 488 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 489 "inweb/literate-module/Chapter 2/Web Notations.w"
+;
+	}
+
+}
+#line 427 "inweb/literate-module/Chapter 2/Web Notations.w"
+;
+		
+{
+#line 493 "inweb/literate-module/Chapter 2/Web Notations.w"
+	if (Regexp__match(&mr, cmd, U"name \"(%C+)\"")) {
+		ntn->name = Str__duplicate(mr.exp[0]); 
+{
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
+	Regexp__dispose_of(&mr);
+	return error;
+
+}
+#line 494 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"recognise (.%C+)")) {
@@ -50738,24 +50746,24 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 		ADD_TO_LINKED_LIST(ext, text_stream, ntn->recognised_filename_extensions);
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 493 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 499 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 	if (Regexp__match(&mr, cmd, U"end")) {
 		error = TL_IS_4113;
 		
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
 }
-#line 497 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 503 "inweb/literate-module/Chapter 2/Web Notations.w"
 ;
 	}
 
@@ -50767,7 +50775,7 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 	WRITE_TO(error, "unknown inweb notation command '%S'", cmd);
 	
 {
-#line 542 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 548 "inweb/literate-module/Chapter 2/Web Notations.w"
 	Regexp__dispose_of(&mr);
 	return error;
 
@@ -50776,7 +50784,7 @@ text_stream *WebNotation__apply_definition_line(ls_notation *ntn, text_stream *c
 ;
 }
 
-#line 550 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 556 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__resolve_declaration(wcl_declaration *D) {
 	Conventions__set_level(D, NOTATION_LSCONVENTIONLEVEL);
 }
@@ -50785,7 +50793,7 @@ void WebNotation__resolve_declaration(wcl_declaration *D) {
 
 
 
-#line 563 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 569 "inweb/literate-module/Chapter 2/Web Notations.w"
 
 notation_rewriting_machine *WebNotation__new_machine(void) {
 	notation_rewriting_machine *nrm = CREATE(notation_rewriting_machine);
@@ -50799,7 +50807,7 @@ notation_rewriting_machine *WebNotation__new_machine(void) {
 
 
 
-#line 585 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 591 "inweb/literate-module/Chapter 2/Web Notations.w"
 text_stream *WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machine *nrm,
 	text_stream *from, text_stream *to) {
 	if (nrm == NULL) internal_error("no fsm");
@@ -50832,30 +50840,36 @@ text_stream *WebNotation__add_rewrite(ls_notation *ntn, notation_rewriting_machi
 	return error;
 }
 
-#line 620 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 626 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_machine *nrm) {
-	FSM__reset_machine(nrm->fsm);
-	for (int i=0; i<Str__len(text); i++) {
-		inchar32_t c = Str__get_at(text, i);
-		PUT(c);
-		int event = FSM__cycle_machine(nrm->fsm, c, NULL);
-		if (event == INWEB_REWRITE_FSMEVENT) {
-			general_pointer parameter = FSM__get_last_parameter(nrm->fsm);
-			notation_rewriter *nr = RETRIEVE_POINTER_notation_rewriter(parameter);
-			int backspace = Str__len(nr->from);
-			Str__truncate(OUT, Str__len(OUT) - backspace);
-			WRITE("%S", nr->to);
+	if (nrm) {
+		FSM__reset_machine(nrm->fsm);
+		for (int i=0; i<Str__len(text); i++) {
+			inchar32_t c = Str__get_at(text, i);
+			PUT(c);
+			int event = FSM__cycle_machine(nrm->fsm, c, NULL);
+			if (event == INWEB_REWRITE_FSMEVENT) {
+				general_pointer parameter = FSM__get_last_parameter(nrm->fsm);
+				notation_rewriter *nr = RETRIEVE_POINTER_notation_rewriter(parameter);
+				int backspace = Str__len(nr->from);
+				Str__truncate(OUT, Str__len(OUT) - backspace);
+				WRITE("%S", nr->to);
+			}
 		}
+	} else {
+		WRITE("%S", text);
 	}
 }
 
-#line 639 "inweb/literate-module/Chapter 2/Web Notations.w"
+#line 649 "inweb/literate-module/Chapter 2/Web Notations.w"
 void WebNotation__postprocess(text_stream *text, ls_notation *ntn) {
 	if (Str__len(text) == 0) return;
-	TEMPORARY_TEXT(processed)
-	WebNotation__rewrite(processed, text, ntn->postprocessor);
-	if (Str__ne(processed, text)) { Str__clear(text); Str__copy(text, processed); }
-	DISCARD_TEXT(processed)
+	if (ntn->postprocessor) {
+		TEMPORARY_TEXT(processed)
+		WebNotation__rewrite(processed, text, ntn->postprocessor);
+		if (Str__ne(processed, text)) { Str__clear(text); Str__copy(text, processed); }
+		DISCARD_TEXT(processed)
+	}
 }
 
 
@@ -58600,7 +58614,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 18 August 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 19 August 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
