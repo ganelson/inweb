@@ -97,9 +97,8 @@ int Conventions::type(int conv) {
 		case NS_INDEX_LSCONVENTION:
 		case IMPORTANT_NS_INDEX_LSCONVENTION:
 		case LITERAL_CHARACTERS_LSCONVENTION:
-			return TEXTUAL_PAIR_LSCONVENTIONTYPE;
 		case LABELS_REGEXP_LSCONVENTION:
-			return TEXTUAL_LSCONVENTIONTYPE;
+			return TEXTUAL_PAIR_LSCONVENTIONTYPE;
 	}
 	internal_error("unimplemented convention");
 }
@@ -236,8 +235,12 @@ void Conventions::describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 				Conventions::convert_to_angled(tv), Conventions::convert_to_angled(tv2));
 			break;
 		case LABELS_REGEXP_LSCONVENTION:
-			if (Str::len(tv) == 0) WRITE("there is no label syntax");
-			else WRITE("labels match regular expression /%S/", tv);
+			if (Str::len(tv) == 0) {
+				WRITE("there is no label syntax");
+			} else {
+				WRITE("labels match /%S/", tv);
+				if (Str::len(tv2) > 0) WRITE(" replacing with %S", tv2);
+			}
 			break;
 		case HOLONS_STYLED_LSCONVENTION:
 			if (iv) WRITE("holon names can contain styling");
@@ -504,6 +507,8 @@ text_stream *Conventions::parse_line(ls_conventions *conventions, text_stream *l
 		conv = LITERAL_CHARACTERS_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *there is no label syntax *")) {
 		conv = LABELS_REGEXP_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp::match(&mr, line, U" *labels match (/%c+?/) replacing with (/%c*?/) *")) {
+		conv = LABELS_REGEXP_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp::match(&mr, line, U" *labels match (/%c+/) *")) {
 		conv = LABELS_REGEXP_LSCONVENTION; tv = mr.exp[0]; tv2 = NULL;
 	} else if (Regexp::match(&mr, line, U" *there is no literal character syntax *")) {

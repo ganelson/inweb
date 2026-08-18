@@ -2300,39 +2300,39 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define BOTH_LSCONVENTIONTYPE 4
 
     
-#line 109 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 108 "inweb/literate-module/Chapter 1/Conventions.w"
     #define MARKDOWN_COMMENTARY_MARKUPCHOICE 1
 
     
-#line 110 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 109 "inweb/literate-module/Chapter 1/Conventions.w"
     #define SIMPLIFIED_COMMENTARY_MARKUPCHOICE 2
 
     
-#line 111 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 110 "inweb/literate-module/Chapter 1/Conventions.w"
     #define TEX_COMMENTARY_MARKUPCHOICE 3
 
     
-#line 115 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 114 "inweb/literate-module/Chapter 1/Conventions.w"
     #define PURPOSE_SUMMARYCHOICE 1
 
     
-#line 116 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 115 "inweb/literate-module/Chapter 1/Conventions.w"
     #define PURPOSE_IF_ITALIC_SUMMARYCHOICE 2
 
     
-#line 117 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 116 "inweb/literate-module/Chapter 1/Conventions.w"
     #define NO_SUMMARYCHOICE 3
 
     
-#line 121 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 120 "inweb/literate-module/Chapter 1/Conventions.w"
     #define NO_ABBREVCHOICE 1
 
     
-#line 122 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 121 "inweb/literate-module/Chapter 1/Conventions.w"
     #define YES_ABBREVCHOICE 2
 
     
-#line 123 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 122 "inweb/literate-module/Chapter 1/Conventions.w"
     #define EVEN_ABBREVCHOICE 3
 
     
@@ -3969,15 +3969,15 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define NO_DEFINED_LSCONVENTIONTYPE_VALUES 4
 
     
-#line 111 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 110 "inweb/literate-module/Chapter 1/Conventions.w"
     #define NO_DEFINED_MARKUPCHOICE_VALUES 3
 
     
-#line 117 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 116 "inweb/literate-module/Chapter 1/Conventions.w"
     #define NO_DEFINED_SUMMARYCHOICE_VALUES 3
 
     
-#line 123 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 122 "inweb/literate-module/Chapter 1/Conventions.w"
     #define NO_DEFINED_ABBREVCHOICE_VALUES 3
 
     
@@ -5170,7 +5170,7 @@ typedef struct module_search {
 	struct pathname *path_to_search;
 	CLASS_DEFINITION
 } module_search;
-#line 303 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 306 "inweb/literate-module/Chapter 1/Conventions.w"
 typedef struct ls_conventions {
 	int level; /* one of the `*_LSCONVENTIONLEVEL` values above */
 	int setting_made[NO_DEFINED_LSCONVENTION_VALUES]; /* `TRUE` only if an explicit choice made */
@@ -5472,7 +5472,7 @@ typedef struct ls_holon {
 	struct text_stream *file_path; /* textual file path for holons tangled to files */
 	struct programming_language *holon_language;
 } ls_holon;
-#line 114 "inweb/literate-module/Chapter 2/Holons.w"
+#line 122 "inweb/literate-module/Chapter 2/Holons.w"
 typedef struct ls_holon_namespace {
 	struct ls_web *owning_web;  /* or `NULL` for code isolated from any web */
 	struct ls_unit *owner;      /* or `NULL` for global scope, but they're not both `NULL` */
@@ -5483,7 +5483,7 @@ typedef struct ls_holon_namespace {
 	int contains_Main;
 	CLASS_DEFINITION
 } ls_holon_namespace;
-#line 335 "inweb/literate-module/Chapter 2/Holons.w"
+#line 343 "inweb/literate-module/Chapter 2/Holons.w"
 typedef struct holon_usage {
 	struct ls_paragraph *used_in_paragraph;
 	int multiplicity; /* for example, 2 if it's used twice in this paragraph */
@@ -8903,55 +8903,55 @@ ls_section * WebRanges__to_section(ls_web *W, text_stream *range) ;
 int  WebRanges__is_within(text_stream *range1, text_stream *range2) ;
 #line 62 "inweb/literate-module/Chapter 1/Conventions.w"
 int  Conventions__type(int conv) ;
-#line 126 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 125 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, text_stream *tv2) ;
-#line 311 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 314 "inweb/literate-module/Chapter 1/Conventions.w"
 ls_conventions * Conventions__new_set(int level) ;
-#line 323 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 326 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__set_both(ls_conventions *conventions, int conv, int val, text_stream *text, text_stream *text2) ;
-#line 332 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 335 "inweb/literate-module/Chapter 1/Conventions.w"
 text_stream * Conventions__convert_from_angled(text_stream *text) ;
-#line 358 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 361 "inweb/literate-module/Chapter 1/Conventions.w"
 text_stream * Conventions__convert_to_angled(text_stream *text) ;
-#line 373 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 376 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__set_int(ls_conventions *conventions, int conv, int val) ;
-#line 377 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 380 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__set_textual(ls_conventions *conventions, int conv, text_stream *text, text_stream *text2) ;
-#line 384 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 387 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__parse_declaration(wcl_declaration *D) ;
-#line 400 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 403 "inweb/literate-module/Chapter 1/Conventions.w"
 text_stream * Conventions__parse_line(ls_conventions *conventions, text_stream *line) ;
-#line 569 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 574 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__resolve_declaration(wcl_declaration *D) ;
-#line 572 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 577 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__set_level(wcl_declaration *D, int level) ;
-#line 582 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 587 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__apply(linked_list *L, wcl_declaration *D) ;
-#line 595 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 600 "inweb/literate-module/Chapter 1/Conventions.w"
 ls_conventions * Conventions__find(linked_list *L, int conv) ;
-#line 606 "inweb/literate-module/Chapter 1/Conventions.w"
-int  Conventions__get_int_from(linked_list *L, int conv) ;
 #line 611 "inweb/literate-module/Chapter 1/Conventions.w"
-text_stream * Conventions__get_textual_from(linked_list *L, int conv) ;
+int  Conventions__get_int_from(linked_list *L, int conv) ;
 #line 616 "inweb/literate-module/Chapter 1/Conventions.w"
-text_stream * Conventions__get_textual2_from(linked_list *L, int conv) ;
+text_stream * Conventions__get_textual_from(linked_list *L, int conv) ;
 #line 621 "inweb/literate-module/Chapter 1/Conventions.w"
+text_stream * Conventions__get_textual2_from(linked_list *L, int conv) ;
+#line 626 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__diagnose(OUTPUT_STREAM, linked_list *L, int fuller) ;
-#line 648 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 653 "inweb/literate-module/Chapter 1/Conventions.w"
 ls_conventions * Conventions__generic(void) ;
-#line 695 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 700 "inweb/literate-module/Chapter 1/Conventions.w"
 linked_list * Conventions__generic_set(void) ;
-#line 702 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 707 "inweb/literate-module/Chapter 1/Conventions.w"
 linked_list * Conventions__applicable(ls_web *W, ls_colony *C) ;
-#line 719 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 724 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__establish(ls_web *W, ls_colony *C) ;
-#line 723 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 728 "inweb/literate-module/Chapter 1/Conventions.w"
 void  Conventions__show(OUTPUT_STREAM, ls_web *W, int fuller) ;
-#line 727 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 732 "inweb/literate-module/Chapter 1/Conventions.w"
 int  Conventions__get_int(ls_web *W, int conv) ;
-#line 731 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 736 "inweb/literate-module/Chapter 1/Conventions.w"
 text_stream * Conventions__get_textual(ls_web *W, int conv) ;
-#line 735 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 740 "inweb/literate-module/Chapter 1/Conventions.w"
 text_stream * Conventions__get_textual2(ls_web *W, int conv) ;
 #line 59 "inweb/literate-module/Chapter 2/Literate Source.w"
 ls_unit * LiterateSource__begin_unit(ls_section *S, ls_notation *ntn, 	programming_language *language, pathname *extracts_path, ls_web *context) ;
@@ -9203,39 +9203,39 @@ void  WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_
 void  WebNotation__postprocess(text_stream *text, ls_notation *ntn) ;
 #line 39 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon * Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int addendum, 	int file_form, text_stream *file_path, ls_holon_namespace *ns, int bitmap, ls_notation *ntn, 	programming_language *pl) ;
-#line 124 "inweb/literate-module/Chapter 2/Holons.w"
+#line 132 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon_namespace * Holons__new_namespace(ls_web *W, ls_unit *owner) ;
-#line 137 "inweb/literate-module/Chapter 2/Holons.w"
+#line 145 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon_namespace * Holons__superior(ls_holon_namespace *ns) ;
-#line 143 "inweb/literate-module/Chapter 2/Holons.w"
+#line 151 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__declare_in_namespace(ls_holon *holon, ls_holon_namespace *ns) ;
-#line 220 "inweb/literate-module/Chapter 2/Holons.w"
+#line 228 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__add_to_namespace(ls_holon *holon, ls_holon_namespace *ns) ;
-#line 230 "inweb/literate-module/Chapter 2/Holons.w"
+#line 238 "inweb/literate-module/Chapter 2/Holons.w"
 int  Holons__abbreviated(text_stream *name) ;
-#line 235 "inweb/literate-module/Chapter 2/Holons.w"
+#line 243 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__sanitise_name(OUTPUT_STREAM, text_stream *name) ;
-#line 249 "inweb/literate-module/Chapter 2/Holons.w"
+#line 257 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__add_un_to_namespace(text_stream *name, ls_holon *from, ls_holon_namespace *ns) ;
-#line 259 "inweb/literate-module/Chapter 2/Holons.w"
+#line 267 "inweb/literate-module/Chapter 2/Holons.w"
 text_stream * Holons__unabbreviate_name(text_stream *name, ls_holon_namespace *ns, int *mc) ;
-#line 284 "inweb/literate-module/Chapter 2/Holons.w"
+#line 292 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon * Holons__find_holon(text_stream *name, ls_holon_namespace *ns, 	int allow_globals, text_stream *err) ;
-#line 321 "inweb/literate-module/Chapter 2/Holons.w"
+#line 329 "inweb/literate-module/Chapter 2/Holons.w"
 text_stream * Holons__external_filename(ls_holon *holon) ;
-#line 340 "inweb/literate-module/Chapter 2/Holons.w"
+#line 348 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__scan(ls_holon_namespace *ns) ;
-#line 402 "inweb/literate-module/Chapter 2/Holons.w"
+#line 410 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__vet_usage(ls_unit *lsu) ;
-#line 455 "inweb/literate-module/Chapter 2/Holons.w"
+#line 463 "inweb/literate-module/Chapter 2/Holons.w"
 int  Holons__traverse_terminated_safely(ls_holon *holon, ls_holon *forbidden, int depth) ;
-#line 471 "inweb/literate-module/Chapter 2/Holons.w"
+#line 479 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__number_paragraphs(ls_unit *lsu) ;
-#line 563 "inweb/literate-module/Chapter 2/Holons.w"
+#line 571 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__settle_paragraph_number(ls_paragraph *par) ;
-#line 574 "inweb/literate-module/Chapter 2/Holons.w"
+#line 582 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__set_parent(ls_paragraph *of, ls_paragraph *to) ;
-#line 583 "inweb/literate-module/Chapter 2/Holons.w"
+#line 591 "inweb/literate-module/Chapter 2/Holons.w"
 void  Holons__inspect_files(OUTPUT_STREAM, ls_web *W) ;
 #line 28 "inweb/literate-module/Chapter 2/Holon Syntax.w"
 finite_state_machine * HolonSyntax__get(ls_notation *ntn, programming_language *pl) ;
@@ -9331,9 +9331,9 @@ void  Languages__add_to_regexp_set(pl_regexp_set *rs, inchar32_t expression[]) ;
 void  Languages__regexp_to(language_reader_state *state, pl_regexp_set *rs, text_stream *T, text_file_position *tfp) ;
 #line 854 "inweb/literate-module/Chapter 3/Programming Languages.w"
 text_stream * Languages__regexp(inchar32_t *write_to, text_stream *T, int wrap) ;
-#line 919 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 923 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__add_to_regexp(inchar32_t *write_to, int i, inchar32_t c) ;
-#line 924 "inweb/literate-module/Chapter 3/Programming Languages.w"
+#line 928 "inweb/literate-module/Chapter 3/Programming Languages.w"
 int  Languages__add_escape_to_regexp(inchar32_t *write_to, int i, inchar32_t c) ;
 #line 35 "inweb/literate-module/Chapter 3/Code Analysis.w"
 void  CodeAnalysis__initialise_analysis_details(ls_web *W) ;
@@ -10049,47 +10049,47 @@ void  HTMLWeaving__render(weave_format *self, text_stream *OUT, heterogeneous_tr
 void  HTMLWeaving__render_EPUB(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) ;
 #line 96 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__render_visit(tree_node *N, void *state, int L) ;
-#line 934 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 936 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__notify_image(weave_order *wv, text_stream *image) ;
-#line 947 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 949 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content, 	int plain, int displayed) ;
-#line 986 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 988 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__interior_material(tree_node *N) ;
-#line 1001 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1003 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) ;
-#line 1019 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1021 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__paragraph_number(text_stream *OUT, ls_paragraph *par) ;
-#line 1046 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1048 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__change_colour(text_stream *OUT, int col, colour_scheme *cs) ;
-#line 1060 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1062 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__escape_text(text_stream *OUT, text_stream *id) ;
-#line 1072 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1074 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_code_block(OUTPUT_STREAM, int mode, weave_order *wv, text_stream *code, text_stream *language_rendered) ;
-#line 1131 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1133 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_syntax_coloured(OUTPUT_STREAM, text_stream *code, 	text_stream *colouring, colour_scheme *colours) ;
-#line 1149 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1151 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__render_text_as_image(OUTPUT_STREAM, int mode, weave_order *wv, 	text_stream *desc, text_stream *path) ;
-#line 1240 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1242 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_download(OUTPUT_STREAM, weave_order *wv, text_stream *download_name, 	text_stream *filetype) ;
-#line 1288 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1290 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_HTML_extract(OUTPUT_STREAM, weave_order *wv, text_stream *leafname) ;
-#line 1307 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1309 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_HTML_player(OUTPUT_STREAM, weave_order *wv, text_stream *name, int audio, int w, int h) ;
-#line 1335 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1337 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_embedding(OUTPUT_STREAM, weave_order *wv, text_stream *ID, 	text_stream *service, int w, int h) ;
-#line 1361 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1363 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__caption(match_results *mr, markdown_item *item, int *pos) ;
-#line 1393 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1395 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__render_ul_as_carousel(OUTPUT_STREAM, int mode, weave_order *wv, 	markdown_item *md, markdown_variation *variation) ;
-#line 1429 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1431 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_carousel_top(OUTPUT_STREAM, weave_order *wv, int slide_number, int slide_of, 	text_stream *carousel_id, text_stream *carousel_dots_id, text_stream *caption, int positioning) ;
-#line 1453 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1455 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__render_carousel_bottom(OUTPUT_STREAM, weave_order *wv, int slide_number, int slide_of, 	text_stream *carousel_id, text_stream *carousel_dots_id, text_stream *caption, int positioning) ;
-#line 1494 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1496 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__progress_popup(OUTPUT_STREAM, text_stream *cl, text_stream *content) ;
-#line 1503 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1505 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int  HTMLWeaving__begin_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) ;
-#line 1518 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1520 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void  HTMLWeaving__end_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) ;
 #line 9 "inweb/literate-module/Chapter 5/Debugging Format.w"
 void  DebuggingWeaving__create(void) ;
@@ -19006,11 +19006,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C25";
+			char *svn = "9.0-beta+1C26";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "16 August 2026";
+			char *d = "17 August 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -46161,14 +46161,13 @@ int Conventions__type(int conv) {
 		case NS_INDEX_LSCONVENTION:
 		case IMPORTANT_NS_INDEX_LSCONVENTION:
 		case LITERAL_CHARACTERS_LSCONVENTION:
-			return TEXTUAL_PAIR_LSCONVENTIONTYPE;
 		case LABELS_REGEXP_LSCONVENTION:
-			return TEXTUAL_LSCONVENTIONTYPE;
+			return TEXTUAL_PAIR_LSCONVENTIONTYPE;
 	}
 	internal_error("unimplemented convention");
 }
 
-#line 126 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 125 "inweb/literate-module/Chapter 1/Conventions.w"
 void Conventions__describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, text_stream *tv2) {
 	if ((conv < 0) || (conv >= NO_DEFINED_LSCONVENTION_VALUES)) internal_error("convention out of range");
 	switch (conv) {
@@ -46282,8 +46281,12 @@ void Conventions__describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 				Conventions__convert_to_angled(tv), Conventions__convert_to_angled(tv2));
 			break;
 		case LABELS_REGEXP_LSCONVENTION:
-			if (Str__len(tv) == 0) WRITE("there is no label syntax");
-			else WRITE("labels match regular expression /%S/", tv);
+			if (Str__len(tv) == 0) {
+				WRITE("there is no label syntax");
+			} else {
+				WRITE("labels match /%S/", tv);
+				if (Str__len(tv2) > 0) WRITE(" replacing with %S", tv2);
+			}
 			break;
 		case HOLONS_STYLED_LSCONVENTION:
 			if (iv) WRITE("holon names can contain styling");
@@ -46350,7 +46353,7 @@ void Conventions__describe(OUTPUT_STREAM, int conv, int iv, text_stream *tv, tex
 
 
 
-#line 310 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 313 "inweb/literate-module/Chapter 1/Conventions.w"
 
 ls_conventions *Conventions__new_set(int level) {
 	ls_conventions *conventions = CREATE(ls_conventions);
@@ -46422,7 +46425,7 @@ void Conventions__set_textual(ls_conventions *conventions, int conv, text_stream
 	Conventions__set_both(conventions, conv, 0, text, text2);
 }
 
-#line 384 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 387 "inweb/literate-module/Chapter 1/Conventions.w"
 void Conventions__parse_declaration(wcl_declaration *D) {
 	ls_conventions *conventions = Conventions__new_set(GENERIC_LSCONVENTIONLEVEL);
 	text_file_position tfp = D->body_position;
@@ -46546,6 +46549,8 @@ text_stream *Conventions__parse_line(ls_conventions *conventions, text_stream *l
 		conv = LITERAL_CHARACTERS_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp__match(&mr, line, U" *there is no label syntax *")) {
 		conv = LABELS_REGEXP_LSCONVENTION; tv = NULL; tv2 = NULL;
+	} else if (Regexp__match(&mr, line, U" *labels match (/%c+?/) replacing with (/%c*?/) *")) {
+		conv = LABELS_REGEXP_LSCONVENTION; tv = mr.exp[0]; tv2 = mr.exp[1];
 	} else if (Regexp__match(&mr, line, U" *labels match (/%c+/) *")) {
 		conv = LABELS_REGEXP_LSCONVENTION; tv = mr.exp[0]; tv2 = NULL;
 	} else if (Regexp__match(&mr, line, U" *there is no literal character syntax *")) {
@@ -46607,7 +46612,7 @@ text_stream *Conventions__parse_line(ls_conventions *conventions, text_stream *l
 	return NULL;
 }
 
-#line 569 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 574 "inweb/literate-module/Chapter 1/Conventions.w"
 void Conventions__resolve_declaration(wcl_declaration *D) {
 }
 
@@ -46631,7 +46636,7 @@ void Conventions__apply(linked_list *L, wcl_declaration *D) {
 	}
 }
 
-#line 595 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 600 "inweb/literate-module/Chapter 1/Conventions.w"
 ls_conventions *Conventions__find(linked_list *L, int conv) {
 	if (L == NULL) internal_error("no list");
 	if ((conv < 0) || (conv >= NO_DEFINED_LSCONVENTION_VALUES)) internal_error("convention out of range");
@@ -46682,7 +46687,7 @@ void Conventions__diagnose(OUTPUT_STREAM, linked_list *L, int fuller) {
 	}
 }
 
-#line 648 "inweb/literate-module/Chapter 1/Conventions.w"
+#line 653 "inweb/literate-module/Chapter 1/Conventions.w"
 ls_conventions *Conventions__generic(void) {
 	static ls_conventions *generic = NULL;
 	if (generic == NULL) {
@@ -50919,6 +50924,7 @@ ls_holon *Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int a
 	LiterateSource__process_chunk(chunk, ntn->code_preprocessor);
 	if (W) {
 		text_stream *regexp = Conventions__get_textual_from(W->conventions, LABELS_REGEXP_LSCONVENTION);
+		text_stream *rep = Conventions__get_textual2_from(W->conventions, LABELS_REGEXP_LSCONVENTION);
 		if (Str__len(regexp) > 0) {
 			if (W->label_pattern[0] == 0) {
 				text_stream *err = Languages__regexp(W->label_pattern, regexp, TRUE);
@@ -50931,8 +50937,15 @@ ls_holon *Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int a
 			match_results mr = Regexp__create_mr();
 			for (ls_line *lst = holon->corresponding_chunk->first_line; lst; lst = lst->next_line) {
 				text_stream *code = CodeExcerpts__line_code(lst);
-				if (Regexp__match(&mr, code, W->label_pattern))
-					LineLabels__label_line(lst, mr.exp[0]);
+				if (Regexp__match(&mr, code, W->label_pattern)) {
+					LineLabels__label_line(lst, mr.exp[1]);
+					if (Str__len(rep) > 0) {
+						Str__clear(code);
+						WRITE_TO(code, "%S", mr.exp[0]);
+						for (int i=1; i<Str__len(rep)-1; i++) PUT_TO(code, Str__get_at(rep, i));
+						WRITE_TO(code, "%S", mr.exp[2]);
+					}
+				}
 			}
 			Regexp__dispose_of(&mr);
 		}
@@ -50954,7 +50967,7 @@ ls_holon *Holons__new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int a
 
 
 
-#line 123 "inweb/literate-module/Chapter 2/Holons.w"
+#line 131 "inweb/literate-module/Chapter 2/Holons.w"
 
 ls_holon_namespace *Holons__new_namespace(ls_web *W, ls_unit *owner) {
 	ls_holon_namespace *ns = CREATE(ls_holon_namespace);
@@ -51017,12 +51030,12 @@ void Holons__declare_in_namespace(ls_holon *holon, ls_holon_namespace *ns) {
 				ADD_TO_LINKED_LIST(holon, ls_holon, existing->addenda);
 				
 {
-#line 216 "inweb/literate-module/Chapter 2/Holons.w"
+#line 224 "inweb/literate-module/Chapter 2/Holons.w"
 	Holons__add_to_namespace(holon, ns);
 	if ((gns) && (holon->webwide)) Holons__add_to_namespace(holon, gns);
 
 }
-#line 183 "inweb/literate-module/Chapter 2/Holons.w"
+#line 191 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 			} else {
 				text_stream *message = Str__new();
@@ -51042,12 +51055,12 @@ void Holons__declare_in_namespace(ls_holon *holon, ls_holon_namespace *ns) {
 			} else {
 				
 {
-#line 216 "inweb/literate-module/Chapter 2/Holons.w"
+#line 224 "inweb/literate-module/Chapter 2/Holons.w"
 	Holons__add_to_namespace(holon, ns);
 	if ((gns) && (holon->webwide)) Holons__add_to_namespace(holon, gns);
 
 }
-#line 200 "inweb/literate-module/Chapter 2/Holons.w"
+#line 208 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 			}
 		}
@@ -51060,18 +51073,18 @@ void Holons__declare_in_namespace(ls_holon *holon, ls_holon_namespace *ns) {
 		} else {
 			
 {
-#line 216 "inweb/literate-module/Chapter 2/Holons.w"
+#line 224 "inweb/literate-module/Chapter 2/Holons.w"
 	Holons__add_to_namespace(holon, ns);
 	if ((gns) && (holon->webwide)) Holons__add_to_namespace(holon, gns);
 
 }
-#line 210 "inweb/literate-module/Chapter 2/Holons.w"
+#line 218 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 		}
 	}
 }
 
-#line 220 "inweb/literate-module/Chapter 2/Holons.w"
+#line 228 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__add_to_namespace(ls_holon *holon, ls_holon_namespace *ns) {
 	if ((Str__len(holon->holon_name) > 0) && (holon->addendum == FALSE)) {
 		if (holon->main_holon) ns->contains_Main = TRUE;
@@ -51133,13 +51146,13 @@ text_stream *Holons__unabbreviate_name(text_stream *name, ls_holon_namespace *ns
 	}
 }
 
-#line 284 "inweb/literate-module/Chapter 2/Holons.w"
+#line 292 "inweb/literate-module/Chapter 2/Holons.w"
 ls_holon *Holons__find_holon(text_stream *name, ls_holon_namespace *ns,
 	int allow_globals, text_stream *err) {
 	while (ns) {
 		if (Str__len(name) > 0) 
 {
-#line 295 "inweb/literate-module/Chapter 2/Holons.w"
+#line 303 "inweb/literate-module/Chapter 2/Holons.w"
 	if (Holons__abbreviated(name)) {
 		if ((ns->owning_web) &&
 			(Conventions__get_int(ns->owning_web, HOLONS_CAN_BE_ABBREVIATED_LSCONVENTION)
@@ -51164,7 +51177,7 @@ ls_holon *Holons__find_holon(text_stream *name, ls_holon_namespace *ns,
 	}
 
 }
-#line 287 "inweb/literate-module/Chapter 2/Holons.w"
+#line 295 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 		if (allow_globals == FALSE) break;
 		ns = Holons__superior(ns);
@@ -51172,7 +51185,7 @@ ls_holon *Holons__find_holon(text_stream *name, ls_holon_namespace *ns,
 	return NULL;
 }
 
-#line 321 "inweb/literate-module/Chapter 2/Holons.w"
+#line 329 "inweb/literate-module/Chapter 2/Holons.w"
 text_stream *Holons__external_filename(ls_holon *holon) {
 	if ((holon == NULL) || (holon->file_form == FALSE)) return NULL;
 	return holon->file_path;
@@ -51182,7 +51195,7 @@ text_stream *Holons__external_filename(ls_holon *holon) {
 
 
 
-#line 339 "inweb/literate-module/Chapter 2/Holons.w"
+#line 347 "inweb/literate-module/Chapter 2/Holons.w"
 
 void Holons__scan(ls_holon_namespace *ns) {
 	linked_list *holon_list = ns->holons;
@@ -51194,7 +51207,7 @@ void Holons__scan(ls_holon_namespace *ns) {
 				(hs->type == FILE_EXPANSION_LSHST))
 				
 {
-#line 365 "inweb/literate-module/Chapter 2/Holons.w"
+#line 373 "inweb/literate-module/Chapter 2/Holons.w"
 	TEMPORARY_TEXT(err)
 	TEMPORARY_TEXT(sanitised)
 	Holons__sanitise_name(sanitised, hs->texts[0]);
@@ -51230,7 +51243,7 @@ void Holons__scan(ls_holon_namespace *ns) {
 	DISCARD_TEXT(err)
 
 }
-#line 348 "inweb/literate-module/Chapter 2/Holons.w"
+#line 356 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list)
@@ -51244,7 +51257,7 @@ void Holons__scan(ls_holon_namespace *ns) {
 						WebErrors__record_at(TL_IS_4125, hs->line);
 					
 {
-#line 411 "inweb/literate-module/Chapter 2/Holons.w"
+#line 419 "inweb/literate-module/Chapter 2/Holons.w"
 	holon_usage *hu;
 	ls_paragraph *user = holon->corresponding_chunk->owner;
 	if (holon->addendum_to) user = holon->addendum_to->corresponding_chunk->owner;
@@ -51260,19 +51273,19 @@ void Holons__scan(ls_holon_namespace *ns) {
 	hu->multiplicity++;
 
 }
-#line 359 "inweb/literate-module/Chapter 2/Holons.w"
+#line 367 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 				}
 			}
 }
 
-#line 402 "inweb/literate-module/Chapter 2/Holons.w"
+#line 410 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__vet_usage(ls_unit *lsu) {
 	ls_holon_namespace *ns = lsu->local_holon_namespace;
 	linked_list *holon_list = ns->holons;
 	
 {
-#line 429 "inweb/literate-module/Chapter 2/Holons.w"
+#line 437 "inweb/literate-module/Chapter 2/Holons.w"
 	ls_holon *holon;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list) {
 		if ((holon->top_level == FALSE) &&
@@ -51286,11 +51299,11 @@ void Holons__vet_usage(ls_unit *lsu) {
 	}
 
 }
-#line 405 "inweb/literate-module/Chapter 2/Holons.w"
+#line 413 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 442 "inweb/literate-module/Chapter 2/Holons.w"
+#line 450 "inweb/literate-module/Chapter 2/Holons.w"
 	ls_holon *holon;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list) {
 		if ((holon->top_level == FALSE) &&
@@ -51304,12 +51317,12 @@ void Holons__vet_usage(ls_unit *lsu) {
 	}
 
 }
-#line 406 "inweb/literate-module/Chapter 2/Holons.w"
+#line 414 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	Holons__number_paragraphs(lsu);
 }
 
-#line 455 "inweb/literate-module/Chapter 2/Holons.w"
+#line 463 "inweb/literate-module/Chapter 2/Holons.w"
 int Holons__traverse_terminated_safely(ls_holon *holon, ls_holon *forbidden, int depth) {
 	if ((depth > 0) && (holon == forbidden)) return FALSE;
 	holon_usage *hu;
@@ -51322,13 +51335,13 @@ int Holons__traverse_terminated_safely(ls_holon *holon, ls_holon *forbidden, int
 	return TRUE;
 }
 
-#line 471 "inweb/literate-module/Chapter 2/Holons.w"
+#line 479 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__number_paragraphs(ls_unit *lsu) {
 	if ((lsu->context) &&
 		(Conventions__get_int(lsu->context, PARAGRAPHS_NUMBERED_SEQUENTIALLY_LSCONVENTION)))
 		
 {
-#line 486 "inweb/literate-module/Chapter 2/Holons.w"
+#line 494 "inweb/literate-module/Chapter 2/Holons.w"
 	int N = 0;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		N++;
@@ -51337,16 +51350,16 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 	}
 
 }
-#line 474 "inweb/literate-module/Chapter 2/Holons.w"
+#line 482 "inweb/literate-module/Chapter 2/Holons.w"
 
 	else
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Holons.w"
+#line 510 "inweb/literate-module/Chapter 2/Holons.w"
 	linked_list *holon_list = lsu->local_holon_namespace->holons;
 	
 {
-#line 510 "inweb/literate-module/Chapter 2/Holons.w"
+#line 518 "inweb/literate-module/Chapter 2/Holons.w"
 	ls_holon *holon;
 	LOOP_OVER_LINKED_LIST(holon, ls_holon, holon_list) {
 		if ((holon->top_level == FALSE) && (holon->addendum_to == NULL)) {
@@ -51362,11 +51375,11 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 	}
 
 }
-#line 503 "inweb/literate-module/Chapter 2/Holons.w"
+#line 511 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 525 "inweb/literate-module/Chapter 2/Holons.w"
+#line 533 "inweb/literate-module/Chapter 2/Holons.w"
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		if (par->parent_paragraph == NULL)
 			for (ls_paragraph *par2 = par; par2; par2 = par2->next_par)
@@ -51377,22 +51390,22 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 				}
 
 }
-#line 504 "inweb/literate-module/Chapter 2/Holons.w"
+#line 512 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 535 "inweb/literate-module/Chapter 2/Holons.w"
+#line 543 "inweb/literate-module/Chapter 2/Holons.w"
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
 		par->paragraph_number = Str__new();
 		par->next_child_number = 0;
 	}
 
 }
-#line 505 "inweb/literate-module/Chapter 2/Holons.w"
+#line 513 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 545 "inweb/literate-module/Chapter 2/Holons.w"
+#line 553 "inweb/literate-module/Chapter 2/Holons.w"
 	int top_level = 1;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		if (par->parent_paragraph == NULL) {
@@ -51402,24 +51415,24 @@ void Holons__number_paragraphs(ls_unit *lsu) {
 			Str__clear(par->paragraph_number);
 
 }
-#line 506 "inweb/literate-module/Chapter 2/Holons.w"
+#line 514 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 	
 {
-#line 554 "inweb/literate-module/Chapter 2/Holons.w"
+#line 562 "inweb/literate-module/Chapter 2/Holons.w"
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		Holons__settle_paragraph_number(par);
 
 }
-#line 507 "inweb/literate-module/Chapter 2/Holons.w"
+#line 515 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 
 }
-#line 476 "inweb/literate-module/Chapter 2/Holons.w"
+#line 484 "inweb/literate-module/Chapter 2/Holons.w"
 ;
 }
 
-#line 563 "inweb/literate-module/Chapter 2/Holons.w"
+#line 571 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__settle_paragraph_number(ls_paragraph *par) {
 	if (Str__len(par->paragraph_number) > 0) return;
 	WRITE_TO(par->paragraph_number, "X"); 
@@ -51437,7 +51450,7 @@ void Holons__set_parent(ls_paragraph *of, ls_paragraph *to) {
 	of->parent_paragraph = to;
 }
 
-#line 583 "inweb/literate-module/Chapter 2/Holons.w"
+#line 591 "inweb/literate-module/Chapter 2/Holons.w"
 void Holons__inspect_files(OUTPUT_STREAM, ls_web *W) {
 	textual_table *T = NULL;
 	ls_chapter *C;
@@ -54174,7 +54187,10 @@ text_stream *Languages__regexp(inchar32_t *write_to, text_stream *T, int wrap) {
 	if (write_to == NULL) internal_error("no buffer");
 	int x = 0;
 	write_to[0] = 0;
-	if (wrap) { write_to[x++] = '%'; write_to[x++] = 'c'; write_to[x++] = '*'; write_to[x++] = '?'; }
+	if (wrap) {
+		write_to[x++] = '('; write_to[x++] = '%'; write_to[x++] = 'c';
+		write_to[x++] = '*'; write_to[x++] = '?'; write_to[x++] = ')';
+	}
 	if (Str__len(T) > 0) {
 		int from = 0, to = Str__len(T)-1;
 		if ((to > from) &&
@@ -54230,7 +54246,8 @@ text_stream *Languages__regexp(inchar32_t *write_to, text_stream *T, int wrap) {
 		write_to[x] = 0;
 	}
 	if ((wrap) && (x+3 < MAX_ILDF_REGEXP_LENGTH)) {
-		write_to[x++] = '%'; write_to[x++] = 'c'; write_to[x++] = '*'; write_to[x++] = 0;
+		write_to[x++] = '('; write_to[x++] = '%'; write_to[x++] = 'c';
+		write_to[x++] = '*'; write_to[x++] = ')'; write_to[x++] = 0;
 	}
 	return NULL;
 }
@@ -58579,7 +58596,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 16 August 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 17 August 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
@@ -66035,7 +66052,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 		(N->type == weave_chapter_title_page_node_type) ||
 		(N->type == weave_grammar_index_node_type)) 
 {
-#line 925 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 927 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	;
 
 }
@@ -66062,7 +66079,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_verbatim_node_type) 
 {
-#line 827 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 829 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
 	WRITE("%S", C->content);
 
@@ -66320,7 +66337,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN("li");
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66514,7 +66531,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 		}
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66553,7 +66570,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("ul", "class=\"footnotetexts\"");
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66584,7 +66601,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("ul", "class=\"endnotetexts\"");
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66607,7 +66624,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	}
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66638,7 +66655,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTML_OPEN_WITH("pre", "class=\"definitions code-font\"");
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
@@ -66728,7 +66745,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_holon_declaration_node_type) 
 {
-#line 692 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 694 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
 	HTML_OPEN_WITH("span", "class=\"named-paragraph-container code-font\"");
 	ls_holon *label_holon = C->holon;
@@ -66768,7 +66785,9 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 		if (LineLabels__labelled(C->line)) {
 			WRITE("<a id=\"");
 			LineLabels__anchor(OUT, C->line);
-			WRITE("\" class=\"labelanchor\"></a><span class=\"linelabel\">%S</span>",
+			WRITE("\" class=\"labelanchor\"></a><span class=\"linelabel\"><a href=\"#");
+			LineLabels__anchor(OUT, C->line);
+			WRITE("\">%S</a></span>",
 				LineLabels__label_text(C->line));
 			n = LineLabels__label_width(C->line);
 		} else {
@@ -66782,12 +66801,12 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	}
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 594 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 596 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	WRITE("\n");
 	return FALSE;
@@ -66797,7 +66816,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_usage_node_type) 
 {
-#line 599 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 601 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_function_usage_node *C = RETRIEVE_POINTER_weave_function_usage_node(N->content);
 	HTML__begin_link_with_class(OUT, TL_IS_4571, C->url);
 	HTMLWeaving__change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
@@ -66810,7 +66829,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_commentary_node_type) 
 {
-#line 607 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 609 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_commentary_node *C = RETRIEVE_POINTER_weave_commentary_node(N->content);
 	if (C->in_code) HTMLWeaving__change_colour(OUT, COMMENT_COLOUR, hrs->colours);
 	for (int i=0; i < Str__len(C->text); i++) {
@@ -66835,7 +66854,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_carousel_slide_node_type) 
 {
-#line 627 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 629 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
 	if (hrs->slide_number == -1) {
 		hrs->slide_number = 1;
@@ -66850,12 +66869,12 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	HTMLWeaving__render_carousel_top(OUT, hrs->wv, hrs->slide_number, hrs->slide_of, carousel_id, carousel_dots_id, C->caption, C->positioning);
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 639 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 641 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	HTMLWeaving__render_carousel_bottom(OUT, hrs->wv, hrs->slide_number, hrs->slide_of, carousel_id, carousel_dots_id, C->caption, C->positioning);
 	DISCARD_TEXT(carousel_id)
@@ -66871,7 +66890,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_toc_node_type) 
 {
-#line 650 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 652 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("ul", "class=\"toc\"");
 	for (tree_node *M = N->child; M; M = M->next) {
 		HTML_OPEN("li");
@@ -66888,7 +66907,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_toc_line_node_type) 
 {
-#line 662 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 664 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_URL(TEMP, C->para, NULL, hrs->wv->weave_to, hrs->wv->weave_colony);
@@ -66910,7 +66929,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_defn_node_type) 
 {
-#line 679 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 681 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
 	HTML_OPEN_WITH("span", "class=\"definition-keyword\"");
 	WRITE("%S", C->keyword);
@@ -66928,7 +66947,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_source_code_node_type) 
 {
-#line 719 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 721 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_source_code_node *C = RETRIEVE_POINTER_weave_source_code_node(N->content);
 	HTMLWeaving__render_syntax_coloured(OUT, C->matter, C->colouring, hrs->colours);
 
@@ -66937,7 +66956,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_comment_in_holon_node_type) 
 {
-#line 723 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 725 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
 	if (C->as_markdown) {
 		HTML_OPEN_WITH("span", "class=\"comment-syntax\"");
@@ -66957,7 +66976,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_url_node_type) 
 {
-#line 738 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 740 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
 	HTML__begin_link_with_class(OUT, (C->external)?TL_IS_4575:TL_IS_4576, C->url);
 	WRITE("%S", C->content);
@@ -66968,7 +66987,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_footnote_cue_node_type) 
 {
-#line 744 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 746 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
 	if (hrs->EPUB_flag) {
 		if (N->parent->type != weave_begin_footnote_text_node_type)
@@ -66984,7 +67003,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_begin_footnote_text_node_type) 
 {
-#line 755 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 757 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_begin_footnote_text_node *C =
 		RETRIEVE_POINTER_weave_begin_footnote_text_node(N->content);
 	if (hrs->EPUB_flag)
@@ -66995,12 +67014,12 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 			C->cue_text);
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 763 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 765 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	if (hrs->EPUB_flag)
 		WRITE("<a href=\"#fnref%S\"> (return to text)</a></p></li>",
@@ -67015,7 +67034,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_display_line_node_type) 
 {
-#line 773 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 775 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_display_line_node *C =
 		RETRIEVE_POINTER_weave_display_line_node(N->content);
 	HTML_OPEN("blockquote"); WRITE("\n"); INDENT;
@@ -67029,7 +67048,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_function_defn_node_type) 
 {
-#line 782 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 784 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
 	if ((Functions__used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
@@ -67058,12 +67077,12 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 		
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 808 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 810 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 		HTML_CLOSE("span");
 
@@ -67081,7 +67100,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_item_node_type) 
 {
-#line 821 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 823 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
 	if (Str__eq(C->label, TL_IS_4578)) WRITE("&#9679; ");
 	else if (Str__len(C->label) > 0) WRITE("(%S) ", C->label);
@@ -67092,16 +67111,16 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_inline_node_type) 
 {
-#line 831 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 833 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("span", "class=\"extract\"");
 	
 {
-#line 928 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 930 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	for (tree_node *M = N->child; M; M = M->next)
 		Trees__traverse_from(M, &HTMLWeaving__render_visit, (void *) hrs, L+1);
 
 }
-#line 832 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 834 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	HTML_CLOSE("span");
 	return FALSE;
@@ -67111,7 +67130,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_locale_node_type) 
 {
-#line 837 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 839 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
 	TEMPORARY_TEXT(TEMP)
 	Colonies__paragraph_URL(TEMP, C->par1, C->finer, hrs->wv->weave_to, hrs->wv->weave_colony);
@@ -67136,7 +67155,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_maths_node_type) 
 {
-#line 857 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 859 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
 	HTMLWeaving__render_maths(OUT, hrs->wv, C->content, hrs->EPUB_flag, C->displayed);
 
@@ -67145,7 +67164,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_markdown_node_type) 
 {
-#line 861 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 863 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	ls_paragraph *first_in_para = NULL;
 	if ((N == N->parent->child) &&
 		(N->parent->type == weave_paragraph_heading_node_type)) {
@@ -67177,7 +67196,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_linebreak_node_type) 
 {
-#line 888 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 890 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	WRITE("<br/>");
 
 }
@@ -67185,7 +67204,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 
 	else if (N->type == weave_index_marker_node_type) 
 {
-#line 891 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 893 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	HTML_OPEN_WITH("div", "class=\"lsindex\"");
 	if ((hrs->wv) && (hrs->wv->weave_web)) {
 		ls_index *index = hrs->wv->weave_web->index;
@@ -67230,7 +67249,7 @@ int HTMLWeaving__render_visit(tree_node *N, void *state, int L) {
 	return TRUE;
 }
 
-#line 934 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 936 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__notify_image(weave_order *wv, text_stream *image) {
 	if (Str__includes_character(image, '/')) return;
 	if (Str__includes_character(image, '\\')) return;
@@ -67241,7 +67260,7 @@ void HTMLWeaving__notify_image(weave_order *wv, text_stream *image) {
 	Assets__include_asset(NULL, R, F, NULL, wv);
 }
 
-#line 947 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 949 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *content,
 	int plain, int displayed) {
 	text_stream *plugin_name = (wv)?(Patterns__get_mathematics_plugin(wv->weave_web, wv->pattern)):NULL;
@@ -67277,7 +67296,7 @@ void HTMLWeaving__render_maths(OUTPUT_STREAM, weave_order *wv, text_stream *cont
 	}
 }
 
-#line 986 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 988 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int HTMLWeaving__interior_material(tree_node *N) {
 	if (N->type == weave_commentary_node_type) return TRUE;
 	if (N->type == weave_markdown_node_type) return TRUE;
@@ -67289,7 +67308,7 @@ int HTMLWeaving__interior_material(tree_node *N) {
 	return FALSE;
 }
 
-#line 1001 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1003 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__go_to_depth(HTML_render_state *hrs, int from_depth, int to_depth) {
 	text_stream *OUT = hrs->OUT;
 	if (from_depth == to_depth) {
@@ -67307,7 +67326,7 @@ void HTMLWeaving__go_to_depth(HTML_render_state *hrs, int from_depth, int to_dep
 	if (to_depth > 0) HTML_OPEN("li");
 }
 
-#line 1019 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1021 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__paragraph_number(text_stream *OUT, ls_paragraph *par) {
 	text_stream *title = LiterateSource__par_title(par);
 	int depth = LiterateSource__par_depth(par);
@@ -67334,7 +67353,7 @@ void HTMLWeaving__paragraph_number(text_stream *OUT, ls_paragraph *par) {
 	}
 }
 
-#line 1046 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1048 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	if (col == -1) {
 		HTML_CLOSE("span");
@@ -67348,7 +67367,7 @@ void HTMLWeaving__change_colour(text_stream *OUT, int col, colour_scheme *cs) {
 	}
 }
 
-#line 1060 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1062 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__escape_text(text_stream *OUT, text_stream *id) {
 	for (int i=0; i < Str__len(id); i++) {
 		if (Str__get_at(id, i) == '&') WRITE("&amp;");
@@ -67358,7 +67377,7 @@ void HTMLWeaving__escape_text(text_stream *OUT, text_stream *id) {
 	}
 }
 
-#line 1072 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1074 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__render_code_block(OUTPUT_STREAM, int mode, weave_order *wv, text_stream *code, text_stream *language_rendered) {
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "%S-Colours", language_rendered);
@@ -67547,7 +67566,7 @@ void HTMLWeaving__render_download(OUTPUT_STREAM, weave_order *wv, text_stream *d
 		int N = Filenames__size(F);
 		if (N > 0) 
 {
-#line 1274 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1276 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	WRITE_TO(size, " (");
 	if (Str__len(filetype) > 0) WRITE_TO(size, "%S, ", filetype);
 	int x = 0, y = 0;
@@ -67562,7 +67581,7 @@ void HTMLWeaving__render_download(OUTPUT_STREAM, weave_order *wv, text_stream *d
 	WRITE_TO(size, ")");
 
 }
-#line 1258 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1260 "inweb/literate-module/Chapter 5/HTML Formats.w"
 
 		else WebErrors__issue_at(TL_IS_4600,
 				wv->current_weave_line);
@@ -67578,7 +67597,7 @@ void HTMLWeaving__render_download(OUTPUT_STREAM, weave_order *wv, text_stream *d
 	}
 }
 
-#line 1288 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1290 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__render_HTML_extract(OUTPUT_STREAM, weave_order *wv, text_stream *leafname) {
 	filename *F = Filenames__in(
 		Pathnames__down(wv->weave_web->path_to_web, TL_IS_4609), leafname);
@@ -67740,12 +67759,12 @@ void HTMLWeaving__render_carousel_top(OUTPUT_STREAM, weave_order *wv, int slide_
 	WRITE(">\n");
 	if (positioning > 0) 
 {
-#line 1488 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1490 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	if (Str__len(caption) > 0)
 		WRITE("<div class=\"%S\">%S</div>\n", caption_class, caption);
 
 }
-#line 1447 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1449 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	WRITE("<div class=\"%S\">%d / %d</div>\n",
 		slide_count_class, slide_number, slide_of);
@@ -67761,12 +67780,12 @@ void HTMLWeaving__render_carousel_bottom(OUTPUT_STREAM, weave_order *wv, int sli
 	WRITE("</div>\n");
 	if (positioning <= 0) 
 {
-#line 1488 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1490 "inweb/literate-module/Chapter 5/HTML Formats.w"
 	if (Str__len(caption) > 0)
 		WRITE("<div class=\"%S\">%S</div>\n", caption_class, caption);
 
 }
-#line 1460 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1462 "inweb/literate-module/Chapter 5/HTML Formats.w"
 ;
 	WRITE("</div>\n");
 	if (slide_number == slide_of) {
@@ -67794,14 +67813,14 @@ void HTMLWeaving__render_carousel_bottom(OUTPUT_STREAM, weave_order *wv, int sli
 	}
 }
 
-#line 1494 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1496 "inweb/literate-module/Chapter 5/HTML Formats.w"
 void HTMLWeaving__progress_popup(OUTPUT_STREAM, text_stream *cl, text_stream *content) {
 	HTML_OPEN_WITH("span", "class=\"%S\"", cl);
 	HTMLWeaving__escape_text(OUT, content);
 	HTML_CLOSE("span");
 }
 
-#line 1503 "inweb/literate-module/Chapter 5/HTML Formats.w"
+#line 1505 "inweb/literate-module/Chapter 5/HTML Formats.w"
 int HTMLWeaving__begin_weaving_EPUB(weave_format *wf, ls_web *W, ls_pattern *pattern) {
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "%S", Bibliographic__get_datum(W, TL_IS_4626));

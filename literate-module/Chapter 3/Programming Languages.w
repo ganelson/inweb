@@ -855,7 +855,10 @@ text_stream *Languages::regexp(inchar32_t *write_to, text_stream *T, int wrap) {
 	if (write_to == NULL) internal_error("no buffer");
 	int x = 0;
 	write_to[0] = 0;
-	if (wrap) { write_to[x++] = '%'; write_to[x++] = 'c'; write_to[x++] = '*'; write_to[x++] = '?'; } 
+	if (wrap) {
+		write_to[x++] = '('; write_to[x++] = '%'; write_to[x++] = 'c';
+		write_to[x++] = '*'; write_to[x++] = '?'; write_to[x++] = ')';
+	} 
 	if (Str::len(T) > 0) {
 		int from = 0, to = Str::len(T)-1;
 		if ((to > from) &&
@@ -911,7 +914,8 @@ text_stream *Languages::regexp(inchar32_t *write_to, text_stream *T, int wrap) {
 		write_to[x] = 0;
 	}
 	if ((wrap) && (x+3 < MAX_ILDF_REGEXP_LENGTH)) {
-		write_to[x++] = '%'; write_to[x++] = 'c'; write_to[x++] = '*'; write_to[x++] = 0;
+		write_to[x++] = '('; write_to[x++] = '%'; write_to[x++] = 'c';
+		write_to[x++] = '*'; write_to[x++] = ')'; write_to[x++] = 0;
 	} 
 	return NULL;
 }

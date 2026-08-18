@@ -85,6 +85,7 @@ ls_holon *Holons::new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int a
 	LiterateSource::process_chunk(chunk, ntn->code_preprocessor);
 	if (W) {
 		text_stream *regexp = Conventions::get_textual_from(W->conventions, LABELS_REGEXP_LSCONVENTION);
+		text_stream *rep = Conventions::get_textual2_from(W->conventions, LABELS_REGEXP_LSCONVENTION);
 		if (Str::len(regexp) > 0) {
 			if (W->label_pattern[0] == 0) {
 				text_stream *err = Languages::regexp(W->label_pattern, regexp, TRUE);
@@ -97,8 +98,15 @@ ls_holon *Holons::new(ls_web *W, ls_chunk *chunk, text_stream *holon_name, int a
 			match_results mr = Regexp::create_mr();
 			for (ls_line *lst = holon->corresponding_chunk->first_line; lst; lst = lst->next_line) {
 				text_stream *code = CodeExcerpts::line_code(lst);
-				if (Regexp::match(&mr, code, W->label_pattern))
-					LineLabels::label_line(lst, mr.exp[0]);
+				if (Regexp::match(&mr, code, W->label_pattern)) {
+					LineLabels::label_line(lst, mr.exp[1]);
+					if (Str::len(rep) > 0) {
+						Str::clear(code);
+						WRITE_TO(code, "%S", mr.exp[0]);
+						for (int i=1; i<Str::len(rep)-1; i++) PUT_TO(code, Str::get_at(rep, i));
+						WRITE_TO(code, "%S", mr.exp[2]);
+					}
+				}
 			}
 			Regexp::dispose_of(&mr);
 		}

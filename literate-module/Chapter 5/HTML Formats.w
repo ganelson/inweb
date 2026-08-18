@@ -579,7 +579,9 @@ that service uses to identify the video/audio in question.
 		if (LineLabels::labelled(C->line)) {
 			WRITE("<a id=\"");
 			LineLabels::anchor(OUT, C->line);
-			WRITE("\" class=\"labelanchor\"></a><span class=\"linelabel\">%S</span>",
+			WRITE("\" class=\"labelanchor\"></a><span class=\"linelabel\"><a href=\"#");
+			LineLabels::anchor(OUT, C->line);
+			WRITE("\">%S</a></span>",
 				LineLabels::label_text(C->line));
 			n = LineLabels::label_width(C->line);
 		} else {
