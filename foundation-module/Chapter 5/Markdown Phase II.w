@@ -1605,6 +1605,10 @@ classdef md_emphasis_delimiter in 1000s {
 			if ((both_count[0] == 0) && (open_count[0] == close_count[0]) &&
 				(both_count[1] == 0) && (open_count[1] == close_count[1]) &&
 				(both_count[2] == 0) && (open_count[2] == close_count[2])) break;
+			if ((no_delimiters == 2) &&
+				(delimiters[0].can_open) && (delimiters[1].can_close) &&
+				(delimiters[0].type == delimiters[1].type) &&
+				(delimiters[0].width == delimiters[1].width)) break;
 		}
 	}
 

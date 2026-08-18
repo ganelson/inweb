@@ -1,4 +1,4 @@
 weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML
 (created directory 'countsort2-assets')
     generated: countsort2.html
-    12 files copied to: countsort2-assets
+    13 files copied to: countsort2-assets

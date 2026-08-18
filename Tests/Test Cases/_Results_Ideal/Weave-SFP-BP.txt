@@ -8,6 +8,7 @@ opaque file: countsort2-assets/Colours.css
 opaque file: countsort2-assets/Contents.css
 opaque file: countsort2-assets/crumbs.gif
 opaque file: countsort2-assets/Fonts.css
+opaque file: countsort2-assets/Labels.css
 opaque file: countsort2-assets/Navigation.css
 opaque file: countsort2-assets/Progress.css
 opaque file: countsort2-assets/seek_locate_display_highlight.js
@@ -24,6 +25,7 @@ file: countsort2.html
 
         <link href="countsort2-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <link href="countsort2-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+        <link href="countsort2-assets/Labels.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <link href="countsort2-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <link href="countsort2-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <script src="countsort2-assets/seek_locate_display_highlight.js"></script>

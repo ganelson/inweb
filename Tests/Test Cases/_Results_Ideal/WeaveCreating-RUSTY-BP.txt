@@ -86,6 +86,7 @@ opaque file: rusty/sample-assets/Colours.css
 opaque file: rusty/sample-assets/Contents.css
 opaque file: rusty/sample-assets/crumbs.gif
 opaque file: rusty/sample-assets/Fonts.css
+opaque file: rusty/sample-assets/Labels.css
 opaque file: rusty/sample-assets/Navigation.css
 opaque file: rusty/sample-assets/Progress.css
 opaque file: rusty/sample-assets/seek_locate_display_highlight.js
@@ -102,6 +103,7 @@ file: rusty/sample.html
 
         <link href="sample-assets/Contents.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <link href="sample-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
+        <link href="sample-assets/Labels.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <link href="sample-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <link href="sample-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
         <script src="sample-assets/seek_locate_display_highlight.js"></script>

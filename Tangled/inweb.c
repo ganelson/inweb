@@ -8293,7 +8293,7 @@ int  MDInlineParser__right_flanking(md_charpos pos, int count) ;
 int  MDInlineParser__can_open_emphasis(md_charpos pos, int count) ;
 #line 1485 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__can_close_emphasis(md_charpos pos, int count) ;
-#line 1806 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1810 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int  MDInlineParser__penalty(markdown_item *md) ;
 #line 28 "inweb/foundation-module/Chapter 5/Markdown Rendering.w"
 void  MDRenderer__render_extended(OUTPUT_STREAM, void *state, markdown_item *md, 	markdown_variation *variation, int extra_modes) ;
@@ -19006,11 +19006,11 @@ int CommandLine__read_pair_p(command_line_subcommand *sub, text_stream *opt, tex
 ; innocuous = TRUE; break;
 		case VERSION_CLSW: {
 			PRINT("inweb");
-			char *svn = "9.0-beta+1C26";
+			char *svn = "9.0-beta+1C27";
 			if (svn[0]) PRINT(" version %s", svn);
 			char *vname = "Invasion";
 			if (vname[0]) PRINT(" '%s'", vname);
-			char *d = "17 August 2026";
+			char *d = "18 August 2026";
 			if (d[0]) PRINT(" (%s)", d);
 			PRINT("\n");
 			innocuous = TRUE; break;
@@ -35021,6 +35021,10 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 			if ((both_count[0] == 0) && (open_count[0] == close_count[0]) &&
 				(both_count[1] == 0) && (open_count[1] == close_count[1]) &&
 				(both_count[2] == 0) && (open_count[2] == close_count[2])) break;
+			if ((no_delimiters == 2) &&
+				(delimiters[0].can_open) && (delimiters[1].can_close) &&
+				(delimiters[0].type == delimiters[1].type) &&
+				(delimiters[0].width == delimiters[1].width)) break;
 		}
 	}
 
@@ -35038,7 +35042,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 			if (CD->can_close == FALSE) continue;
 			
 {
-#line 1623 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1627 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (CD->type != OD->type) continue;
 	if ((CD->can_open) || (OD->can_close)) {
 		int sum = OD->width + CD->width;
@@ -35056,7 +35060,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 			}
 			
 {
-#line 1642 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1646 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	markdown_item *option = Markdown__deep_copy(owner);
 	options[no_options++] = option;
 	markdown_item *OI = NULL, *CI = NULL;
@@ -35073,7 +35077,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	md_charpos last_trimmed_char_right;
 	
 {
-#line 1685 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1689 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int O_start = OD->pos.at, O_width = OD->width;
 	if (O_start < OI->from) { O_width -= (OI->from - O_start); O_start = OI->from; }
 
@@ -35096,25 +35100,25 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1656 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1660 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	
 {
-#line 1707 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1711 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	for (int w=0; w<width; w++) {
 		Markdown__put_offset(first_trimmed_char_left, w, ':');
 		Markdown__put_offset(first_trimmed_char_right, w, ':');
 	}
 
 }
-#line 1658 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1662 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	markdown_item *em_top, *em_bottom;
 	
 {
-#line 1727 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1731 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	if (OD->type == 0) {
 		em_top = Markdown__new_item(STRIKETHROUGH_MIT);
 		em_bottom = em_top;
@@ -35138,11 +35142,11 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 
 }
-#line 1661 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1665 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 	
 {
-#line 1750 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1754 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	markdown_item *chain = option->down;
 	if (tracing_Markdown_parser) {
 		Markdown__debug_chain_label(OUT, chain, TL_IS_2439);
@@ -35175,7 +35179,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	em_bottom->down = emphasis;
 
 }
-#line 1662 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1666 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 ;
 
 	MDInlineParser__emphasis(variation, em_bottom, mask);
@@ -35196,7 +35200,7 @@ void MDInlineParser__emphasis(markdown_variation *variation, markdown_item *owne
 	}
 	if (no_options > 0) 
 {
-#line 1782 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1786 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 	int best_is = 1, best_score = 100000000;
 	for (int pair_i = 0; pair_i < no_options; pair_i++) {
 		int score = MDInlineParser__penalty(options[pair_i]);
@@ -35303,7 +35307,7 @@ int MDInlineParser__can_close_emphasis(md_charpos pos, int count) {
 
 
 
-#line 1806 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
+#line 1810 "inweb/foundation-module/Chapter 5/Markdown Phase II.w"
 int MDInlineParser__penalty(markdown_item *md) {
 	if (md) {
 		int penalty = 0;
@@ -58596,7 +58600,7 @@ void Ctags__write(ls_web *W, filename *F) {
 	if (Time__fixed())
 		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built [[28 March 2016]]/\n");
 	else
-		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 17 August 2026/\n");
+		WRITE("!_TAG_PROGRAM_VERSION\t9.0\t/built 18 August 2026/\n");
 
 }
 #line 47 "inweb/literate-module/Chapter 4/Ctags Support.w"
