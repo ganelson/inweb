@@ -639,7 +639,7 @@ void WebNotation::rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_m
 			}
 		}
 	} else {
-		WRITE("%S", text);
+		Str::concatenate(OUT, text);
 	}
 }
 

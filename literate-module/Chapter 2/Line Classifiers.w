@@ -450,10 +450,14 @@ ls_notation_rule_pattern LineClassifiers::parse_pattern(text_stream *pt,
 =
 int LineClassifiers::match_pattern(ls_notation_rule_pattern *pattern, text_stream *full_text,
 	text_stream **wildcards) {
-	TEMPORARY_TEXT(text)
-	@<Reduce the line indentation to allow for <INDENT> markers@>;
+	text_stream *text = full_text;
+	TEMPORARY_TEXT(stripped_text)
+	if (pattern->strip_indents > 0) {
+		text = stripped_text;
+		@<Reduce the line indentation to allow for <INDENT> markers@>;
+	}
 	@<Try to find a match against the text@>;
-	DISCARD_TEXT(text)
+	DISCARD_TEXT(stripped_text)
 	return FALSE;
 }
 

@@ -2592,7 +2592,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define BLACK_LINESHADE 2
 
     
-#line 559 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 565 "inweb/literate-module/Chapter 2/Line Classification.w"
     #define MAX_RESIDUE_OR_OPTIONS_ITERATIONS 1000
 
     
@@ -2668,303 +2668,303 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define RESIDUE_LSWILDCARD 5
 
     
-#line 627 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 631 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define NO_LSNROID 0
 
     
-#line 629 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 633 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define AUDIO_LSNROID 1
 
     
-#line 630 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 634 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define BEGINPARAGRAPH_LSNROID 2
 
     
-#line 631 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 635 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CAROUSELEND_LSNROID 3
 
     
-#line 632 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 636 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CAROUSELSLIDE_LSNROID 4
 
     
-#line 633 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 637 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CODE_LSNROID 5
 
     
-#line 634 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 638 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define COMMENTARY_LSNROID 6
 
     
-#line 635 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 639 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define DEFINITION_LSNROID 7
 
     
-#line 636 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 640 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define DEFINITIONCONTINUED_LSNROID 8
 
     
-#line 637 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 641 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define DOWNLOAD_LSNROID 9
 
     
-#line 638 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 642 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define EMBEDDEDVIDEO_LSNROID 10
 
     
-#line 639 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 643 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define ENDEXTRACT_LSNROID 11
 
     
-#line 640 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 644 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define ENUMERATION_LSNROID 12
 
     
-#line 641 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 645 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define EXTRACT_LSNROID 13
 
     
-#line 642 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 646 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define FIGURE_LSNROID 14
 
     
-#line 643 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 647 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define FILEHOLON_LSNROID 15
 
     
-#line 644 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 648 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define FORMATIDENTIFIER_LSNROID 16
 
     
-#line 645 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 649 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define HTML_LSNROID 17
 
     
-#line 646 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 650 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define INCLUDEFILE_LSNROID 18
 
     
-#line 647 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 651 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define MAKEDEFINITIONSHERE_LSNROID 19
 
     
-#line 648 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 652 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define MAKECLASSESHERE_LSNROID 20
 
     
-#line 649 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 653 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define NAMEDHOLON_LSNROID 21
 
     
-#line 650 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 654 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define NAMELESSHOLON_LSNROID 22
 
     
-#line 651 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 655 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define PARAGRAPHTAG_LSNROID 23
 
     
-#line 652 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 656 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define PARAGRAPHTITLING_LSNROID 24
 
     
-#line 653 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 657 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define PARTITION_LSNROID 25
 
     
-#line 654 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 658 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define PURPOSE_LSNROID 26
 
     
-#line 655 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 659 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define QUOTATION_LSNROID 27
 
     
-#line 656 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 660 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define TEXTASCODEEXTRACT_LSNROID 28
 
     
-#line 657 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 661 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define TEXTEXTRACT_LSNROID 29
 
     
-#line 658 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 662 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define TEXTEXTRACTTO_LSNROID 30
 
     
-#line 659 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 663 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define TITLE_LSNROID 31
 
     
-#line 660 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 664 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define VIDEO_LSNROID 32
 
     
-#line 664 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 668 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define HYPERLINKED_LSNROID 33
 
     
-#line 665 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 669 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define UNDISPLAYED_LSNROID 34
 
     
-#line 667 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 671 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define WEBWIDEHOLON_LSNROID 35
 
     
-#line 668 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 672 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define TANGLEDTOHOLON_LSNROID 36
 
     
-#line 669 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 673 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define VERYEARLYHOLON_LSNROID 37
 
     
-#line 670 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 674 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define EARLYHOLON_LSNROID 38
 
     
-#line 671 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 675 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LATEHOLON_LSNROID 39
 
     
-#line 672 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 676 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define VERYLATEHOLON_LSNROID 40
 
     
-#line 674 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 678 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CONTINUATION_LSNROID 41
 
     
-#line 676 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 680 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define SUPERHEADING_LSNROID 42
 
     
-#line 677 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 681 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL1_LSNROID 43
 
     
-#line 678 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 682 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL2_LSNROID 44
 
     
-#line 679 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 683 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL3_LSNROID 45
 
     
-#line 680 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 684 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL4_LSNROID 46
 
     
-#line 681 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 685 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL5_LSNROID 47
 
     
-#line 683 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 687 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define SILENT_LSNROID 48
 
     
-#line 685 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 689 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define WITHPURPOSE_LSNROID 49
 
     
-#line 687 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 691 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CAPTIONABOVE_LSNROID 50
 
     
-#line 688 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 692 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CAPTIONBELOW_LSNROID 51
 
     
-#line 690 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 694 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define INCLUSIVE_LSNROID 52
 
     
-#line 692 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 696 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define DEFAULT_LSNROID 53
 
     
-#line 767 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 771 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define HYPERLINKED_LSNROBIT 0x000100
 
     
-#line 768 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 772 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define UNDISPLAYED_LSNROBIT 0x000200
 
     
-#line 770 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 774 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define WEBWIDEHOLON_LSNROBIT 0x000400
 
     
-#line 771 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 775 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define TANGLEDTOHOLON_LSNROBIT 0x000800
 
     
-#line 772 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 776 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define VERYEARLYHOLON_LSNROBIT 0x001000
 
     
-#line 773 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 777 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define EARLYHOLON_LSNROBIT 0x002000
 
     
-#line 774 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 778 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LATEHOLON_LSNROBIT 0x004000
 
     
-#line 775 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 779 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define VERYLATEHOLON_LSNROBIT 0x008000
 
     
-#line 777 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 781 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CONTINUATION_LSNROBIT 0x010000
 
     
-#line 779 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 783 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define SUPERHEADING_LSNROBIT 0x020000
 
     
-#line 780 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 784 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL1_LSNROBIT 0x040000
 
     
-#line 781 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 785 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL2_LSNROBIT 0x080000
 
     
-#line 782 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 786 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL3_LSNROBIT 0x100000
 
     
-#line 783 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 787 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL4_LSNROBIT 0x200000
 
     
-#line 784 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 788 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define LEVEL5_LSNROBIT 0x400000
 
     
-#line 786 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 790 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define SILENT_LSNROBIT 0x800000
 
     
-#line 788 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 792 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define WITHPURPOSE_LSNROBIT 0x1000000
 
     
-#line 790 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 794 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CAPTIONABOVE_LSNROBIT 0x2000000
 
     
-#line 791 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 795 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define CAPTIONBELOW_LSNROBIT 0x4000000
 
     
-#line 793 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 797 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define INCLUSIVE_LSNROBIT 0x8000000
 
     
-#line 795 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 799 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define DEFAULT_LSNROBIT 0x10000000
 
     
@@ -3882,7 +3882,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 
     
 #line 25 "inweb/literate-module/Chapter 6/Build Files.w"
-    #define NO_DEFINED_CLASS_VALUES 207
+    #define NO_DEFINED_CLASS_VALUES 209
 
     
 #line 468 "inweb/foundation-module/Chapter 2/Memory.w"
@@ -4001,7 +4001,7 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
     #define NO_DEFINED_LSWILDCARD_VALUES 6
 
     
-#line 692 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 696 "inweb/literate-module/Chapter 2/Line Classifiers.w"
     #define NO_DEFINED_LSNROID_VALUES 54
 
     
@@ -4100,145 +4100,147 @@ struct Win32_Mutex { INIT_ONCE init; CRITICAL_SECTION crit; };
 #define ls_web_CLASS 65
 #define ls_chapter_CLASS 66
 #define ls_section_CLASS 67
-#define web_bibliographic_datum_CLASS 68
-#define web_contents_state_CLASS 69
-#define sfw_reader_state_CLASS 70
-#define ls_module_CLASS 71
-#define module_search_CLASS 72
-#define ls_conventions_CLASS 73
-#define ls_unit_CLASS 74
-#define ls_line_CLASS 75
-#define ls_paragraph_CLASS 76
-#define ls_chunk_CLASS 77
-#define ls_footnote_CLASS 78
-#define literate_source_tagging_CLASS 79
-#define ls_class_CLASS 80
-#define ls_class_parsing_CLASS 81
-#define ls_classifier_CLASS 82
-#define ls_notation_rule_CLASS 83
-#define ls_classifier_context_CLASS 84
-#define ls_notation_rule_condition_CLASS 85
-#define ls_notation_rule_pattern_CLASS 86
-#define ls_srtoken_CLASS 87
-#define ls_notation_rule_outcome_CLASS 88
-#define ls_line_label_CLASS 89
-#define ls_label_namespace_CLASS 90
-#define ls_error_CLASS 91
-#define ls_notation_CLASS 92
-#define notation_rewriting_machine_CLASS 93
-#define notation_rewriter_CLASS 94
-#define ls_holon_CLASS 95
-#define ls_holon_namespace_CLASS 96
-#define holon_usage_CLASS 97
-#define ls_holon_scanner_CLASS 98
-#define ls_code_excerpt_CLASS 99
-#define holon_splice_CLASS 100
-#define ls_index_mark_CLASS 101
-#define ls_index_CLASS 102
-#define ls_index_lemma_CLASS 103
-#define programming_language_CLASS 104
-#define language_reader_state_CLASS 105
-#define colouring_language_block_CLASS 106
-#define colouring_rule_CLASS 107
-#define reserved_word_CLASS 108
-#define pl_regexp_set_CLASS 109
-#define ls_web_analysis_CLASS 110
-#define ls_paragraph_analysis_CLASS 111
-#define ls_line_analysis_CLASS 112
-#define hash_table_entry_usage_CLASS 113
-#define enumeration_set_CLASS 114
-#define language_type_CLASS 115
-#define structure_element_CLASS 116
-#define language_function_CLASS 117
-#define hash_table_CLASS 118
-#define hash_table_entry_CLASS 119
-#define custom_colour_CLASS 120
-#define preform_nonterminal_CLASS 121
-#define nonterminal_variable_CLASS 122
-#define text_literal_CLASS 123
-#define tangle_target_CLASS 124
-#define tangle_docket_CLASS 125
-#define tangle_external_file_CLASS 126
-#define defined_constant_CLASS 127
-#define ls_web_weaving_details_CLASS 128
-#define ls_chapter_weaving_details_CLASS 129
-#define ls_section_weaving_details_CLASS 130
-#define weave_reporting_CLASS 131
-#define weave_copy_record_CLASS 132
-#define weave_order_CLASS 133
-#define ls_pattern_CLASS 134
-#define ls_pattern_pair_CLASS 135
-#define weave_plugin_CLASS 136
-#define colour_scheme_CLASS 137
-#define asset_selector_CLASS 138
-#define asset_disposition_CLASS 139
-#define asset_rule_CLASS 140
-#define css_file_transformation_CLASS 141
-#define sd_file_transformation_CLASS 142
-#define collater_state_CLASS 143
-#define weaver_state_CLASS 144
-#define weave_document_node_CLASS 145
-#define weave_head_node_CLASS 146
-#define weave_body_node_CLASS 147
-#define weave_tail_node_CLASS 148
-#define weave_chapter_header_node_CLASS 149
-#define weave_chapter_footer_node_CLASS 150
-#define weave_section_header_node_CLASS 151
-#define weave_section_footer_node_CLASS 152
-#define weave_section_purpose_node_CLASS 153
-#define weave_subheading_node_CLASS 154
-#define weave_subsubheading_node_CLASS 155
-#define weave_bar_node_CLASS 156
-#define weave_pagebreak_node_CLASS 157
-#define weave_linebreak_node_CLASS 158
-#define weave_paragraph_heading_node_CLASS 159
-#define weave_endnote_node_CLASS 160
-#define weave_figure_node_CLASS 161
-#define weave_extract_node_CLASS 162
-#define weave_audio_node_CLASS 163
-#define weave_video_node_CLASS 164
-#define weave_download_node_CLASS 165
-#define weave_material_node_CLASS 166
-#define weave_embed_node_CLASS 167
-#define weave_holon_usage_node_CLASS 168
-#define weave_tangler_command_node_CLASS 169
-#define weave_holon_declaration_node_CLASS 170
-#define weave_vskip_node_CLASS 171
-#define weave_chapter_node_CLASS 172
-#define weave_section_node_CLASS 173
-#define weave_code_line_node_CLASS 174
-#define weave_function_usage_node_CLASS 175
-#define weave_commentary_node_CLASS 176
-#define weave_carousel_slide_node_CLASS 177
-#define weave_toc_node_CLASS 178
-#define weave_toc_line_node_CLASS 179
-#define weave_chapter_title_page_node_CLASS 180
-#define weave_defn_node_CLASS 181
-#define weave_inline_node_CLASS 182
-#define weave_locale_node_CLASS 183
-#define weave_source_code_node_CLASS 184
-#define weave_comment_in_holon_node_CLASS 185
-#define weave_url_node_CLASS 186
-#define weave_footnote_cue_node_CLASS 187
-#define weave_begin_footnote_text_node_CLASS 188
-#define weave_display_line_node_CLASS 189
-#define weave_function_defn_node_CLASS 190
-#define weave_item_node_CLASS 191
-#define weave_grammar_index_node_CLASS 192
-#define weave_maths_node_CLASS 193
-#define weave_markdown_node_CLASS 194
-#define weave_verbatim_node_CLASS 195
-#define weave_index_marker_node_CLASS 196
-#define weave_format_CLASS 197
-#define PlainText_render_state_CLASS 198
-#define TeX_render_state_CLASS 199
-#define HTML_render_state_CLASS 200
-#define debugging_render_state_CLASS 201
-#define tex_results_CLASS 202
-#define makefile_specifics_CLASS 203
-#define inweb_reference_data_CLASS 204
-#define writeme_asset_CLASS 205
-#define build_file_data_CLASS 206
+#define partitioned_file_CLASS 68
+#define file_partition_CLASS 69
+#define web_bibliographic_datum_CLASS 70
+#define web_contents_state_CLASS 71
+#define sfw_reader_state_CLASS 72
+#define ls_module_CLASS 73
+#define module_search_CLASS 74
+#define ls_conventions_CLASS 75
+#define ls_unit_CLASS 76
+#define ls_line_CLASS 77
+#define ls_paragraph_CLASS 78
+#define ls_chunk_CLASS 79
+#define ls_footnote_CLASS 80
+#define literate_source_tagging_CLASS 81
+#define ls_class_CLASS 82
+#define ls_class_parsing_CLASS 83
+#define ls_classifier_CLASS 84
+#define ls_notation_rule_CLASS 85
+#define ls_classifier_context_CLASS 86
+#define ls_notation_rule_condition_CLASS 87
+#define ls_notation_rule_pattern_CLASS 88
+#define ls_srtoken_CLASS 89
+#define ls_notation_rule_outcome_CLASS 90
+#define ls_line_label_CLASS 91
+#define ls_label_namespace_CLASS 92
+#define ls_error_CLASS 93
+#define ls_notation_CLASS 94
+#define notation_rewriting_machine_CLASS 95
+#define notation_rewriter_CLASS 96
+#define ls_holon_CLASS 97
+#define ls_holon_namespace_CLASS 98
+#define holon_usage_CLASS 99
+#define ls_holon_scanner_CLASS 100
+#define ls_code_excerpt_CLASS 101
+#define holon_splice_CLASS 102
+#define ls_index_mark_CLASS 103
+#define ls_index_CLASS 104
+#define ls_index_lemma_CLASS 105
+#define programming_language_CLASS 106
+#define language_reader_state_CLASS 107
+#define colouring_language_block_CLASS 108
+#define colouring_rule_CLASS 109
+#define reserved_word_CLASS 110
+#define pl_regexp_set_CLASS 111
+#define ls_web_analysis_CLASS 112
+#define ls_paragraph_analysis_CLASS 113
+#define ls_line_analysis_CLASS 114
+#define hash_table_entry_usage_CLASS 115
+#define enumeration_set_CLASS 116
+#define language_type_CLASS 117
+#define structure_element_CLASS 118
+#define language_function_CLASS 119
+#define hash_table_CLASS 120
+#define hash_table_entry_CLASS 121
+#define custom_colour_CLASS 122
+#define preform_nonterminal_CLASS 123
+#define nonterminal_variable_CLASS 124
+#define text_literal_CLASS 125
+#define tangle_target_CLASS 126
+#define tangle_docket_CLASS 127
+#define tangle_external_file_CLASS 128
+#define defined_constant_CLASS 129
+#define ls_web_weaving_details_CLASS 130
+#define ls_chapter_weaving_details_CLASS 131
+#define ls_section_weaving_details_CLASS 132
+#define weave_reporting_CLASS 133
+#define weave_copy_record_CLASS 134
+#define weave_order_CLASS 135
+#define ls_pattern_CLASS 136
+#define ls_pattern_pair_CLASS 137
+#define weave_plugin_CLASS 138
+#define colour_scheme_CLASS 139
+#define asset_selector_CLASS 140
+#define asset_disposition_CLASS 141
+#define asset_rule_CLASS 142
+#define css_file_transformation_CLASS 143
+#define sd_file_transformation_CLASS 144
+#define collater_state_CLASS 145
+#define weaver_state_CLASS 146
+#define weave_document_node_CLASS 147
+#define weave_head_node_CLASS 148
+#define weave_body_node_CLASS 149
+#define weave_tail_node_CLASS 150
+#define weave_chapter_header_node_CLASS 151
+#define weave_chapter_footer_node_CLASS 152
+#define weave_section_header_node_CLASS 153
+#define weave_section_footer_node_CLASS 154
+#define weave_section_purpose_node_CLASS 155
+#define weave_subheading_node_CLASS 156
+#define weave_subsubheading_node_CLASS 157
+#define weave_bar_node_CLASS 158
+#define weave_pagebreak_node_CLASS 159
+#define weave_linebreak_node_CLASS 160
+#define weave_paragraph_heading_node_CLASS 161
+#define weave_endnote_node_CLASS 162
+#define weave_figure_node_CLASS 163
+#define weave_extract_node_CLASS 164
+#define weave_audio_node_CLASS 165
+#define weave_video_node_CLASS 166
+#define weave_download_node_CLASS 167
+#define weave_material_node_CLASS 168
+#define weave_embed_node_CLASS 169
+#define weave_holon_usage_node_CLASS 170
+#define weave_tangler_command_node_CLASS 171
+#define weave_holon_declaration_node_CLASS 172
+#define weave_vskip_node_CLASS 173
+#define weave_chapter_node_CLASS 174
+#define weave_section_node_CLASS 175
+#define weave_code_line_node_CLASS 176
+#define weave_function_usage_node_CLASS 177
+#define weave_commentary_node_CLASS 178
+#define weave_carousel_slide_node_CLASS 179
+#define weave_toc_node_CLASS 180
+#define weave_toc_line_node_CLASS 181
+#define weave_chapter_title_page_node_CLASS 182
+#define weave_defn_node_CLASS 183
+#define weave_inline_node_CLASS 184
+#define weave_locale_node_CLASS 185
+#define weave_source_code_node_CLASS 186
+#define weave_comment_in_holon_node_CLASS 187
+#define weave_url_node_CLASS 188
+#define weave_footnote_cue_node_CLASS 189
+#define weave_begin_footnote_text_node_CLASS 190
+#define weave_display_line_node_CLASS 191
+#define weave_function_defn_node_CLASS 192
+#define weave_item_node_CLASS 193
+#define weave_grammar_index_node_CLASS 194
+#define weave_maths_node_CLASS 195
+#define weave_markdown_node_CLASS 196
+#define weave_verbatim_node_CLASS 197
+#define weave_index_marker_node_CLASS 198
+#define weave_format_CLASS 199
+#define PlainText_render_state_CLASS 200
+#define TeX_render_state_CLASS 201
+#define HTML_render_state_CLASS 202
+#define debugging_render_state_CLASS 203
+#define tex_results_CLASS 204
+#define makefile_specifics_CLASS 205
+#define inweb_reference_data_CLASS 206
+#define writeme_asset_CLASS 207
+#define build_file_data_CLASS 208
 #line 43 "inweb/foundation-module/Chapter 2/Debugging Log.w"
 typedef struct debugging_aspect {
 	struct text_stream *hyphenated_name; /* e.g., "memory-usage" */
@@ -5106,6 +5108,20 @@ typedef struct ls_section {
 	void *analysis_ref;
 	CLASS_DEFINITION
 } ls_section;
+#line 721 "inweb/literate-module/Chapter 1/Web Structure.w"
+typedef struct partitioned_file {
+	struct filename *accessed_at;
+	struct linked_list *partitions; /* of `file_partition` */
+	struct file_partition *latest;
+	struct ls_notation *notation;
+	CLASS_DEFINITION
+} partitioned_file;
+#line 728 "inweb/literate-module/Chapter 1/Web Structure.w"
+typedef struct file_partition {
+	struct text_file_position start;
+	struct linked_list *lines; /* of `text_stream` */
+	CLASS_DEFINITION
+} file_partition;
 #line 11 "inweb/literate-module/Chapter 1/Bibliographic Data for Webs.w"
 typedef struct web_bibliographic_datum {
 	struct text_stream *key;
@@ -5357,7 +5373,7 @@ typedef struct ls_notation_rule_pattern {
 	struct text_stream *parsed_from;
 	CLASS_DEFINITION
 } ls_notation_rule_pattern;
-#line 569 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 573 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 typedef struct ls_notation_rule_outcome {
 	int outcome_ID;            /* one of the `*_LSNROID` values below */
 	int options_applied;       /* a bitmap of `*_LSNROBIT` values below */
@@ -8821,21 +8837,27 @@ filename * WebStructure__contents_filename(ls_web *W) ;
 ls_web * WebStructure__parse_declaration(wcl_declaration *D) ;
 #line 575 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals) ;
-#line 659 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 693 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, void *state) ;
-#line 713 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 733 "inweb/literate-module/Chapter 1/Web Structure.w"
+partitioned_file * WebStructure__partition_file(filename *F, ls_notation *notation) ;
+#line 745 "inweb/literate-module/Chapter 1/Web Structure.w"
+void  WebStructure__add_partition(partitioned_file *pf, text_file_position *tfp) ;
+#line 753 "inweb/literate-module/Chapter 1/Web Structure.w"
+void  WebStructure__scan_to_partition(text_stream *line, text_file_position *tfp, void *state) ;
+#line 778 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__resolve_declaration(wcl_declaration *D) ;
-#line 729 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 794 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__section_language(ls_section *S) ;
-#line 734 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 799 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__chapter_language(ls_chapter *C) ;
-#line 739 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 804 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__web_language(ls_web *W) ;
-#line 743 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 808 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__set_language(ls_web *W, programming_language *pl) ;
-#line 748 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 813 "inweb/literate-module/Chapter 1/Web Structure.w"
 programming_language * WebStructure__line_language(ls_line *L) ;
-#line 766 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 831 "inweb/literate-module/Chapter 1/Web Structure.w"
 void  WebStructure__write_web(OUTPUT_STREAM, ls_web *W, text_stream *range) ;
 #line 29 "inweb/literate-module/Chapter 1/Bibliographic Data for Webs.w"
 int  Bibliographic__datum_can_be_declared(ls_web *W, text_stream *key) ;
@@ -9071,7 +9093,7 @@ ls_class_parsing  LineClassification__new_results(int major, int minor) ;
 ls_class_parsing  LineClassification__no_results(void) ;
 #line 273 "inweb/literate-module/Chapter 2/Line Classification.w"
 ls_class_parsing  LineClassification__classify(ls_notation *ntn, text_stream *line, 	ls_class *previously, int sff) ;
-#line 308 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 314 "inweb/literate-module/Chapter 2/Line Classification.w"
 ls_class_parsing  LineClassification__pass_through_classifier(ls_notation *ntn, 	text_stream *line, ls_class *previously, int sff) ;
 #line 13 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ls_classifier * LineClassifiers__new(void) ;
@@ -9101,13 +9123,13 @@ ls_srtoken  LineClassifiers__wildcard_token(int n) ;
 ls_notation_rule_pattern  LineClassifiers__parse_pattern(text_stream *pt, 	linked_list *conventions, text_stream **error) ;
 #line 451 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 int  LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_stream *full_text, 	text_stream **wildcards) ;
-#line 576 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 580 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ls_notation_rule_outcome  LineClassifiers__new_outcome(void) ;
-#line 585 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 589 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ls_notation_rule_outcome  LineClassifiers__parse_outcome(text_stream *ot, text_stream **error) ;
-#line 697 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 701 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 int  LineClassifiers__outcome_by_name(text_stream *outcome) ;
-#line 798 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 802 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 int  LineClassifiers__option_bit(int O) ;
 #line 14 "inweb/literate-module/Chapter 2/Line Labels.w"
 ls_line_label * LineLabels__label_line(ls_line *lst, text_stream *name) ;
@@ -16610,6 +16632,8 @@ DECLARE_CLASS(breadcrumb_request)
 DECLARE_CLASS(ls_web)
 DECLARE_CLASS(ls_chapter)
 DECLARE_CLASS(ls_section)
+DECLARE_CLASS(partitioned_file)
+DECLARE_CLASS(file_partition)
 DECLARE_CLASS(web_bibliographic_datum)
 DECLARE_CLASS(web_contents_state)
 DECLARE_CLASS(sfw_reader_state)
@@ -44708,13 +44732,14 @@ ls_web *WebStructure__parse_declaration(wcl_declaration *D) {
 
 #line 575 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals) {
+	partitioned_file *cached_pf = NULL;
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
 			
 {
-#line 614 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 615 "inweb/literate-module/Chapter 1/Web Structure.w"
 	pathname *P = W->path_to_web;
 	ls_module *M = S->owning_chapter->owning_module;
 	if ((M) && (M->module_location))
@@ -44724,12 +44749,12 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 
 	if (W->is_page) 
 {
-#line 651 "inweb/literate-module/Chapter 1/Web Structure.w"
-	text_stream *purpose = Bibliographic__get_datum(W, TL_IS_3899);
+#line 685 "inweb/literate-module/Chapter 1/Web Structure.w"
+	text_stream *purpose = Bibliographic__get_datum(W, TL_IS_3901);
 	if (Str__len(purpose) > 0) LiterateSource__add_purpose(S->literate_source, NULL, purpose);
 
 }
-#line 621 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 622 "inweb/literate-module/Chapter 1/Web Structure.w"
 ;
 
 	int cl = 0;
@@ -44745,6 +44770,39 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 			DISCARD_TEXT(line);
 			tfp.line_count++; cl++;
 		}
+	} else if (S->partition_number > 0) {
+		ls_notation *notation = S->literate_source->partition_notation;
+		if (notation == NULL) {
+			notation = WebNotation__notation_by_name(S->literate_source->context, TL_IS_3898);
+			if (notation == NULL) {
+				WebErrors__issue_at(TL_IS_3899, NULL);
+				S->partition_number = 0;
+			}
+		}
+		if (notation) {
+			filename *F = S->source_file_for_section;
+			if (F == NULL) internal_error("no source file");
+			if ((cached_pf == NULL) ||
+				(Filenames__eq(F, cached_pf->accessed_at) == FALSE)) {
+				if (verbosely) PRINT("Partitioning file: '%S'\n", F);
+				cached_pf = WebStructure__partition_file(F, notation);
+			}
+
+			int n = 0;
+			file_partition *fp = NULL;
+			LOOP_OVER_LINKED_LIST(fp, file_partition, cached_pf->partitions) {
+				if (n == S->partition_number) break;
+				n++;
+			}
+			if (fp) {
+				text_file_position tfp = fp->start;
+				text_stream *L;
+				LOOP_OVER_LINKED_LIST(L, text_stream, fp->lines) {
+					WebStructure__scan_source_line(L, &tfp, (void *) S);
+					tfp.line_count++; cl++;
+				}
+			}
+		}
 	} else {
 		filename *F = S->source_file_for_section;
 		if (F == NULL) internal_error("no source file");
@@ -44755,12 +44813,12 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 	LiterateSource__complete_unit(S->literate_source);
 	if (Str__len(S->literate_source->heading.operand1) > 0) {
 		WebStructure__name_section(S, S->literate_source->heading.operand1);
-		if (W->is_page) Bibliographic__set_datum(W, TL_IS_3898, S->sect_title);
+		if (W->is_page) Bibliographic__set_datum(W, TL_IS_3900, S->sect_title);
 	}
 	if (verbosely) PRINT("Read section: '%S' (%d lines)\n", S->sect_title, cl);
 
 }
-#line 580 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 581 "inweb/literate-module/Chapter 1/Web Structure.w"
 ;
 	int dc = 0, cc = 0;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
@@ -44794,7 +44852,7 @@ void WebStructure__read_web_source(ls_web *W, int verbosely, int with_internals)
 	WCL__report_errors(W->declaration);
 }
 
-#line 659 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 693 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, void *state) {
 	ls_section *S = (ls_section *) state;
 	S->sect_extent++;
@@ -44803,35 +44861,6 @@ void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, 
 	int l = Str__len(line) - 1;
 	while ((l>=0) && (Characters__is_space_or_tab(Str__get_at(line, l))))
 		Str__truncate(line, l--);
-
-	if (S->partition_number > 0) 
-{
-#line 687 "inweb/literate-module/Chapter 1/Web Structure.w"
-	if (S->literate_source->partition_notation == NULL) {
-		S->literate_source->partition_notation =
-			WebNotation__notation_by_name(S->literate_source->context, TL_IS_3900);
-		if (S->literate_source->partition_notation == NULL) {
-			WebErrors__issue_at(TL_IS_3901, NULL);
-			S->partition_number = 0;
-		}
-	}
-	if (S->literate_source->partition_notation) {
-		ls_class last_cf = LineClassification__unclassified();
-		int sff = FALSE;
-		if ((S->literate_source->context) && (S->literate_source->context->single_file)) sff = TRUE;
-		ls_class_parsing res =
-			LineClassification__classify(
-				S->literate_source->partition_notation, line, &last_cf, sff);
-		if (res.cf.major == PARTITION_MAJLC) {
-			S->current_partition++;
-			if (res.cf.minor != INCLUSIVE_PARTITION_MINLC) return;
-		}
-		if (S->partition_number != S->current_partition) return;
-	}
-
-}
-#line 668 "inweb/literate-module/Chapter 1/Web Structure.w"
-;
 
 	ls_line *L = LiterateSource__feed_line(S->literate_source, tfp, line);
 	if (L->classification.major == INCLUDE_FILE_MAJLC) {
@@ -44849,7 +44878,62 @@ void WebStructure__scan_source_line(text_stream *line, text_file_position *tfp, 
 	}
 }
 
-#line 713 "inweb/literate-module/Chapter 1/Web Structure.w"
+
+
+
+
+
+
+#line 727 "inweb/literate-module/Chapter 1/Web Structure.w"
+
+
+
+
+
+#line 732 "inweb/literate-module/Chapter 1/Web Structure.w"
+
+partitioned_file *WebStructure__partition_file(filename *F, ls_notation *notation) {
+	partitioned_file *pf = CREATE(partitioned_file);
+	pf->accessed_at = F;
+	pf->partitions = NEW_LINKED_LIST(file_partition);
+	pf->notation = notation;
+	text_file_position tfp = TextFiles__at(F, 1);
+	WebStructure__add_partition(pf, &tfp);
+	TextFiles__read(F, FALSE, "can't open web source file", TRUE,
+		WebStructure__scan_to_partition, NULL, (void *) pf);
+	return pf;
+}
+
+void WebStructure__add_partition(partitioned_file *pf, text_file_position *tfp) {
+	file_partition *fp = CREATE(file_partition);
+	fp->start = *tfp;
+	fp->lines = NEW_LINKED_LIST(text_stream);
+	ADD_TO_LINKED_LIST(fp, file_partition, pf->partitions);
+	pf->latest = fp;
+}
+
+void WebStructure__scan_to_partition(text_stream *line, text_file_position *tfp, void *state) {
+	partitioned_file *pf = (partitioned_file *) state;
+
+	int l = Str__len(line) - 1;
+	while ((l>=0) && (Characters__is_space_or_tab(Str__get_at(line, l))))
+		Str__truncate(line, l--);
+
+	ls_class last_cf = LineClassification__unclassified();
+	ls_class_parsing res = LineClassification__classify(pf->notation, line, &last_cf, FALSE);
+	if (res.cf.major == PARTITION_MAJLC) {
+		if (res.cf.minor == INCLUSIVE_PARTITION_MINLC) {
+			text_stream *saved = Str__duplicate(line);
+			ADD_TO_LINKED_LIST(saved, text_stream, pf->latest->lines);
+		}
+		WebStructure__add_partition(pf, tfp);
+		return;
+	}
+	text_stream *saved = Str__duplicate(line);
+	ADD_TO_LINKED_LIST(saved, text_stream, pf->latest->lines);
+}
+
+#line 778 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__resolve_declaration(wcl_declaration *D) {
 	ls_web *W = RETRIEVE_POINTER_ls_web(D->object_declared);
 	text_stream *language_name = Bibliographic__get_datum(W, TL_IS_3902);
@@ -44898,7 +44982,7 @@ programming_language *WebStructure__line_language(ls_line *L) {
 	return NULL;
 }
 
-#line 766 "inweb/literate-module/Chapter 1/Web Structure.w"
+#line 831 "inweb/literate-module/Chapter 1/Web Structure.w"
 void WebStructure__write_web(OUTPUT_STREAM, ls_web *W, text_stream *range) {
 	ls_chapter *C = WebRanges__to_chapter(W, range);
 	if (C) {
@@ -48913,12 +48997,18 @@ ls_class_parsing LineClassification__classify(ls_notation *ntn, text_stream *lin
 	WebNotation__rewrite(processed, line, ntn->preprocessor);
 
 	TEMPORARY_TEXT(indexed_text)
-	linked_list *L = WebIndexing__index_from_line(indexed_text, processed, ntn, &error);
+	text_stream *draw_from = processed;
+	linked_list *L = NULL;
 
-	results = LineClassification__pass_through_classifier(ntn, indexed_text, previously, sff);
+	if (ntn->indexing_machine) {
+		L = WebIndexing__index_from_line(indexed_text, processed, ntn, &error);
+		draw_from = indexed_text;
+	}
+
+	results = LineClassification__pass_through_classifier(ntn, draw_from, previously, sff);
 	if (results.cf.major != UNCLASSIFIED_MAJLC) 
 {
-#line 298 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 304 "inweb/literate-module/Chapter 2/Line Classification.w"
 	results.index_marks = L;
 	if (error) results.error = error;
 	WebNotation__postprocess(results.error, ntn);
@@ -48927,11 +49017,11 @@ ls_class_parsing LineClassification__classify(ls_notation *ntn, text_stream *lin
 	return results;
 
 }
-#line 285 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 291 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 
 	results = LineClassification__new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
-	results.cf.operand1 = Str__duplicate(indexed_text);
+	results.cf.operand1 = Str__duplicate(draw_from);
 	if (previously->major == UNCLASSIFIED_MAJLC) {
 		results.implies_paragraph = TRUE;
 		results.implies_extract = TRUE;
@@ -48939,7 +49029,7 @@ ls_class_parsing LineClassification__classify(ls_notation *ntn, text_stream *lin
 
 	
 {
-#line 298 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 304 "inweb/literate-module/Chapter 2/Line Classification.w"
 	results.index_marks = L;
 	if (error) results.error = error;
 	WebNotation__postprocess(results.error, ntn);
@@ -48948,11 +49038,11 @@ ls_class_parsing LineClassification__classify(ls_notation *ntn, text_stream *lin
 	return results;
 
 }
-#line 294 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 300 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 }
 
-#line 308 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 314 "inweb/literate-module/Chapter 2/Line Classification.w"
 ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	text_stream *line, ls_class *previously, int sff) {
 	ls_classifier_context context;
@@ -48965,7 +49055,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	context.whitespace_nature = LineClassification__shade(line);
 	if (context.whitespace_nature == WHITE_LINESHADE) 
 {
-#line 329 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 335 "inweb/literate-module/Chapter 2/Line Classification.w"
 	ls_class_parsing res;
 	if ((follows_extract) && (previously->major != HOLON_DECLARATION_MAJLC))
 		res = LineClassification__new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
@@ -48975,11 +49065,11 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	return res;
 
 }
-#line 318 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 324 "inweb/literate-module/Chapter 2/Line Classification.w"
 
 	else 
 {
-#line 342 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 348 "inweb/literate-module/Chapter 2/Line Classification.w"
 	ls_class_parsing res = LineClassification__new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
 	TEMPORARY_TEXT(material)
 	TEMPORARY_TEXT(second)
@@ -49001,7 +49091,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 		int bitmap = OR->outcome.options_applied;
 		
 {
-#line 379 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 385 "inweb/literate-module/Chapter 2/Line Classification.w"
 	res.cf.follows_title = FALSE;
 	switch (OR->outcome.outcome_ID) {
 		case COMMENTARY_LSNROID:
@@ -49176,12 +49266,12 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	res.cf.whitespace_nature = context.whitespace_nature;
 
 }
-#line 361 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 367 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 		if (OR->outcome.new_paragraph) res.implies_paragraph = TRUE;
 		if (Str__len(residue) > 0) 
 {
-#line 562 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 568 "inweb/literate-module/Chapter 2/Line Classification.w"
 	res.residue = Str__duplicate(residue);
 	ls_class never = LineClassification__unclassified();
 	ls_classifier_context residue_context = context;
@@ -49194,7 +49284,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 		if (RR == NULL) break;
 		
 {
-#line 585 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 591 "inweb/literate-module/Chapter 2/Line Classification.w"
 	switch (RR->outcome.outcome_ID) {
 		case PARAGRAPHTAG_LSNROID: {
 			text_stream *tag = Str__duplicate(material);
@@ -49209,7 +49299,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	}
 
 }
-#line 572 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 578 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 		if (RR->outcome.outcome_ID == PARAGRAPHTAG_LSNROID) {
 			text_stream *tag = Str__duplicate(material);
@@ -49220,11 +49310,11 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	}
 
 }
-#line 363 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 369 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 		if (Str__len(options) > 0) 
 {
-#line 602 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 608 "inweb/literate-module/Chapter 2/Line Classification.w"
 	TEMPORARY_TEXT(opts)
 	WRITE_TO(opts, "%S", options);
 	ls_class never = LineClassification__unclassified();
@@ -49239,7 +49329,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 		if (Str__len(OPR->outcome.error) > 0) res.error = OPR->outcome.error;
 		else 
 {
-#line 625 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 631 "inweb/literate-module/Chapter 2/Line Classification.w"
 	int B = LineClassifiers__option_bit(OPR->outcome.outcome_ID);
 	if (B == -1) {
 		res.error = Str__new();
@@ -49249,7 +49339,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	}
 
 }
-#line 614 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 620 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 		Str__clear(opts);
 		Str__copy(opts, options);
@@ -49261,12 +49351,12 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	DISCARD_TEXT(opts)
 
 }
-#line 364 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 370 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 		if (Str__len(OR->outcome.error) > 0) res.error = OR->outcome.error;
 		if (bitmap) 
 {
-#line 634 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 640 "inweb/literate-module/Chapter 2/Line Classification.w"
 	res.cf.options_bitmap = bitmap;
 	if (OR->outcome.outcome_ID == NAMELESSHOLON_LSNROID) {
 		if (bitmap & EARLYHOLON_LSNROBIT)     res.cf.minor = EARLY_MINLC;
@@ -49297,7 +49387,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	}
 
 }
-#line 366 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 372 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 	}
 	DISCARD_TEXT(material)
@@ -49309,7 +49399,7 @@ ls_class_parsing LineClassification__pass_through_classifier(ls_notation *ntn,
 	return res;
 
 }
-#line 319 "inweb/literate-module/Chapter 2/Line Classification.w"
+#line 325 "inweb/literate-module/Chapter 2/Line Classification.w"
 ;
 }
 
@@ -49685,10 +49775,13 @@ ls_notation_rule_pattern LineClassifiers__parse_pattern(text_stream *pt,
 #line 451 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_stream *full_text,
 	text_stream **wildcards) {
-	TEMPORARY_TEXT(text)
-	
+	text_stream *text = full_text;
+	TEMPORARY_TEXT(stripped_text)
+	if (pattern->strip_indents > 0) {
+		text = stripped_text;
+		
 {
-#line 464 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 468 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 	int wsc = 0, on = (pattern->strip_indents == 0)?TRUE:FALSE;
 	for (int i=0; i<Str__len(full_text); i++) {
 		inchar32_t c = Str__get_at(full_text, i);
@@ -49703,11 +49796,12 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 	if (on == FALSE) return FALSE; 
 
 }
-#line 454 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 457 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ;
+	}
 	
 {
-#line 486 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 490 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 	for (int i=0; i<NO_DEFINED_LSWILDCARD_VALUES; i++)
 		if (wildcards[i]) Str__clear(wildcards[i]);
 	int match_from = 0, match_to = pattern->no_tokens - 1;
@@ -49717,7 +49811,7 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 			match_from, match_to, Str__get_at(text, p_from), Str__get_at(text, p_to));
 		
 {
-#line 502 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 506 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 	if (pattern->tokens[match_from].wildcard < 0) {
 		text_stream *prefix = pattern->tokens[match_from].fixed_content;
 		if (Str__includes_at(text, p_from, prefix) == FALSE) break;
@@ -49727,11 +49821,11 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 	}
 
 }
-#line 493 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 497 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ;
 		
 {
-#line 511 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 515 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 	if (pattern->tokens[match_to].wildcard < 0) {
 		text_stream *suffix = pattern->tokens[match_to].fixed_content;
 		if (Str__includes_at(text, p_to - Str__len(suffix) + 1, suffix) == FALSE) break;
@@ -49741,11 +49835,11 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 	}
 
 }
-#line 494 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 498 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ;
 		
 {
-#line 520 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 524 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 	if (match_from == match_to) {
 		text_stream *WT = wildcards[pattern->tokens[match_from].wildcard];
 		Str__substr(WT, Str__at(text, p_from), Str__at(text, p_to+1));
@@ -49767,11 +49861,11 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 	}
 
 }
-#line 495 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 499 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ;
 		
 {
-#line 551 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 555 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 	if (pattern->tokens[match_from+1].wildcard >= 0) internal_error("consecutive wildcard tokens");
 	int lookahead = p_from+1, l_to = p_to - Str__len(pattern->tokens[match_from+1].fixed_content);
 	for (; lookahead <= l_to; lookahead++)
@@ -49786,16 +49880,16 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 	if (lookahead > l_to) break;
 
 }
-#line 496 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 500 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ;
 	}
 	if ((match_from > match_to) && (p_from > p_to)) return TRUE;
 	if (TRACE_LCLASSIFIER) WRITE_TO(STDERR, "Failure\n");
 
 }
-#line 455 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 459 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 ;
-	DISCARD_TEXT(text)
+	DISCARD_TEXT(stripped_text)
 	return FALSE;
 }
 
@@ -49805,7 +49899,7 @@ int LineClassifiers__match_pattern(ls_notation_rule_pattern *pattern, text_strea
 
 
 
-#line 575 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 579 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 
 ls_notation_rule_outcome LineClassifiers__new_outcome(void) {
 	ls_notation_rule_outcome outcome;
@@ -49854,7 +49948,7 @@ ls_notation_rule_outcome LineClassifiers__parse_outcome(text_stream *ot, text_st
 	return outcome;
 }
 
-#line 697 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 701 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 int LineClassifiers__outcome_by_name(text_stream *outcome) {
 	if (Str__eq(outcome, TL_IS_4051))                return AUDIO_LSNROID;
 	if (Str__eq(outcome, TL_IS_4052))       return BEGINPARAGRAPH_LSNROID;
@@ -49922,7 +50016,7 @@ int LineClassifiers__outcome_by_name(text_stream *outcome) {
 	return NO_LSNROID;
 }
 
-#line 798 "inweb/literate-module/Chapter 2/Line Classifiers.w"
+#line 802 "inweb/literate-module/Chapter 2/Line Classifiers.w"
 int LineClassifiers__option_bit(int O) {
 	switch (O) {
 		case HYPERLINKED_LSNROID:    return HYPERLINKED_LSNROBIT;
@@ -50857,7 +50951,7 @@ void WebNotation__rewrite(OUTPUT_STREAM, text_stream *text, notation_rewriting_m
 			}
 		}
 	} else {
-		WRITE("%S", text);
+		Str__concatenate(OUT, text);
 	}
 }
 
@@ -75482,10 +75576,10 @@ void Inweb_InC_register_I_literals(void) {
     TL_IS_3895 = Str__literal(U"Contents.inwebc");
     TL_IS_3896 = Str__literal(U"classes position set for a second time");
     TL_IS_3897 = Str__literal(U"definitions position set for a second time");
-    TL_IS_3898 = Str__literal(U"Title");
-    TL_IS_3899 = Str__literal(U"Purpose");
-    TL_IS_3900 = Str__literal(U"Partition");
-    TL_IS_3901 = Str__literal(U"unable to find a 'Partition' notation");
+    TL_IS_3898 = Str__literal(U"Partition");
+    TL_IS_3899 = Str__literal(U"unable to find a 'Partition' notation");
+    TL_IS_3900 = Str__literal(U"Title");
+    TL_IS_3901 = Str__literal(U"Purpose");
     TL_IS_3902 = Str__literal(U"Language");
     TL_IS_3903 = Str__literal(U"C");
     TL_IS_3904 = Str__literal(U"Language");

@@ -573,6 +573,7 @@ of the web into memory, which is profligate, but saves time.
 
 =
 void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals) {
+	partitioned_file *cached_pf = NULL;
 	ls_chapter *C;
 	ls_section *S;
 	LOOP_OVER_LINKED_LIST(C, ls_chapter, W->chapters)
@@ -633,6 +634,39 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 			DISCARD_TEXT(line);
 			tfp.line_count++; cl++;
 		}
+	} else if (S->partition_number > 0) {
+		ls_notation *notation = S->literate_source->partition_notation;
+		if (notation == NULL) {
+			notation = WebNotation::notation_by_name(S->literate_source->context, I"Partition");
+			if (notation == NULL) {
+				WebErrors::issue_at(I"unable to find a 'Partition' notation", NULL);
+				S->partition_number = 0;
+			}
+		}
+		if (notation) {
+			filename *F = S->source_file_for_section;
+			if (F == NULL) internal_error("no source file");
+			if ((cached_pf == NULL) ||
+				(Filenames::eq(F, cached_pf->accessed_at) == FALSE)) {
+				if (verbosely) PRINT("Partitioning file: '%S'\n", F);
+				cached_pf = WebStructure::partition_file(F, notation);
+			}
+
+			int n = 0;
+			file_partition *fp = NULL;
+			LOOP_OVER_LINKED_LIST(fp, file_partition, cached_pf->partitions) {
+				if (n == S->partition_number) break;
+				n++;
+			}
+			if (fp) {
+				text_file_position tfp = fp->start;
+				text_stream *L;
+				LOOP_OVER_LINKED_LIST(L, text_stream, fp->lines) {
+					WebStructure::scan_source_line(L, &tfp, (void *) S);
+					tfp.line_count++; cl++;
+				}
+			}
+		}
 	} else {
 		filename *F = S->source_file_for_section;
 		if (F == NULL) internal_error("no source file");
@@ -665,8 +699,6 @@ void WebStructure::scan_source_line(text_stream *line, text_file_position *tfp, 
 	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
 		Str::truncate(line, l--);
 
-	if (S->partition_number > 0) @<Make sure we are in the correct partition@>;
-
 	ls_line *L = LiterateSource::feed_line(S->literate_source, tfp, line);
 	if (L->classification.major == INCLUDE_FILE_MAJLC) {
 		filename *F = Filenames::from_text_relative(
@@ -683,28 +715,61 @@ void WebStructure::scan_source_line(text_stream *line, text_file_position *tfp, 
 	}
 }
 
-@<Make sure we are in the correct partition@> =
-	if (S->literate_source->partition_notation == NULL) {
-		S->literate_source->partition_notation =
-			WebNotation::notation_by_name(S->literate_source->context, I"Partition");
-		if (S->literate_source->partition_notation == NULL) {
-			WebErrors::issue_at(I"unable to find a 'Partition' notation", NULL);
-			S->partition_number = 0;
+@h Cache for files being partitioned.
+
+=
+classdef partitioned_file {
+	struct filename *accessed_at;
+	struct linked_list *partitions; /* of `file_partition` */
+	struct file_partition *latest;
+	struct ls_notation *notation;
+}
+
+classdef file_partition {
+	struct text_file_position start;
+	struct linked_list *lines; /* of `text_stream` */
+}
+
+partitioned_file *WebStructure::partition_file(filename *F, ls_notation *notation) {
+	partitioned_file *pf = CREATE(partitioned_file);
+	pf->accessed_at = F;
+	pf->partitions = NEW_LINKED_LIST(file_partition);
+	pf->notation = notation;
+	text_file_position tfp = TextFiles::at(F, 1);
+	WebStructure::add_partition(pf, &tfp);
+	TextFiles::read(F, FALSE, "can't open web source file", TRUE,
+		WebStructure::scan_to_partition, NULL, (void *) pf);
+	return pf;
+}
+
+void WebStructure::add_partition(partitioned_file *pf, text_file_position *tfp) {
+	file_partition *fp = CREATE(file_partition);
+	fp->start = *tfp;
+	fp->lines = NEW_LINKED_LIST(text_stream);
+	ADD_TO_LINKED_LIST(fp, file_partition, pf->partitions);
+	pf->latest = fp;
+}
+
+void WebStructure::scan_to_partition(text_stream *line, text_file_position *tfp, void *state) {
+	partitioned_file *pf = (partitioned_file *) state;
+
+	int l = Str::len(line) - 1;
+	while ((l>=0) && (Characters::is_space_or_tab(Str::get_at(line, l))))
+		Str::truncate(line, l--);
+
+	ls_class last_cf = LineClassification::unclassified();
+	ls_class_parsing res = LineClassification::classify(pf->notation, line, &last_cf, FALSE);
+	if (res.cf.major == PARTITION_MAJLC) {
+		if (res.cf.minor == INCLUSIVE_PARTITION_MINLC) {
+			text_stream *saved = Str::duplicate(line);
+			ADD_TO_LINKED_LIST(saved, text_stream, pf->latest->lines);
 		}
-	} 
-	if (S->literate_source->partition_notation) {
-		ls_class last_cf = LineClassification::unclassified();
-		int sff = FALSE;
-		if ((S->literate_source->context) && (S->literate_source->context->single_file)) sff = TRUE;
-		ls_class_parsing res =
-			LineClassification::classify(
-				S->literate_source->partition_notation, line, &last_cf, sff);
-		if (res.cf.major == PARTITION_MAJLC) {
-			S->current_partition++;
-			if (res.cf.minor != INCLUSIVE_PARTITION_MINLC) return;
-		}
-		if (S->partition_number != S->current_partition) return;
+		WebStructure::add_partition(pf, tfp);
+		return;
 	}
+	text_stream *saved = Str::duplicate(line);
+	ADD_TO_LINKED_LIST(saved, text_stream, pf->latest->lines);
+}
 
 @h Language.
 I'm probably showing my age here: the default language for a web is C.

@@ -279,13 +279,19 @@ ls_class_parsing LineClassification::classify(ls_notation *ntn, text_stream *lin
 	WebNotation::rewrite(processed, line, ntn->preprocessor);
 
 	TEMPORARY_TEXT(indexed_text)
-	linked_list *L = WebIndexing::index_from_line(indexed_text, processed, ntn, &error);
+	text_stream *draw_from = processed;
+	linked_list *L = NULL;
 
-	results = LineClassification::pass_through_classifier(ntn, indexed_text, previously, sff);
+	if (ntn->indexing_machine) {
+		L = WebIndexing::index_from_line(indexed_text, processed, ntn, &error);
+		draw_from = indexed_text;
+	}
+
+	results = LineClassification::pass_through_classifier(ntn, draw_from, previously, sff);
 	if (results.cf.major != UNCLASSIFIED_MAJLC) @<Exit with the results@>;
 
 	results = LineClassification::new_results(EXTRACT_MATTER_MAJLC, NO_MINLC);
-	results.cf.operand1 = Str::duplicate(indexed_text);
+	results.cf.operand1 = Str::duplicate(draw_from);
 	if (previously->major == UNCLASSIFIED_MAJLC) {
 		results.implies_paragraph = TRUE;
 		results.implies_extract = TRUE;
