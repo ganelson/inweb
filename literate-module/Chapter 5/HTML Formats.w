@@ -593,7 +593,15 @@ that service uses to identify the video/audio in question.
 		WRITE("</span>");
 		WRITE("</span>");
 	}
+	ls_paragraph *par = LiterateSource::par_of_line(C->line);
+	if (par) {
+		WRITE("<a id=\"");
+		Colonies::paragraph_anchor(OUT, par);
+		WRITE("LN%d\" class=\"lineanchor\"></a>", C->line->allocation_id);
+	}
+	WRITE("<span class=\"anchoredline\">");
 	@<Recurse the renderer through children nodes@>;
+	WRITE("</span>");
 	WRITE("\n");
 	return FALSE;
 
@@ -847,12 +855,13 @@ that service uses to identify the video/audio in question.
 		else
 			WRITE("external:");
 	}
+	if (LineLabels::labelled(C->finer)) HTML_OPEN_WITH("span", "class=\"linelabel\"");
 	WRITE("%s%S",
 		(Str::get_first_char(LiterateSource::par_ornament(C->par1)) == 'S')?"&#167;":"&para;",
 		C->par1->paragraph_number);
 	if (C->par2) WRITE("-%S", C->par2->paragraph_number);
-	if (LineLabels::labelled(C->finer))
-		WRITE("<span class=\"linelabel\">%S</span>", LineLabels::label_text(C->finer));
+	if (LineLabels::labelled(C->finer)) WRITE("&nbsp;%S", LineLabels::label_text(C->finer));
+	if (LineLabels::labelled(C->finer)) HTML_CLOSE("span");
 	HTML::end_link(OUT);
 
 @<Render maths@> =

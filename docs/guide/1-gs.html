@@ -71,8 +71,8 @@ The software is provided as a command-line tool, and if your installation has
 been successful, you should be able to type Inweb to use it:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span>
-<span class="ConsoleText-plain-syntax">    inweb: a tool for literate programming. See 'inweb help' for more.</span>
+<a id="SP1LN27" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span></span>
+<a id="SP1LN28" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb: a tool for literate programming. See 'inweb help' for more.</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>In this manual, the shell prompt is shown as <code>$</code>, so the command typed there was
@@ -89,13 +89,13 @@ brief reminder of how to use Inweb at the command line. For every other
 command, for example <code>inweb tangle</code>, further help is also available:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> help tangle</span>
-<span class="ConsoleText-plain-syntax">    inweb tangle</span>
+<a id="SP1LN48" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> help tangle</span></span>
+<a id="SP1LN49" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb tangle</span></span>
 
-<span class="ConsoleText-plain-syntax">    Usage: inweb tangle [WEB]</span>
+<a id="SP1LN51" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Usage: inweb tangle [WEB]</span></span>
 
-<span class="ConsoleText-plain-syntax">    Tangling is one of the two fundamental operations of literate programming</span>
-<span class="ConsoleText-plain-syntax">    (for the other, see 'inweb help weave'). It strips out the markup in a web,</span>
+<a id="SP1LN53" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Tangling is one of the two fundamental operations of literate programming</span></span>
+<a id="SP1LN54" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (for the other, see 'inweb help weave'). It strips out the markup in a web,</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>... and so on: about a screenful is printed.</p>
@@ -108,15 +108,15 @@ optional switch <code>-to FILE</code>, which changes where the tangled program i
 Without the switch:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span>
-<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span>
+<a id="SP1LN70" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span></span>
+<a id="SP1LN71" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>And with it:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> unexpected.py</span>
-<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'</span>
+<a id="SP1LN77" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> unexpected.py</span></span>
+<a id="SP1LN78" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>This overrode the default filename <code>countsort.py</code>, which would otherwise have been
@@ -129,13 +129,13 @@ useful, though, control the amount of console output produced by Inweb.</p>
 <p>For the most part, replies like:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span>
+<a id="SP1LN93" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>are a helpful reassurance. But users who prefer the customary Unix silence can add <code>-silent</code>:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -silent</span>
+<a id="SP1LN99" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -silent</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>in which case nothing at all will be printed unless some error occurs. There is

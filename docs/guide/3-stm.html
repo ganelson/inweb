@@ -57,15 +57,15 @@ a sitemap of the website produced when all the webs in the colony have been wove
 Here's what we get:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> map</span>
-<span class="ConsoleText-plain-syntax">    colony declared in the file: colony.inweb</span>
-<span class="ConsoleText-plain-syntax">    weave output to the directory: docs</span>
+<a id="SP1LN2914" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> map</span></span>
+<a id="SP1LN2915" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    colony declared in the file: colony.inweb</span></span>
+<a id="SP1LN2916" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weave output to the directory: docs</span></span>
 
-<span class="ConsoleText-plain-syntax">    member    | type | source location</span>
-<span class="ConsoleText-plain-syntax">    --------- | ---- | -----------------</span>
-<span class="ConsoleText-plain-syntax">    front     | book | front-office</span>
-<span class="ConsoleText-plain-syntax">    inventory | book | inventory-module</span>
-<span class="ConsoleText-plain-syntax">    back      | page | back-office.py.md</span>
+<a id="SP1LN2918" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    member    | type | source location</span></span>
+<a id="SP1LN2919" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    --------- | ---- | -----------------</span></span>
+<a id="SP1LN2920" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front     | book | front-office</span></span>
+<a id="SP1LN2921" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory | book | inventory-module</span></span>
+<a id="SP1LN2922" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back      | page | back-office.py.md</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Members are divided into &quot;books&quot;, webs with multiple sections, and &quot;pages&quot;,
@@ -76,13 +76,13 @@ is, it won't be the same as the <code>at</code> fields in the declaration.</p>
 <p>Then we get some statistics:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    member    | notation     | language | chapters | sections</span>
-<span class="ConsoleText-plain-syntax">    --------- | ------------ | -------- | -------- | --------</span>
-<span class="ConsoleText-plain-syntax">    front     | MarkdownCode | Python   | 1        | 2</span>
-<span class="ConsoleText-plain-syntax">    *back     | MarkdownCode | Python   | 1        | 1</span>
-<span class="ConsoleText-plain-syntax">    inventory | MarkdownCode | Python   | 1        | 2</span>
-<span class="ConsoleText-plain-syntax">    --------- | ------------ | -------- | -------- | --------</span>
-<span class="ConsoleText-plain-syntax">    total: 3  | --           | --       | 3        | 5</span>
+<a id="SP1LN2935" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    member    | notation     | language | chapters | sections</span></span>
+<a id="SP1LN2936" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    --------- | ------------ | -------- | -------- | --------</span></span>
+<a id="SP1LN2937" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front     | MarkdownCode | Python   | 1        | 2</span></span>
+<a id="SP1LN2938" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    *back     | MarkdownCode | Python   | 1        | 1</span></span>
+<a id="SP1LN2939" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory | MarkdownCode | Python   | 1        | 2</span></span>
+<a id="SP1LN2940" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    --------- | ------------ | -------- | -------- | --------</span></span>
+<a id="SP1LN2941" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    total: 3  | --           | --       | 3        | 5</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note that this doesn't total up lines or paragraphs. That's because to do
@@ -92,15 +92,15 @@ Inweb will dutifully do so if asked for <code>inweb map -fuller</code>. For exam
 here's the fuller stats for the colony of the program Intest:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    member     | notation     | language | modules | chapters | sections   | paragraphs   | lines</span>
-<span class="ConsoleText-plain-syntax">    ---------- | ------------ | -------- | ------- | -------- | ---------- | ------------ | --------------</span>
-<span class="ConsoleText-plain-syntax">    *overview  | InwebClassic | None     | --      | 1        | 1          | 0            | 16</span>
-<span class="ConsoleText-plain-syntax">    intest     | InwebClassic | InC      | 2       | 6 (+ 11) | 21 (+ 55)  | 376 (+ 1053) | 8097 (+ 29997)</span>
-<span class="ConsoleText-plain-syntax">    arch       | InwebClassic | InC      | --      | 3        | 5          | 62           | 1164</span>
-<span class="ConsoleText-plain-syntax">    inweb      | InwebClassic | InC      | 2       | 3 (+ 15) | 18 (+ 100) | 192 (+ 2037) | 4642 (+ 51738)</span>
-<span class="ConsoleText-plain-syntax">    foundation | InwebClassic | InC      | --      | 8        | 50         | 991          | 28833</span>
-<span class="ConsoleText-plain-syntax">    ---------- | ------------ | -------- | ------- | -------- | ---------- | ------------ | --------------</span>
-<span class="ConsoleText-plain-syntax">    total: 5   | --           | --       | --      | 21       | 95         | 1621         | 42752</span>
+<a id="SP1LN2951" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    member     | notation     | language | modules | chapters | sections   | paragraphs   | lines</span></span>
+<a id="SP1LN2952" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ---------- | ------------ | -------- | ------- | -------- | ---------- | ------------ | --------------</span></span>
+<a id="SP1LN2953" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    *overview  | InwebClassic | None     | --      | 1        | 1          | 0            | 16</span></span>
+<a id="SP1LN2954" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    intest     | InwebClassic | InC      | 2       | 6 (+ 11) | 21 (+ 55)  | 376 (+ 1053) | 8097 (+ 29997)</span></span>
+<a id="SP1LN2955" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    arch       | InwebClassic | InC      | --      | 3        | 5          | 62           | 1164</span></span>
+<a id="SP1LN2956" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb      | InwebClassic | InC      | 2       | 3 (+ 15) | 18 (+ 100) | 192 (+ 2037) | 4642 (+ 51738)</span></span>
+<a id="SP1LN2957" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    foundation | InwebClassic | InC      | --      | 8        | 50         | 991          | 28833</span></span>
+<a id="SP1LN2958" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ---------- | ------------ | -------- | ------- | -------- | ---------- | ------------ | --------------</span></span>
+<a id="SP1LN2959" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    total: 5   | --           | --       | --      | 21       | 95         | 1621         | 42752</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>The additions in brackets are to allow for the fact that, by using modules,
@@ -111,12 +111,12 @@ importing 11 more chapters of 55 sections from the 2 modules it imports.</p>
 <p>Returning to our <code>retail</code> example, we then get the site map itself:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    path         | leaf             | link-name | nav | crumbs | pattern</span>
-<span class="ConsoleText-plain-syntax">    ------------ | ---------------- | --------- | --- | ------ | -------</span>
-<span class="ConsoleText-plain-syntax">    back/        | back-office.html | back      | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    docs-assets/ | --               | --        | --  | --     | --</span>
-<span class="ConsoleText-plain-syntax">    front/       | index.html       | front     | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    inventory/   | index.html       | inventory | --  |        | HTML</span>
+<a id="SP1LN2971" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    path         | leaf             | link-name | nav | crumbs | pattern</span></span>
+<a id="SP1LN2972" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------------ | ---------------- | --------- | --- | ------ | -------</span></span>
+<a id="SP1LN2973" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back/        | back-office.html | back      | --  |        | HTML</span></span>
+<a id="SP1LN2974" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    docs-assets/ | --               | --        | --  | --     | --</span></span>
+<a id="SP1LN2975" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front/       | index.html       | front     | --  |        | HTML</span></span>
+<a id="SP1LN2976" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory/   | index.html       | inventory | --  |        | HTML</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>This is meant to give a picture of the website which would emerge if each
@@ -150,12 +150,12 @@ if we rearrange the site map one day, all these links will remain unbroken.</p>
 <p>Suppose we don't want this arrangement:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    path         | leaf             | link-name | nav | crumbs | pattern</span>
-<span class="ConsoleText-plain-syntax">    ------------ | ---------------- | --------- | --- | ------ | -------</span>
-<span class="ConsoleText-plain-syntax">    back/        | back-office.html | back      | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    docs-assets/ | --               | --        | --  | --     | --</span>
-<span class="ConsoleText-plain-syntax">    front/       | index.html       | front     | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    inventory/   | index.html       | inventory | --  |        | HTML</span>
+<a id="SP1LN3018" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    path         | leaf             | link-name | nav | crumbs | pattern</span></span>
+<a id="SP1LN3019" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------------ | ---------------- | --------- | --- | ------ | -------</span></span>
+<a id="SP1LN3020" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back/        | back-office.html | back      | --  |        | HTML</span></span>
+<a id="SP1LN3021" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    docs-assets/ | --               | --        | --  | --     | --</span></span>
+<a id="SP1LN3022" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front/       | index.html       | front     | --  |        | HTML</span></span>
+<a id="SP1LN3023" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory/   | index.html       | inventory | --  |        | HTML</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>It seems asymmetric, somehow, that the URL for <code>front</code> is <code>front/index.html</code>
@@ -208,24 +208,24 @@ page at the top level of the website called <code>index.html</code> (rather than
 <p>The table of materials now looks like so:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    member    | type | source location</span>
-<span class="ConsoleText-plain-syntax">    --------- | ---- | -------------------------</span>
-<span class="ConsoleText-plain-syntax">    front     | book | front-office</span>
-<span class="ConsoleText-plain-syntax">    inventory | book | inventory-module</span>
-<span class="ConsoleText-plain-syntax">    landing   | page | (material in Colony file)</span>
-<span class="ConsoleText-plain-syntax">    back      | page | back-office.py.md</span>
+<a id="SP1LN3084" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    member    | type | source location</span></span>
+<a id="SP1LN3085" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    --------- | ---- | -------------------------</span></span>
+<a id="SP1LN3086" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front     | book | front-office</span></span>
+<a id="SP1LN3087" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory | book | inventory-module</span></span>
+<a id="SP1LN3088" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    landing   | page | (material in Colony file)</span></span>
+<a id="SP1LN3089" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back      | page | back-office.py.md</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>And here's our sitemap:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    path         | leaf       | link-name | nav | crumbs | pattern</span>
-<span class="ConsoleText-plain-syntax">    ------------ | ---------- | --------- | --- | ------ | -------</span>
-<span class="ConsoleText-plain-syntax">                 | index.html | landing   | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    back/        | index.html | back      | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    docs-assets/ | --         | --        | --  | --     | --</span>
-<span class="ConsoleText-plain-syntax">    front/       | index.html | front     | --  |        | HTML</span>
-<span class="ConsoleText-plain-syntax">    inventory/   | index.html | inventory | --  |        | HTML</span>
+<a id="SP1LN3095" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    path         | leaf       | link-name | nav | crumbs | pattern</span></span>
+<a id="SP1LN3096" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------------ | ---------- | --------- | --- | ------ | -------</span></span>
+<a id="SP1LN3097" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">                 | index.html | landing   | --  |        | HTML</span></span>
+<a id="SP1LN3098" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back/        | index.html | back      | --  |        | HTML</span></span>
+<a id="SP1LN3099" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    docs-assets/ | --         | --        | --  | --     | --</span></span>
+<a id="SP1LN3100" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front/       | index.html | front     | --  |        | HTML</span></span>
+<a id="SP1LN3101" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory/   | index.html | inventory | --  |        | HTML</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>It's even possible to define a multi-section web from inside a colony, and
@@ -256,13 +256,13 @@ in effect collates some Markdown files into an area of our website. The bill
 of materials now looks like so:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    member      | type | source location</span>
-<span class="ConsoleText-plain-syntax">    ----------- | ---- | ------------------------------</span>
-<span class="ConsoleText-plain-syntax">    front       | book | front-office</span>
-<span class="ConsoleText-plain-syntax">    inventory   | book | inventory-module</span>
-<span class="ConsoleText-plain-syntax">    regulations | book | (contents list in Colony file)</span>
-<span class="ConsoleText-plain-syntax">    landing     | page | (material in Colony file)</span>
-<span class="ConsoleText-plain-syntax">    back        | page | back-office.py.md</span>
+<a id="SP1LN3133" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    member      | type | source location</span></span>
+<a id="SP1LN3134" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ----------- | ---- | ------------------------------</span></span>
+<a id="SP1LN3135" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front       | book | front-office</span></span>
+<a id="SP1LN3136" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory   | book | inventory-module</span></span>
+<a id="SP1LN3137" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    regulations | book | (contents list in Colony file)</span></span>
+<a id="SP1LN3138" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    landing     | page | (material in Colony file)</span></span>
+<a id="SP1LN3139" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back        | page | back-office.py.md</span></span>
 </pre>
 <div class="lsmarkdown">
 <h2>Patterns</h2>
@@ -322,15 +322,15 @@ member: "inventory" at "inventory-module"
 <p>The site map now becomes:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    path         | leaf       | link-name | nav | crumbs | pattern</span>
-<span class="ConsoleText-plain-syntax">    ------------ | ---------- | --------- | --- | ------ | -----------</span>
-<span class="ConsoleText-plain-syntax">                 | index.html | landing   | --  |        | GitHubPages</span>
-<span class="ConsoleText-plain-syntax">    back/        | index.html | back      | --  | A      | GitHubPages</span>
-<span class="ConsoleText-plain-syntax">    docs-assets/ | --         | --        | --  | --     | --</span>
-<span class="ConsoleText-plain-syntax">    front/       | index.html | front     | --  | A      | GitHubPages</span>
-<span class="ConsoleText-plain-syntax">    inventory/   | index.html | inventory | --  | A      | GitHubPages</span>
+<a id="SP1LN3210" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    path         | leaf       | link-name | nav | crumbs | pattern</span></span>
+<a id="SP1LN3211" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------------ | ---------- | --------- | --- | ------ | -----------</span></span>
+<a id="SP1LN3212" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">                 | index.html | landing   | --  |        | GitHubPages</span></span>
+<a id="SP1LN3213" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back/        | index.html | back      | --  | A      | GitHubPages</span></span>
+<a id="SP1LN3214" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    docs-assets/ | --         | --        | --  | --     | --</span></span>
+<a id="SP1LN3215" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front/       | index.html | front     | --  | A      | GitHubPages</span></span>
+<a id="SP1LN3216" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory/   | index.html | inventory | --  | A      | GitHubPages</span></span>
 
-<span class="ConsoleText-plain-syntax">    A = Home: //landing//</span>
+<a id="SP1LN3218" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    A = Home: //landing//</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>This provides something nice and simple: the landing page, at the top of
@@ -419,15 +419,15 @@ But it's also possible to link to an external website with an absolute URL:</p>
 <p>The site map for our <code>retail</code> colony now looks like so:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    path         | leaf       | link-name | nav        | crumbs | pattern</span>
-<span class="ConsoleText-plain-syntax">    ------------ | ---------- | --------- | ---------- | ------ | -----------</span>
-<span class="ConsoleText-plain-syntax">                 | index.html | landing   | (nameless) |        | GitHubPages</span>
-<span class="ConsoleText-plain-syntax">    back/        | index.html | back      | (nameless) | A      | GitHubPages</span>
-<span class="ConsoleText-plain-syntax">    docs-assets/ | --         | --        | --         | --     | --</span>
-<span class="ConsoleText-plain-syntax">    front/       | index.html | front     | (nameless) | A      | GitHubPages</span>
-<span class="ConsoleText-plain-syntax">    inventory/   | index.html | inventory | (nameless) | A      | GitHubPages</span>
+<a id="SP1LN3319" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    path         | leaf       | link-name | nav        | crumbs | pattern</span></span>
+<a id="SP1LN3320" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------------ | ---------- | --------- | ---------- | ------ | -----------</span></span>
+<a id="SP1LN3321" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">                 | index.html | landing   | (nameless) |        | GitHubPages</span></span>
+<a id="SP1LN3322" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back/        | index.html | back      | (nameless) | A      | GitHubPages</span></span>
+<a id="SP1LN3323" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    docs-assets/ | --         | --        | --         | --     | --</span></span>
+<a id="SP1LN3324" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    front/       | index.html | front     | (nameless) | A      | GitHubPages</span></span>
+<a id="SP1LN3325" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inventory/   | index.html | inventory | (nameless) | A      | GitHubPages</span></span>
 
-<span class="ConsoleText-plain-syntax">    A = Home: //landing//</span>
+<a id="SP1LN3327" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    A = Home: //landing//</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note the &quot;nav&quot; column in this table: the four weaves all use the navigation

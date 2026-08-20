@@ -59,31 +59,31 @@ programs in multi-section webs stored in directories. So the following descripti
 assumes we want to track build codes for the web <code>smorgasbord</code>:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build smorgasbord</span>
-<span class="ConsoleText-plain-syntax">    inweb: fatal error: web has no build file</span>
+<a id="SP1LN7890" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build smorgasbord</span></span>
+<a id="SP1LN7891" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb: fatal error: web has no build file</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>And nor has it. But we can make one:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build</span><span class="ConsoleText-identifier-syntax"> -creating</span><span class="ConsoleText-plain-syntax"> smorgasbord</span>
-<span class="ConsoleText-plain-syntax">    Build file begun at build 1A01 on 21 December 2025</span>
+<a id="SP1LN7897" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build</span><span class="ConsoleText-identifier-syntax"> -creating</span><span class="ConsoleText-plain-syntax"> smorgasbord</span></span>
+<a id="SP1LN7898" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build file begun at build 1A01 on 21 December 2025</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Very little has happened here: a small text file has been created.</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> smorgasbord/build.txt</span>
-<span class="ConsoleText-plain-syntax">    Build Date: 21 December 2025</span>
-<span class="ConsoleText-plain-syntax">    Build Number: 1A01</span>
+<a id="SP1LN7904" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> smorgasbord/build.txt</span></span>
+<a id="SP1LN7905" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Date: 21 December 2025</span></span>
+<a id="SP1LN7906" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Number: 1A01</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Today's date has been filled in, and the &quot;build number&quot; has been started at 1A01.
 If we try to advance again:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build smorgasbord</span>
-<span class="ConsoleText-plain-syntax">    Build number remains 1A01 since it is still 21 December 2025</span>
+<a id="SP1LN7913" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build smorgasbord</span></span>
+<a id="SP1LN7914" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build number remains 1A01 since it is still 21 December 2025</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>This is the convention: the build number only actually advances on each new day.
@@ -91,16 +91,16 @@ If we try to advance again:</p>
 a make file.) If we come back next day:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build smorgasbord</span>
-<span class="ConsoleText-plain-syntax">    Build number advanced from 1A01 (set on 21 December 2025) to 1A02</span>
+<a id="SP1LN7922" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> advance-build smorgasbord</span></span>
+<a id="SP1LN7923" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build number advanced from 1A01 (set on 21 December 2025) to 1A02</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>And indeed:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> smorgasbord/build.txt</span>
-<span class="ConsoleText-plain-syntax">    Build Date: 22 December 2025</span>
-<span class="ConsoleText-plain-syntax">    Build Number: 1A02</span>
+<a id="SP1LN7929" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> smorgasbord/build.txt</span></span>
+<a id="SP1LN7930" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Date: 22 December 2025</span></span>
+<a id="SP1LN7931" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Number: 1A02</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Build numbers progress from 1A01, 1A02, ..., 1A99, 2A01, 2A02, ..., and so on,
@@ -112,9 +112,9 @@ allows for 21384 distinct build codes, enough to use one each day for 58 years.<
 optional field can be added in this way:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    Prerelease: early-beta</span>
-<span class="ConsoleText-plain-syntax">    Build Date: 22 December 2025</span>
-<span class="ConsoleText-plain-syntax">    Build Number: 1A02</span>
+<a id="SP1LN7944" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Prerelease: early-beta</span></span>
+<a id="SP1LN7945" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Date: 22 December 2025</span></span>
+<a id="SP1LN7946" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Number: 1A02</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Any <code>Prerelease</code> value is preserved by <code>inweb advance-build</code>, so it will stay
@@ -123,12 +123,12 @@ there until changed or removed by hand-editing.</p>
 contributes to the metadata for a web:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -metadata</span><span class="ConsoleText-plain-syntax"> smorgasbord</span>
-<span class="ConsoleText-plain-syntax">    ...</span>
-<span class="ConsoleText-plain-syntax">    Build Date: 21 December 2025</span>
-<span class="ConsoleText-plain-syntax">    Build Number: 1A02</span>
-<span class="ConsoleText-plain-syntax">    Prerelease: early-beta</span>
-<span class="ConsoleText-plain-syntax">    Semantic Version Number: 1-early-beta+1A02</span>
+<a id="SP1LN7956" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -metadata</span><span class="ConsoleText-plain-syntax"> smorgasbord</span></span>
+<a id="SP1LN7957" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ...</span></span>
+<a id="SP1LN7958" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Date: 21 December 2025</span></span>
+<a id="SP1LN7959" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Build Number: 1A02</span></span>
+<a id="SP1LN7960" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Prerelease: early-beta</span></span>
+<a id="SP1LN7961" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Semantic Version Number: 1-early-beta+1A02</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>So that, for example, the web could include the following source line:</p>
@@ -137,7 +137,7 @@ contributes to the metadata for a web:</p>
 <p>and the result would print:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    This is v1-early-beta+1A02, built on 21 December 2025.</span>
+<a id="SP1LN7971" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    This is v1-early-beta+1A02, built on 21 December 2025.</span></span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Summary of Patterns</span><a href="6-sop.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 7: Other Services</span>7<li class="progresscurrent"><span class="current-fullname-popup">Build Numbering</span>bn</li><li class="progresssection"><span class="fullname-popup">README Files</span><a href="7-rf.html">rf</a></li><li class="progresssection"><span class="fullname-popup">Make Files</span><a href="7-mf.html">mf</a></li><li class="progresssection"><span class="fullname-popup">Gitignore Files</span><a href="7-gf.html">gf</a></li><li class="progressnext"><span class="nav-popup">README Files</span><a href="7-rf.html">&#10095;</a></li></ul></div>

@@ -83,25 +83,25 @@ was the single file of a small web. When referring to a multi-file web,
 we can <em>either</em> give its contents page:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord/Contents.inweb</span>
+<a id="SP1LN1438" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord/Contents.inweb</span></span>
 </pre>
 <div class="lsmarkdown">
 <p><em>or</em>, equivalently and more conveniently, just give the directory name:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord</span>
+<a id="SP1LN1444" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Either way, the reply is:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span>
+<a id="SP1LN1450" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span></span>
 
-<span class="ConsoleText-plain-syntax">    Contents:</span>
-<span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span>
-<span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span>
-<span class="ConsoleText-plain-syntax">    cnsr   | Counting Sort | 77</span>
-<span class="ConsoleText-plain-syntax">    qcsr   | Quick Sort    | 62</span>
+<a id="SP1LN1452" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Contents:</span></span>
+<a id="SP1LN1453" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span></span>
+<a id="SP1LN1454" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span></span>
+<a id="SP1LN1455" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    cnsr   | Counting Sort | 77</span></span>
+<a id="SP1LN1456" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    qcsr   | Quick Sort    | 62</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>New output has appeared here: a contents rundown. The <code>abbrev</code> column is because
@@ -116,13 +116,13 @@ the contents entry to specify an abbreviation explicitly:</p>
 <p>After which:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span>
+<a id="SP1LN1472" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span></span>
 
-<span class="ConsoleText-plain-syntax">    Contents:</span>
-<span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span>
-<span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span>
-<span class="ConsoleText-plain-syntax">    csort  | Counting Sort | 77</span>
-<span class="ConsoleText-plain-syntax">    qsort  | Quick Sort    | 62</span>
+<a id="SP1LN1474" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Contents:</span></span>
+<a id="SP1LN1475" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span></span>
+<a id="SP1LN1476" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span></span>
+<a id="SP1LN1477" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    csort  | Counting Sort | 77</span></span>
+<a id="SP1LN1478" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    qsort  | Quick Sort    | 62</span></span>
 </pre>
 <div class="lsmarkdown">
 <h2>Weaving and tangling</h2>
@@ -141,11 +141,11 @@ are created if they do not already exist.</li>
 <p>So, for example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span>
-<span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span>
-<span class="ConsoleText-plain-syntax">    [smorgasbord/Woven/cnsr.html] [qcsr]</span>
-<span class="ConsoleText-plain-syntax">    [index]</span>
-<span class="ConsoleText-plain-syntax">    10 files copied to: smorgasbord/Woven/assets</span>
+<a id="SP1LN1498" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span></span>
+<a id="SP1LN1499" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span></span>
+<a id="SP1LN1500" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    [smorgasbord/Woven/cnsr.html] [qcsr]</span></span>
+<a id="SP1LN1501" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    [index]</span></span>
+<a id="SP1LN1502" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    10 files copied to: smorgasbord/Woven/assets</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note the reappearance of the two abbreviations mentioned above: each section has
@@ -157,17 +157,17 @@ user if the command-line switch <code>-to</code> is used, but it's not sure what
 to. For example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span>
-<span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span>
-<span class="ConsoleText-plain-syntax">    inweb: fatal error: this is neither an existing file nor directory: my_website</span>
+<a id="SP1LN1515" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span></span>
+<a id="SP1LN1516" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span></span>
+<a id="SP1LN1517" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb: fatal error: this is neither an existing file nor directory: my_website</span></span>
 
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">mkdir</span><span class="ConsoleText-plain-syntax"> my_website</span>
+<a id="SP1LN1519" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">mkdir</span><span class="ConsoleText-plain-syntax"> my_website</span></span>
 
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span>
-<span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span>
-<span class="ConsoleText-plain-syntax">        [my_website/cnsr.html] [qcsr]</span>
-<span class="ConsoleText-plain-syntax">        [index]</span>
-<span class="ConsoleText-plain-syntax">        10 files copied to: my_website/assets</span>
+<a id="SP1LN1521" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span></span>
+<a id="SP1LN1522" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span></span>
+<a id="SP1LN1523" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [my_website/cnsr.html] [qcsr]</span></span>
+<a id="SP1LN1524" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [index]</span></span>
+<a id="SP1LN1525" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        10 files copied to: my_website/assets</span></span>
 </pre>
 <div class="lsmarkdown">
 <h2>Contents entries</h2>
@@ -263,20 +263,20 @@ Appendix &lt;letter A to L&gt;: &lt;title&gt;
 Inblorb, we now see:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    abbrev | chapter   | section                   | lines</span>
-<span class="ConsoleText-plain-syntax">    ------ | --------- | ------------------------- | -----</span>
-<span class="ConsoleText-plain-syntax">    1/bsc  | Chapter 1 | Basics                    | 55</span>
-<span class="ConsoleText-plain-syntax">    1/mn   | Chapter 1 | Main                      | 295</span>
-<span class="ConsoleText-plain-syntax">    1/be   | Chapter 1 | Blorb Errors              | 115</span>
-<span class="ConsoleText-plain-syntax">    1/bp   | Chapter 1 | Blurb Parser              | 405</span>
-<span class="ConsoleText-plain-syntax">    2/bw   | Chapter 2 | Blorb Writer              | 591</span>
-<span class="ConsoleText-plain-syntax">    3/rls  | Chapter 3 | Releaser                  | 616</span>
-<span class="ConsoleText-plain-syntax">    3/sd   | Chapter 3 | Solution Deviser          | 421</span>
-<span class="ConsoleText-plain-syntax">    3/laaf | Chapter 3 | Links and Auxiliary Files | 165</span>
-<span class="ConsoleText-plain-syntax">    3/plc  | Chapter 3 | Placeholders              | 212</span>
-<span class="ConsoleText-plain-syntax">    3/tmp  | Chapter 3 | Templates                 | 123</span>
-<span class="ConsoleText-plain-syntax">    3/wm   | Chapter 3 | Website Maker             | 1031</span>
-<span class="ConsoleText-plain-syntax">    3/bs6  | Chapter 3 | Base64                    | 80</span>
+<a id="SP1LN1633" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    abbrev | chapter   | section                   | lines</span></span>
+<a id="SP1LN1634" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ------ | --------- | ------------------------- | -----</span></span>
+<a id="SP1LN1635" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    1/bsc  | Chapter 1 | Basics                    | 55</span></span>
+<a id="SP1LN1636" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    1/mn   | Chapter 1 | Main                      | 295</span></span>
+<a id="SP1LN1637" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    1/be   | Chapter 1 | Blorb Errors              | 115</span></span>
+<a id="SP1LN1638" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    1/bp   | Chapter 1 | Blurb Parser              | 405</span></span>
+<a id="SP1LN1639" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    2/bw   | Chapter 2 | Blorb Writer              | 591</span></span>
+<a id="SP1LN1640" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/rls  | Chapter 3 | Releaser                  | 616</span></span>
+<a id="SP1LN1641" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/sd   | Chapter 3 | Solution Deviser          | 421</span></span>
+<a id="SP1LN1642" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/laaf | Chapter 3 | Links and Auxiliary Files | 165</span></span>
+<a id="SP1LN1643" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/plc  | Chapter 3 | Placeholders              | 212</span></span>
+<a id="SP1LN1644" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/tmp  | Chapter 3 | Templates                 | 123</span></span>
+<a id="SP1LN1645" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/wm   | Chapter 3 | Website Maker             | 1031</span></span>
+<a id="SP1LN1646" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3/bs6  | Chapter 3 | Base64                    | 80</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note that the abbreviations now have a numerical part: <code>3/sd</code> abbreviates

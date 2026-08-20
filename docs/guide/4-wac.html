@@ -83,35 +83,35 @@ every integer which is equal to the sum of the \INWEBMATH(m\INWEBMATH)-th powers
 Renaming this <code>backpdi.c.cweb</code>, we obtain:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect back-pdi.c.cweb</span>
-<span class="ConsoleText-plain-syntax">    web "Untitled" (C program in CWEB notation): 22 paragraphs : 367 lines</span>
+<a id="SP1LN3868" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect back-pdi.c.cweb</span></span>
+<a id="SP1LN3869" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Untitled" (C program in CWEB notation): 22 paragraphs : 367 lines</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>CWEB has no concept of metadata such as titling: hence, &quot;Untitled&quot;. The rest
 looks correct, though, and:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave back-pdi.c.cweb</span>
-<span class="ConsoleText-plain-syntax">    weaving web "Untitled" (C program in CWEB notation) as HTML</span>
-<span class="ConsoleText-plain-syntax">        generated: back-pdi.html</span>
-<span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span>
+<a id="SP1LN3876" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave back-pdi.c.cweb</span></span>
+<a id="SP1LN3877" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (C program in CWEB notation) as HTML</span></span>
+<a id="SP1LN3878" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        generated: back-pdi.html</span></span>
+<a id="SP1LN3879" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span></span>
 
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle back-pdi.c.cweb</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> CWEB.inweb</span>
-<span class="ConsoleText-plain-syntax">    tangling web "Untitled" (C program in CWEB notation) to file 'back-pdi.c'</span>
+<a id="SP1LN3881" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle back-pdi.c.cweb</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> CWEB.inweb</span></span>
+<a id="SP1LN3882" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Untitled" (C program in CWEB notation) to file 'back-pdi.c'</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>This code is written in an antique dialect of C, so:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-identifier-syntax"> -std</span><span class="ConsoleText-plain-syntax">=c89 back-pdi.c</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> back-pdi</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./back-pdi</span><span class="ConsoleText-plain-syntax"> 3</span>
-<span class="ConsoleText-plain-syntax">    1: 7400-&gt;0407</span>
-<span class="ConsoleText-plain-syntax">    2: 7310-&gt;0371</span>
-<span class="ConsoleText-plain-syntax">    3: 7300-&gt;0370</span>
-<span class="ConsoleText-plain-syntax">    4: 5310-&gt;0153</span>
-<span class="ConsoleText-plain-syntax">    5: 1000-&gt;0001</span>
-<span class="ConsoleText-plain-syntax">    6: 0000-&gt;0000</span>
-<span class="ConsoleText-plain-syntax">    Altogether 6 solutions for m=3 (110 nodes, 4662 mems).</span>
+<a id="SP1LN3888" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-identifier-syntax"> -std</span><span class="ConsoleText-plain-syntax">=c89 back-pdi.c</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> back-pdi</span></span>
+<a id="SP1LN3889" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./back-pdi</span><span class="ConsoleText-plain-syntax"> 3</span></span>
+<a id="SP1LN3890" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    1: 7400-&gt;0407</span></span>
+<a id="SP1LN3891" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    2: 7310-&gt;0371</span></span>
+<a id="SP1LN3892" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    3: 7300-&gt;0370</span></span>
+<a id="SP1LN3893" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    4: 5310-&gt;0153</span></span>
+<a id="SP1LN3894" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    5: 1000-&gt;0001</span></span>
+<a id="SP1LN3895" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    6: 0000-&gt;0000</span></span>
+<a id="SP1LN3896" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Altogether 6 solutions for m=3 (110 nodes, 4662 mems).</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>And indeed \INWEBMATH(4^3 + 0^3 + 7^3 = 64 + 0 + 343 = 407\INWEBMATH), so score one for Professor Knuth:
@@ -138,10 +138,10 @@ and are difficult to emulate without essentially porting them wholesale.</p>
 parse <code>WEAVE</code> and <code>TANGLE</code> successfully:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave weave.pas.web</span>
-<span class="ConsoleText-plain-syntax">    weaving web "Untitled" (Pascal program in WEB notation) as HTML</span>
-<span class="ConsoleText-plain-syntax">        generated: weave.html</span>
-<span class="ConsoleText-plain-syntax">        10 files copied to: weave-assets</span>
+<a id="SP1LN3927" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave weave.pas.web</span></span>
+<a id="SP1LN3928" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (Pascal program in WEB notation) as HTML</span></span>
+<a id="SP1LN3929" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        generated: weave.html</span></span>
+<a id="SP1LN3930" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        10 files copied to: weave-assets</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note that a WEB file must be filenamed <code>NAME.pas.web</code> in order for Inweb to

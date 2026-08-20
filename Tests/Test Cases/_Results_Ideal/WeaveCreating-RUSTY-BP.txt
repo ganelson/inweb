@@ -124,31 +124,31 @@ file: rusty/sample.html
     <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. </b> </p>
 
     <pre class="displayed-code all-displayed-code code-font">
-    <span class="reserved-syntax">fn</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">() {</span>
-    <span class="plain-syntax">    </span><span class="comment-syntax">// Iterate over all integers from 1 to 10</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">let</span><span class="plain-syntax"> </span><span class="reserved-syntax">mut</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">10</span><span class="plain-syntax"> {</span>
-    <span class="plain-syntax">         </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"n = {n} of 10"</span><span class="plain-syntax">); </span><span class="comment-syntax">/* using a macro */</span>
-    <span class="plain-syntax">         </span><span class="identifier-syntax">n</span><span class="plain-syntax"> += </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-    <span class="plain-syntax">    }</span>
-    <span class="plain-syntax">    </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"1e4 is {}, -2.5e-3 is {}"</span><span class="plain-syntax">, </span><span class="constant-syntax">1e4</span><span class="plain-syntax">, </span><span class="constant-syntax">-2.5e-3</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"true is {}, false is {}"</span><span class="plain-syntax">, </span><span class="constant-syntax">true</span><span class="plain-syntax">, </span><span class="constant-syntax">false</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">    </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"4.5_f64 is {}, 0x3ef5u128 is {}"</span><span class="plain-syntax">, </span><span class="constant-syntax">4.5_f64</span><span class="plain-syntax">, </span><span class="constant-syntax">0x3ef5u128</span><span class="plain-syntax">);</span>
-    <span class="plain-syntax">}</span>
-
-    <span class="reserved-syntax">enum</span><span class="plain-syntax"> </span><span class="type-syntax">WebEvent</span><span class="plain-syntax"> {</span>
-    <span class="plain-syntax">    </span><span class="comment-syntax">// An `enum` variant may either be `unit-like`,</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">PageLoad</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">PageUnload</span><span class="plain-syntax">,</span>
-    <span class="plain-syntax">    </span><span class="comment-syntax">// like tuple structs,</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">KeyPress</span><span class="plain-syntax">(</span><span class="type-syntax">char</span><span class="plain-syntax">),</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">Paste</span><span class="plain-syntax">(</span><span class="identifier-syntax">String</span><span class="plain-syntax">),</span>
-    <span class="plain-syntax">    </span><span class="comment-syntax">// or c-like structures.</span>
-    <span class="plain-syntax">    </span><span class="identifier-syntax">Click</span><span class="plain-syntax"> { </span><span class="identifier-syntax">x</span><span class="plain-syntax">: </span><span class="type-syntax">i64</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">: </span><span class="type-syntax">i64</span><span class="plain-syntax"> },</span>
-    <span class="plain-syntax">}</span>
-
-    <span class="reserved-syntax">type</span><span class="plain-syntax"> </span><span class="type-syntax">Operations</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VeryVerboseEnumOfThingsToDoWithNumbers</span><span class="plain-syntax">;</span>
-
+    <a id="SP1LN3" class="lineanchor"></a><span class="anchoredline"><span class="reserved-syntax">fn</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">() {</span></span>
+    <a id="SP1LN4" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="comment-syntax">// Iterate over all integers from 1 to 10</span></span>
+    <a id="SP1LN5" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="reserved-syntax">let</span><span class="plain-syntax"> </span><span class="reserved-syntax">mut</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span></span>
+    <a id="SP1LN6" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">10</span><span class="plain-syntax"> {</span></span>
+    <a id="SP1LN7" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">         </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"n = {n} of 10"</span><span class="plain-syntax">); </span><span class="comment-syntax">/* using a macro */</span></span>
+    <a id="SP1LN8" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">         </span><span class="identifier-syntax">n</span><span class="plain-syntax"> += </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span></span>
+    <a id="SP1LN9" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    }</span></span>
+    <a id="SP1LN10" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"1e4 is {}, -2.5e-3 is {}"</span><span class="plain-syntax">, </span><span class="constant-syntax">1e4</span><span class="plain-syntax">, </span><span class="constant-syntax">-2.5e-3</span><span class="plain-syntax">);</span></span>
+    <a id="SP1LN11" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"true is {}, false is {}"</span><span class="plain-syntax">, </span><span class="constant-syntax">true</span><span class="plain-syntax">, </span><span class="constant-syntax">false</span><span class="plain-syntax">);</span></span>
+    <a id="SP1LN12" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="element-syntax">println!</span><span class="plain-syntax">(</span><span class="string-syntax">"4.5_f64 is {}, 0x3ef5u128 is {}"</span><span class="plain-syntax">, </span><span class="constant-syntax">4.5_f64</span><span class="plain-syntax">, </span><span class="constant-syntax">0x3ef5u128</span><span class="plain-syntax">);</span></span>
+    <a id="SP1LN13" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">}</span></span>
+    <a id="SP1LN14" class="lineanchor"></a><span class="anchoredline"></span>
+    <a id="SP1LN15" class="lineanchor"></a><span class="anchoredline"><span class="reserved-syntax">enum</span><span class="plain-syntax"> </span><span class="type-syntax">WebEvent</span><span class="plain-syntax"> {</span></span>
+    <a id="SP1LN16" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="comment-syntax">// An `enum` variant may either be `unit-like`,</span></span>
+    <a id="SP1LN17" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="identifier-syntax">PageLoad</span><span class="plain-syntax">,</span></span>
+    <a id="SP1LN18" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="identifier-syntax">PageUnload</span><span class="plain-syntax">,</span></span>
+    <a id="SP1LN19" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="comment-syntax">// like tuple structs,</span></span>
+    <a id="SP1LN20" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="identifier-syntax">KeyPress</span><span class="plain-syntax">(</span><span class="type-syntax">char</span><span class="plain-syntax">),</span></span>
+    <a id="SP1LN21" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="identifier-syntax">Paste</span><span class="plain-syntax">(</span><span class="identifier-syntax">String</span><span class="plain-syntax">),</span></span>
+    <a id="SP1LN22" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="comment-syntax">// or c-like structures.</span></span>
+    <a id="SP1LN23" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">    </span><span class="identifier-syntax">Click</span><span class="plain-syntax"> { </span><span class="identifier-syntax">x</span><span class="plain-syntax">: </span><span class="type-syntax">i64</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">: </span><span class="type-syntax">i64</span><span class="plain-syntax"> },</span></span>
+    <a id="SP1LN24" class="lineanchor"></a><span class="anchoredline"><span class="plain-syntax">}</span></span>
+    <a id="SP1LN25" class="lineanchor"></a><span class="anchoredline"></span>
+    <a id="SP1LN26" class="lineanchor"></a><span class="anchoredline"><span class="reserved-syntax">type</span><span class="plain-syntax"> </span><span class="type-syntax">Operations</span><span class="plain-syntax"> = </span><span class="identifier-syntax">VeryVerboseEnumOfThingsToDoWithNumbers</span><span class="plain-syntax">;</span></span>
+    <a id="SP1LN27" class="lineanchor"></a><span class="anchoredline"></span>
     </pre>
     <!-- End of weave -->
 

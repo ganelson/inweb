@@ -49,3 +49,11 @@ a.labelanchor {
 a.labelanchor:target + span.linelabel {
   --line-label-colour: #a6adff;
 }
+
+a.lineanchor {
+	scroll-margin-top: 300px;
+}
+
+a.lineanchor:target + span.anchoredline {
+	background-color: #a6adff;
+}
