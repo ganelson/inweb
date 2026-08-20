@@ -319,10 +319,17 @@ void CodeAnalysis::analyse_find(ls_web *W, ls_line *lst, text_stream *identifier
 		CodeAnalysis::find_hash_entry_for_section(LiterateSource::section_of_line(lst), identifier, FALSE);
 	if (hte == NULL) return;
 	hash_table_entry_usage *hteu = NULL, *loop = NULL;
-	LOOP_OVER_LINKED_LIST(loop, hash_table_entry_usage, hte->usages)
-		if (LiterateSource::par_of_line(lst) == loop->usage_recorded_at) {
-			hteu = loop; break;
+	LOOP_OVER_LINKED_LIST(loop, hash_table_entry_usage, hte->usages) {
+		if (loop->finer_positioning) {
+			if (lst == loop->finer_positioning) {
+				hteu = loop; break;
+			}
+		} else {
+			if (LiterateSource::par_of_line(lst) == loop->usage_recorded_at) {
+				hteu = loop; break;
+			}
 		}
+	}
 	if (hteu == NULL) {
 		hteu = CREATE(hash_table_entry_usage);
 		hteu->form_of_usage = 0;

@@ -216,6 +216,11 @@ classdef weave_display_line_node {
 
 classdef weave_function_defn_node {
 	struct language_function *fn;
+	int local_usages;
+	int local_direction;
+	int section_usages;
+	int external_usages;
+	struct hash_table_entry_usage *hteu;
 }
 
 classdef weave_item_node {
@@ -786,9 +791,14 @@ tree_node *WeaveTree::footnote(heterogeneous_tree *tree, text_stream *cue) {
 definition has just occurred.
 
 =
-tree_node *WeaveTree::function_defn(heterogeneous_tree *tree, language_function *fn) {
+tree_node *WeaveTree::function_defn(heterogeneous_tree *tree, language_function *fn,
+	int local_usages, int local_direction, int section_usages, int external_usages,
+	hash_table_entry_usage *hteu) {
 	weave_function_defn_node *C = CREATE(weave_function_defn_node);
 	C->fn = fn;
+	C->local_usages = local_usages; C->local_direction = local_direction;
+	C->section_usages = section_usages; C->external_usages = external_usages;
+	C->hteu = hteu;
 	return Trees::new_node(tree, weave_function_defn_node_type, STORE_POINTER_weave_function_defn_node(C));
 }
 

@@ -791,34 +791,52 @@ that service uses to identify the video/audio in question.
 @<Render function defn@> =
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
-	if ((Functions::used_elsewhere(C->fn)) && (hrs->EPUB_flag == FALSE)) {
+	int tot = C->local_usages + C->section_usages + C->external_usages;
+	if ((tot > 0) && (hrs->EPUB_flag == FALSE)) {
+		int use_popup = FALSE;
+		if ((tot > 1) || (C->external_usages == 1)) use_popup = TRUE;
 		Swarm::ensure_plugin(hrs->wv, I"Popups");
 
 		HTMLWeaving::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
 		WRITE("%S", C->fn->function_name);
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
 
-		WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
-			hrs->popup_counter);
+		if (use_popup) {
+			WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
+				hrs->popup_counter);
+		} else {
+			WRITE("<a href=\"");
+			Colonies::paragraph_URL(OUT,
+				C->hteu->usage_recorded_at, C->hteu->finer_positioning,
+				hrs->wv->weave_to, hrs->wv->weave_colony);
+			WRITE("\">");
+			WRITE("<button class=\"popup\">", hrs->popup_counter);
+		}
 
 		HTMLWeaving::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
-		WRITE("?");
+		if (use_popup) WRITE("&#x2190;%d", tot);
+		else if (C->local_direction == -1) WRITE("&#x2199;");
+		else WRITE("&#x2196;");
+		// WRITE("(%d, %d, %d, %d)", C->local_usages, C->local_direction, C->section_usages, C->external_usages);
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
 
-		WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">", hrs->popup_counter);
-
-		WRITE("Usage of ");
-		HTML_OPEN_WITH("span", "class=\"code-font\"");
-		HTMLWeaving::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
-		WRITE("%S", C->fn->function_name);
-		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
-		HTML_CLOSE("span");
-		WRITE(":<br/>"); 
-
-		@<Recurse the renderer through children nodes@>;
-		HTML_CLOSE("span");
+		if (use_popup) {
+			WRITE("<span class=\"popuptext\" id=\"usagePopup%d\">", hrs->popup_counter);
+	
+			WRITE("Usage of ");
+			HTML_OPEN_WITH("span", "class=\"code-font\"");
+			HTMLWeaving::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);
+			WRITE("%S", C->fn->function_name);
+			HTMLWeaving::change_colour(OUT, -1, hrs->colours);
+			HTML_CLOSE("span");
+			WRITE(":<br/>"); 
+	
+			@<Recurse the renderer through children nodes@>;
+			HTML_CLOSE("span");
+		}
 
 		WRITE("</button>");
+		if (use_popup == FALSE) WRITE("</a>");
 		hrs->popup_counter++;
 	} else {
 		HTMLWeaving::change_colour(OUT, FUNCTION_COLOUR, hrs->colours);

@@ -315,7 +315,11 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 		if (wv->current_weave_line == fn->function_header_at) {
 			if (fn->usage_described == FALSE) {
 				TextWeaver::source_code_piece(tree, ap, matter, colouring, from, i);
-				tree_node *FD = WeaveTree::function_defn(tree, fn);
+				int local_usages = 0, local_direction = 0, section_usages = 0, external_usages = 0;
+				hash_table_entry_usage *hteu = NULL;
+				Weaver::count_function_usage(par, fn, &local_usages, &local_direction, &section_usages, &external_usages, &hteu);
+				tree_node *FD = WeaveTree::function_defn(tree, fn,
+					local_usages, local_direction, section_usages, external_usages, hteu);
 				Trees::make_child(FD, ap);
 				Weaver::show_function_usage(tree, wv, FD, par, fn, TRUE);
 				i += Str::len(fname) - 1;

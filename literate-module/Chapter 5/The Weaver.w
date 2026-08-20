@@ -862,6 +862,43 @@ void Weaver::show_endnotes_on_previous_paragraph(heterogeneous_tree *tree,
 	TextWeaver::commentary_text(tree, ap, I".");
 
 @ =
+void Weaver::count_function_usage(ls_paragraph *par, language_function *fn,
+	int *local_usages, int *local_direction, int *section_usages, int *external_usages,
+	hash_table_entry_usage **single_hteu) {
+	*local_usages = 0;
+	*local_direction = 0;
+	*section_usages = 0;
+	*external_usages = 0;
+	hash_table_entry *hte =
+		CodeAnalysis::find_hash_entry_for_section(fn->function_section,
+			fn->function_name, FALSE);
+	hash_table_entry_usage *hteu = NULL;
+	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages) {
+		if (hteu->finer_positioning == fn->function_header_at) continue;
+		if (par == hteu->usage_recorded_at) {
+			(*local_usages)++;
+			if (*local_usages == 1) {
+				*local_direction = 0;
+				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+					for (ls_line *lst = chunk->first_line; lst; lst = lst->next_line) {
+						if (lst == hteu->finer_positioning) {
+							*local_direction = -1; goto exit;
+						}
+						if (lst == fn->function_header_at) {
+							*local_direction = 1; goto exit;
+						}
+					}
+				exit: ;
+			}
+		}
+		else if (LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at))
+			(*section_usages)++;
+		else
+			(*external_usages)++;
+		*single_hteu = hteu;
+	}
+}
+
 void Weaver::show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	tree_node *ap, ls_paragraph *par, language_function *fn, int as_list) {
 	tree_node *body = ap;
@@ -880,8 +917,8 @@ void Weaver::show_function_usage(heterogeneous_tree *tree, weave_order *wv,
 	ls_section *last_cited_in = NULL;
 	int count_under = 0;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
-		if ((par != hteu->usage_recorded_at) &&
-			(LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at)))
+		if ((LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at)) &&
+			(hteu->finer_positioning != fn->function_header_at))
 			@<Cite usage of function here@>;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages)
 		if (LiterateSource::section_of_par(par) != LiterateSource::section_of_par(hteu->usage_recorded_at))
