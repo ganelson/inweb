@@ -13,7 +13,9 @@ Chapter 2: Larger Webs
 	Modules
 	Tags
 	Conventions
+	Labels
 	Resources and Declarations
+	Regular Expressions
 
 Chapter 3: Colonies of Webs
 	Colonies

@@ -233,6 +233,7 @@ classdef weave_maths_node {
 
 classdef weave_markdown_node {
 	struct markdown_item *content;
+	struct ls_line *nearby_line;
 	struct markdown_variation *variation;
 }
 
@@ -845,9 +846,10 @@ tree_node *WeaveTree::mathematics(heterogeneous_tree *tree, text_stream *content
 }
 
 tree_node *WeaveTree::markdown_chunk(heterogeneous_tree *tree, markdown_item *content,
-	markdown_variation *variation) {
+	ls_line *nearby_line, markdown_variation *variation) {
 	weave_markdown_node *C = CREATE(weave_markdown_node);
 	C->content = content;
+	C->nearby_line = nearby_line;
 	C->variation = variation;
 	return Trees::new_node(tree, weave_markdown_node_type, STORE_POINTER_weave_markdown_node(C));
 }

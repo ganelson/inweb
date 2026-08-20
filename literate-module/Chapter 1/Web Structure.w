@@ -95,7 +95,7 @@ ls_web *WebStructure::new_ls_web(wcl_declaration *D) {
 	W->header_filenames = NEW_LINKED_LIST(filename);
 	W->main_module = WebModules::create_main_module(W);
 	W->global_holon_namespace = Holons::new_namespace(W, NULL);
-	W->global_label_namespace = LineLabels::new_namespace(W, NULL);
+	W->global_label_namespace = LineLabels::new_namespace();
 	W->label_pattern[0] = 0;
 	W->weaving_ref = NULL;
 	W->tangling_ref = NULL;
@@ -622,57 +622,12 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	if (W->is_page) @<Insert an implied purpose, for a single-file web@>;
 
 	int cl = 0;
-	if (S->source_declaration_for_section) {
-		wcl_declaration *D = S->source_declaration_for_section;
-		text_file_position tfp = D->body_position;
-		if (S->source_file_for_section) tfp.text_file_filename = S->source_file_for_section;
-		text_stream *L;
-		LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
-			TEMPORARY_TEXT(line)
-			Str::copy(line, L);
-			WebStructure::scan_source_line(line, &tfp, (void *) S);
-			DISCARD_TEXT(line);
-			tfp.line_count++; cl++;
-		}
-	} else if (S->partition_number > 0) {
-		ls_notation *notation = S->literate_source->partition_notation;
-		if (notation == NULL) {
-			notation = WebNotation::notation_by_name(S->literate_source->context, I"Partition");
-			if (notation == NULL) {
-				WebErrors::issue_at(I"unable to find a 'Partition' notation", NULL);
-				S->partition_number = 0;
-			}
-		}
-		if (notation) {
-			filename *F = S->source_file_for_section;
-			if (F == NULL) internal_error("no source file");
-			if ((cached_pf == NULL) ||
-				(Filenames::eq(F, cached_pf->accessed_at) == FALSE)) {
-				if (verbosely) PRINT("Partitioning file: '%S'\n", F);
-				cached_pf = WebStructure::partition_file(F, notation);
-			}
-
-			int n = 0;
-			file_partition *fp = NULL;
-			LOOP_OVER_LINKED_LIST(fp, file_partition, cached_pf->partitions) {
-				if (n == S->partition_number) break;
-				n++;
-			}
-			if (fp) {
-				text_file_position tfp = fp->start;
-				text_stream *L;
-				LOOP_OVER_LINKED_LIST(L, text_stream, fp->lines) {
-					WebStructure::scan_source_line(L, &tfp, (void *) S);
-					tfp.line_count++; cl++;
-				}
-			}
-		}
-	} else {
-		filename *F = S->source_file_for_section;
-		if (F == NULL) internal_error("no source file");
-		cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
-				WebStructure::scan_source_line, NULL, (void *) S);
-	}
+	if (S->source_declaration_for_section)
+		@<Extract the section source from a WCL declaration in memory@>
+	else if (S->partition_number > 0)
+		@<Extract the section source from a numbered partition in a multi-section file@>
+	else
+		@<Extract the section source from a stand-alone file@>;
 
 	LiterateSource::complete_unit(S->literate_source);
 	if (Str::len(S->literate_source->heading.operand1) > 0) {
@@ -685,9 +640,62 @@ void WebStructure::read_web_source(ls_web *W, int verbosely, int with_internals)
 	text_stream *purpose = Bibliographic::get_datum(W, I"Purpose");
 	if (Str::len(purpose) > 0) LiterateSource::add_purpose(S->literate_source, NULL, purpose);
 
-@ Non-implied source lines come from here. Note that we assume here that
-trailing whitespace on a line is not significant in the language being
-tangled for.
+@<Extract the section source from a WCL declaration in memory@> =
+	wcl_declaration *D = S->source_declaration_for_section;
+	text_file_position tfp = D->body_position;
+	if (S->source_file_for_section) tfp.text_file_filename = S->source_file_for_section;
+	text_stream *L;
+	LOOP_OVER_LINKED_LIST(L, text_stream, D->declaration_lines) {
+		TEMPORARY_TEXT(line)
+		Str::copy(line, L);
+		WebStructure::scan_source_line(line, &tfp, (void *) S);
+		DISCARD_TEXT(line);
+		tfp.line_count++; cl++;
+	}
+
+@ Partitioning a file is not trivial in terms of speed, so it turns out to be
+worth a very crude cache arrangement: if we need to read, say, partition 5 of
+a given file, we first check to see if that file is the most recently-read
+(partitioned) file. If it is, we needn't read it in and look for the partition
+breaks all over again. On a large file with 40 partitions, that can save as
+much as 20% of Inweb's running time of Inweb.
+
+@<Extract the section source from a numbered partition in a multi-section file@> =
+	ls_notation *notation =
+		WebNotation::notation_by_name(S->literate_source->context, I"Partition");
+	if (notation) {
+		filename *F = S->source_file_for_section;
+		if (F == NULL) internal_error("no source file");
+		if ((cached_pf == NULL) ||
+			(Filenames::eq(F, cached_pf->accessed_at) == FALSE)) {
+			if (verbosely) PRINT("Partitioning file: '%S'\n", F);
+			cached_pf = WebStructure::partition_file(F, notation);
+		}
+		file_partition *fp = WebStructure::retrieve_partition(cached_pf, S->partition_number);
+		if (fp) {
+			text_file_position tfp = fp->start;
+			text_stream *L;
+			LOOP_OVER_LINKED_LIST(L, text_stream, fp->lines) {
+				WebStructure::scan_source_line(L, &tfp, (void *) S);
+				tfp.line_count++; cl++;
+			}
+		}
+	} else {
+		WebErrors::issue_at(I"unable to find a 'Partition' notation", NULL);
+		S->partition_number = 0;
+	}
+
+@<Extract the section source from a stand-alone file@> =
+	filename *F = S->source_file_for_section;
+	if (F == NULL) internal_error("no source file");
+	cl = TextFiles::read(F, FALSE, "can't open section file", TRUE,
+			WebStructure::scan_source_line, NULL, (void *) S);
+
+@ However the source has been extracted, each line in turn is fed into the
+following function.
+
+Note that we assume here that trailing whitespace on a line is not significant
+in the language being tangled for.
 
 =
 void WebStructure::scan_source_line(text_stream *line, text_file_position *tfp, void *state) {
@@ -715,7 +723,12 @@ void WebStructure::scan_source_line(text_stream *line, text_file_position *tfp, 
 	}
 }
 
-@h Cache for files being partitioned.
+@h Reading partitioned files.
+The following holds the contents of a partitioned file, once read in. We store
+the partitions in a linked list, to save having any upper limits: in principle
+this means reading an $n$-partition file involves $O(n^2)$ retrieval time, but
+with a very low constant, and with $n$ confidently expected to be less than 1000
+and more likely in the 5 to 50 range.
 
 =
 classdef partitioned_file {
@@ -725,20 +738,27 @@ classdef partitioned_file {
 	struct ls_notation *notation;
 }
 
+@ Each partition is a consecutive run of lines from the original file.
+The partitions are disjoint, and their union is the entire file except possibly
+for the marker lines delimiting them. (This is an option: see below.)
+
+=
 classdef file_partition {
 	struct text_file_position start;
 	struct linked_list *lines; /* of `text_stream` */
 }
 
-partitioned_file *WebStructure::partition_file(filename *F, ls_notation *notation) {
+@ Note that a `partitioned_file` is created with the first partition ready to
+be filled: it is initially empty, but marked as beginning on line 1.
+
+=
+partitioned_file *WebStructure::new_partitioned_file(filename *F, ls_notation *notation) {
 	partitioned_file *pf = CREATE(partitioned_file);
 	pf->accessed_at = F;
 	pf->partitions = NEW_LINKED_LIST(file_partition);
 	pf->notation = notation;
 	text_file_position tfp = TextFiles::at(F, 1);
 	WebStructure::add_partition(pf, &tfp);
-	TextFiles::read(F, FALSE, "can't open web source file", TRUE,
-		WebStructure::scan_to_partition, NULL, (void *) pf);
 	return pf;
 }
 
@@ -748,6 +768,30 @@ void WebStructure::add_partition(partitioned_file *pf, text_file_position *tfp) 
 	fp->lines = NEW_LINKED_LIST(text_stream);
 	ADD_TO_LINKED_LIST(fp, file_partition, pf->partitions);
 	pf->latest = fp;
+}
+
+@ This retrieves partition `seek` from file `pf`, where `seek` counts from 0:
+
+=
+file_partition *WebStructure::retrieve_partition(partitioned_file *pf, int seek) {
+	int n = 0;
+	file_partition *fp = NULL;
+	LOOP_OVER_LINKED_LIST(fp, file_partition, pf->partitions)
+		if (n++ == seek)
+			return fp;
+	return NULL;
+}
+
+@ To partition a file, we read it in line by line, and parse the lines according
+to the given notation, which will be a simple one capable only of spotting where
+the delimiting lines are.
+
+=
+partitioned_file *WebStructure::partition_file(filename *F, ls_notation *notation) {
+	partitioned_file *pf = WebStructure::new_partitioned_file(F, notation);
+	TextFiles::read(F, FALSE, "can't open web source file", TRUE,
+		WebStructure::scan_to_partition, NULL, (void *) pf);
+	return pf;
 }
 
 void WebStructure::scan_to_partition(text_stream *line, text_file_position *tfp, void *state) {
@@ -760,16 +804,16 @@ void WebStructure::scan_to_partition(text_stream *line, text_file_position *tfp,
 	ls_class last_cf = LineClassification::unclassified();
 	ls_class_parsing res = LineClassification::classify(pf->notation, line, &last_cf, FALSE);
 	if (res.cf.major == PARTITION_MAJLC) {
-		if (res.cf.minor == INCLUSIVE_PARTITION_MINLC) {
-			text_stream *saved = Str::duplicate(line);
-			ADD_TO_LINKED_LIST(saved, text_stream, pf->latest->lines);
-		}
+		if (res.cf.minor == INCLUSIVE_PARTITION_MINLC) @<Add line to partition@>;
 		WebStructure::add_partition(pf, tfp);
-		return;
+	} else {
+		@<Add line to partition@>;
 	}
+}
+
+@<Add line to partition@> =
 	text_stream *saved = Str::duplicate(line);
 	ADD_TO_LINKED_LIST(saved, text_stream, pf->latest->lines);
-}
 
 @h Language.
 I'm probably showing my age here: the default language for a web is C.

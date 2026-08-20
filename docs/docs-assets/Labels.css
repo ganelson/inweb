@@ -28,6 +28,15 @@ span.linelabel::before {
     -webkit-mask: var(--shape) center / 100% 100% no-repeat;
 }
 
+.linelabel a {
+    text-decoration: none;
+}
+
+.linelabel a:hover {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
 span.nolinelabel {
     padding: 0px 12px 0px 3px;
 	font-size: 75%;

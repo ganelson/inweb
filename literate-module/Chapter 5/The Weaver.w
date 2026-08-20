@@ -196,7 +196,7 @@ classdef weaver_state {
 won't parse it further, but simply encapsulate it as a blob of Markdown content.
 
 @<Deal with a Markdown commentary chunk@> =
-	tree_node *C = WeaveTree::markdown_chunk(tree, chunk->as_markdown,
+	tree_node *C = WeaveTree::markdown_chunk(tree, chunk->as_markdown, chunk->first_line,
 		WebNotation::commentary_variation(wv->weave_web));
 	Trees::make_child(C, state->ap);
 

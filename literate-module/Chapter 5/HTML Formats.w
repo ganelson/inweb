@@ -882,6 +882,7 @@ that service uses to identify the video/audio in question.
 			HTML_CLOSE("p");
 		}
 	}
+	hrs->wv->current_weave_line = C->nearby_line;
 	MDRenderer::render_extended(OUT, (void *) hrs->wv, C->content, C->variation, mode);
 	INDENT;
 	HTML_CLOSE("div");
