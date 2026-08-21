@@ -575,6 +575,16 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 				@<The HEADING field is taken from the paragraph titling, if any@>;
 				@<The TEXT field is a sort of crude weave to plain text@>;
 				JSON::add_to_array(subhead_list, subhead);
+				for (ls_chunk *chunk = P->first_chunk; chunk; chunk = chunk->next_chunk)
+					for (ls_line *lst = chunk->first_line; lst; lst = lst->next_line)
+						if (LineLabels::labelled(lst)) {
+							JSON_value *labelledline = JSON::new_object();
+							@<The ID field for a line is the anchor@>;
+							@<The HEADING field for a line is taken from the paragraph titling, if any@>;
+							@<The TEXT field for a line is the label itself@>;
+							JSON::add_to_array(subhead_list, labelledline);
+						}
+							
 			}
 			JSON_value *entry = JSON::new_object();
 			TEMPORARY_TEXT(url)
@@ -668,3 +678,22 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 @<Crudely weave some other sort of chunk@> =
 	;
 	
+@<The ID field for a line is the anchor@> =
+	TEMPORARY_TEXT(id)
+	LineLabels::anchor(id, lst);
+	JSON::add_to_object(labelledline, I"id", JSON::new_string(id));
+	DISCARD_TEXT(id)
+
+@<The HEADING field for a line is taken from the paragraph titling, if any@> =
+	TEMPORARY_TEXT(sht)
+	WRITE_TO(sht, "Code line %d of ", lst->sequence_number_in_paragraph);
+	text_stream *S = LiterateSource::par_ornament(P);
+	if (Str::eq(S, I"S")) { S = Str::new(); PUT_TO(S, (inchar32_t) 0xA7); }
+	WRITE_TO(sht, "%S%S", S, P->paragraph_number);
+	if (Str::len(P->titling.operand1) > 0) WRITE_TO(sht, ". %S", P->titling.operand1);
+	else if (Str::len(nh) > 0) WRITE_TO(sht, " (under %S)", nh);
+	JSON::add_to_object(labelledline, I"heading", JSON::new_string(sht));
+	DISCARD_TEXT(sht)
+
+@<The TEXT field for a line is the label itself@> =
+	JSON::add_to_object(labelledline, I"text", JSON::new_string(LineLabels::label_text(lst)));

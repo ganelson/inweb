@@ -57,3 +57,35 @@ a.lineanchor {
 a.lineanchor:target + span.anchoredline {
 	background-color: #a6adff;
 }
+
+.arrow-from-above-button {
+  width: 30px;
+  height: 20px;
+  border: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 753' preserveAspectRatio='none' fill-rule='evenodd' clip-rule='evenodd'%3E%3Cpath d='M0,499.219L253.125,246.094L253.125,455.859L853.125,455.859L853.125,0L939.844,0L939.844,542.578L253.125,542.578L253.125,752.344L0,499.219Z' fill-rule='nonzero' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+}
+
+.arrow-from-below-button {
+  width: 30px;
+  height: 20px;
+  border: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 940 753' preserveAspectRatio='none' fill-rule='evenodd' clip-rule='evenodd'%3E%3Cpath d='M0,253.125L253.125,506.25L253.125,296.484L853.125,296.484L853.125,752.344L939.844,752.344L939.844,209.766L253.125,209.766L253.125,0L0,253.125Z' fill-rule='nonzero' /%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+}
+
+.arrow-short-button {
+  width: auto;                    /* let it grow with the label */
+  height: 20px;
+  border: 0;
+  padding: 0 8px 0 19px;          /* reserve the left strip for the arrow */
+  text-align: left;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 444 507' fill-rule='evenodd' clip-rule='evenodd'%3E%3Cpath d='M0,253.125L253.125,0L253.125,209.766L443.125,209.766L443.844,296.484L253.125,296.484L253.125,506.25L0,253.125Z' fill-rule='nonzero'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 4px center;
+  background-size: auto 14px;     /* height-driven; width = 14 × 444/507 ≈ 12px */
+}

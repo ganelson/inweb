@@ -788,6 +788,10 @@ that service uses to identify the video/audio in question.
 	HTML_CLOSE("p");
 	OUTDENT; HTML_CLOSE("blockquote"); WRITE("\n");
 
+@ At one time the Unicode characters `0x2190` (a left arrow), `0x2199` (arrow
+pointing in and down), `0x2196` (ditto but up) were used instead of the SVG
+images now encoded in the CSS for the buttons.
+
 @<Render function defn@> =
 	weave_function_defn_node *C =
 		RETRIEVE_POINTER_weave_function_defn_node(N->content);
@@ -802,7 +806,7 @@ that service uses to identify the video/audio in question.
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
 
 		if (use_popup) {
-			WRITE("<button class=\"popup\" onclick=\"togglePopup('usagePopup%d')\">",
+			WRITE("<button class=\"popup arrow-short-button\" onclick=\"togglePopup('usagePopup%d')\">",
 				hrs->popup_counter);
 		} else {
 			WRITE("<a href=\"");
@@ -810,13 +814,15 @@ that service uses to identify the video/audio in question.
 				C->hteu->usage_recorded_at, C->hteu->finer_positioning,
 				hrs->wv->weave_to, hrs->wv->weave_colony);
 			WRITE("\">");
-			WRITE("<button class=\"popup\">", hrs->popup_counter);
+			if (C->local_direction == -1)
+				WRITE("<button class=\"popup arrow-from-above-button\">");
+			else
+				WRITE("<button class=\"popup arrow-from-below-button\">");
+			WRITE("&nbsp;");
 		}
 
 		HTMLWeaving::change_colour(OUT, COMMENT_COLOUR, hrs->colours);
-		if (use_popup) WRITE("&#x2190;%d", tot);
-		else if (C->local_direction == -1) WRITE("&#x2199;");
-		else WRITE("&#x2196;");
+		if (use_popup) WRITE("%d", tot);
 		// WRITE("(%d, %d, %d, %d)", C->local_usages, C->local_direction, C->section_usages, C->external_usages);
 		HTMLWeaving::change_colour(OUT, -1, hrs->colours);
 
