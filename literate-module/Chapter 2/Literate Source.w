@@ -278,6 +278,8 @@ classdef ls_line {
 	struct ls_chunk *owning_chunk; /* `NULL` until the unit has been divided up into chunks */
 	struct ls_line *prev_line;
 	struct ls_line *next_line;
+	int sequence_number_in_section; /* counting from 1; 0 if not a code line */
+	int sequence_number_in_paragraph; /* counting from 1; 0 if not a code line */
 }
 
 ls_line *LiterateSource::new_line(text_file_position *tfp, text_stream *text, ls_class cf) {
@@ -295,6 +297,9 @@ ls_line *LiterateSource::new_line(text_file_position *tfp, text_stream *text, ls
 	line->owning_chunk = NULL;
 	line->prev_line = NULL;
 	line->next_line = NULL;
+	
+	line->sequence_number_in_section = 0;
+	line->sequence_number_in_paragraph = 0;
 	return line;
 }
 
@@ -323,6 +328,8 @@ void LiterateSource::complete_unit(ls_unit *lsu) {
 	int next_footnote = 1;
 	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par)
 		@<Work out footnote numbering for this paragraph@>;
+		
+	@<Work out line numbering for code in this unit@>;
 }
 
 @ To see the first (up to) N lines of the raw linked list of lines, before
@@ -1555,6 +1562,21 @@ ls_footnote *LiterateSource::find_footnote_in_para(ls_paragraph *par, text_strea
 				return F;
 	return NULL;
 }
+
+@ It turns out to be useful to have a sequence number for lines of code in
+the unit:
+
+@<Work out line numbering for code in this unit@> =
+	int s = 1;
+	for (ls_paragraph *par = lsu->first_par; par; par = par->next_par) {
+		int p = 1;
+		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
+			if (chunk->holon)
+				for (ls_line *line = chunk->first_line; line; line = line->next_line) {
+					line->sequence_number_in_paragraph = p++;
+					line->sequence_number_in_section = s++;
+				}
+	}
 
 @h Processing.
 

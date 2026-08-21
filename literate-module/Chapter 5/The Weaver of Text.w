@@ -329,7 +329,7 @@ void TextWeaver::source_code(heterogeneous_tree *tree, tree_node *ap,
 			TextWeaver::source_code_piece(tree, ap, matter, colouring, from, i);
 			TEMPORARY_TEXT(url)
 			Colonies::paragraph_URL(url, par, NULL, wv->weave_to, wv->weave_colony);
-			WRITE_TO(url, "LN%d", fn->function_header_at->allocation_id);
+			WRITE_TO(url, "LN%d", fn->function_header_at->sequence_number_in_paragraph);
 			tree_node *U = WeaveTree::function_usage(tree, url, fn);
 			Trees::make_child(U, ap);
 			i += Str::len(fname) - 1;

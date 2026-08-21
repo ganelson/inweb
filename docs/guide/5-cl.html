@@ -81,21 +81,21 @@ written as a web in <code>MarkdownCode</code> format, called <code>sample.rust.m
 <p>Kicking the tyres:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN5379" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect sample.rust.md</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> rust.inweb</span></span>
-<a id="SP1LN5380" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Traces of Corrosion" (Rust program in MarkdownCode notation): 1 paragraph : 11 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect sample.rust.md</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> rust.inweb</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Traces of Corrosion" (Rust program in MarkdownCode notation): 1 paragraph : 11 lines</span></span>
 
-<a id="SP1LN5382" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle sample.rust.md</span></span>
-<a id="SP1LN5383" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Traces of Corrosion" (MarkdownCode notation) to file 'sample.rust'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle sample.rust.md</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "Traces of Corrosion" (MarkdownCode notation) to file 'sample.rust'</span></span>
 
-<a id="SP1LN5385" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> sample.rust</span></span>
-<a id="SP1LN5386" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    fn main() {</span></span>
-<a id="SP1LN5387" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        // Iterate over all integers from 1 to 10</span></span>
-<a id="SP1LN5388" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        let mut n = 1;</span></span>
-<a id="SP1LN5389" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        while n &lt;= 10 {</span></span>
-<a id="SP1LN5390" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">             println!("n = {n} of 10");</span></span>
-<a id="SP1LN5391" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">             n += 1;</span></span>
-<a id="SP1LN5392" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        }</span></span>
-<a id="SP1LN5393" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    }</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cat</span><span class="ConsoleText-plain-syntax"> sample.rust</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    fn main() {</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        // Iterate over all integers from 1 to 10</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        let mut n = 1;</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        while n &lt;= 10 {</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">             println!("n = {n} of 10");</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">             n += 1;</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        }</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    }</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>As can be seen, a minimal language definition can be minimal indeed. Even
@@ -131,10 +131,10 @@ contain <code>Conventions</code> settings; if present, this must come at the end
 with the almost empty definition so far:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN5425" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave sample.rust.md</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
-<a id="SP1LN5426" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Traces of Corrosion" (MarkdownCode notation) as HTML</span></span>
-<a id="SP1LN5427" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        generated: sample.html</span></span>
-<a id="SP1LN5428" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        10 files copied to: sample-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave sample.rust.md</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Traces of Corrosion" (MarkdownCode notation) as HTML</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: sample.html</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: sample-assets</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>...then we will see a web page where the Rust code is really quite strangely
@@ -354,34 +354,34 @@ on Rust, of which there are annoyingly many.</p>
 <p>How can we test this definition? One convenience is the command <code>inweb test-language</code>:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN5673" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle sample.rust.md</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> rust.inweb</span></span>
-<a id="SP1LN5674" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Traces of Corrosion" (Rust program in MarkdownCode notation) to file 'sample.rust'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle sample.rust.md</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> rust.inweb</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "Traces of Corrosion" (Rust program in MarkdownCode notation) to file 'sample.rust'</span></span>
 
-<a id="SP1LN5676" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> test-language</span><span class="ConsoleText-identifier-syntax"> -called</span><span class="ConsoleText-plain-syntax"> rust</span><span class="ConsoleText-identifier-syntax"> -on</span><span class="ConsoleText-plain-syntax"> sample.rust</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> rust.inweb</span></span>
-<a id="SP1LN5677" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Test of colouring for language Rust:</span></span>
-<a id="SP1LN5678" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    fn main() {</span></span>
-<a id="SP1LN5679" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        // Iterate over all integers from 1 to 10</span></span>
-<a id="SP1LN5680" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        let mut n = 1;</span></span>
-<a id="SP1LN5681" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        while n &lt;= 10 {</span></span>
-<a id="SP1LN5682" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">             println!("n = {n} of 10");</span></span>
-<a id="SP1LN5683" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">             n += 1;</span></span>
-<a id="SP1LN5684" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        }</span></span>
-<a id="SP1LN5685" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        println!("1e4 is {}, -2.5e-3 is {}", 1e4, -2.5e-3);</span></span>
-<a id="SP1LN5686" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        println!("true is {}, false is {}", true, false);</span></span>
-<a id="SP1LN5687" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        println!("4.5_f64 is {}, 0x3ef5u128 is {}", 4.5_f64, 0x3ef5u128);</span></span>
-<a id="SP1LN5688" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    }</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> test-language</span><span class="ConsoleText-identifier-syntax"> -called</span><span class="ConsoleText-plain-syntax"> rust</span><span class="ConsoleText-identifier-syntax"> -on</span><span class="ConsoleText-plain-syntax"> sample.rust</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> rust.inweb</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Test of colouring for language Rust:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    fn main() {</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        // Iterate over all integers from 1 to 10</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        let mut n = 1;</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        while n &lt;= 10 {</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">             println!("n = {n} of 10");</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">             n += 1;</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        }</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        println!("1e4 is {}, -2.5e-3 is {}", 1e4, -2.5e-3);</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        println!("true is {}, false is {}", true, false);</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        println!("4.5_f64 is {}, 0x3ef5u128 is {}", 4.5_f64, 0x3ef5u128);</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    }</span></span>
 
-<a id="SP1LN5690" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    rrpiiiipppp</span></span>
-<a id="SP1LN5691" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    pppp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></span>
-<a id="SP1LN5692" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    pppprrrprrrpipppnp</span></span>
-<a id="SP1LN5693" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    pppprrrrrpippppnnpp</span></span>
-<a id="SP1LN5694" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    pppppppppmmmmmmmmpssssssssssssssspp</span></span>
-<a id="SP1LN5695" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    pppppppppippppnp</span></span>
-<a id="SP1LN5696" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ppppp</span></span>
-<a id="SP1LN5697" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ppppmmmmmmmmpssssssssssssssssssssssssssppnnnppnnnnnnnpp</span></span>
-<a id="SP1LN5698" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ppppmmmmmmmmpsssssssssssssssssssssssssppnnnnppnnnnnpp</span></span>
-<a id="SP1LN5699" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ppppmmmmmmmmpsssssssssssssssssssssssssssssssssppnnniiiippnnnnnniiiipp</span></span>
-<a id="SP1LN5700" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    p</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    rrpiiiipppp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    pppp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    pppprrrprrrpipppnp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    pppprrrrrpippppnnpp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    pppppppppmmmmmmmmpssssssssssssssspp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    pppppppppippppnp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ppppp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ppppmmmmmmmmpssssssssssssssssssssssssssppnnnppnnnnnnnpp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ppppmmmmmmmmpsssssssssssssssssssssssssppnnnnppnnnnnpp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ppppmmmmmmmmpsssssssssssssssssssssssssssssssssppnnniiiippnnnnnniiiipp</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    p</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>So the command <code>inweb test-language -called X -on Y</code> syntax-colours the file <code>Y</code>

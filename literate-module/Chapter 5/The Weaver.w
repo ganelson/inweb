@@ -875,27 +875,21 @@ void Weaver::count_function_usage(ls_paragraph *par, language_function *fn,
 	hash_table_entry_usage *hteu = NULL;
 	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages) {
 		if (hteu->finer_positioning == fn->function_header_at) continue;
-		if (par == hteu->usage_recorded_at) {
+		if (par == hteu->usage_recorded_at)
 			(*local_usages)++;
-			if (*local_usages == 1) {
-				*local_direction = 0;
-				for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk)
-					for (ls_line *lst = chunk->first_line; lst; lst = lst->next_line) {
-						if (lst == hteu->finer_positioning) {
-							*local_direction = -1; goto exit;
-						}
-						if (lst == fn->function_header_at) {
-							*local_direction = 1; goto exit;
-						}
-					}
-				exit: ;
-			}
-		}
 		else if (LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at))
 			(*section_usages)++;
 		else
 			(*external_usages)++;
 		*single_hteu = hteu;
+		
+		if (LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at)) {
+			*local_direction = 0;
+			int delta = hteu->finer_positioning->sequence_number_in_section -
+					fn->function_header_at->sequence_number_in_section;
+			if (delta < 0) *local_direction = -1;
+			if (delta > 0) *local_direction = 1;
+		}
 	}
 }
 

@@ -107,8 +107,8 @@ of the program.</p>
 <p>To reassure ourselves that this file makes sense to Inweb, we could try:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN228" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.md</span></span>
-<a id="SP1LN229" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 33 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.md</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Counting Sort" (Python program in MarkdownCode notation): 3 paragraphs : 33 lines</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>The title &quot;Counting Sort&quot; has been correctly extracted, and there are indeed 3 paras,
@@ -119,8 +119,8 @@ containing a program at all. In fact, if we had called the exact same file
 <code>countsort.md</code>, not <code>countsort.py.md</code>, that's just what would have happened:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN241" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.md</span></span>
-<a id="SP1LN242" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Counting Sort" (Markdown notation): 1 paragraph : 33 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.md</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Counting Sort" (Markdown notation): 1 paragraph : 33 lines</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Here the entire file would be a single paragraph, and all of it is commentary.
@@ -132,12 +132,12 @@ Inweb makes these decisions, when it hasn't been told any different.</p>
 <p>It's time to tangle the web to an actual program, and run it:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN257" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span></span>
-<a id="SP1LN258" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'</span></span>
 
-<a id="SP1LN260" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">python3</span><span class="ConsoleText-plain-syntax"> countsort.py</span></span>
-<a id="SP1LN261" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
-<a id="SP1LN262" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">python3</span><span class="ConsoleText-plain-syntax"> countsort.py</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>As this demonstrates, the <code>python3</code> interpreter is only asked to run the tangled
@@ -147,8 +147,8 @@ the obvious way to express that Markdown formatting had been stripped from <code
 But this can be overridden with the <code>-to FILE</code> switch:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN273" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> tangled_stuff/mystery.py</span></span>
-<a id="SP1LN274" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'tangled_stuff/mystery.py'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> tangled_stuff/mystery.py</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'tangled_stuff/mystery.py'</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>The special output file <code>-</code> can be used to mean &quot;print the result of tangling
@@ -160,9 +160,9 @@ into a Unix pipe. Pipes are a feature of Unix-like operating systems in which
 the output printed by one tool becomes the input read by another. So, for example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN286" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span></span>
-<a id="SP1LN287" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
-<a id="SP1LN288" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>The pipe character <code>|</code> indicates that output from <code>inweb tangle countsort.py.md -to -</code>
@@ -173,8 +173,8 @@ called <code>countsort.py</code> needed to be written at all, which seems tidy.<
 <p>This can also sometimes be used to inspect the tangled output. For example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN300" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | more</span></span>
-<a id="SP1LN301" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | bbedit</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | more</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | bbedit</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Here we pipe to either <code>more</code>, a standard Unix tool for displaying files which
@@ -183,11 +183,11 @@ are too long to show on screen all at once, or to the MacOS text editor BBEdit.<
 <p>Weaving next:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN312" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave countsort.py.md</span></span>
-<a id="SP1LN313" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML</span></span>
-<a id="SP1LN314" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    the weave would require this directory to exist:</span></span>
-<a id="SP1LN315" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        countsort2-assets</span></span>
-<a id="SP1LN316" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make it by hand, or run again with -creating set</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave countsort.py.md</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    the weave would require this directory to exist:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        countsort2-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make it by hand, or run again with -creating set</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>As this reply shows, Inweb is a little cautious about creating directories
@@ -196,11 +196,11 @@ better safe than sorry. Typing <code>mkdir countsort2-assets</code> would make t
 but instead why not take Inweb's advice:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN325" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">     </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
-<a id="SP1LN326" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML</span></span>
-<a id="SP1LN327" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (created directory 'countsort2-assets')</span></span>
-<a id="SP1LN328" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        generated: countsort2.html</span></span>
-<a id="SP1LN329" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        10 files copied to: countsort2-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">     </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave countsort.py.md</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Counting Sort" (Python program in MarkdownCode notation) as HTML</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'countsort2-assets')</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: countsort2.html</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: countsort2-assets</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>And now that the directory exists, we don't need to use <code>-creating</code> again.</p>
@@ -215,13 +215,13 @@ reply from <code>inweb weave</code> is then longer. Here's the output from weavi
 program:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN346" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "longer" (InC program) as GitHubPages (based on HTML)</span></span>
-<a id="SP1LN347" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [longer/docs/M-iti.html] [M-wtaw] [M-htwaw] [M-mwiw] [M-awwp] [M-spl] [M-tid] [M-rc]</span></span>
-<a id="SP1LN348" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [P-htpw]</span></span>
-<a id="SP1LN349" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [1-pc] [1-cnf] [1-ias] [1-iis] [1-ims] [1-ims2] [1-its] [1-its2] [1-iws]</span></span>
-<a id="SP1LN350" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [index]</span></span>
-<a id="SP1LN351" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        18 files copied to: longer/docs/docs-assets</span></span>
-<a id="SP1LN352" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        7 files copied to: longer/docs</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "longer" (InC program) as GitHubPages (based on HTML)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [longer/docs/M-iti.html] [M-wtaw] [M-htwaw] [M-mwiw] [M-awwp] [M-spl] [M-tid] [M-rc]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [P-htpw]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [1-pc] [1-cnf] [1-ias] [1-iis] [1-ims] [1-ims2] [1-its] [1-its2] [1-iws]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        18 files copied to: longer/docs/docs-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        7 files copied to: longer/docs</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>The filenames in square brackets are abbreviated for legibility: only the first

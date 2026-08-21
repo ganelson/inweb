@@ -79,8 +79,8 @@ directory called <code>retail</code>. So, we create a file <code>colony.inweb</c
 <p>So at this point, assuming <code>retail</code> is the current working directory:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2671" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span></span>
-<a id="SP1LN2672" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    back-office.py.md   colony.inweb    front-office    inventory-module</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    back-office.py.md   colony.inweb    front-office    inventory-module</span></span>
 </pre>
 <div class="lsmarkdown">
 <h2>Member names</h2>
@@ -88,8 +88,8 @@ directory called <code>retail</code>. So, we create a file <code>colony.inweb</c
 commands. For example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2681" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect ::back</span></span>
-<a id="SP1LN2682" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect ::back</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Here <code>inweb inspect ::back</code> achieved the same result as <code>inweb inspect back-office.py.md</code>.
@@ -99,11 +99,11 @@ specify <code>COLONY</code>, it's taken to be the colony file in the current wor
 which is why <code>::back</code> works from inside <code>retail</code>. If we stepped up one level:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2692" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> ..</span></span>
-<a id="SP1LN2693" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span></span>
-<a id="SP1LN2694" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    retail</span></span>
-<a id="SP1LN2695" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect retail::back</span></span>
-<a id="SP1LN2696" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> ..</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">ls</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    retail</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect retail::back</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "The Back Office" (Python program in MarkdownCode notation): 13 paragraphs : 248 lines</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>The <code>COLONY</code> part of <code>COLONY::MEMBER</code> can either give the filename of the colony
@@ -167,29 +167,29 @@ then we don't even need to indicate what <code>COLONY</code> we mean: Inweb will
 automatically. Thus, in the above <code>retail</code> example, we can tangle:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2771" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle</span></span>
-<a id="SP1LN2772" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (Tangle 1 of 3: front)</span></span>
-<a id="SP1LN2773" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "The Front Office" (Python program in MarkdownCode notation) to file 'front-office/Tangled/The Front Office.py'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (Tangle 1 of 3: front)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "The Front Office" (Python program in MarkdownCode notation) to file 'front-office/Tangled/The Front Office.py'</span></span>
 
-<a id="SP1LN2775" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (Tangle 2 of 3: back)</span></span>
-<a id="SP1LN2776" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "The Back Office" (Python program in MarkdownCode notation) to file 'back-office.py'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (Tangle 2 of 3: back)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "The Back Office" (Python program in MarkdownCode notation) to file 'back-office.py'</span></span>
 
-<a id="SP1LN2778" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (Tangle 3 of 3: inventory)</span></span>
-<a id="SP1LN2779" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    tangling web "inventory-module" (Python program in MarkdownCode notation) to file 'inventory-module/Tangled/inventory-module.py'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (Tangle 3 of 3: inventory)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "inventory-module" (Python program in MarkdownCode notation) to file 'inventory-module/Tangled/inventory-module.py'</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>When we weave, it's clear at once that a skeleton of directories will be needed
 in order to hold all the HTML generated:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2786" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave</span></span>
-<a id="SP1LN2787" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    the weave would require these 5 directories to exist:</span></span>
-<a id="SP1LN2788" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        docs</span></span>
-<a id="SP1LN2789" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        docs/docs-assets</span></span>
-<a id="SP1LN2790" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        docs/front</span></span>
-<a id="SP1LN2791" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        docs/back</span></span>
-<a id="SP1LN2792" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        docs/inventory</span></span>
-<a id="SP1LN2793" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make them by hand, or run again with -creating set</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    the weave would require these 5 directories to exist:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        docs</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        docs/docs-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        docs/front</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        docs/back</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        docs/inventory</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make them by hand, or run again with -creating set</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note a subtle change here: once Inweb thinks in terms of a colony, it defaults
@@ -198,32 +198,32 @@ used by GitHub when serving web pages associated with a repository.) We can
 change that, of course:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2802" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">minweb</span><span class="ConsoleText-plain-syntax"> weave</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my/funny/area</span></span>
-<a id="SP1LN2803" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    the weave would require these 7 directories to exist:</span></span>
-<a id="SP1LN2804" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my</span></span>
-<a id="SP1LN2805" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my/funny</span></span>
-<a id="SP1LN2806" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my/funny/area</span></span>
-<a id="SP1LN2807" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my/funny/area/docs-assets</span></span>
-<a id="SP1LN2808" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my/funny/area/front</span></span>
-<a id="SP1LN2809" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my/funny/area/back</span></span>
-<a id="SP1LN2810" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        my/funny/area/inventory</span></span>
-<a id="SP1LN2811" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make them by hand, or run again with -creating set</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">minweb</span><span class="ConsoleText-plain-syntax"> weave</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my/funny/area</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    the weave would require these 7 directories to exist:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my/funny</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my/funny/area</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my/funny/area/docs-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my/funny/area/front</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my/funny/area/back</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        my/funny/area/inventory</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inweb: fatal error: giving up: either make them by hand, or run again with -creating set</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>But on second thoughts, <code>docs</code> wasn't such a bad idea, so:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN2817" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
-<a id="SP1LN2818" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (created directory 'docs')</span></span>
-<a id="SP1LN2819" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (created directory 'docs/docs-assets')</span></span>
-<a id="SP1LN2820" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (created directory 'docs/front')</span></span>
-<a id="SP1LN2821" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (created directory 'docs/back')</span></span>
-<a id="SP1LN2822" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (created directory 'docs/inventory')</span></span>
-<a id="SP1LN2823" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    (Weave 1 of 3: front)</span></span>
-<a id="SP1LN2824" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    weaving web "The Front Office" (Python program in MarkdownCode notation) as GitHubPages (based on HTML)</span></span>
-<a id="SP1LN2825" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [docs/front/invh.html] [sales] [promo]</span></span>
-<a id="SP1LN2826" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        [index]</span></span>
-<a id="SP1LN2827" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'docs')</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'docs/docs-assets')</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'docs/front')</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'docs/back')</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'docs/inventory')</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (Weave 1 of 3: front)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "The Front Office" (Python program in MarkdownCode notation) as GitHubPages (based on HTML)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [docs/front/invh.html] [sales] [promo]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>...and so on.</p>

@@ -597,9 +597,9 @@ that service uses to identify the video/audio in question.
 	if (par) {
 		WRITE("<a id=\"");
 		Colonies::paragraph_anchor(OUT, par);
-		WRITE("LN%d\" class=\"lineanchor\"></a>", C->line->allocation_id);
+		WRITE("LN%d\" class=\"lineanchor\"></a>", C->line->sequence_number_in_paragraph);
 	}
-	WRITE("<span class=\"anchoredline\">");
+
 	@<Recurse the renderer through children nodes@>;
 	WRITE("</span>");
 	WRITE("\n");

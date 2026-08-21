@@ -102,12 +102,12 @@ as using it. The following definition will do:</p>
 <p>Everything seems to work nicely:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN3996" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span></span>
-<a id="SP1LN3997" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 31 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 31 lines</span></span>
 
-<a id="SP1LN3999" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span></span>
-<a id="SP1LN4000" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
-<a id="SP1LN4001" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Note the <code>-using simple.inweb</code> added to the Inweb commands here: these make
@@ -222,31 +222,31 @@ And this code tests the function:                           commentary
 <p>and so on. That can be verified using <code>inweb inspect -scan</code>:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN4130" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -scan -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span></span>
-<a id="SP1LN4131" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 27 lines</span></span>
-<a id="SP1LN4132" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    S1</span></span>
-<a id="SP1LN4133" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        C1: commentary</span></span>
-<a id="SP1LN4134" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            _______ This⏑is⏑a⏑Python⏑implementation⏑of⏑the⏑counting⏑sort⏑algorithm.⏑The⏑following</span></span>
-<a id="SP1LN4135" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            _______ function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns⏑the⏑result:</span></span>
-<a id="SP1LN4136" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span></span>
-<a id="SP1LN4137" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000004 def⏑countingSort(unsorted):</span></span>
-<a id="SP1LN4138" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000005 ⏑⏑⏑⏑sorted⏑=⏑[]</span></span>
-<a id="SP1LN4139" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000006 ⏑⏑⏑⏑if⏑unsorted:</span></span>
-<a id="SP1LN4140" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000007 ⏑⏑⏑⏑⏑⏑⏑⏑max_val⏑=⏑max(unsorted)</span></span>
-<a id="SP1LN4141" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000008 ⏑⏑⏑⏑⏑⏑⏑⏑counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)</span></span>
-<a id="SP1LN4142" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000009 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value⏑in⏑unsorted:</span></span>
-<a id="SP1LN4143" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000010 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑counts[value]⏑+=⏑1</span></span>
-<a id="SP1LN4144" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000011 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value,⏑count⏑in⏑enumerate(counts):</span></span>
-<a id="SP1LN4145" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000012 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)</span></span>
-<a id="SP1LN4146" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000013 ⏑⏑⏑⏑return⏑sorted</span></span>
-<a id="SP1LN4147" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    S2</span></span>
-<a id="SP1LN4148" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        C1: commentary</span></span>
-<a id="SP1LN4149" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            _______ And⏑this⏑code⏑tests⏑the⏑function:</span></span>
-<a id="SP1LN4150" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span></span>
-<a id="SP1LN4151" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000017 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]</span></span>
-<a id="SP1LN4152" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000018 print("Unsorted:",⏑A)</span></span>
-<a id="SP1LN4153" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">            0000019 print("Sorted:",⏑countingSort(A))</span></span>
-<a id="SP1LN4154" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ...</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -scan -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 27 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    S1</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C1: commentary</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ This⏑is⏑a⏑Python⏑implementation⏑of⏑the⏑counting⏑sort⏑algorithm.⏑The⏑following</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns⏑the⏑result:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000004 def⏑countingSort(unsorted):</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000005 ⏑⏑⏑⏑sorted⏑=⏑[]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000006 ⏑⏑⏑⏑if⏑unsorted:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000007 ⏑⏑⏑⏑⏑⏑⏑⏑max_val⏑=⏑max(unsorted)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000008 ⏑⏑⏑⏑⏑⏑⏑⏑counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000009 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value⏑in⏑unsorted:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000010 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑counts[value]⏑+=⏑1</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000011 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value,⏑count⏑in⏑enumerate(counts):</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000012 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000013 ⏑⏑⏑⏑return⏑sorted</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    S2</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C1: commentary</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ And⏑this⏑code⏑tests⏑the⏑function:</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000017 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000018 print("Unsorted:",⏑A)</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000019 print("Sorted:",⏑countingSort(A))</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ...</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>In these scan printouts, <code>S1</code>, <code>S2</code>, ..., are the paragraphs, which are internally
@@ -340,9 +340,9 @@ Testing which:
 <p>And then indeed:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN4259" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.nssimp</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> -</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> nssimple.inweb | python2</span></span>
-<a id="SP1LN4260" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])</span></span>
-<a id="SP1LN4261" class="lineanchor"></a><span class="anchoredline"><span class="ConsoleText-plain-syntax">    ('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.nssimp</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> -</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> nssimple.inweb | python2</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])</span></span>
 </pre>
 <div class="lsmarkdown">
 <p>Of course, this notation is only a little different from <code>MarkdownCode</code>. We
