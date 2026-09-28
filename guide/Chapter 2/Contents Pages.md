@@ -173,11 +173,11 @@ of the file path stepped up a directory, getting out of `smorgasbord` altogether
 It is usually a good idea for a section called, say, "Counting Sort", to have
 a filename consisting of its title plus an extension, as in `Counting Sort.md`.
 But there are times when this might be tricky. For example, we might want to
-avoid awkward Unicode characters in the filename of a section called "Runes 𐲦‎𐲧‎𐲨‎𐲩 and 𐲌𐲏",
-if we don't trust our computer's file system to handle Old Hungarian properly.
+avoid awkward Unicode characters in the filename of a section called "Suits ♤♧♡♢",
+if we don't trust our computer's file system to handle chess symbols properly.
 For those, we could write:
 
-		"Runes 𐲦‎𐲧‎𐲨‎𐲩 and 𐲌𐲏" at "Runes 1.md"
+		"Suits ♤♧♡♢" at "Suits 1.md"
 
 thus specifying the section title and location independently. Since section titles
 cannot contain a `"` character, no ambiguity can arise.

@@ -38,6 +38,7 @@ classdef ls_pattern {
 	struct asset_rule *pending_rule;
 	struct text_stream *pending_command;
 	int pending_lines;
+	int allow_commands; /* currently allowing the use of commands */
 }
 
 classdef ls_pattern_pair {
@@ -130,6 +131,7 @@ void Patterns::parse_declaration(wcl_declaration *D) {
 	wp->pending_rule = NULL;
 	wp->pending_command = NULL;
 	wp->pending_lines = 0;
+	wp->allow_commands = FALSE;
 
 @<Read in the pattern file@> =
 	text_file_position tfp = D->body_position;
@@ -172,10 +174,16 @@ void Patterns::resolve_declaration(wcl_declaration *D) {
 }
 
 weave_format *Patterns::get_format(ls_web *W, ls_pattern *wp) {
+	weave_format *wf = Patterns::get_format_r(W, wp);
+	if (wf == NULL) Errors::fatal("pattern has no known weave format");
+	return wf;
+}
+
+weave_format *Patterns::get_format_r(ls_web *W, ls_pattern *wp) {
 	if (wp == NULL) return NULL;
 	if (wp->pattern_format == NULL) {
 		ls_pattern *basis = Patterns::basis(W->declaration, wp);
-		if (basis) return Patterns::get_format(W, basis);
+		if (basis) return Patterns::get_format_r(W, basis);
 	}
 	return wp->pattern_format;
 }
@@ -315,6 +323,8 @@ void Patterns::scan_pattern_line(text_stream *line, text_file_position *tfp, voi
 				}
 			} else if (Str::eq_insensitive(key, I"format")) {
 				wp->pattern_format = WeavingFormats::find_by_name(value);
+				if (wp->pattern_format == NULL)
+					Errors::in_text_file("no such format", tfp);
 			} else if (Str::eq_insensitive(key, I"default range")) {
 				wp->default_range = Str::duplicate(value);
 			} else if (Str::eq_insensitive(key, I"initial extension")) {
@@ -381,39 +391,41 @@ completes.
 
 =
 void Patterns::post_process(ls_pattern *pattern, weave_order *wv) {
-	text_stream *T;
-	LOOP_OVER_LINKED_LIST(T, text_stream, pattern->post_commands) {
-		filename *last_F = NULL;
-		TEMPORARY_TEXT(cmd)
-		for (int i=0; i<Str::len(T); i++) {
-			if (Str::includes_at(T, i, I"WOVENPATH")) {
-				Shell::quote_path(cmd, Filenames::up(wv->weave_to));
-				i += 8;
-			} else if (Str::includes_at(T, i, I"WOVEN")) {
-				filename *W = wv->weave_to;
-				i += 5;
-				if (Str::get_at(T, i) == '.') {
-					i++;
-					TEMPORARY_TEXT(ext)
-					while (Characters::isalpha(Str::get_at(T, i)))
-						PUT_TO(ext,Str::get_at(T, i++));
-					W = Filenames::set_extension(W, ext);
-					DISCARD_TEXT(ext)
-				}
-				Shell::quote_file(cmd, W);
-				last_F = W;
-				i--;
-			} else PUT_TO(cmd, Str::get_at(T, i));
+	if (pattern->allow_commands) {
+		text_stream *T;
+		LOOP_OVER_LINKED_LIST(T, text_stream, pattern->post_commands) {
+			filename *last_F = NULL;
+			TEMPORARY_TEXT(cmd)
+			for (int i=0; i<Str::len(T); i++) {
+				if (Str::includes_at(T, i, I"WOVENPATH")) {
+					Shell::quote_path(cmd, Filenames::up(wv->weave_to));
+					i += 8;
+				} else if (Str::includes_at(T, i, I"WOVEN")) {
+					filename *W = wv->weave_to;
+					i += 5;
+					if (Str::get_at(T, i) == '.') {
+						i++;
+						TEMPORARY_TEXT(ext)
+						while (Characters::isalpha(Str::get_at(T, i)))
+							PUT_TO(ext,Str::get_at(T, i++));
+						W = Filenames::set_extension(W, ext);
+						DISCARD_TEXT(ext)
+					}
+					Shell::quote_file(cmd, W);
+					last_F = W;
+					i--;
+				} else PUT_TO(cmd, Str::get_at(T, i));
+			}
+			if ((Str::includes_at(cmd, 0, I"PROCESS ")) && (last_F)) {
+				TeXPost::scan_TeX_log(wv, last_F);
+			} else {
+				Str::trim_white_space(cmd);
+				if (wv->reportage) PRINT("(%S)\n", cmd);
+				int rv = Shell::run(cmd);
+				if (rv != 0) WRITE_TO(STDERR, "warning: post-processing command failed\n");
+			}
+			DISCARD_TEXT(cmd)
 		}
-		if ((Str::includes_at(cmd, 0, I"PROCESS ")) && (last_F)) {
-			TeXUtilities::scan_TeX_log(wv, last_F);
-		} else {
-			Str::trim_white_space(cmd);
-			if (wv->reportage) PRINT("(%S)\n", cmd);
-			int rv = Shell::run(cmd);
-			if (rv != 0) WRITE_TO(STDERR, "warning: post-processing command failed\n");
-		}
-		DISCARD_TEXT(cmd)
 	}
 }
 

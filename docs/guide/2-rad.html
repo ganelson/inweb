@@ -50,39 +50,39 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#2">Chapter 2: Larger Webs</a></li><li><b>Resources and Declarations</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Inweb is highly customisable, and this means there must be ways to supply
-it with new conventions about notations, programming languages, and so on.
-Those conventions need to be written down in files, and that in turn means
-that Inweb must be able to read a variety of files with different meanings,
-not just webs.</p>
-<p>Since much of the rest of this guide will be about creating new resources,
-this seems a good point to set out some ground rules for declaring them.</p>
-<h2>Inspecting resources</h2>
-<p>By convention, files which are meaningful to Inweb commands but which are
-<em>not</em> webs are given the filename extension <code>.inweb</code>. For example, if you were
-to create a custom programming language definition, say for the language
-Racket, you might call this <code>Racket.inweb</code>. And then:</p>
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>Inweb is highly customisable, and this means there must be ways to supply
+    it with new conventions about notations, programming languages, and so on.
+    Those conventions need to be written down in files, and that in turn means
+    that Inweb must be able to read a variety of files with different meanings,
+    not just webs.</p>
+    <p>Since much of the rest of this guide will be about creating new resources,
+    this seems a good point to set out some ground rules for declaring them.</p>
+    <h2>Inspecting resources</h2>
+    <p>By convention, files which are meaningful to Inweb commands but which are
+    <em>not</em> webs are given the filename extension <code>.inweb</code>. For example, if you were
+    to create a custom programming language definition, say for the language
+    Racket, you might call this <code>Racket.inweb</code>. And then:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect Racket.inweb</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Language "Racket" at Racket.inweb, line 1</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect Racket.inweb</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Language "Racket" at Racket.inweb, line 1</span>
 </pre>
 <div class="lsmarkdown">
-<p>...and then some further output, which need not detain us here. In general,
-<code>inweb inspect</code> can be pointed at any file which Inweb understands, and will
-say what it appears to be.</p>
-<h2>Declarations</h2>
-<p>The general rule is that all Inweb files are a series of one or more <em>declarations</em>
-of <em>resources</em>, like this one:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Racket" {
+    <p class="commentary">...and then some further output, which need not detain us here. In general,
+    <code>inweb inspect</code> can be pointed at any file which Inweb understands, and will
+    say what it appears to be.</p>
+    <h2>Declarations</h2>
+    <p>The general rule is that all Inweb files are a series of one or more <em>declarations</em>
+    of <em>resources</em>, like this one:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Racket" {
     ...
 }
 </span></pre>
-<p>Here the <em>type</em> of the resource is <code>Language</code>, and the <em>name</em> of the particular
-one created is <code>Racket</code>. (Names are optional in some cases: types never are.)
-Details about it then appear in the <code>...</code> position above. A file can contain
-multiple resources:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Racket" {
+    <p>Here the <em>type</em> of the resource is <code>Language</code>, and the <em>name</em> of the particular
+    one created is <code>Racket</code>. (Names are optional in some cases: types never are.)
+    Details about it then appear in the <code>...</code> position above. A file can contain
+    multiple resources:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "Racket" {
     ...
 }
 
@@ -90,10 +90,10 @@ Notation "Homebrew" {
     ...
 }
 </span></pre>
-<p>Such a file is called a &quot;miscellany&quot;, even if all of its declarations have the
-same type as each other (unlike in this case).</p>
-<p>Resources can even, in some cases, be nested:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
+    <p>Such a file is called a &quot;miscellany&quot;, even if all of its declarations have the
+    same type as each other (unlike in this case).</p>
+    <p>Resources can even, in some cases, be nested:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Colony {
     ...
 
     Language "Racket" {
@@ -101,53 +101,53 @@ same type as each other (unlike in this case).</p>
     }
 }
 </span></pre>
-<p>This is not a miscellany because the file contains just one declaration,
-a <code>Colony</code>. That has a second declaration, a <code>Language</code>, inside of it, but
-this is a private resource of its own, not visible from the outside.</p>
-<p>Outside of these declarations, comments can be included as lines which
-begin with <code>//</code>. For example, in:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">// Something of a stopgap for now
+    <p>This is not a miscellany because the file contains just one declaration,
+    a <code>Colony</code>. That has a second declaration, a <code>Language</code>, inside of it, but
+    this is a private resource of its own, not visible from the outside.</p>
+    <p>Outside of these declarations, comments can be included as lines which
+    begin with <code>//</code>. For example, in:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">// Something of a stopgap for now
 Language "APL" {
     ...
 }
 </span></pre>
-<p>the line <code>// Something of a stopgap for now</code> is simply discarded. Otherwise,
-nothing can appear outside of declarations except for white space.</p>
-<p>The rules on indentation and placing of the braces are strictly enforced here.
-This, for example, produces an error:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {  ...  }
+    <p>the line <code>// Something of a stopgap for now</code> is simply discarded. Otherwise,
+    nothing can appear outside of declarations except for white space.</p>
+    <p>The rules on indentation and placing of the braces are strictly enforced here.
+    This, for example, produces an error:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {  ...  }
 </span></pre>
-<p>as does:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {
+    <p>as does:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {
     ...
     }
 </span></pre>
-<p>and so does:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {
+    <p>and so does:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "APL" {
         ...A...
     ...B...
         ...C...
 }
 </span></pre>
-<p>The material inside the braces should be indented by some amount (counting
-tab stops as four spaces), and the indentation used on the first line should
-be the minimum indentation used throughout. It's the <code>...B...</code> line which
-causes the problem in that last example.</p>
-<h2>Webs are also resources</h2>
-<p>If all Inweb files are supposed to be declarations like the ones above, then,
-why haven't the webs seen so far followed that shape?</p>
-<p>The answer is that if a file is <em>not</em> a declaration (or a miscellany of
-multiple declarations), then Inweb decides what it is by looking at the
-filename rather than the contents.</p>
-<ul>
-<li>If its filename is <code>colony.inweb</code>, it is read as the body of a <code>Colony</code>;</li>
-<li>If its filename is <code>Contents.w</code> or <code>Contents.inweb</code> or ends <code>.inwebc</code>, it is
-read as the body of a <code>Web</code>;</li>
-<li>And otherwise it is read as the body of a <code>Page</code>.</li>
-</ul>
-<p>A <code>Web</code> declaration is a contents page. So, for example, a contents page
-<code>Contents.inweb</code> like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
+    <p>The material inside the braces should be indented by some amount (counting
+    tab stops as four spaces), and the indentation used on the first line should
+    be the minimum indentation used throughout. It's the <code>...B...</code> line which
+    causes the problem in that last example.</p>
+    <h2>Webs are also resources</h2>
+    <p>If all Inweb files are supposed to be declarations like the ones above, then,
+    why haven't the webs seen so far followed that shape?</p>
+    <p>The answer is that if a file is <em>not</em> a declaration (or a miscellany of
+    multiple declarations), then Inweb decides what it is by looking at the
+    filename rather than the contents.</p>
+    <ul>
+    <li>If its filename is <code>colony.inweb</code>, it is read as the body of a <code>Colony</code>;</li>
+    <li>If its filename is <code>Contents.w</code> or <code>Contents.inweb</code> or ends <code>.inwebc</code>, it is
+    read as the body of a <code>Web</code>;</li>
+    <li>And otherwise it is read as the body of a <code>Page</code>.</li>
+    </ul>
+    <p>A <code>Web</code> declaration is a contents page. So, for example, a contents page
+    <code>Contents.inweb</code> like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: MarkdownCode
 Language: Python
@@ -157,8 +157,8 @@ Sections
 	Counting Sort.md
 	Quick Sort.md
 </span></pre>
-<p>is read exactly as if it had been declared thus:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Web {
+    <p>is read exactly as if it had been declared thus:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Web {
 	Title: Sorting Smorgasbord
 	Author: Various Artists
 	Notation: MarkdownCode
@@ -170,24 +170,24 @@ Sections
 		Quick Sort.md
 }
 </span></pre>
-<p>Properly speaking, Inweb always reads filenames case insensitively, so
-<code>Colony.INWEB</code> would be equivalent to <code>colony.inweb</code>. Similarly, trailing spaces
-after a filename extension are ignored, so <code>colony.inweb </code> also matches.</p>
-<p>The difference between <code>Web</code> and <code>Page</code> is that the former is used for large
-webs, and contains a contents listing (and possibly some book data), whereas
-the latter is used for a single-file web, and contains the actual text. But
-both create webs. A <code>Colony</code> is a whole collection of webs, and we'll come
-to that later on.</p>
-<p>For example, this tiny single-file web:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Pi
+    <p>Properly speaking, Inweb always reads filenames case insensitively, so
+    <code>Colony.INWEB</code> would be equivalent to <code>colony.inweb</code>. Similarly, trailing spaces
+    after a filename extension are ignored, so <code>colony.inweb </code> also matches.</p>
+    <p>The difference between <code>Web</code> and <code>Page</code> is that the former is used for large
+    webs, and contains a contents listing (and possibly some book data), whereas
+    the latter is used for a single-file web, and contains the actual text. But
+    both create webs. A <code>Colony</code> is a whole collection of webs, and we'll come
+    to that later on.</p>
+    <p>For example, this tiny single-file web:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax"># Pi
 
 π is not part of the core of Python, but is defined in the `math` module:
 
     import math
     print (math.pi)
 </span></pre>
-<p>is read exactly as if it had been declared like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Page {
+    <p>is read exactly as if it had been declared like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Page {
     # Pi
 
     π is not part of the core of Python, but is defined in the `math` module:
@@ -196,67 +196,67 @@ to that later on.</p>
         print (math.pi)
 }
 </span></pre>
-<p>In practice, it would be cumbersome and annoying to have to put webs inside
-these declaration braces, and this guide expects that users will never bother
-with them except when declaring a <code>Web</code> or <code>Page</code> inside a <code>Colony</code>.</p>
-<h2>Complete table of resource types</h2>
-<table>
-<thead>
-<tr>
-<th>type</th>
-<th>defines</th>
-<th>can contain</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Colony</code></td>
-<td>collection of related webs</td>
-<td>anything but a <code>Colony</code> or <code>Pattern</code></td>
-</tr>
-<tr>
-<td><code>Web</code></td>
-<td>contents list and book data for a large web</td>
-<td>anything but a <code>Colony</code>, <code>Web</code>, <code>Page</code> or <code>Pattern</code></td>
-</tr>
-<tr>
-<td><code>Page</code></td>
-<td>text of a single-page web with no contents list</td>
-<td>only a <code>Conventions</code></td>
-</tr>
-<tr>
-<td><code>Notation</code></td>
-<td>notation for writing webs</td>
-<td>only a <code>Conventions</code></td>
-</tr>
-<tr>
-<td><code>Language</code></td>
-<td>details of a programming language</td>
-<td>only a <code>Conventions</code></td>
-</tr>
-<tr>
-<td><code>Navigation</code></td>
-<td>navigation menu used in woven websites</td>
-<td>nothing</td>
-</tr>
-<tr>
-<td><code>Pattern</code></td>
-<td>generic design used in woven websites</td>
-<td>nothing</td>
-</tr>
-<tr>
-<td><code>Conventions</code></td>
-<td>preference settings to be applied to webs</td>
-<td>nothing</td>
-</tr>
-</tbody>
-</table>
-<p>In addition, the type <code>Miscellany</code> is used internally to represent a ragbag
-of declarations all in the same file as each other, but it cannot be declared
-explicitly. A <code>Miscellany</code> can contain anything except another <code>Miscellany</code>.</p>
+    <p>In practice, it would be cumbersome and annoying to have to put webs inside
+    these declaration braces, and this guide expects that users will never bother
+    with them except when declaring a <code>Web</code> or <code>Page</code> inside a <code>Colony</code>.</p>
+    <h2>Complete table of resource types</h2>
+    <table>
+    <thead>
+    <tr>
+    <th>type</th>
+    <th>defines</th>
+    <th>can contain</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>Colony</code></td>
+    <td>collection of related webs</td>
+    <td>anything but a <code>Colony</code></td>
+    </tr>
+    <tr>
+    <td><code>Web</code></td>
+    <td>contents list and book data for a large web</td>
+    <td>anything but a <code>Colony</code>, <code>Web</code>, or <code>Page</code></td>
+    </tr>
+    <tr>
+    <td><code>Page</code></td>
+    <td>text of a single-page web with no contents list</td>
+    <td>only a <code>Conventions</code></td>
+    </tr>
+    <tr>
+    <td><code>Notation</code></td>
+    <td>notation for writing webs</td>
+    <td>only a <code>Conventions</code></td>
+    </tr>
+    <tr>
+    <td><code>Language</code></td>
+    <td>details of a programming language</td>
+    <td>only a <code>Conventions</code></td>
+    </tr>
+    <tr>
+    <td><code>Navigation</code></td>
+    <td>navigation menu used in woven websites</td>
+    <td>nothing</td>
+    </tr>
+    <tr>
+    <td><code>Pattern</code></td>
+    <td>generic design used in woven websites</td>
+    <td>nothing</td>
+    </tr>
+    <tr>
+    <td><code>Conventions</code></td>
+    <td>preference settings to be applied to webs</td>
+    <td>nothing</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>In addition, the type <code>Miscellany</code> is used internally to represent a ragbag
+    of declarations all in the same file as each other, but it cannot be declared
+    explicitly. A <code>Miscellany</code> can contain anything except another <code>Miscellany</code>.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Labels</span><a href="2-lbl.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 2: Larger Webs</span>2<li class="progresssection"><span class="fullname-popup">Contents Pages</span><a href="2-cp.html">cp</a></li><li class="progresssection"><span class="fullname-popup">Modules</span><a href="2-mdl.html">mdl</a></li><li class="progresssection"><span class="fullname-popup">Tags</span><a href="2-tgs.html">tgs</a></li><li class="progresssection"><span class="fullname-popup">Conventions</span><a href="2-cnv.html">cnv</a></li><li class="progresssection"><span class="fullname-popup">Labels</span><a href="2-lbl.html">lbl</a></li><li class="progresscurrent"><span class="current-fullname-popup">Resources and Declarations</span>rad</li><li class="progresssection"><span class="fullname-popup">Regular Expressions</span><a href="2-re.html">re</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Regular Expressions</span><a href="2-re.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Labels</span><a href="2-lbl.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 2: Larger Webs</span>2</li><li class="progresssection"><span class="fullname-popup">Contents Pages</span><a href="2-cp.html">cp</a></li><li class="progresssection"><span class="fullname-popup">Modules</span><a href="2-mdl.html">mdl</a></li><li class="progresssection"><span class="fullname-popup">Tags</span><a href="2-tgs.html">tgs</a></li><li class="progresssection"><span class="fullname-popup">Conventions</span><a href="2-cnv.html">cnv</a></li><li class="progresssection"><span class="fullname-popup">Labels</span><a href="2-lbl.html">lbl</a></li><li class="progresscurrent"><span class="current-fullname-popup">Resources and Declarations</span>rad</li><li class="progresssection"><span class="fullname-popup">Regular Expressions</span><a href="2-re.html">re</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Regular Expressions</span><a href="2-re.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

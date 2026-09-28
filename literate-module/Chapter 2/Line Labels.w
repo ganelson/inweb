@@ -88,13 +88,15 @@ The label is required to be unique only at the paragraph level.
 			par->paragraph_label_namespace = LineLabels::new_namespace();
 		dict_entry *de = Dictionaries::find(par->paragraph_label_namespace->names, name);
 		if (de) @<Throw an error for duplicate labels in the same paragraph@>
-		LineLabels::add_to_namespace(label, par->paragraph_label_namespace);
+		LineLabels::add_to_namespace(label, par->paragraph_label_namespace, FALSE);
 	}
 	ls_unit *unit = LiterateSource::unit_of_line(lst);
-	if (unit)
-		LineLabels::add_to_namespace(label, unit->local_label_namespace);
+	if (unit) {
+		dict_entry *de = Dictionaries::find(unit->local_label_namespace->names, name);
+		LineLabels::add_to_namespace(label, unit->local_label_namespace, (de)?TRUE:FALSE);
+	}
 	if ((unit) && (unit->context))
-		LineLabels::add_to_namespace(label, unit->context->global_label_namespace);
+		LineLabels::add_to_namespace(label, unit->context->global_label_namespace, FALSE);
 	return label;
 
 @<Throw an error for an empty label name@> =
@@ -123,20 +125,25 @@ of the label names. These are initially fairly small (just 8 entries) because
 a typical paragraph is unlikely to contain many labels; and if it does, we
 can afford the small speed hit when expanding the dictionary.
 
+The `duplicate_names` set is maintained only for duplicates within a section.
+
 =
 classdef ls_label_namespace {
 	struct dictionary *names;
+	struct dictionary *duplicate_names;
 }
 
 ls_label_namespace *LineLabels::new_namespace(void) {
 	ls_label_namespace *ns = CREATE(ls_label_namespace);
 	ns->names = Dictionaries::new(8, FALSE);
+	ns->duplicate_names = Dictionaries::new(8, FALSE);
 	return ns;
 }
 
-void LineLabels::add_to_namespace(ls_line_label *label, ls_label_namespace *ns) {
+void LineLabels::add_to_namespace(ls_line_label *label, ls_label_namespace *ns, int dup) {
 	Dictionaries::create(ns->names, label->name);
 	Dictionaries::write_value(ns->names, label->name, label);
+	if (dup) Dictionaries::create(ns->duplicate_names, label->name);
 }
 
 @ Searching for a name involves going up the hierarchy of the three levels:
@@ -171,16 +178,24 @@ ls_line_label *LineLabels::find(ls_web *W, ls_line *lst, text_stream *name) {
 When a web with labels is rendered to HTML, anchor elements are placed at
 the start of each line with a label. These anchors need to have unique names,
 and as noted above, label names are only guaranteed unique within a paragraph.
-So the anchor name for a label is a concatenation of the paragraph anchor
-and the label itself.
+Unless the label name turns out to be unique within the section, then,
+we prepend the paragraph anchor just to make sure.
 
-For example, label `magic` in paragraph 2.3 might have anchor `SP2_3LLmagic`.
+For example, label `magic` in paragraph 2.3 might have anchor `SP2_3LLmagic`
+if it occurs two or more times within its section, or simply `LLmagic` if not.
 
 =
 void LineLabels::anchor(OUTPUT_STREAM, ls_line *lst) {
-	if (lst) {
+	if ((lst) && (lst->label)) {
 		ls_paragraph *par = LiterateSource::par_of_line(lst);
-		if (par) Colonies::paragraph_anchor(OUT, par);
+		if (par) {
+			int unique = FALSE;
+			ls_unit *unit = LiterateSource::unit_of_line(lst);
+			if ((unit) && (Dictionaries::find(
+				unit->local_label_namespace->duplicate_names, lst->label->name) == NULL))
+				unique = TRUE;
+			if (unique == FALSE) Colonies::paragraph_anchor(OUT, par);
+		}
 		WRITE("LL%S", lst->label->name);
 	}
 }

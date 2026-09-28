@@ -119,7 +119,7 @@ LP tools or intermediate files stored on disc.
 - Weaving. See //The Swarm// for an overview of how complex weaves are
 divided into a "swarm" of simple ones, each of which generates a "weave tree"
 of rendering instructions. See //Format Methods// and its subsidiaries,
-such as //HTML Formats//, for the actual process of rendering weave output
+such as //HTML Format//, for the actual process of rendering weave output
 from the tree.
 
 @ Literate programs are, at the end of the day, still programs, and are

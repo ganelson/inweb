@@ -1,0 +1,526 @@
+Chapter 1: Layout
+
+  Layout Demonstration
+    This section exercises paragraph structure, direct notations for inserted gadgets, and footnotes.
+
+
+Layout Demonstration
+
+This section exercises paragraph structure, direct notations for inserted gadgets, and footnotes.
+
+S1 Disclaimer.  The content of this web is essentially meaningless. It exists only to test
+the renderers.
+
+
+S2 Named paragraph.  This paragraph has a name, and is usually rendered with a modest subheading.[1]
+There is very little else to it.[2]
+
+[1] Also two footnotes.
+
+[2] Save for the formula n\mapsto 3n + 1.
+
+
+S3.  This paragraph is anonymous, and will contain some definitions.
+
+define 1
+define 3
+default 10
+enumerate 1
+enumerate 
+enumerate 
+
+S4.  The trivial function at #A implements the famous iteration of
+Lothar Collatz (1910-1990). The use of MULTIPLE at #B triples and adds 1.
+
+int collatzS6none
+(int x) {            /* A */
+    <Print out x (4.1)>
+    if (x % 2 == 0) return x/2;
+    return MULTIPLE*x + 1;      /* B */
+}
+
+S4.1.  A named holon appears next. This one appears after some commentary, but
+that is not obligatory, as the next will show.
+
+<Print out x (4.1)> =    printf("x = %d\n", x);   /* `x` here is what we called $n$ above */
+    sleep(1);                // that was done with a verbatim splice
+This code is continued in S5, and used in S4.
+
+S5.  <Print out x (5)> =    print("x is still %d\n", x);
+This code is a continuation of S4.1.
+
+S6 Another named paragraph.  Note the duplicate label here: the link #A goes to the one in this function.
+
+int lotharnone
+(int n) { /* A */
+    return collatz(n);
+}
+
+S7 Gadgetry.  This uses notation for insertions by hand, so to speak, rather than via a
+Markdown extension, so the following involves non-commentary chunks in the
+literate source tree.
+
+[See YouTube video with ID GR3aImy7dWw.]
+[See Vimeo video with ID 204519.]
+[See SoundCloud video with ID 42803139.]
+
+S8.  If this renders to a format which supports audio, then this will be the call
+of Steller's Jay, from the Cornell Lab of Ornithology collection
+Voices of Western Backyard Birds:
+
+
+S9.  This doesn't look much (and isn't): a raw piece of HTML pasted in from a
+file, and visible only when this web is rendered to HTML.
+
+
+S10.  A modest slide carousel, again using direct insertions:
+
+	ROOT ---> DOCUMENT
+	ROOT ---> DOCUMENT
+				|
+			  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+	ROOT ---> DOCUMENT
+				|
+			  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+				|            |            |
+			  text 1       text 2       text 3  ...
+
+
+Chapter 2: Commentary
+
+  Markdown Demonstration
+    This section exercises Markdown-format commentary, complete with its many Inweb extensions. These provide an alternative way to insert gadgets.
+
+
+Markdown Demonstration
+
+This section exercises Markdown-format commentary, complete with its many Inweb extensions. These provide an alternative way to insert gadgets.
+
+S1 Commentary.  The content of this section is again meaningless. It exists only to test
+the renderers.
+
+Here is some emphasis and strong emphasis and text struck through.
+
+Here is some literal backticked text.
+
+Some index entries appear here, invisibly.
+
+
+S2 Character set.  These are potentially tricky for TeX: {Knuth}. A\B. A_B. A#B. $40. A|B. 30%. 2^56.
+
+And in backticked literal text: {Knuth}. A\B. A_B. A#B. $40. A|B. 30%. 2^26.
+
+These are potentially tricky for HTML: <, &, >.
+
+And in backticked literal text: <, &, >.
+
+"Double quoted." 'Single quoted.'
+
+In TeX variants, it's 'reasonable' to hope for "smart quotes" to be imposed, but
+more questionable whether phrases like église château mañana will be accented.
+
+
+S3 ISO Latin-1.  Some formats can take most of Unicode, but others are more limited, and plain TeX
+is stuck with a small selection of ASCII, leaving the following ragged. It's in
+both tabular and untabular form because of issues with TeX rendering of table cells,
+which mean that implementation of magic characters works differently in those cases.
+
+
+0  | 1  | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E  | F | 
+-- | -- | - | - | - | - | - | - | - | - | - | - | - | - | -- | - | -
+2x | SP | ! | " | # | $ | % | & | ' | ( | ) | * | + | , | -  | . | /
+3x | 0  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | : | ; | < | =  | > | ?
+4x | @  | A | B | C | D | E | F | G | H | I | J | K | L | M  | N | O
+5x | P  | Q | R | S | T | U | V | W | X | Y | Z | [ | \ | ]  | ^ | _
+6x | `  | a | b | c | d | e | f | g | h | i | j | k | l | m  | n | o
+7x | p  | q | r | s | t | u | v | w | x | y | z | { | | | }  | ~ | 
+Ax | NB | ¡ | ¢ | £ | ¤ | ¥ | ¦ | § | ¨ | © | ª | « | ¬ | SH | ® | ¯
+Bx | °  | ± | ² | ³ | ´ | µ | ¶ | · | ¸ | ¹ | º | » | ¼ | ½  | ¾ | ¿
+Cx | À  | Á | Â | Ã | Ä | Å | Æ | Ç | È | É | Ê | Ë | Ì | Í  | Î | Ï
+Dx | Ð  | Ñ | Ò | Ó | Ô | Õ | Ö | × | Ø | Ù | Ú | Û | Ü | Ý  | Þ | ß
+Ex | à  | á | â | ã | ä | å | æ | ç | è | é | ê | ë | ì | í  | î | ï
+Fx | ð  | ñ | ò | ó | ô | õ | ö | ÷ | ø | ù | ú | û | ü | ý  | þ | ÿ
+
+
+0  | 1  | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D   | E  | F | 
+-- | -- | - | - | - | - | - | - | - | - | - | - | - | --- | -- | - | -
+2x | SP | ! | " | # | $ | % | & | ' | ( | ) | * | + | ,   | -  | . | /
+3x | 0  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | : | ; | <   | =  | > | ?
+4x | @  | A | B | C | D | E | F | G | H | I | J | K | L   | M  | N | O
+5x | P  | Q | R | S | T | U | V | W | X | Y | Z | [ | \   | ]  | ^ | _
+6x | `  | a | b | c | d | e | f | g | h | i | j | k | l   | m  | n | o
+7x | p  | q | r | s | t | u | v | w | x | y | z | { | bar | }  | ~ | 
+Ax | NB | ¡ | ¢ | £ | ¤ | ¥ | ¦ | § | ¨ | © | ª | « | ¬   | SH | ® | ¯
+Bx | °  | ± | ² | ³ | ´ | µ | ¶ | · | ¸ | ¹ | º | » | ¼   | ½  | ¾ | ¿
+Cx | À  | Á | Â | Ã | Ä | Å | Æ | Ç | È | É | Ê | Ë | Ì   | Í  | Î | Ï
+Dx | Ð  | Ñ | Ò | Ó | Ô | Õ | Ö | × | Ø | Ù | Ú | Û | Ü   | Ý  | Þ | ß
+Ex | à  | á | â | ã | ä | å | æ | ç | è | é | ê | ë | ì   | í  | î | ï
+Fx | ð  | ñ | ò | ó | ô | õ | ö | ÷ | ø | ù | ú | û | ü   | ý  | þ | ÿ
+
+SP   !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+
+0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+
+@   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+
+P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+
+`   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+
+p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~
+
+NB   ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SH   ®   ¯
+
+°   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
+
+À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
+
+Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
+
+à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
+
+ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+
+SP   !   "   #   $   %   &   '   (   )   *   +   ,   -   .   /
+
+0   1   2   3   4   5   6   7   8   9   :   ;   <   =   >   ?
+
+@   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+
+P   Q   R   S   T   U   V   W   X   Y   Z   [   \   ]   ^   _
+
+`   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+
+p   q   r   s   t   u   v   w   x   y   z   {   |   }   ~
+
+NB   ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SH   ®   ¯
+
+°   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
+
+À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
+
+Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
+
+à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
+
+ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+
+
+S4 Mathematics.  Zolotarev's Lemma says that a!= 0 has a square root modulo a prime p
+if and only if the rearrangement of { 0, 1, 2, ..., p-1} produced by multiplying
+by a is an even permutation. That is, if σ(x) = ax ~mod~ p, then
+ ({\frac {a}{p}}) = \cases{1 & if σ even,\cr
+-1 & if σ odd.\cr} 
+
+                                        
+
+
+
+
+S5 Internal subheadings.  
+{\bf Subhead level 1}
+
+
+{\bf Subhead level 2}
+
+
+{\bf Subhead level 3}
+
+This seems a good moment for what Markdown calls a thematic break.
+
+
+
+-----------------------------------------------------------------
+
+And here are some more invisible entries.
+
+
+S6 Lists and tables.  Some notable etymologies:
+
+
+
+    * 
+    Lanthanum from the Greek "lanthanein", meaning to be hidden.
+
+
+
+    * 
+    Praseodymium from the Greek "prasios", meaning leek-green, and "didymos", meaning twin.
+
+
+
+    * 
+    All of these from the mining village of Ytterby, on the Swedish island of Resaro:
+
+
+
+        * Terbium
+
+        * Erbium
+
+        * Yttrium
+
+        * Ytterbium
+
+
+
+To tabulate:
+
+
+Element | Name         | Usages                                
+------- | ------------ | --------------------------------------
+21 Sc   | Scandium     | aerospace alloys                      
+39 Y    | Yttrium      | tooth crowns, jet engines, light bulbs
+57 La   | Lanthanum    | glass additive, lenses                
+58 Ce   | Cerium       | polishing powder, self-cleaning ovens 
+59 Pr   | Praseodymium | lasers, arc lights                    
+
+
+S7 Block quotations.  
+    In 1787, Lieutenant Carl Axel Arrhenius found an unidentified black mineral
+    in the Ytterby mine, whose purpose was to produce quartz and later feldspar.
+
+
+Later on:
+
+
+    In 1953, the mine was renovated and used for the storage of jet fuel, MC 77,
+    but the storage method led to contamination.
+
+
+We also support alerts:
+
+
+! Warning
+Passenger ships of the Waxholmsbolaget do not call at Ytterby pier in the
+winter months.
+
+
+
+S8 Links.  Regular Markdown links first. Here is a typical link without problematic
+characters in its URI, and a
+link with an accent in, and lastly
+a third link with a Hebrew letter.
+
+Inweb has its own slashed links, which we try next.
+First an external slashed link to Wikipedia -> https://en.wikipedia.org,
+and then an internal one to code label A -> #A.
+
+
+S9 Code extracts.  To begin with, an unfenced code extract:
+
+factorial = 1
+for i in range(2, n + 1):
+	factorial *= i
+
+print(factorial)
+And the same extract fenced:
+
+factorial = 1
+for i in range(2, n + 1):
+    factorial *= i
+
+print(factorial)
+This time syntax-coloured as None:
+
+factorial = 1
+for i in range(2, n + 1):
+    factorial *= i
+
+print(factorial)
+This time syntax-coloured as Python:
+
+factorial = 1
+for i in range(2, n + 1):
+    factorial *= i
+
+print(factorial)
+
+S10 Images and gadgets.  [Image: Flag of St Lucia]
+
+
+[Image: download: An early limerick]
+
+
+[Image: embedded YouTube video]
+
+
+[Image: embedded Vimeo video]
+
+
+[Image: embedded SoundCloud audio]
+
+
+[Image: embedded Vimeo video at 400 by 300]
+
+
+[Image: embedded SoundCloud audio at height 200]
+
+
+
+S11 Carousels.  So this is a carousel by Markdown:
+
+
+
+    * 
+    (carousel "Stage 1 - Raw tree" captioned below)
+
+    	ROOT ---> DOCUMENT
+
+
+    * 
+    (carousel "Stage 2 - Developed tree" captioned below)
+
+    	ROOT ---> DOCUMENT
+    				|
+    			  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+
+
+    * 
+    (carousel "Stage 3 - Completed tree" captioned below)
+
+    	ROOT ---> DOCUMENT
+    				|
+    			  NODE 1  ---  NODE 2  ---  NODE 3  --- ...
+    				|            |            |
+    			  text 1       text 2       text 3  ...
+
+
+
+S12 A gratuitously long table.  
+Atomic number | Symbol | Name         
+------------- | ------ | -------------
+1             | H      | Hydrogen     
+2             | He     | Helium       
+3             | Li     | Lithium      
+4             | Be     | Beryllium    
+5             | B      | Boron        
+6             | C      | Carbon       
+7             | N      | Nitrogen     
+8             | O      | Oxygen       
+9             | F      | Fluorine     
+10            | Ne     | Neon         
+11            | Na     | Sodium       
+12            | Mg     | Magnesium    
+13            | Al     | Aluminium    
+14            | Si     | Silicon      
+15            | P      | Phosphorus   
+16            | S      | Sulfur       
+17            | Cl     | Chlorine     
+18            | Ar     | Argon        
+19            | K      | Potassium    
+20            | Ca     | Calcium      
+21            | Sc     | Scandium     
+22            | Ti     | Titanium     
+23            | V      | Vanadium     
+24            | Cr     | Chromium     
+25            | Mn     | Manganese    
+26            | Fe     | Iron         
+27            | Co     | Cobalt       
+28            | Ni     | Nickel       
+29            | Cu     | Copper       
+30            | Zn     | Zinc         
+31            | Ga     | Gallium      
+32            | Ge     | Germanium    
+33            | As     | Arsenic      
+34            | Se     | Selenium     
+35            | Br     | Bromine      
+36            | Kr     | Krypton      
+37            | Rb     | Rubidium     
+38            | Sr     | Strontium    
+39            | Y      | Yttrium      
+40            | Zr     | Zirconium    
+41            | Nb     | Niobium      
+42            | Mo     | Molybdenum   
+43            | Tc     | Technetium   
+44            | Ru     | Ruthenium    
+45            | Rh     | Rhodium      
+46            | Pd     | Palladium    
+47            | Ag     | Silver       
+48            | Cd     | Cadmium      
+49            | In     | Indium       
+50            | Sn     | Tin          
+51            | Sb     | Antimony     
+52            | Te     | Tellurium    
+53            | I      | Iodine       
+54            | Xe     | Xenon        
+55            | Cs     | Caesium      
+56            | Ba     | Barium       
+57            | La     | Lanthanum    
+58            | Ce     | Cerium       
+59            | Pr     | Praseodymium 
+60            | Nd     | Neodymium    
+61            | Pm     | Promethium   
+62            | Sm     | Samarium     
+63            | Eu     | Europium     
+64            | Gd     | Gadolinium   
+65            | Tb     | Terbium      
+66            | Dy     | Dysprosium   
+67            | Ho     | Holmium      
+68            | Er     | Erbium       
+69            | Tm     | Thulium      
+70            | Yb     | Ytterbium    
+71            | Lu     | Lutetium     
+72            | Hf     | Hafnium      
+73            | Ta     | Tantalum     
+74            | W      | Tungsten     
+75            | Re     | Rhenium      
+76            | Os     | Osmium       
+77            | Ir     | Iridium      
+78            | Pt     | Platinum     
+79            | Au     | Gold         
+80            | Hg     | Mercury      
+81            | Tl     | Thallium     
+82            | Pb     | Lead         
+83            | Bi     | Bismuth      
+84            | Po     | Polonium     
+85            | At     | Astatine     
+86            | Rn     | Radon        
+87            | Fr     | Francium     
+88            | Ra     | Radium       
+89            | Ac     | Actinium     
+90            | Th     | Thorium      
+91            | Pa     | Protactinium 
+92            | U      | Uranium      
+93            | Np     | Neptunium    
+94            | Pu     | Plutonium    
+95            | Am     | Americium    
+96            | Cm     | Curium       
+97            | Bk     | Berkelium    
+98            | Cf     | Californium  
+99            | Es     | Einsteinium  
+100           | Fm     | Fermium      
+101           | Md     | Mendelevium  
+102           | No     | Nobelium     
+103           | Lr     | Lawrencium   
+104           | Rf     | Rutherfordium
+105           | Db     | Dubnium      
+106           | Sg     | Seaborgium   
+107           | Bh     | Bohrium      
+108           | Hs     | Hassium      
+109           | Mt     | Meitnerium   
+110           | Ds     | Darmstadtium 
+111           | Rg     | Roentgenium  
+112           | Cn     | Copernicium  
+113           | Nh     | Nihonium     
+114           | Fl     | Flerovium    
+115           | Mc     | Moscovium    
+116           | Lv     | Livermorium  
+117           | Ts     | Tennessine   
+118           | Og     | Oganesson    
+
+
+S13 Index.  This sentence should be followed by a mechanically-constructed index.
+
+
+Index:
+
+functions
+  `collatz`  _4_
+  `lothar`  _6_
+index  1, _5_
+/non-standard/  1, _5_
+`Z_X_1`  1, _5_
+
+
+

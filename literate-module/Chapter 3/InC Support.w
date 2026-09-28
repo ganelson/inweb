@@ -17,7 +17,6 @@ void InCSupport::add_features(programming_language *pl) {
 	METHOD_ADD(pl, ADDITIONAL_TANGLING_TAN_MTID, InCSupport::additional_tangling);
 
 	METHOD_ADD(pl, SKIP_IN_WEAVING_WEA_MTID, InCSupport::skip_in_weaving);
-	METHOD_ADD(pl, WEAVE_CODE_LINE_WEA_MTID, InCSupport::weave_code_line);
 
 	METHOD_ADD(pl, ANALYSIS_ANA_MTID, InCSupport::analyse_code);
 	METHOD_ADD(pl, SHARE_ELEMENT_ANA_MTID, InCSupport::share_element);
@@ -996,7 +995,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 	for (pnt = alphabetical_list_of_nonterminals; pnt;
 		pnt = pnt->next_pnt_alphabetically) {
 		WRITE("\\line{\\nonterminal{%S}%s"
-			"\\leaders\\hbox to 1em{\\hss.\\hss}\\hfill {\\xreffont %S}}\n",
+			"\\leaders\\hbox to 1em{\\hss.\\hss}\\hfill \\holonnametext{%S}}\n",
 			pnt->unangled_name,
 			(pnt->as_function)?" (internal)":"",
 			WebRanges::of(pnt->where_defined));
@@ -1031,7 +1030,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 		LOOP_OVER(S, ls_section)
 			if (S->scratch_flag) {
 				if (c++ > 0) WRITE(", ");
-				WRITE("{\\xreffont %S}", WebRanges::of(S));
+				WRITE("\\holonnametext{%S}", WebRanges::of(S));
 			}
 		WRITE("\n\n");
 	}
@@ -1056,7 +1055,7 @@ void InCSupport::weave_grammar_index(OUTPUT_STREAM) {
 		LOOP_OVER(S, ls_section)
 			if (S->scratch_flag) {
 				if (c++ > 0) WRITE(", ");
-				WRITE("{\\xreffont %S}", WebRanges::of(S));
+				WRITE("\\holonnametext{%S}", WebRanges::of(S));
 			}
 		WRITE("\n\n");
 	}
@@ -1077,18 +1076,6 @@ int InCSupport::skip_in_weaving(programming_language *self, weave_order *wv, ls_
 		if (Regexp::match(&mr, lst->text, U"<%c*?> internal%c*")) skipping_internal = TRUE;
 		Regexp::dispose_of(&mr);
 	}
-	return FALSE;
-}
-
-@ And here is the TeX code for displaying Preform grammar:
-
-=
-int InCSupport::weave_code_line(programming_language *self, text_stream *OUT,
-	weave_order *wv, ls_web *W, ls_chapter *C, ls_section *S, ls_line *lst,
-	text_stream *matter, text_stream *concluding_comment) {
-	if (Str::eq(wv->theme_match, I"Preform"))
-		return WeavingFormats::preform_document(OUT, wv, W, C, S, lst,
-			matter, concluding_comment);
 	return FALSE;
 }
 

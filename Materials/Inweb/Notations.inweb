@@ -34,8 +34,6 @@ Notation "InwebClassic" {
 		@h MATERIAL                                 ==> error "no full stop after heading text"
 		@heading MATERIAL                           ==> error "no full stop after heading text"
 		@m											==> makeclasseshere
-	
-		>> MATERIAL                                 ==> quotation if not in extract context
 	end
 	
 	options of namedholon
@@ -109,25 +107,19 @@ Notation "InwebClassic" {
 	end
 	
 	options of textextract
-		hyperlinked                                 ==> hyperlinkedoption
 		undisplayed                                 ==> undisplayedoption
-		hyperlinked OPTIONS                         ==> hyperlinkedoption
 		undisplayed OPTIONS                         ==> undisplayedoption
 		MATERIAL                                    ==> error "unknown text option(s)"
 	end
 	
 	options of textascodeextract
-		hyperlinked                                 ==> hyperlinkedoption
 		undisplayed                                 ==> undisplayedoption
-		hyperlinked OPTIONS                         ==> hyperlinkedoption
 		undisplayed OPTIONS                         ==> undisplayedoption
 		MATERIAL                                    ==> error "unknown text option(s)"
 	end
 	
 	options of textextractto
-		hyperlinked                                 ==> hyperlinkedoption
 		undisplayed                                 ==> undisplayedoption
-		hyperlinked OPTIONS                         ==> hyperlinkedoption
 		undisplayed OPTIONS                         ==> undisplayedoption
 		MATERIAL                                    ==> error "unknown text option(s)"
 	end
@@ -169,8 +161,8 @@ Notation "MarkdownCode" {
 		``` MATERIAL(NONWHITESPACE)                 ==> textextract
 		```                                         ==> textextract if not in extract context
 		```                                         ==> endextract if in extract context
-		<INDENT>MATERIAL 	                        ==> code if in indented context
 		MATERIAL                                    ==> extract if in textextract context
+		<INDENT>MATERIAL 	                        ==> code if in indented context
 		MATERIAL									==> commentary
 	end
 	

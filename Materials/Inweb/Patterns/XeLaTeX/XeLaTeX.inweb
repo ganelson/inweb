@@ -1,0 +1,8 @@
+Pattern "XeLaTeX" {
+	based on: LaTeX
+	initial extension: .xelatex
+	commands
+		if xelatex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.xelatex >WOVEN.console; then echo "no xelatex errors"; else cat WOVEN.console; fi
+		PROCESS WOVEN.log
+	end
+}

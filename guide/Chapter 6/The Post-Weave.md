@@ -6,17 +6,15 @@ the documents it has just woven. As with the après-ski, by default nothing
 happens.
 
 In fact, nothing will ever happen unless the pattern for a weave has a
-declaration containing a `commands` block. The only pattern supplied with Inweb which does have
-`commands` is `PDFTeX`, whose declaration reads:
+declaration containing a `commands` block. For example, the pattern `PDFTeX`
+is declared like so:
 
 	Pattern "PDFTeX" {
 		based on: TeX
 		initial extension: .tex
 		commands
-			pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >WOVEN.console
+			if pdftex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >WOVEN.console; then echo "no pdftex errors"; else cat WOVEN.console; fi
 			PROCESS WOVEN.log
-			rm WOVEN.log
-			rm WOVEN.console
 		end
 	}
 
@@ -37,23 +35,23 @@ form `PROCESS filename`. This gives Inweb the chance to look at the file if
 it wants to. That's in practice only ever going to be useful for TeX: what
 Inweb does is to scan through the output produced by TeX to see if there
 have been overfull hbox errors, count the number of pages, and such. So,
-really, it should be used only by the definition above.
+really, it should be used only by the definition above, and in definitions
+of other TeX variants like it.
 
 Here is the above post-weave system in action:
 
 ``` ConsoleText
 	$ inweb weave pyramid.c.md -as PDFTeX
 	weaving web "Hilbert's Pyramid" (C program in MarkdownCode notation) as PDFTeX (based on TeX)
-	(pdftex -output-directory='.'  -interaction=scrollmode 'pyramid.tex'  >'pyramid.console')
-	(rm 'pyramid.log')
-	(rm 'pyramid.console')
-		generated: pyramid.tex
+	(if pdftex -output-directory='.'  -interaction=scrollmode 'pyramid.tex'  >'pyramid.console'; then echo "no pdftex errors"; else cat pyramid.console; fi)
+	no pdftex errors
+		[pyramid.tex: 3pp 297K] 
 ```
 
 Note that `WOVENPATH` in one command has become `.` (the output directory
 happens to be the current working directory here), while each `WOVEN` has
 become `pyramid`. Note that `WOVEN` cannot begin with `-`, or contain any
-spaces, so the command `rm WOVEN.log` is not quite the invitation to walk
-through a graveyard at night that it might seem. Those are the only two
-substitutions made by Inweb when it passes these commands to the system
-shell.
+spaces, so that a command like `rm WOVEN.log` would not be quite the
+invitation to walk through a graveyard at night that it might seem. Those
+are the only two substitutions made by Inweb when it passes these commands
+to the system shell.

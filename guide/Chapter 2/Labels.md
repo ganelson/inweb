@@ -76,7 +76,7 @@ matter, because they are removed during tangling.
 ## Heavier labelling
 
 The example labels above were single letters, but that's just because
-the convention called for that. Consider the following diassembly of a
+the convention called for that. Consider the following disassembly of a
 machine code program:
 
     ; If there are no bytes to shift, then branch to shift by bits.

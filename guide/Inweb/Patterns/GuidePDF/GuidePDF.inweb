@@ -1,0 +1,10 @@
+Pattern "GuidePDF" {
+	based on: PDFLaTeX
+	initial extension: .latex
+	default range: 0
+	commands
+		if pdflatex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.latex >WOVEN.console; then echo "no pdflatex errors"; else cat WOVEN.console; fi
+		if pdflatex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.latex >WOVEN.console; then echo "no pdflatex errors"; else cat WOVEN.console; fi
+		PROCESS WOVEN.log
+	end
+}

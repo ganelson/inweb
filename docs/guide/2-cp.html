@@ -50,20 +50,20 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#2">Chapter 2: Larger Webs</a></li><li><b>Contents Pages</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> The examples so far have been of single-file webs, but it's impractical for
-even a medium-sized program to be stuffed into a single section of code,
-and all but impossible for a large one.</p>
-<h2>Getting started</h2>
-<p>It's easy to make a multi-file web. Suppose the <code>Counting Sort</code> example used
-earlier needed to become part of a larger program, trying out different sort
-algorithms.</p>
-<p>We begin by creating a new directory, which we'll call <code>smorgasbord</code>:
-though not a requirement, giving a web its own private directory is tidy.
-The web will have two <em>sections</em>, each in its own file: <code>Counting Sort.md</code> and
-<code>Quick Sort.md</code>, which demonstrate different ways to sort data. The third and
-final file making up the web is the <em>contents page</em>, which we will give the
-filename <code>Contents.inweb</code>. It reads:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>The examples so far have been of single-file webs, but it's impractical for
+    even a medium-sized program to be stuffed into a single section of code,
+    and all but impossible for a large one.</p>
+    <h2>Getting started</h2>
+    <p>It's easy to make a multi-file web. Suppose the <code>Counting Sort</code> example used
+    earlier needed to become part of a larger program, trying out different sort
+    algorithms.</p>
+    <p>We begin by creating a new directory, which we'll call <code>smorgasbord</code>:
+    though not a requirement, giving a web its own private directory is tidy.
+    The web will have two <em>sections</em>, each in its own file: <code>Counting Sort.md</code> and
+    <code>Quick Sort.md</code>, which demonstrate different ways to sort data. The third and
+    final file making up the web is the <em>contents page</em>, which we will give the
+    filename <code>Contents.inweb</code>. It reads:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: MarkdownCode
 Language: Python
@@ -73,153 +73,153 @@ Sections
 	Counting Sort
 	Quick Sort
 </span></pre>
-<p>As can be seen, this starts with some basic metadata about the web. We saw
-earlier that a single-file web has to imply its metadata by using its
-title and filename: that's because it has no better way. A multi-file web
-uses its contents page to spell out the details explicitly.</p>
-<p>Inweb commands refer to a single-file web by giving its filename: hence
-commands like <code>inweb inspect countsort.pl.md</code>, where <code>countsort.pl.md</code>
-was the single file of a small web. When referring to a multi-file web,
-we can <em>either</em> give its contents page:</p>
+    <p>As can be seen, this starts with some basic metadata about the web. We saw
+    earlier that a single-file web has to imply its metadata by using its
+    title and filename: that's because it has no better way. A multi-file web
+    uses its contents page to spell out the details explicitly.</p>
+    <p>Inweb commands refer to a single-file web by giving its filename: hence
+    commands like <code>inweb inspect countsort.pl.md</code>, where <code>countsort.pl.md</code>
+    was the single file of a small web. When referring to a multi-file web,
+    we can <em>either</em> give its contents page:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord/Contents.inweb</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord/Contents.inweb</span>
 </pre>
 <div class="lsmarkdown">
-<p><em>or</em>, equivalently and more conveniently, just give the directory name:</p>
+    <p class="commentary"><em>or</em>, equivalently and more conveniently, just give the directory name:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect smorgasbord</span>
 </pre>
 <div class="lsmarkdown">
-<p>Either way, the reply is:</p>
+    <p class="commentary">Either way, the reply is:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Contents:</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    cnsr   | Counting Sort | 77</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    qcsr   | Quick Sort    | 62</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Contents:</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    cnsr   | Counting Sort | 77</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    qcsr   | Quick Sort    | 62</span>
 </pre>
 <div class="lsmarkdown">
-<p>New output has appeared here: a contents rundown. The <code>abbrev</code> column is because
-Inweb sometimes needs a way to refer to sections briefly but unambiguously: it
-chooses abbreviations such that no two sections can ever have the same. These
-are sometimes not what the author would choose, though, so Inweb also allows
-the contents entry to specify an abbreviation explicitly:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
+    <p class="commentary">New output has appeared here: a contents rundown. The <code>abbrev</code> column is because
+    Inweb sometimes needs a way to refer to sections briefly but unambiguously: it
+    chooses abbreviations such that no two sections can ever have the same. These
+    are sometimes not what the author would choose, though, so Inweb also allows
+    the contents entry to specify an abbreviation explicitly:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
 	"Counting Sort" = "csort"
 	"Quick Sort" = "qsort"
 </span></pre>
-<p>After which:</p>
+    <p>After which:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Contents:</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    csort  | Counting Sort | 77</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    qsort  | Quick Sort    | 62</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Sorting Smorgasbord" (Python program in MarkdownCode notation): 2 sections : 10 paragraphs : 139 lines</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Contents:</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    abbrev | section       | lines</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ------ | ------------- | -----</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    csort  | Counting Sort | 77</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    qsort  | Quick Sort    | 62</span>
 </pre>
 <div class="lsmarkdown">
-<h2>Weaving and tangling</h2>
-<p>Weaving and tangling work much as they do for single-file webs, except that
-the output is written, by default, to different places:</p>
-<ul>
-<li><code>inweb tangle countsort.pl.md</code> tangles to <code>countsort.pl</code>.</li>
-<li><code>inweb tangle smorgasbord</code> tangles to <code>smorgasbord/Tangled/Sorting Smorgasbord.pl</code>,
-creating the subdirectory <code>Tangled</code> of <code>smorgasbord</code> if it doesn't already exist.</li>
-<li><code>inweb weave countsort.pl.md</code> weaves to <code>countsort.html</code> with a slew of CSS
-files in the directory <code>countsort-assets</code>.</li>
-<li><code>inweb weave smorgasbord</code> weaves a website into <code>smorgasbord/Woven</code>, whose CSS
-and similar files are in <code>smorgasbord/Woven/assets</code>, and those subdirectories
-are created if they do not already exist.</li>
-</ul>
-<p>So, for example:</p>
+    <p class="commentary"><h2>Weaving and tangling</h2>
+    <p>Weaving and tangling work much as they do for single-file webs, except that
+    the output is written, by default, to different places:</p>
+    <ul>
+    <li><code>inweb tangle countsort.pl.md</code> tangles to <code>countsort.pl</code>.</li>
+    <li><code>inweb tangle smorgasbord</code> tangles to <code>smorgasbord/Tangled/Sorting Smorgasbord.pl</code>,
+    creating the subdirectory <code>Tangled</code> of <code>smorgasbord</code> if it doesn't already exist.</li>
+    <li><code>inweb weave countsort.pl.md</code> weaves to <code>countsort.html</code> with a slew of CSS
+    files in the directory <code>countsort-assets</code>.</li>
+    <li><code>inweb weave smorgasbord</code> weaves a website into <code>smorgasbord/Woven</code>, whose CSS
+    and similar files are in <code>smorgasbord/Woven/assets</code>, and those subdirectories
+    are created if they do not already exist.</li>
+    </ul>
+    <p>So, for example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    [smorgasbord/Woven/cnsr.html] [qcsr]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    [index]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    10 files copied to: smorgasbord/Woven/assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    [smorgasbord/Woven/cnsr.html] [qcsr]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    [index]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    10 files copied to: smorgasbord/Woven/assets</span>
 </pre>
 <div class="lsmarkdown">
-<p>Note the reappearance of the two abbreviations mentioned above: each section has
-become an HTML file called <code>cnsr.html</code> or <code>qcsr.html</code>, rather than the more
-cumbersome <code>Counting Sort.html</code>. In addition, the contents have become <code>index.html</code>,
-the home page for the mini-website.</p>
-<p>Inweb is just a little more cautious about creating directories on behalf of the
-user if the command-line switch <code>-to</code> is used, but it's not sure what that refers
-to. For example:</p>
+    <p class="commentary">Note the reappearance of the two abbreviations mentioned above: each section has
+    become an HTML file called <code>cnsr.html</code> or <code>qcsr.html</code>, rather than the more
+    cumbersome <code>Counting Sort.html</code>. In addition, the contents have become <code>index.html</code>,
+    the home page for the mini-website.</p>
+    <p>Inweb is just a little more cautious about creating directories on behalf of the
+    user if the command-line switch <code>-to</code> is used, but it's not sure what that refers
+    to. For example:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inweb: fatal error: this is neither an existing file nor directory: my_website</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">mkdir</span><span class="ConsoleText-plain-syntax"> my_website</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [my_website/cnsr.html] [qcsr]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: my_website/assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inweb: fatal error: this is neither an existing file nor directory: my_website</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">mkdir</span><span class="ConsoleText-plain-syntax"> my_website</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave smorgasbord</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> my_website</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [my_website/cnsr.html] [qcsr]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: my_website/assets</span>
 </pre>
 <div class="lsmarkdown">
-<h2>Contents entries</h2>
-<p>Every section of a web has to have its own individual entry in the contents
-listing for a web, and every section has to be stored in its own individual file.</p>
-<p>An entry in the contents listing of a web gives Inweb enough information to
-know both the title of the section, and the location of the file. When Inweb
-reads an entry like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Counting Sort
+    <p class="commentary"><h2>Contents entries</h2>
+    <p>Every section of a web has to have its own individual entry in the contents
+    listing for a web, and every section has to be stored in its own individual file.</p>
+    <p>An entry in the contents listing of a web gives Inweb enough information to
+    know both the title of the section, and the location of the file. When Inweb
+    reads an entry like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	Counting Sort
 </span></pre>
-<p>it takes the title to be <code>Counting Sort</code>. As to the location, Inweb looks
-for <code>smorgasbord/Counting Sort</code>; it doesn't find that file, so it tries
-<code>smorgasbord/Counting Sort.md</code> instead; and that does exist, so all is well.
-(Inweb would also have tried the filename extensions <code>.w</code> or <code>.i6t</code>, though
-the latter is now deprecated.) If that had failed too, Inweb would next
-have looked to see if the web had a <code>Sections</code> subdirectory, because some
-medium-sized webs like to store their section files in a subdirectory called
-<code>Sections</code>. So in fact it tries quite a few possibilities:</p>
-<ul>
-<li><code>Counting Sort</code></li>
-<li><code>Counting Sort.md</code></li>
-<li><code>Counting Sort.w</code></li>
-<li><code>Counting Sort.i6t</code></li>
-<li><code>Sections/Counting Sort</code></li>
-<li><code>Sections/Counting Sort.md</code></li>
-<li><code>Sections/Counting Sort.w</code></li>
-<li><code>Sections/Counting Sort.i6t</code></li>
-</ul>
-<p>and takes the first match, that is, the first which exists as a file.</p>
-<p>Section names must not contain the characters <code>.</code>, <code>\</code>, <code>&quot;</code>, or <code>/</code>. So, in
-particular, if Inweb reads the contents entry</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	../external/miscellaneous/Mixed Bag.md
+    <p>it takes the title to be <code>Counting Sort</code>. As to the location, Inweb looks
+    for <code>smorgasbord/Counting Sort</code>; it doesn't find that file, so it tries
+    <code>smorgasbord/Counting Sort.md</code> instead; and that does exist, so all is well.
+    (Inweb would also have tried the filename extensions <code>.w</code> or <code>.i6t</code>, though
+    the latter is now deprecated.) If that had failed too, Inweb would next
+    have looked to see if the web had a <code>Sections</code> subdirectory, because some
+    medium-sized webs like to store their section files in a subdirectory called
+    <code>Sections</code>. So in fact it tries quite a few possibilities:</p>
+    <ul>
+    <li><code>Counting Sort</code></li>
+    <li><code>Counting Sort.md</code></li>
+    <li><code>Counting Sort.w</code></li>
+    <li><code>Counting Sort.i6t</code></li>
+    <li><code>Sections/Counting Sort</code></li>
+    <li><code>Sections/Counting Sort.md</code></li>
+    <li><code>Sections/Counting Sort.w</code></li>
+    <li><code>Sections/Counting Sort.i6t</code></li>
+    </ul>
+    <p>and takes the first match, that is, the first which exists as a file.</p>
+    <p>Section names must not contain the characters <code>.</code>, <code>\</code>, <code>&quot;</code>, or <code>/</code>. So, in
+    particular, if Inweb reads the contents entry</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	../external/miscellaneous/Mixed Bag.md
 </span></pre>
-<p>then it knows that the title of the section must just be <code>Mixed Bag</code>. The
-location of the file is always taken to be <em>relative to</em> the directory holding
-the contents file. So, here, it would be <code>external/miscellaneous/Mixed Bag.md</code>,
-assuming that <code>smorgasbord</code> is in our current working directory: the <code>..</code> part
-of the file path stepped up a directory, getting out of <code>smorgasbord</code> altogether.</p>
-<p>It is usually a good idea for a section called, say, &quot;Counting Sort&quot;, to have
-a filename consisting of its title plus an extension, as in <code>Counting Sort.md</code>.
-But there are times when this might be tricky. For example, we might want to
-avoid awkward Unicode characters in the filename of a section called &quot;Runes 𐲦‎𐲧‎𐲨‎𐲩 and 𐲌𐲏&quot;,
-if we don't trust our computer's file system to handle Old Hungarian properly.
-For those, we could write:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	"Runes 𐲦‎𐲧‎𐲨‎𐲩 and 𐲌𐲏" at "Runes 1.md"
+    <p>then it knows that the title of the section must just be <code>Mixed Bag</code>. The
+    location of the file is always taken to be <em>relative to</em> the directory holding
+    the contents file. So, here, it would be <code>external/miscellaneous/Mixed Bag.md</code>,
+    assuming that <code>smorgasbord</code> is in our current working directory: the <code>..</code> part
+    of the file path stepped up a directory, getting out of <code>smorgasbord</code> altogether.</p>
+    <p>It is usually a good idea for a section called, say, &quot;Counting Sort&quot;, to have
+    a filename consisting of its title plus an extension, as in <code>Counting Sort.md</code>.
+    But there are times when this might be tricky. For example, we might want to
+    avoid awkward Unicode characters in the filename of a section called &quot;Suits ♤♧♡♢&quot;,
+    if we don't trust our computer's file system to handle chess symbols properly.
+    For those, we could write:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	"Suits ♤♧♡♢" at "Suits 1.md"
 </span></pre>
-<p>thus specifying the section title and location independently. Since section titles
-cannot contain a <code>&quot;</code> character, no ambiguity can arise.</p>
-<p>Large webs will have enough sections to make it sensible to group them
-together in what are called <em>chapters</em>. For example, this is from a contents
-page for a program called Inblorb:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Chapter 1: Blurbs
+    <p>thus specifying the section title and location independently. Since section titles
+    cannot contain a <code>&quot;</code> character, no ambiguity can arise.</p>
+    <p>Large webs will have enough sections to make it sensible to group them
+    together in what are called <em>chapters</em>. For example, this is from a contents
+    page for a program called Inblorb:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Chapter 1: Blurbs
 "A little infrastructure, but basically, parsing of our instructions."
 	Basics
 	Main
@@ -240,57 +240,57 @@ Chapter 3: Other Material
 	Website Maker
 	Base64
 </span></pre>
-<p>Whereas our previous simple contents page had just one subheading, <code>Sections</code>:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
+    <p>Whereas our previous simple contents page had just one subheading, <code>Sections</code>:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
 	Counting Sort
 	Quick Sort
 </span></pre>
-<p>...this larger example has three, <code>Chapter 1: Blurbs</code>, <code>Chapter 2: Blorbs</code>,
-and <code>Chapter 3: Other Material</code>. In each case the chapter is followed by a line
-of text in quotation marks <code>&quot;</code>, briefly outlining the contents: this is optional,
-though. The rules for looking up the section files are the same as before,
-except that instead of looking in <code>Sections</code>, Inweb will look in <code>Chapter 1</code>,
-<code>Chapter 2</code> or <code>Chapter 3</code>, as appropriate. For example, <code>Solution Deviser</code>
-turns out to refer to the file at <code>inblorb/Chapter 3/Solution Deviser.w</code>.</p>
-<p>The list of legal chapter-like headings is quite restrictive:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Preliminaries
+    <p>...this larger example has three, <code>Chapter 1: Blurbs</code>, <code>Chapter 2: Blorbs</code>,
+    and <code>Chapter 3: Other Material</code>. In each case the chapter is followed by a line
+    of text in quotation marks <code>&quot;</code>, briefly outlining the contents: this is optional,
+    though. The rules for looking up the section files are the same as before,
+    except that instead of looking in <code>Sections</code>, Inweb will look in <code>Chapter 1</code>,
+    <code>Chapter 2</code> or <code>Chapter 3</code>, as appropriate. For example, <code>Solution Deviser</code>
+    turns out to refer to the file at <code>inblorb/Chapter 3/Solution Deviser.w</code>.</p>
+    <p>The list of legal chapter-like headings is quite restrictive:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Preliminaries
 Manual
 Chapter &lt;positive whole number&gt;: &lt;title&gt;
 Appendix &lt;letter A to L&gt;: &lt;title&gt;
 </span></pre>
-<p>And that's all. Note that if chapters are used at all, then the subheading
-<code>Sections</code> can't be used: a web is either chaptered or it is not. Inspecting
-Inblorb, we now see:</p>
+    <p>And that's all. Note that if chapters are used at all, then the subheading
+    <code>Sections</code> can't be used: a web is either chaptered or it is not. Inspecting
+    Inblorb, we now see:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    abbrev | chapter   | section                   | lines</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ------ | --------- | ------------------------- | -----</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/bsc  | Chapter 1 | Basics                    | 55</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/mn   | Chapter 1 | Main                      | 295</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/be   | Chapter 1 | Blorb Errors              | 115</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/bp   | Chapter 1 | Blurb Parser              | 405</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    2/bw   | Chapter 2 | Blorb Writer              | 591</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/rls  | Chapter 3 | Releaser                  | 616</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/sd   | Chapter 3 | Solution Deviser          | 421</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/laaf | Chapter 3 | Links and Auxiliary Files | 165</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/plc  | Chapter 3 | Placeholders              | 212</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/tmp  | Chapter 3 | Templates                 | 123</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/wm   | Chapter 3 | Website Maker             | 1031</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/bs6  | Chapter 3 | Base64                    | 80</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    abbrev | chapter   | section                   | lines</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ------ | --------- | ------------------------- | -----</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/bsc  | Chapter 1 | Basics                    | 55</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/mn   | Chapter 1 | Main                      | 295</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/be   | Chapter 1 | Blorb Errors              | 115</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1/bp   | Chapter 1 | Blurb Parser              | 405</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    2/bw   | Chapter 2 | Blorb Writer              | 591</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/rls  | Chapter 3 | Releaser                  | 616</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/sd   | Chapter 3 | Solution Deviser          | 421</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/laaf | Chapter 3 | Links and Auxiliary Files | 165</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/plc  | Chapter 3 | Placeholders              | 212</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/tmp  | Chapter 3 | Templates                 | 123</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/wm   | Chapter 3 | Website Maker             | 1031</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3/bs6  | Chapter 3 | Base64                    | 80</span>
 </pre>
 <div class="lsmarkdown">
-<p>Note that the abbreviations now have a numerical part: <code>3/sd</code> abbreviates
-<code>Solution Deviser</code> from <code>Chapter 3</code>. The chapter itself has an abbreviation,
-which is just <code>3</code>. For <code>Preliminaries</code> or <code>Manual</code>, the prefix would be <code>P</code>
-or <code>M</code>, and for <code>Appendix A</code> to <code>Appendix L</code> (the most allowed), it would be
-<code>A</code> to <code>L</code>. As noted above, these abbreviations are used when weaving a website:
-but since the <code>/</code> can't be used in a filename, it's replaced by a <code>-</code>. So the
-HTML file generated for <code>Solution Deviser</code> is <code>3-sd.html</code>.</p>
-<p>The special abbreviation <code>0</code> can be used to refer to the entire web, should
-this ever be necessary. There is never a Chapter 0.</p>
+    <p class="commentary">Note that the abbreviations now have a numerical part: <code>3/sd</code> abbreviates
+    <code>Solution Deviser</code> from <code>Chapter 3</code>. The chapter itself has an abbreviation,
+    which is just <code>3</code>. For <code>Preliminaries</code> or <code>Manual</code>, the prefix would be <code>P</code>
+    or <code>M</code>, and for <code>Appendix A</code> to <code>Appendix L</code> (the most allowed), it would be
+    <code>A</code> to <code>L</code>. As noted above, these abbreviations are used when weaving a website:
+    but since the <code>/</code> can't be used in a filename, it's replaced by a <code>-</code>. So the
+    HTML file generated for <code>Solution Deviser</code> is <code>3-sd.html</code>.</p>
+    <p>The special abbreviation <code>0</code> can be used to refer to the entire web, should
+    this ever be necessary. There is never a Chapter 0.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Metadata</span><a href="1-mtd.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 2: Larger Webs</span>2<li class="progresscurrent"><span class="current-fullname-popup">Contents Pages</span>cp</li><li class="progresssection"><span class="fullname-popup">Modules</span><a href="2-mdl.html">mdl</a></li><li class="progresssection"><span class="fullname-popup">Tags</span><a href="2-tgs.html">tgs</a></li><li class="progresssection"><span class="fullname-popup">Conventions</span><a href="2-cnv.html">cnv</a></li><li class="progresssection"><span class="fullname-popup">Labels</span><a href="2-lbl.html">lbl</a></li><li class="progresssection"><span class="fullname-popup">Resources and Declarations</span><a href="2-rad.html">rad</a></li><li class="progresssection"><span class="fullname-popup">Regular Expressions</span><a href="2-re.html">re</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Modules</span><a href="2-mdl.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Metadata</span><a href="1-mtd.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 2: Larger Webs</span>2</li><li class="progresscurrent"><span class="current-fullname-popup">Contents Pages</span>cp</li><li class="progresssection"><span class="fullname-popup">Modules</span><a href="2-mdl.html">mdl</a></li><li class="progresssection"><span class="fullname-popup">Tags</span><a href="2-tgs.html">tgs</a></li><li class="progresssection"><span class="fullname-popup">Conventions</span><a href="2-cnv.html">cnv</a></li><li class="progresssection"><span class="fullname-popup">Labels</span><a href="2-lbl.html">lbl</a></li><li class="progresssection"><span class="fullname-popup">Resources and Declarations</span><a href="2-rad.html">rad</a></li><li class="progresssection"><span class="fullname-popup">Regular Expressions</span><a href="2-re.html">re</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Modules</span><a href="2-mdl.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

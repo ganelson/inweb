@@ -1,0 +1,44 @@
+\usepackage[utf8]{inputenc}
+\usepackage{newunicodechar}
+\newunicodechar{📐}{\ensuremath{\angle}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{⏑}{\leavevmode\hbox{\tt\char`\ }}
+\newunicodechar{▶}{\ensuremath{\triangleright}}
+\newunicodechar{◀}{\ensuremath{\triangleleft}}
+\newunicodechar{♤}{\ensuremath{\spadesuit}}
+\newunicodechar{♧}{\ensuremath{\clubsuit}}
+\newunicodechar{♡}{\ensuremath{\heartsuit}}
+\newunicodechar{♢}{\ensuremath{\diamondsuit}}
+\newunicodechar{♨}{\ensuremath{\infty}}
+
+\DeclareUnicodeCharacter{FE0E}{}
+\DeclareUnicodeCharacter{FE0F}{}
+
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\epsilon}}
+\newunicodechar{έ}{\ensuremath{\acute\epsilon}}
+\newunicodechar{ῆ}{\ensuremath{\tilde\nu}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{ι}{\ensuremath{\iota}}
+% I'm sure these could be done with math accents, but life's too short
+\newunicodechar{ἰ}{\ensuremath{\iota}}
+\newunicodechar{ἱ}{\ensuremath{\iota}}
+\newunicodechar{ί}{\ensuremath{\acute\iota}}
+\newunicodechar{κ}{\ensuremath{\kappa}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{ο}{\ensuremath{o}}
+% "There's no \omicron, because it would look the same as o" (The TeXBook).
+\newunicodechar{ό}{\ensuremath{\acute o}}
+\newunicodechar{Π}{\ensuremath{\Pi}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{υ}{\ensuremath{\upsilon}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{φ}{\ensuremath{\phi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{ς}{\ensuremath{\zeta}}

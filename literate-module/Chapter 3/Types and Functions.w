@@ -263,3 +263,38 @@ void Functions::catalogue(ls_section *S, int functions_too) {
 				PRINT("\n                     %S", fn->function_name);
 	}
 }
+
+@h Counting usages.
+This rather clumsy function is needed by the weaver.
+
+=
+void Functions::count_usage(ls_paragraph *par, language_function *fn,
+	int *local_usages, int *local_direction, int *section_usages, int *external_usages,
+	hash_table_entry_usage **single_hteu) {
+	*local_usages = 0;
+	*local_direction = 0;
+	*section_usages = 0;
+	*external_usages = 0;
+	hash_table_entry *hte =
+		CodeAnalysis::find_hash_entry_for_section(fn->function_section,
+			fn->function_name, FALSE);
+	hash_table_entry_usage *hteu = NULL;
+	LOOP_OVER_LINKED_LIST(hteu, hash_table_entry_usage, hte->usages) {
+		if (hteu->finer_positioning == fn->function_header_at) continue;
+		if (par == hteu->usage_recorded_at)
+			(*local_usages)++;
+		else if (LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at))
+			(*section_usages)++;
+		else
+			(*external_usages)++;
+		*single_hteu = hteu;
+		
+		if (LiterateSource::section_of_par(par) == LiterateSource::section_of_par(hteu->usage_recorded_at)) {
+			*local_direction = 0;
+			int delta = hteu->finer_positioning->sequence_number_in_section -
+					fn->function_header_at->sequence_number_in_section;
+			if (delta < 0) *local_direction = -1;
+			if (delta > 0) *local_direction = 1;
+		}
+	}
+}

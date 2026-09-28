@@ -1,0 +1,20 @@
+\def\inwebstartlinkurl#1{{\leavevmode\pdfstartlink
+attr{/Border [2 1 1] /C [0.5 0 0]}
+user{/Subtype /Link
+/A << /S /URI /URI (#1) >>}%
+}}
+%
+\def\inwebstartlinkpara#1{{\leavevmode\pdfstartlink
+attr{/Border [0 0 0] /C [0.9 0 0]}
+goto name {#1}}}%
+%
+\def\inwebstartlinkgoto#1{{\leavevmode\pdfstartlink
+attr{/Border [2 1 1] /C [0.5 0 0]}
+goto name {#1}}}%
+%
+\def\inweblinktourl#1#2{\inwebstartlinkurl{#1}{#2}\pdfendlink}
+\def\inweblinktopara#1#2{\inwebstartlinkpara{#1}{#2}\pdfendlink}
+\def\inweblinktoanchor#1#2{\inwebstartlinkgoto{#1}{#2}\pdfendlink}
+%
+\def\inwebanchor#1{\pdfdest name {#1} xyz }
+%

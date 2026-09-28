@@ -50,67 +50,67 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#7">Chapter 7: Other Services</a></li><li><b>Make Files</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Inweb provides a system for generating <em>makefiles</em>, that is, build instructions
-to be used by the Unix utility <code>make</code>, much like its system for generating
-<a href="7-rf.html" class="internal">README Files</a>. The command <code>inweb make-makefile</code> works almost exactly like
-<code>inweb make-readme</code>, and once again generates a makefile from a script:</p>
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>Inweb provides a system for generating <em>makefiles</em>, that is, build instructions
+    to be used by the Unix utility <code>make</code>, much like its system for generating
+    <a href="7-rf.html" class="internal">README Files</a>. The command <code>inweb make-makefile</code> works almost exactly like
+    <code>inweb make-readme</code>, and once again generates a makefile from a script:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-makefile smorgasbord</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.mkscript -&gt; smorgasbord/smorgasbord.mk</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-makefile smorgasbord</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.mkscript -&gt; smorgasbord/smorgasbord.mk</span>
 </pre>
 <div class="lsmarkdown">
-<p>A new switch, <code>-platform X</code>, allows the platform (i.e. operating system)
-being targeted to be changed: by default, this is whatever Inweb is running
-on, but with <code>-platform windows</code>, Inweb on MacOS can cosplay.</p>
-<p>As for README scripts, the braces <code>{</code> and <code>}</code> are significant, and all of the
-same rules apply: <code>{set ...}</code> can create variables, <code>{repeat ...}</code> can provide
-loops, <code>{define ...}</code> can create new macros. In addition, the following
-make-related macros are available:</p>
-<ul>
-<li>
-<p><code>{platform-settings}</code> splices in a set of platform-specific definitions
-for compiling C-like programs on the platform (i.e., operating system) in
-which Inweb has been installed. If you're using Windows, they will be Windows
-settings, and so on.</p>
-</li>
-<li>
-<p><code>{identity-settings}</code> splices in four constant declarations:</p>
-<ul>
-<li><code>INWEB</code> is the path to the Inweb executable;</li>
-<li><code>INTEST</code> similarly for Intest;</li>
-<li><code>MYNAME</code> is the directory name in which the web is held;</li>
-<li><code>ME</code> is the pathname of this directory.</li>
-</ul>
-</li>
-<li>
-<p><code>{dependent-files tool: TOOL}</code>, or <code>{dependent-files module: MODULES}</code>, or
-<code>{dependent-files tool-and-modules: BOTH}</code> all produce a run of the source files
-on which a tangle of a web is dependent. Basically, a web needs to be tangled
-again and recompiled after each time any of its section files changes, or its
-contents page changes, or the libraries it's using (as modules) have changed.
-Compiling lists of such dependent files by hand is liable to result in
-accidental omissions. <code>{dependent-files}</code> alone means all the files on which
-a tangle of the current web depends.</p>
-</li>
-<li>
-<p><code>{modify-filenames original: FILE prefix: PREFIX suffix: SUFFIX}</code> takes the
-filename and adds either a prefix or a suffix to the unextended leafname.
-Both prefix and suffix clauses are optional, but of course if both are
-missing then nothing changes.</p>
-<p>For example, the following needs to compile something twice, once for each
-CPU architecture; if <code>TO</code> is, say, <code>binary.o</code>, then as modified this will be
-<code>binary_x86.o</code> and <code>binary_arm.o</code>.</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{define: compile to: TO from: FROM ?options: OPTS}
+    <p class="commentary">A new switch, <code>-platform X</code>, allows the platform (i.e. operating system)
+    being targeted to be changed: by default, this is whatever Inweb is running
+    on, but with <code>-platform windows</code>, Inweb on MacOS can cosplay.</p>
+    <p>As for README scripts, the braces <code>{</code> and <code>}</code> are significant, and all of the
+    same rules apply: <code>{set ...}</code> can create variables, <code>{repeat ...}</code> can provide
+    loops, <code>{define ...}</code> can create new macros. In addition, the following
+    make-related macros are available:</p>
+    <ul>
+    <li>
+    <p><code>{platform-settings}</code> splices in a set of platform-specific definitions
+    for compiling C-like programs on the platform (i.e., operating system) in
+    which Inweb has been installed. If you're using Windows, they will be Windows
+    settings, and so on.</p>
+    </li>
+    <li>
+    <p><code>{identity-settings}</code> splices in four constant declarations:</p>
+    <ul>
+    <li><code>INWEB</code> is the path to the Inweb executable;</li>
+    <li><code>INTEST</code> similarly for Intest;</li>
+    <li><code>MYNAME</code> is the directory name in which the web is held;</li>
+    <li><code>ME</code> is the pathname of this directory.</li>
+    </ul>
+    </li>
+    <li>
+    <p><code>{dependent-files tool: TOOL}</code>, or <code>{dependent-files module: MODULES}</code>, or
+    <code>{dependent-files tool-and-modules: BOTH}</code> all produce a run of the source files
+    on which a tangle of a web is dependent. Basically, a web needs to be tangled
+    again and recompiled after each time any of its section files changes, or its
+    contents page changes, or the libraries it's using (as modules) have changed.
+    Compiling lists of such dependent files by hand is liable to result in
+    accidental omissions. <code>{dependent-files}</code> alone means all the files on which
+    a tangle of the current web depends.</p>
+    </li>
+    <li>
+    <p><code>{modify-filenames original: FILE prefix: PREFIX suffix: SUFFIX}</code> takes the
+    filename and adds either a prefix or a suffix to the unextended leafname.
+    Both prefix and suffix clauses are optional, but of course if both are
+    missing then nothing changes.</p>
+    <p>For example, the following needs to compile something twice, once for each
+    CPU architecture; if <code>TO</code> is, say, <code>binary.o</code>, then as modified this will be
+    <code>binary_x86.o</code> and <code>binary_arm.o</code>.</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{define: compile to: TO from: FROM ?options: OPTS}
     clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSX) -g {OPTS} -o {modify-filenames original: {TO} suffix: _x86} {FROM}
     clang -std=c11 -c $(MANYWARNINGS) $(CCOPTSA) -g {OPTS} -o {modify-filenames original: {TO} suffix: _arm} {FROM}
 {end-define}
 </span></pre>
-</li>
-</ul>
-<p>For example, here's a minimal script capable of incrementally tangling and
-recompiling a C program:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{platform-settings}
+    </li>
+    </ul>
+    <p>For example, here's a minimal script capable of incrementally tangling and
+    recompiling a C program:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{platform-settings}
 
 {identity-settings}
 
@@ -127,32 +127,32 @@ define make-me
 	{link from:    $(ME)/Tangled/$(MYNAME).o   to:   $(ME)/Tangled/$(MYNAME)$(EXEEXTENSION)}
 endef
 </span></pre>
-<p>Note that the macros <code>{compile ...}</code> and <code>{link ...}</code> are defined in the platform
-settings, as is <code>EXEEXTENSION</code> (it's <code>.exe</code> on Windows and blank on most other
-platforms), whereas <code>ME</code> and <code>MYNAME</code> are set in the identity settings.</p>
-<h2>Conveniences for Inform</h2>
-<p>The main Inform repository's makefile is especially convoluted because of the
-very large number of webs in it, which fall into several different categories.
-Inweb provides a couple of macros to help manage that.</p>
-<ul>
-<li>
-<p><code>{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}</code>
-declares one of the &quot;component&quot; webs which might need to be built. For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{component type: module symbol: WORDS webname: words path: services/words-module set: modules}
+    <p>Note that the macros <code>{compile ...}</code> and <code>{link ...}</code> are defined in the platform
+    settings, as is <code>EXEEXTENSION</code> (it's <code>.exe</code> on Windows and blank on most other
+    platforms), whereas <code>ME</code> and <code>MYNAME</code> are set in the identity settings.</p>
+    <h2>Conveniences for Inform</h2>
+    <p>The main Inform repository's makefile is especially convoluted because of the
+    very large number of webs in it, which fall into several different categories.
+    Inweb provides a couple of macros to help manage that.</p>
+    <ul>
+    <li>
+    <p><code>{component symbol: SYMBOL webname: WEBNAME path: PATH set: SET type: TYPE}</code>
+    declares one of the &quot;component&quot; webs which might need to be built. For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{component type: module symbol: WORDS webname: words path: services/words-module set: modules}
 </span></pre>
-<p>tells Inweb that it needs to know about the module whose name in the colony is
-<code>words</code>, but which will be identified in this makefile using the symbol <code>WORDS</code>,
-and so on.</p>
-</li>
-<li>
-<p><code>{components type: TYPE}</code> and <code>{end-components}</code> then provide a loop construct,
-which loops through all components declared as having the given type. Within
-the loop body, the variable <code>{SYMBOL}</code> holds the symbol of the current component.</p>
-</li>
-</ul>
+    <p>tells Inweb that it needs to know about the module whose name in the colony is
+    <code>words</code>, but which will be identified in this makefile using the symbol <code>WORDS</code>,
+    and so on.</p>
+    </li>
+    <li>
+    <p><code>{components type: TYPE}</code> and <code>{end-components}</code> then provide a loop construct,
+    which loops through all components declared as having the given type. Within
+    the loop body, the variable <code>{SYMBOL}</code> holds the symbol of the current component.</p>
+    </li>
+    </ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">README Files</span><a href="7-rf.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 7: Other Services</span>7<li class="progresssection"><span class="fullname-popup">Build Numbering</span><a href="7-bn.html">bn</a></li><li class="progresssection"><span class="fullname-popup">README Files</span><a href="7-rf.html">rf</a></li><li class="progresscurrent"><span class="current-fullname-popup">Make Files</span>mf</li><li class="progresssection"><span class="fullname-popup">Gitignore Files</span><a href="7-gf.html">gf</a></li><li class="progressnext"><span class="nav-popup">Gitignore Files</span><a href="7-gf.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">README Files</span><a href="7-rf.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 7: Other Services</span>7</li><li class="progresssection"><span class="fullname-popup">Build Numbering</span><a href="7-bn.html">bn</a></li><li class="progresssection"><span class="fullname-popup">README Files</span><a href="7-rf.html">rf</a></li><li class="progresscurrent"><span class="current-fullname-popup">Make Files</span>mf</li><li class="progresssection"><span class="fullname-popup">Gitignore Files</span><a href="7-gf.html">gf</a></li><li class="progressnext"><span class="nav-popup">Gitignore Files</span><a href="7-gf.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

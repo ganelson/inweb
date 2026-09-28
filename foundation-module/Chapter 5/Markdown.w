@@ -13,9 +13,9 @@ We provide two basic functions:
 
 `Markdown::parse(text)` turns the text `T` into a "Markdown tree".
 
-`Markdown::render(OUT, tree)` outputs HTML expressing the Markdown tree `tree`.
+`MDRender::render_CommonMark(OUT, tree)` outputs HTML expressing the Markdown tree `tree`.
 
-The combination `Markdown::render(OUT, Markdown::parse(T))` thus turns
+The combination `MDRender::render_CommonMark(OUT, Markdown::parse(T))` thus turns
 Markdown into HTML.
 
 @ Markdown was devised by John Gruber in 2004, building on the work of Aaron Swartz
@@ -44,7 +44,7 @@ CommonMark is not wholly unambiguous, which is next to impossible, but it's very
 precise and is certainly now best practice. In particular, it's the one used by
 GitHub, though it doesn't include GitHub's extensions. It also provides an
 immensely valuable test suite, as noted above, of 652 test examples. In every
-case `Markdown::render(OUT, Markdown::parse(T))` exactly agrees with CommonMark,
+case `MDRender::render_CommonMark(OUT, Markdown::parse(T))` agrees with CommonMark,
 producing precisely the same (and not simply equivalent) HTML output. These are
 all organised as test cases of `foundation-test`, so if Intest passes all the
 `foundation-test` cases then this parser is in agreement with CommonMark. Do not
@@ -245,23 +245,6 @@ context-free except for its use of the links dictionary:
 @<Phase II@> =
 	MDInlineParser::inline_recursion(variation, dict, tree);
 	MarkdownVariations::intervene_after_Phase_II(variation, tree, dict);
-
-@ Rendering is similarly delegated:
-
-=
-void Markdown::render(OUTPUT_STREAM, markdown_item *tree) {
-	MDRenderer::render_extended(OUT, NULL, tree, MarkdownVariations::CommonMark(), 0);
-}
-
-void Markdown::render_extended(OUTPUT_STREAM, markdown_item *tree,
-	markdown_variation *variation) {
-	MDRenderer::render_extended(OUT, NULL, tree, variation, 0);
-}
-
-void Markdown::render_bodied_extended(OUTPUT_STREAM, markdown_item *tree,
-	markdown_variation *variation) {
-	MDRenderer::render_extended(OUT, NULL, tree, variation, EXAMPLE_BODIES_MDRMODE);
-}
 
 @h Storing marked-up copy.
 We will represent the results of parsing Markdown in the obvious way: as a

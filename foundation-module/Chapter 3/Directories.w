@@ -59,7 +59,7 @@ int Directories::exists(pathname *P) {
 }
 
 @ It turns out to be useful to scan the contents of a directory in an order
-which is predictable regardless of platform Ñ `Platform::readdir` works in a
+which is predictable regardless of platform. `Platform::readdir` works in a
 different order on MacOS, Windows and Linux, even given the same directory
 of files to work on. So the following returns a linked list of the contents,
 sorted into alphabetical order, but case-insensitively. For the Inform project,

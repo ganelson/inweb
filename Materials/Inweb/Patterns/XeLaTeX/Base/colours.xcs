@@ -1,0 +1,12 @@
+\definecolor{inwebdefinitioncolour}{rgb}{0.27,0.27,0.27}
+\definecolor{inwebfunctioncolour}{rgb}{0.75,0,0}
+\definecolor{inwebidentifiercolour}{rgb}{0.25,0.25,1}
+\definecolor{inwebelementcolour}{rgb}{0.25,0.25,0.5}
+\definecolor{inwebreservedcolour}{rgb}{0.375,0,0}
+\definecolor{inwebstringcolour}{rgb}{0.25,0.5,0.25}
+\definecolor{inwebcharactercolour}{rgb}{0.125,0.25,0.125}
+\definecolor{inwebtypecolour}{rgb}{0.125,0.5,0.125}
+\definecolor{inwebconstantcolour}{rgb}{0.5,0.25,0.125}
+\definecolor{inwebplaincolour}{rgb}{0,0,0}
+\definecolor{inwebextractcolour}{rgb}{0.27,0.27,0.27}
+\definecolor{inwebcommentcolour}{rgb}{0.25,0.25,0.25}

@@ -50,20 +50,20 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#4">Chapter 4: Notations</a></li><li><b>Showcasing Illiterate Programs</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> One easy use of notations is to turn an existing program, never written to be
-literate, into a valid web, by recognising certain patterns in the source code
-and dividing up the material accordingly.</p>
-<p>While this will never be useful from the point of view of compilation — these
-webs will never need to be tangled — it makes it possible for Inweb to weave
-many existing programs into legible websites.</p>
-<h2>Example: An assembly language classic</h2>
-<p>Here is a fragment from the BBC Micro MOS, &quot;machine operating system&quot;, written
-by Acorn in around 1982 for its breakthrough microcomputer. The source here is
-tidily set out (using ACME assembly language for the 6502 microprocessor), and
-is taken from Toby Nelson's excellent commentary. So there is content worth
-reading. But it is not in any obvious way a literate program able to be run
-through Inweb:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; ***************************************************************************************
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>One easy use of notations is to turn an existing program, never written to be
+    literate, into a valid web, by recognising certain patterns in the source code
+    and dividing up the material accordingly.</p>
+    <p>While this will never be useful from the point of view of compilation — these
+    webs will never need to be tangled — it makes it possible for Inweb to weave
+    many existing programs into legible websites.</p>
+    <h2>Example: An assembly language classic</h2>
+    <p>Here is a fragment from the BBC Micro MOS, &quot;machine operating system&quot;, written
+    by Acorn in around 1982 for its breakthrough microcomputer. The source here is
+    tidily set out (using ACME assembly language for the 6502 microprocessor), and
+    is taken from Toby Nelson's excellent commentary. So there is content worth
+    reading. But it is not in any obvious way a literate program able to be run
+    through Inweb:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; ***************************************************************************************
 ;
 ;   VDU 1       Send next byte to printer only
 ;
@@ -88,14 +88,14 @@ through Inweb:</p>
 	CMP #$F2                                            ; if (VDU number &gt; 13) then clear carry
 	EOR #$FF                                            ; re-invert value back again
 </span></pre>
-<p>Of course, there's a lot more of that: the MOS occupied a 16K ROM, and was a
-masterpiece of design for its time.</p>
-<p>Suppose we take that material and put it into a file called <code>vdu.a.mossy</code>. The
-<code>.a</code> part refers to ACME assembly language: one of the languages which Inweb
-knows how to syntax-colour, as it happens. The <code>.mossy</code> part indicates the
-notation — we will create a new notation called &quot;Mossy&quot;, just for the MOS.</p>
-<p>And really, there's nothing to it. Here is <code>mossy.inweb</code>:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Mossy" {
+    <p>Of course, there's a lot more of that: the MOS occupied a 16K ROM, and was a
+    masterpiece of design for its time.</p>
+    <p>Suppose we take that material and put it into a file called <code>vdu.a.mossy</code>. The
+    <code>.a</code> part refers to ACME assembly language: one of the languages which Inweb
+    knows how to syntax-colour, as it happens. The <code>.mossy</code> part indicates the
+    notation — we will create a new notation called &quot;Mossy&quot;, just for the MOS.</p>
+    <p>And really, there's nothing to it. Here is <code>mossy.inweb</code>:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Mossy" {
 	recognise .mossy
 	recognise .*.mossy
 
@@ -108,32 +108,32 @@ notation — we will create a new notation called &quot;Mossy&quot;, just for th
 	end
 }
 </span></pre>
-<p>Even this tiny definition gets things well under way. The basic split is that
-lines with <code>;</code> in column 1 are comments, and other lines are code. But within
-the comment, we also want to clear out those fences of asterisks. Note the
-way these are dealt with: if Inweb is reading code, it treats the asterisks
-as a paragraph break, thus ending code and entering commentary; if it isn't
-reading code, it ignores the asterisks completely — that's because, although
-the line is classified as <code>commentary</code>, nothing was put into <code>MATERIAL</code>, so
-no actual content got through.</p>
-<p>And now we're off to the races:</p>
+    <p>Even this tiny definition gets things well under way. The basic split is that
+    lines with <code>;</code> in column 1 are comments, and other lines are code. But within
+    the comment, we also want to clear out those fences of asterisks. Note the
+    way these are dealt with: if Inweb is reading code, it treats the asterisks
+    as a paragraph break, thus ending code and entering commentary; if it isn't
+    reading code, it ignores the asterisks completely — that's because, although
+    the line is classified as <code>commentary</code>, nothing was put into <code>MATERIAL</code>, so
+    no actual content got through.</p>
+    <p>And now we're off to the races:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave vdu.a.mossy</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> mossy.inweb</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (ACME program in Mossy notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'vdu-assets')</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: vdu.html</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: vdu-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave vdu.a.mossy</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> mossy.inweb</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (ACME program in Mossy notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'vdu-assets')</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: vdu.html</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: vdu-assets</span>
 </pre>
 <div class="lsmarkdown">
-<p>So much for a single fragment of code. More ambitiously, the next task is to
-present a slew of assembly files, which will become the sections of a multi-file web.</p>
-<p>For simplicity, we'll suppose just two source files, called <code>star.a</code> and <code>vdu.a</code>,
-and put them in a directory called <code>mos</code>. That will be the web directory. There's
-no need now to tack <code>.mossy</code> onto the filenames, because the contents page will
-see to all that. The contents page will be called <code>Contents.inweb</code>, and will look
-like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: MOS
+    <p class="commentary">So much for a single fragment of code. More ambitiously, the next task is to
+    present a slew of assembly files, which will become the sections of a multi-file web.</p>
+    <p>For simplicity, we'll suppose just two source files, called <code>star.a</code> and <code>vdu.a</code>,
+    and put them in a directory called <code>mos</code>. That will be the web directory. There's
+    no need now to tack <code>.mossy</code> onto the filenames, because the contents page will
+    see to all that. The contents page will be called <code>Contents.inweb</code>, and will look
+    like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: MOS
 Author: Acorn Computers
 Notation: Mossy
 Language: ACME
@@ -158,27 +158,27 @@ Notation "Mossy" {
 	end
 }
 </span></pre>
-<p>Note that it <em>contains</em> the definition of <code>Mossy</code>, so there's no need now for a
-sidekick file called <code>mossy.inweb</code>, and no need to keep saying <code>-using mossy.inweb</code>
-in commands about the <code>mos</code> web: the web sees this definition all by itself.</p>
-<p>Another plus of having a contents page is that it gives the web some metadata:</p>
+    <p>Note that it <em>contains</em> the definition of <code>Mossy</code>, so there's no need now for a
+    sidekick file called <code>mossy.inweb</code>, and no need to keep saying <code>-using mossy.inweb</code>
+    in commands about the <code>mos</code> web: the web sees this definition all by itself.</p>
+    <p>Another plus of having a contents page is that it gives the web some metadata:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect mos</span><span class="ConsoleText-identifier-syntax"> -metadata</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "MOS" (ACME program in Mossy notation): 2 sections : 9 paragraphs : 179 lines</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Title: MOS</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Author: Acorn Computers</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Purpose: The operating system used by the 1982 BBC Micro.</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Language: ACME</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Notation: Mossy</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Semantic Version Number: 1.2</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Version Number: 1.2</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect mos</span><span class="ConsoleText-identifier-syntax"> -metadata</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "MOS" (ACME program in Mossy notation): 2 sections : 9 paragraphs : 179 lines</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Title: MOS</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Author: Acorn Computers</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Purpose: The operating system used by the 1982 BBC Micro.</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Language: ACME</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Notation: Mossy</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Semantic Version Number: 1.2</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Version Number: 1.2</span>
 </pre>
 <div class="lsmarkdown">
-<p>The source files, here <code>vdu.a</code> and <code>star.a</code>, are longer now. Suppose they start
-like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; ***************************************************************************************
+    <p class="commentary">The source files, here <code>vdu.a</code> and <code>star.a</code>, are longer now. Suppose they start
+    like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; ***************************************************************************************
 ; ***************************************************************************************
 ;
 ; Chapter: Star commands
@@ -193,43 +193,43 @@ like this:</p>
 ; The data required by the OSFILE call is stored at .osfileBlockStart, is 18 bytes long, and
 ; is as follows:
 </span></pre>
-<p>...and so on. We want to pick the chapter headings out, which is why the notation
-slipped in an extra classification line:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">		; Chapter: MATERIAL     ==&gt; title
+    <p>...and so on. We want to pick the chapter headings out, which is why the notation
+    slipped in an extra classification line:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">		; Chapter: MATERIAL     ==&gt; title
 </span></pre>
-<p>This means Inweb reads the section <code>star.a</code> as having the title &quot;Star commands&quot;.</p>
-<p>Because of Inweb's rule that the contents page must always agree with the section
-files themselves about what the titles of the sections are, we have to write
-the contents like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
+    <p>This means Inweb reads the section <code>star.a</code> as having the title &quot;Star commands&quot;.</p>
+    <p>Because of Inweb's rule that the contents page must always agree with the section
+    files themselves about what the titles of the sections are, we have to write
+    the contents like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
 	"VDU" at "vdu.a"
 	"Star commands" at "star.a"
 </span></pre>
-<p>rather than like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
+    <p>rather than like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
 	vdu.a
 	star.a
 </span></pre>
-<p>(If we wrote the latter, Inweb would complain that the section entitled &quot;star.a&quot;
-seemed actually to be called &quot;Star commands&quot;.)</p>
-<p>Setting up the contents page was a little fuss, but now we get a neat little
-website as the reward:</p>
+    <p>(If we wrote the latter, Inweb would complain that the section entitled &quot;star.a&quot;
+    seemed actually to be called &quot;Star commands&quot;.)</p>
+    <p>Setting up the contents page was a little fuss, but now we get a neat little
+    website as the reward:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave mos</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "MOS" (ACME program in Mossy notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'mos/Woven/assets')</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [mos/Woven/vd.html] [stcm]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: mos/Woven/assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave mos</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "MOS" (ACME program in Mossy notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    (created directory 'mos/Woven/assets')</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [mos/Woven/vd.html] [stcm]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: mos/Woven/assets</span>
 </pre>
 <div class="lsmarkdown">
-<h2>Partitioning a long source file</h2>
-<p>Now suppose that the source code to be showcased is presented as a very long
-disassembly, in (say) a 20000-line text file. We want this to be broken up
-into sections in a tidy way, but without cutting up the text file.</p>
-<p>This can be done with a contents page like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
+    <p class="commentary"><h2>Partitioning a long source file</h2>
+    <p>Now suppose that the source code to be showcased is presented as a very long
+    disassembly, in (say) a 20000-line text file. We want this to be broken up
+    into sections in a tidy way, but without cutting up the text file.</p>
+    <p>This can be done with a contents page like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Sections
 	"Preliminaries" at "long.asm":1
 	"Constants" at "long.asm":2
 	"The Rest" at "long.asm":3
@@ -240,49 +240,49 @@ Notation "Partition" {
 	end
 }
 </span></pre>
-<p>Note the suffix numbers <code>:1</code>, <code>:2</code>, ..., attached to the filenames of the
-sections. The three sections here represent <em>partitions</em> of the same file <code>long.asm</code>.
-The &quot;Preliminaries&quot; section consists only of the lines in partition 1, and
-so on.</p>
-<p>If a contents page uses suffix numbers, then the web must be able to see a
-special notation called <code>Partition</code>. This is used only to determine where the
-dividing lines are; it can classify lines only as <code>partition</code>. (Regular
-notations can't use that.) In the example above, a line like:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; Chapter: Constants
+    <p>Note the suffix numbers <code>:1</code>, <code>:2</code>, ..., attached to the filenames of the
+    sections. The three sections here represent <em>partitions</em> of the same file <code>long.asm</code>.
+    The &quot;Preliminaries&quot; section consists only of the lines in partition 1, and
+    so on.</p>
+    <p>If a contents page uses suffix numbers, then the web must be able to see a
+    special notation called <code>Partition</code>. This is used only to determine where the
+    dividing lines are; it can classify lines only as <code>partition</code>. (Regular
+    notations can't use that.) In the example above, a line like:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; Chapter: Constants
 </span></pre>
-<p>will be read as a <em>partition line</em>. Partitions in a file are numbered from 0,
-and continue until the next partition line; they do not include that line.
-If this is <code>example.asm</code>:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; Hello.
+    <p>will be read as a <em>partition line</em>. Partitions in a file are numbered from 0,
+    and continue until the next partition line; they do not include that line.
+    If this is <code>example.asm</code>:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; Hello.
 ; Chapter: A
 ; This is a two-line
 ; chapter.
 ; Chapter: B
 ; This is only one line.
 </span></pre>
-<p>then it has three partitions: 0 (the Hello line), 1 (two lines), 2 (one line).
-Reading <code>&quot;example.asm&quot;:1</code> is exactly equivalent to reading a file which contains:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; This is a two-line
+    <p>then it has three partitions: 0 (the Hello line), 1 (two lines), 2 (one line).
+    Reading <code>&quot;example.asm&quot;:1</code> is exactly equivalent to reading a file which contains:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; This is a two-line
 ; chapter.
 </span></pre>
-<p>A partition can legally be empty. If the file had begun:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; Chapter: A
+    <p>A partition can legally be empty. If the file had begun:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; Chapter: A
 ; This is a two-line
 ; chapter.
 </span></pre>
-<p>then <code>&quot;example.asm&quot;:1</code> would still have been the two lines as before, but
-<code>&quot;example.asm&quot;:0</code> would now be blank. And this file:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">; Chapter: A
+    <p>then <code>&quot;example.asm&quot;:1</code> would still have been the two lines as before, but
+    <code>&quot;example.asm&quot;:0</code> would now be blank. And this file:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">; Chapter: A
 ; Chapter: B
 ; Chapter: C
 </span></pre>
-<p>has four partitions, <code>:0</code>, <code>:1</code>, <code>:2</code>, and <code>:3</code>, all of them blank.</p>
-<h2>Example: Semiliterate C</h2>
-<p>An alternative use case now: taking a non-literate program, adding comments to
-it in a particular format, and making it &quot;semiliterate&quot; — that is, able to
-be woven attractively, but with no need for it to be tangled.</p>
-<p>This time the program will be:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">/// # Getting started
+    <p>has four partitions, <code>:0</code>, <code>:1</code>, <code>:2</code>, and <code>:3</code>, all of them blank.</p>
+    <h2>Example: Semiliterate C</h2>
+    <p>An alternative use case now: taking a non-literate program, adding comments to
+    it in a particular format, and making it &quot;semiliterate&quot; — that is, able to
+    be woven attractively, but with no need for it to be tangled.</p>
+    <p>This time the program will be:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">/// # Getting started
 
 #include&lt;stdio.h&gt;
 
@@ -311,18 +311,18 @@ int main(int argc, char *argv[]) {
 	return 0;       /* this is **very important** to ensure a clean exit */
 }
 </span></pre>
-<p>Note that this is a valid ANSI C program, and requires no tangling to run:</p>
+    <p>Note that this is a valid ANSI C program, and requires no tangling to run:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> jasmine</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-plain-syntax"> main.c</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./a.out</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    e = 2.718281828</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">cd</span><span class="ConsoleText-plain-syntax"> jasmine</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-plain-syntax"> main.c</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./a.out</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    e = 2.718281828</span>
 </pre>
 <div class="lsmarkdown">
-<p>(which, despite the crudeness of the method, is the right answer). So there
-is no point in tangling: but if we supply also the following contents page —</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Jasmine
+    <p class="commentary">(which, despite the crudeness of the method, is the right answer). So there
+    is no point in tangling: but if we supply also the following contents page —</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Jasmine
 Author: Graham Nelson
 Notation: SemiliterateC
 Language: C
@@ -344,18 +344,18 @@ Notation "SemiliterateC" {
 	}
 }
 </span></pre>
-<p>then we can weave the program directly to a website which contains mathematical
-formulae, headings, a contents page, and so on:</p>
+    <p>then we can weave the program directly to a website which contains mathematical
+    formulae, headings, a contents page, and so on:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave jasmine</span><span class="ConsoleText-identifier-syntax"> -creating</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Jasmine" (C program in SemiliterateC notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [jasmine/Woven/mn.html]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: jasmine/Woven/assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave jasmine</span><span class="ConsoleText-identifier-syntax"> -creating</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Jasmine" (C program in SemiliterateC notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [jasmine/Woven/mn.html]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        [index]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: jasmine/Woven/assets</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Creating Notations</span><a href="4-cn.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4<li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresscurrent"><span class="current-fullname-popup">Showcasing Illiterate Programs</span>sip</li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Summary of Notations</span><a href="4-son.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Creating Notations</span><a href="4-cn.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4</li><li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresscurrent"><span class="current-fullname-popup">Showcasing Illiterate Programs</span>sip</li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Summary of Notations</span><a href="4-son.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

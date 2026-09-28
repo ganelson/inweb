@@ -13,7 +13,7 @@ allocation being automatic; they are encoded as an array of Unicode code
 points (not as UTF-8, -16 or -32); and they do not use a null or indeed any
 terminator. This has the advantage that finding the length of a string, and
 appending characters to it, run in constant time regardless of the string's
-length. It is is entirely feasible to write hundreds of megabytes of
+length. It is entirely feasible to write hundreds of megabytes of
 output into a string, if that's useful, and no substantial slowing down
 will occur in handling the result (except, of course, that printing it
 out on screen would take a while). Strings are also very well protected

@@ -53,7 +53,8 @@ int WCL::can_contain(int outer_type, int type) {
 			if ((type != MISCELLANY_WCLTYPE) && (type != COLONY_WCLTYPE)) return TRUE;
 			break;
 		case WEB_WCLTYPE:
-			if ((type == LANGUAGE_WCLTYPE) || (type == NOTATION_WCLTYPE) || (type == CONVENTIONS_WCLTYPE)) return TRUE;
+			if ((type == LANGUAGE_WCLTYPE) || (type == NOTATION_WCLTYPE) ||
+				(type == CONVENTIONS_WCLTYPE) || (type == PATTERN_WCLTYPE)) return TRUE;
 			break;
 		case LANGUAGE_WCLTYPE:
 		case NOTATION_WCLTYPE:
@@ -140,7 +141,6 @@ void WCL::merge_within(wcl_declaration *D, wcl_declaration *M) {
 	} else {
 		if (WCL::can_contain(M->declaration_type, D->declaration_type))
 			WCL::place_within(D, M);
-		else PRINT("Nope! %d, %d\n", M->declaration_type, D->declaration_type);
 	}	
 }
 
@@ -797,6 +797,9 @@ void WCL::merge_resources_from_path(pathname *RP, wcl_declaration *M, int flag) 
 	if (TextFiles::exists(F)) @<Merge from F@>;
 	pathname *P = Pathnames::down(RP, I"Inweb");
 	@<Merge from P@>;
+	presumption = PATTERN_WCLTYPE;
+	P = Pathnames::down(P, I"Patterns");
+	@<Merge from patterns P@>;
 	presumption = LANGUAGE_WCLTYPE;
 	P = Pathnames::down(RP, I"Dialects");
 	@<Merge from P@>;

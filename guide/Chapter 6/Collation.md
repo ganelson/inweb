@@ -77,10 +77,10 @@ the `template-body.html` for `GitHubPages`, for example, does.
 - `[[Docs]]` is intended for webs being woven as part of a colony of webs
 sharing a website: it expands to the URL for the home page.
 
-- `[[Assets]]|` expands to the URL of the directory into which plugin
+- `[[Assets]]` expands to the URL of the directory into which plugin
 assets such as images are placed. An example of this in use can be found
-in //Creating Patterns//, in the URL for the tapestry logo image. Note that
-it might be the empty text, if the images are in the same directory as
+in //Patterns for Weaving Websites//, in the URL for the tapestry logo image.
+Note that it might be the empty text, if the images are in the same directory as
 the page being generated: and if it is not empty, then it contains a final
 directory divider. It might typically expand to `project-assets/`. Because
 of this a typical image URL in the template should be written `[[Assets]]image.jpg`,

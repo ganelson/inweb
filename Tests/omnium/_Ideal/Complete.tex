@@ -1,0 +1,1020 @@
+\def\definitionsyntaxcolouring#1{\pdfliteral direct{0.27 0.27 0.27 rg}}
+    \def\functionsyntaxcolouring#1{\pdfliteral direct{0.75 0 0 rg}}
+    \def\identifiersyntaxcolouring#1{\pdfliteral direct{0.25 0.25 1 rg}}
+    \def\elementsyntaxcolouring#1{\pdfliteral direct{0.25 0.25 0.5 rg}}
+    \def\reservedsyntaxcolouring#1{\pdfliteral direct{0.375 0 0 rg}}
+    \def\stringsyntaxcolouring#1{\pdfliteral direct{0.25 0.5 0.25 rg}}
+    \def\charactersyntaxcolouring#1{\pdfliteral direct{0.125 0.25 0.125 rg}}
+    \def\typesyntaxcolouring#1{\pdfliteral direct{0.125 0.5 0.125 rg}}
+    \def\constantsyntaxcolouring#1{\pdfliteral direct{0.5 0.25 0.125 rg}}
+    \def\plainsyntaxcolouring#1{\pdfliteral direct{0 0 0 rg}}
+    \def\extractsyntaxcolouring#1{\pdfliteral direct{0.27 0.27 0.27 rg}}
+    \def\commentsyntaxcolouring#1{\pdfliteral direct{0.25 0.25 0.25 rg}}
+    \def\endcolouring#1{\special{PDF:0 g}}
+
+    \def\inwebimage#1{\pdfximage{#1}\smallskip\noindent
+    \hbox to\hsize{\hfill\pdfrefximage \pdflastximage\hfill}\smallskip}
+    %
+    \def\inwebimagewidth#1#2{\pdfximage width #2cm {#1}\smallskip\noindent
+    \hbox to\hsize{\hfill\pdfrefximage \pdflastximage\hfill}\smallskip}
+    %
+    \def\inwebimageheight#1#2{\pdfximage height #2cm {#1}\smallskip\noindent
+    \hbox to\hsize{\hfill\pdfrefximage \pdflastximage\hfill}\smallskip}
+    %
+    \def\inwebimagewidthheight#1#2#3{\pdfximage width #3cm height #2cm {#1}\smallskip\noindent
+    \hbox to\hsize{\hfill\pdfrefximage \pdflastximage\hfill}\smallskip}
+    %
+    \def\inwebstartlinkurl#1{{\leavevmode\pdfstartlink
+    attr{/Border [2 1 1] /C [0.5 0 0]}
+    user{/Subtype /Link
+    /A << /S /URI /URI (#1) >>}%
+    }}
+    %
+    \def\inwebstartlinkpara#1{{\leavevmode\pdfstartlink
+    attr{/Border [0 0 0] /C [0.9 0 0]}
+    goto name {#1}}}%
+    %
+    \def\inwebstartlinkgoto#1{{\leavevmode\pdfstartlink
+    attr{/Border [2 1 1] /C [0.5 0 0]}
+    goto name {#1}}}%
+    %
+    \def\inweblinktourl#1#2{\inwebstartlinkurl{#1}{#2}\pdfendlink}
+    \def\inweblinktopara#1#2{\inwebstartlinkpara{#1}{#2}\pdfendlink}
+    \def\inweblinktoanchor#1#2{\inwebstartlinkgoto{#1}{#2}\pdfendlink}
+    %
+    \def\inwebanchor#1{\pdfdest name {#1} xyz }
+    %
+    % Beginning of `inweb-macros.tex`
+    %
+    % These are TeX macros for use by Inweb when rendering to a Plain TeX variant
+    % (such as TeX itself, pdftex or xetex): they should work on any TeX. Macros
+    % which do not have the luxury of engine-independence have been hived off into
+    % the files `links-macros.tex`, `colours-macros.tex`, and `images-macros.tex`.
+    %
+    % (1) Fonts
+    % There are more fonts here than we actually need for Inweb purposes, but it
+    % seems easiest to follow Knuth's semi-standard book design code.
+    %
+    % See Appendix B of the TeXBook: some `\font` definitions, such as `\tenrm`
+    % and `\tentt`, are already defined in Plain TeX.
+    %
+    \font\defnannotationfont=cmti9
+    \def\defnannotationtext#1{{\defnannotationfont #1}}
+    \font\tentex=cmtex10
+    \font\sourcefont=cmss10
+    \font\holonfont=cmss9
+    \def\holonnametext#1{{\holonfont #1}}
+    \hyphenchar\holonfont=-1
+    \font\usagefont=cmss8
+    \def\endnotetext#1{{\usagefont #1}}
+    \def\sectiontoctext#1{{\usagefont #1}}
+    \font\inchhighfont=cminch
+    \font\reducedinchhighfont=cminch at 60pt
+    \font\chaptertitlefont=cmss10 at 24pt
+    \def\chaptertitletext#1{\chaptertitlefont #1}
+    \font\sectiontitlefont=cmss10 at 20pt
+    \def\sectiontitletext#1{\sectiontitlefont #1}
+    \font\ssectiontitlefont=cmss10 at 20pt
+    \font\sssectiontitlefont=cmr10 at 12pt
+    \font\ninerm=cmr9
+    \font\eightrm=cmr8
+    \font\sixrm=cmr6
+    \font\ninei=cmmi9
+    \skewchar\ninei='177
+    \font\eighti=cmmi8
+    \skewchar\eighti='177
+    \font\sixi=cmmi6
+    \skewchar\sixi='177
+    \font\ninesy=cmsy9
+    \skewchar\ninesy='60
+    \font\eightsy=cmsy8
+    \skewchar\eightsy='60
+    \font\sixsy=cmsy6
+    \skewchar\sixsy='60
+    \font\holonnumberfont=cmss10 at 7pt
+    \def\holonnumbertext#1{{\holonnumberfont #1}}
+    \font\eightss=cmssq8
+    \font\eightssi=cmssqi8
+    \font\ninebf=cmbx9
+    \font\eightbf=cmbx8
+    \font\sixbf=cmbx6
+    \font\ninett=cmtt9
+    \hyphenchar\ninett=-1
+    \font\eighttt=cmtt8
+    \hyphenchar\eighttt=-1
+    \hyphenchar\tentt=-1 % inhibit hyphenation in typewriter type
+    \font\ninesl=cmsl9
+    \font\eightsl=cmsl8
+    \font\nineit=cmti9
+    \font\eightit=cmti8
+    \font\tenu=cmu10 % unslanted text italic
+    \font\magnifiedfiverm=cmr5 at 10pt
+    \font\manual=manfnt % font used for the METAFONT logo, etc.
+    \font\cmman=cmman % font used for miscellaneous Computer Modern variations
+    %
+    % Knuth's standard way to change point size:
+    %
+    \newskip\ttglue
+    \def\tenpoint{\def\rm{\fam0\tenrm}%
+      \textfont0=\tenrm \scriptfont0=\sevenrm \scriptscriptfont0=\fiverm
+      \textfont1=\teni \scriptfont1=\seveni \scriptscriptfont1=\fivei
+      \textfont2=\tensy \scriptfont2=\sevensy \scriptscriptfont2=\fivesy
+      \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+      \def\it{\fam\itfam\tenit}%
+      \textfont\itfam=\tenit
+      \def\sl{\fam\slfam\tensl}%
+      \textfont\slfam=\tensl
+      \def\bf{\fam\bffam\tenbf}%
+      \textfont\bffam=\tenbf \scriptfont\bffam=\sevenbf
+       \scriptscriptfont\bffam=\fivebf
+      \def\tt{\fam\ttfam\tentt}%
+      \textfont\ttfam=\tentt
+      \tt \ttglue=.5em plus.25em minus.15em
+      \normalbaselineskip=12pt
+      \def\MF{{\manual META}\-{\manual FONT}}%
+      \let\sc=\eightrm
+      \let\big=\tenbig
+      \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width\z@}%
+      \normalbaselines\rm}
+    %
+    \def\ninepoint{\def\rm{\fam0\ninerm}%
+      \textfont0=\ninerm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+      \textfont1=\ninei \scriptfont1=\sixi \scriptscriptfont1=\fivei
+      \textfont2=\ninesy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+      \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+      \def\it{\fam\itfam\nineit}%
+      \textfont\itfam=\nineit
+      \def\sl{\fam\slfam\ninesl}%
+      \textfont\slfam=\ninesl
+      \def\bf{\fam\bffam\ninebf}%
+      \textfont\bffam=\ninebf \scriptfont\bffam=\sixbf
+       \scriptscriptfont\bffam=\fivebf
+      \def\tt{\fam\ttfam\ninett}%
+      \textfont\ttfam=\ninett
+      \tt \ttglue=.5em plus.25em minus.15em
+      \normalbaselineskip=11pt
+      \def\MF{{\manual hijk}\-{\manual lmnj}}%
+      \let\sc=\sevenrm
+      \let\big=\ninebig
+      \setbox\strutbox=\hbox{\vrule height8pt depth3pt width\z@}%
+      \normalbaselines\rm}
+    %
+    \def\ttninepoint{\def\rm{\fam0\ninerm}%
+      \textfont0=\ninerm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+      \textfont1=\ninei \scriptfont1=\sixi \scriptscriptfont1=\fivei
+      \textfont2=\ninesy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+      \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+      \def\it{\fam\itfam\nineit}%
+      \textfont\itfam=\nineit
+      \def\sl{\fam\slfam\ninesl}%
+      \textfont\slfam=\ninesl
+      \def\bf{\fam\bffam\ninebf}%
+      \textfont\bffam=\ninebf \scriptfont\bffam=\sixbf
+       \scriptscriptfont\bffam=\fivebf
+      \def\tt{\fam\ttfam\ninett}%
+      \textfont\ttfam=\ninett
+      \normalbaselineskip=11pt
+      \normalbaselines\rm}
+    %
+    \def\eightpoint{\def\rm{\fam0\eightrm}%
+      \textfont0=\eightrm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+      \textfont1=\eighti \scriptfont1=\sixi \scriptscriptfont1=\fivei
+      \textfont2=\eightsy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+      \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+      \def\it{\fam\itfam\eightit}%
+      \textfont\itfam=\eightit
+      \def\sl{\fam\slfam\eightsl}%
+      \textfont\slfam=\eightsl
+      \def\bf{\fam\bffam\eightbf}%
+      \textfont\bffam=\eightbf \scriptfont\bffam=\sixbf
+       \scriptscriptfont\bffam=\fivebf
+      \def\tt{\fam\ttfam\eighttt}%
+      \textfont\ttfam=\eighttt
+      \tt \ttglue=.5em plus.25em minus.15em
+      \normalbaselineskip=9pt
+      \def\MF{{\manual opqr}\-{\manual stuq}}%
+      \let\sc=\sixrm
+      \let\big=\eightbig
+      \setbox\strutbox=\hbox{\vrule height7pt depth2pt width\z@}%
+      \normalbaselines\rm}
+    %
+    \def\tenmath{\tenpoint\fam-1 } % use after $ in ninepoint sections
+    \def\tenbig#1{{\hbox{$\left#1\vbox to8.5pt{}\right.\n@space$}}}
+    \def\ninebig#1{{\hbox{$\textfont0=\tenrm\textfont2=\tensy
+      \left#1\vbox to7.25pt{}\right.\n@space$}}}
+    \def\eightbig#1{{\hbox{$\textfont0=\ninerm\textfont2=\ninesy
+      \left#1\vbox to6.5pt{}\right.\n@space$}}}
+    %
+    % (2) Inweb headings
+    % `\weavesection` and its heavier friends are Inweb sections, the grander the
+    % more `s` suffixes they have: untitled paragraph, titled paragraph, section, chapter.
+    %
+    \def\weavesectionsss#1#2#3#4#5{\vfill\eject\noindent\chaptertitletext{#2}\mark{#3}\vskip 0.5in\par\noindent\titlepage}
+    \def\weavesectionss#1#2#3#4#5{\vfill\eject\noindent\sectiontitletext{#2\hfill #5}\mark{#3}\bigskip\par\noindent\titlepage}
+    \def\weavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1. #2.}\mark{#3}\quad}
+    \def\weavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1.}\mark{#3}\quad}
+    %
+    % The `t` variants are for themed extracts.
+    \def\tweavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1. #2.}\quad}
+    \def\tweavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1.}\quad}
+    %
+    % The `ns` variants have less vertical spacing before them.
+    \def\nsweavesections#1#2#3#4#5{\noindent{\bf #4#1. #2.}\mark{#3}\quad}
+    \def\nsweavesection#1#2#3#4#5{\noindent{\bf #4#1.}\mark{#3}\quad}
+    %
+    % (3) Strikethrough
+    % Plain TeX does not support text struck through, out of the box: it turns out
+    % to be quite tricky to get right.
+    %
+    \catcode`@=11
+    \def\strikethrough#1{\leavevmode\strikethr@ugh#1 \relax}
+    \def\strikethr@ugh#1 {\strike@word{#1}\futurelet\next\strike@next}
+    \def\strike@next{\ifx\next\relax\else\strike@space\expandafter\strikethr@ugh\fi}
+    \def\strike@word#1{\setbox0=\hbox{#1}\rlap{\strike@rule width\wd0}\box0}
+    \def\strike@space{\leaders\strike@rule\sp@ce}
+    \def\strike@rule{\vrule height2.4pt depth-2pt}
+    \def\sp@ce{\hskip\fontdimen2\font plus\fontdimen3\font minus\fontdimen4\font}
+    \catcode`@=12
+    %
+    % (4) Nested lists, enumerated and unenumerated
+    % We don't want to have to rely on Plain TeX's `\item` and `\itemitem`.
+    % Instead, all items are `\item` (which is redefined as appropriate for the
+    % context) and lists begin and end with `\beginenumerate` and `\endenumerate`
+    % if they are to be numbered, or `\beginunenumerate` and `\endunenumerate` if not;
+    % and those can be fairly arbitrarily nested.
+    %
+    \catcode`@=11
+    \newcount\c@listlevel
+    \newcount\c@item
+    \newdimen\enumerateindent
+    %
+    \def\init@str{} % the label of every item
+    \def\beginenumerate{%
+      \begingroup
+      \let\item\enumerate@item
+      \advance\c@listlevel\@ne
+      \ifnum\c@listlevel=\@ne
+        \vskip.5\baselineskip
+      \fi
+      \ifnum\c@listlevel>\@ne
+        \edef\init@str{}%
+      \fi
+      \c@item\z@
+    }
+    %
+    \def\endenumerate{%
+      \par\endgroup
+      \ifnum\c@listlevel=\z@
+        \vskip.5\baselineskip
+      \fi}
+    %
+    \def\beginunenumerate{%
+      \begingroup
+      \let\item\unenumerate@item
+      \advance\c@listlevel\@ne
+      \ifnum\c@listlevel=\@ne
+        \vskip.5\baselineskip
+      \fi
+      \c@item\z@
+    }
+    %
+    \def\endunenumerate{%
+      \par\endgroup
+      \ifnum\c@listlevel=\z@
+        \vskip.5\baselineskip
+      \fi}
+    %
+    \def\enumerate@item{%
+      \advance\c@item\@ne
+      \enumerateindent=\c@listlevel\parindent
+      \ifvmode\else\par\fi
+      % if an \item has more than one paragraph only the first one have to be preceded by a label;
+      % so \@itemlabel redefine itself the first time is expanded.
+      \def\@itemlabel{%
+        \llap{\init@str\number\c@item.\quad}%
+        \def\@itemlabel{}%
+      }%
+      \everypar{\setbox0\lastbox
+        \hangindent\enumerateindent \hangafter\z@
+        \@itemlabel}}
+    %
+    \def\unenumerate@item{%
+      \advance\c@item\@ne
+      \enumerateindent=\c@listlevel\parindent
+      \ifvmode\else\par\fi
+      \everypar{\setbox0\lastbox
+        \hangindent\enumerateindent \hangafter\z@
+        $\bullet$~}}
+    %
+    \catcode`@=12
+    %
+    % (5) Verbatim code samples
+    %
+    \chardef\other=12
+    \def\ttverbatim{\begingroup\ttninepoint\frenchspacing
+      \catcode`\\=\other
+      \catcode`\{=\other
+      \catcode`\}=\other
+      \catcode`\$=\other
+      \catcode`\&=\other
+      \catcode`\#=\other
+      \catcode`\%=\other
+      \catcode`\~=\other
+      \catcode`\_=\other
+      \catcode`\^=\other
+      \obeyspaces \obeylines \tt}
+    %
+    \def\|{\leavevmode\hbox{\tt\char`\|}} % vertical line
+    \outer\def\begintt{$$\let\par=\endgraf \ttverbatim \parskip=\z@
+      \catcode`\|=0 \rightskip-5pc \ttfinish}
+    {\catcode`\|=0 |catcode`|\=\other % | is temporary escape character
+      |obeylines % end of line is active
+      |gdef|ttfinish#1^^M#2\endtt{#1|vbox{#2}|endgroup|tenpoint$$}}
+    \catcode`\|=\active
+    %
+    {\obeylines \gdef|{\ttverbatim \spaceskip\ttglue \let^^M=\  \let|=\endgroup}}
+    %
+    \catcode`@=11
+    \def\beginlines{\par\begingroup\nobreak\medskip\parindent\z@ \obeylines\nobreak \everypar{\strut}}
+    \def\beginlinestighter{\par\begingroup\nobreak\parindent=0pt \kern1pt\nobreak \obeylines \everypar{\strut}}
+    \def\endlines{\kern1pt\endgroup\medbreak\noindent}
+    \catcode`@=12
+    %
+    % (6) Preform grammar document macros
+    % These are no longer really used, but are brief enough to be worth keeping around
+    % in case of an underdog comeback story.
+    %
+    \def\[#1]{\silenttrue\xref|#1|\thinspace{\tt#1}\thinspace} % keyword in syntax
+    \def\beginsyntax{\endgraf\nobreak\medskip
+      \begingroup \catcode`<=13 \catcode`[=13
+      \let\par=\endsyntaxline \obeylines}
+    \def\endsyntaxline{\futurelet\next\syntaxswitch}
+    \def\syntaxswitch{\ifx\next\<\let\next=\syntaxrule
+      \else\ifx\next\endsyntax\let\next=\endgroup
+      \else\let\next=\continuerule\fi\fi \next}
+    \def\continuerule{\hfil\break\indent\qquad}
+    \def\endsyntax{\medbreak\noindent}
+    {\catcode`<=13 \catcode`[=13
+      \global\let<=\< \global\let[=\[
+      \gdef\syntaxrule<#1>{\endgraf\indent\silentfalse\xref\<#1>}}
+    \def\is{\ $\longrightarrow$ }
+    \def\alt{\ $\vert$ }
+    \def\cast#1#2{{#1}$\;\rightarrow\;${#2}}
+    \def\comp#1#2{{#1}$\;\sim\;${#2}}
+    \def\al{$\alpha$}
+    \def\be{$\beta$}
+    \def\nonterminal#1{$\langle${\xreffont\pdfliteral direct{1 1 0 0 k}#1\special{PDF:0 g}}$\rangle$}
+    \def\fixed#1{{\bf #1}}
+    \def\from{\par\qquad\quad$\leftarrow$\quad}
+    \def\continuation{\par\qquad\quad\phantom{$\leftarrow$}\quad}
+    %
+    % (7) Miscellaneous math macros which seem to be expected by MathJax users,
+    % even though they are not in Plain TeX
+    %
+    \def\frac#1#2{{{#1}\over{#2}}}
+    \def\cfrac#1#2{{{#1}\over{#2}}}
+    \def\dfrac#1#2{{{#1}\over{#2}}}
+    \def\tfrac#1#2{{{#1}\over{#2}}}
+    \def\mathit#1{{\hbox{\it #1}}}
+    \def\mathrm#1{{\hbox{\rm #1}}}
+    \def\mathbf#1{{\hbox{\bf #1}}}
+    \def\text#1{{\hbox{#1}}}
+    \def\lvert{|}
+    \def\rvert{|}
+    \def\implies{\Rightarrow}
+    %
+    % (8) And finally, something other than macros and fonts: the page design.
+    % First, header and footer:
+    %
+    \nopagenumbers
+    \newif\iftitle
+    \def\titlepage{\global\titletrue}
+    \headline={\iftitle\hfil\global\titlefalse\else\tenrm\hfil{\sourcefont \firstmark\qquad\the\pageno}\fi}
+    \titlepage
+    %
+    % Tolerances for spacing:
+    %
+    \raggedbottom
+    \tolerance=20000
+    %
+    % End of `inweb-macros.tex`
+
+
+% Weave of 'Complete Program' generated by inweb
+\weavesectionsss{}{Chapter 1\quad Layout}{}{\P}{1/ld}%
+\medskip
+\smallskip\noindent {\bf Layout Demonstration}\qquad
+This section exercises paragraph structure, direct notations for inserted gadgets, and footnotes.\weavesectionss{}{Layout Demonstration}{}{\P}{}%
+\smallskip\par\noindent{\it This section exercises paragraph structure, direct notations for inserted gadgets, and footnotes.}\smallskip\noindent
+\medskip\hrule\smallskip\par\noindent\usagefont {\inweblinktoanchor{para1_ld1}{$\S$1}}~Disclaimer; {\inweblinktoanchor{para1_ld2}{$\S$2}}~Named paragraph; {\inweblinktoanchor{para1_ld6}{$\S$6}}~Another named paragraph; {\inweblinktoanchor{para1_ld7}{$\S$7}}~Gadgetry}\par\medskip\hrule\bigskip
+\weavesections{1}{Disclaimer}{Chapter 1: Layout - Layout Demonstration\quad$\S$1}{\S}{1/ld}%
+\inwebanchor{para1_ld1}The content of this web is essentially meaningless. It exists only to test
+the renderers.
+
+
+\weavesections{2}{Named paragraph}{Chapter 1: Layout - Layout Demonstration\quad$\S$2}{\S}{1/ld}%
+\inwebanchor{para1_ld2}This paragraph has a name, and is usually rendered with a modest subheading.\footnote{${}^{1}$}{Also two footnotes.
+
+}
+There is very little else to it.\footnote{${}^{2}$}{Save for the formula $n\mapsto 3n + 1$.
+
+}
+
+
+\weavesection{3}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$3}{\S}{1/ld}%
+\inwebanchor{para1_ld3}This paragraph is anonymous, and will contain some definitions.
+
+
+\beginlinestighter
+\hskip1em \noindent \constantsyntaxcolouring{}|ONE|\plainsyntaxcolouring{} $\equiv$ ||\constantsyntaxcolouring{}|1|\endcolouring{}||
+\hskip1em \noindent \constantsyntaxcolouring{}|MULTIPLE|\plainsyntaxcolouring{} $\equiv$ ||\constantsyntaxcolouring{}|3|\endcolouring{}||
+\hskip1em \noindent \constantsyntaxcolouring{}|MULTIPLE|\plainsyntaxcolouring{} $\equiv_{\hbox{\defnannotationfont def}}$ ||\constantsyntaxcolouring{}|10|\endcolouring{}||
+\hskip1em \noindent {\defnannotationfont enum} \constantsyntaxcolouring{}|RED_COLOUR|\plainsyntaxcolouring{}  ||\constantsyntaxcolouring{}|1|\endcolouring{}||
+\hskip1em \noindent {\defnannotationfont enum} \constantsyntaxcolouring{}|GREEN_COLOUR|\plainsyntaxcolouring{}  
+\hskip1em \noindent {\defnannotationfont enum} \constantsyntaxcolouring{}|BLUE_COLOUR|\plainsyntaxcolouring{}  
+\endlines
+\weavesection{4}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$4}{\S}{1/ld}%
+\inwebanchor{para1_ld4}The trivial function at {\inweblinktoanchor{s1line12}{A}} implements the famous iteration of
+Lothar Collatz (1910-1990). The use of |MULTIPLE| at {\inweblinktoanchor{s1line4}{B}} triples and adds 1.
+
+
+\beginlines
+\hskip1em \inwebanchor{s1line1}|A |{$\Rightarrow$}\hskip1em ||\identifiersyntaxcolouring{}|int|\plainsyntaxcolouring{}| |\endcolouring{}||||\functionsyntaxcolouring{}|collatz|\plainsyntaxcolouring{}||||\plainsyntaxcolouring{}|(|\identifiersyntaxcolouring{}|int|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|x|\plainsyntaxcolouring{}|) {            |\endcolouring{}||||\commentsyntaxcolouring{}|/* A */|\plainsyntaxcolouring{}||
+\hskip1em |  |\phantom{$\Rightarrow$}\hskip1em ||\plainsyntaxcolouring{}|    |\endcolouring{}||\inweblinktopara{para105}{\definitionsyntaxcolouring{}$\langle$\holonnametext{Print out x} \holonnumbertext{4.1}\endcolouring{}$\rangle$ }
+\hskip1em |  |\phantom{$\Rightarrow$}\hskip1em ||\plainsyntaxcolouring{}|    |\reservedsyntaxcolouring{}|if|\plainsyntaxcolouring{}| (|\identifiersyntaxcolouring{}|x|\plainsyntaxcolouring{}| % |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}| == |\constantsyntaxcolouring{}|0|\plainsyntaxcolouring{}|) |\reservedsyntaxcolouring{}|return|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|x|\plainsyntaxcolouring{}|/2;|\endcolouring{}||
+\hskip1em \inwebanchor{s1line4}|B |{$\Rightarrow$}\hskip1em ||\plainsyntaxcolouring{}|    |\reservedsyntaxcolouring{}|return|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|MULTIPLE|\plainsyntaxcolouring{}|*|\identifiersyntaxcolouring{}|x|\plainsyntaxcolouring{}| + |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|;      |\endcolouring{}||||\commentsyntaxcolouring{}|/* B */|\plainsyntaxcolouring{}||
+\hskip1em |  |\phantom{$\Rightarrow$}\hskip1em ||\plainsyntaxcolouring{}|}|\endcolouring{}||
+\endlines
+\weavesection{4.1}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$4.1}{\S}{1/ld}%
+\inwebanchor{para1_ld4.1}A named holon appears next. This one appears after some commentary, but
+that is not obligatory, as the next will show.
+
+
+\par\smallskip\noindent
+\inwebanchor{para105}\definitionsyntaxcolouring{}$\langle$\holonnametext{Print out x} \holonnumbertext{4.1}\endcolouring{}$\rangle$ $\equiv$
+\beginlinestighter
+\hskip1em ||\plainsyntaxcolouring{}|    |\identifiersyntaxcolouring{}|printf|\plainsyntaxcolouring{}|(|\stringsyntaxcolouring{}|"x = %d\n"|\plainsyntaxcolouring{}|, |\identifiersyntaxcolouring{}|x|\plainsyntaxcolouring{}|);   |\endcolouring{}||||\commentsyntaxcolouring{}|/* `x` here is what we called $n$ above */|\plainsyntaxcolouring{}||
+\hskip1em ||\plainsyntaxcolouring{}|    |\endcolouring{}||||\charactersyntaxcolouring{}|sleep(1);|\endcolouring{}||||\plainsyntaxcolouring{}|                |\endcolouring{}||||\commentsyntaxcolouring{}|// that was done with a verbatim splice|\plainsyntaxcolouring{}||
+\endlines
+\par\noindent\penalty10000
+\endnotetext{This code is continued in {\inweblinktoanchor{para1_ld5}{$\S$5}}, and used in {\inweblinktoanchor{para1_ld4}{$\S$4}}.}\smallskip
+\weavesection{5}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$5}{\S}{1/ld}%
+\inwebanchor{para1_ld5}\inweblinktopara{para105}{\definitionsyntaxcolouring{}$\langle$\holonnametext{Print out x} \holonnumbertext{4.1}\endcolouring{}$\rangle$ $+${}$\equiv$}
+\beginlinestighter
+\hskip1em ||\plainsyntaxcolouring{}|    |\identifiersyntaxcolouring{}|print|\plainsyntaxcolouring{}|(|\stringsyntaxcolouring{}|"x is still %d\n"|\plainsyntaxcolouring{}|, |\identifiersyntaxcolouring{}|x|\plainsyntaxcolouring{}|);|\endcolouring{}||
+\endlines
+\par\noindent\penalty10000
+\endnotetext{This code is a continuation of {\inweblinktoanchor{para1_ld4.1}{$\S$4.1}}.}\smallskip
+\weavesections{6}{Another named paragraph}{Chapter 1: Layout - Layout Demonstration\quad$\S$6}{\S}{1/ld}%
+\inwebanchor{para1_ld6}Note the duplicate label here: the link {\inweblinktoanchor{s1line12}{A}} goes to the one in this function.
+
+
+\beginlines
+\hskip1em \inwebanchor{s1line12}|A |{$\Rightarrow$}\hskip1em ||\identifiersyntaxcolouring{}|int|\plainsyntaxcolouring{}| |\endcolouring{}||||\functionsyntaxcolouring{}|lothar|\plainsyntaxcolouring{}||||\plainsyntaxcolouring{}|(|\identifiersyntaxcolouring{}|int|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|n|\plainsyntaxcolouring{}|) { |\endcolouring{}||||\commentsyntaxcolouring{}|/* A */|\plainsyntaxcolouring{}||
+\hskip1em |  |\phantom{$\Rightarrow$}\hskip1em ||\plainsyntaxcolouring{}|    |\reservedsyntaxcolouring{}|return|\plainsyntaxcolouring{}| |\endcolouring{}||||\functionsyntaxcolouring{}|collatz|\endcolouring{}||||\plainsyntaxcolouring{}|(|\identifiersyntaxcolouring{}|n|\plainsyntaxcolouring{}|);|\endcolouring{}||
+\hskip1em |  |\phantom{$\Rightarrow$}\hskip1em ||\plainsyntaxcolouring{}|}|\endcolouring{}||
+\endlines
+\weavesections{7}{Gadgetry}{Chapter 1: Layout - Layout Demonstration\quad$\S$7}{\S}{1/ld}%
+\inwebanchor{para1_ld7}This uses notation for insertions by hand, so to speak, rather than via a
+Markdown extension, so the following involves non-commentary chunks in the
+literate source tree.
+
+\inwebimagewidth{inweb/Tests/omnium/Figures/stlucia.jpg}{15}
+
+\weavesection{8}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$8}{\S}{1/ld}%
+\inwebanchor{para1_ld8}If this renders to a format which supports audio, then this will be the call
+of Steller's Jay, from the Cornell Lab of Ornithology collection
+{\inweblinktourl{https://dl.allaboutbirds.org}{Voices of Western Backyard Birds}}:
+
+
+\weavesection{9}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$9}{\S}{1/ld}%
+\inwebanchor{para1_ld9}This doesn't look much (and isn't): a raw piece of HTML pasted in from a
+file, and visible only when this web is rendered to HTML.
+
+
+\weavesection{10}{}{Chapter 1: Layout - Layout Demonstration\quad$\S$10}{\S}{1/ld}%
+\inwebanchor{para1_ld10}A modest slide carousel, again using direct insertions:
+
+
+
+\medskip\hrule\smallskip
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|    |\functionsyntaxcolouring{}|ROOT|\plainsyntaxcolouring{}| ---> |\functionsyntaxcolouring{}|DOCUMENT|\plainsyntaxcolouring{}||
+\hskip1em||\endcolouring{}||\endlines
+
+\centerline{\bf 1/3. Stage 1 - Raw tree}
+
+
+\smallskip\hrule\medskip
+
+\medskip\hrule\smallskip
+\centerline{\bf 2/3. Stage 2 - Developed tree}
+
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|    |\functionsyntaxcolouring{}|ROOT|\plainsyntaxcolouring{}| ---> |\functionsyntaxcolouring{}|DOCUMENT|\plainsyntaxcolouring{}||
+\hskip1em|                |{\tt\|}||
+\hskip1em|              |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|3|\plainsyntaxcolouring{}|  --- ...|
+\hskip1em||\endcolouring{}||\endlines
+
+
+\smallskip\hrule\medskip
+
+\medskip\hrule\smallskip
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|    |\functionsyntaxcolouring{}|ROOT|\plainsyntaxcolouring{}| ---> |\functionsyntaxcolouring{}|DOCUMENT|\plainsyntaxcolouring{}||
+\hskip1em|                |{\tt\|}||
+\hskip1em|              |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|3|\plainsyntaxcolouring{}|  --- ...|
+\hskip1em|                |{\tt\|}|            |{\tt\|}|            |{\tt\|}||
+\hskip1em|              |\elementsyntaxcolouring{}|text|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|       |\elementsyntaxcolouring{}|text|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|       |\elementsyntaxcolouring{}|text|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|3|\plainsyntaxcolouring{}|  ...|
+\hskip1em||\endcolouring{}||\endlines
+
+\centerline{\bf 3/3. Stage 3 - Completed tree}
+
+
+\smallskip\hrule\medskip
+\weavesectionsss{}{Chapter 2\quad Commentary}{}{\P}{2/md}%
+\medskip
+\smallskip\noindent {\bf Markdown Demonstration}\qquad
+This section exercises Markdown-format commentary, complete with its many Inweb extensions. These provide an alternative way to insert gadgets.\weavesectionss{}{Markdown Demonstration}{}{\P}{}%
+\smallskip\par\noindent{\it This section exercises Markdown-format commentary, complete with its many Inweb extensions. These provide an alternative way to insert gadgets.}\smallskip\noindent
+\medskip\hrule\smallskip\par\noindent\usagefont {\inweblinktoanchor{para2_md1}{$\S$1}}~Commentary; {\inweblinktoanchor{para2_md2}{$\S$2}}~Character set; {\inweblinktoanchor{para2_md3}{$\S$3}}~ISO Latin-1; {\inweblinktoanchor{para2_md4}{$\S$4}}~Mathematics; {\inweblinktoanchor{para2_md5}{$\S$5}}~Internal subheadings; {\inweblinktoanchor{para2_md6}{$\S$6}}~Lists and tables; {\inweblinktoanchor{para2_md7}{$\S$7}}~Block quotations; {\inweblinktoanchor{para2_md8}{$\S$8}}~Links; {\inweblinktoanchor{para2_md9}{$\S$9}}~Code extracts; {\inweblinktoanchor{para2_md10}{$\S$10}}~Images and gadgets; {\inweblinktoanchor{para2_md11}{$\S$11}}~Carousels; {\inweblinktoanchor{para2_md12}{$\S$12}}~A gratuitously long table; {\inweblinktoanchor{para2_md13}{$\S$13}}~Index}\par\medskip\hrule\bigskip
+\weavesections{1}{Commentary}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$1}{\S}{2/md}%
+\inwebanchor{para2_md1}The content of this section is again meaningless. It exists only to test
+the renderers.
+
+Here is some {\it emphasis} and {\bf strong emphasis} and \strikethrough{text struck through}.
+
+Here is some |literal backticked text|.
+
+Some index entries appear here, invisibly.
+
+
+\weavesections{2}{Character set}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$2}{\S}{2/md}%
+\inwebanchor{para2_md2}These are potentially tricky for TeX: $\{$Knuth$\}$. A$\backslash$B. A\_B. A\#B. \$40. A\|B. 30\%. 2\char`^56.
+
+And in backticked literal text: |{Knuth}. A\B. A_B. A#B. $40. A|{\tt\|}|B. 30%. 2^26.|
+
+These are potentially tricky for HTML: {\tt<}, \&, {\tt>}.
+
+And in backticked literal text: |<, &, >|.
+
+``Double quoted.'' `Single quoted.'
+
+In TeX variants, it's `reasonable' to hope for ``smart quotes'' to be imposed, but
+more questionable whether phrases like église château mañana will be accented.
+
+
+\weavesections{3}{ISO Latin-1}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$3}{\S}{2/md}%
+\inwebanchor{para2_md3}Some formats can take most of Unicode, but others are more limited, and plain TeX
+is stuck with a small selection of ASCII, leaving the following ragged. It's in
+both tabular and untabular form because of issues with TeX rendering of table cells,
+which mean that implementation of magic characters works differently in those cases.
+
+
+\medskip\centerline{\vbox{\offinterlineskip
+\hrule
+\halign{&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad\cr
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+&&&0&&1&&2&&3&&4&&5&&6&&7&&8&&9&&A&&B&&C&&D&&E&&F&\cr
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+\noalign{\hrule}
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+&2x&&SP&&!&&``&&\#&&\$&&\%&&\&&&`&&(&&)&&*&&+&&,&&-&&.&&/&\cr
+&3x&&0&&1&&2&&3&&4&&5&&6&&7&&8&&9&&:&&;&&{\tt<}&&=&&{\tt>}&&?&\cr
+&4x&&@&&A&&B&&C&&D&&E&&F&&G&&H&&I&&J&&K&&L&&M&&N&&O&\cr
+&5x&&P&&Q&&R&&S&&T&&U&&V&&W&&X&&Y&&Z&&[&&$\backslash$&&]&&\char`^&&\_&\cr
+&6x&&`&&a&&b&&c&&d&&e&&f&&g&&h&&i&&j&&k&&l&&m&&n&&o&\cr
+&7x&&p&&q&&r&&s&&t&&u&&v&&w&&x&&y&&z&&$\{$&&\|&&$\}$&&\char`~&&&\cr
+&Ax&&NB&&¡&&¢&&£&&¤&&¥&&¦&&§&&¨&&©&&ª&&«&&¬&&SH&&®&&¯&\cr
+&Bx&&°&&±&&²&&³&&´&&µ&&¶&&·&&¸&&¹&&º&&»&&¼&&½&&¾&&¿&\cr
+&Cx&&À&&Á&&Â&&Ã&&Ä&&Å&&Æ&&Ç&&È&&É&&Ê&&Ë&&Ì&&Í&&Î&&Ï&\cr
+&Dx&&Ð&&Ñ&&Ò&&Ó&&Ô&&Õ&&Ö&&×&&Ø&&Ù&&Ú&&Û&&Ü&&Ý&&Þ&&ß&\cr
+&Ex&&à&&á&&â&&ã&&ä&&å&&æ&&ç&&è&&é&&ê&&ë&&ì&&í&&î&&ï&\cr
+&Fx&&ð&&ñ&&ò&&ó&&ô&&õ&&ö&&÷&&ø&&ù&&ú&&û&&ü&&ý&&þ&&ÿ&\cr
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+}\hrule}}\medskip
+
+
+\medskip\centerline{\vbox{\offinterlineskip
+\hrule
+\halign{&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad\cr
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+&&&0&&1&&2&&3&&4&&5&&6&&7&&8&&9&&A&&B&&C&&D&&E&&F&\cr
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+\noalign{\hrule}
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+&2x&&|SP|&&|!|&&|“|&&|\#|&&|\$|&&|\%|&&|\&|&&|‘|&&|(|&&|)|&&|*|&&|+|&&|,|&&|-|&&|.|&&|/|&\cr
+&3x&&|0|&&|1|&&|2|&&|3|&&|4|&&|5|&&|6|&&|7|&&|8|&&|9|&&|:|&&|;|&&|<|&&|=|&&|>|&&|?|&\cr
+&4x&&|@|&&|A|&&|B|&&|C|&&|D|&&|E|&&|F|&&|G|&&|H|&&|I|&&|J|&&|K|&&|L|&&|M|&&|N|&&|O|&\cr
+&5x&&|P|&&|Q|&&|R|&&|S|&&|T|&&|U|&&|V|&&|W|&&|X|&&|Y|&&|Z|&&|[|&&||$\backslash$||&&|]|&&|\char`^|&&|\_|&\cr
+&6x&&|`|&&|a|&&|b|&&|c|&&|d|&&|e|&&|f|&&|g|&&|h|&&|i|&&|j|&&|k|&&|l|&&|m|&&|n|&&|o|&\cr
+&7x&&|p|&&|q|&&|r|&&|s|&&|t|&&|u|&&|v|&&|w|&&|x|&&|y|&&|z|&&||$\{$||&&bar&&||$\}$||&&||\tt\char`~||&&&\cr
+&Ax&&|NB|&&|¡|&&|¢|&&|£|&&|¤|&&|¥|&&|¦|&&|§|&&|¨|&&|©|&&|ª|&&|«|&&|¬|&&|SH|&&|®|&&|¯|&\cr
+&Bx&&|°|&&|±|&&|²|&&|³|&&|´|&&|µ|&&|¶|&&|·|&&|¸|&&|¹|&&|º|&&|»|&&|¼|&&|½|&&|¾|&&|¿|&\cr
+&Cx&&|À|&&|Á|&&|Â|&&|Ã|&&|Ä|&&|Å|&&|Æ|&&|Ç|&&|È|&&|É|&&|Ê|&&|Ë|&&|Ì|&&|Í|&&|Î|&&|Ï|&\cr
+&Dx&&|Ð|&&|Ñ|&&|Ò|&&|Ó|&&|Ô|&&|Õ|&&|Ö|&&|×|&&|Ø|&&|Ù|&&|Ú|&&|Û|&&|Ü|&&|Ý|&&|Þ|&&|ß|&\cr
+&Ex&&|à|&&|á|&&|â|&&|ã|&&|ä|&&|å|&&|æ|&&|ç|&&|è|&&|é|&&|ê|&&|ë|&&|ì|&&|í|&&|î|&&|ï|&\cr
+&Fx&&|ð|&&|ñ|&&|ò|&&|ó|&&|ô|&&|õ|&&|ö|&&|÷|&&|ø|&&|ù|&&|ú|&&|û|&&|ü|&&|ý|&&|þ|&&|ÿ|&\cr
+height2pt&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&&\omit&\cr
+}\hrule}}\medskip
+
+SP   !   ``   \#   \$   \%   \&   `   (   )   *   +   ,   -   .   /
+
+0   1   2   3   4   5   6   7   8   9   :   ;   {\tt<}   =   {\tt>}   ?
+
+@   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O
+
+P   Q   R   S   T   U   V   W   X   Y   Z   [   $\backslash$   ]   \char`^   \_
+
+`   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o
+
+p   q   r   s   t   u   v   w   x   y   z   $\{$   \|   $\}$   \char`~
+
+NB   ¡   ¢   £   ¤   ¥   ¦   §   ¨   ©   ª   «   ¬  SH   ®   ¯
+
+°   ±   ²   ³   ´   µ   ¶   ·   ¸   ¹   º   »   ¼   ½   ¾   ¿
+
+À   Á   Â   Ã   Ä   Å   Æ   Ç   È   É   Ê   Ë   Ì   Í   Î   Ï
+
+Ð   Ñ   Ò   Ó   Ô   Õ   Ö   ×   Ø   Ù   Ú   Û   Ü   Ý   Þ   ß
+
+à   á   â   ã   ä   å   æ   ç   è   é   ê   ë   ì   í   î   ï
+
+ð   ñ   ò   ó   ô   õ   ö   ÷   ø   ù   ú   û   ü   ý   þ   ÿ
+
+|SP|   |!|   |“|   |#|   |$|   |%|   |&|   |‘|   |(|   |)|   |*|   |+|   |,|   |-|   |.|   |/|
+
+|0|   |1|   |2|   |3|   |4|   |5|   |6|   |7|   |8|   |9|   |:|   |;|   |<|   |=|   |>|   |?|
+
+|@|   |A|   |B|   |C|   |D|   |E|   |F|   |G|   |H|   |I|   |J|   |K|   |L|   |M|   |N|   |O|
+
+|P|   |Q|   |R|   |S|   |T|   |U|   |V|   |W|   |X|   |Y|   |Z|   |[|   |\|   |]|   |^|   |_|
+
+|`|   |a|   |b|   |c|   |d|   |e|   |f|   |g|   |h|   |i|   |j|   |k|   |l|   |m|   |n|   |o|
+
+|p|   |q|   |r|   |s|   |t|   |u|   |v|   |w|   |x|   |y|   |z|   |{|   ||{\tt\|}||   |}|   |~|
+
+|NB|   |¡|   |¢|   |£|   |¤|   |¥|   |¦|   |§|   |¨|   |©|   |ª|   |«|   |¬|  |SH|   |®|   |¯|
+
+|°|   |±|   |²|   |³|   |´|   |µ|   |¶|   |·|   |¸|   |¹|   |º|   |»|   |¼|   |½|   |¾|   |¿|
+
+|À|   |Á|   |Â|   |Ã|   |Ä|   |Å|   |Æ|   |Ç|   |È|   |É|   |Ê|   |Ë|   |Ì|   |Í|   |Î|   |Ï|
+
+|Ð|   |Ñ|   |Ò|   |Ó|   |Ô|   |Õ|   |Ö|   |×|   |Ø|   |Ù|   |Ú|   |Û|   |Ü|   |Ý|   |Þ|   |ß|
+
+|à|   |á|   |â|   |ã|   |ä|   |å|   |æ|   |ç|   |è|   |é|   |ê|   |ë|   |ì|   |í|   |î|   |ï|
+
+|ð|   |ñ|   |ò|   |ó|   |ô|   |õ|   |ö|   |÷|   |ø|   |ù|   |ú|   |û|   |ü|   |ý|   |þ|   |ÿ|
+
+
+\weavesections{4}{Mathematics}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$4}{\S}{2/md}%
+\inwebanchor{para2_md4}Zolotarev's Lemma says that $a\neq 0$ has a square root modulo a prime $p$
+if and only if the rearrangement of $\lbrace 0, 1, 2, \dots, p-1\rbrace$ produced by multiplying
+by $a$ is an even permutation. That is, if $\sigma(x) = ax {\rm ~mod~} p$, then
+$$ \left({\frac {a}{p}}\right) = \cases{1 & if $\sigma$ even,\cr
+-1 & if $\sigma$ odd.\cr} $$
+
+
+\weavesections{5}{Internal subheadings}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$5}{\S}{2/md}%
+\inwebanchor{para2_md5}
+\medskip\par\noindent{\bf Subhead level 1}
+
+
+\medskip\par\noindent{\bf Subhead level 2}
+
+
+\medskip\par\noindent{\it Subhead level 3}
+
+This seems a good moment for what Markdown calls a thematic break.
+
+
+\bigskip\hrule\bigskip
+
+And here are some more invisible entries.
+
+
+\weavesections{6}{Lists and tables}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$6}{\S}{2/md}%
+\inwebanchor{para2_md6}Some notable etymologies:
+
+\beginunenumerate
+
+\item \smallskip
+Lanthanum from the Greek ``lanthanein'', meaning to be hidden.
+
+
+
+\item \smallskip
+Praseodymium from the Greek ``prasios'', meaning leek-green, and ``didymos'', meaning twin.
+
+
+
+\item \smallskip
+All of these from the mining village of Ytterby, on the Swedish island of Resaro:
+
+\beginenumerate
+
+\item Terbium
+
+\item Erbium
+
+\item Yttrium
+
+\item Ytterbium
+\endenumerate
+
+\endunenumerate
+To tabulate:
+
+
+\medskip\centerline{\vbox{\offinterlineskip
+\hrule
+\halign{&\vrule#&\strut\quad#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\quad\cr
+height2pt&\omit&&\omit&&\omit&\cr
+&Element&&Name&&Usages&\cr
+height2pt&\omit&&\omit&&\omit&\cr
+\noalign{\hrule}
+height2pt&\omit&&\omit&&\omit&\cr
+&21 Sc&&Scandium&&aerospace alloys&\cr
+&39 Y&&Yttrium&&tooth crowns, jet engines, light bulbs&\cr
+&57 La&&Lanthanum&&glass additive, lenses&\cr
+&58 Ce&&Cerium&&polishing powder, self-cleaning ovens&\cr
+&59 Pr&&Praseodymium&&lasers, arc lights&\cr
+height2pt&\omit&&\omit&&\omit&\cr
+}\hrule}}\medskip
+
+
+\weavesections{7}{Block quotations}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$7}{\S}{2/md}%
+\inwebanchor{para2_md7}\smallskip\par{\narrower\narrower\noindent
+In 1787, Lieutenant Carl Axel Arrhenius found an unidentified black mineral
+in the Ytterby mine, whose purpose was to produce quartz and later feldspar.
+
+\smallskip}
+Later on:
+
+\smallskip\par{\narrower\narrower\noindent
+In 1953, the mine was renovated and used for the storage of jet fuel, MC 77,
+but the storage method led to contamination.
+
+\smallskip}
+We also support alerts:
+
+{\narrower\smallskip\noindent
+$\otimes$ {\bf Warning}
+
+\noindent Passenger ships of the {\it Waxholmsbolaget} do not call at Ytterby pier in the
+winter months.
+
+\smallskip}
+
+\weavesections{8}{Links}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$8}{\S}{2/md}%
+\inwebanchor{para2_md8}Regular Markdown links first. Here is a {\inweblinktourl{https://en.wikipedia.org/wiki/Acorn_System_BASIC}{typical link without problematic
+characters in its URI}}, and a
+{\inweblinktourl{https://en.wikipedia.org/wiki/D\%C3\%A9class\%C3\%A9e}{link with an accent in}}, and lastly
+a {\inweblinktourl{https://en.wikipedia.org/w/index.php?title=\%E2\%84\%B5}{third link with a Hebrew letter}}.
+
+Inweb has its own slashed links, which we try next.
+First {\inweblinktourl{https://en.wikipedia.org}{an external slashed link to Wikipedia}},
+and then {\inweblinktoanchor{s1line12}{an internal one to code label A}}.
+
+
+\weavesections{9}{Code extracts}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$9}{\S}{2/md}%
+\inwebanchor{para2_md9}To begin with, an unfenced code extract:
+
+\beginlines
+\hskip1em||\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}| = |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}||
+\hskip1em||\reservedsyntaxcolouring{}|for|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|i|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|in|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|range|\plainsyntaxcolouring{}|(2, |\identifiersyntaxcolouring{}|n|\plainsyntaxcolouring{}| + |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|):|
+\hskip1em|    |\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}| *= |\identifiersyntaxcolouring{}|i|\plainsyntaxcolouring{}||
+\hskip1em||
+\hskip1em||\identifiersyntaxcolouring{}|print|\plainsyntaxcolouring{}|(|\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}|)|
+\hskip1em||\endcolouring{}||\endlines
+And the same extract fenced:
+
+\beginlines
+\hskip1em||\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}| = |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}||
+\hskip1em||\reservedsyntaxcolouring{}|for|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|i|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|in|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|range|\plainsyntaxcolouring{}|(2, |\identifiersyntaxcolouring{}|n|\plainsyntaxcolouring{}| + |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|):|
+\hskip1em|    |\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}| *= |\identifiersyntaxcolouring{}|i|\plainsyntaxcolouring{}||
+\hskip1em||
+\hskip1em||\identifiersyntaxcolouring{}|print|\plainsyntaxcolouring{}|(|\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}|)|
+\hskip1em||\endcolouring{}||\endlines
+This time syntax-coloured as None:
+
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|factorial = 1|
+\hskip1em|for i in range(2, n + 1):|
+\hskip1em|    factorial *= i|
+\hskip1em||
+\hskip1em|print(factorial)|
+\hskip1em||\endcolouring{}||\endlines
+This time syntax-coloured as Python:
+
+\beginlines
+\hskip1em||\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}| = |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}||
+\hskip1em||\reservedsyntaxcolouring{}|for|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|i|\plainsyntaxcolouring{}| |\reservedsyntaxcolouring{}|in|\plainsyntaxcolouring{}| |\identifiersyntaxcolouring{}|range|\plainsyntaxcolouring{}|(|\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|, |\identifiersyntaxcolouring{}|n|\plainsyntaxcolouring{}| + |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|):|
+\hskip1em|    |\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}| *= |\identifiersyntaxcolouring{}|i|\plainsyntaxcolouring{}||
+\hskip1em||
+\hskip1em||\identifiersyntaxcolouring{}|print|\plainsyntaxcolouring{}|(|\identifiersyntaxcolouring{}|factorial|\plainsyntaxcolouring{}|)|
+\hskip1em||\endcolouring{}||\endlines
+
+\weavesections{10}{Images and gadgets}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$10}{\S}{2/md}%
+\inwebanchor{para2_md10}\inwebimagewidth{inweb/Tests/omnium/Figures/stlucia.jpg}{15}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\weavesections{11}{Carousels}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$11}{\S}{2/md}%
+\inwebanchor{para2_md11}So this is a carousel by Markdown:
+
+
+\medskip\hrule\smallskip
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|    |\functionsyntaxcolouring{}|ROOT|\plainsyntaxcolouring{}| ---> |\functionsyntaxcolouring{}|DOCUMENT|\plainsyntaxcolouring{}||
+\hskip1em||\endcolouring{}||\endlines
+\centerline{\bf 1/3. Stage 1 - Raw tree}
+
+
+\smallskip\hrule\medskip
+
+\medskip\hrule\smallskip
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|    |\functionsyntaxcolouring{}|ROOT|\plainsyntaxcolouring{}| ---> |\functionsyntaxcolouring{}|DOCUMENT|\plainsyntaxcolouring{}||
+\hskip1em|                |{\tt\|}||
+\hskip1em|              |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|3|\plainsyntaxcolouring{}|  --- ...|
+\hskip1em||\endcolouring{}||\endlines
+\centerline{\bf 2/3. Stage 2 - Developed tree}
+
+
+\smallskip\hrule\medskip
+
+\medskip\hrule\smallskip
+\beginlines
+\hskip1em||\plainsyntaxcolouring{}|    |\functionsyntaxcolouring{}|ROOT|\plainsyntaxcolouring{}| ---> |\functionsyntaxcolouring{}|DOCUMENT|\plainsyntaxcolouring{}||
+\hskip1em|                |{\tt\|}||
+\hskip1em|              |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|  ---  |\functionsyntaxcolouring{}|NODE|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|3|\plainsyntaxcolouring{}|  --- ...|
+\hskip1em|                |{\tt\|}|            |{\tt\|}|            |{\tt\|}||
+\hskip1em|              |\elementsyntaxcolouring{}|text|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|1|\plainsyntaxcolouring{}|       |\elementsyntaxcolouring{}|text|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|2|\plainsyntaxcolouring{}|       |\elementsyntaxcolouring{}|text|\plainsyntaxcolouring{}| |\constantsyntaxcolouring{}|3|\plainsyntaxcolouring{}|  ...|
+\hskip1em||\endcolouring{}||\endlines
+\centerline{\bf 3/3. Stage 3 - Completed tree}
+
+
+\smallskip\hrule\medskip
+
+\weavesections{12}{A gratuitously long table}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$12}{\S}{2/md}%
+\inwebanchor{para2_md12}
+\medskip\centerline{\vbox{\offinterlineskip
+\hrule
+\halign{&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad&\vrule#&\strut\quad\hfil#\hfil\quad\cr
+height2pt&\omit&&\omit&&\omit&\cr
+&Atomic number&&Symbol&&Name&\cr
+height2pt&\omit&&\omit&&\omit&\cr
+\noalign{\hrule}
+height2pt&\omit&&\omit&&\omit&\cr
+&1&&H&&Hydrogen&\cr
+&2&&He&&Helium&\cr
+&3&&Li&&Lithium&\cr
+&4&&Be&&Beryllium&\cr
+&5&&B&&Boron&\cr
+&6&&C&&Carbon&\cr
+&7&&N&&Nitrogen&\cr
+&8&&O&&Oxygen&\cr
+&9&&F&&Fluorine&\cr
+&10&&Ne&&Neon&\cr
+&11&&Na&&Sodium&\cr
+&12&&Mg&&Magnesium&\cr
+&13&&Al&&Aluminium&\cr
+&14&&Si&&Silicon&\cr
+&15&&P&&Phosphorus&\cr
+&16&&S&&Sulfur&\cr
+&17&&Cl&&Chlorine&\cr
+&18&&Ar&&Argon&\cr
+&19&&K&&Potassium&\cr
+&20&&Ca&&Calcium&\cr
+&21&&Sc&&Scandium&\cr
+&22&&Ti&&Titanium&\cr
+&23&&V&&Vanadium&\cr
+&24&&Cr&&Chromium&\cr
+&25&&Mn&&Manganese&\cr
+&26&&Fe&&Iron&\cr
+&27&&Co&&Cobalt&\cr
+&28&&Ni&&Nickel&\cr
+&29&&Cu&&Copper&\cr
+&30&&Zn&&Zinc&\cr
+&31&&Ga&&Gallium&\cr
+&32&&Ge&&Germanium&\cr
+&33&&As&&Arsenic&\cr
+&34&&Se&&Selenium&\cr
+&35&&Br&&Bromine&\cr
+&36&&Kr&&Krypton&\cr
+&37&&Rb&&Rubidium&\cr
+&38&&Sr&&Strontium&\cr
+&39&&Y&&Yttrium&\cr
+&40&&Zr&&Zirconium&\cr
+&41&&Nb&&Niobium&\cr
+&42&&Mo&&Molybdenum&\cr
+&43&&Tc&&Technetium&\cr
+&44&&Ru&&Ruthenium&\cr
+&45&&Rh&&Rhodium&\cr
+&46&&Pd&&Palladium&\cr
+&47&&Ag&&Silver&\cr
+&48&&Cd&&Cadmium&\cr
+&49&&In&&Indium&\cr
+&50&&Sn&&Tin&\cr
+&51&&Sb&&Antimony&\cr
+&52&&Te&&Tellurium&\cr
+&53&&I&&Iodine&\cr
+&54&&Xe&&Xenon&\cr
+&55&&Cs&&Caesium&\cr
+&56&&Ba&&Barium&\cr
+&57&&La&&Lanthanum&\cr
+&58&&Ce&&Cerium&\cr
+&59&&Pr&&Praseodymium&\cr
+&60&&Nd&&Neodymium&\cr
+&61&&Pm&&Promethium&\cr
+&62&&Sm&&Samarium&\cr
+&63&&Eu&&Europium&\cr
+&64&&Gd&&Gadolinium&\cr
+&65&&Tb&&Terbium&\cr
+&66&&Dy&&Dysprosium&\cr
+&67&&Ho&&Holmium&\cr
+&68&&Er&&Erbium&\cr
+&69&&Tm&&Thulium&\cr
+&70&&Yb&&Ytterbium&\cr
+&71&&Lu&&Lutetium&\cr
+&72&&Hf&&Hafnium&\cr
+&73&&Ta&&Tantalum&\cr
+&74&&W&&Tungsten&\cr
+&75&&Re&&Rhenium&\cr
+&76&&Os&&Osmium&\cr
+&77&&Ir&&Iridium&\cr
+&78&&Pt&&Platinum&\cr
+&79&&Au&&Gold&\cr
+&80&&Hg&&Mercury&\cr
+&81&&Tl&&Thallium&\cr
+&82&&Pb&&Lead&\cr
+&83&&Bi&&Bismuth&\cr
+&84&&Po&&Polonium&\cr
+&85&&At&&Astatine&\cr
+&86&&Rn&&Radon&\cr
+&87&&Fr&&Francium&\cr
+&88&&Ra&&Radium&\cr
+&89&&Ac&&Actinium&\cr
+&90&&Th&&Thorium&\cr
+&91&&Pa&&Protactinium&\cr
+&92&&U&&Uranium&\cr
+&93&&Np&&Neptunium&\cr
+&94&&Pu&&Plutonium&\cr
+&95&&Am&&Americium&\cr
+&96&&Cm&&Curium&\cr
+&97&&Bk&&Berkelium&\cr
+&98&&Cf&&Californium&\cr
+&99&&Es&&Einsteinium&\cr
+&100&&Fm&&Fermium&\cr
+&101&&Md&&Mendelevium&\cr
+&102&&No&&Nobelium&\cr
+&103&&Lr&&Lawrencium&\cr
+&104&&Rf&&Rutherfordium&\cr
+&105&&Db&&Dubnium&\cr
+&106&&Sg&&Seaborgium&\cr
+&107&&Bh&&Bohrium&\cr
+&108&&Hs&&Hassium&\cr
+&109&&Mt&&Meitnerium&\cr
+&110&&Ds&&Darmstadtium&\cr
+&111&&Rg&&Roentgenium&\cr
+&112&&Cn&&Copernicium&\cr
+&113&&Nh&&Nihonium&\cr
+&114&&Fl&&Flerovium&\cr
+&115&&Mc&&Moscovium&\cr
+&116&&Lv&&Livermorium&\cr
+&117&&Ts&&Tennessine&\cr
+&118&&Og&&Oganesson&\cr
+height2pt&\omit&&\omit&&\omit&\cr
+}\hrule}}\medskip
+
+
+\weavesections{13}{Index}{Chapter 2: Commentary - Markdown Demonstration\quad$\S$13}{\S}{2/md}%
+\inwebanchor{para2_md13}This sentence should be followed by a mechanically-constructed index.
+
+
+
+\beginlines
+functions
+\quad |collatz|\hskip1em {\bf {\inweblinktoanchor{para1_ld4}{1/ld:$\S$4}}}
+\quad |lothar|\hskip1em {\bf {\inweblinktoanchor{para1_ld6}{1/ld:$\S$6}}}
+index\hskip1em {\inweblinktoanchor{para2_md1}{$\S$1}}, {\bf {\inweblinktoanchor{para2_md5}{$\S$5}}}
+/non-standard/\hskip1em {\inweblinktoanchor{para2_md1}{$\S$1}}, {\bf {\inweblinktoanchor{para2_md5}{$\S$5}}}
+|Z_X_1|\hskip1em {\inweblinktoanchor{para2_md1}{$\S$1}}, {\bf {\inweblinktoanchor{para2_md5}{$\S$5}}}
+\endlines
+
+% End of weave
+\end
+

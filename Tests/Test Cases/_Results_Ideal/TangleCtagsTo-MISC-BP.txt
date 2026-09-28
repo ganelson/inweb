@@ -75,9 +75,6 @@ file: exhaustive.c.w
     @ ^"Cosmopolitan" ^"Banal"
     This paragraph has two tags.
 
-    >> Also a quotation, which is curiously structured like this,
-    >> continuing thus.
-
     @h Subheading here. This is now text placed
     under that subheading.
 
@@ -122,18 +119,8 @@ file: exhaustive.c.w
     extract spanning two lines.
     =
 
-    = (hyperlinked text)
-    This is //hyperlinked//, but still an
-    extract spanning two lines.
-    =
-
     = (undisplayed text)
     This is undisplayed, but still an
-    extract spanning two lines.
-    =
-
-    = (hyperlinked undisplayed text)
-    This is //hyperlinked// and undisplayed, but still an
     extract spanning two lines.
     =
 

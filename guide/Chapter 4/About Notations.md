@@ -71,7 +71,7 @@ conventional Markdown.
 
 `WEB` is an even more partial compatibility mode for Knuth's early WEB tool.
 It can only usefully weave, not tangle, and even then, quite imperfectly.
-WEB is used today only for the ${\rm\TeX}$ and Metafont source code, and there
+WEB is used today only for the TeX and Metafont source code, and there
 is little point in tangling these, since they are written in a long-obsolete
 form of Pascal. Again, commentary uses TeX.
 

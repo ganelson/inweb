@@ -656,7 +656,6 @@ used to mean "nothing matched".
 @e PARAGRAPHTITLING_LSNROID
 @e PARTITION_LSNROID
 @e PURPOSE_LSNROID
-@e QUOTATION_LSNROID
 @e TEXTASCODEEXTRACT_LSNROID
 @e TEXTEXTRACT_LSNROID
 @e TEXTEXTRACTTO_LSNROID
@@ -665,7 +664,6 @@ used to mean "nothing matched".
 
 @ And here are the options which some of the above may be given:
 
-@e HYPERLINKED_LSNROID
 @e UNDISPLAYED_LSNROID
 
 @e WEBWIDEHOLON_LSNROID
@@ -725,14 +723,12 @@ int LineClassifiers::outcome_by_name(text_stream *outcome) {
 	if (Str::eq(outcome, I"paragraphtitling"))     return PARAGRAPHTITLING_LSNROID;
 	if (Str::eq(outcome, I"partition"))            return PARTITION_LSNROID;
 	if (Str::eq(outcome, I"purpose"))              return PURPOSE_LSNROID;
-	if (Str::eq(outcome, I"quotation"))            return QUOTATION_LSNROID;
 	if (Str::eq(outcome, I"textascodeextract"))    return TEXTASCODEEXTRACT_LSNROID;
 	if (Str::eq(outcome, I"textextract"))          return TEXTEXTRACT_LSNROID;
 	if (Str::eq(outcome, I"textextractto"))        return TEXTEXTRACTTO_LSNROID;
 	if (Str::eq(outcome, I"title"))                return TITLE_LSNROID;
 	if (Str::eq(outcome, I"video"))                return VIDEO_LSNROID;
 	
-	if (Str::eq(outcome, I"hyperlinkedoption"))    return HYPERLINKED_LSNROID;
 	if (Str::eq(outcome, I"undisplayedoption"))    return UNDISPLAYED_LSNROID;
 
 	if (Str::eq(outcome, I"webwideholonoption"))   return WEBWIDEHOLON_LSNROID;
@@ -768,7 +764,6 @@ int LineClassifiers::outcome_by_name(text_stream *outcome) {
 @ The following bits are high enough up that a valid options bitmap can never
 equal a valid outcome ID, but at present we make no use of this fact.
 
-@d HYPERLINKED_LSNROBIT     0x000100
 @d UNDISPLAYED_LSNROBIT     0x000200
 
 @d WEBWIDEHOLON_LSNROBIT    0x000400
@@ -801,7 +796,6 @@ equal a valid outcome ID, but at present we make no use of this fact.
 =
 int LineClassifiers::option_bit(int O) {
 	switch (O) {
-		case HYPERLINKED_LSNROID:    return HYPERLINKED_LSNROBIT;
 		case UNDISPLAYED_LSNROID:    return UNDISPLAYED_LSNROBIT;
 	
 		case WEBWIDEHOLON_LSNROID:   return WEBWIDEHOLON_LSNROBIT;

@@ -668,7 +668,7 @@ much as 20% of Inweb's running time of Inweb.
 		if (F == NULL) internal_error("no source file");
 		if ((cached_pf == NULL) ||
 			(Filenames::eq(F, cached_pf->accessed_at) == FALSE)) {
-			if (verbosely) PRINT("Partitioning file: '%S'\n", F);
+			if (verbosely) PRINT("Partitioning file: '%f'\n", F);
 			cached_pf = WebStructure::partition_file(F, notation);
 		}
 		file_partition *fp = WebStructure::retrieve_partition(cached_pf, S->partition_number);

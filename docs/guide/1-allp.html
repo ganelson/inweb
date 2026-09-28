@@ -50,17 +50,16 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#1">Chapter 1: Smaller Webs</a></li><li><b>A Little Literate Programming</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a></p>
-<h2>What are holons?</h2>
-<p>Literate programming is the art of breaking up a complicated program into
-fragments, explaining how they work, and placing them all in context.</p>
-<p>The explanatory parts of a web are called <em>commentary</em> and the fragments of code
-are called <em>holons</em>, a word borrowed from the Hungarian thinker Arthur Koestler
-by the Belgian computer scientist Pierre-Arnoul de Marneffe. A holon is &quot;a piece
-of the whole&quot;, and for us it is a piece of the program being expressed by the web.</p>
-<p>As we've seen, when Inweb's Markdown notation is used, commentary and holons
-tend to alternate:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is commentary text.
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><h2>What are holons?</h2>
+    <p>Literate programming is the art of breaking up a complicated program into
+    fragments, explaining how they work, and placing them all in context.</p>
+    <p>The explanatory parts of a web are called <em>commentary</em> and the fragments of code
+    are called <em>holons</em>, a word borrowed from the Hungarian thinker Arthur Koestler
+    by the Belgian computer scientist Pierre-Arnoul de Marneffe. A holon is &quot;a piece
+    of the whole&quot;, and for us it is a piece of the program being expressed by the web.</p>
+    <p>As we've seen, when Inweb's Markdown notation is used, commentary and holons
+    tend to alternate:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">This is commentary text.
 
 And so is this.
 
@@ -69,14 +68,14 @@ And so is this.
 
 Now back to commentary.
 </span></pre>
-<p>In short, the holons, or code fragments, are the runs of lines indented by one tab
-stop. The web above has just one holon, and it tangles to:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">thisIsAHolon = true
+    <p>In short, the holons, or code fragments, are the runs of lines indented by one tab
+    stop. The web above has just one holon, and it tangles to:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">thisIsAHolon = true
 print("A holon is part of the whole.")
 </span></pre>
-<p>However, tangling can do more. The real strength of literate programming lies
-in the ability to divide the code into holons which have names. Consider this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">The program divides neatly:
+    <p>However, tangling can do more. The real strength of literate programming lies
+    in the ability to divide the code into holons which have names. Consider this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">The program divides neatly:
 
 	print("Begin.")
 	{{Phase one}}
@@ -91,20 +90,20 @@ in the ability to divide the code into holons which have names. Consider this:</
 
 	print("This is phase two.")
 </span></pre>
-<p>Now there are three holons. The first is nameless, while the second and third
-have the names <code>Phase one</code> and <code>Phase two</code> respectively. Now our web tangles to:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">print("Begin.")
+    <p>Now there are three holons. The first is nameless, while the second and third
+    have the names <code>Phase one</code> and <code>Phase two</code> respectively. Now our web tangles to:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">print("Begin.")
 print("This is phase one.")
 print("This is phase two.")
 print("End.")
 </span></pre>
-<h2>A literate program</h2>
-<p>Literate programming can only make a case for itself when used to explain
-something which does actually call for explanation. So the following is a more
-whole-heartedly <em>literate</em> rewriting of the same counting-sort program used
-as an example before. This time we divide its critical code into three
-phases, each of which becomes a named holon.</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax"># Counting Sort by Harold H. Seward
+    <h2>A literate program</h2>
+    <p>Literate programming can only make a case for itself when used to explain
+    something which does actually call for explanation. So the following is a more
+    whole-heartedly <em>literate</em> rewriting of the same counting-sort program used
+    as an example before. This time we divide its critical code into three
+    phases, each of which becomes a named holon.</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax"># Counting Sort by Harold H. Seward
 
 _An implementation of the 1954 sort algorithm._
 
@@ -171,65 +170,65 @@ at least unpredictable, so that speed and memory usage both spike. But for just
 a few applications, where $k$ is known to be within tight bounds, count sort
 is still used today and is exceptionally fast.
 </span></pre>
-<p>If literate programming works at all as an idea, then the above ought to be
-easier to understand (and to spot the flaws in) than the original. The woven
-form of this, converted for example into a web page, is still easier to read.</p>
-<p>Our program is now divided into five holons. Two of these are nameless
-holons, the first of which (beginning <code>def countingSort</code>) incorporates,
-or we will say <em>uses</em>, the content of the three named holons. The final
-nameless holon (beginning <code>A =</code>) does some testing.</p>
-<h2>The rules about holon names and usage</h2>
-<p>There are of course some rules about all this, which Inweb enforces.
-Firstly, about the names:</p>
-<ul>
-<li>
-<p>Holon names are text, and can include all manner of exotic characters or
-emoji, and in whatever casing the author would like.
-So, for example, <code>{{Measure️ the Bézier curve 📐}}</code> is a valid holon name.</p>
-</li>
-<li>
-<p>They can also contain styling, such as underscores used for emphasis:
-<code>{{look for the _control point_}}</code>, say. This can be turned off if it
-causes any confusion (see <a href="2-cnv.html" class="internal">Conventions</a>). Note that <code>{{look for the control point}}</code>
-is a different holon name from <code>{{look for the _control point_}}</code>, even
-though they differ only in styling. So if you use styling in one mention
-of a holon, you must use matching styling in every mention of it.</p>
-</li>
-<li>
-<p>The empty text is not valid, that is, <code>{{}}</code> is not legal as a holon name.
-Holon names consisting of white space, like <code>{{ }}</code>, <em>are</em> legal, but
-really, get a life.</p>
-</li>
-<li>
-<p>Holon names are not allowed to end with the characters <code>...</code>: for why,
-see below.</p>
-</li>
-<li>
-<p>The same name cannot be used for two different holons in the same file.
-If a web has multiple sections, each in its own file, then it's fine for
-the same holon name — say, <code>{{Memory has run out}}</code> — to be used in more
-than one section, but those names are talking about different holons.</p>
-</li>
-</ul>
-<p>And there are also common-sense restrictions on how holons are &quot;used&quot;, that
-is, incorporated into other holons:</p>
-<ul>
-<li>
-<p>A holon can be used more than once, and can be used either before its
-definition, after its definition, or both.</p>
-</li>
-<li>
-<p>Every holon should be used at least once. If it is not, Inweb will issue a
-warning rather than an error, but this warning cannot be muted.</p>
-</li>
-<li>
-<p>However, an error will assuredly result from an attempt to use an unknown
-holon. That is, <code>{{Do something mysterious}}</code> would throw an error if there
-is no definition of this.</p>
-</li>
-<li>
-<p>A holon cannot use itself, directly or indirectly. For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{alpha}} =
+    <p>If literate programming works at all as an idea, then the above ought to be
+    easier to understand (and to spot the flaws in) than the original. The woven
+    form of this, converted for example into a web page, is still easier to read.</p>
+    <p>Our program is now divided into five holons. Two of these are nameless
+    holons, the first of which (beginning <code>def countingSort</code>) incorporates,
+    or we will say <em>uses</em>, the content of the three named holons. The final
+    nameless holon (beginning <code>A =</code>) does some testing.</p>
+    <h2>The rules about holon names and usage</h2>
+    <p>There are of course some rules about all this, which Inweb enforces.
+    Firstly, about the names:</p>
+    <ul>
+    <li>
+    <p>Holon names are text, and can include all manner of exotic characters or
+    emoji, and in whatever casing the author would like.
+    So, for example, <code>{{Measure️ the Bézier curve 📐}}</code> is a valid holon name.</p>
+    </li>
+    <li>
+    <p>They can also contain styling, such as underscores used for emphasis:
+    <code>{{look for the _control point_}}</code>, say. This can be turned off if it
+    causes any confusion (see <a href="2-cnv.html" class="internal">Conventions</a>). Note that <code>{{look for the control point}}</code>
+    is a different holon name from <code>{{look for the _control point_}}</code>, even
+    though they differ only in styling. So if you use styling in one mention
+    of a holon, you must use matching styling in every mention of it.</p>
+    </li>
+    <li>
+    <p>The empty text is not valid, that is, <code>{{}}</code> is not legal as a holon name.
+    Holon names consisting of white space, like <code>{{ }}</code>, <em>are</em> legal, but
+    really, get a life.</p>
+    </li>
+    <li>
+    <p>Holon names are not allowed to end with the characters <code>...</code>: for why,
+    see below.</p>
+    </li>
+    <li>
+    <p>The same name cannot be used for two different holons in the same file.
+    If a web has multiple sections, each in its own file, then it's fine for
+    the same holon name — say, <code>{{Memory has run out}}</code> — to be used in more
+    than one section, but those names are talking about different holons.</p>
+    </li>
+    </ul>
+    <p>And there are also common-sense restrictions on how holons are &quot;used&quot;, that
+    is, incorporated into other holons:</p>
+    <ul>
+    <li>
+    <p>A holon can be used more than once, and can be used either before its
+    definition, after its definition, or both.</p>
+    </li>
+    <li>
+    <p>Every holon should be used at least once. If it is not, Inweb will issue a
+    warning rather than an error, but this warning cannot be muted.</p>
+    </li>
+    <li>
+    <p>However, an error will assuredly result from an attempt to use an unknown
+    holon. That is, <code>{{Do something mysterious}}</code> would throw an error if there
+    is no definition of this.</p>
+    </li>
+    <li>
+    <p>A holon cannot use itself, directly or indirectly. For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{alpha}} =
 
     {{beta}}
 
@@ -237,61 +236,61 @@ is no definition of this.</p>
 
     {{alpha}}
 </span></pre>
-<p>results in an error (whether or not <code>{{alpha}}</code> or <code>{{beta}}</code> are used elsewhere).</p>
-</li>
-</ul>
-<h2>Abbreviating holon names</h2>
-<p>Suppose a holon has a lengthy name which is difficult to type:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Fail with an error message, deallocate memory, and return 1}} =
+    <p>results in an error (whether or not <code>{{alpha}}</code> or <code>{{beta}}</code> are used elsewhere).</p>
+    </li>
+    </ul>
+    <h2>Abbreviating holon names</h2>
+    <p>Suppose a holon has a lengthy name which is difficult to type:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Fail with an error message, deallocate memory, and return 1}} =
 </span></pre>
-<p>This may make it annoying to refer to:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (text) {{Fail with an error message, deallocate memory, and return 1}}
+    <p>This may make it annoying to refer to:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (text) {{Fail with an error message, deallocate memory, and return 1}}
 </span></pre>
-<p>So Inweb allows such references to be abbreviated:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (text) {{Fail...}}
+    <p>So Inweb allows such references to be abbreviated:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	if (text) {{Fail...}}
 </span></pre>
-<p>The rule is that the text before <code>...</code>, in the case <code>Fail</code>, must be a prefix of
-the name of <em>exactly one</em> holon defined in the current section; or, if it matches
-none in the current section, <em>exactly one</em> holon defined webwide.</p>
-<h2>Naming every holon</h2>
-<p>Some LP purists may not approve of the way that Inweb normally reads a mix of
-nameless and named holons. Shouldn't every holon have a name? That was certainly
-the original scheme of Pierre-Arnoul de Marneffe.</p>
-<p>Inweb does not adopt this convention by default because large programs containing
-a mass of global functions would just become cumbersome if all of those &quot;and
-here's another one&quot; holons had to have names. But Inweb does recognise that
-some programs will be better presented the old-fashioned way, so it provides
-the following feature in order to let authors decide:</p>
-<ul>
-<li>
-<p>The holon name <code>{{Main}}</code> is special. If used at all, it can only be used as
-the first holon in a web. (If the web has multiple sections, that means the
-first holon in the first section which contains any holons.) This first holon
-is then called the &quot;main holon&quot;.</p>
-</li>
-<li>
-<p>Ordinarily, holon names are case sensitive, and so <code>{{Read from STDIN}}</code>
-and <code>{{read from stdin}}</code>, for example, are different names. But any casing
-of <code>{{Main}}</code> can be used to declare the main holon, so for example <code>{{main}}</code>
-or <code>{{MAIN}}</code> would also work.</p>
-</li>
-<li>
-<p>If there is a main holon, then every holon in the web must be named.</p>
-</li>
-</ul>
-<h2>Continuations</h2>
-<p>This ability wasn't needed by the example above, but it's also possible to
-continue a holon from earlier. Suppose we write the holon:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Print diagnostics}} +=
+    <p>The rule is that the text before <code>...</code>, in the case <code>Fail</code>, must be a prefix of
+    the name of <em>exactly one</em> holon defined in the current section; or, if it matches
+    none in the current section, <em>exactly one</em> holon defined webwide.</p>
+    <h2>Naming every holon</h2>
+    <p>Some LP purists may not approve of the way that Inweb normally reads a mix of
+    nameless and named holons. Shouldn't every holon have a name? That was certainly
+    the original scheme of Pierre-Arnoul de Marneffe.</p>
+    <p>Inweb does not adopt this convention by default because large programs containing
+    a mass of global functions would just become cumbersome if all of those &quot;and
+    here's another one&quot; holons had to have names. But Inweb does recognise that
+    some programs will be better presented the old-fashioned way, so it provides
+    the following feature in order to let authors decide:</p>
+    <ul>
+    <li>
+    <p>The holon name <code>{{Main}}</code> is special. If used at all, it can only be used as
+    the first holon in a web. (If the web has multiple sections, that means the
+    first holon in the first section which contains any holons.) This first holon
+    is then called the &quot;main holon&quot;.</p>
+    </li>
+    <li>
+    <p>Ordinarily, holon names are case sensitive, and so <code>{{Read from STDIN}}</code>
+    and <code>{{read from stdin}}</code>, for example, are different names. But any casing
+    of <code>{{Main}}</code> can be used to declare the main holon, so for example <code>{{main}}</code>
+    or <code>{{MAIN}}</code> would also work.</p>
+    </li>
+    <li>
+    <p>If there is a main holon, then every holon in the web must be named.</p>
+    </li>
+    </ul>
+    <h2>Continuations</h2>
+    <p>This ability wasn't needed by the example above, but it's also possible to
+    continue a holon from earlier. Suppose we write the holon:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Print diagnostics}} +=
 
 	print("Total memory usage was ", mem_usage)
 </span></pre>
-<p>Note the <code>+=</code> here, rather than just <code>=</code>. That makes this a continuation of
-the holon <code>{{Print diagnostics}}</code>, which must already have been defined.
-A holon can have any number of continuations; if it does, then the code it
-represents is a concatenation of its own lines with the lines in its
-continuations, in order of definition. So for example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Print diagnostics}} =
+    <p>Note the <code>+=</code> here, rather than just <code>=</code>. That makes this a continuation of
+    the holon <code>{{Print diagnostics}}</code>, which must already have been defined.
+    A holon can have any number of continuations; if it does, then the code it
+    represents is a concatenation of its own lines with the lines in its
+    continuations, in order of definition. So for example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Print diagnostics}} =
 
 	print("Diagnostics:")
 
@@ -303,20 +302,20 @@ continuations, in order of definition. So for example:</p>
 
 	print("Total memory usage was ", mem_usage)
 </span></pre>
-<p>tangles <code>{{Print diagnostics}}</code> to:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">print("Diagnostics:")
+    <p>tangles <code>{{Print diagnostics}}</code> to:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">print("Diagnostics:")
 print("Total time taken was ", time_in_cs)
 print("Total memory usage was ", mem_usage)
 </span></pre>
-<p>Continuations are best used sparingly, and only when they actually clarify
-what is going on, rather than obscuring it.</p>
-<h2>Early and late holons</h2>
-<p>Most programming languages need code to be written in a particular order
-to avoid errors, and this is occasionally a nuisance to the literate programmer,
-because that isn't the clearest order in which to explain it.</p>
-<p>Inweb therefore allows holons to be marked as to be tangled either earlier or
-later than usual. For example, the following are all valid header lines:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Include header files}} (tangled very early) =
+    <p>Continuations are best used sparingly, and only when they actually clarify
+    what is going on, rather than obscuring it.</p>
+    <h2>Early and late holons</h2>
+    <p>Most programming languages need code to be written in a particular order
+    to avoid errors, and this is occasionally a nuisance to the literate programmer,
+    because that isn't the clearest order in which to explain it.</p>
+    <p>Inweb therefore allows holons to be marked as to be tangled either earlier or
+    later than usual. For example, the following are all valid header lines:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Include header files}} (tangled very early) =
 
 {{Initialisation}} (tangled early) =
 
@@ -326,97 +325,97 @@ later than usual. For example, the following are all valid header lines:</p>
 
 {{Check for undeclared symbols}} (tangled very late) =
 </span></pre>
-<p>Inweb will throw an error if code attempts to use an early or late holon. For
-example, this cannot work:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Do some business}} =
+    <p>Inweb will throw an error if code attempts to use an early or late holon. For
+    example, this cannot work:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Do some business}} =
 	print("Starting up")
 	{{Initialisation}}
 </span></pre>
-<p>because the <code>{{Initialisation}}</code> holon was marked as <code>tangled early</code>. So it
-can appear only once, and only in the early phase, not as part of another holon.</p>
-<p>This is probably a good time to say explicitly what tangling does:</p>
-<ul>
-<li>
-<p>The following happens in five phases in turn: very early, early, normal,
-late, very late.</p>
-</li>
-<li>
-<p>In each phase, each top-level holon belonging to that phase is tangled in turn.</p>
-</li>
-</ul>
-<p>And a holon can be <em>top-level</em> in one of three ways:</p>
-<ul>
-<li>
-<p>If there is a main holon (see above), that is always top-level. In this case
-there are no nameless holons.</p>
-</li>
-<li>
-<p>All nameless holons are top-level. In this case there is no main holon.</p>
-</li>
-<li>
-<p>All holons marked as very early, early, late, or very late, are top-level.</p>
-</li>
-</ul>
-<p>Top-level holons are so called because they are exactly the ones which are not
-used inside any others. Every part of the program is contained, directly or
-indirectly, in at least one top-level holon. To put this in computer-science
-terms, our program is a directed multigraph, in which the vertices are the holons,
-and an edge is drawn from vertex X to vertex Y whenever holon X uses holon Y.
-This graph contains no directed loops, and the top-level holons are exactly the
-vertices with no incoming edges.</p>
-<h2>Webwide holons</h2>
-<p>In a web with multiple sections, each section ordinarily has its own private set
-of holon names, as explained above. Early LP tools intended for smaller programs
-tended instead to have a common set of names used throughout the web, but
-experience has shown that for larger webs, this is generally not wise.</p>
-<p>But it is occasionally useful to make exceptions for particular holons.
-Inweb therefore allows holons to be marked as <em>webwide</em>, which means that their
-names are visible from every section. (The difference between a webwide and a
-regular holon is much like that between a global and a local variable.)</p>
-<p>The main holon is automatically webwide if it exists. Otherwise,
-holons are only webwide if they are explicitly declared that way. For example,
-suppose we declare a holon like this in one section:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide) =
+    <p>because the <code>{{Initialisation}}</code> holon was marked as <code>tangled early</code>. So it
+    can appear only once, and only in the early phase, not as part of another holon.</p>
+    <p>This is probably a good time to say explicitly what tangling does:</p>
+    <ul>
+    <li>
+    <p>The following happens in five phases in turn: very early, early, normal,
+    late, very late.</p>
+    </li>
+    <li>
+    <p>In each phase, each top-level holon belonging to that phase is tangled in turn.</p>
+    </li>
+    </ul>
+    <p>And a holon can be <em>top-level</em> in one of three ways:</p>
+    <ul>
+    <li>
+    <p>If there is a main holon (see above), that is always top-level. In this case
+    there are no nameless holons.</p>
+    </li>
+    <li>
+    <p>All nameless holons are top-level. In this case there is no main holon.</p>
+    </li>
+    <li>
+    <p>All holons marked as very early, early, late, or very late, are top-level.</p>
+    </li>
+    </ul>
+    <p>Top-level holons are so called because they are exactly the ones which are not
+    used inside any others. Every part of the program is contained, directly or
+    indirectly, in at least one top-level holon. To put this in computer-science
+    terms, our program is a directed multigraph, in which the vertices are the holons,
+    and an edge is drawn from vertex X to vertex Y whenever holon X uses holon Y.
+    This graph contains no directed loops, and the top-level holons are exactly the
+    vertices with no incoming edges.</p>
+    <h2>Webwide holons</h2>
+    <p>In a web with multiple sections, each section ordinarily has its own private set
+    of holon names, as explained above. Early LP tools intended for smaller programs
+    tended instead to have a common set of names used throughout the web, but
+    experience has shown that for larger webs, this is generally not wise.</p>
+    <p>But it is occasionally useful to make exceptions for particular holons.
+    Inweb therefore allows holons to be marked as <em>webwide</em>, which means that their
+    names are visible from every section. (The difference between a webwide and a
+    regular holon is much like that between a global and a local variable.)</p>
+    <p>The main holon is automatically webwide if it exists. Otherwise,
+    holons are only webwide if they are explicitly declared that way. For example,
+    suppose we declare a holon like this in one section:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide) =
 </span></pre>
-<p>We could then continue this in any subsequent section of the web, and not just
-in its own:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} +=
+    <p>We could then continue this in any subsequent section of the web, and not just
+    in its own:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} +=
 </span></pre>
-<p>It's legal for a holon to be both webwide and early/late: for example,</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide and tangled very early) =
+    <p>It's legal for a holon to be both webwide and early/late: for example,</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide and tangled very early) =
 </span></pre>
-<p>Similarly, a webwide holon can be used from outside its own section. We
-might, for example, declare this in the opening section of a web:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Disclaimer}} (webwide) =
+    <p>Similarly, a webwide holon can be used from outside its own section. We
+    might, for example, declare this in the opening section of a web:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Disclaimer}} (webwide) =
 
 	print("This part of the program is not fully implemented yet.")
 </span></pre>
-<p>And then we can use <code>{{Disclaimer}}</code> anywhere needed.</p>
-<p>Webwide holons are, again, best used only when there's a good reason for it.</p>
-<h2>Extracting holon matter to files</h2>
-<p>Another option which can be applied to a holon is to mark it as containing code
-which is not part of the main program, but is instead destined for an extraneous
-file of text or code. For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Default preferences file}} (tangled to prefs.txt) =
+    <p>And then we can use <code>{{Disclaimer}}</code> anywhere needed.</p>
+    <p>Webwide holons are, again, best used only when there's a good reason for it.</p>
+    <h2>Extracting holon matter to files</h2>
+    <p>Another option which can be applied to a holon is to mark it as containing code
+    which is not part of the main program, but is instead destined for an extraneous
+    file of text or code. For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Default preferences file}} (tangled to prefs.txt) =
 </span></pre>
-<p>This holon is tangled like any other, but into the sidekick file <code>prefs.txt</code>.</p>
-<p>The command <code>inweb inspect -tangle-files</code> can be used to find which files like
-this are actually written in a tangle:</p>
+    <p>This holon is tangled like any other, but into the sidekick file <code>prefs.txt</code>.</p>
+    <p>The command <code>inweb inspect -tangle-files</code> can be used to find which files like
+    this are actually written in a tangle:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -tangle-files</span><span class="ConsoleText-plain-syntax"> inform/inform7</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "inform7" (InC program in InwebClassic notation): 27 modules : 146 chapters : 796 sections : 12576 paragraphs : 285331 lines</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    file           | holon name       | language | where</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    -------------- | ---------------- | -------- | -------</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inform7_clib.h | C library header | None     | 5/fnc:8</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inform7_clib.c | C library code   | C        | 5/fnc:9</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -tangle-files</span><span class="ConsoleText-plain-syntax"> inform/inform7</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "inform7" (InC program in InwebClassic notation): 27 modules : 146 chapters : 796 sections : 12576 paragraphs : 285331 lines</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    file           | holon name       | language | where</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    -------------- | ---------------- | -------- | -------</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inform7_clib.h | C library header | None     | 5/fnc:8</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    inform7_clib.c | C library code   | C        | 5/fnc:9</span>
 </pre>
 <div class="lsmarkdown">
-<p>(The languages used in these files are inferred from their filename extensions:
-Inweb recognises <code>.c</code> here but not <code>.h</code>.)</p>
+    <p class="commentary">(The languages used in these files are inferred from their filename extensions:
+    Inweb recognises <code>.c</code> here but not <code>.h</code>.)</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Single-File Webs</span><a href="1-sw.html">&#10094;</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 1: Smaller Webs</span>1<li class="progresssection"><span class="fullname-popup">Getting Started</span><a href="1-gs.html">gs</a></li><li class="progresssection"><span class="fullname-popup">Single-File Webs</span><a href="1-sw.html">sw</a></li><li class="progresscurrent"><span class="current-fullname-popup">A Little Literate Programming</span>allp</li><li class="progresssection"><span class="fullname-popup">Commentary in Markdown</span><a href="1-cim.html">cim</a></li><li class="progresssection"><span class="fullname-popup">Metadata</span><a href="1-mtd.html">mtd</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Commentary in Markdown</span><a href="1-cim.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Single-File Webs</span><a href="1-sw.html">&#10094;</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 1: Smaller Webs</span>1</li><li class="progresssection"><span class="fullname-popup">Getting Started</span><a href="1-gs.html">gs</a></li><li class="progresssection"><span class="fullname-popup">Single-File Webs</span><a href="1-sw.html">sw</a></li><li class="progresscurrent"><span class="current-fullname-popup">A Little Literate Programming</span>allp</li><li class="progresssection"><span class="fullname-popup">Commentary in Markdown</span><a href="1-cim.html">cim</a></li><li class="progresssection"><span class="fullname-popup">Metadata</span><a href="1-mtd.html">mtd</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Commentary in Markdown</span><a href="1-cim.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

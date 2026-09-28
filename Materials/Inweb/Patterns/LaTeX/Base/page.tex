@@ -1,0 +1,20 @@
+% `page.tex`
+%
+% The page design we will use: paper size, margins, headers and footers,
+% default point size, and font family. See also `type.tex`.
+%
+\documentclass[a4paper,10pt]{book}
+%
+\usepackage[a4paper, inner=1.5cm, outer=1.5cm, top=2cm, bottom=3cm,
+bindingoffset=0cm]{geometry}
+%
+\usepackage{fancyhdr}
+\fancyhf{}
+\fancyhead[LE]{\thepage\quad\leftmark}
+\fancyhead[RO]{\rightmark\quad\thepage}
+\fancyfoot[LE,RO]{}
+\pagestyle{fancy}
+%
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+%

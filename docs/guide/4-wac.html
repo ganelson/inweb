@@ -69,87 +69,87 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#4">Chapter 4: Notations</a></li><li><b>WEB and CWEB</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> These are somewhat experimental features provided with a view to being able
-to read existing webs in two 1980s LP systems, for historical interest: there's
-no intention here to support these formats for the creation of new webs.
-The implementation is in any case incomplete, as noted below.</p>
-<h2>CWEB</h2>
-<p><code>CWEB</code> is the adaptation of <code>WEB</code> (see below) to C rather than Pascal, and is
-a system still used by Knuth for smaller programs, such as those written in
-the course of his work on <em>The Art of Computer Programming</em>.</p>
-<p>Inweb has only limited <code>CWEB</code> support, but can weave and even tangle some modest
-C programs. For example, Knuth wrote a web called <code>backpdi.w</code> which computes
-every integer which is equal to the sum of the \INWEBMATH(m\INWEBMATH)-th powers of its digits.
-Renaming this <code>backpdi.c.cweb</code>, we obtain:</p>
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>These are somewhat experimental features provided with a view to being able
+    to read existing webs in two 1980s LP systems, for historical interest: there's
+    no intention here to support these formats for the creation of new webs.
+    The implementation is in any case incomplete, as noted below.</p>
+    <h2>CWEB</h2>
+    <p><code>CWEB</code> is the adaptation of <code>WEB</code> (see below) to C rather than Pascal, and is
+    a system still used by Knuth for smaller programs, such as those written in
+    the course of his work on <em>The Art of Computer Programming</em>.</p>
+    <p>Inweb has only limited <code>CWEB</code> support, but can weave and even tangle some modest
+    C programs. For example, Knuth wrote a web called <code>backpdi.w</code> which computes
+    every integer which is equal to the sum of the \INWEBMATH(m\INWEBMATH)-th powers of its digits.
+    Renaming this <code>backpdi.c.cweb</code>, we obtain:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect back-pdi.c.cweb</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (C program in CWEB notation): 22 paragraphs : 367 lines</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect back-pdi.c.cweb</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (C program in CWEB notation): 22 paragraphs : 367 lines</span>
 </pre>
 <div class="lsmarkdown">
-<p>CWEB has no concept of metadata such as titling: hence, &quot;Untitled&quot;. The rest
-looks correct, though, and:</p>
+    <p class="commentary">CWEB has no concept of metadata such as titling: hence, &quot;Untitled&quot;. The rest
+    looks correct, though, and:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave back-pdi.c.cweb</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (C program in CWEB notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: back-pdi.html</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle back-pdi.c.cweb</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> CWEB.inweb</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "Untitled" (C program in CWEB notation) to file 'back-pdi.c'</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave back-pdi.c.cweb</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (C program in CWEB notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: back-pdi.html</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        11 files copied to: docs/docs-assets</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle back-pdi.c.cweb</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> CWEB.inweb</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    tangling web "Untitled" (C program in CWEB notation) to file 'back-pdi.c'</span>
 </pre>
 <div class="lsmarkdown">
-<p>This code is written in an antique dialect of C, so:</p>
+    <p class="commentary">This code is written in an antique dialect of C, so:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-identifier-syntax"> -std</span><span class="ConsoleText-plain-syntax">=c89 back-pdi.c</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> back-pdi</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./back-pdi</span><span class="ConsoleText-plain-syntax"> 3</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1: 7400-&gt;0407</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    2: 7310-&gt;0371</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3: 7300-&gt;0370</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    4: 5310-&gt;0153</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    5: 1000-&gt;0001</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    6: 0000-&gt;0000</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Altogether 6 solutions for m=3 (110 nodes, 4662 mems).</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">clang</span><span class="ConsoleText-identifier-syntax"> -std</span><span class="ConsoleText-plain-syntax">=c89 back-pdi.c</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> back-pdi</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">./back-pdi</span><span class="ConsoleText-plain-syntax"> 3</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    1: 7400-&gt;0407</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    2: 7310-&gt;0371</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    3: 7300-&gt;0370</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    4: 5310-&gt;0153</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    5: 1000-&gt;0001</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    6: 0000-&gt;0000</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Altogether 6 solutions for m=3 (110 nodes, 4662 mems).</span>
 </pre>
 <div class="lsmarkdown">
-<p>And indeed \INWEBMATH(4^3 + 0^3 + 7^3 = 64 + 0 + 343 = 407\INWEBMATH), so score one for Professor Knuth:
-the solutions are 407, 371, 370, 153, 1 and 0.</p>
-<p>Support for <code>CWEB</code> remains limited, nevertheless. The following are not implemented:</p>
-<ul>
-<li>the <code>@x</code>, <code>@y</code>, <code>@z</code> syntax used only in change files (Knuth's reinvention of
-<code>diff</code>);</li>
-<li>the <code>@l</code> syntax for handling ISO Latin-1 (not very well);</li>
-<li>the syntax <code>@'x'</code> to mean the character code for <code>x</code>;</li>
-<li>the syntax <code>@f IDENTIFIER TeX</code>, i.e., the <code>TeX</code> special case of <code>@f</code>, which
-would be tiresome to explain.</li>
-</ul>
-<p>Moreover, holon names are not allowed to run over multiple lines, as they are
-in CWEB; and a few other such issues mean that not all valid CWEB webs can be
-read in, as yet. More work may or may not be done on this.</p>
-<h2>WEB</h2>
-<p><code>WEB</code> was the original literate programming tool, created by Donald Knuth in
-order to manage the source code for his typographic programs TeX and Metafont.
-Properly speaking there were two tools, <code>WEAVE</code> and <code>TANGLE</code>, but collectively
-they are called <code>WEB</code>. These were tied to a form of Pascal no longer used,
-and are difficult to emulate without essentially porting them wholesale.</p>
-<p>Inweb has even more limited support for reading <code>WEB</code> files. Currently, it can
-parse <code>WEAVE</code> and <code>TANGLE</code> successfully:</p>
+    <p class="commentary">And indeed \INWEBMATH(4^3 + 0^3 + 7^3 = 64 + 0 + 343 = 407\INWEBMATH), so score one for Professor Knuth:
+    the solutions are 407, 371, 370, 153, 1 and 0.</p>
+    <p>Support for <code>CWEB</code> remains limited, nevertheless. The following are not implemented:</p>
+    <ul>
+    <li>the <code>@x</code>, <code>@y</code>, <code>@z</code> syntax used only in change files (Knuth's reinvention of
+    <code>diff</code>);</li>
+    <li>the <code>@l</code> syntax for handling ISO Latin-1 (not very well);</li>
+    <li>the syntax <code>@'x'</code> to mean the character code for <code>x</code>;</li>
+    <li>the syntax <code>@f IDENTIFIER TeX</code>, i.e., the <code>TeX</code> special case of <code>@f</code>, which
+    would be tiresome to explain.</li>
+    </ul>
+    <p>Moreover, holon names are not allowed to run over multiple lines, as they are
+    in CWEB; and a few other such issues mean that not all valid CWEB webs can be
+    read in, as yet. More work may or may not be done on this.</p>
+    <h2>WEB</h2>
+    <p><code>WEB</code> was the original literate programming tool, created by Donald Knuth in
+    order to manage the source code for his typographic programs TeX and Metafont.
+    Properly speaking there were two tools, <code>WEAVE</code> and <code>TANGLE</code>, but collectively
+    they are called <code>WEB</code>. These were tied to a form of Pascal no longer used,
+    and are difficult to emulate without essentially porting them wholesale.</p>
+    <p>Inweb has even more limited support for reading <code>WEB</code> files. Currently, it can
+    parse <code>WEAVE</code> and <code>TANGLE</code> successfully:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave weave.pas.web</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (Pascal program in WEB notation) as HTML</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: weave.html</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: weave-assets</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> weave weave.pas.web</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    weaving web "Untitled" (Pascal program in WEB notation) as HTML</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        generated: weave.html</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        10 files copied to: weave-assets</span>
 </pre>
 <div class="lsmarkdown">
-<p>Note that a WEB file must be filenamed <code>NAME.pas.web</code> in order for Inweb to
-pick up its notation. As yet, <code>tex.pas.web</code> does not parse: it contains some
-direly convoluted syntax. More work may or may not be done on this.</p>
+    <p class="commentary">Note that a WEB file must be filenamed <code>NAME.pas.web</code> in order for Inweb to
+    pick up its notation. As yet, <code>tex.pas.web</code> does not parse: it contains some
+    direly convoluted syntax. More work may or may not be done on this.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">InwebClassic Notation</span><a href="4-in.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4<li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresscurrent"><span class="current-fullname-popup">WEB and CWEB</span>wac</li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Creating Notations</span><a href="4-cn.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">InwebClassic Notation</span><a href="4-in.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4</li><li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresscurrent"><span class="current-fullname-popup">WEB and CWEB</span>wac</li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Creating Notations</span><a href="4-cn.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

@@ -50,16 +50,16 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#4">Chapter 4: Notations</a></li><li><b>Creating Notations</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> First, some friendly advice: there may be no need for this. If all that's wanted
-is, for example, to change the syntax for named holons, that can be done by
-applying <code>Conventions</code> to a web written in an existing notation. With that said,
-this section offers a tutorial.</p>
-<h2>Simple</h2>
-<p>To get started, here is a notation called <code>Simple</code> which does only the absolute
-minimum of literate programming: it recognises indented lines as code, and
-unindented lines as Markdown commentary. As a test case for that, here's
-<code>countsort.py.simp</code>:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a Python implementation of the counting sort algorithm. The following
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>First, some friendly advice: there may be no need for this. If all that's wanted
+    is, for example, to change the syntax for named holons, that can be done by
+    applying <code>Conventions</code> to a web written in an existing notation. With that said,
+    this section offers a tutorial.</p>
+    <h2>Simple</h2>
+    <p>To get started, here is a notation called <code>Simple</code> which does only the absolute
+    minimum of literate programming: it recognises indented lines as code, and
+    unindented lines as Markdown commentary. As a test case for that, here's
+    <code>countsort.py.simp</code>:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a Python implementation of the counting sort algorithm. The following
 function takes an array of non-negative integers, sorts it, and returns the result:
 
 	def countingSort(unsorted):
@@ -86,9 +86,9 @@ Unsorted array: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]
 Sorted array: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]
 ```
 </span></pre>
-<p>So now we need to define <code>Simple</code>, and tell Inweb to recognise <code>.simp</code> files
-as using it. The following definition will do:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Simple" {
+    <p>So now we need to define <code>Simple</code>, and tell Inweb to recognise <code>.simp</code> files
+    as using it. The following definition will do:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Simple" {
 	recognise .simp
 	recognise .*.simp
 
@@ -98,25 +98,25 @@ as using it. The following definition will do:</p>
 	end
 }
 </span></pre>
-<p>This can be placed in, say, the file <code>simple.inweb</code>.</p>
-<p>Everything seems to work nicely:</p>
+    <p>This can be placed in, say, the file <code>simple.inweb</code>.</p>
+    <p>Everything seems to work nicely:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 31 lines</span></span>
-
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 31 lines</span>
+<a id="SP1LN0" class="lineanchor"></a>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> - | python3</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Unsorted: [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    Sorted: [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6]</span>
 </pre>
 <div class="lsmarkdown">
-<p>Note the <code>-using simple.inweb</code> added to the Inweb commands here: these make
-declarations in the file <code>simple.inweb</code> available to Inweb. There are
-alternative ways to do that; for example, if the <code>countsort.py.simp</code> web
-were part of a colony, then the colony declaration could incorporate the
-<code>Simple</code> one; or, if the web were large enough for a contents page, that
-could do so —</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
+    <p class="commentary">Note the <code>-using simple.inweb</code> added to the Inweb commands here: these make
+    declarations in the file <code>simple.inweb</code> available to Inweb. There are
+    alternative ways to do that; for example, if the <code>countsort.py.simp</code> web
+    were part of a colony, then the colony declaration could incorporate the
+    <code>Simple</code> one; or, if the web were large enough for a contents page, that
+    could do so —</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: Simple
 Language: Python
@@ -136,52 +136,52 @@ Notation "Simple" {
 	end
 }
 </span></pre>
-<p>However it's done, though, Inweb can only use <code>Simple</code> if it can see the
-declaration somewhere.</p>
-<p>Looking back at the declaration, let's take it apart. Firstly, it declares
-a named resource of type <code>Notation</code> and with the name <code>Simple</code>, so it has
-the following shape:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Simple" {
+    <p>However it's done, though, Inweb can only use <code>Simple</code> if it can see the
+    declaration somewhere.</p>
+    <p>Looking back at the declaration, let's take it apart. Firstly, it declares
+    a named resource of type <code>Notation</code> and with the name <code>Simple</code>, so it has
+    the following shape:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "Simple" {
 	...
 }
 </span></pre>
-<p>The contents of the definition begin like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	recognise .simp
+    <p>The contents of the definition begin like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	recognise .simp
 	recognise .*.simp
 </span></pre>
-<p>This tells Inweb which filename extensions are a clue that a web might be
-written with this notation. Note the second line: this says that a double
-filename extension, where <code>*</code> represents an extension suggesting a programming
-language as well, is also allowed. (And this is what enables the filename
-<code>countsort.py.simp</code> to be recognised.)</p>
-<p>Any number of <code>recognise</code> lines are allowed, including none. For example,</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	recognise .simple
+    <p>This tells Inweb which filename extensions are a clue that a web might be
+    written with this notation. Note the second line: this says that a double
+    filename extension, where <code>*</code> represents an extension suggesting a programming
+    language as well, is also allowed. (And this is what enables the filename
+    <code>countsort.py.simp</code> to be recognised.)</p>
+    <p>Any number of <code>recognise</code> lines are allowed, including none. For example,</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	recognise .simple
 	recognise .*.simple
 </span></pre>
-<p>could be added as alternatives.</p>
-<p>The critical part of a notation is the part telling Inweb how to classify
-its lines. Inweb reads literate source one line at a time — unlike some
-earlier LP tools, it's very much line-based, rather than reading its input
-as a stream of characters. Each line is then run through the classifier,
-which normally offers one or more possible readings: and Inweb accepts the
-first one which works.</p>
-<p>The classifier here offers two possible ways to read a line:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
+    <p>could be added as alternatives.</p>
+    <p>The critical part of a notation is the part telling Inweb how to classify
+    its lines. Inweb reads literate source one line at a time — unlike some
+    earlier LP tools, it's very much line-based, rather than reading its input
+    as a stream of characters. Each line is then run through the classifier,
+    which normally offers one or more possible readings: and Inweb accepts the
+    first one which works.</p>
+    <p>The classifier here offers two possible ways to read a line:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
 		MATERIAL 	            ==&gt; code if in indented context
 		MATERIAL				==&gt; commentary
 	end
 </span></pre>
-<p>Each possibility takes the form of a textual pattern to match, then a <code>==&gt;</code>
-marker, and then the outcome if it does match, possibly with a condition attached.
-(White space either side of the <code>==&gt;</code> is ignored.)</p>
-<p>Here the patterns are both just <code>MATERIAL</code>. This is not the literal word
-&quot;MATERIAL&quot;: it's a wildcard, which matches anything. So in fact both lines
-in the classifier will match every possible input. However, the first one
-matches only <code>if in indented context</code>. This is a <em>condition</em>, and means
-more than just saying that the line itself is indented: it has to be part
-of a run of indented lines, with white space either side. For example, on
-the following input:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">You need to get through 30 whole sonnets of Philip Sidney's _Astrophel
+    <p>Each possibility takes the form of a textual pattern to match, then a <code>==&gt;</code>
+    marker, and then the outcome if it does match, possibly with a condition attached.
+    (White space either side of the <code>==&gt;</code> is ignored.)</p>
+    <p>Here the patterns are both just <code>MATERIAL</code>. This is not the literal word
+    &quot;MATERIAL&quot;: it's a wildcard, which matches anything. So in fact both lines
+    in the classifier will match every possible input. However, the first one
+    matches only <code>if in indented context</code>. This is a <em>condition</em>, and means
+    more than just saying that the line itself is indented: it has to be part
+    of a run of indented lines, with white space either side. For example, on
+    the following input:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">You need to get through 30 whole sonnets of Philip Sidney's _Astrophel
 and Stella_ (1591) before you arrive at the good bit:
 
 	With how sad steps, oh Moon, thou climb'st the skies,
@@ -189,17 +189,17 @@ and Stella_ (1591) before you arrive at the good bit:
 	What, may it be, that even in heav'nly place
 	That busy archer his sharp arrows tries?
 </span></pre>
-<p>Here the four lines of verse would be read <code>in indented context</code>, because
-they are part of just such an indented block. Reading this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Oh grammar rules, oh now your virtues show
+    <p>Here the four lines of verse would be read <code>in indented context</code>, because
+    they are part of just such an indented block. Reading this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Oh grammar rules, oh now your virtues show
 	So children still read you with awefull eyes,
 As my young dove may in your precepts wise
 	Her grant to me, by her own virtue know.
 </span></pre>
-<p>Inweb would not register any of the lines as <code>in indented context</code>, even
-though two are indented.</p>
-<p>So, then, the result of the above classifier is:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a Python implementation of the counting sort...		commentary
+    <p>Inweb would not register any of the lines as <code>in indented context</code>, even
+    though two are indented.</p>
+    <p>So, then, the result of the above classifier is:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a Python implementation of the counting sort...		commentary
 function takes an array of non-negative integers, so...		commentary
                                                             commentary
 	def countingSort(unsorted):                             code
@@ -219,59 +219,59 @@ And this code tests the function:                           commentary
 	print("Unsorted:", A)                                   code
 	print("Sorted:", countingSort(A))                       code
 </span></pre>
-<p>and so on. That can be verified using <code>inweb inspect -scan</code>:</p>
+    <p>and so on. That can be verified using <code>inweb inspect -scan</code>:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -scan -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 27 lines</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    S1</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C1: commentary</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ This⏑is⏑a⏑Python⏑implementation⏑of⏑the⏑counting⏑sort⏑algorithm.⏑The⏑following</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns⏑the⏑result:</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000004 def⏑countingSort(unsorted):</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000005 ⏑⏑⏑⏑sorted⏑=⏑[]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000006 ⏑⏑⏑⏑if⏑unsorted:</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000007 ⏑⏑⏑⏑⏑⏑⏑⏑max_val⏑=⏑max(unsorted)</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000008 ⏑⏑⏑⏑⏑⏑⏑⏑counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000009 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value⏑in⏑unsorted:</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000010 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑counts[value]⏑+=⏑1</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000011 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value,⏑count⏑in⏑enumerate(counts):</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000012 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000013 ⏑⏑⏑⏑return⏑sorted</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    S2</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C1: commentary</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ And⏑this⏑code⏑tests⏑the⏑function:</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000017 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000018 print("Unsorted:",⏑A)</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000019 print("Sorted:",⏑countingSort(A))</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ...</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect countsort.py.simp</span><span class="ConsoleText-identifier-syntax"> -scan -using</span><span class="ConsoleText-plain-syntax"> simple.inweb</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    web "Untitled" (Python program in Simple notation): 3 paragraphs : 27 lines</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    S1</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C1: commentary</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ This⏑is⏑a⏑Python⏑implementation⏑of⏑the⏑counting⏑sort⏑algorithm.⏑The⏑following</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ function⏑takes⏑an⏑array⏑of⏑non-negative⏑integers,⏑sorts⏑it,⏑and⏑returns⏑the⏑result:</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000004 def⏑countingSort(unsorted):</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000005 ⏑⏑⏑⏑sorted⏑=⏑[]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000006 ⏑⏑⏑⏑if⏑unsorted:</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000007 ⏑⏑⏑⏑⏑⏑⏑⏑max_val⏑=⏑max(unsorted)</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000008 ⏑⏑⏑⏑⏑⏑⏑⏑counts⏑=⏑[0]⏑*⏑(max_val⏑+⏑1)</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000009 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value⏑in⏑unsorted:</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000010 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑counts[value]⏑+=⏑1</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000011 ⏑⏑⏑⏑⏑⏑⏑⏑for⏑value,⏑count⏑in⏑enumerate(counts):</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000012 ⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑⏑sorted.extend([value]⏑*⏑count)</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000013 ⏑⏑⏑⏑return⏑sorted</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    S2</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C1: commentary</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            _______ And⏑this⏑code⏑tests⏑the⏑function:</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">        C2: holon (used sequentially)</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000017 A⏑=⏑[4,⏑2,⏑2,⏑6,⏑3,⏑3,⏑1,⏑6,⏑5,⏑2,⏑3]</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000018 print("Unsorted:",⏑A)</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">            0000019 print("Sorted:",⏑countingSort(A))</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ...</span>
 </pre>
 <div class="lsmarkdown">
-<p>In these scan printouts, <code>S1</code>, <code>S2</code>, ..., are the paragraphs, which are internally
-divided into <em>chunks</em>, <code>C1</code>, <code>C2</code>, and so on. What has happened, then, is that
-Inweb has formed the commentary lines together into commentary chunks, and the
-code lines into code chunks — which are called holons. When creating a new
-notation, it's generally a good idea to write a test web which tries it out,
-and to keep on using <code>inweb inspect -scan</code> to check that it's being read in
-correctly.</p>
-<h2>Not quite so simple</h2>
-<p>Adding a few further features should give a clearer idea of how classification
-works. First, let's add subheadings, using Markdown's customary <code>##</code> syntax.
-This can be done with a new possible match:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
+    <p class="commentary">In these scan printouts, <code>S1</code>, <code>S2</code>, ..., are the paragraphs, which are internally
+    divided into <em>chunks</em>, <code>C1</code>, <code>C2</code>, and so on. What has happened, then, is that
+    Inweb has formed the commentary lines together into commentary chunks, and the
+    code lines into code chunks — which are called holons. When creating a new
+    notation, it's generally a good idea to write a test web which tries it out,
+    and to keep on using <code>inweb inspect -scan</code> to check that it's being read in
+    correctly.</p>
+    <h2>Not quite so simple</h2>
+    <p>Adding a few further features should give a clearer idea of how classification
+    works. First, let's add subheadings, using Markdown's customary <code>##</code> syntax.
+    This can be done with a new possible match:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
 		## MATERIAL             ==&gt; beginparagraph
 		MATERIAL 	            ==&gt; code if in indented context
 		MATERIAL				==&gt; commentary
 	end
 </span></pre>
-<p>So we have a new outcome, <code>beginparagraph</code>, which forces a paragraph break
-to occur at this point in the source. The <code>MATERIAL</code> becomes the subtitle
-for the paragraph.</p>
-<p>And what about a heading at the top of the file? A really full provision
-for that needs quite a run of fresh matches:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
+    <p>So we have a new outcome, <code>beginparagraph</code>, which forces a paragraph break
+    to occur at this point in the source. The <code>MATERIAL</code> becomes the subtitle
+    for the paragraph.</p>
+    <p>And what about a heading at the top of the file? A really full provision
+    for that needs quite a run of fresh matches:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	classify
 		# "MATERIAL" by SECOND (vTHIRD)     ==&gt; title if on first line of only file
 		# MATERIAL by SECOND (vTHIRD)		==&gt; title if on first line of only file
 		# MATERIAL (vTHIRD)					==&gt; title if on first line of only file
@@ -284,29 +284,29 @@ for that needs quite a run of fresh matches:</p>
 		MATERIAL							==&gt; commentary
 	end
 </span></pre>
-<p>The outcome in all of those seven, count them, seven matches is <code>title</code>. Note
-the two new conditions here: <code>if on first line</code> means we are on the first line
-of the current file (remembering that larger webs have many sections, so that
-this may be the title only of one section); <code>if on first line of only file</code>
-matches only for the top line of a single-file web. It's only in those cases
-where we look out for an author name and version number, which (if given)
-go into the new wildcards <code>SECOND</code> and <code>THIRD</code>. For example, matching</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">"North by Northwest" by Alfred Hitchcock (v2.1)
+    <p>The outcome in all of those seven, count them, seven matches is <code>title</code>. Note
+    the two new conditions here: <code>if on first line</code> means we are on the first line
+    of the current file (remembering that larger webs have many sections, so that
+    this may be the title only of one section); <code>if on first line of only file</code>
+    matches only for the top line of a single-file web. It's only in those cases
+    where we look out for an author name and version number, which (if given)
+    go into the new wildcards <code>SECOND</code> and <code>THIRD</code>. For example, matching</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">"North by Northwest" by Alfred Hitchcock (v2.1)
 </span></pre>
-<p>would fill <code>MATERIAL</code> with &quot;North by Northwest&quot;, <code>SECOND</code> with &quot;Alfred Hitchcock&quot;,
-and <code>THIRD</code> with &quot;2.1&quot;.</p>
-<p>Okay, so now for something more powerful: named holons. Combine this classification:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;     ==&gt; namedholon
+    <p>would fill <code>MATERIAL</code> with &quot;North by Northwest&quot;, <code>SECOND</code> with &quot;Alfred Hitchcock&quot;,
+    and <code>THIRD</code> with &quot;2.1&quot;.</p>
+    <p>Okay, so now for something more powerful: named holons. Combine this classification:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;     ==&gt; namedholon
 </span></pre>
-<p>with a new convention:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Conventions {
+    <p>with a new convention:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	Conventions {
 		holon names are written between &lt;[ and ]&gt;
 	}
 </span></pre>
-<p>(Conventions can be added at the end of pretty well all Inweb declarations:
-see <a href="2-rad.html" class="internal">Resources and Declarations</a> for the rules on all of that.)</p>
-<p>The effect is an eccentric new syntax, one which would read the following web:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">In non-so-simple notation:
+    <p>(Conventions can be added at the end of pretty well all Inweb declarations:
+    see <a href="2-rad.html" class="internal">Resources and Declarations</a> for the rules on all of that.)</p>
+    <p>The effect is an eccentric new syntax, one which would read the following web:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">In non-so-simple notation:
 
 	def countingSort(unsorted):
 		sorted = []
@@ -337,110 +337,110 @@ Testing which:
 	print("Unsorted:", A)
 	print("Sorted:", countingSort(A))
 </span></pre>
-<p>And then indeed:</p>
+    <p>And then indeed:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.nssimp</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> -</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> nssimple.inweb | python2</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> tangle countsort.py.nssimp</span><span class="ConsoleText-identifier-syntax"> -to</span><span class="ConsoleText-plain-syntax"> -</span><span class="ConsoleText-identifier-syntax"> -using</span><span class="ConsoleText-plain-syntax"> nssimple.inweb | python2</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ('Unsorted:', [4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3])</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    ('Sorted:', [1, 2, 2, 2, 3, 3, 3, 4, 5, 6, 6])</span>
 </pre>
 <div class="lsmarkdown">
-<p>Of course, this notation is only a little different from <code>MarkdownCode</code>. We
-are writing holons as <code>&lt;[Name]&gt;</code> rather than <code>{{Name}}</code>, and declaring them
-with <code>&lt;[Name]&gt; ~~&gt;</code> rather than <code>{{Name}} =</code>. All the same, it <em>is</em> different,
-and the full variation available to notations is pretty generous. We could
-also, say, add:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	Extend &lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;  ==&gt; namedholon with continuationoption
+    <p class="commentary">Of course, this notation is only a little different from <code>MarkdownCode</code>. We
+    are writing holons as <code>&lt;[Name]&gt;</code> rather than <code>{{Name}}</code>, and declaring them
+    with <code>&lt;[Name]&gt; ~~&gt;</code> rather than <code>{{Name}} =</code>. All the same, it <em>is</em> different,
+    and the full variation available to notations is pretty generous. We could
+    also, say, add:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	Extend &lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; ~~&gt;  ==&gt; namedholon with continuationoption
 </span></pre>
-<p>and now instead of the <code>MarkdownCode</code> syntax for extending a holon, <code>{{Name of holon}} +=</code>,
-we recognise <code>Extend &lt;[Name of holon]&gt; ~~&gt;</code>.</p>
-<p>So, then, here there were two new outcomes: <code>namedholon</code> and
-<code>namedholon with continuationoption</code>. (That use of <code>with</code> to modify an outcome
-with an option is relatively unusual: only a few outcomes have options available.)
-Also new were the syntaxes <code>&lt;OPENHOLON&gt;</code> and <code>&lt;CLOSEHOLON&gt;</code> in the patterns to
-match. Rather than matching literally, these match whatever setting is currently
-made by the <code>holon names are written between ... and ...</code> convention.</p>
-<h2>RESIDUE</h2>
-<p>Suppose we want to make a pilcrow sign ¶ begin a new paragraph, when it's found
-in the first column of a line. That seems easy enough:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	¶             			                    ==&gt; beginparagraph
+    <p>and now instead of the <code>MarkdownCode</code> syntax for extending a holon, <code>{{Name of holon}} +=</code>,
+    we recognise <code>Extend &lt;[Name of holon]&gt; ~~&gt;</code>.</p>
+    <p>So, then, here there were two new outcomes: <code>namedholon</code> and
+    <code>namedholon with continuationoption</code>. (That use of <code>with</code> to modify an outcome
+    with an option is relatively unusual: only a few outcomes have options available.)
+    Also new were the syntaxes <code>&lt;OPENHOLON&gt;</code> and <code>&lt;CLOSEHOLON&gt;</code> in the patterns to
+    match. Rather than matching literally, these match whatever setting is currently
+    made by the <code>holon names are written between ... and ...</code> convention.</p>
+    <h2>RESIDUE</h2>
+    <p>Suppose we want to make a pilcrow sign ¶ begin a new paragraph, when it's found
+    in the first column of a line. That seems easy enough:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	¶             			                    ==&gt; beginparagraph
 </span></pre>
-<p>As far as it goes, that works fine; except that the following natural-looking
-commentary doesn't work —</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ According to part 11(b) of the specification, an identifier name which
+    <p>As far as it goes, that works fine; except that the following natural-looking
+    commentary doesn't work —</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ According to part 11(b) of the specification, an identifier name which
 begins with an underscore is reserved, but we are not obliged to reject it.
 Therefore...
 </span></pre>
-<p>The solution is this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	¶             			                    ==&gt; beginparagraph
+    <p>The solution is this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	¶             			                    ==&gt; beginparagraph
 	¶ RESIDUE            			            ==&gt; beginparagraph
 </span></pre>
-<p><code>RESIDUE</code>, like <code>MATERIAL</code>, <code>SECOND</code> and <code>THIRD</code>, is another wildcard which
-can match any text. If Inweb classifies a line and finds anything in <code>RESIDUE</code>,
-it turns that material into a new line which immediately follows on, and
-then classifies that in turn. For example, Inweb reads this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ According to part 11(b) of the specification, an identifier name which
+    <p><code>RESIDUE</code>, like <code>MATERIAL</code>, <code>SECOND</code> and <code>THIRD</code>, is another wildcard which
+    can match any text. If Inweb classifies a line and finds anything in <code>RESIDUE</code>,
+    it turns that material into a new line which immediately follows on, and
+    then classifies that in turn. For example, Inweb reads this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ According to part 11(b) of the specification, an identifier name which
 </span></pre>
-<p>and classifies it <code>beginparagraph</code>, with <code>RESIDUE</code> set to &quot;According to part
-11(b) of the specification, an identifier name which&quot;. Inweb then classifies
-the new line</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">According to part 11(b) of the specification, an identifier name which
+    <p>and classifies it <code>beginparagraph</code>, with <code>RESIDUE</code> set to &quot;According to part
+    11(b) of the specification, an identifier name which&quot;. Inweb then classifies
+    the new line</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">According to part 11(b) of the specification, an identifier name which
 </span></pre>
-<p>and classifies it <code>commentary</code>. In effect, then, Inweb read the original text
-as two lines in succession:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶
+    <p>and classifies it <code>commentary</code>. In effect, then, Inweb read the original text
+    as two lines in succession:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">¶
 According to part 11(b) of the specification, an identifier name which
 </span></pre>
-<p>In fact, still more is possible. Suppose we want this to work:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ ^"specification" ^"ANSI" According to part 11(b), ...
+    <p>In fact, still more is possible. Suppose we want this to work:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">¶ ^"specification" ^"ANSI" According to part 11(b), ...
 </span></pre>
-<p>...where we want to &quot;tag&quot; the paragraph with the keywords &quot;specification&quot; and &quot;ANSI&quot;.
-There can be any number of those tags, so the syntax isn't fixed. The trick now
-is to supply a whole new classifier:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">residue of beginparagraph
+    <p>...where we want to &quot;tag&quot; the paragraph with the keywords &quot;specification&quot; and &quot;ANSI&quot;.
+    There can be any number of those tags, so the syntax isn't fixed. The trick now
+    is to supply a whole new classifier:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">residue of beginparagraph
 	RESIDUE &lt;OPENTAG&gt;MATERIAL&lt;CLOSETAG&gt;         ==&gt; paragraphtag
 	&lt;OPENTAG&gt;MATERIAL&lt;CLOSETAG&gt;                 ==&gt; paragraphtag
 end
 </span></pre>
-<p>This tells Inweb that if it finds anything in the <code>RESIDUE</code> after classifying
-a <code>beginparagraph</code>, it should then run that material through this classifier.
-So the sequence of events is:</p>
-<ul>
-<li>
-<p>Inweb reads <code>¶ ^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...</code> as
-a <code>beginparagraph</code>, with residue &quot;^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...&quot;.</p>
-</li>
-<li>
-<p>Inweb matches <code>^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...</code> with
-the <code>residue of beginparagraph</code> classifier, spotting <code>paragraphtag</code> with
-<code>MATERIAL</code> set to &quot;specification&quot;.</p>
-</li>
-<li>
-<p>Inweb matches <code>^&quot;ANSI&quot; According to part 11(b), ...</code> with the <code>residue of beginparagraph</code>
-classifier, spotting <code>paragraphtag</code> with <code>MATERIAL</code> set to &quot;ANSI&quot;.</p>
-</li>
-<li>
-<p>Inweb matches <code>According to part 11(b), ...</code> with the <code>residue of beginparagraph</code>
-classifier, but this time doesn't make a match, and so...</p>
-</li>
-<li>
-<p>Inweb reads <code>According to part 11(b), ...</code> as a new line, which it then
-classifies as <code>commentary</code>.</p>
-</li>
-</ul>
-<h2>OPTIONS</h2>
-<p>The <code>MarkdownCode</code> notation allowed for a whole range of qualifying notes to
-be added to a holon declaration. For example, in <code>MarkdownCode</code>, this was legal:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide and tangled very early) =
+    <p>This tells Inweb that if it finds anything in the <code>RESIDUE</code> after classifying
+    a <code>beginparagraph</code>, it should then run that material through this classifier.
+    So the sequence of events is:</p>
+    <ul>
+    <li>
+    <p>Inweb reads <code>¶ ^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...</code> as
+    a <code>beginparagraph</code>, with residue &quot;^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...&quot;.</p>
+    </li>
+    <li>
+    <p>Inweb matches <code>^&quot;specification&quot; ^&quot;ANSI&quot; According to part 11(b), ...</code> with
+    the <code>residue of beginparagraph</code> classifier, spotting <code>paragraphtag</code> with
+    <code>MATERIAL</code> set to &quot;specification&quot;.</p>
+    </li>
+    <li>
+    <p>Inweb matches <code>^&quot;ANSI&quot; According to part 11(b), ...</code> with the <code>residue of beginparagraph</code>
+    classifier, spotting <code>paragraphtag</code> with <code>MATERIAL</code> set to &quot;ANSI&quot;.</p>
+    </li>
+    <li>
+    <p>Inweb matches <code>According to part 11(b), ...</code> with the <code>residue of beginparagraph</code>
+    classifier, but this time doesn't make a match, and so...</p>
+    </li>
+    <li>
+    <p>Inweb reads <code>According to part 11(b), ...</code> as a new line, which it then
+    classifies as <code>commentary</code>.</p>
+    </li>
+    </ul>
+    <h2>OPTIONS</h2>
+    <p>The <code>MarkdownCode</code> notation allowed for a whole range of qualifying notes to
+    be added to a holon declaration. For example, in <code>MarkdownCode</code>, this was legal:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">{{Grab bag}} (webwide and tangled very early) =
 </span></pre>
-<p>Let's add an equivalent functionality to our example notation. Start with
-a new classification line:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; (OPTIONS) ~~&gt;   ==&gt; namedholon
+    <p>Let's add an equivalent functionality to our example notation. Start with
+    a new classification line:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	&lt;OPENHOLON&gt;MATERIAL&lt;CLOSEHOLON&gt; (OPTIONS) ~~&gt;   ==&gt; namedholon
 </span></pre>
-<p>As before, this has the outcome <code>namedholon</code>. The only difference is that
-this time it fills a new wildcard called <code>OPTIONS</code>. So how do we deal with that?
-The answer is that we give it a whole new classification:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">options of namedholon
+    <p>As before, this has the outcome <code>namedholon</code>. The only difference is that
+    this time it fills a new wildcard called <code>OPTIONS</code>. So how do we deal with that?
+    The answer is that we give it a whole new classification:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">options of namedholon
 	webwide                                     ==&gt; webwideholonoption
 	tangled very early                          ==&gt; veryearlyholonoption
 	tangled early                               ==&gt; earlyholonoption
@@ -459,29 +459,29 @@ The answer is that we give it a whole new classification:</p>
 	MATERIAL                                    ==&gt; error "unknown holon option(s)"
 end
 </span></pre>
-<p>This tells Inweb how it should deal with any material found in <code>OPTIONS</code> after
-it has classified a <code>namedholon</code>. So for example, in our bizarro syntax,
-suppose Inweb is parsing this line:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;[Do something elegant]&gt; (tangled very early and webwide) ~~&gt;
+    <p>This tells Inweb how it should deal with any material found in <code>OPTIONS</code> after
+    it has classified a <code>namedholon</code>. So for example, in our bizarro syntax,
+    suppose Inweb is parsing this line:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;[Do something elegant]&gt; (tangled very early and webwide) ~~&gt;
 </span></pre>
-<p>The regular classification will diagnose this as a <code>namedholon</code> with
-<code>MATERIAL</code> set to the name, &quot;Do something elegant&quot;. The <code>OPTIONS</code>, though,
-will be set to &quot;tangled very early and webwide&quot;. Inweb then runs <em>that</em> text
-through the <code>options of namedholon</code> classifier, and matches it against</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	tangled very early and OPTIONS              ==&gt; veryearlyholonoption
+    <p>The regular classification will diagnose this as a <code>namedholon</code> with
+    <code>MATERIAL</code> set to the name, &quot;Do something elegant&quot;. The <code>OPTIONS</code>, though,
+    will be set to &quot;tangled very early and webwide&quot;. Inweb then runs <em>that</em> text
+    through the <code>options of namedholon</code> classifier, and matches it against</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	tangled very early and OPTIONS              ==&gt; veryearlyholonoption
 </span></pre>
-<p>This registers the <code>veryearlyholonoption</code> option, and reduces the <code>OPTIONS</code>
-text to &quot;webwide&quot;. This is still not empty, so Inweb classifies again, and
-this time matches against</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">	webwide                                     ==&gt; webwideholonoption
+    <p>This registers the <code>veryearlyholonoption</code> option, and reduces the <code>OPTIONS</code>
+    text to &quot;webwide&quot;. This is still not empty, so Inweb classifies again, and
+    this time matches against</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">	webwide                                     ==&gt; webwideholonoption
 </span></pre>
-<p>And so we end up with <code>namedholon</code> supplemented by two options,
-<code>veryearlyholonoption</code> and <code>webwideholonoption</code>.</p>
-<p>In practice, only a few outcomes support options, but when they are needed
-they do something which otherwise couldn't easily be done.</p>
-<h2>A farewell to NotSoSimple</h2>
-<p>To recap, then, this is the final version of what's now called &quot;NotSoSimple&quot;:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "NotSoSimple" {
+    <p>And so we end up with <code>namedholon</code> supplemented by two options,
+    <code>veryearlyholonoption</code> and <code>webwideholonoption</code>.</p>
+    <p>In practice, only a few outcomes support options, but when they are needed
+    they do something which otherwise couldn't easily be done.</p>
+    <h2>A farewell to NotSoSimple</h2>
+    <p>To recap, then, this is the final version of what's now called &quot;NotSoSimple&quot;:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Notation "NotSoSimple" {
 	recognise .nssimp
 	recognise .*.nssimp
 
@@ -532,37 +532,37 @@ they do something which otherwise couldn't easily be done.</p>
 	}
 }
 </span></pre>
-<h2>Custom alerts</h2>
-<p>Commentary inside a web is styled with some dialect of Markdown, depending
-on the convention settings. If GitHub-flavored Markdown features are available
-(as they are by default) then this will include so-called <em>alerts</em>.
-See <a href="1-cim.html" class="internal">Commentary in Markdown</a> for examples.</p>
-<p>GitHub Markdown provides five forms of alert, cued as <code>[!NOTE]</code>, <code>[!TIP]</code>,
-<code>[!IMPORTANT]</code>, <code>[!WARNING]</code>, and <code>[!CAUTION]</code>. A notation can however add
-new ones, with a declaration like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">alerts
+    <h2>Custom alerts</h2>
+    <p>Commentary inside a web is styled with some dialect of Markdown, depending
+    on the convention settings. If GitHub-flavored Markdown features are available
+    (as they are by default) then this will include so-called <em>alerts</em>.
+    See <a href="1-cim.html" class="internal">Commentary in Markdown</a> for examples.</p>
+    <p>GitHub Markdown provides five forms of alert, cued as <code>[!NOTE]</code>, <code>[!TIP]</code>,
+    <code>[!IMPORTANT]</code>, <code>[!WARNING]</code>, and <code>[!CAUTION]</code>. A notation can however add
+    new ones, with a declaration like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">alerts
 	♨︎ HOT
 	&gt; SYNTAX
 end
 </span></pre>
-<p>This adds two new sorts of alert, which might be used as follows:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; [!HOT]
+    <p>This adds two new sorts of alert, which might be used as follows:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; [!HOT]
 &gt; Use of this feature may cause CPU temperatures to exceed 102 centigrade.
 
 &gt; [!SYNTAX]
 &gt; - **GO** _direction_
 &gt; - **GO BACK** _direction_
 </span></pre>
-<p>When woven to HTML, these alerts will become blockquotes, just as for <code>[!NOTE]</code>
-and so on; the blockquotes will have the class names <code>alerthot</code> and <code>alertsyntax</code>,
-matching the conventions used for <code>alertnote</code>, <code>alertwarning</code> and so on. They
-can then be styled in suitable colour schemes, have boxes drawn around them, or
-whatever, by means of CSS: see <a href="6-cp.html" class="internal">Creating Patterns</a>.</p>
-<h2>Processing</h2>
-<p>An entirely different mechanism, intended to be used only if really necessary,
-allows material in the web to be &quot;processed&quot; (read: rewritten).</p>
-<p>For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">process commentary
+    <p>When woven to HTML, these alerts will become blockquotes, just as for <code>[!NOTE]</code>
+    and so on; the blockquotes will have the class names <code>alerthot</code> and <code>alertsyntax</code>,
+    matching the conventions used for <code>alertnote</code>, <code>alertwarning</code> and so on. They
+    can then be styled in suitable colour schemes, have boxes drawn around them, or
+    whatever, by means of CSS: see <a href="6-pfww.html" class="internal">Patterns for Weaving Websites</a>.</p>
+    <h2>Processing</h2>
+    <p>An entirely different mechanism, intended to be used only if really necessary,
+    allows material in the web to be &quot;processed&quot; (read: rewritten).</p>
+    <p>For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">process commentary
 	green ==&gt; blue
 	blue ==&gt; green
 end
@@ -571,25 +571,25 @@ process code
 	green ==&gt; brown
 end
 </span></pre>
-<p>This looks a little like one of the classifiers above, but it's subtly different.
-It's hard to see why one would want to do this, but the result is that this web:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">A greengrocer, once in a blue moon, might run this code:
+    <p>This looks a little like one of the classifiers above, but it's subtly different.
+    It's hard to see why one would want to do this, but the result is that this web:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">A greengrocer, once in a blue moon, might run this code:
 
 	for (int green_bottles = 1; green_bottles &lt;= 10; green_bottles++)
 		printf("%d green bottles standing on a wall\n", green_bottles);
 </span></pre>
-<p>would be read in as:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">A bluegrocer, once in a green moon, might run this code:
+    <p>would be read in as:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">A bluegrocer, once in a green moon, might run this code:
 
 	for (int brown_bottles = 1; brown_bottles &lt;= 10; brown_bottles++)
 		printf("%d brown bottles standing on a wall\n", brown_bottles);
 </span></pre>
-<p>Those changes are made after classification, of course, which is how Inweb
-knows whether to apply its changes to code or commentary. But it is also
-possible to &quot;preprocess&quot; lines before classification, or &quot;postprocess&quot; them
-afterwards.</p>
-<p>For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">preprocess
+    <p>Those changes are made after classification, of course, which is how Inweb
+    knows whether to apply its changes to code or commentary. But it is also
+    possible to &quot;preprocess&quot; lines before classification, or &quot;postprocess&quot; them
+    afterwards.</p>
+    <p>For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">preprocess
 	@@  ==&gt; §real_at_character§
 	@+  ==&gt; &lt;SPACE&gt;
 	@&amp;  ==&gt; &lt;NOTHING&gt;
@@ -599,14 +599,14 @@ postprocess
 	§real_at_character§ ==&gt; @
 end
 </span></pre>
-<p>Here the idea is that <code>@@</code> is notation for a literal <code>@</code> character which would
-not trigger any of the lines in the classification; we preprocess that into the
-text <code>§real_at_character§</code>, rendering it inactive, and then postprocess it back
-again after classification. On the other hand, we just replace <code>@+</code> with a space
-to get rid of it, and <code>@&amp;</code> goes altogether.</p>
+    <p>Here the idea is that <code>@@</code> is notation for a literal <code>@</code> character which would
+    not trigger any of the lines in the classification; we preprocess that into the
+    text <code>§real_at_character§</code>, rendering it inactive, and then postprocess it back
+    again after classification. On the other hand, we just replace <code>@+</code> with a space
+    to get rid of it, and <code>@&amp;</code> goes altogether.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">WEB and CWEB</span><a href="4-wac.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4<li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresscurrent"><span class="current-fullname-popup">Creating Notations</span>cn</li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">WEB and CWEB</span><a href="4-wac.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4</li><li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresscurrent"><span class="current-fullname-popup">Creating Notations</span>cn</li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

@@ -15,25 +15,6 @@
     <link href="../docs-assets/Progress.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script src="../docs-assets/seek_locate_display_highlight.js"></script>
     <link href="../docs-assets/sld.css" rel="stylesheet" rev="stylesheet" type="text/css">
-    <script>
-    MathJax = {
-        options: {
-        	skipHtmlTags: {'[-]': ['pre']},
-        	processHtmlClass: 'mathjax_process'
-        },
-    	loader: {load: ['[tex]/texhtml']},
-      	tex: {
-    		inlineMath: [ ['\\INWEBMATH(', '\\INWEBMATH)'] ],
-        	packages: {'[+]': ['texhtml']},
-        	allowTexHTML: true
-    	},
-    	svg: {
-    		fontCache: 'global'
-    	}
-    };
-    </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js"></script>
-
     <link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
     <script src="http://code.jquery.com/jquery-1.12.4.min.js"
     	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
@@ -68,25 +49,24 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#4">Chapter 4: Notations</a></li><li><b>About Notations</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a></p>
-<h2>Introduction</h2>
-<p>A <em>notation</em> is a form of markup for a web which tells Inweb how to decide
-which parts are commentary, which parts are program, and so on. In the chapters
-of this guide so far, a notation called <code>MarkdownCode</code> has always been used:
-a lightweight sort of notation closely based on Markdown.</p>
-<p>However, a good LP tool should allow for multiple notations, both because tastes
-vary and because some notations work better with particular languages than others.
-Inweb goes further and allows users to create their own notations, and this is
-a real help for an under-appreciated use case: showcasing classic programs which
-do contain commentary, but were never written as literate programs by their authors.</p>
-<h2>How Inweb decides on the notation for a web</h2>
-<p>Clearly Inweb cannot read a web without knowing its notation, and this is not
-always obvious. Here is how it decides:</p>
-<ul>
-<li>
-<p>A web large enough to have a contents page can explicitly declare its notation,
-as in this example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><h2>Introduction</h2>
+    <p>A <em>notation</em> is a form of markup for a web which tells Inweb how to decide
+    which parts are commentary, which parts are program, and so on. In the chapters
+    of this guide so far, a notation called <code>MarkdownCode</code> has always been used:
+    a lightweight sort of notation closely based on Markdown.</p>
+    <p>However, a good LP tool should allow for multiple notations, both because tastes
+    vary and because some notations work better with particular languages than others.
+    Inweb goes further and allows users to create their own notations, and this is
+    a real help for an under-appreciated use case: showcasing classic programs which
+    do contain commentary, but were never written as literate programs by their authors.</p>
+    <h2>How Inweb decides on the notation for a web</h2>
+    <p>Clearly Inweb cannot read a web without knowing its notation, and this is not
+    always obvious. Here is how it decides:</p>
+    <ul>
+    <li>
+    <p>A web large enough to have a contents page can explicitly declare its notation,
+    as in this example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Title: Sorting Smorgasbord
 Author: Various Artists
 Notation: MarkdownCode
 Language: Python
@@ -96,54 +76,54 @@ Sections
 	Counting Sort
 	Quick Sort
 </span></pre>
-<p>Here the line <code>Notation: MarkdownCode</code> decides the matter. Note that every
-notation has its own name; that needs to be a resource visible from the web.
-(Note also that contents pages have the same syntax regardless of notation.)</p>
-</li>
-<li>
-<p>If a web has a contents page, but does not say what the notation is, then:</p>
-<ul>
-<li>if the section filenames have the extension <code>.md</code>, it will be <code>MarkdownCode</code>;</li>
-<li>if <code>.w</code>, then <code>InwebClassic</code>.</li>
-</ul>
-</li>
-<li>
-<p>A single-file web, which doesn't have a contents page, can use a filename
-extension to indicate its notation:</p>
-<ul>
-<li>the extension <code>.md</code> indicates <code>MarkdownCode</code>;</li>
-<li>the extension <code>.w</code> indicates <code>InwebClassic</code>;</li>
-<li>the extension <code>.cweb</code> indicates <code>CWEB</code>;</li>
-<li>the extension <code>.web</code> indicates <code>WEB</code>;</li>
-<li>and any newly-constructed notation can say what extensions it recognises.</li>
-</ul>
-</li>
-</ul>
-<h2>The notations supplied with Inweb</h2>
-<p><code>MarkdownCode</code> is the simplest notation Inweb supports. It's intended to be
-easy to pick up, and also to have the convenience that a web using this
-notation renders well in a Markdown viewer — for example, if such a source
-code file is viewed at GitHub.</p>
-<p><code>InwebClassic</code> is a more traditional LP notation, in that paragraph and code
-boundaries are explicitly marked. This increases the amount of markup needed,
-but some people find this clearer. It also provides for automated definitions
-and enumerations when coding in C-like languages, and for that reason is used
-by the Inform project. But since the commentary uses the same Markdown syntax as
-<code>MarkdownCode</code>, the two notations are not as different as they may appear at
-first sight.</p>
-<p><code>CWEB</code> is a partial compatibility mode with Knuth's CWEB tool. It is able to
-tangle, and to weave to HTML, at least some of his programs of the last
-forty years, more or less adequately. Here, commentary uses TeX, not
-conventional Markdown.</p>
-<p><code>WEB</code> is an even more partial compatibility mode for Knuth's early WEB tool.
-It can only usefully weave, not tangle, and even then, quite imperfectly.
-WEB is used today only for the \INWEBMATH({\rm\TeX}\INWEBMATH) and Metafont source code, and there
-is little point in tangling these, since they are written in a long-obsolete
-form of Pascal. Again, commentary uses TeX.</p>
-<p>As we shall see, though, it's easy to create entirely new notations.</p>
+    <p>Here the line <code>Notation: MarkdownCode</code> decides the matter. Note that every
+    notation has its own name; that needs to be a resource visible from the web.
+    (Note also that contents pages have the same syntax regardless of notation.)</p>
+    </li>
+    <li>
+    <p>If a web has a contents page, but does not say what the notation is, then:</p>
+    <ul>
+    <li>if the section filenames have the extension <code>.md</code>, it will be <code>MarkdownCode</code>;</li>
+    <li>if <code>.w</code>, then <code>InwebClassic</code>.</li>
+    </ul>
+    </li>
+    <li>
+    <p>A single-file web, which doesn't have a contents page, can use a filename
+    extension to indicate its notation:</p>
+    <ul>
+    <li>the extension <code>.md</code> indicates <code>MarkdownCode</code>;</li>
+    <li>the extension <code>.w</code> indicates <code>InwebClassic</code>;</li>
+    <li>the extension <code>.cweb</code> indicates <code>CWEB</code>;</li>
+    <li>the extension <code>.web</code> indicates <code>WEB</code>;</li>
+    <li>and any newly-constructed notation can say what extensions it recognises.</li>
+    </ul>
+    </li>
+    </ul>
+    <h2>The notations supplied with Inweb</h2>
+    <p><code>MarkdownCode</code> is the simplest notation Inweb supports. It's intended to be
+    easy to pick up, and also to have the convenience that a web using this
+    notation renders well in a Markdown viewer — for example, if such a source
+    code file is viewed at GitHub.</p>
+    <p><code>InwebClassic</code> is a more traditional LP notation, in that paragraph and code
+    boundaries are explicitly marked. This increases the amount of markup needed,
+    but some people find this clearer. It also provides for automated definitions
+    and enumerations when coding in C-like languages, and for that reason is used
+    by the Inform project. But since the commentary uses the same Markdown syntax as
+    <code>MarkdownCode</code>, the two notations are not as different as they may appear at
+    first sight.</p>
+    <p><code>CWEB</code> is a partial compatibility mode with Knuth's CWEB tool. It is able to
+    tangle, and to weave to HTML, at least some of his programs of the last
+    forty years, more or less adequately. Here, commentary uses TeX, not
+    conventional Markdown.</p>
+    <p><code>WEB</code> is an even more partial compatibility mode for Knuth's early WEB tool.
+    It can only usefully weave, not tangle, and even then, quite imperfectly.
+    WEB is used today only for the TeX and Metafont source code, and there
+    is little point in tangling these, since they are written in a long-obsolete
+    form of Pascal. Again, commentary uses TeX.</p>
+    <p>As we shall see, though, it's easy to create entirely new notations.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Summary of Colonies</span><a href="3-soc.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4<li class="progresscurrent"><span class="current-fullname-popup">About Notations</span>an</li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">InwebClassic Notation</span><a href="4-in.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Summary of Colonies</span><a href="3-soc.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4</li><li class="progresscurrent"><span class="current-fullname-popup">About Notations</span>an</li><li class="progresssection"><span class="fullname-popup">InwebClassic Notation</span><a href="4-in.html">in</a></li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">InwebClassic Notation</span><a href="4-in.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

@@ -92,7 +92,8 @@ void ParagraphTags::autotag(weave_order *wv, ls_paragraph *par, markdown_item *m
 			case INWEB_LINK_MIT: {
 				TEMPORARY_TEXT(address)
 				TEMPORARY_TEXT(URL)
-				MDRenderer::recurse(address, NULL, md->down, RAW_MDRMODE, variation);
+				markdown_render rdr = MDRender::context_free_HTML(variation);
+				MDRender::render_in_mode(address, &rdr, md->down, RAW_MDRMODE);
 				if (Colonies::is_reference_external(address, URL))
 					ParagraphTags::tag_with_caption(par, I"Outlinks", URL);
 				DISCARD_TEXT(URL)
@@ -101,7 +102,8 @@ void ParagraphTags::autotag(weave_order *wv, ls_paragraph *par, markdown_item *m
 			}
 			case LINK_DEST_MIT: {
 				TEMPORARY_TEXT(address)
-				MDRenderer::recurse(address, NULL, md, RAW_MDRMODE, variation);
+				markdown_render rdr = MDRender::context_free_HTML(variation);
+				MDRender::render_in_mode(address, &rdr, md, RAW_MDRMODE);
 				if (Colonies::is_reference_external(address, NULL))
 					ParagraphTags::tag_with_caption(par, I"Outlinks", address);
 				DISCARD_TEXT(address)

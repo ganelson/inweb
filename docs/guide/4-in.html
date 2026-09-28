@@ -49,44 +49,44 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#4">Chapter 4: Notations</a></li><li><b>InwebClassic Notation</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Despite first appearances — when it seems full of mysterious <code>@</code> and <code>=</code> signs —
-<code>InwebClassic</code> is quite similar to the <code>MarkdownCode</code> notation used in the rest
-of this guide. The differences are:</p>
-<ul>
-<li>Paragraph boundaries are explicitly marked with <code>@</code> or <code>@h</code>.</li>
-<li>Code boundaries are explicitly marked with <code>=</code>.</li>
-<li>Named holons are written <code>@&lt;Like this@&gt;</code> not <code>{{Like this}}</code>.</li>
-<li>In C-like languages, definitions and enumerations can be made with <code>@d</code> and <code>@e</code>.</li>
-</ul>
-<p><code>InwebClassic</code> is a little heavier on the eye, then, but reads easily enough
-with practice. The source code of Inweb is itself written in <code>InwebClassic</code> notation.</p>
-<h2>Example</h2>
-<p>Here is the same program used as an example in <a href="1-allp.html" class="internal">A Little Literate Programming</a>,
-but with its literate features written in <code>InwebClassic</code> rather than <code>MarkdownCode</code>
-notation. The first thing to notice is that there are <code>@</code> marker signs scattered
-at various line-beginnings throughout, which divide the web into paragraphs: when
-using <code>MarkdownCode</code>, Inweb deduces paragraph boundaries, but here we write them
-explicitly. Similarly, the dividing point between commentary and code is written
-explicitly with <code>=</code> markers.</p>
-<p>The fact that paragraphs begin at <code>@</code> markers open up a possibility not found
-in <code>MarkdownCode</code>: there can be lines at the start of a section in &quot;limbo&quot;.
-This term, coined by Knuth, refers to any chunk of material found before the
-first <code>@</code> marker, and therefore not in any paragraph at all:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Counting Sort.
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>Despite first appearances — when it seems full of mysterious <code>@</code> and <code>=</code> signs —
+    <code>InwebClassic</code> is quite similar to the <code>MarkdownCode</code> notation used in the rest
+    of this guide. The differences are:</p>
+    <ul>
+    <li>Paragraph boundaries are explicitly marked with <code>@</code> or <code>@h</code>.</li>
+    <li>Code boundaries are explicitly marked with <code>=</code>.</li>
+    <li>Named holons are written <code>@&lt;Like this@&gt;</code> not <code>{{Like this}}</code>.</li>
+    <li>In C-like languages, definitions and enumerations can be made with <code>@d</code> and <code>@e</code>.</li>
+    </ul>
+    <p><code>InwebClassic</code> is a little heavier on the eye, then, but reads easily enough
+    with practice. The source code of Inweb is itself written in <code>InwebClassic</code> notation.</p>
+    <h2>Example</h2>
+    <p>Here is the same program used as an example in <a href="1-allp.html" class="internal">A Little Literate Programming</a>,
+    but with its literate features written in <code>InwebClassic</code> rather than <code>MarkdownCode</code>
+    notation. The first thing to notice is that there are <code>@</code> marker signs scattered
+    at various line-beginnings throughout, which divide the web into paragraphs: when
+    using <code>MarkdownCode</code>, Inweb deduces paragraph boundaries, but here we write them
+    explicitly. Similarly, the dividing point between commentary and code is written
+    explicitly with <code>=</code> markers.</p>
+    <p>The fact that paragraphs begin at <code>@</code> markers open up a possibility not found
+    in <code>MarkdownCode</code>: there can be lines at the start of a section in &quot;limbo&quot;.
+    This term, coined by Knuth, refers to any chunk of material found before the
+    first <code>@</code> marker, and therefore not in any paragraph at all:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Counting Sort.
 
 An implementation of the 1954 sort algorithm.
 
 @ The first para has just begun, and...
 </span></pre>
-<p>This limbo contains a titling line — which, note, needs to end in a full stop — and
-then an (optional) description of the purpose of the program. Unlike <code>MarkdownCode</code>,
-this notation doesn't allow titling lines to be elaborated with author names,
-version numbers and such. (<code>InwebClassic</code> was really a notation devised for
-larger webs which have contents pages, where that can be spelled out fully.)</p>
-<p>Here's the actual first paragraph. The <code>@</code> followed by at least one character of white
-space marks the opening. All the verbiage from &quot;This algorithm&quot; through to &quot;is returned&quot;
-is commentary.</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ This algorithm was found in 1954 by [Harold H. Seward](https://en.wikipedia.org/wiki/Harold_H._Seward),
+    <p>This limbo contains a titling line — which, note, needs to end in a full stop — and
+    then an (optional) description of the purpose of the program. Unlike <code>MarkdownCode</code>,
+    this notation doesn't allow titling lines to be elaborated with author names,
+    version numbers and such. (<code>InwebClassic</code> was really a notation devised for
+    larger webs which have contents pages, where that can be spelled out fully.)</p>
+    <p>Here's the actual first paragraph. The <code>@</code> followed by at least one character of white
+    space marks the opening. All the verbiage from &quot;This algorithm&quot; through to &quot;is returned&quot;
+    is commentary.</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ This algorithm was found in 1954 by [Harold H. Seward](https://en.wikipedia.org/wiki/Harold_H._Seward),
 who also devised radix sort. They differ from most sorting techniques because they do
 not make comparisons between items in the unsorted array. Indeed, there are no
 comparisons in the following function, only iteration.
@@ -97,11 +97,11 @@ and is needed because Python would otherwise handle this case badly: of course,
 if `unsorted` does equal `[]`, then so should `sorted`, and so the right answer
 is returned.
 </span></pre>
-<p>Once again, the commentary itself uses Markdown notation, so we see the familiar
-backticks for code snippets, for example.</p>
-<p>Now for some code. The following is a top-level holon, indicated by an equals
-sign <code>=</code> in the first column of a line:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">=
+    <p>Once again, the commentary itself uses Markdown notation, so we see the familiar
+    backticks for code snippets, for example.</p>
+    <p>Now for some code. The following is a top-level holon, indicated by an equals
+    sign <code>=</code> in the first column of a line:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">=
 def countingSort(unsorted):
 	sorted = []
 	if unsorted:
@@ -110,9 +110,9 @@ def countingSort(unsorted):
 		@&lt;construct the sorted array with the right number of each value@&gt;
 	return sorted
 </span></pre>
-<p>Note that holon names are written in <code>@&lt;</code> and <code>@&gt;</code> markers, instead of <code>{{</code> and <code>}}</code>
-as in <code>MarkdownCode</code>. In the next paragraph, one of those is defined:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ For example, suppose the array is initially `[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]`.
+    <p>Note that holon names are written in <code>@&lt;</code> and <code>@&gt;</code> markers, instead of <code>{{</code> and <code>}}</code>
+    as in <code>MarkdownCode</code>. In the next paragraph, one of those is defined:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ For example, suppose the array is initially `[4, 2, 2, 6, 3, 3, 1, 6, 5, 2, 3]`.
 Then the maximum value is 6. Python arrays index from 0, so we need an incidence
 counts array of size 7, and we create it as `[0, 0, 0, 0, 0, 0, 0]`.
 
@@ -120,11 +120,11 @@ counts array of size 7, and we create it as `[0, 0, 0, 0, 0, 0, 0]`.
 	max_val = max(unsorted)
 	counts = [0] * (max_val + 1)
 </span></pre>
-<p>In that paragraph, then, the commentary section ended and the code segment began
-with the line <code>@&lt;initialise the incidence counts to zero@&gt; =</code>, making clear that
-this is a named holon, not a top-level and nameless one.</p>
-<p>The program continues in similar vein:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
+    <p>In that paragraph, then, the commentary section ended and the code segment began
+    with the line <code>@&lt;initialise the incidence counts to zero@&gt; =</code>, making clear that
+    this is a named holon, not a top-level and nameless one.</p>
+    <p>The program continues in similar vein:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ In the unsorted array we will observe no 0s, one 1, three 2s, and so on. The
 following produces the counts `[0, 1, 3, 3, 1, 1, 2]`.
 
 @&lt;tally how many times each value occurs in the unsorted array@&gt; =
@@ -157,11 +157,11 @@ In fact, though, his opposite number Paul de Casteljau at the Citroën
 works was responsible for the best algorithm for computing these curves,
 $$ B(t) = \sum_{i=0}^n \beta_i b_{i, n}(t). $$
 </span></pre>
-<h2>Paragraph structure</h2>
-<p>Paragraphs consist of three segments, all optional, but which must occur in the
-following order: commentary, definitions, code.</p>
-<p>A paragraph usually begins in one of these two ways:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ A simple marker, which begins a standard paragraph. Any text on the
+    <h2>Paragraph structure</h2>
+    <p>Paragraphs consist of three segments, all optional, but which must occur in the
+    following order: commentary, definitions, code.</p>
+    <p>A paragraph usually begins in one of these two ways:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ A simple marker, which begins a standard paragraph. Any text on the
 line after the marker is commentary, which continues on subsequent lines.
 
 @h A Heading.
@@ -169,70 +169,70 @@ Note the h, and that a (short) subtitle then follows, up to the full stop.
 Commentary can then begin, though it's better style to start on the
 line following.
 </span></pre>
-<p>A paragraph can be given one or more tags thus:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ ^"Tag1" ^"Tag2"
+    <p>A paragraph can be given one or more tags thus:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ ^"Tag1" ^"Tag2"
 Commentary begins here.
 
 @h Another Heading. ^"Tag1" ^"Tag2"
 Commentary begins here.
 </span></pre>
-<p>It is also possible to begin a paragraph without commentary or definitions,
-going straight into the code segment like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ =
+    <p>It is also possible to begin a paragraph without commentary or definitions,
+    going straight into the code segment like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ =
 	...
 </span></pre>
-<p>This is an abbreviation for:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@
+    <p>This is an abbreviation for:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@
 
 =
 	...
 </span></pre>
-<p>There's one last possibility: if the paragraph follows immediately after
-some code, or is the opening paragraph, then it can also begin like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@&lt;Named holon@&gt; =
+    <p>There's one last possibility: if the paragraph follows immediately after
+    some code, or is the opening paragraph, then it can also begin like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@&lt;Named holon@&gt; =
 	...
 </span></pre>
-<p>which, once again, makes a paragraph containing only code.</p>
-<p>Any definitions must be made after the commentary (and automatically end it). The
-simplest definitions are like preprocessor definitions in C:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@d TERM DEFINITION
+    <p>which, once again, makes a paragraph containing only code.</p>
+    <p>Any definitions must be made after the commentary (and automatically end it). The
+    simplest definitions are like preprocessor definitions in C:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@d TERM DEFINITION
 </span></pre>
-<p>The definition can run across multiple lines, though it usually does not.
-So, for example,</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@d NUMBER_TEST_RUNS 100
+    <p>The definition can run across multiple lines, though it usually does not.
+    So, for example,</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@d NUMBER_TEST_RUNS 100
 @d TEST_FUNCTION(name)
 	name(NUMBER_TEST_RUNS);
 </span></pre>
-<p><code>@define</code> can be used to spell out <code>@d</code>, though the abbreviation is more often used.
-A variation on this is:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@default TERM DEFINITION
+    <p><code>@define</code> can be used to spell out <code>@d</code>, though the abbreviation is more often used.
+    A variation on this is:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@default TERM DEFINITION
 </span></pre>
-<p>which only defines <code>TERM</code> if it hasn't already been defined.</p>
-<p>Finally, <code>@e</code> or <code>@enumerate</code> define an enumerated value. The rule here is that
-terms in a given &quot;family&quot; are given sequential values automatically. For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@e BLUE_COLOUR from 1
+    <p>which only defines <code>TERM</code> if it hasn't already been defined.</p>
+    <p>Finally, <code>@e</code> or <code>@enumerate</code> define an enumerated value. The rule here is that
+    terms in a given &quot;family&quot; are given sequential values automatically. For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@e BLUE_COLOUR from 1
 @e MAGENTA_COLOUR
 @e CRIMSON_COLOUR
 </span></pre>
-<p>defines these three terms with the values 1, 2, 3. The family resemblance is that
-they all end <code>_COLOUR</code>.</p>
-<p>Commentary or definitions then end automatically, and we go into the code segment
-of the paragraph, if either the &quot;nameless holon&quot; syntax is used — that is, an
-equals sign in column 1:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">=
+    <p>defines these three terms with the values 1, 2, 3. The family resemblance is that
+    they all end <code>_COLOUR</code>.</p>
+    <p>Commentary or definitions then end automatically, and we go into the code segment
+    of the paragraph, if either the &quot;nameless holon&quot; syntax is used — that is, an
+    equals sign in column 1:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">=
 ...
 </span></pre>
-<p>...or if the &quot;named holon&quot; syntax is used:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@&lt;Named holon@&gt; =
+    <p>...or if the &quot;named holon&quot; syntax is used:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@&lt;Named holon@&gt; =
 	...
 </span></pre>
-<p>As in <code>MarkdownCode</code>, holons can be continued:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@&lt;Previously defined holon@&gt; +=
+    <p>As in <code>MarkdownCode</code>, holons can be continued:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@&lt;Previously defined holon@&gt; +=
 	...
 </span></pre>
-<p>So for example here is a paragraph under a subheading, and which contains all
-three possible segments:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@h Example paragraph.
+    <p>So for example here is a paragraph under a subheading, and which contains all
+    three possible segments:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@h Example paragraph.
 This shows all three possible parts.
 
 @d ENDED_SAFELY 0
@@ -242,21 +242,21 @@ int main(int argc, char *argv[]) {
 	return ENDED_SAFELY;
 }
 </span></pre>
-<h2>Mildly deprecated syntaxes</h2>
-<p>Until 2026, webs written in this notation made heavy use of annotated forms of
-the equals-sign marker. For example, code to be tangled early could be written
-like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (early code)
+    <h2>Mildly deprecated syntaxes</h2>
+    <p>Until 2026, webs written in this notation made heavy use of annotated forms of
+    the equals-sign marker. For example, code to be tangled early could be written
+    like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (early code)
 </span></pre>
-<p>and similarly for <code>= (very early code)</code>, <code>= (late code)</code> and <code>= (very late code)</code>.
-While this is still implemented, its use is no longer recommended (it is now
-better to use holons marked as tangled early), and all instances have been
-withdrawn from the Inform code-base. The same goes for all of the other forms
-of <code>=</code> below, some of which did <em>not</em> introduce code but instead placed
-gadgets into the commentary. (This conflation of two different sorts of usage
-is one reason the syntax is now deprecated.)</p>
-<p>For example, this is a way to impose images:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (figure Wotsit.jpg)
+    <p>and similarly for <code>= (very early code)</code>, <code>= (late code)</code> and <code>= (very late code)</code>.
+    While this is still implemented, its use is no longer recommended (it is now
+    better to use holons marked as tangled early), and all instances have been
+    withdrawn from the Inform code-base. The same goes for all of the other forms
+    of <code>=</code> below, some of which did <em>not</em> introduce code but instead placed
+    gadgets into the commentary. (This conflation of two different sorts of usage
+    is one reason the syntax is now deprecated.)</p>
+    <p>For example, this is a way to impose images:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (figure Wotsit.jpg)
 
 = (figure Whatever.jpg at width 500)
 
@@ -264,73 +264,73 @@ is one reason the syntax is now deprecated.)</p>
 
 = (figure Whatever.jpg at 20 by 100)
 </span></pre>
-<p>All of these all be achieved with (more or less) regular Markdown just as easily:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![This is a doohickey.](Wotsit.jpg)
+    <p>All of these all be achieved with (more or less) regular Markdown just as easily:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">![This is a doohickey.](Wotsit.jpg)
 
 ![This is a rescaled doohickey.](Wotsit.jpg@20x100)
 </span></pre>
-<p>Similarly, there are some now-redundant syntaxes for incorporating blocks
-of quoted code which are not part of the program. This:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
+    <p>Similarly, there are some now-redundant syntaxes for incorporating blocks
+    of quoted code which are not part of the program. This:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
 
 = (text)
 int whatever(int x, char *y) {
 }
 =
 </span></pre>
-<p>(note the second <code>=</code>, used as an end-marker) is equivalent to an indented
-Markdown code extract, like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
+    <p>(note the second <code>=</code>, used as an end-marker) is equivalent to an indented
+    Markdown code extract, like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
 
 	int whatever(int x, char *y) {
 	}
 </span></pre>
-<p>or equally to a fenced Markdown code extract, like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
+    <p>or equally to a fenced Markdown code extract, like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
 
 ```
 int whatever(int x, char *y) {
 }
 ```
 </span></pre>
-<p>The material in the quotation is syntax-coloured following the conventions
-of the language used in the program of the current web. Those can be overridden
-by specifying a language with a fenced Markdown extract, thus:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
+    <p>The material in the quotation is syntax-coloured following the conventions
+    of the language used in the program of the current web. Those can be overridden
+    by specifying a language with a fenced Markdown extract, thus:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
 
 ``` ConsoleText
 $ inweb tangle countsort.py.md -to unexpected.py
 tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'
 ```
 </span></pre>
-<p>This is equivalent to the older notation:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
+    <p>This is equivalent to the older notation:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Consider the following code sample:
 
 = (text as ConsoleText)
 $ inweb tangle countsort.py.md -to unexpected.py
 tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'unexpected.py'
 =
 </span></pre>
-<p>Text was traditionally inserted from an external file with syntaxes like:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (text from FILE)
+    <p>Text was traditionally inserted from an external file with syntaxes like:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (text from FILE)
 
 = (text from FILE as code)
 
 = (text from FILE as LANGUAGE)
 </span></pre>
-<p>This should now be done thus:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![text](FILE)
+    <p>This should now be done thus:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">![text](FILE)
 
 ![text as LANGUAGE](FILE)
 </span></pre>
-<p>Downloads were likewise historically written like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (download alice.crt "certificate file")
+    <p>Downloads were likewise historically written like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (download alice.crt "certificate file")
 </span></pre>
-<p>but this is now preferred:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![download: certificate file](alice.crt)
+    <p>but this is now preferred:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">![download: certificate file](alice.crt)
 </span></pre>
-<p>Similarly:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (html fireworks.html)
+    <p>Similarly:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (html fireworks.html)
 = (audio SP014.mp3)
 = (video DW014.mp4)
 = (embedded YouTube video GR3aImy7dWw)
@@ -339,8 +339,8 @@ tangling web "Counting Sort" (Python program in MarkdownCode notation) to file '
 = (embedded Vimeo video 204519 at 400 by 300)
 = (embedded SoundCloud audio 42803139 at height 200)
 </span></pre>
-<p>would now be written:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">![HTML](fireworks.html)
+    <p>would now be written:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">![HTML](fireworks.html)
 ![audio](SP014.mp3)
 ![video](DW014.mp4)
 ![embedded YouTube video](GR3aImy7dWw?si=GZidlSyeX-BUFWJ8)
@@ -349,8 +349,8 @@ tangling web "Counting Sort" (Python program in MarkdownCode notation) to file '
 ![embedded Vimeo video at 400 by 300](204519)
 ![embedded SoundCloud audio at height 200](42803139)
 </span></pre>
-<p>Lastly, carousels used to be thus:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
+    <p>Lastly, carousels used to be thus:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (carousel "Royal Albert Hall, London: King Crimson's 50th Anniversary Concert")
 ![The Royal Albert Hall at night.](rah.jpg)
 = (carousel "Brighton Beach")
 ![Brighton beach by day.](brighton.jpg)
@@ -360,25 +360,25 @@ tangling web "Counting Sort" (Python program in MarkdownCode notation) to file '
 ![St Mark's Basilica.](venice.jpg)
 = (carousel end)
 </span></pre>
-<p>There is now no need for <code>= (carousel end)</code>, and the slides are instead
-written as a Markdown list. See <a href="1-cim.html" class="internal">Commentary in Markdown</a>. Captions like:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">= (carousel "Stage 2 - Developed tree" above)
+    <p>There is now no need for <code>= (carousel end)</code>, and the slides are instead
+    written as a Markdown list. See <a href="1-cim.html" class="internal">Commentary in Markdown</a>. Captions like:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">= (carousel "Stage 2 - Developed tree" above)
 </span></pre>
-<p>are now written:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">* (carousel "Stage 2 - Developed tree" captioned above)
+    <p>are now written:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">* (carousel "Stage 2 - Developed tree" captioned above)
 </span></pre>
-<p>Another syntax now deprecated is <code>&gt;&gt;</code> to introduce a block quotation, like so:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt;&gt; You sit on the veranda drinking tea and your ducklings swim on the pond,
+    <p>Another syntax now deprecated is <code>&gt;&gt;</code> to introduce a block quotation, like so:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt;&gt; You sit on the veranda drinking tea and your ducklings swim on the pond,
 and everything smells good... and there are gooseberries. (Anton Chekhov)
 </span></pre>
-<p>The standard Markdown syntax should now be used instead, with leading <code>&gt;</code> signs
-on each line:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; You sit on the veranda drinking tea and your ducklings swim on the pond,
+    <p>The standard Markdown syntax should now be used instead, with leading <code>&gt;</code> signs
+    on each line:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">&gt; You sit on the veranda drinking tea and your ducklings swim on the pond,
 &gt; and everything smells good... and there are gooseberries. (Anton Chekhov)
 </span></pre>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">About Notations</span><a href="4-an.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4<li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresscurrent"><span class="current-fullname-popup">InwebClassic Notation</span>in</li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">WEB and CWEB</span><a href="4-wac.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">About Notations</span><a href="4-an.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 4: Notations</span>4</li><li class="progresssection"><span class="fullname-popup">About Notations</span><a href="4-an.html">an</a></li><li class="progresscurrent"><span class="current-fullname-popup">InwebClassic Notation</span>in</li><li class="progresssection"><span class="fullname-popup">WEB and CWEB</span><a href="4-wac.html">wac</a></li><li class="progresssection"><span class="fullname-popup">Creating Notations</span><a href="4-cn.html">cn</a></li><li class="progresssection"><span class="fullname-popup">Showcasing Illiterate Programs</span><a href="4-sip.html">sip</a></li><li class="progresssection"><span class="fullname-popup">Summary of Notations</span><a href="4-son.html">son</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">WEB and CWEB</span><a href="4-wac.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

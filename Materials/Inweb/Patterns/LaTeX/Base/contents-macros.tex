@@ -1,0 +1,11 @@
+% `contents-macros.tex`
+%
+% Macros not used by default, but which can be employed by a user-supplied set
+% of preliminaries
+%
+\def\leaderfill{\leaders\hbox to 2mm{\hss.\hss}\hfill}
+%
+\def\inwebcontentsc#1#2{\bigbreak\hfil\vbox{\noindent\hsize 16cm\inweblinktoanchor{#2}{\textbf{#1}}\penalty0\hbox{}\nobreak\leaderfill \inweblinktoanchor{#2}{\pageref{item:#2}}}\hfil\medskip}
+%
+\def\inwebcontentss#1#2{\hfil\vbox{\hsize 16cm \inweblinktoanchor{#2}{#1}\penalty0\hbox{}\nobreak\leaderfill \inweblinktoanchor{#2}{\pageref{item:#2}}}\hfil\smallskip}
+%

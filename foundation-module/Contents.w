@@ -59,6 +59,10 @@ Chapter 5: Generating Websites
 	Markdown Phase I
 	Markdown Phase II
 	Markdown Rendering
+	Markdown to HTML
+	Markdown to TeX
+	Markdown to LaTeX
+	Markdown to Plain Text
 	Markdown Variations
 	Inform-Flavoured Markdown
 	Epub Ebooks

@@ -132,11 +132,6 @@ pathname *Pathnames::path_to_inweb(void) {
 	#endif
 }
 
-pathname *Pathnames::path_to_inweb_patterns(void) {
-	pathname *path_to_inweb = Pathnames::path_to_inweb();
-	return Pathnames::down(path_to_inweb, I"Patterns");
-}
-
 pathname *Pathnames::path_to_inweb_materials(void) {
 	pathname *path_to_inweb = Pathnames::path_to_inweb();
 	return Pathnames::down(path_to_inweb, I"Materials");

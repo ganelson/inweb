@@ -78,14 +78,16 @@ void IfdefTags::close_ifdefs(OUTPUT_STREAM, ls_paragraph *par) {
 }
 
 @h Effect on weaving.
+This provides the text for an endnote to a paragraph affected by conditional
+compilation; for a paragraph not thus affected, it writes nothing.
 
 =
-void IfdefTags::show_endnote_on_ifdefs(heterogeneous_tree *tree, tree_node *ap, ls_paragraph *par) {
+void IfdefTags::show_endnote_on_ifdefs(OUTPUT_STREAM, ls_paragraph *par) {
 	int d = 0, sense = 1;
 	@<Show ifdef endnoting@>;
 	sense = -1;
 	@<Show ifdef endnoting@>;
-	if (d > 0) TextWeaver::commentary_text(tree, ap, I".");
+	if (d > 0) WRITE(".");
 }
 
 @<Show ifdef endnoting@> =
@@ -98,22 +100,19 @@ void IfdefTags::show_endnote_on_ifdefs(heterogeneous_tree *tree, tree_node *ap, 
 				IfdefTags::conditional_identifier(identifier, pt->the_tag);
 				if (c++ == 0) {
 					if (d++ == 0) {
-						tree_node *E = WeaveTree::endnote(tree);
-						Trees::make_child(E, ap); ap = E;
-						TextWeaver::commentary_text(tree, ap, I"This paragraph is used only if ");
+						WRITE("This paragraph is used only if ");
 					} else {
-						TextWeaver::commentary_text(tree, ap, I" and if ");
+						WRITE(" and if ");
 					}
 				} else {
-					TextWeaver::commentary_text(tree, ap, I" and ");
+					WRITE(" and ");
 				}
-				TextWeaver::commentary_text(tree, ap, identifier);
+				WRITE("%S", identifier);
 			}
 		if (c > 0) {
-			if (c == 1) TextWeaver::commentary_text(tree, ap, I" is");
-			else TextWeaver::commentary_text(tree, ap, I" are");
-			if (sense == 1) TextWeaver::commentary_text(tree, ap, I" defined");
-			else TextWeaver::commentary_text(tree, ap, I" undefined");
+			if (c == 1) WRITE(" is");
+			else WRITE(" are");
+			if (sense == 1) WRITE(" defined");
+			else WRITE(" undefined");
 		}
 	}
-

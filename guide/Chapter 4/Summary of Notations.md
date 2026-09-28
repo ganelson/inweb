@@ -96,7 +96,7 @@ condition                    | holds provided
 `on first line`              | at the top of any file in the literate source
 `on first line of only file` | at the top of a single-file web (and never in a multi-file web)
 `following title`            | in lines following `title`
-`in extract context`         | previous line was code, or a text extract, or a named holon declaration, or a nameless holon marker
+`in extract context`         | previous line was code, or a text extract, or a holon declaration or marker
 `in holon context`           | `in extract context` where the extract is a holon
 `in textextract context`     | `in extract context` where the extract is not a holon
 `in definition context`      | previous line was `definition` or `defaultdefinition` or `definitioncontinued`
@@ -155,11 +155,6 @@ into `MATERIAL`.
 
 -- -- --
 
-`quotation` means a displayed (inset) quotation, whose text should be put
-into `MATERIAL`.
-
--- -- --
-
 `textextract` should be used for a line which indicates that _subsequent_ lines
 are part of a displayed piece of text or code (but which are _not_ part of the
 program being tangled, and are not functional). `MATERIAL` can optionally be set
@@ -183,10 +178,9 @@ an external file whose filename is in `MATERIAL`.
 not containing any of the content) of a `textextract`, `textascodeextract`,
 or `textextractto` extract.
 
-Either or both of these options can also be applied to `textextract`,
-`textascodeextract`, or `textextractto`:
+The following option can also be applied to `textextract`, `textascodeextract`,
+or `textextractto`:
 
-- `hyperlinkedoption` causes URLs in the extract to be woven as live links;
 - `undisplayedoption` causes the extract to be woven without the inset box or
   similar framing on the page — the effect is a much barer look.
 

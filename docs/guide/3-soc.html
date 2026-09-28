@@ -49,44 +49,44 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#3">Chapter 3: Colonies of Webs</a></li><li><b>Summary of Colonies</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> This has been a lengthy tour, but the basic point should be clear enough: except
-perhaps for the simplest of one-program websites, every endeavour with Inweb
-will likely benefit from being organised into a colony. To sum up:</p>
-<ul>
-<li>A colony has 1 or more members, each declared by <code>member:</code>, unless it is
-from a different colony entirely, in which case <code>external:</code>.</li>
-<li>Each member has a <em>name</em>, and can optionally supply one or more of:
-<ul>
-<li>a <em>location</em> using <code>at</code>,</li>
-<li>a <em>website path</em> using <code>to</code>,</li>
-<li>a choice of <em>navigation links</em> using <code>navigation</code>,</li>
-<li>a choice of <em>breadcrumb links</em> using <code>breadcrumbs</code>, and/or</li>
-<li>a weaving <em>pattern</em> using <code>pattern</code>.</li>
-</ul>
-</li>
-<li>A line reading <code>default:</code> and then some of these clauses sets some default
-values for <code>navigation</code>, <code>breadcrumbs</code> and/or <code>pattern</code> which apply to
-subsequent members until cancelled by a change of <code>default:</code>.</li>
-<li>A colony can also contain declarations of:
-<ul>
-<li>single pages of commentary with <code>Page &quot;name&quot; { ... }</code>,</li>
-<li>contents pages for a whole web with <code>Web &quot;name&quot; { ... }</code>,</li>
-<li>language declarations with <code>Language &quot;name&quot; { ... }</code>,</li>
-<li>notation declarations with <code>Notation &quot;name&quot; { ... }</code>, and/or</li>
-<li>conventions to apply to colony members with <code>Conventions { ... }</code>.</li>
-</ul>
-</li>
-<li>The command <code>inweb map COLONY</code> shows a sitemap, and <code>inweb map -fuller COLONY</code>
-a more extensive one. <code>COLONY</code> need not be specified if the current working
-directory contains the relevant <code>colony.inweb</code> file.</li>
-<li>Other Inweb commands can refer to members of a colony as <code>COLONY::MEMBER</code> or,
-if again Inweb can see the colony in the cwd, simply <code>::MEMBER</code>.</li>
-<li><code>inweb weave</code> and <code>inweb tangle</code> can be applied to a colony instead of a web,
-in which case they act on each (internal) member of the colony in turn.</li>
-</ul>
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>This has been a lengthy tour, but the basic point should be clear enough: except
+    perhaps for the simplest of one-program websites, every endeavour with Inweb
+    will likely benefit from being organised into a colony. To sum up:</p>
+    <ul>
+    <li>A colony has 1 or more members, each declared by <code>member:</code>, unless it is
+    from a different colony entirely, in which case <code>external:</code>.</li>
+    <li>Each member has a <em>name</em>, and can optionally supply one or more of:
+    <ul>
+    <li>a <em>location</em> using <code>at</code>,</li>
+    <li>a <em>website path</em> using <code>to</code>,</li>
+    <li>a choice of <em>navigation links</em> using <code>navigation</code>,</li>
+    <li>a choice of <em>breadcrumb links</em> using <code>breadcrumbs</code>, and/or</li>
+    <li>a weaving <em>pattern</em> using <code>pattern</code>.</li>
+    </ul>
+    </li>
+    <li>A line reading <code>default:</code> and then some of these clauses sets some default
+    values for <code>navigation</code>, <code>breadcrumbs</code> and/or <code>pattern</code> which apply to
+    subsequent members until cancelled by a change of <code>default:</code>.</li>
+    <li>A colony can also contain declarations of:
+    <ul>
+    <li>single pages of commentary with <code>Page &quot;name&quot; { ... }</code>,</li>
+    <li>contents pages for a whole web with <code>Web &quot;name&quot; { ... }</code>,</li>
+    <li>language declarations with <code>Language &quot;name&quot; { ... }</code>,</li>
+    <li>notation declarations with <code>Notation &quot;name&quot; { ... }</code>, and/or</li>
+    <li>conventions to apply to colony members with <code>Conventions { ... }</code>.</li>
+    </ul>
+    </li>
+    <li>The command <code>inweb map COLONY</code> shows a sitemap, and <code>inweb map -fuller COLONY</code>
+    a more extensive one. <code>COLONY</code> need not be specified if the current working
+    directory contains the relevant <code>colony.inweb</code> file.</li>
+    <li>Other Inweb commands can refer to members of a colony as <code>COLONY::MEMBER</code> or,
+    if again Inweb can see the colony in the cwd, simply <code>::MEMBER</code>.</li>
+    <li><code>inweb weave</code> and <code>inweb tangle</code> can be applied to a colony instead of a web,
+    in which case they act on each (internal) member of the colony in turn.</li>
+    </ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Sitemaps</span><a href="3-stm.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 3: Colonies of Webs</span>3<li class="progresssection"><span class="fullname-popup">Colonies</span><a href="3-cln.html">cln</a></li><li class="progresssection"><span class="fullname-popup">Sitemaps</span><a href="3-stm.html">stm</a></li><li class="progresscurrent"><span class="current-fullname-popup">Summary of Colonies</span>soc</li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">About Notations</span><a href="4-an.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Sitemaps</span><a href="3-stm.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 3: Colonies of Webs</span>3</li><li class="progresssection"><span class="fullname-popup">Colonies</span><a href="3-cln.html">cln</a></li><li class="progresssection"><span class="fullname-popup">Sitemaps</span><a href="3-stm.html">stm</a></li><li class="progresscurrent"><span class="current-fullname-popup">Summary of Colonies</span>soc</li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">About Notations</span><a href="4-an.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

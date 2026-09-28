@@ -178,8 +178,8 @@ with them except when declaring a `Web` or `Page` inside a `Colony`.
 
 type          | defines                                         | can contain
 ------------- | ----------------------------------------------- | ----------------------------------------
-`Colony`      | collection of related webs                      | anything but a `Colony` or `Pattern`
-`Web`         | contents list and book data for a large web     | anything but a `Colony`, `Web`, `Page` or `Pattern`
+`Colony`      | collection of related webs                      | anything but a `Colony`
+`Web`         | contents list and book data for a large web     | anything but a `Colony`, `Web`, or `Page`
 `Page`        | text of a single-page web with no contents list | only a `Conventions`
 `Notation`    | notation for writing webs                       | only a `Conventions`
 `Language`    | details of a programming language               | only a `Conventions`

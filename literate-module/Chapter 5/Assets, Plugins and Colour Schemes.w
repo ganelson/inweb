@@ -310,6 +310,12 @@ void Assets::parse_disposition(asset_disposition *D, text_stream *cmd, text_file
 	} else if (Str::eq(cmd, I"collate to search box")) {
 		D->method = COLLATE_ASSET_METHOD;
 		D->collate_to = SEARCH_BOX_WEAVEINSCRIPTION;
+	} else if (Str::eq(cmd, I"collate to document")) {
+		D->method = COLLATE_ASSET_METHOD;
+		D->collate_to = DOCUMENT_WEAVEINSCRIPTION;
+	} else if (Str::eq(cmd, I"collate before document")) {
+		D->method = COLLATE_ASSET_METHOD;
+		D->collate_to = PRE_DOCUMENT_WEAVEINSCRIPTION;
 	} else if (Str::eq(cmd, I"embed")) {
 		D->next_is_pre = TRUE;
 	} else if (Str::eq(cmd, I"prefix")) {
@@ -356,6 +362,8 @@ locations in the woven output:
 
 @e HEAD_WEAVEINSCRIPTION from 0
 @e BODY_WEAVEINSCRIPTION
+@e DOCUMENT_WEAVEINSCRIPTION
+@e PRE_DOCUMENT_WEAVEINSCRIPTION
 @e SEARCH_BOX_WEAVEINSCRIPTION
 
 @ This is called by //Patterns// in response to `assets: EXT CMD` commands. The
@@ -466,12 +474,11 @@ pathname *Assets::dispose_of_asset(OUTPUT_STREAM, asset_disposition *D, filename
 				Errors::fatal_with_file("unable to write tangled file", F);
 			Assets::incorporate_search_data(&sd_S, F, wv->weave_web);
 			STREAM_CLOSE(&sd_S);
-			result = H;
 		} else {
 			Shell::copy(F, H, "");
-			result = H;
 		}
 	}
+	result = H;
 	if (WeavingDetails::get_as_ebook(wv->weave_web)) {
 		filename *rel = Filenames::in(NULL, Filenames::get_leafname(F));
 		Epub::note_image(WeavingDetails::get_as_ebook(wv->weave_web), rel);
@@ -634,7 +641,7 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 	DISCARD_TEXT(text)
 
 @<Crudely weave a Markdown commentary chunk@> =
-	MDRenderer::recurse(OUT, NULL, chunk->as_markdown, SUPERPLAIN_MDRMODE, WebNotation::commentary_variation(sd->W));
+	MDRender::render_as_plain_text(OUT, WebNotation::commentary_variation(sd->W), chunk->as_markdown);
 	WRITE("\n");
 
 @<Crudely weave a holon@> =
@@ -653,7 +660,7 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 
 @<Crudely weave a named holon usage@> =
 	WRITE("{{");
-	MDRenderer::recurse(OUT, NULL, hs->expansion->holon_name_as_markdown, SUPERPLAIN_MDRMODE, WebNotation::commentary_variation(sd->W));
+	MDRender::render_as_plain_text(OUT, WebNotation::commentary_variation(sd->W), hs->expansion->holon_name_as_markdown);
 	WRITE("}}");
 
 @<Crudely weave a tangler command@> =
@@ -667,7 +674,7 @@ void Assets::incorporater(text_stream *line, text_file_position *tfp, void *X) {
 
 @<Crudely weave a comment@> =
 	if (hs->comment_as_markdown) {
-		MDRenderer::recurse(OUT, NULL, hs->comment_as_markdown, SUPERPLAIN_MDRMODE, WebNotation::commentary_variation(sd->W));
+		MDRender::render_as_plain_text(OUT, WebNotation::commentary_variation(sd->W), hs->comment_as_markdown);
 	} else {
 		WRITE("%S%S%S", hs->texts[1], hs->texts[0], hs->texts[2]);
 	}

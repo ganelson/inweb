@@ -1,0 +1,18 @@
+\makeatletter
+\newcommand{\globalcolor}[1]{%
+  \color{#1}\global\let\default@color\current@color
+}
+\makeatother
+\def\definitionsyntaxcolouring#1{\globalcolor{inwebdefinitioncolour}}
+\def\functionsyntaxcolouring#1{\globalcolor{inwebfunctioncolour}}
+\def\identifiersyntaxcolouring#1{\globalcolor{inwebidentifiercolour}}
+\def\elementsyntaxcolouring#1{\globalcolor{inwebelementcolour}}
+\def\reservedsyntaxcolouring#1{\globalcolor{inwebreservedcolour}}
+\def\stringsyntaxcolouring#1{\globalcolor{inwebstringcolour}}
+\def\charactersyntaxcolouring#1{\globalcolor{inwebcharactercolour}}
+\def\typesyntaxcolouring#1{\globalcolor{inwebtypecolour}}
+\def\constantsyntaxcolouring#1{\globalcolor{inwebconstantcolour}}
+\def\plainsyntaxcolouring#1{\globalcolor{inwebplaincolour}}
+\def\extractsyntaxcolouring#1{\globalcolor{inwebextractcolour}}
+\def\commentsyntaxcolouring#1{\globalcolor{inwebcommentcolour}}
+\def\endcolouring#1{\globalcolor{inwebplaincolour}}

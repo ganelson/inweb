@@ -1,0 +1,22 @@
+% `heading-macros.tex`
+%
+% This flag is used to control whether to indent a paragraph: immediately after a
+% heading, no.
+\newif\iffollowsheading
+%
+% `\weavesection` and its heavier friends are Inweb sections, the grander the
+% more `s` suffixes they have: untitled paragraph, titled paragraph, section, chapter.
+%
+\def\weavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1.}\quad\markboth{#3}{#3}}
+\def\weavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1. #2.}\quad\markboth{#3}{#3}\followsheadingtrue}
+\def\weavesectionss#1#2#3#4#5{\par\noindent\sectiontitletext{#2\hfill #5}\bigskip\thispagestyle{empty}\markboth{#3}{#3}\followsheadingtrue}
+\def\weavesectionsss#1#2#3#4#5{\par\noindent\chaptertitletext{#2}\vskip 0.5in\thispagestyle{empty}\followsheadingtrue}
+%
+% The `t` variants are for themed extracts.
+\def\tweavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1.}\quad}
+\def\tweavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1. #2.}\quad\followsheadingtrue}
+%
+% The `ns` variants have less vertical spacing before them.
+\def\nsweavesection#1#2#3#4#5{\noindent{\bf #4#1.}\mark{#3}\quad}
+\def\nsweavesections#1#2#3#4#5{\noindent{\bf #4#1. #2.}\mark{#3}\quad\followsheadingtrue}
+%

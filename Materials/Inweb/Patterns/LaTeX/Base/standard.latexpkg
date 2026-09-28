@@ -1,0 +1,19 @@
+% `standard.latexpkg`
+%
+% Unlike the `.tex` files in this pattern, `.latexpkg` files are collated into
+% the LaTeX source after the document class has been set, but before the document
+% has been opened. This is the correct place for `\usepackage` declarations.
+%
+\usepackage{graphicx}
+%
+\usepackage{multirow}
+\usepackage{longtable}
+\newcommand{\inwebltpreamble}{}
+%
+\usepackage{xcolor}
+%
+\usepackage{paralist}
+%
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue}
+%

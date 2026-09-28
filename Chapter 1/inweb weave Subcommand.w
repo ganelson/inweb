@@ -12,6 +12,7 @@ The inweb weave subcommand weaves a web.
 @e ONLY_CLSW
 @e WEAVE_TAG_CLSW
 @e CREATING_CLSW
+@e COMMANDS_CLSW
 
 =
 void InwebWeave::cli(void) {
@@ -43,7 +44,9 @@ void InwebWeave::cli(void) {
 		U"set weave pattern to X (default is 'HTML')");
 	CommandLine::declare_boolean_switch(CREATING_CLSW, U"creating", 1,
 		U"create directories as needed to put the woven output into", FALSE);
-		
+	CommandLine::declare_boolean_switch(COMMANDS_CLSW, U"commands", 1,
+		U"run any tidy-up shell commands included in the pattern", TRUE);
+
 	CommandLine::begin_group(WEAVING_SELECTION_CLSG,
 		I"for weaving only part of a web, not the whole thing");	
 	CommandLine::declare_switch(ONLY_CLSW, U"only", 2,
@@ -63,6 +66,7 @@ typedef struct inweb_weave_settings {
 	struct text_stream *tag_setting;
 	struct text_stream *pattern_name;
 	int creating_setting;
+	int run_commands;
 } inweb_weave_settings;
 
 void InwebWeave::initialise(inweb_weave_settings *iws) {
@@ -71,6 +75,7 @@ void InwebWeave::initialise(inweb_weave_settings *iws) {
 	iws->tag_setting = Str::new();
 	iws->pattern_name = I"";
 	iws->creating_setting = FALSE;
+	iws->run_commands = TRUE;
 }
 
 int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *arg) {
@@ -81,6 +86,7 @@ int InwebWeave::switch(inweb_instructions *ins, int id, int val, text_stream *ar
 		case ONLY_CLSW: Configuration::set_range(&(iws->subset), arg, TRUE); return TRUE;
 		case WEAVE_TAG_CLSW: iws->tag_setting = Str::duplicate(arg); return TRUE;
 		case CREATING_CLSW: iws->creating_setting = val; return TRUE;
+		case COMMANDS_CLSW: iws->run_commands = val; return TRUE;
 	}
 	return FALSE;
 }
@@ -218,7 +224,8 @@ void InwebWeave::run_on(inweb_weave_settings *iws, ls_colony *C, ls_colony_membe
 	if (weave_into_setting) Swarm::cancel_redirection(W);
 
 	Swarm::weave(C, CM, W, weave_to_setting, weave_into_setting, pattern,
-		iws->subset.swarm_mode, iws->subset.range, iws->tag_setting, verbose_mode, silent_mode);
+		iws->subset.swarm_mode, iws->subset.range, iws->tag_setting, verbose_mode,
+		silent_mode, iws->run_commands);
 
 	if (weave_into_setting) {
 		if (C) Colonies::set_redirect(C, NULL);

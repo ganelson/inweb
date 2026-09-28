@@ -1,4 +1,6 @@
 Title: The Inweb Guide
+Author: Graham Nelson
+Version Number: 9.0
 Notation: Markdown
 
 Chapter 1: Smaller Webs
@@ -41,7 +43,8 @@ Chapter 5: Languages
 
 Chapter 6: Patterns
 	About Patterns
-	Creating Patterns
+	Patterns for Weaving Websites
+	Patterns for Weaving PDFs
 	Collation
 	Asset Management
 	The Post-Weave

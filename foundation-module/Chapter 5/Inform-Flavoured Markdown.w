@@ -55,8 +55,8 @@ markdown_item *InformFlavouredMarkdown::error_item(text_stream *text) {
 	return E;
 }
 
-int InformFlavouredMarkdown::render_errors(markdown_feature *feature, text_stream *OUT,
-	markdown_item *md, int mode) {
+int InformFlavouredMarkdown::render_errors(markdown_feature *feature, markdown_render *rdr,
+	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_ERROR_MARKER_MIT) {
 		HTML_OPEN_WITH("p", "class=\"documentationerrorbox\"");
 		HTML::begin_span(OUT, I"documentationerror");
@@ -260,7 +260,7 @@ void InformFlavouredMarkdown::find_s(markdown_item *md, text_stream *name, markd
 
 @ =
 int InformFlavouredMarkdown::render_descriptive_headings(markdown_feature *feature,
-	text_stream *OUT, markdown_item *md, int mode) {
+	markdown_render *rdr, text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == HEADING_MIT) {
 		int L = Markdown::get_heading_level(md);
 		switch (L) {
@@ -283,7 +283,7 @@ int InformFlavouredMarkdown::render_descriptive_headings(markdown_feature *featu
 		}
 		DISCARD_TEXT(anchor)
 		for (markdown_item *ch = md->down; ch; ch = ch->next)
-			Markdown::render_extended(OUT, ch, InformFlavouredMarkdown::variation());
+			MDRender::render(OUT, rdr, ch);
 		HTML_CLOSE("span");
 		switch (L) {
 			case 1: HTML_CLOSE("h2"); break;
@@ -463,13 +463,13 @@ CSS is now much more reliable.
 
 =
 int InformFlavouredMarkdown::EE_render(markdown_feature *feature,
-	text_stream *OUT, markdown_item *md, int mode) {
+	markdown_render *rdr, text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == INFORM_EXAMPLE_HEADING_MIT) {
 		IFM_example *E = RETRIEVE_POINTER_IFM_example(md->user_state);
 		InformFlavouredMarkdown::render_example_heading(OUT, E, md);
 		if (mode & EXAMPLE_BODIES_MDRMODE)
 			for (markdown_item *ch=md->down; ch; ch = ch->next)
-				MDRenderer::recurse(OUT, NULL, ch, mode, InformFlavouredMarkdown::variation());
+				MDRender::render_in_mode(OUT, rdr, ch, mode);
 		return TRUE;
 	}
 	return FALSE;
@@ -705,12 +705,12 @@ void InformFlavouredMarkdown::PD_r(markdown_item *md, markdown_item **last_secti
 
 =
 int unique_defn_anchor_count = 0;
-int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *OUT,
-	markdown_item *md, int mode) {
+int InformFlavouredMarkdown::PD_render(markdown_feature *feature, markdown_render *rdr,
+	text_stream *OUT, markdown_item *md, int mode) {
 	if ((md->type == BLOCK_QUOTE_MIT) && (md->down) && (md->down->type == PHRASE_HEADER_MIT)) {
 		HTML_OPEN_WITH("div", "class=\"definition\"");
 		for (markdown_item *ch = md->down; ch; ch = ch->next)
-			Markdown::render_extended(OUT, ch, InformFlavouredMarkdown::variation());
+			MDRender::render(OUT, rdr, ch);
 		HTML_CLOSE("div");
 		return TRUE;
 	}
@@ -723,7 +723,7 @@ int InformFlavouredMarkdown::PD_render(markdown_feature *feature, text_stream *O
 		HTML_OPEN_WITH("p", "class=\"defnprototype\"");
 		HTML_OPEN_WITH("a", "id=\"defn%d\"", unique_defn_anchor_count);
 		HTML_CLOSE("a");
-		MDRenderer::stream(OUT, md->stashed, mode);
+		MDRender::stream(OUT, rdr, md->stashed, mode);
 		HTML_CLOSE("p");
 		HTML::comment(OUT, I"END PHRASE");
 		return TRUE;
@@ -844,14 +844,14 @@ void InformFlavouredMarkdown::set_gatekeeper_function(int (gatekeeper)(text_stre
 	IFM_gatekeeper = gatekeeper;
 }
 
-int InformFlavouredMarkdown::PG_render(markdown_feature *feature, text_stream *OUT,
-	markdown_item *md, int mode) {
+int InformFlavouredMarkdown::PG_render(markdown_feature *feature, markdown_render *rdr,
+	text_stream *OUT, markdown_item *md, int mode) {
 	if (md->type == GATE_MIT) {
 		int decision = FALSE;
 		if (IFM_gatekeeper) decision = IFM_gatekeeper(md->stashed);
 		if (md->details == FALSE) decision = (decision)?FALSE:TRUE;
 		if (decision)
-			Markdown::render_extended(OUT, md->down, InformFlavouredMarkdown::variation());
+			MDRender::render(OUT, rdr, md->down);
 		return TRUE;
 	}
 	return FALSE;
@@ -871,8 +871,8 @@ int InformFlavouredMarkdown::PG_render(markdown_feature *feature, text_stream *O
 
 @ =
 int unique_i7_code_anchor_count = 0;
-int InformFlavouredMarkdown::SC_render(markdown_feature *feature, text_stream *OUT,
-	markdown_item *md, int mode) {
+int InformFlavouredMarkdown::SC_render(markdown_feature *feature, markdown_render *rdr,
+	text_stream *OUT, markdown_item *md, int mode) {
 	switch (md->type) {
 		case CODE_MIT:       @<Render a code snippet@>; return TRUE;
 		case CODE_BLOCK_MIT: @<Render a code block@>;   return TRUE;
@@ -885,7 +885,7 @@ twice or more as being in some other more conventional programming language.
 But this affects only the CSS class applied to it.
 
 @<Render a code snippet@> =
-	if (mode & TAGS_MDRMODE) {
+	if ((mode & ALT_TEXT_MDRMODE) == 0) {
 		if (Markdown::get_backtick_count(md) == 1) {
 			HTML_OPEN_WITH("code", "class=\"inlinesourcetext\"");
 		} else if (Markdown::get_backtick_count(md) == 2) {
@@ -906,8 +906,8 @@ But this affects only the CSS class applied to it.
 	}
 	mode = mode & (~ESCAPES_MDRMODE);
 	mode = mode & (~ENTITIES_MDRMODE);
-	MDRenderer::slice(OUT, md, mode);
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
+	MDRender::slice(OUT, rdr, md, mode);
+	if ((mode & ALT_TEXT_MDRMODE) == 0) HTML_CLOSE("code");
 
 @ As is customary in Markdown, the first word of the info string on a code
 block (if there is one) names the language in use.
@@ -923,7 +923,7 @@ block (if there is one) names the language in use.
 	if (Str::len(language_text) > 0) {
 		md->sliced_from = language_text;
 		md->from = 0; md->to = Str::len(language_text) - 1;
-		MDRenderer::slice(language, md, mode | ENTITIES_MDRMODE);
+		MDRender::slice(language, rdr, md, mode | ENTITIES_MDRMODE);
 	}
 	@<Decide on a language if none was supplied@>;
 	#ifdef LITERATE_MODULE
@@ -1105,28 +1105,24 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	HTML::begin_span(OUT, I"indexdullblue");
 
 @<Render as problem message@> =
-	if (mode & TAGS_MDRMODE)
-		HTML_OPEN_WITH("div", "class=\"extract-problems\"");
-	if (mode & TAGS_MDRMODE) HTML_OPEN("blockquote");
-	for (int k=0; k<Str::len(md->stashed); k++)
-		MDRenderer::char(OUT, Str::get_at(md->stashed, k), mode);
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("blockquote");
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("div");
+	HTML_OPEN_WITH("div", "class=\"extract-problems\"");
+	HTML_OPEN("blockquote");
+	MDRender::stream(OUT, rdr, md->stashed, mode);
+	HTML_CLOSE("blockquote");
+	HTML_CLOSE("div");
 
 @<Render as some other programming language content@> =
 	programming_language *pl = NULL;
 	if (Str::len(language) > 0) {
-		if (mode & TAGS_MDRMODE)
-			HTML_OPEN_WITH("div", "class=\"extract-%S\"", language);
+		HTML_OPEN_WITH("div", "class=\"extract-%S\"", language);
 	}
-	if (mode & TAGS_MDRMODE) HTML_OPEN("pre");
+	HTML_OPEN("pre");
 	if (Str::len(language) > 0) {
-		if (mode & TAGS_MDRMODE)
-			HTML_OPEN_WITH("code", "class=\"language-%S\"", language);
+		HTML_OPEN_WITH("code", "class=\"language-%S\"", language);
 		pl = Languages::find(NULL, language);
 		if (pl == NULL) LOG("Unable to find language <%S>\n", language);
 	} else {
-		if (mode & TAGS_MDRMODE) HTML_OPEN("code");
+		HTML_OPEN("code");
 	}
 
 	Painter::reset_syntax_colouring(pl);
@@ -1147,18 +1143,17 @@ and this is fiddly but elementary in the usual way of HTML tables:
 	}
 	DISCARD_TEXT(line)
 	DISCARD_TEXT(line_colouring)
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("code");
-	if (mode & TAGS_MDRMODE) HTML_CLOSE("pre");
+	HTML_CLOSE("code");
+	HTML_CLOSE("pre");
 	if (Str::len(language) > 0) {
-		if (mode & TAGS_MDRMODE) HTML_CLOSE("div");
+		HTML_CLOSE("div");
 	}
 
 @<Render line as code@> =
 	if (pl) Painter::syntax_colour(pl, NULL, line, line_colouring, FALSE, TRUE);
 	InformFlavouredMarkdown::syntax_coloured_code(OUT, pl, line, line_colouring,
 		0, Str::len(line), mode);
-	if (mode & TAGS_MDRMODE) WRITE("<br>"); else WRITE(" ");
-
+	WRITE("<br>");
 
 @ =
 #ifdef LITERATE_MODULE
@@ -1178,7 +1173,7 @@ void InformFlavouredMarkdown::syntax_coloured_code(OUTPUT_STREAM,
 			HTML_OPEN_WITH("span", "class=\"%S\"", span_class);
 			current_col = col;
 		}
-		MDRenderer::char(OUT, c, mode);
+		MDRenderHTML::char(OUT, c, mode);
 	}
 	if (current_col) HTML_CLOSE("span");
 }
@@ -1191,6 +1186,7 @@ This utility function parses and renders short inline content only:
 void InformFlavouredMarkdown::render_text(OUTPUT_STREAM, text_stream *text) {
 	markdown_item *md = Markdown::parse_inline(text);
 	HTML_OPEN_WITH("span", "class=\"markdowncontent\"");
-	Markdown::render_extended(OUT, md, InformFlavouredMarkdown::variation());
+	markdown_render rdr = MDRender::context_free_HTML(InformFlavouredMarkdown::variation());
+	MDRender::render(OUT, &rdr, md);
 	HTML_CLOSE("span");
 }

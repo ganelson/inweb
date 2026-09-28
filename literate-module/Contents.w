@@ -61,15 +61,15 @@ Chapter 5: Weaving
 	Patterns
 	Assets, Plugins and Colour Schemes
 	The Collater
-	The Weaver
-	The Weaver of Text
 	Weave Tree
+	The Weaver
 	Format Methods
 	Plain Text Format
 	TeX Format
-	HTML Formats
+	LaTeX Format
+	HTML Format
 	Debugging Format
-	TeX Utilities
+	TeX Post-Processing
 
 Chapter 6: Project Management
 "Additional features for managing larger webs as repositories."

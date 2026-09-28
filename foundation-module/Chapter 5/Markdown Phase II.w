@@ -1672,7 +1672,8 @@ than the original, it does at least terminate.
 		WRITE("Option %d is to fragment thus:\n", no_options);
 		Markdown::debug_subtree(STDOUT, option);
 		WRITE("Resulting in: ");
-		Markdown::render_extended(STDOUT, option, variation);
+		markdown_render rdr = MDRender::context_free_HTML(variation);
+		MDRender::render(STDOUT, &rdr, option);
 		WRITE("\nWhich scores %d penalty points\n", MDInlineParser::penalty(option));
 	}
 

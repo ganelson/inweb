@@ -47,6 +47,7 @@ This must be performed very early on, before any weaving takes place.
 void WeavingFormats::create_weave_formats(void) {
 	DebuggingWeaving::create();
 	TeXWeaving::create();
+	LaTeXWeaving::create();
 	PlainTextWeaving::create();
 	HTMLWeaving::create();
 }
@@ -146,26 +147,6 @@ void WeavingFormats::render_to(text_stream *OUT, heterogeneous_tree *tree, filen
 	DISCARD_TEXT(template)
 }
 
-@ The weaver has special typographical support for the stand-alone Inform
-document of Preform grammar, and this is the hook for it. Most formats
-should ignore it.
-
-@e PREFORM_DOCUMENT_FOR_MTID
-
-=
-INT_METHOD_TYPE(PREFORM_DOCUMENT_FOR_MTID, weave_format *wf, text_stream *OUT,
-	weave_order *wv, ls_web *W, ls_chapter *C, ls_section *S, ls_line *lst,
-	text_stream *matter, text_stream *concluding_comment)
-int WeavingFormats::preform_document(OUTPUT_STREAM, weave_order *wv, ls_web *W,
-	ls_chapter *C, ls_section *S, ls_line *lst, text_stream *matter,
-	text_stream *concluding_comment) {
-	weave_format *wf = wv->format;
-	int rv = FALSE;
-	INT_METHOD_CALL(rv, wf, PREFORM_DOCUMENT_FOR_MTID, OUT, wv, W, C, S, lst, matter,
-		concluding_comment);
-	return rv;
-}
-	
 @h Post-processing.
 Post-processing is now largely done by commands in the pattern file, rather
 than here, but we retain method calls to enable formats to do some idiosyncratic
@@ -188,7 +169,7 @@ handled by //Patterns::post_process// directly.
 =
 VOID_METHOD_TYPE(POST_PROCESS_REPORT_POS_MTID, weave_format *wf, weave_order *wv)
 void WeavingFormats::report_on_post_processing(weave_order *wv) {
-	TeXUtilities::report_on_post_processing(wv);
+	TeXPost::report_on_post_processing(wv);
 	VOID_METHOD_CALL(wv->format, POST_PROCESS_REPORT_POS_MTID, wv);
 }
 
@@ -202,7 +183,67 @@ INT_METHOD_TYPE(POST_PROCESS_SUBSTITUTE_POS_MTID, weave_format *wf, text_stream 
 	weave_order *wv, text_stream *detail, ls_pattern *pattern)
 int WeavingFormats::substitute_post_processing_data(OUTPUT_STREAM, weave_order *wv,
 	text_stream *detail, ls_pattern *pattern) {
-	int rv = TeXUtilities::substitute_post_processing_data(OUT, wv, detail);
-	INT_METHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
-	return rv;
+	if (wv) {
+		int rv = TeXPost::substitute_post_processing_data(OUT, wv, detail);
+		INT_METHOD_CALL(rv, wv->format, POST_PROCESS_SUBSTITUTE_POS_MTID, OUT, wv, detail, pattern);
+		return rv;
+	}
+	return FALSE;
+}
+
+@h Standard colour scheme.
+The Markdown code in //foundation// allows any rendering format to use its own
+idiosyncratic set of colours in syntax colouring, but we want to use a standard
+set, as provided by //The Painter//:
+
+=
+void WeavingFormats::name_colour(markdown_render *rdr, text_stream *OUT, int col) {
+	WRITE("%S", Painter::colour_classname(NULL, (inchar32_t) col));
+}
+
+void WeavingFormats::name_colour_scheme(markdown_render *rdr, text_stream *OUT, void *csv) {
+	colour_scheme *cs = (colour_scheme *) csv;
+	WRITE("%S", cs->prefix);
+}
+
+@ And this is then a plain-vanilla way to use them:
+
+=
+void WeavingFormats::begin_colouring(markdown_render *rdr, text_stream *language_rendered,
+	void **token, void **colours) {
+	weave_order *wv = RETRIEVE_POINTER_weave_order(rdr->context);
+	programming_language *pl = wv->weave_web->web_language;
+	if (Str::len(language_rendered) > 0)
+		pl = Languages::find(wv->weave_web, language_rendered);
+	if (pl == NULL) {
+		WRITE_TO(STDERR, "warning: no language definition for '%S'\n", language_rendered);
+		if (Str::eq_insensitive(language_rendered, I"plain"))
+			WRITE_TO(STDERR,
+				"(note that 'plain' is not normally a language: use 'none' instead)\n");
+		pl = Languages::find(wv->weave_web, I"None");
+	}
+	Painter::reset_syntax_colouring(pl);
+	*token = (void *) pl;
+	*colours = NULL;
+}
+
+void WeavingFormats::colour_line(markdown_render *rdr, void *token, text_stream *code_line,
+	text_stream *cols) {
+	programming_language *pl = (programming_language *) token;
+	Painter::syntax_colour(pl, &(pl->built_in_keywords), code_line, cols, FALSE, TRUE);
+}
+
+@h Standard way to resolve links.
+Similarly, all our formats which can have links at all should use the following
+way of resolving them:
+
+=
+void WeavingFormats::resolve_link(markdown_render *rdr, text_stream *link_text, query_results *qr) {
+	if (qr == NULL) internal_error("no query results structure");
+	weave_order *wv = RETRIEVE_POINTER_weave_order(rdr->context);
+	if (wv)
+		Colonies::resolve_reference(qr, link_text,
+			wv->weave_colony, wv->weave_web, wv->current_weave_line, wv->weave_to);
+	else
+		Colonies::resolve_reference(qr, link_text, NULL, NULL, NULL, NULL);
 }

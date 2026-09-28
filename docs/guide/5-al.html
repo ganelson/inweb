@@ -50,51 +50,50 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#5">Chapter 5: Languages</a></li><li><b>About Languages</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a></p>
-<h2>Languages as means of writing programs</h2>
-<p>Literate programming tools have to strike a balance about how much they want
-to know about the programming language being used in a web. If they get too
-close, the result can be a tool wedded to a single language, just as the
-original <code>WEB</code> really cannot be used with anything other than a long-dead
-dialect of Pascal. But if they take a principled stand that they know
-nothing about the language, then they end up feature-poor, and produce
-weaves which are a little bland.</p>
-<p>Inweb aims to allow quite a wide variety of programming languages, but needs
-the user to brief it on any language it does not already know. Running:</p>
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><h2>Languages as means of writing programs</h2>
+    <p>Literate programming tools have to strike a balance about how much they want
+    to know about the programming language being used in a web. If they get too
+    close, the result can be a tool wedded to a single language, just as the
+    original <code>WEB</code> really cannot be used with anything other than a long-dead
+    dialect of Pascal. But if they take a principled stand that they know
+    nothing about the language, then they end up feature-poor, and produce
+    weaves which are a little bland.</p>
+    <p>Inweb aims to allow quite a wide variety of programming languages, but needs
+    the user to brief it on any language it does not already know. Running:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -resources</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> inspect</span><span class="ConsoleText-identifier-syntax"> -resources</span>
 </pre>
 <div class="lsmarkdown">
-<p>lists all Inweb's built-in resources, and at time of writing only 24 of them
-are languages: since quite a few are obscure (for reasons to do with the needs
-of the Inform project, which Inweb spun out of), an Inweb user is quite likely
-to need to add new languages sooner or later.</p>
-<p>Fortunately, language declarations can be surprisingly short and easy, so this
-is not a huge task.</p>
-<h2>Languages as ways to syntax-colour text</h2>
-<p>The author of a large web may want to display snippets of console output,
-pseudocode, pieces of programs in other languages, examples of usage, and so
-on. These aren't part of the web's program as such, and all vanish away in
-a tangle. But in the woven form of the web, they need to look right.</p>
-<p>But how is Inweb to do that? Inweb uses a combination of syntax-colouring and
-(in HTML output) CSS styling to make a chunk of C look different from a chunk
-of console output, for example. But in order to do that, in needs to be told
-what each chunk is. For example (in <code>MarkdownCode</code> notation):</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a basic tangling command:
+    <p class="commentary">lists all Inweb's built-in resources, and at time of writing only 24 of them
+    are languages: since quite a few are obscure (for reasons to do with the needs
+    of the Inform project, which Inweb spun out of), an Inweb user is quite likely
+    to need to add new languages sooner or later.</p>
+    <p>Fortunately, language declarations can be surprisingly short and easy, so this
+    is not a huge task.</p>
+    <h2>Languages as ways to syntax-colour text</h2>
+    <p>The author of a large web may want to display snippets of console output,
+    pseudocode, pieces of programs in other languages, examples of usage, and so
+    on. These aren't part of the web's program as such, and all vanish away in
+    a tangle. But in the woven form of the web, they need to look right.</p>
+    <p>But how is Inweb to do that? Inweb uses a combination of syntax-colouring and
+    (in HTML output) CSS styling to make a chunk of C look different from a chunk
+    of console output, for example. But in order to do that, in needs to be told
+    what each chunk is. For example (in <code>MarkdownCode</code> notation):</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">This is a basic tangling command:
 
 ``` ConsoleText
 $ inweb tangle countsort.py.md
 tangling web "Counting Sort" (Python program in MarkdownCode notation) to file 'countsort.py'
 ```
 </span></pre>
-<p>Here the displayed material, inside a Markdown &quot;fence&quot; provided by the backticks,
-is declared as being <code>ConsoleText</code>.</p>
-<p>This is in fact a &quot;language&quot;, as far as Inweb is concerned. (It's one of the ones
-supplied with Inweb.) Inweb doesn't distinguish between languages you might want
-to program in, and schemes for colouring up text being displayed in a weave. As
-a pretty extreme example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "VowelsExample" {
+    <p>Here the displayed material, inside a Markdown &quot;fence&quot; provided by the backticks,
+    is declared as being <code>ConsoleText</code>.</p>
+    <p>This is in fact a &quot;language&quot;, as far as Inweb is concerned. (It's one of the ones
+    supplied with Inweb.) Inweb doesn't distinguish between languages you might want
+    to program in, and schemes for colouring up text being displayed in a weave. As
+    a pretty extreme example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "VowelsExample" {
 	colour !vowel like !function
 	colouring
 		=&gt; !plain
@@ -104,14 +103,14 @@ a pretty extreme example:</p>
 	end
 }
 </span></pre>
-<p>This language is evidently just a colouring scheme (it takes plain text and
-highlights the English vowels in it), not something to write programs in.</p>
-<p>All of this is to say that an Inweb language is a combination of a few notes
-about its syntax or quirks, together with instructions on how to syntax-colour
-its code, but both parts are optional.</p>
+    <p>This language is evidently just a colouring scheme (it takes plain text and
+    highlights the English vowels in it), not something to write programs in.</p>
+    <p>All of this is to say that an Inweb language is a combination of a few notes
+    about its syntax or quirks, together with instructions on how to syntax-colour
+    its code, but both parts are optional.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Summary of Notations</span><a href="4-son.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 5: Languages</span>5<li class="progresscurrent"><span class="current-fullname-popup">About Languages</span>al</li><li class="progresssection"><span class="fullname-popup">Creating Languages</span><a href="5-cl.html">cl</a></li><li class="progresssection"><span class="fullname-popup">Holons as Code Blocks</span><a href="5-hacb.html">hacb</a></li><li class="progresssection"><span class="fullname-popup">Syntax Colouring Programs</span><a href="5-scp.html">scp</a></li><li class="progresssection"><span class="fullname-popup">Recognising Functions and Types</span><a href="5-rfat.html">rfat</a></li><li class="progresssection"><span class="fullname-popup">Special C Features</span><a href="5-scf.html">scf</a></li><li class="progresssection"><span class="fullname-popup">Summary of Languages</span><a href="5-sol.html">sol</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Creating Languages</span><a href="5-cl.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Summary of Notations</span><a href="4-son.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 5: Languages</span>5</li><li class="progresscurrent"><span class="current-fullname-popup">About Languages</span>al</li><li class="progresssection"><span class="fullname-popup">Creating Languages</span><a href="5-cl.html">cl</a></li><li class="progresssection"><span class="fullname-popup">Holons as Code Blocks</span><a href="5-hacb.html">hacb</a></li><li class="progresssection"><span class="fullname-popup">Syntax Colouring Programs</span><a href="5-scp.html">scp</a></li><li class="progresssection"><span class="fullname-popup">Recognising Functions and Types</span><a href="5-rfat.html">rfat</a></li><li class="progresssection"><span class="fullname-popup">Special C Features</span><a href="5-scf.html">scf</a></li><li class="progresssection"><span class="fullname-popup">Summary of Languages</span><a href="5-sol.html">sol</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Creating Languages</span><a href="5-cl.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

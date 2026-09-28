@@ -3,97 +3,322 @@
 The weaver produces a tree of rendering instructions as its main intermediate
 representation, and this section defines that tree.
 
-@ The data structure here is a heterogenous tree (unlike the LP source tree),
-and this inevitably means an awful lot of tedious stucture declarations and
-creator functions. Deep breath now:
+@h Tree and node type declarations.
+The data structure here is a heterogenous tree — see //foundation: Trees// for
+more on this, but the idea is that a weave tree can have as its nodes structures
+of any of some 39 classes.
+
+This inevitably means an awful lot of tedious structure declarations and
+creator functions. This section contains nothing else, and will have succeeded
+if it is perfectly boring from beginning to end.
+
+To begin, we need to declare the types of node which can occur in the tree.
+These will be presented in the same standardised order wherever we deal with
+them.
+
+Document superstructure:
+
+=
+tree_node_type *weave_document_node_type = NULL;
+tree_node_type *weave_head_node_type = NULL;
+tree_node_type *weave_body_node_type = NULL;
+tree_node_type *weave_tail_node_type = NULL;
+
+@ Large-scale structure:
+
+=
+tree_node_type *weave_chapter_node_type = NULL;
+tree_node_type *weave_chapter_header_node_type = NULL;
+tree_node_type *weave_chapter_footer_node_type = NULL;
+tree_node_type *weave_section_node_type = NULL;
+tree_node_type *weave_section_header_node_type = NULL;
+tree_node_type *weave_section_footer_node_type = NULL;
+tree_node_type *weave_section_purpose_node_type = NULL;
+tree_node_type *weave_toc_node_type = NULL;
+tree_node_type *weave_toc_line_node_type = NULL;
+
+@ Small-scale structure:
+
+=
+tree_node_type *weave_subheading_node_type = NULL;
+tree_node_type *weave_subsubheading_node_type = NULL;
+tree_node_type *weave_paragraph_heading_node_type = NULL;
+tree_node_type *weave_material_node_type = NULL;
+
+@ Code-like material:
+
+=
+tree_node_type *weave_holon_declaration_node_type = NULL;
+tree_node_type *weave_code_line_node_type = NULL;
+tree_node_type *weave_holon_usage_node_type = NULL;
+tree_node_type *weave_tangler_command_node_type = NULL;
+tree_node_type *weave_verbatim_node_type = NULL;
+tree_node_type *weave_source_code_node_type = NULL;
+tree_node_type *weave_function_defn_node_type = NULL;
+tree_node_type *weave_function_usage_node_type = NULL;
+tree_node_type *weave_comment_in_holon_node_type = NULL;
+tree_node_type *weave_defn_node_type = NULL;
+
+@ Commentary and gadget material:
+
+=
+tree_node_type *weave_markdown_node_type = NULL;
+tree_node_type *weave_audio_node_type = NULL;
+tree_node_type *weave_carousel_slide_node_type = NULL;
+tree_node_type *weave_download_node_type = NULL;
+tree_node_type *weave_embed_node_type = NULL;
+tree_node_type *weave_figure_node_type = NULL;
+tree_node_type *weave_raw_HTML_node_type = NULL;
+tree_node_type *weave_video_node_type = NULL;
+
+@ Paragraph tail material:
+
+=
+tree_node_type *weave_index_begins_node_type = NULL;
+tree_node_type *weave_index_lemma_node_type = NULL;
+tree_node_type *weave_index_ends_node_type = NULL;
+tree_node_type *weave_endnote_node_type = NULL;
+tree_node_type *weave_locale_node_type = NULL;
+tree_node_type *weave_endnote_text_node_type = NULL;
+
+@ Now the function to create a heterogeneous weave tree: it begins with a
+single (root) node, of type `weave_document_node_type`.
+
+On first being called, this function declares the tree type, and with it all
+of the above node types, so that the many `tree_node_type *` pointers above
+are no longer `NULL`.
+
+@d DECLARE_WEAVENODE(T, DESC) T##_type = Trees::new_node_type(DESC, T##_CLASS, NULL);
+
+=
+tree_type *weave_tree_type = NULL;
+
+heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) {
+	if (weave_tree_type == NULL) {
+		weave_tree_type = Trees::new_type(I"weave tree", NULL);
+
+		/* Document superstructure */
+		DECLARE_WEAVENODE(weave_document_node, I"document");
+		DECLARE_WEAVENODE(weave_head_node, I"head");
+		DECLARE_WEAVENODE(weave_body_node, I"body");
+		DECLARE_WEAVENODE(weave_tail_node, I"tail");
+
+		/* Large-scale structure */
+		DECLARE_WEAVENODE(weave_chapter_node, I"chapter");
+		DECLARE_WEAVENODE(weave_chapter_header_node, I"chapter header");
+		DECLARE_WEAVENODE(weave_chapter_footer_node, I"chapter footer");
+		DECLARE_WEAVENODE(weave_section_node, I"section");
+		DECLARE_WEAVENODE(weave_section_header_node, I"section header");
+		DECLARE_WEAVENODE(weave_section_footer_node, I"section footer");
+		DECLARE_WEAVENODE(weave_section_purpose_node, I"section purpose");
+		DECLARE_WEAVENODE(weave_toc_node, I"toc");
+		DECLARE_WEAVENODE(weave_toc_line_node, I"toc line");
+
+		/* Small-scale structure */
+		DECLARE_WEAVENODE(weave_subheading_node, I"subheading");
+		DECLARE_WEAVENODE(weave_subsubheading_node, I"subsubheading");
+		DECLARE_WEAVENODE(weave_paragraph_heading_node, I"paragraph heading");
+		DECLARE_WEAVENODE(weave_material_node, I"material");
+
+		/* Code-like material */
+		DECLARE_WEAVENODE(weave_holon_declaration_node, I"holon declaration");
+		DECLARE_WEAVENODE(weave_code_line_node, I"code line");
+		DECLARE_WEAVENODE(weave_holon_usage_node, I"holon usage");
+		DECLARE_WEAVENODE(weave_tangler_command_node, I"tangler command");
+		DECLARE_WEAVENODE(weave_verbatim_node, I"verbatim");
+		DECLARE_WEAVENODE(weave_source_code_node, I"source code");
+		DECLARE_WEAVENODE(weave_function_defn_node, I"function defn");
+		DECLARE_WEAVENODE(weave_function_usage_node, I"function usage");
+		DECLARE_WEAVENODE(weave_comment_in_holon_node, I"comment in holon");
+		DECLARE_WEAVENODE(weave_defn_node, I"defn");
+
+		/* Commentary and gadget material */
+		DECLARE_WEAVENODE(weave_markdown_node, I"markdown");
+		DECLARE_WEAVENODE(weave_audio_node, I"audio");
+		DECLARE_WEAVENODE(weave_carousel_slide_node, I"carousel slide");
+		DECLARE_WEAVENODE(weave_download_node, I"download");
+		DECLARE_WEAVENODE(weave_embed_node, I"embed");
+		DECLARE_WEAVENODE(weave_figure_node, I"figure");
+		DECLARE_WEAVENODE(weave_raw_HTML_node, I"raw HTML");
+		DECLARE_WEAVENODE(weave_video_node, I"video");
+
+		/* Paragraph tail material */
+		DECLARE_WEAVENODE(weave_index_begins_node, I"index begins");
+		DECLARE_WEAVENODE(weave_index_lemma_node, I"index lemma");
+		DECLARE_WEAVENODE(weave_index_ends_node, I"index ends");
+		DECLARE_WEAVENODE(weave_endnote_node, I"endnote");
+		DECLARE_WEAVENODE(weave_locale_node, I"locale");
+		DECLARE_WEAVENODE(weave_endnote_text_node, I"endnote text");
+	}
+	heterogeneous_tree *tree = Trees::new(weave_tree_type);
+	Trees::make_root(tree, WeaveTree::document(tree, wv, footnotes_present));
+	return tree;
+}
+
+@h Document superstructure creators.
+The weave tree always contains just one of these, as its root node.
+
+@d CREATE_WEAVENODE(T) T *N = CREATE(T);
+@d RETURN_WEAVENODE(T) return Trees::new_node(tree, T##_type, STORE_POINTER_##T(N));
 
 =
 classdef weave_document_node {
 	struct weave_order *wv;
 	int footnotes_present;
 }
+tree_node *WeaveTree::document(heterogeneous_tree *tree, weave_order *wv,
+	int footnotes_present) {
+	CREATE_WEAVENODE(weave_document_node);
+	N->wv = wv;
+	N->footnotes_present = footnotes_present;
+	RETURN_WEAVENODE(weave_document_node);
+}
 
 classdef weave_head_node {
 	struct text_stream *banner;
 }
+tree_node *WeaveTree::head(heterogeneous_tree *tree, text_stream *banner) {
+	CREATE_WEAVENODE(weave_head_node);
+	N->banner = Str::duplicate(banner);
+	RETURN_WEAVENODE(weave_head_node);
+}
 
 classdef weave_body_node {
+}
+tree_node *WeaveTree::body(heterogeneous_tree *tree) {
+	CREATE_WEAVENODE(weave_body_node);
+	RETURN_WEAVENODE(weave_body_node);
 }
 
 classdef weave_tail_node {
 	struct text_stream *rennab;
 }
+tree_node *WeaveTree::tail(heterogeneous_tree *tree, text_stream *rennab) {
+	CREATE_WEAVENODE(weave_tail_node);
+	N->rennab = Str::duplicate(rennab);
+	RETURN_WEAVENODE(weave_tail_node);
+}
+
+@h Large-scale structure creators.
+
+=
+classdef weave_chapter_node {
+	struct ls_chapter *chap;
+}
+tree_node *WeaveTree::chapter(heterogeneous_tree *tree, ls_chapter *Ch) {
+	CREATE_WEAVENODE(weave_chapter_node);
+	N->chap = Ch;
+	RETURN_WEAVENODE(weave_chapter_node);
+}
 
 classdef weave_chapter_header_node {
 	struct ls_chapter *chap;
+}
+tree_node *WeaveTree::chapter_header(heterogeneous_tree *tree, ls_chapter *Ch) {
+	CREATE_WEAVENODE(weave_chapter_header_node);
+	N->chap = Ch;
+	RETURN_WEAVENODE(weave_chapter_header_node);
 }
 
 classdef weave_chapter_footer_node {
 	struct ls_chapter *chap;
 }
+tree_node *WeaveTree::chapter_footer(heterogeneous_tree *tree, ls_chapter *Ch) {
+	CREATE_WEAVENODE(weave_chapter_footer_node);
+	N->chap = Ch;
+	RETURN_WEAVENODE(weave_chapter_footer_node);
+}
+
+classdef weave_section_node {
+	struct ls_section *sect;
+}
+tree_node *WeaveTree::section(heterogeneous_tree *tree, ls_section *sect) {
+	CREATE_WEAVENODE(weave_section_node);
+	N->sect = sect;
+	RETURN_WEAVENODE(weave_section_node);
+}
 
 classdef weave_section_header_node {
 	struct ls_section *sect;
+}
+tree_node *WeaveTree::section_header(heterogeneous_tree *tree, ls_section *S) {
+	CREATE_WEAVENODE(weave_section_header_node);
+	N->sect = S;
+	RETURN_WEAVENODE(weave_section_header_node);
 }
 
 classdef weave_section_footer_node {
 	struct ls_section *sect;
 }
+tree_node *WeaveTree::section_footer(heterogeneous_tree *tree, ls_section *S) {
+	CREATE_WEAVENODE(weave_section_footer_node);
+	N->sect = S;
+	RETURN_WEAVENODE(weave_section_footer_node);
+}
 
 classdef weave_section_purpose_node {
 	struct text_stream *purpose;
 }
+tree_node *WeaveTree::purpose(heterogeneous_tree *tree, text_stream *P) {
+	CREATE_WEAVENODE(weave_section_purpose_node);
+	N->purpose = Str::duplicate(P);
+	RETURN_WEAVENODE(weave_section_purpose_node);
+}
 
+classdef weave_toc_node {
+	struct text_stream *text1;
+}
+tree_node *WeaveTree::table_of_contents(heterogeneous_tree *tree, text_stream *text1) {
+	CREATE_WEAVENODE(weave_toc_node);
+	N->text1 = Str::duplicate(text1);
+	RETURN_WEAVENODE(weave_toc_node);
+}
+
+classdef weave_toc_line_node {
+	struct text_stream *text1;
+	struct text_stream *text2;
+	struct ls_paragraph *para;
+}
+tree_node *WeaveTree::contents_line(heterogeneous_tree *tree,
+	text_stream *text1, text_stream *text2, ls_paragraph *par) {
+	CREATE_WEAVENODE(weave_toc_line_node);
+	N->text1 = Str::duplicate(text1);
+	N->text2 = Str::duplicate(text2);
+	N->para = par;
+	RETURN_WEAVENODE(weave_toc_line_node);
+}
+
+@h Small-scale structure creators.
+
+=
 classdef weave_subheading_node {
 	struct text_stream *text;
+}
+tree_node *WeaveTree::subheading(heterogeneous_tree *tree, text_stream *P) {
+	CREATE_WEAVENODE(weave_subheading_node);
+	N->text = Str::duplicate(P);
+	RETURN_WEAVENODE(weave_subheading_node);
 }
 
 classdef weave_subsubheading_node {
 	struct text_stream *text;
 }
-
-classdef weave_bar_node {
-}
-
-classdef weave_pagebreak_node {
-}
-
-classdef weave_linebreak_node {
+tree_node *WeaveTree::subsubheading(heterogeneous_tree *tree, text_stream *P) {
+	CREATE_WEAVENODE(weave_subsubheading_node);
+	N->text = Str::duplicate(P);
+	RETURN_WEAVENODE(weave_subsubheading_node);
 }
 
 classdef weave_paragraph_heading_node {
 	struct ls_paragraph *para;
 	int no_skip;
 }
-
-classdef weave_endnote_node {
-}
-
-classdef weave_figure_node {
-	struct text_stream *figname;
-	struct text_stream *alt_text;
-	int w;
-	int h;
-}
-
-classdef weave_extract_node {
-	struct text_stream *extract;
-}
-
-classdef weave_audio_node {
-	struct text_stream *audio_name;
-	int w;
-}
-
-classdef weave_video_node {
-	struct text_stream *video_name;
-	int w;
-	int h;
-}
-
-classdef weave_download_node {
-	struct text_stream *download_name;
-	struct text_stream *filetype;
+tree_node *WeaveTree::paragraph_heading(heterogeneous_tree *tree,
+	ls_paragraph *par, int no_skip) {
+	CREATE_WEAVENODE(weave_paragraph_heading_node);
+	N->para = par;
+	N->no_skip = no_skip;
+	RETURN_WEAVENODE(weave_paragraph_heading_node);
 }
 
 classdef weave_material_node {
@@ -102,116 +327,80 @@ classdef weave_material_node {
 	struct programming_language *styling;
 	struct text_stream *endnote;
 }
+tree_node *WeaveTree::material(heterogeneous_tree *tree, int material_type, int plainly,
+	programming_language *styling, text_stream *endnote) {
+	CREATE_WEAVENODE(weave_material_node);
+	N->material_type = material_type;
+	N->plainly = plainly;
+	N->styling = styling;
+	N->endnote = Str::duplicate(endnote);
+	RETURN_WEAVENODE(weave_material_node);
+}
 
-classdef weave_embed_node {
-	struct text_stream *service;
-	struct text_stream *ID;
-	int w;
-	int h;
+@h Code-like material creators.
+
+=
+classdef weave_holon_declaration_node {
+	struct ls_holon *holon;
+	struct markdown_variation *variation;
+}
+tree_node *WeaveTree::holon_declaration(heterogeneous_tree *tree, ls_holon *holon,
+	markdown_variation *variation) {
+	CREATE_WEAVENODE(weave_holon_declaration_node);
+	N->holon = holon;
+	N->variation = variation;
+	RETURN_WEAVENODE(weave_holon_declaration_node);
+}
+
+classdef weave_code_line_node {
+	struct ls_line *line;
+}
+tree_node *WeaveTree::code_line(heterogeneous_tree *tree, ls_line *line) {
+	CREATE_WEAVENODE(weave_code_line_node);
+	N->line = line;
+	RETURN_WEAVENODE(weave_code_line_node);
 }
 
 classdef weave_holon_usage_node {
 	struct ls_holon *holon;
 	struct markdown_variation *variation;
 }
+tree_node *WeaveTree::holon_usage(heterogeneous_tree *tree, ls_holon *holon,
+	markdown_variation *variation) {
+	CREATE_WEAVENODE(weave_holon_usage_node);
+	N->holon = holon;
+	N->variation = variation;
+	RETURN_WEAVENODE(weave_holon_usage_node);
+}
 
 classdef weave_tangler_command_node {
 	struct text_stream *command;
 }
-
-classdef weave_holon_declaration_node {
-	struct ls_holon *holon;
-	struct markdown_variation *variation;
+tree_node *WeaveTree::tangler_command(heterogeneous_tree *tree, text_stream *cmd) {
+	CREATE_WEAVENODE(weave_tangler_command_node);
+	N->command = Str::duplicate(cmd);
+	RETURN_WEAVENODE(weave_tangler_command_node);
 }
 
-classdef weave_vskip_node {
-	int in_comment;
+classdef weave_verbatim_node {
+	struct text_stream *content;
 }
-
-classdef weave_chapter_node {
-	struct ls_chapter *chap;
-}
-
-classdef weave_section_node {
-	struct ls_section *sect;
-}
-
-classdef weave_code_line_node {
-	struct ls_line *line;
-}
-
-classdef weave_function_usage_node {
-	struct text_stream *url;
-	struct language_function *fn;
-}
-
-classdef weave_commentary_node {
-	struct text_stream *text;
-	int in_code;
-}
-
-classdef weave_carousel_slide_node {
-	struct text_stream *caption;
-	int positioning;
-}
-
-classdef weave_toc_node {
-	struct text_stream *text1;
-}
-
-classdef weave_toc_line_node {
-	struct text_stream *text1;
-	struct text_stream *text2;
-	struct ls_paragraph *para;
-}
-
-classdef weave_chapter_title_page_node {
-}
-
-classdef weave_defn_node {
-	struct text_stream *keyword;
-	struct text_stream *symbol;
-}
-
-classdef weave_inline_node {
-}
-
-classdef weave_locale_node {
-	struct ls_paragraph *par1;
-	struct ls_line *finer;
-	struct ls_paragraph *par2;
-	int distant;
+tree_node *WeaveTree::verbatim(heterogeneous_tree *tree, text_stream *content) {
+	CREATE_WEAVENODE(weave_verbatim_node);
+	N->content = Str::duplicate(content);
+	RETURN_WEAVENODE(weave_verbatim_node);
 }
 
 classdef weave_source_code_node {
 	struct text_stream *matter;
 	struct text_stream *colouring;
 }
-
-classdef weave_comment_in_holon_node {
-	struct text_stream *raw;
-	struct text_stream *comment_open;
-	struct text_stream *comment_close;
-	struct markdown_item *as_markdown;
-	struct markdown_variation *variation;
-}
-
-classdef weave_url_node {
-	struct text_stream *url;
-	struct text_stream *content;
-	int external;
-}
-
-classdef weave_footnote_cue_node {
-	struct text_stream *cue_text;
-}
-
-classdef weave_begin_footnote_text_node {
-	struct text_stream *cue_text;
-}
-
-classdef weave_display_line_node {
-	struct text_stream *text;
+tree_node *WeaveTree::source_code(heterogeneous_tree *tree,
+	text_stream *matter, text_stream *colouring) {
+	CREATE_WEAVENODE(weave_source_code_node);
+	N->matter = Str::duplicate(matter);
+	N->colouring = Str::duplicate(colouring);
+	RETURN_WEAVENODE(weave_source_code_node);
 }
 
 classdef weave_function_defn_node {
@@ -222,672 +411,233 @@ classdef weave_function_defn_node {
 	int external_usages;
 	struct hash_table_entry_usage *hteu;
 }
-
-classdef weave_item_node {
-	int depth;
-	struct text_stream *label;
+tree_node *WeaveTree::function_defn(heterogeneous_tree *tree, language_function *fn,
+	int local_usages, int local_direction, int section_usages, int external_usages,
+	hash_table_entry_usage *hteu) {
+	CREATE_WEAVENODE(weave_function_defn_node);
+	N->fn = fn;
+	N->local_usages = local_usages; N->local_direction = local_direction;
+	N->section_usages = section_usages; N->external_usages = external_usages;
+	N->hteu = hteu;
+	RETURN_WEAVENODE(weave_function_defn_node);
 }
 
-classdef weave_grammar_index_node {
+classdef weave_function_usage_node {
+	struct text_stream *url;
+	struct language_function *fn;
+}
+tree_node *WeaveTree::function_usage(heterogeneous_tree *tree,
+	text_stream *url, language_function *fn) {
+	CREATE_WEAVENODE(weave_function_usage_node);
+	N->url = Str::duplicate(url);
+	N->fn = fn;
+	RETURN_WEAVENODE(weave_function_usage_node);
 }
 
-classdef weave_maths_node {
-	struct text_stream *content;
-	int displayed;
+classdef weave_comment_in_holon_node {
+	struct text_stream *raw;
+	struct text_stream *comment_open;
+	struct text_stream *comment_close;
+	struct markdown_item *as_markdown;
+	struct markdown_variation *variation;
+}
+tree_node *WeaveTree::comment_in_holon(heterogeneous_tree *tree, text_stream *raw,
+	text_stream *open, text_stream *close, markdown_item *as_markdown,
+	markdown_variation *variation) {
+	CREATE_WEAVENODE(weave_comment_in_holon_node);
+	N->raw = Str::duplicate(raw);
+	N->comment_open = Str::duplicate(open);
+	N->comment_close = Str::duplicate(close);
+	N->as_markdown = as_markdown;
+	N->variation = variation;
+	RETURN_WEAVENODE(weave_comment_in_holon_node);
 }
 
+classdef weave_defn_node {
+	struct text_stream *keyword;
+	struct text_stream *symbol;
+}
+tree_node *WeaveTree::weave_defn_node(heterogeneous_tree *tree, text_stream *keyword,
+	text_stream *symbol) {
+	CREATE_WEAVENODE(weave_defn_node);
+	N->keyword = Str::duplicate(keyword);
+	N->symbol = Str::duplicate(symbol);
+	RETURN_WEAVENODE(weave_defn_node);
+}
+
+@h Commentary and gadget material creators.
+
+=
 classdef weave_markdown_node {
 	struct markdown_item *content;
 	struct ls_line *nearby_line;
 	struct markdown_variation *variation;
 }
-
-classdef weave_verbatim_node {
-	struct text_stream *content;
+tree_node *WeaveTree::Markdown_commentary(heterogeneous_tree *tree,
+	markdown_item *content, ls_line *nearby_line, markdown_variation *variation) {
+	CREATE_WEAVENODE(weave_markdown_node);
+	N->content = content;
+	N->nearby_line = nearby_line;
+	N->variation = variation;
+	RETURN_WEAVENODE(weave_markdown_node);
 }
 
-classdef weave_index_marker_node {
-	struct ls_paragraph *par;
+classdef weave_audio_node {
+	struct text_stream *audio_name;
+	int w;
 }
-
-@ =
-tree_type *weave_tree_type = NULL;
-tree_node_type *weave_document_node_type = NULL;
-tree_node_type *weave_head_node_type = NULL;
-tree_node_type *weave_body_node_type = NULL;
-tree_node_type *weave_tail_node_type = NULL;
-tree_node_type *weave_chapter_header_node_type = NULL;
-tree_node_type *weave_chapter_footer_node_type = NULL;
-tree_node_type *weave_section_header_node_type = NULL;
-tree_node_type *weave_section_footer_node_type = NULL;
-tree_node_type *weave_section_purpose_node_type = NULL;
-tree_node_type *weave_verbatim_node_type = NULL;
-tree_node_type *weave_subheading_node_type = NULL;
-tree_node_type *weave_subsubheading_node_type = NULL;
-tree_node_type *weave_bar_node_type = NULL;
-tree_node_type *weave_pagebreak_node_type = NULL;
-tree_node_type *weave_linebreak_node_type = NULL;
-tree_node_type *weave_paragraph_heading_node_type = NULL;
-tree_node_type *weave_endnote_node_type = NULL;
-tree_node_type *weave_figure_node_type = NULL;
-tree_node_type *weave_extract_node_type = NULL;
-tree_node_type *weave_audio_node_type = NULL;
-tree_node_type *weave_video_node_type = NULL;
-tree_node_type *weave_download_node_type = NULL;
-tree_node_type *weave_material_node_type = NULL;
-tree_node_type *weave_embed_node_type = NULL;
-tree_node_type *weave_holon_usage_node_type = NULL;
-tree_node_type *weave_tangler_command_node_type = NULL;
-tree_node_type *weave_vskip_node_type = NULL;
-tree_node_type *weave_chapter_node_type = NULL;
-tree_node_type *weave_section_node_type = NULL;
-tree_node_type *weave_holon_declaration_node_type = NULL;
-tree_node_type *weave_code_line_node_type = NULL;
-tree_node_type *weave_function_usage_node_type = NULL;
-tree_node_type *weave_commentary_node_type = NULL;
-tree_node_type *weave_carousel_slide_node_type = NULL;
-tree_node_type *weave_toc_node_type = NULL;
-tree_node_type *weave_toc_line_node_type = NULL;
-tree_node_type *weave_chapter_title_page_node_type = NULL;
-tree_node_type *weave_defn_node_type = NULL;
-tree_node_type *weave_source_code_node_type = NULL;
-tree_node_type *weave_comment_in_holon_node_type = NULL;
-tree_node_type *weave_url_node_type = NULL;
-tree_node_type *weave_footnote_cue_node_type = NULL;
-tree_node_type *weave_begin_footnote_text_node_type = NULL;
-tree_node_type *weave_display_line_node_type = NULL;
-tree_node_type *weave_function_defn_node_type = NULL;
-tree_node_type *weave_item_node_type = NULL;
-tree_node_type *weave_grammar_index_node_type = NULL;
-tree_node_type *weave_inline_node_type = NULL;
-tree_node_type *weave_locale_node_type = NULL;
-tree_node_type *weave_maths_node_type = NULL;
-tree_node_type *weave_markdown_node_type = NULL;
-tree_node_type *weave_index_marker_node_type = NULL;
-
-heterogeneous_tree *WeaveTree::new_tree(weave_order *wv, int footnotes_present) {
-	if (weave_tree_type == NULL) {
-		weave_tree_type = Trees::new_type(I"weave tree", NULL);
-		weave_document_node_type =
-			Trees::new_node_type(I"document", weave_document_node_CLASS, NULL);
-		weave_head_node_type =
-			Trees::new_node_type(I"head", weave_head_node_CLASS, NULL);
-		weave_body_node_type =
-			Trees::new_node_type(I"body", weave_body_node_CLASS, NULL);
-		weave_tail_node_type =
-			Trees::new_node_type(I"tail", weave_tail_node_CLASS, NULL);
-		weave_chapter_footer_node_type =
-			Trees::new_node_type(I"chapter footer", weave_chapter_footer_node_CLASS, NULL);
-		weave_chapter_header_node_type =
-			Trees::new_node_type(I"chapter header", weave_chapter_header_node_CLASS, NULL);
-		weave_section_footer_node_type =
-			Trees::new_node_type(I"section footer", weave_section_footer_node_CLASS, NULL);
-		weave_section_header_node_type =
-			Trees::new_node_type(I"section header", weave_section_header_node_CLASS, NULL);
-		weave_section_purpose_node_type =
-			Trees::new_node_type(I"section purpose", weave_section_purpose_node_CLASS, NULL);
-
-		weave_subheading_node_type =
-			Trees::new_node_type(I"subheading", weave_subheading_node_CLASS, NULL);
-		weave_subsubheading_node_type =
-			Trees::new_node_type(I"subsubheading", weave_subsubheading_node_CLASS, NULL);
-		weave_bar_node_type =
-			Trees::new_node_type(I"bar", weave_bar_node_CLASS, NULL);
-		weave_pagebreak_node_type =
-			Trees::new_node_type(I"pagebreak", weave_pagebreak_node_CLASS, NULL);
-		weave_linebreak_node_type =
-			Trees::new_node_type(I"linebreak", weave_linebreak_node_CLASS, NULL);
-		weave_paragraph_heading_node_type =
-			Trees::new_node_type(I"paragraph", weave_paragraph_heading_node_CLASS, NULL);
-		weave_endnote_node_type =
-			Trees::new_node_type(I"endnote", weave_endnote_node_CLASS, NULL);
-		weave_figure_node_type =
-			Trees::new_node_type(I"figure", weave_figure_node_CLASS, NULL);
-		weave_extract_node_type =
-			Trees::new_node_type(I"extract", weave_extract_node_CLASS, NULL);
-		weave_audio_node_type =
-			Trees::new_node_type(I"audio", weave_audio_node_CLASS, NULL);
-		weave_video_node_type =
-			Trees::new_node_type(I"video", weave_video_node_CLASS, NULL);
-		weave_download_node_type =
-			Trees::new_node_type(I"download", weave_download_node_CLASS, NULL);
-		weave_material_node_type =
-			Trees::new_node_type(I"material", weave_material_node_CLASS, NULL);
-		weave_embed_node_type =
-			Trees::new_node_type(I"embed", weave_embed_node_CLASS, NULL);
-		weave_holon_usage_node_type =
-			Trees::new_node_type(I"pmac", weave_holon_usage_node_CLASS, NULL);
-		weave_tangler_command_node_type =
-			Trees::new_node_type(I"tangler command", weave_tangler_command_node_CLASS, NULL);
-		weave_vskip_node_type =
-			Trees::new_node_type(I"vskip", weave_vskip_node_CLASS, NULL);
-		weave_chapter_node_type =
-			Trees::new_node_type(I"chapter", weave_chapter_node_CLASS, NULL);
-		weave_section_node_type =
-			Trees::new_node_type(I"section", weave_section_node_CLASS, NULL);
-		weave_holon_declaration_node_type =
-			Trees::new_node_type(I"holon declaration", weave_holon_declaration_node_CLASS, NULL);
-		weave_code_line_node_type =
-			Trees::new_node_type(I"code line", weave_code_line_node_CLASS, NULL);
-		weave_function_usage_node_type =
-			Trees::new_node_type(I"function usage", weave_function_usage_node_CLASS, NULL);
-		weave_commentary_node_type =
-			Trees::new_node_type(I"commentary", weave_commentary_node_CLASS, NULL);
-		weave_carousel_slide_node_type =
-			Trees::new_node_type(I"carousel slide", weave_carousel_slide_node_CLASS, NULL);
-		weave_toc_node_type =
-			Trees::new_node_type(I"toc", weave_toc_node_CLASS, NULL);
-		weave_toc_line_node_type =
-			Trees::new_node_type(I"toc line", weave_toc_line_node_CLASS, NULL);
-		weave_chapter_title_page_node_type =
-			Trees::new_node_type(I"chapter_title_page", weave_chapter_title_page_node_CLASS, NULL);
-		weave_defn_node_type =
-			Trees::new_node_type(I"defn", weave_defn_node_CLASS, NULL);
-		weave_source_code_node_type =
-			Trees::new_node_type(I"source_code", weave_source_code_node_CLASS, NULL);
-		weave_comment_in_holon_node_type =
-			Trees::new_node_type(I"comment in holon", weave_comment_in_holon_node_CLASS, NULL);
-		weave_url_node_type =
-			Trees::new_node_type(I"url", weave_url_node_CLASS, NULL);
-		weave_footnote_cue_node_type =
-			Trees::new_node_type(I"footnote_cue", weave_footnote_cue_node_CLASS, NULL);
-		weave_begin_footnote_text_node_type =
-			Trees::new_node_type(I"footnote", weave_begin_footnote_text_node_CLASS, NULL);
-		weave_display_line_node_type =
-			Trees::new_node_type(I"display line", weave_display_line_node_CLASS, NULL);
-		weave_function_defn_node_type =
-			Trees::new_node_type(I"function defn", weave_function_defn_node_CLASS, NULL);
-		weave_item_node_type =
-			Trees::new_node_type(I"item", weave_item_node_CLASS, NULL);
-		weave_grammar_index_node_type =
-			Trees::new_node_type(I"grammar index", weave_grammar_index_node_CLASS, NULL);
-		weave_inline_node_type =
-			Trees::new_node_type(I"inline", weave_inline_node_CLASS, NULL);
-		weave_locale_node_type =
-			Trees::new_node_type(I"locale", weave_locale_node_CLASS, NULL);
-		weave_maths_node_type =
-			Trees::new_node_type(I"mathematics", weave_maths_node_CLASS, NULL);
-		weave_markdown_node_type =
-			Trees::new_node_type(I"markdown", weave_markdown_node_CLASS, NULL);
-		weave_index_marker_node_type =
-			Trees::new_node_type(I"index marker", weave_index_marker_node_CLASS, NULL);
-
-		weave_verbatim_node_type =
-			Trees::new_node_type(I"verbatim", weave_verbatim_node_CLASS, NULL);
-	}
-	heterogeneous_tree *tree = Trees::new(weave_tree_type);
-	Trees::make_root(tree, WeaveTree::document(tree, wv, footnotes_present));
-	return tree;
-}
-
-tree_node *WeaveTree::document(heterogeneous_tree *tree, weave_order *wv, int footnotes_present) {
-	weave_document_node *doc = CREATE(weave_document_node);
-	doc->wv = wv;
-	doc->footnotes_present = footnotes_present;
-	return Trees::new_node(tree, weave_document_node_type,
-		STORE_POINTER_weave_document_node(doc));
-}
-
-tree_node *WeaveTree::head(heterogeneous_tree *tree, text_stream *banner) {
-	weave_head_node *head = CREATE(weave_head_node);
-	head->banner = Str::duplicate(banner);
-	return Trees::new_node(tree, weave_head_node_type,
-		STORE_POINTER_weave_head_node(head));
-}
-
-tree_node *WeaveTree::body(heterogeneous_tree *tree) {
-	weave_body_node *body = CREATE(weave_body_node);
-	return Trees::new_node(tree, weave_body_node_type,
-		STORE_POINTER_weave_body_node(body));
-}
-
-tree_node *WeaveTree::tail(heterogeneous_tree *tree, text_stream *rennab) {
-	weave_tail_node *tail = CREATE(weave_tail_node);
-	tail->rennab = Str::duplicate(rennab);
-	return Trees::new_node(tree, weave_tail_node_type,
-		STORE_POINTER_weave_tail_node(tail));
-}
-
-tree_node *WeaveTree::verbatim(heterogeneous_tree *tree, text_stream *content) {
-	weave_verbatim_node *C = CREATE(weave_verbatim_node);
-	C->content = Str::duplicate(content);
-	return Trees::new_node(tree, weave_verbatim_node_type,
-		STORE_POINTER_weave_verbatim_node(C));
-}
-
-tree_node *WeaveTree::section_header(heterogeneous_tree *tree, ls_section *S) {
-	weave_section_header_node *C = CREATE(weave_section_header_node);
-	C->sect = S;
-	return Trees::new_node(tree, weave_section_header_node_type,
-		STORE_POINTER_weave_section_header_node(C));
-}
-
-tree_node *WeaveTree::section_footer(heterogeneous_tree *tree, ls_section *S) {
-	weave_section_footer_node *C = CREATE(weave_section_footer_node);
-	C->sect = S;
-	return Trees::new_node(tree, weave_section_footer_node_type,
-		STORE_POINTER_weave_section_footer_node(C));
-}
-
-tree_node *WeaveTree::chapter(heterogeneous_tree *tree, ls_chapter *Ch) {
-	weave_chapter_node *C = CREATE(weave_chapter_node);
-	C->chap = Ch;
-	return Trees::new_node(tree, weave_chapter_node_type, STORE_POINTER_weave_chapter_node(C));
-}
-
-tree_node *WeaveTree::chapter_header(heterogeneous_tree *tree, ls_chapter *Ch) {
-	weave_chapter_header_node *C = CREATE(weave_chapter_header_node);
-	C->chap = Ch;
-	return Trees::new_node(tree, weave_chapter_header_node_type,
-		STORE_POINTER_weave_chapter_header_node(C));
-}
-
-tree_node *WeaveTree::chapter_footer(heterogeneous_tree *tree, ls_chapter *Ch) {
-	weave_chapter_footer_node *C = CREATE(weave_chapter_footer_node);
-	C->chap = Ch;
-	return Trees::new_node(tree, weave_chapter_footer_node_type,
-		STORE_POINTER_weave_chapter_footer_node(C));
-}
-
-tree_node *WeaveTree::purpose(heterogeneous_tree *tree, text_stream *P) {
-	weave_section_purpose_node *C = CREATE(weave_section_purpose_node);
-	C->purpose = Str::duplicate(P);
-	return Trees::new_node(tree, weave_section_purpose_node_type,
-		STORE_POINTER_weave_section_purpose_node(C));
-}
-
-tree_node *WeaveTree::subheading(heterogeneous_tree *tree, text_stream *P) {
-	weave_subheading_node *C = CREATE(weave_subheading_node);
-	C->text = Str::duplicate(P);
-	return Trees::new_node(tree, weave_subheading_node_type,
-		STORE_POINTER_weave_subheading_node(C));
-}
-
-tree_node *WeaveTree::subsubheading(heterogeneous_tree *tree, text_stream *P) {
-	weave_subsubheading_node *C = CREATE(weave_subsubheading_node);
-	C->text = Str::duplicate(P);
-	return Trees::new_node(tree, weave_subsubheading_node_type,
-		STORE_POINTER_weave_subsubheading_node(C));
-}
-
-tree_node *WeaveTree::pagebreak(heterogeneous_tree *tree) {
-	weave_pagebreak_node *C = CREATE(weave_pagebreak_node);
-	return Trees::new_node(tree, weave_pagebreak_node_type,
-		STORE_POINTER_weave_pagebreak_node(C));
-}
-
-tree_node *WeaveTree::linebreak(heterogeneous_tree *tree) {
-	weave_linebreak_node *C = CREATE(weave_linebreak_node);
-	return Trees::new_node(tree, weave_linebreak_node_type,
-		STORE_POINTER_weave_linebreak_node(C));
-}
-
-tree_node *WeaveTree::bar(heterogeneous_tree *tree) {
-	weave_bar_node *C = CREATE(weave_bar_node);
-	return Trees::new_node(tree, weave_bar_node_type,
-		STORE_POINTER_weave_bar_node(C));
-}
-
-tree_node *WeaveTree::paragraph_heading(heterogeneous_tree *tree,
-	ls_paragraph *par, int no_skip) {
-	weave_paragraph_heading_node *C = CREATE(weave_paragraph_heading_node);
-	C->para = par;
-	C->no_skip = no_skip;
-	return Trees::new_node(tree, weave_paragraph_heading_node_type,
-		STORE_POINTER_weave_paragraph_heading_node(C));
-}
-
-tree_node *WeaveTree::endnote(heterogeneous_tree *tree) {
-	weave_endnote_node *C = CREATE(weave_endnote_node);
-	return Trees::new_node(tree, weave_endnote_node_type,
-		STORE_POINTER_weave_endnote_node(C));
-}
-
-tree_node *WeaveTree::figure(heterogeneous_tree *tree, 
-	text_stream *figname, text_stream *alt_text, int w, int h) {
-	weave_figure_node *C = CREATE(weave_figure_node);
-	C->figname = Str::duplicate(figname);
-	C->alt_text = Str::duplicate(alt_text);
-	C->w = w;
-	C->h = h;
-	return Trees::new_node(tree, weave_figure_node_type,
-		STORE_POINTER_weave_figure_node(C));
-}
-
-tree_node *WeaveTree::raw_extract(heterogeneous_tree *tree, 
-	text_stream *extract) {
-	weave_extract_node *C = CREATE(weave_extract_node);
-	C->extract = Str::duplicate(extract);
-	return Trees::new_node(tree, weave_extract_node_type,
-		STORE_POINTER_weave_extract_node(C));
-}
-
 tree_node *WeaveTree::audio(heterogeneous_tree *tree, 
 	text_stream *audio_name, int w) {
-	weave_audio_node *C = CREATE(weave_audio_node);
-	C->audio_name = Str::duplicate(audio_name);
-	C->w = w;
-	return Trees::new_node(tree, weave_audio_node_type,
-		STORE_POINTER_weave_audio_node(C));
+	CREATE_WEAVENODE(weave_audio_node);
+	N->audio_name = Str::duplicate(audio_name);
+	N->w = w;
+	RETURN_WEAVENODE(weave_audio_node);
 }
 
-tree_node *WeaveTree::video(heterogeneous_tree *tree, 
-	text_stream *video_name, int w, int h) {
-	weave_video_node *C = CREATE(weave_video_node);
-	C->video_name = Str::duplicate(video_name);
-	C->w = w;
-	return Trees::new_node(tree, weave_video_node_type,
-		STORE_POINTER_weave_video_node(C));
+classdef weave_carousel_slide_node {
+	struct text_stream *caption;
+	int positioning;
+	int slide_number;
+	int slide_of;
+}
+tree_node *WeaveTree::carousel_slide(heterogeneous_tree *tree, text_stream *caption,
+	int positioning, int slide_number, int slide_of) {
+	CREATE_WEAVENODE(weave_carousel_slide_node);
+	N->caption = Str::duplicate(caption);
+	N->positioning = positioning;
+	N->slide_number = slide_number;
+	N->slide_of = slide_of;
+	RETURN_WEAVENODE(weave_carousel_slide_node);
 }
 
+classdef weave_download_node {
+	struct text_stream *download_name;
+	struct text_stream *filetype;
+}
 tree_node *WeaveTree::download(heterogeneous_tree *tree, 
 	text_stream *download_name, text_stream *filetype) {
-	weave_download_node *C = CREATE(weave_download_node);
-	C->download_name = Str::duplicate(download_name);
-	C->filetype = Str::duplicate(filetype);
-	return Trees::new_node(tree, weave_download_node_type,
-		STORE_POINTER_weave_download_node(C));
+	CREATE_WEAVENODE(weave_download_node);
+	N->download_name = Str::duplicate(download_name);
+	N->filetype = Str::duplicate(filetype);
+	RETURN_WEAVENODE(weave_download_node);
 }
 
-tree_node *WeaveTree::material(heterogeneous_tree *tree, int material_type, int plainly,
-	programming_language *styling, text_stream *endnote) {
-	weave_material_node *C = CREATE(weave_material_node);
-	C->material_type = material_type;
-	C->plainly = plainly;
-	C->styling = styling;
-	C->endnote = Str::duplicate(endnote);
-	return Trees::new_node(tree, weave_material_node_type, STORE_POINTER_weave_material_node(C));
+classdef weave_embed_node {
+	struct text_stream *service;
+	struct text_stream *ID;
+	int w;
+	int h;
 }
-
 tree_node *WeaveTree::embed(heterogeneous_tree *tree,
 	text_stream *service, text_stream *ID, int w, int h) {
-	weave_embed_node *C = CREATE(weave_embed_node);
-	C->service = Str::duplicate(service);
-	C->ID = Str::duplicate(ID);
-	C->w = w;
-	C->h = h;
-	return Trees::new_node(tree, weave_embed_node_type, STORE_POINTER_weave_embed_node(C));
+	CREATE_WEAVENODE(weave_embed_node);
+	N->service = Str::duplicate(service);
+	N->ID = Str::duplicate(ID);
+	N->w = w;
+	N->h = h;
+	RETURN_WEAVENODE(weave_embed_node);
 }
 
-@ This node weaves an angle-bracketed paragraph macro name. `defn` is set
-if and only if this is the place where the macro is defined — the usual
-thing is to render some sort of equals sign after it, if so.
+classdef weave_figure_node {
+	struct text_stream *figname;
+	struct text_stream *alt_text;
+	int w;
+	int h;
+}
+tree_node *WeaveTree::figure(heterogeneous_tree *tree, 
+	text_stream *figname, text_stream *alt_text, int w, int h) {
+	CREATE_WEAVENODE(weave_figure_node);
+	N->figname = Str::duplicate(figname);
+	N->alt_text = Str::duplicate(alt_text);
+	N->w = w;
+	N->h = h;
+	RETURN_WEAVENODE(weave_figure_node);
+}
+
+classdef weave_raw_HTML_node {
+	struct text_stream *extract;
+}
+tree_node *WeaveTree::raw_HTML(heterogeneous_tree *tree, 
+	text_stream *extract) {
+	CREATE_WEAVENODE(weave_raw_HTML_node);
+	N->extract = Str::duplicate(extract);
+	RETURN_WEAVENODE(weave_raw_HTML_node);
+}
+
+classdef weave_video_node {
+	struct text_stream *video_name;
+	int w;
+	int h;
+}
+tree_node *WeaveTree::video(heterogeneous_tree *tree, 
+	text_stream *video_name, int w, int h) {
+	CREATE_WEAVENODE(weave_video_node);
+	N->video_name = Str::duplicate(video_name);
+	N->w = w;
+	RETURN_WEAVENODE(weave_video_node);
+}
+
+@h Paragraph tail material creators.
 
 =
-tree_node *WeaveTree::holon_usage(heterogeneous_tree *tree, ls_holon *holon, markdown_variation *variation) {
-	weave_holon_usage_node *C = CREATE(weave_holon_usage_node);
-	C->holon = holon;
-	C->variation = variation;
-	return Trees::new_node(tree, weave_holon_usage_node_type, STORE_POINTER_weave_holon_usage_node(C));
+classdef weave_index_begins_node {
+	struct ls_paragraph *par;
+}
+tree_node *WeaveTree::index_begins(heterogeneous_tree *tree, ls_paragraph *par) {
+	CREATE_WEAVENODE(weave_index_begins_node);
+	N->par = par;
+	RETURN_WEAVENODE(weave_index_begins_node);
 }
 
-@ Similarly, if less often used:
-
-=
-tree_node *WeaveTree::tangler_command(heterogeneous_tree *tree, text_stream *cmd) {
-	weave_tangler_command_node *C = CREATE(weave_tangler_command_node);
-	C->command = Str::duplicate(cmd);
-	return Trees::new_node(tree, weave_tangler_command_node_type, STORE_POINTER_weave_tangler_command_node(C));
+classdef weave_index_lemma_node {
+	struct ls_paragraph *par;
+	struct ls_index_lemma *lemma;
+}
+tree_node *WeaveTree::index_lemma(heterogeneous_tree *tree, ls_paragraph *par,
+	ls_index_lemma *lemma) {
+	CREATE_WEAVENODE(weave_index_lemma_node);
+	N->par = par;
+	N->lemma = lemma;
+	RETURN_WEAVENODE(weave_index_lemma_node);
 }
 
-@ The following should render some kind of skip, and may want to take note of
-whether this happens in commentary or in code: the `in_comment` flag provides this
-information.
-
-=
-tree_node *WeaveTree::vskip(heterogeneous_tree *tree, int in_comment) {
-	weave_vskip_node *C = CREATE(weave_vskip_node);
-	C->in_comment = in_comment;
-	return Trees::new_node(tree, weave_vskip_node_type, STORE_POINTER_weave_vskip_node(C));
+classdef weave_index_ends_node {
+	struct ls_paragraph *par;
+}
+tree_node *WeaveTree::index_ends(heterogeneous_tree *tree, ls_paragraph *par) {
+	CREATE_WEAVENODE(weave_index_ends_node);
+	N->par = par;
+	RETURN_WEAVENODE(weave_index_ends_node);
 }
 
-tree_node *WeaveTree::section(heterogeneous_tree *tree, ls_section *sect) {
-	weave_section_node *C = CREATE(weave_section_node);
-	C->sect = sect;
-	return Trees::new_node(tree, weave_section_node_type, STORE_POINTER_weave_section_node(C));
+classdef weave_endnote_node {
+}
+tree_node *WeaveTree::endnote(heterogeneous_tree *tree) {
+	CREATE_WEAVENODE(weave_endnote_node);
+	RETURN_WEAVENODE(weave_endnote_node);
 }
 
-tree_node *WeaveTree::code_line(heterogeneous_tree *tree, ls_line *line) {
-	weave_code_line_node *C = CREATE(weave_code_line_node);
-	C->line = line;
-	return Trees::new_node(tree, weave_code_line_node_type, STORE_POINTER_weave_code_line_node(C));
+classdef weave_locale_node {
+	struct ls_paragraph *par1;
+	struct ls_line *finer;
+	struct ls_paragraph *par2;
+	int distant;
 }
-
-tree_node *WeaveTree::function_usage(heterogeneous_tree *tree,
-	text_stream *url, language_function *fn) {
-	weave_function_usage_node *C = CREATE(weave_function_usage_node);
-	C->url = Str::duplicate(url);
-	C->fn = fn;
-	return Trees::new_node(tree, weave_function_usage_node_type, STORE_POINTER_weave_function_usage_node(C));
-}
-
-tree_node *WeaveTree::commentary(heterogeneous_tree *tree, text_stream *text, int in_code) {
-	weave_commentary_node *C = CREATE(weave_commentary_node);
-	C->text = Str::duplicate(text);
-	C->in_code = in_code;
-	return Trees::new_node(tree, weave_commentary_node_type, STORE_POINTER_weave_commentary_node(C));
-}
-
-tree_node *WeaveTree::carousel_slide(heterogeneous_tree *tree, text_stream *caption, int positioning) {
-	weave_carousel_slide_node *C = CREATE(weave_carousel_slide_node);
-	C->caption = Str::duplicate(caption);
-	C->positioning = positioning;
-	return Trees::new_node(tree, weave_carousel_slide_node_type, STORE_POINTER_weave_carousel_slide_node(C));
-}
-
-tree_node *WeaveTree::table_of_contents(heterogeneous_tree *tree, text_stream *text1) {
-	weave_toc_node *C = CREATE(weave_toc_node);
-	C->text1 = Str::duplicate(text1);
-	return Trees::new_node(tree, weave_toc_node_type, STORE_POINTER_weave_toc_node(C));
-}
-
-tree_node *WeaveTree::contents_line(heterogeneous_tree *tree,
-	text_stream *text1, text_stream *text2, ls_paragraph *par) {
-	weave_toc_line_node *C = CREATE(weave_toc_line_node);
-	C->text1 = Str::duplicate(text1);
-	C->text2 = Str::duplicate(text2);
-	C->para = par;
-	return Trees::new_node(tree, weave_toc_line_node_type, STORE_POINTER_weave_toc_line_node(C));
-}
-
-tree_node *WeaveTree::weave_chapter_title_page_node(heterogeneous_tree *tree) {
-	weave_chapter_title_page_node *C = CREATE(weave_chapter_title_page_node);
-	return Trees::new_node(tree, weave_chapter_title_page_node_type, STORE_POINTER_weave_chapter_title_page_node(C));
-}
-
-tree_node *WeaveTree::weave_defn_node(heterogeneous_tree *tree, text_stream *keyword,
-	text_stream *symbol) {
-	weave_defn_node *C = CREATE(weave_defn_node);
-	C->keyword = Str::duplicate(keyword);
-	C->symbol = Str::duplicate(symbol);
-	return Trees::new_node(tree, weave_defn_node_type, STORE_POINTER_weave_defn_node(C));
-}
-
-tree_node *WeaveTree::holon_declaration(heterogeneous_tree *tree, ls_holon *holon,
-	markdown_variation *variation) {
-	weave_holon_declaration_node *C = CREATE(weave_holon_declaration_node);
-	C->holon = holon;
-	C->variation = variation;
-	return Trees::new_node(tree, weave_holon_declaration_node_type, STORE_POINTER_weave_holon_declaration_node(C));
-}
-
-@ The following node is expected to weave a piece of code, which has already
-been syntax-coloured.
-
-We don't want to leak tab characters out into woven code, where they are at
-the mercy of web browsers, which render tabs slightly oddly (and not to the
-width this author happens to like). So tabs are automatically converted to
-spaces sufficient to reach the next tab-stop position, calculated as:
-
-@d SPACES_PER_TAB_IN_WOVEN_CODE 4
-
-=
-tree_node *WeaveTree::source_code(heterogeneous_tree *tree,
-	text_stream *matter, text_stream *colouring) {
-	if (Str::len(colouring) != Str::len(matter)) internal_error("bad source segment");
-
-	for (int i=0; i<Str::len(matter); i++) {
-		inchar32_t c = Str::get_at(matter, i);
-		if (c == '\t') {
-			Str::put_at(matter, i, ' ');
-			int extra_spaces =
-				SPACES_PER_TAB_IN_WOVEN_CODE - 1 - (i % SPACES_PER_TAB_IN_WOVEN_CODE);
-			if (extra_spaces > 0) {
-				for (int j=0; j<extra_spaces; j++) {
-					PUT_TO(matter, ' '); PUT_TO(colouring, PLAIN_COLOUR);
-				}
-				for (int j=Str::len(matter)-1; j >= i+extra_spaces; j--) {
-					Str::put_at(matter, j, Str::get_at(matter, j-extra_spaces));
-					Str::put_at(colouring, j, Str::get_at(colouring, j-extra_spaces));
-				}
-				for (int j=0; j<extra_spaces; j++) {
-					Str::put_at(matter, i+1+j, ' ');
-					Str::put_at(colouring, i+1+j, PLAIN_COLOUR);
-				}
-			}
-		}
-	}
-
-	weave_source_code_node *C = CREATE(weave_source_code_node);
-	C->matter = Str::duplicate(matter);
-	C->colouring = Str::duplicate(colouring);
-	return Trees::new_node(tree, weave_source_code_node_type, STORE_POINTER_weave_source_code_node(C));
-}
-
-tree_node *WeaveTree::comment_in_holon(heterogeneous_tree *tree, text_stream *raw,
-	text_stream *open, text_stream *close, markdown_item *as_markdown,
-	markdown_variation *variation) {
-	weave_comment_in_holon_node *C = CREATE(weave_comment_in_holon_node);
-	C->raw = Str::duplicate(raw);
-	C->comment_open = Str::duplicate(open);
-	C->comment_close = Str::duplicate(close);
-	C->as_markdown = as_markdown;
-	C->variation = variation;
-	return Trees::new_node(tree, weave_comment_in_holon_node_type, STORE_POINTER_weave_comment_in_holon_node(C));
-}
-
-tree_node *WeaveTree::url(heterogeneous_tree *tree, text_stream *url,
-	text_stream *content, int external) {
-	weave_url_node *C = CREATE(weave_url_node);
-	C->url = Str::duplicate(url);
-	C->content = Str::duplicate(content);
-	C->external = external;
-	return Trees::new_node(tree, weave_url_node_type, STORE_POINTER_weave_url_node(C));
-}
-
-tree_node *WeaveTree::footnote_cue(heterogeneous_tree *tree, text_stream *cue) {
-	weave_footnote_cue_node *C = CREATE(weave_footnote_cue_node);
-	C->cue_text = Str::duplicate(cue);
-	return Trees::new_node(tree, weave_footnote_cue_node_type, STORE_POINTER_weave_footnote_cue_node(C));
-}
-
-tree_node *WeaveTree::footnote(heterogeneous_tree *tree, text_stream *cue) {
-	weave_begin_footnote_text_node *C = CREATE(weave_begin_footnote_text_node);
-	C->cue_text = Str::duplicate(cue);
-	return Trees::new_node(tree, weave_begin_footnote_text_node_type, STORE_POINTER_weave_begin_footnote_text_node(C));
-}
-
-@ This node need not do anything; it simply alerts the renderer that a function
-definition has just occurred.
-
-=
-tree_node *WeaveTree::function_defn(heterogeneous_tree *tree, language_function *fn,
-	int local_usages, int local_direction, int section_usages, int external_usages,
-	hash_table_entry_usage *hteu) {
-	weave_function_defn_node *C = CREATE(weave_function_defn_node);
-	C->fn = fn;
-	C->local_usages = local_usages; C->local_direction = local_direction;
-	C->section_usages = section_usages; C->external_usages = external_usages;
-	C->hteu = hteu;
-	return Trees::new_node(tree, weave_function_defn_node_type, STORE_POINTER_weave_function_defn_node(C));
-}
-
-@ This node produces the `>> Example` bits of example source text, really
-a convenience for Inform 7 code commentary.
-
-=
-tree_node *WeaveTree::display_line(heterogeneous_tree *tree, text_stream *text) {
-	weave_display_line_node *C = CREATE(weave_display_line_node);
-	C->text = Str::duplicate(text);
-	return Trees::new_node(tree, weave_display_line_node_type, STORE_POINTER_weave_display_line_node(C));
-}
-
-@ An item node produces an item marker in a typical (a), (b), (c), ... sort
-of list. `depth` can be 1 or 2: you can have lists in lists, but not lists in
-lists in lists. `label` is the marker text, e.g., `a`, `b`, `c`, ...; it can
-also be empty, in which case the method should move to the matching level of
-indentation but not weave any bracketed marker.
-
-=
-tree_node *WeaveTree::weave_item_node(heterogeneous_tree *tree, int depth, text_stream *label) {
-	weave_item_node *C = CREATE(weave_item_node);
-	C->depth = depth;
-	C->label = Str::duplicate(label);
-	return Trees::new_node(tree, weave_item_node_type, STORE_POINTER_weave_item_node(C));
-}
-
-tree_node *WeaveTree::grammar_index(heterogeneous_tree *tree) {
-	weave_grammar_index_node *C = CREATE(weave_grammar_index_node);
-	return Trees::new_node(tree, weave_grammar_index_node_type, STORE_POINTER_weave_grammar_index_node(C));
-}
-
-tree_node *WeaveTree::inline(heterogeneous_tree *tree) {
-	weave_inline_node *C = CREATE(weave_inline_node);
-	return Trees::new_node(tree, weave_inline_node_type, STORE_POINTER_weave_inline_node(C));
-}
-
 tree_node *WeaveTree::locale(heterogeneous_tree *tree, ls_paragraph *par1,
-	ls_line *finer, ls_paragraph *par2, ls_section *from) {
-	weave_locale_node *C = CREATE(weave_locale_node);
-	C->par1 = par1;
-	C->finer = finer;
-	C->par2 = par2;
-	C->distant = FALSE;
-	if ((from) && (C->par1->owning_unit->owning_section) && (from != C->par1->owning_unit->owning_section))
-		C->distant = TRUE;
-	return Trees::new_node(tree, weave_locale_node_type, STORE_POINTER_weave_locale_node(C));
+	ls_line *finer, ls_paragraph *par2, int distant) {
+	CREATE_WEAVENODE(weave_locale_node);
+	N->par1 = par1;
+	N->finer = finer;
+	N->par2 = par2;
+	N->distant = distant;
+	RETURN_WEAVENODE(weave_locale_node);
 }
 
-tree_node *WeaveTree::mathematics(heterogeneous_tree *tree, text_stream *content, int displayed) {
-	weave_maths_node *C = CREATE(weave_maths_node);
-	C->content = Str::duplicate(content);
-	C->displayed = displayed;
-	return Trees::new_node(tree, weave_maths_node_type, STORE_POINTER_weave_maths_node(C));
+classdef weave_endnote_text_node {
+	struct text_stream *text;
 }
-
-tree_node *WeaveTree::markdown_chunk(heterogeneous_tree *tree, markdown_item *content,
-	ls_line *nearby_line, markdown_variation *variation) {
-	weave_markdown_node *C = CREATE(weave_markdown_node);
-	C->content = content;
-	C->nearby_line = nearby_line;
-	C->variation = variation;
-	return Trees::new_node(tree, weave_markdown_node_type, STORE_POINTER_weave_markdown_node(C));
-}
-
-tree_node *WeaveTree::index_marker(heterogeneous_tree *tree, ls_paragraph *par) {
-	weave_index_marker_node *C = CREATE(weave_index_marker_node);
-	C->par = par;
-	return Trees::new_node(tree, weave_index_marker_node_type, STORE_POINTER_weave_index_marker_node(C));
-}
-
-void WeaveTree::show(text_stream *OUT, heterogeneous_tree *T) {
-	WRITE("%S\n", T->type->name);
-	INDENT;
-	DebuggingWeaving::render(NULL, OUT, T);
-	OUTDENT;
-}
-
-void WeaveTree::prune(heterogeneous_tree *T) {
-	Trees::prune_tree(T, &WeaveTree::prune_visit, NULL);
-}
-
-int WeaveTree::prune_visit(tree_node *N, void *state) {
-	if ((N->type->required_CLASS == weave_material_node_CLASS) && (N->child == NULL))
-		return TRUE;
-	if ((N->type->required_CLASS == weave_vskip_node_CLASS) && (N->next == NULL))
-		return TRUE;
-	if ((N->type->required_CLASS == weave_vskip_node_CLASS) &&
-		(N->next->type->required_CLASS == weave_item_node_CLASS))
-		return TRUE;
-	return FALSE;
+tree_node *WeaveTree::endnote_text(heterogeneous_tree *tree, text_stream *text) {
+	CREATE_WEAVENODE(weave_endnote_text_node);
+	N->text = Str::duplicate(text);
+	RETURN_WEAVENODE(weave_endnote_text_node);
 }

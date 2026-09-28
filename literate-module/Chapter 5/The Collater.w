@@ -629,6 +629,8 @@ this will recursively call The Collater, in fact.
 		Str::copy(substituted, C->ch_range);
 	} else if (Str::eq_wide_string(detail, U"Purpose")) {
 		Str::copy(substituted, C->rubric);
+	} else if (Str::eq_wide_string(detail, U"Link")) {
+		WRITE_TO(substituted, "ch%S", C->ch_range);
 	} else if (WeavingFormats::substitute_post_processing_data(substituted,
 		WeavingDetails::get_ch_weave(C), detail, cls->wv->pattern)) {
 		;
@@ -659,6 +661,8 @@ this will recursively call The Collater, in fact.
 		WRITE_TO(substituted, "%f", S->source_file_for_section);
 	} else if (Str::eq_wide_string(detail, U"Page")) {
 		Colonies::section_URL(substituted, S);
+	} else if (Str::eq_wide_string(detail, U"Link")) {
+		WRITE_TO(substituted, "se%S", S->sect_range);
 	} else if (Str::eq_wide_string(detail, U"Paragraphs")) {
 		WRITE_TO(substituted, "%d", WebStructure::paragraph_count_within_section(S));
 	} else if (Str::eq_wide_string(detail, U"Mean")) {

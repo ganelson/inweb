@@ -1,7 +1,7 @@
 [TeXWeaving::] TeX Format.
 
 To provide for weaving in the standard maths and science typesetting
-software, TeX.
+software, TeX, and its numerous variants.
 
 @h Creation.
 
@@ -9,106 +9,171 @@ software, TeX.
 void TeXWeaving::create(void) {
 	weave_format *wf = WeavingFormats::create_weave_format(I"TeX", I".tex");
 	METHOD_ADD(wf, RENDER_FOR_MTID, TeXWeaving::render_TeX);
-	METHOD_ADD(wf, PREFORM_DOCUMENT_FOR_MTID, TeXWeaving::preform_document);
+}
+
+@h Markdown rendering instructions.
+While the code in this section renders the weave tree, the actual commentary
+(along with other fragments, such as comments in code, depending on the
+conventions used) is stored in Markdown, and needs to be handed over to the
+code in //foundation: Markdown to TeX//.
+
+That needs a set of instructions, to say what kind of Markdown, how we want it
+rendered, and so on.
+
+=
+markdown_render TeXWeaving::Markdown_instructions(weave_order *wv) {
+	markdown_render rdr = MDRender::contextual_TeX(
+		WebNotation::commentary_variation(wv->weave_web),
+		STORE_POINTER_weave_order(wv));
+	markdown_render *prdr = &rdr;
+	METHOD_ADD(prdr, NAME_COLOUR_MTID, WeavingFormats::name_colour);
+	METHOD_ADD(prdr, NAME_COLOUR_SCHEME_MTID, WeavingFormats::name_colour_scheme);
+	METHOD_ADD(prdr, BEGIN_COLOURING_MTID, WeavingFormats::begin_colouring);
+	METHOD_ADD(prdr, COLOUR_LINE_MTID, WeavingFormats::colour_line);
+	METHOD_ADD(prdr, RESOLVE_LINK_MTID, WeavingFormats::resolve_link);
+	METHOD_ADD(prdr, NAME_ANCHOR_MTID, TeXWeaving::name_anchor);
+	METHOD_ADD(prdr, NOTIFY_IMAGE_MTID, TeXWeaving::notify_image);
+	METHOD_ADD(prdr, RENDER_GADGET_MTID, TeXWeaving::render_gadget);
+	METHOD_ADD(prdr, RENDER_UL_AS_CAROUSEL_MTID, TeXWeaving::render_ul_as_carousel);
+	return rdr;
+}
+
+void TeXWeaving::name_anchor(markdown_render *rdr, text_stream *OUT, void *clabel) {
+	ls_line_label *label = (ls_line_label *) clabel;
+	ls_line *line = LineLabels::destination(label);
+	TeXWeaving::line_anchor(OUT, line);
+}
+
+void TeXWeaving::line_anchor(text_stream *OUT, ls_line *line) {
+	ls_section *S = LiterateSource::section_of_line(line);
+	if (S) WRITE("s%d", S->allocation_id);
+	WRITE("line%d", line->sequence_number_in_section);
 }
 
 @h Rendering.
-At present, this renderer only makes the dialect of TeX needed for `pdftex`,
-which involves various extension commands: the curse of modern TeX is the
-combination of an outdated original, and a proliferation of non-canonical
-extensions, but `pdftex` is pretty good. All the same, we should perhaps
-consider adding LaTeX, or XeTeX.
-
-@e PDFTEX_TEXDIALECT from 1
 
 =
 void TeXWeaving::render_TeX(weave_format *self, text_stream *OUT, heterogeneous_tree *tree) {
-	TeXWeaving::render_inner(OUT, tree, PDFTEX_TEXDIALECT);
+	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
+	TeX_render_state trs;
+	@<Initialise the render state@>;
+	Trees::traverse_from(tree->root, &TeXWeaving::render_visit, (void *) &trs, 0);
 }
 
-@ From here on, then, the renderer, which should generate TeX which is as
-generic as possible, but with special features depending on `trs->TeX_form`.
+@ The following state will be carried through the traverse.
 
 =
 classdef TeX_render_state {
 	struct text_stream *OUT;
 	struct weave_order *wv;
-	int TeX_form;
+	struct colour_scheme *colours;
+	struct markdown_render rdr;
+	int max_label_width;
+	int holon_defined;
+	int commentary_rendered;
+	ls_paragraph *current_par;
 } TeX_render_state;
 
-void TeXWeaving::render_inner(text_stream *OUT, heterogeneous_tree *tree, int form) {
-	weave_document_node *C = RETRIEVE_POINTER_weave_document_node(tree->root->content);
-	TeX_render_state trs;
+@<Initialise the render state@> =
 	trs.OUT = OUT;
 	trs.wv = C->wv;
-	trs.TeX_form = form;
-	Trees::traverse_from(tree->root, &TeXWeaving::render_visit, (void *) &trs, 0);
-}
+	trs.colours = Swarm::ensure_colour_scheme(C->wv, I"Colours", I"");
+	trs.rdr = TeXWeaving::Markdown_instructions(C->wv);
+	trs.max_label_width = 0;
+	trs.holon_defined = FALSE;
+	trs.commentary_rendered = FALSE;
+	trs.current_par = NULL;
 
-@ For the reason why footnotes are omitted, see below: they aren't really.
+@ So, then, the visiting function, called on each node. C does not allow
+switch statements whose cases are not literal constants, so there's a
+big contrived `if` instead. But it is morally a `switch`.
 
 =
 int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	TeX_render_state *trs = (TeX_render_state *) state;
 	text_stream *OUT = trs->OUT;
-	if ((N->type == weave_document_node_type) ||
-		(N->type == weave_body_node_type) ||
-		(N->type == weave_chapter_title_page_node_type) ||
-		(N->type == weave_chapter_footer_node_type) ||
-		(N->type == weave_section_footer_node_type) ||
-		(N->type == weave_audio_node_type) ||
-		(N->type == weave_video_node_type) ||
-		(N->type == weave_download_node_type) ||
-		(N->type == weave_chapter_node_type) ||
-		(N->type == weave_carousel_slide_node_type) ||
-		(N->type == weave_begin_footnote_text_node_type)) @<Render nothing@>
 
+	/* Document superstructure */
+
+	     if (N->type == weave_document_node_type) @<Skip@>
 	else if (N->type == weave_head_node_type) @<Render head@>
+	else if (N->type == weave_body_node_type) @<Skip@>
 	else if (N->type == weave_tail_node_type) @<Render tail@>
-	else if (N->type == weave_verbatim_node_type) @<Render verbatim@>
+
+	/* Large-scale structure */
+
+	else if (N->type == weave_chapter_node_type) @<Skip@>
 	else if (N->type == weave_chapter_header_node_type) @<Render chapter header@>
-	else if (N->type == weave_section_header_node_type) @<Render header@>
-	else if (N->type == weave_section_purpose_node_type) @<Render purpose@>
-	else if (N->type == weave_subheading_node_type) @<Render subheading@>
-	else if (N->type == weave_subsubheading_node_type) @<Render subsubheading@>
-	else if (N->type == weave_bar_node_type) @<Render bar@>
-	else if (N->type == weave_pagebreak_node_type) @<Render pagebreak@>
-	else if (N->type == weave_linebreak_node_type) @<Render linebreak@>
-	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
-	else if (N->type == weave_endnote_node_type) @<Render endnote@>
-	else if (N->type == weave_figure_node_type) @<Render figure@>
-	else if (N->type == weave_material_node_type) @<Render material@>
-	else if (N->type == weave_embed_node_type) @<Render embed@>
-	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
-	else if (N->type == weave_holon_usage_node_type) @<Render holon usage@>
-	else if (N->type == weave_vskip_node_type) @<Render vskip@>
-	else if (N->type == weave_section_node_type) @<Render section@>
-	else if (N->type == weave_code_line_node_type) @<Render code line@>
-	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
-	else if (N->type == weave_commentary_node_type) @<Render commentary@>
+	else if (N->type == weave_chapter_footer_node_type) @<Skip@>
+	else if (N->type == weave_section_node_type) @<Skip@>
+	else if (N->type == weave_section_header_node_type) @<Render section header@>
+	else if (N->type == weave_section_footer_node_type) @<Skip@>
+	else if (N->type == weave_section_purpose_node_type) @<Render section purpose@>
 	else if (N->type == weave_toc_node_type) @<Render toc@>
 	else if (N->type == weave_toc_line_node_type) @<Render toc line@>
-	else if (N->type == weave_defn_node_type) @<Render defn@>
-	else if (N->type == weave_source_code_node_type) @<Render source code@>
-	else if (N->type == weave_comment_in_holon_node_type) @<Render comment in holon@>
-	else if (N->type == weave_url_node_type) @<Render URL@>
-	else if (N->type == weave_footnote_cue_node_type) @<Render footnote cue@>
-	else if (N->type == weave_display_line_node_type) @<Render display line@>
-	else if (N->type == weave_function_defn_node_type) @<Render function defn@>
-	else if (N->type == weave_item_node_type) @<Render item@>
-	else if (N->type == weave_grammar_index_node_type) @<Render grammar index@>
-	else if (N->type == weave_inline_node_type) @<Render inline@>
-	else if (N->type == weave_locale_node_type) @<Render locale@>
-	else if (N->type == weave_maths_node_type) @<Render maths@>
-	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
-	else if (N->type == weave_index_marker_node_type) @<Render index@>
 
-	else {
-		WRITE_TO(STDERR, "errant node type: %S\n", N->type->node_type_name);
-		internal_error("unable to render unknown node");
-	}
+	/* Small-scale structure */
+
+	else if (N->type == weave_subheading_node_type) @<Render subheading@>
+	else if (N->type == weave_subsubheading_node_type) @<Render subsubheading@>
+	else if (N->type == weave_paragraph_heading_node_type) @<Render paragraph heading@>
+	else if (N->type == weave_material_node_type) @<Render material@>
+
+	/* Code-like material */
+
+	else if (N->type == weave_holon_declaration_node_type) @<Render holon declaration@>
+	else if (N->type == weave_code_line_node_type) @<Render code line@>
+	else if (N->type == weave_holon_usage_node_type) @<Render holon usage@>
+	else if (N->type == weave_tangler_command_node_type) @<Skip@>
+	else if (N->type == weave_verbatim_node_type) @<Render verbatim@>
+	else if (N->type == weave_source_code_node_type) @<Render source code@>
+	else if (N->type == weave_function_defn_node_type) @<Render function defn@>
+	else if (N->type == weave_function_usage_node_type) @<Render function usage@>
+	else if (N->type == weave_comment_in_holon_node_type) @<Render comment in holon@>
+	else if (N->type == weave_defn_node_type) @<Render defn@>
+
+	/* Commentary and gadget material */
+
+	else if (N->type == weave_markdown_node_type) @<Render Markdown@>
+	else if (N->type == weave_audio_node_type) @<Skip@>
+	else if (N->type == weave_carousel_slide_node_type) @<Render carousel slide@>
+	else if (N->type == weave_download_node_type) @<Skip@>
+	else if (N->type == weave_embed_node_type) @<Skip@>
+	else if (N->type == weave_figure_node_type) @<Render figure@>
+	else if (N->type == weave_raw_HTML_node_type) @<Skip@>
+	else if (N->type == weave_video_node_type) @<Skip@>
+
+	/* Paragraph tail material */
+
+	else if (N->type == weave_index_begins_node_type) @<Render index begins@>
+	else if (N->type == weave_index_lemma_node_type) @<Render index lemma@>
+	else if (N->type == weave_index_ends_node_type) @<Render index ends@>
+	else if (N->type == weave_endnote_node_type) @<Render endnote@>
+	else if (N->type == weave_locale_node_type) @<Render locale@>
+	else if (N->type == weave_endnote_text_node_type) @<Render endnote text@>
+
+	else internal_error("no HTML rendering for this node type");
 	return TRUE;
 }
+
+@<Skip@> =
+	;
+
+@ By default, the visitor function returns `TRUE` at each node (see above).
+This tells the tree-traversing machinery to continue recursing down through
+that node's children _after_ the node itself has been visited.
+
+Some nodes, however, will want to render something, then recurse downwards,
+then render something further. They can do this by using the following holon
+to perform the recursion, but must then explicitly return `FALSE`, or else the child
+nodes will end up being visited a second time.
+
+@<Recurse the renderer through children nodes@> =
+	for (tree_node *M = N->child; M; M = M->next)
+		Trees::traverse_from(M, &TeXWeaving::render_visit, (void *) trs, L+1);
+
+@h Document superstructure renderers.
+These are just comments.
 
 @<Render head@> =
 	weave_head_node *C = RETRIEVE_POINTER_weave_head_node(N->content);
@@ -119,176 +184,40 @@ int TeXWeaving::render_visit(tree_node *N, void *state, int L) {
 	WRITE("%% %S\n", C->rennab);
 	WRITE("\\end\n");
 
+@h Large-scale structure renderers.
+
 @<Render chapter header@> =
 	weave_chapter_header_node *C = RETRIEVE_POINTER_weave_chapter_header_node(N->content);
 	if (Str::ne(C->chap->ch_range, I"S")) {
-		TeXWeaving::general_heading(OUT, trs->wv,
+		TeXWeaving::general_heading(OUT, &(trs->rdr), trs->wv,
 			FIRST_IN_LINKED_LIST(ls_section, C->chap->sections), NULL, C->chap->ch_title,
 			3, FALSE);
 		WRITE("%S\\medskip\n", C->chap->rubric);
 		ls_section *S;
 		LOOP_OVER_LINKED_LIST(S, ls_section, C->chap->sections) {
 			WRITE("\\smallskip\\noindent ");
-			WRITE("{\\it %S}\\qquad\n", S->sect_title);
-			WRITE("%S", LiterateSource::unit_purpose(S->literate_source));
+			WRITE("{\\bf ");
+			MDRender::stream(OUT, &(trs->rdr), S->sect_title, 0);
+			WRITE("}\\qquad\n");
+			MDRender::stream(OUT, &(trs->rdr), LiterateSource::unit_purpose(S->literate_source), 0);
 		}
 	}
 
-@<Render header@> =
+@<Render section header@> =
 	weave_section_header_node *C = RETRIEVE_POINTER_weave_section_header_node(N->content);
-	TeXWeaving::general_heading(OUT, trs->wv, C->sect, NULL,
+	TeXWeaving::general_heading(OUT, &(trs->rdr), trs->wv, C->sect, NULL,
 		C->sect->sect_title, 2, FALSE);
 
-@<Render purpose@> =
+@<Render section purpose@> =
 	weave_section_purpose_node *C = RETRIEVE_POINTER_weave_section_purpose_node(N->content);
-	WRITE("\\smallskip\\par\\noindent{\\it %S}\\smallskip\\noindent\n", C->purpose);
+	WRITE("\\smallskip\\par\\noindent{\\it ");
+	MDRender::stream(OUT, &(trs->rdr), C->purpose, 0);
+	WRITE("}\\smallskip\\noindent\n");
 
-@<Render subheading@> =
-	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
-	WRITE("\\par\\noindent{\\bf %S}\\mark{%S}\\medskip\n", C->text, NULL);
-
-@<Render subsubheading@> =
-	weave_subsubheading_node *C = RETRIEVE_POINTER_weave_subsubheading_node(N->content);
-	WRITE("\\par\\noindent{\\bf %S}\\mark{%S}\\medskip\n", C->text, NULL);
-
-@<Render bar@> =
-	WRITE("\\par\\medskip\\noindent\\hrule\\medskip\\noindent\n");
-
-@<Render pagebreak@> =
-	WRITE("\\vfill\\eject\n");
-
-@<Render linebreak@> =
-	WRITE("\n");
-
-@<Render paragraph heading@> =
-	weave_paragraph_heading_node *C =
-		RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
-	TeXWeaving::general_heading(OUT, trs->wv, LiterateSource::section_of_par(C->para),
-		C->para, I"", 0, FALSE);
-
-@<Render endnote@> =
-	WRITE("\\par\\noindent\\penalty10000\n");
-	WRITE("{\\usagefont ");
-	@<Recurse the renderer through children nodes@>;
-	WRITE("}\\smallskip\n");
-	return FALSE;
-
-@ TeX itself has an almost defiant lack of support for anything pictorial,
-which is one reason it didn't live up to its hope of being the definitive basis
-for typography; even today the loose confederation of TeX-like programs and
-extensions lack standard approaches. Here we're going to use `pdftex` features,
-having nothing better. All we're trying for is to insert a picture, scaled
-to a given width, into the text at the current position.
-
-@<Render figure@> =
-	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
-	filename *F = Filenames::in(
-		Pathnames::down(trs->wv->weave_web->path_to_web, I"Figures"),
-		C->figname);
-	WRITE("\\pdfximage");
-	if (C->w >= 0) WRITE(" width %d cm{%f}\n", C->w/POINTS_PER_CM, F);
-	else if (C->h >= 0) WRITE(" height %d cm{%f}\n", C->h/POINTS_PER_CM, F);
-	else WRITE("{%f}\n", F);
-	WRITE("\\smallskip\\noindent"
-		"\\hbox to\\hsize{\\hfill\\pdfrefximage \\pdflastximage\\hfill}"
-		"\\smallskip\n");
-
-@<Render material@> =
-	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
-//	if ((N == N->parent->child) &&
-//		(N->parent->type == weave_paragraph_heading_node_type)) {
-//		weave_paragraph_heading_node *PC =
-//			RETRIEVE_POINTER_weave_paragraph_heading_node(N->parent->content);
-//	}
-	if (C->material_type == COMMENTARY_MATERIAL)
-		@<Deal with a commentary material node@>
-	else if (C->material_type == CODE_MATERIAL)
-		@<Deal with a code material node@>
-	else if (C->material_type == FOOTNOTES_MATERIAL)
-		@<Deal with a footnotes material node@>
-	else if (C->material_type == ENDNOTES_MATERIAL)
-		@<Deal with a endnotes material node@>
-	else if (C->material_type == MACRO_MATERIAL)
-		@<Deal with a macro material node@>
-	else if (C->material_type == DEFINITION_MATERIAL)
-		@<Deal with a definition material node@>;
-	return FALSE;
-
-@<Deal with a commentary material node@> =
-	@<Recurse the renderer through children nodes@>;
-	WRITE("\n");
-
-@<Deal with a code material node@> =
-	WRITE("\\beginlines\n");
-	@<Recurse the renderer through children nodes@>;
-	WRITE("\\endlines\n");
-
-@<Deal with a footnotes material node@> =
-	return FALSE;
-
-@<Deal with a endnotes material node@> =
-	@<Recurse the renderer through children nodes@>;
-
-@<Deal with a macro material node@> =
-	@<Recurse the renderer through children nodes@>;
-	WRITE("\n");
-
-@<Deal with a definition material node@> =
-	WRITE("\\beginlines\n");
-	@<Recurse the renderer through children nodes@>;
-	WRITE("\\endlines\n");
-
-@<Render verbatim@> =
-	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
-	WRITE("%S", C->content);
-
-@<Render nothing@> =
-	;
-
-@<Render embed@> =
-	weave_embed_node *C = RETRIEVE_POINTER_weave_embed_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
-@<Render holon declaration@> =
-	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
-	TeXWeaving::para_macro(OUT, trs->wv, C->holon->corresponding_chunk->owner, TRUE);
-
-@<Render holon usage@> =
-	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
-	TeXWeaving::para_macro(OUT, trs->wv, C->holon->corresponding_chunk->owner, FALSE);
-
-@<Render vskip@> =
-	weave_vskip_node *C = RETRIEVE_POINTER_weave_vskip_node(N->content);
-	if (C->in_comment) WRITE("\\smallskip\\par\\noindent%%\n");
-	else WRITE("\\smallskip\n");
-
-@<Render section@> =
-	weave_section_node *C = RETRIEVE_POINTER_weave_section_node(N->content);
-	LOG("It was %d\n", C->allocation_id);
-
-@<Render code line@> =
-	WRITE("\\smallskip\\par\\noindent ");
-	WRITE("|");
-	@<Recurse the renderer through children nodes@>;
-	WRITE("|");
-	WRITE("\n");
-	return FALSE;
-
-@<Render function usage@> =
-	weave_function_usage_node *C =
-		RETRIEVE_POINTER_weave_function_usage_node(N->content);
-	WRITE("%S", C->fn->function_name);
-	return FALSE;
-
-@<Render commentary@> =
-	weave_commentary_node *C =
-		RETRIEVE_POINTER_weave_commentary_node(N->content);
-	if (C->in_code) WRITE(" |\\hfill{\\ttninepoint\\it ");
-	TeXWeaving::commentary_text(OUT, trs->wv, C->text);
-	if (C->in_code) WRITE("}|");
+@ The Table of Contents at the top of a section:
 
 @<Render toc@> =
-	WRITE("\\medskip\\hrule\\smallskip\\par\\noindent{\\usagefont ");
+	WRITE("\\medskip\\hrule\\smallskip\\par\\noindent\\usagefont ");
 	for (tree_node *M = N->child; M; M = M->next) {
 		Trees::traverse_from(M, &TeXWeaving::render_visit, (void *) trs, L+1);
 		if (M->next) WRITE("; ");
@@ -298,19 +227,166 @@ to a given width, into the text at the current position.
 
 @<Render toc line@> =
 	weave_toc_line_node *C = RETRIEVE_POINTER_weave_toc_line_node(N->content);
-	WRITE("%S~%S", C->text1, C->text2);
+	TeXWeaving::locale(OUT, &(trs->rdr), C->para, NULL, C->para);
+	WRITE("~");
+	MDRender::stream(OUT, &(trs->rdr), C->text2, 0);
 
-@<Render defn@> =
-	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
-	WRITE("|{\\ninebf %S} |", C->keyword);
+@h Small-scale structure renderers.
+
+@<Render subheading@> =
+	weave_subheading_node *C = RETRIEVE_POINTER_weave_subheading_node(N->content);
+	WRITE("\\par\\noindent{\\bf ");
+	MDRender::stream(OUT, &(trs->rdr), C->text, 0);
+	WRITE("}\\medskip\n");
+
+@<Render subsubheading@> =
+	weave_subsubheading_node *C = RETRIEVE_POINTER_weave_subsubheading_node(N->content);
+	WRITE("\\par\\noindent{\\bf ");
+	MDRender::stream(OUT, &(trs->rdr), C->text, 0);
+	WRITE("}\\medskip\n");
+
+@<Render paragraph heading@> =
+	weave_paragraph_heading_node *C =
+		RETRIEVE_POINTER_weave_paragraph_heading_node(N->content);
+	if (LiterateSource::par_has_visible_number(C->para)) {
+		text_stream *titling = LiterateSource::par_title(C->para);
+		if (Str::len(titling) == 0)
+			TeXWeaving::general_heading(OUT, &(trs->rdr), trs->wv, LiterateSource::section_of_par(C->para),
+				C->para, I"", 0, FALSE);
+		else
+			TeXWeaving::general_heading(OUT, &(trs->rdr), trs->wv, LiterateSource::section_of_par(C->para),
+				C->para, titling, 1, FALSE);
+	}
+	trs->holon_defined = FALSE;
+	trs->commentary_rendered = FALSE;
+	trs->current_par = C->para;
+	WRITE("\\inwebanchor{");
+	TeXWeaving::paragraph_link(OUT, C->para);
+	WRITE("}");
+
+@<Render material@> =
+	weave_material_node *C = RETRIEVE_POINTER_weave_material_node(N->content);
+	if (C->material_type == COMMENTARY_MATERIAL)
+		@<Deal with a commentary material node@>
+	else if (C->material_type == CODE_MATERIAL)
+		@<Deal with a code material node@>
+	else if (C->material_type == FOOTNOTES_MATERIAL)
+		@<Deal with a footnotes material node@>
+	else if (C->material_type == ENDNOTES_MATERIAL)
+		@<Deal with a endnotes material node@>
+	else if (C->material_type == HOLON_DECLARATION_MATERIAL)
+		@<Deal with a holon material node@>
+	else if (C->material_type == DEFINITION_MATERIAL)
+		@<Deal with a definition material node@>;
+	return FALSE;
+
+@<Deal with a commentary material node@> =
+	@<Recurse the renderer through children nodes@>;
+	WRITE("\n");
+	trs->commentary_rendered = TRUE;
+
+@<Deal with a code material node@> =
+	if (C->styling) {
+		TEMPORARY_TEXT(csname)
+		WRITE_TO(csname, "%S-Colours", C->styling->language_name);
+		trs->colours = Swarm::ensure_colour_scheme(trs->wv,
+			csname, C->styling->language_name);
+		DISCARD_TEXT(csname)
+	}
+	if (trs->holon_defined) WRITE("\\beginlinestighter\n");
+	else WRITE("\\beginlines\n");
+	trs->max_label_width = 0;
+	for (tree_node *M = N->child; M; M = M->next)
+		if (M->type == weave_code_line_node_type) {
+			weave_code_line_node *MC = RETRIEVE_POINTER_weave_code_line_node(M->content);
+			if ((MC->line) && (LineLabels::label_width(MC->line) > trs->max_label_width))
+				trs->max_label_width = LineLabels::label_width(MC->line);
+		}
+	@<Recurse the renderer through children nodes@>;
+	trs->max_label_width = 0;
+	WRITE("\\endlines\n");
+
+@<Deal with a footnotes material node@> =
+	return FALSE;
+
+@<Deal with a endnotes material node@> =
+	@<Recurse the renderer through children nodes@>;
+
+@<Deal with a holon material node@> =
+	@<Recurse the renderer through children nodes@>;
+	WRITE("\n");
+
+@<Deal with a definition material node@> =
+	WRITE("\\beginlinestighter\n");
+	@<Recurse the renderer through children nodes@>;
+	WRITE("\\endlines\n");
+
+@h Code-like material renderers.
+
+@<Render holon declaration@> =
+	if (trs->commentary_rendered) WRITE("\\par\\smallskip\\noindent\n");
+	weave_holon_declaration_node *C = RETRIEVE_POINTER_weave_holon_declaration_node(N->content);
+	TeXWeaving::holon_name(OUT, &(trs->rdr), C->holon, TRUE);
+	trs->holon_defined = TRUE;
+
+@<Render code line@> =
+	weave_code_line_node *C = RETRIEVE_POINTER_weave_code_line_node(N->content);
+	WRITE("\\hskip1em ");
+	if (trs->max_label_width > 0) {
+		if (LineLabels::labelled(C->line)) {
+			WRITE("\\inwebanchor{");
+			TeXWeaving::line_anchor(OUT, C->line);
+			WRITE("}");
+			WRITE("|");
+			int n = trs->max_label_width - Str::len(LineLabels::label_text(C->line));
+			while (n > 0) { WRITE(" "); n--; }
+			WRITE("%S |{$\\Rightarrow$}", LineLabels::label_text(C->line));
+		} else {
+			WRITE("|");
+			int n = trs->max_label_width + 1;
+			while (n > 0) { WRITE(" "); n--; }
+			WRITE("|\\phantom{$\\Rightarrow$}");
+		}
+		WRITE("\\hskip1em ");
+	}
+	@<Recurse the renderer through children nodes@>;
+	WRITE("\n");
+	return FALSE;
+
+@<Render holon usage@> =
+	weave_holon_usage_node *C = RETRIEVE_POINTER_weave_holon_usage_node(N->content);
+	TeXWeaving::holon_name(OUT, &(trs->rdr), C->holon, FALSE);
+
+@<Render verbatim@> =
+	weave_verbatim_node *C = RETRIEVE_POINTER_weave_verbatim_node(N->content);
+	TEMPORARY_TEXT(colouring)
+	for (int i=0; i<Str::len(C->content); i++) PUT_TO(colouring, CHARACTER_COLOUR);
+	MDRenderTeX::render_syntax_coloured(OUT, &(trs->rdr), C->content, colouring, NULL);
+	DISCARD_TEXT(colouring)
 
 @<Render source code@> =
 	weave_source_code_node *C =
 		RETRIEVE_POINTER_weave_source_code_node(N->content);
-	int starts = FALSE;
-	if (N == N->parent->child) starts = TRUE;
-	TeXWeaving::source_code(OUT, trs->wv,
-		C->matter, C->colouring, starts);
+	MDRenderTeX::render_syntax_coloured(OUT, &(trs->rdr), C->matter, C->colouring, NULL);
+
+@<Render function defn@> =
+	weave_function_defn_node *C =
+		RETRIEVE_POINTER_weave_function_defn_node(N->content);
+	WRITE("|");
+	MDRenderTeX::change_colour(OUT, &(trs->rdr), FUNCTION_COLOUR, NULL);
+	WRITE("%S", C->fn->function_name);
+	MDRenderTeX::change_colour(OUT, &(trs->rdr), PLAIN_COLOUR, NULL);
+	WRITE("|");
+	return FALSE;
+
+@<Render function usage@> =
+	weave_function_usage_node *C =
+		RETRIEVE_POINTER_weave_function_usage_node(N->content);
+	TEMPORARY_TEXT(colouring)
+	for (int i=0; i<Str::len(C->fn->function_name); i++) PUT_TO(colouring, FUNCTION_COLOUR);
+	MDRenderTeX::render_syntax_coloured(OUT, &(trs->rdr), C->fn->function_name, colouring, NULL);
+	DISCARD_TEXT(colouring)
+	return FALSE;
 
 @<Render comment in holon@> =
 	weave_comment_in_holon_node *C = RETRIEVE_POINTER_weave_comment_in_holon_node(N->content);
@@ -322,134 +398,120 @@ to a given width, into the text at the current position.
 	for (int i=0; i<Str::len(cm); i++) PUT_TO(col, COMMENT_COLOUR);
 	int starts = FALSE;
 	if (N == N->parent->child) starts = TRUE;
-	TeXWeaving::source_code(OUT, trs->wv,
-		cm, col, starts);
+	WRITE("|");
+	TeXWeaving::source_code(OUT, &(trs->rdr), trs->wv, cm, col, starts);
+	WRITE("|");
 	DISCARD_TEXT(cm)
 	DISCARD_TEXT(col)
 
-@<Render URL@> =
-	weave_url_node *C = RETRIEVE_POINTER_weave_url_node(N->content);
-	WRITE("%S", C->url);
+@<Render defn@> =
+	weave_defn_node *C = RETRIEVE_POINTER_weave_defn_node(N->content);
+	WRITE("\\noindent ");
+	if (Str::eq(C->keyword, I"enumerate")) WRITE("{\\defnannotationfont enum} ");
+	WRITE("\\constantsyntaxcolouring{}|%S|\\plainsyntaxcolouring{} ", C->symbol);
+	if (Str::eq(C->keyword, I"default")) WRITE("$\\equiv_{\\hbox{\\defnannotationfont def}}$ ");
+	else if (Str::ne(C->keyword, I"enumerate")) WRITE("$\\equiv$ ");
+	else WRITE(" ");
 
-@ The TeX macro for footnotes means that the text has to accompany the cue,
-which is tricky for us now because the footnote text is somewhere else in
-the weave tree — so, we go for a little walk:
+@h Commentary and gadget material renderers.
 
-@<Render footnote cue@> =
-	weave_footnote_cue_node *C = RETRIEVE_POINTER_weave_footnote_cue_node(N->content);
-	WRITE("\\footnote{${}^{%S}$}{", C->cue_text);
-	tree_node *M = N;
-	while ((M) && (M->type != weave_paragraph_heading_node_type)) M = M->parent;
-	if (M == NULL) internal_error("tree without section nodes");
-	M = M->child;
-	int found = FALSE;
-	while (M) {
-		if (M->type == weave_material_node_type) {
-			weave_material_node *MC = RETRIEVE_POINTER_weave_material_node(M->content);
-			if (MC->material_type == FOOTNOTES_MATERIAL) {
-				tree_node *F = M->child;
-				while (F) {
-					if (F->type == weave_begin_footnote_text_node_type) {
-						weave_begin_footnote_text_node *FC =
-							RETRIEVE_POINTER_weave_begin_footnote_text_node(F->content);
-						if (Str::eq(FC->cue_text, C->cue_text))
-							@<Found the right footnote text at last@>;
-					}
-					F = F->next;
-				}
-			}
-		}
-		M = M->next;
-	}
-	WRITE("}");
-	if (found == FALSE) internal_error("cue without text");
+@<Render Markdown@> =
+	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
+	MDRender::render(OUT, &(trs->rdr), C->content);
 
-@ And so here's the text. Note that we render only its second and subsequent
-child nodes: that's because the first child is a copy of the footnote cue,
-and TeX renders that automatically.
-
-(The TeX renderer otherwise ignores footnote texts, so if these nodes
-are not rendered here, they never will be.)
-
-@<Found the right footnote text at last@> =
-	for (tree_node *X = F->child->next; X; X = X->next)
-		Trees::traverse_from(X, &TeXWeaving::render_visit, (void *) trs, L+1);
-	found = TRUE;
-
-@<Render display line@> =
-	weave_display_line_node *C =
-		RETRIEVE_POINTER_weave_display_line_node(N->content);
-	WRITE("\\quotesource{%S}\n", C->text);
-
-@<Render function defn@> =
-	weave_function_defn_node *C =
-		RETRIEVE_POINTER_weave_function_defn_node(N->content);
-	TeXWeaving::change_colour_PDF(OUT, FUNCTION_COLOUR, TRUE);
-	WRITE("%S", C->fn->function_name);
-	TeXWeaving::change_colour_PDF(OUT, PLAIN_COLOUR, TRUE);
-	return FALSE;
-
-@<Render item@> =
-	weave_item_node *C = RETRIEVE_POINTER_weave_item_node(N->content);
-	if (Str::len(C->label) > 0) {
-		if (C->depth == 1) WRITE("\\item{(%S)}", C->label);
-		else WRITE("\\itemitem{(%S)}", C->label);
-	} else {
-		if (C->depth == 1) WRITE("\\item{}");
-		else WRITE("\\itemitem{}");
-	}
-
-@<Render grammar index@> =
-	InCSupport::weave_grammar_index(OUT);
-
-@<Render inline@> =
-	WRITE("|");
+@<Render carousel slide@> =
+	weave_carousel_slide_node *C = RETRIEVE_POINTER_weave_carousel_slide_node(N->content);
+	TEMPORARY_TEXT(carousel_id)
+	TEMPORARY_TEXT(carousel_dots_id)
+	TeXWeaving::render_carousel_top(OUT, &(trs->rdr), trs->wv, C->slide_number, C->slide_of, carousel_id, carousel_dots_id, C->caption, C->positioning);
 	@<Recurse the renderer through children nodes@>;
-	WRITE("|");
+	TeXWeaving::render_carousel_bottom(OUT, &(trs->rdr), trs->wv, C->slide_number, C->slide_of, carousel_id, carousel_dots_id, C->caption, C->positioning);
+	DISCARD_TEXT(carousel_id)
+	DISCARD_TEXT(carousel_dots_id)
+	return FALSE;
+	
+@ TeX itself has an almost defiant lack of support for anything pictorial,
+which is one reason it didn't live up to its hope of being the definitive basis
+for typography; even today the loose confederation of TeX-like programs and
+extensions lack standard approaches. Because of that, we will assume that the
+pattern has provided suitable macros. All we're trying for is to insert a picture,
+scaled to a given width, into the text at the current position.
+
+@<Render figure@> =
+	weave_figure_node *C = RETRIEVE_POINTER_weave_figure_node(N->content);
+	filename *F = Filenames::in(
+		Pathnames::down(trs->wv->weave_web->path_to_web, I"Figures"),
+		C->figname);
+	int w = C->w, h = C->h;
+	if ((w <= 0) && (h <= 0)) w = INWEB_POINTS_PER_CM*15;
+	if ((w > 0) && (h > 0)) WRITE("\\inwebimagewidthheight{%f}{%d}{%d}\n",
+		F, w/INWEB_POINTS_PER_CM, h/INWEB_POINTS_PER_CM);
+	else if (w > 0) WRITE("\\inwebimagewidth{%f}{%d}\n", F, w/INWEB_POINTS_PER_CM);
+	else if (h > 0) WRITE("\\inwebimageheight{%f}{%d}\n", F, h/INWEB_POINTS_PER_CM);
+	else WRITE("\\inwebimage{%f}\n", F);
+
+@h Paragraph tail material renderers.
+
+@<Render index begins@> =
+	WRITE("\n\\beginlines\n");
+
+@<Render index lemma@> =
+	weave_index_lemma_node *C = RETRIEVE_POINTER_weave_index_lemma_node(N->content);
+	ls_index_lemma *lemma = C->lemma;
+	for (ls_index_lemma *l2 = lemma->parent; l2; l2 = l2->parent) WRITE("\\quad ");
+	if (lemma->style == 2) WRITE("|");
+	if (lemma->style == 3) WRITE("/");
+	if (lemma->style == 2) WRITE("%S", lemma->text);
+	else MDRender::stream(OUT, &(trs->rdr), lemma->text, 0);
+	if (lemma->style == 2) WRITE("|");
+	if (lemma->style == 3) WRITE("/");
+	ls_index_mark *mark; int c = 0;
+	LOOP_OVER_LINKED_LIST(mark, ls_index_mark, lemma->marks) {
+		if (c++ > 0) WRITE(", "); else WRITE("\\hskip1em ");
+		if (mark->important) WRITE("{\\bf ");
+		TeXWeaving::locale(OUT, &(trs->rdr), mark->at, NULL, trs->current_par);
+		if (mark->important) WRITE("}");
+	}
+	WRITE("\n");
+
+@<Render index ends@> =
+	WRITE("\\endlines\n\n");
+
+@<Render endnote@> =
+	WRITE("\\par\\noindent\\penalty10000\n");
+	WRITE("\\endnotetext{");
+	@<Recurse the renderer through children nodes@>;
+	WRITE("}\\smallskip\n");
 	return FALSE;
 
 @<Render locale@> =
 	weave_locale_node *C = RETRIEVE_POINTER_weave_locale_node(N->content);
-	WRITE("$\\%S$%S", LiterateSource::par_ornament(C->par1), C->par1->paragraph_number);
-	if (C->par2) WRITE("-%S", C->par2->paragraph_number);
+	TeXWeaving::locale(OUT, &(trs->rdr), C->par1, C->par2, trs->current_par);
 
-@<Render maths@> =
-	weave_maths_node *C = RETRIEVE_POINTER_weave_maths_node(N->content);
-	if (C->displayed) WRITE("$$"); else WRITE("$");
-	WRITE("%S", C->content);
-	if (C->displayed) WRITE("$$"); else WRITE("$");
+@<Render endnote text@> =
+	weave_endnote_text_node *C =
+		RETRIEVE_POINTER_weave_endnote_text_node(N->content);
+	MDRender::stream(OUT, &(trs->rdr), C->text, 0);
 
-@<Render Markdown@> =
-	weave_markdown_node *C = RETRIEVE_POINTER_weave_markdown_node(N->content);
-	MDRenderer::render_extended(OUT, (void *) trs->wv, C->content, C->variation, SUPERPLAIN_MDRMODE);
+@h TeX code for headings.
 
-@<Render index@> =
-	if ((trs->wv) && (trs->wv->weave_web)) {
-		WebIndexing::inspect_index(OUT, trs->wv->weave_web, I"0");
-	}
-
-@<Recurse the renderer through children nodes@> =
-	for (tree_node *M = N->child; M; M = M->next)
-		Trees::traverse_from(M, &TeXWeaving::render_visit, (void *) trs, L+1);
-
-@ =
-text_stream *P_literal = NULL;
-void TeXWeaving::general_heading(text_stream *OUT, weave_order *wv,
+=
+void TeXWeaving::general_heading(text_stream *OUT, markdown_render *rdr, weave_order *wv,
 	ls_section *S, ls_paragraph *par, text_stream *heading_text, int weight, int no_skip) {
 	text_stream *TeX_macro = NULL;
 	@<Choose which TeX macro to use in order to typeset the new paragraph heading@>;
 	
-	if (P_literal == NULL) P_literal = Str::new_from_wide_string(U"P");
-	text_stream *orn = (par)?(LiterateSource::par_ornament(par)):P_literal;
+	text_stream *orn = (par)?(LiterateSource::par_ornament(par)):I"P";
 	text_stream *N = (par)?(par->paragraph_number):NULL;
 	TEMPORARY_TEXT(mark)
-	@<Work out the next mark to place into the TeX vertical list@>;
+	if (weight < 2)
+		@<Work out the next mark to place into the TeX vertical list@>;
 	TEMPORARY_TEXT(modified)
-	Str::copy(modified, heading_text);
+	MDRender::stream(modified, rdr, heading_text, 0);
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, modified, U"(%c*?): (%c*)")) {
 		Str::clear(modified);
-		WRITE_TO(modified, "{\\sinchhigh %S}\\quad %S", mr.exp[0], mr.exp[1]);
+		WRITE_TO(modified, "%S\\quad %S", mr.exp[0], mr.exp[1]);
 	}
 	if (weight == 2)
 		WRITE("\\%S{%S}{%S}{%S}{\\%S}{%S}%%\n",
@@ -511,30 +573,50 @@ because they abbreviate characters found in math fonts but not regular ones,
 in TeX's deeply peculiar font encoding system.
 
 @<Work out the next mark to place into the TeX vertical list@> =
-	text_stream *chaptermark = Str::new();
-	text_stream *sectionmark = Str::new();
-	if (weight == 3) {
-		Str::copy(chaptermark, S->owning_chapter->ch_title);
-		Str::clear(sectionmark);
-	}
-	if (weight == 2) {
-		Str::copy(sectionmark, S->sect_title);
-		Str::clear(chaptermark);
-		if (Str::len(chaptermark) > 0) {
-			Str::clear(sectionmark);
-			WRITE_TO(sectionmark, " - %S", S->sect_title);
-		}
-	}
+	TEMPORARY_TEXT(chaptermark)
+	TEMPORARY_TEXT(sectionmark)
+	MDRender::stream(chaptermark, rdr, S->owning_chapter->ch_title, 0);
+	if (Str::len(chaptermark) > 0) WRITE_TO(sectionmark, " - ");
+	MDRender::stream(sectionmark, rdr, S->sect_title, 0);
 	WRITE_TO(mark, "%S%S\\quad$\\%S$%S", chaptermark, sectionmark, orn, N);
+	DISCARD_TEXT(chaptermark)
+	DISCARD_TEXT(sectionmark)
 
-@ Code is typeset by TeX within vertical strokes; these switch a sort of
-typewriter-type verbatim mode on and off. To get an actual stroke, we must
-escape from code mode, escape it using a backslash, then re-enter code
-mode once again:
+@h Holon names.
+Holon names are highlighted in several cute ways: first, we make use of colour
+and we drop in the paragraph number of the definition of the macro in small
+type; and second, we use cross-reference links.
 
 =
-void TeXWeaving::source_code(text_stream *OUT, weave_order *wv,
-	text_stream *matter, text_stream *colouring, int starts) {
+void TeXWeaving::holon_name(text_stream *OUT, markdown_render *rdr, ls_holon *holon, int defn) {
+	ls_paragraph *par = holon->corresponding_chunk->owner;
+	if (holon->addendum) par = holon->addendum_to->corresponding_chunk->owner;
+	if ((defn) && (holon->addendum == FALSE))
+		WRITE("\\inwebanchor{para%d}", par->allocation_id + 100);		
+	else
+		WRITE("\\inweblinktopara{para%d}{", par->allocation_id + 100);
+	WRITE("\\definitionsyntaxcolouring{}$\\langle$\\holonnametext{");
+	MDRender::stream(OUT, rdr, holon->holon_name, 0);
+	WRITE("} \\holonnumbertext{%S}", par->paragraph_number);
+	WRITE("\\endcolouring{}");
+	WRITE("$\\rangle$ ");
+	if (defn) {
+		if (holon->addendum) WRITE("$+${}$\\equiv$");
+		else WRITE("$\\equiv$");
+	}
+	if (!((defn) && (holon->addendum == FALSE)))
+		WRITE("}");
+}
+
+@h Code rendering.
+Code is typeset by TeX (with our macros) within vertical strokes; these switch
+a sort of typewriter-type verbatim mode on and off. To get an actual stroke, we
+must escape from code mode, escape it using a backslash, then re-enter code mode
+once again:
+
+=
+void TeXWeaving::source_code(text_stream *OUT, markdown_render *rdr,
+	weave_order *wv, text_stream *matter, text_stream *colouring, int starts) {
 	int current_colour = PLAIN_COLOUR, colour_wanted = PLAIN_COLOUR;
 	for (int i=0; i < Str::len(matter); i++) {
 		colour_wanted = (int) Str::get_at(colouring, i);
@@ -547,156 +629,139 @@ void TeXWeaving::source_code(text_stream *OUT, weave_order *wv,
 
 @<Adjust code colour as necessary@> =
 	if (colour_wanted != current_colour) {
-		TeXWeaving::change_colour_PDF(OUT, colour_wanted, TRUE);
+		MDRenderTeX::change_colour(OUT, rdr, colour_wanted, NULL);
 		current_colour = colour_wanted;
 	}
 
-@ =
-void TeXWeaving::change_colour_PDF(text_stream *OUT, int col, int in_code) {
-	char *inout = "";
-	if (in_code) inout = "|";
-	switch (col) {
-		case DEFINITION_COLOUR:
-			WRITE("%s\\pdfliteral direct{1 1 0 0 k}%s", inout, inout); break;
-		case FUNCTION_COLOUR:
-			WRITE("%s\\pdfliteral direct{0 1 1 0 k}%s", inout, inout); break;
-		case PLAIN_COLOUR:
-			WRITE("%s\\special{PDF:0 g}%s", inout, inout); break;
-		case EXTRACT_COLOUR:
-			WRITE("%s\\special{PDF:0 g}%s", inout, inout); break;
-	}
-}
 
-@ Any usage of angle-macros is highlighted in several cute ways: first,
-we make use of colour and we drop in the paragraph number of the definition
-of the macro in small type; and second, we use cross-reference links.
-
-In the PDF format, these three are all called, in sequence below; in TeX
-or DVI, only the middle one is.
+@h Locale links.
 
 =
-void TeXWeaving::para_macro(text_stream *OUT, weave_order *wv, ls_paragraph *par, int defn) {
-	if (defn)
-		WRITE("|\\pdfdest num %d fit ",
-			par->allocation_id + 100);
-	else
-		WRITE("|\\pdfstartlink attr{/C [0.9 0 0] /Border [0 0 0]} goto num %d ",
-			par->allocation_id + 100);
-	WRITE("$\\langle${\\xreffont");
-	TeXWeaving::change_colour_PDF(OUT, DEFINITION_COLOUR, FALSE);
-	WRITE("%S ", (par->holon)?(par->holon->holon_name):NULL);
-	WRITE("{\\sevenss %S}}", par->paragraph_number);
-	TeXWeaving::change_colour_PDF(OUT, PLAIN_COLOUR, FALSE);
-	WRITE("$\\rangle$ ");
-	if (defn)
-		WRITE("$\\equiv$|");
-	else
-		WRITE("\\pdfendlink|");
+void TeXWeaving::locale(OUTPUT_STREAM, markdown_render *rdr, ls_paragraph *par1,
+	ls_paragraph *par2, ls_paragraph *from) {
+	ls_section *S = LiterateSource::section_of_par(par1);
+	ls_section *from_S = LiterateSource::section_of_par(from);
+	TEMPORARY_TEXT(nameid)
+	TeXWeaving::paragraph_link(nameid, par1);
+	MDRenderTeX::link_internal(OUT, nameid, 0);
+	DISCARD_TEXT(nameid)
+	if ((S) && (S != from_S)) WRITE("%S:", S->sect_range);
+	WRITE("$\\%S$%S", LiterateSource::par_ornament(par1), par1->paragraph_number);
+	if (par2) WRITE("-%S", par2->paragraph_number);
+	MDRenderTeX::end_link(OUT, 0);
 }
 
-@ =
-void TeXWeaving::commentary_text(text_stream *OUT, weave_order *wv, text_stream *id) {
-	int math_mode = FALSE;
-	for (int i=0; i < Str::len(id); i++) {
-		switch (Str::get_at(id, i)) {
-			case '$': math_mode = (math_mode)?FALSE:TRUE;
-				WRITE("%c", Str::get_at(id, i)); break;
-			case '_': if (math_mode) WRITE("_"); else WRITE("\\_"); break;
-			case '"':
-				if ((Str::get_at(id, i) == '"') &&
-					((i==0) || (Str::get_at(id, i-1) == ' ') ||
-						(Str::get_at(id, i-1) == '(')))
-					WRITE("``");
-				else
-					WRITE("''");
-				break;
-			default: WRITE("%c", Str::get_at(id, i));
-				break;
+void TeXWeaving::paragraph_link(OUTPUT_STREAM, ls_paragraph *par) {
+	ls_section *S = LiterateSource::section_of_par(par);
+	WRITE("para");
+	if (S)
+		for (int i=0; i<Str::len(S->sect_range); i++) {
+			inchar32_t c = Str::get_at(S->sect_range, i);
+			if (c == '/') WRITE("_");
+			else PUT(c);
 		}
-	}
+	WRITE("%S", par->paragraph_number);
 }
 
-@ The following is called only when the language is InC, and the weave is of
-the special Preform grammar document.
+@h Gadgetry.
+This is convenient when rendering out Markdown which contains images. Note that
+it actually rewrites the filename, to ensure that the TeX contains a correct
+file reference to a locally-stored file.
 
 =
-int TeXWeaving::preform_document(weave_format *self, text_stream *OUT, ls_web *W,
-	weave_order *wv, ls_chapter *C, ls_section *S, ls_line *lst, text_stream *matter,
-	text_stream *concluding_comment) {
-	ls_line_analysis *L = (ls_line_analysis *) lst->analysis_ref;
-	if (L->preform_nonterminal_defined) {
-		preform_production_count = 0;
-		@<Weave the opening line of the nonterminal definition@>;
-		return TRUE;
-	} else {
-		if (L->preform_grammar) {
-			@<Weave a line from the body of the nonterminal definition@>;
+void TeXWeaving::notify_image(markdown_render *rdr, text_stream *image) {
+	weave_order *wv = RETRIEVE_POINTER_weave_order(rdr->context);
+	if (Str::includes_character(image, '/')) return;
+	if (Str::includes_character(image, '\\')) return;
+	filename *F = Filenames::in(
+		Pathnames::down(wv->weave_web->path_to_web, I"Figures"),
+		image);
+	Str::clear(image);
+	WRITE_TO(image, "%f", F);
+}
+
+@ Return `TRUE` if we have rendered something (or chosen to silently eliminate
+this gadget from the weave); or `FALSE` to refuse because the gadget is
+incomprehensible to us.
+
+=
+int TeXWeaving::render_gadget(markdown_render *rdr, OUTPUT_STREAM,
+	int gadget, text_stream *text_operand, int w, int h, int mode, text_stream *path) {
+	weave_order *wv = RETRIEVE_POINTER_weave_order(rdr->context);
+
+	switch (gadget) {
+		case TEXT_AS_INWEBGADGET:
+			@<Render the contents of the named file as code@>;
 			return TRUE;
-		}
+		case DOWNLOAD_INWEBGADGET:
+		case HTML_INWEBGADGET:
+		case VIDEO_INWEBGADGET:
+		case EMBED_INWEBGADGET:
+		case AUDIO_INWEBGADGET:
+			return TRUE;
+		default:
+			return FALSE;
 	}
-	return FALSE;
 }
 
-@<Weave the opening line of the nonterminal definition@> =
-	WRITE("\\nonterminal{%S} |::=|",
-		L->preform_nonterminal_defined->unangled_name);
-	if (L->preform_nonterminal_defined->as_function) {
-		WRITE("\\quad{\\it internal definition");
-		if (L->preform_nonterminal_defined->voracious)
-			WRITE(" (voracious)");
-		else if (L->preform_nonterminal_defined->min_word_count ==
-			L->preform_nonterminal_defined->max_word_count)
-			WRITE(" (%d word%s)",
-				L->preform_nonterminal_defined->min_word_count,
-				(L->preform_nonterminal_defined->min_word_count != 1)?"s":"");
-		WRITE("}");
+@<Render the contents of the named file as code@> =
+	filename *F = Filenames::from_text_relative(wv->weave_web->path_to_web, path);
+	if (TextFiles::exists(F) == FALSE) {
+		WRITE_TO(STDERR, "warning: text file at '%S' not found\n", path);
+	} else {
+		TEMPORARY_TEXT(code)
+		TextFiles::write_file_contents(code, F);
+		while ((Str::get_last_char(code) == ' ') || 
+				(Str::get_last_char(code) == '\t') || 
+				(Str::get_last_char(code) == '\n')) Str::delete_last_character(code);
+		MDRenderTeX::render_code_block(OUT, mode, rdr, code, text_operand);
+		DISCARD_TEXT(code)
 	}
-	WRITE("\n");
 
-@<Weave a line from the body of the nonterminal definition@> =
-	TEMPORARY_TEXT(problem)
+@h Carousels.
+
+=
+int TeXWeaving::render_ul_as_carousel(markdown_render *rdr, OUTPUT_STREAM, int mode,
+	markdown_item *md) {
+	weave_order *wv = RETRIEVE_POINTER_weave_order(rdr->context);
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, matter, U"Issue (%c*?) problem"))
-		Str::copy(problem, mr.exp[0]);
-	else if (Regexp::match(&mr, matter, U"FAIL_NONTERMINAL %+"))
-		WRITE_TO(problem, "fail and skip");
-	else if (Regexp::match(&mr, matter, U"FAIL_NONTERMINAL"))
-		WRITE_TO(problem, "fail");
-	preform_production_count++;
-	WRITE_TO(matter, "|%S|", lst->classification.operand1);
-	while (Regexp::match(&mr, matter, U"(%c+?)|(%c+)")) {
-		Str::clear(matter);
-		WRITE_TO(matter, "%S___stroke___%S", mr.exp[0], mr.exp[1]);
+	int count = 1, of = 0;
+	for (markdown_item *item = md->down; item; item = item->next) of++;
+	for (markdown_item *item = md->down; item; item = item->next) {
+		int positioning = 0;
+		MDRender::caption(&mr, item, &positioning);
+		TEMPORARY_TEXT(carousel_id)
+		TEMPORARY_TEXT(carousel_dots_id)
+		TeXWeaving::render_carousel_top(OUT, rdr, wv, count, of, carousel_id, carousel_dots_id, mr.exp[0], positioning);
+		int m = mode | LOOSE_MDRMODE;
+		for (markdown_item *c = item->down->next; c; c = c->next) {
+			MDRender::render_in_mode(OUT, rdr, c, m);
+			m = m & (~EXISTING_PAR_MDRMODE);
+		}
+		TeXWeaving::render_carousel_bottom(OUT, rdr, wv, count, of, carousel_id, carousel_dots_id, mr.exp[0], positioning);
+		DISCARD_TEXT(carousel_id)
+		DISCARD_TEXT(carousel_dots_id)
+		count++;
 	}
-	while (Regexp::match(&mr, matter, U"(%c*?)___stroke___(%c*)")) {
-		Str::clear(matter);
-		WRITE_TO(matter, "%S|\\||%S", mr.exp[0], mr.exp[1]);
-	}
-	while (Regexp::match(&mr, matter, U"(%c*)<(%c*?)>(%c*)")) {
-		Str::clear(matter);
-		WRITE_TO(matter, "%S|\\nonterminal{%S}|%S",
-			mr.exp[0], mr.exp[1], mr.exp[2]);
-	}
-	TEMPORARY_TEXT(label)
-	int N = preform_production_count;
-	int L = ((N-1)%26) + 1;
-	if (N <= 26) WRITE_TO(label, "%c", 'a'+L-1);
-	else if (N <= 52) WRITE_TO(label, "%c%c", 'a'+L-1, 'a'+L-1);
-	else if (N <= 78) WRITE_TO(label, "%c%c%c", 'a'+L-1, 'a'+L-1, 'a'+L-1);
-	else {
-		int n = (N-1)/26;
-		WRITE_TO(label, "%c${}^{%d}$", 'a'+L-1, n);
-	}
-	WRITE("\\qquad {\\hbox to 0.4in{\\it %S\\hfil}}%S", label, matter);
-	if (Str::len(problem) > 0)
-		WRITE("\\hfill$\\longrightarrow$ {\\ttninepoint\\it %S}", problem);
-	else if (Str::len(concluding_comment) > 0) {
-		WRITE(" \\hfill{\\ttninepoint\\it ");
-		if (Str::len(concluding_comment) > 0)
-			TeXWeaving::commentary_text(OUT, wv, concluding_comment);
-		WRITE("}");
-	}
-	WRITE("\n");
-	DISCARD_TEXT(label)
-	DISCARD_TEXT(problem)
 	Regexp::dispose_of(&mr);
+	return TRUE;
+}
+ 
+void TeXWeaving::render_carousel_top(OUTPUT_STREAM, markdown_render *rdr, weave_order *wv, int slide_number, int slide_of,
+	text_stream *carousel_id, text_stream *carousel_dots_id, text_stream *caption, int positioning) {
+	WRITE("\n\\medskip\\hrule\\smallskip\n");
+	if (positioning > 0) @<Place caption here@>;
+}
+
+void TeXWeaving::render_carousel_bottom(OUTPUT_STREAM, markdown_render *rdr, weave_order *wv, int slide_number, int slide_of,
+	text_stream *carousel_id, text_stream *carousel_dots_id, text_stream *caption, int positioning) {
+	if (positioning <= 0) @<Place caption here@>;
+	WRITE("\n\\smallskip\\hrule\\medskip\n");
+}
+
+@<Place caption here@> =
+	if (Str::len(caption) > 0) {
+		WRITE("\\centerline{\\bf %d/%d. ", slide_number, slide_of);
+		MDRender::stream(OUT, rdr, caption, 0);
+		WRITE("}\n\n");
+	}

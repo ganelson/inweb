@@ -1,0 +1,8 @@
+Pattern "XeTeX" {
+	based on: TeX
+	initial extension: .tex
+	commands
+		xetex -output-directory=WOVENPATH -interaction=scrollmode WOVEN.tex >WOVEN.console
+		PROCESS WOVEN.log
+	end
+}

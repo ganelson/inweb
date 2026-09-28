@@ -1,6 +1,7 @@
 -cases [Blueprint] 'inweb/Tests/Test Cases'
 -cases [BlueprintError] 'inweb/Tests/Test Errors'
 -cases [Painter] 'inweb/Tests/Test Painter'
+-cases [Omnium] 'inweb/Tests/Test Omnium'
 
 -recipe [Blueprint]
 	set: $INWEB = inweb/Tangled/inweb
@@ -97,6 +98,56 @@
 
 	pass: 'passed'
 
+-end
+
+-recipe [Omnium]
+	set: $INWEB = inweb/Tangled/inweb
+	set: $OMNIUM = inweb/Tests/omnium
+	set: $OMNIUMA = $WORK/Woven
+	mkdir: $OMNIUMA
+	mkdir: $OMNIUMA/docs-assets
+	set: $OMNIUMI = inweb/Tests/omnium/_Ideal
+	set: $CONSOLE = $WORK/console.txt
+	set: $LANGUAGES = inweb/Dialects
+	set: $INTERNAL = Internal
+
+	set: $CANVAS = $PATH/$CASE.txt
+	if: $CASE %c+-plain
+		step: $INWEB weave $OMNIUM -as plain -only 0 -to $OMNIUMA -fixtime -locale console=utf-8 >$CONSOLE 2>&1
+		or: 'failed inweb' $CONSOLE
+		match text: $OMNIUMA/Complete.txt $OMNIUMI/Complete.txt
+	endif
+	if: $CASE %c+-pdftex
+		step: $INWEB weave $OMNIUM -as pdftex -no-commands -only 0 -to $OMNIUMA -fixtime -locale console=utf-8 >$CONSOLE 2>&1
+		or: 'failed inweb' $CONSOLE
+		match text: $OMNIUMA/Complete.tex $OMNIUMI/Complete.tex
+	endif
+	if: $CASE %c+-pdflatex
+		step: $INWEB weave $OMNIUM -as pdflatex -no-commands -only 0 -to $OMNIUMA -fixtime -locale console=utf-8 >$CONSOLE 2>&1
+		or: 'failed inweb' $CONSOLE
+		match text: $OMNIUMA/Complete.latex $OMNIUMI/Complete.latex
+	endif
+	if: $CASE %c+-xelatex
+		step: $INWEB weave $OMNIUM -as xelatex -no-commands -only 0 -to $OMNIUMA -fixtime -locale console=utf-8 >$CONSOLE 2>&1
+		or: 'failed inweb' $CONSOLE
+		match text: $OMNIUMA/Complete.xelatex $OMNIUMI/Complete.xelatex
+	endif
+	if: $CASE %c+-debug
+		step: $INWEB weave $OMNIUM -as TestingInweb -no-commands -only 0 -to $OMNIUMA -fixtime -locale console=utf-8 >$CONSOLE 2>&1
+		or: 'failed inweb' $CONSOLE
+		match text: $OMNIUMA/Complete.debug.txt $OMNIUMI/Complete.debug.txt
+	endif
+	if: $CASE %c+-html
+		step: $INWEB weave $OMNIUM -no-commands -to $OMNIUMA -fixtime -locale console=utf-8 >$CONSOLE 2>&1
+		or: 'failed inweb' $CONSOLE
+		match text: $OMNIUMA/index.html $OMNIUMI/index.html
+		or: 'failed to match index file'
+		match text: $OMNIUMA/1-ld.html $OMNIUMI/1-ld.html
+		or: 'failed to match section 1 file'
+		match text: $OMNIUMA/2-md.html $OMNIUMI/2-md.html
+		or: 'failed to match section 2 file'
+	endif
+	pass: 'passed'
 -end
 
 -recipe [NoLongerUsed]

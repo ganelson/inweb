@@ -49,78 +49,77 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#5">Chapter 5: Languages</a></li><li><b>Special C Features</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a></p>
-<h2>Of rats and men</h2>
-<p>In 1974, Brian Kernighan had finally had enough. Despite all advances in
-programming language design since 1953 his colleagues were, infuriatingly, still
-using FORTRAN. (And don't hold your breath: in 2026, it still remains in 12th
-place on the TIOBE usage index.) In an attempt to bargain, Kernighan wrote a
-preprocessor which would superimpose better language features on top of FORTRAN.
-He called it &quot;rational FORTRAN&quot;, though the rodent-like filename RATFOR is what
-we now remember.</p>
-<p>This was an idea of its time. An under-appreciated feature of the early Unix era
-is that it saw a great flowering of techniques by which programs wrote other
-programs, something previously difficult since computers had too little memory,
-and sometimes had file systems rigidly distinguishing between program files and
-data. Unix did not, so why shouldn't the output of one program be the source
-code for another?</p>
-<p>Language preprocessors tend to be stopgaps which do not last. Similar new features
-to those in RATFOR were ultimately incorporated in the FORTRAN 77 revision. When
-Bjarne Stroustrup began what became C++ in 1979, he used a preprocessor to C,
-but by 1983 a native C++ compiler had replaced this. The trouble with preprocessors
-is that they incur time overheads, and complicate build mechanisms, and report
-errors waywardly. And the trouble with language extensions is that programmers
-generally prefer the official, standard design, even when it's not very good,
-just as chess players hardly ever play &quot;fairy chess&quot; — variants of the game with
-exotic pieces, or different rules for captures.</p>
-<p>But literate programming also comes out of this period, and when Donald Knuth
-worked on the first WEB tool in 1980-84, he combined it with a suite of language
-&quot;improvements&quot; so that using WEB wasn't so much coding in Pascal as a sort of
-RAT-Pascal. Pascal was poorly standardised, and its design was not ideal for
-system-software tools of the kind Knuth wanted to write. But it needed only a
-little work: and since Knuth was, after all, using a preprocessor anyway, in
-order to tangle code, why not throw in some new Pascal features along the way?</p>
-<p>The answer to that &quot;why not&quot; question is: because it will tie the program too
-closely to the preprocessor, and make it difficult to port. It is far from
-easy to compile Knuth's great programs TeX and Metafont nowadays, because the
-original Pascal dialect is obsolete. Even converting a web from WEB to CWEB,
-say, porting the Pascal code to C, is a very non-trivial business.</p>
-<h2>Supposed improvements</h2>
-<p>&quot;Improving&quot; languages is a trap for authors of literate programming tools. Inweb
-would arguably be a cleaner design if it did not fall into that trap: but in
-fact it has. Specifically:</p>
-<ul>
-<li>
-<p>When tangling a language which is a C variant, Inweb provides a number
-of minor conveniences, such as predeclaring functions automatically and
-reordering structure declarations — in both cases, so that programmers
-don't need to define things in any particular order, or repeat themselves.</p>
-</li>
-<li>
-<p>When tangling a particular C variant called &quot;InC&quot;, Inweb does even more,
-and recognises a new sort of string literal, for example.</p>
-</li>
-</ul>
-<h3>Declaring a language C-like</h3>
-<p>Inweb's concept of being &quot;C-like&quot; means they really are very closely related —
-Rust, for example, may have a lot of C heritage in it, but would not qualify.
-So the property <code>C-Like</code> should be set to <code>true</code> only for a language which
-really is a C variant adopting almost all of C's syntax. Of the languages
-supplied with Inweb, only C itself, C++, and InC are <code>C-Like</code>.</p>
-<p>This setting has two consequences:</p>
-<ol>
-<li>
-<p>The <code>Function Declaration</code> and <code>Type Declaration</code> properties are ignored,
-so that there is no point in setting them. Instead, code hard-wired into
-Inweb performs its own scan for C function and typedef declarations.</p>
-</li>
-<li>
-<p>Four conveniences are provided which affect the way tangling is performed.
-They are off by default, and must be enabled by making <code>Conventions</code>.</p>
-</li>
-</ol>
-<p>So, then, Inweb's definition of C includes:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><h2>Of rats and men</h2>
+    <p>In 1974, Brian Kernighan had finally had enough. Despite all advances in
+    programming language design since 1953 his colleagues were, infuriatingly, still
+    using FORTRAN. (And don't hold your breath: in 2026, it still remains in 12th
+    place on the TIOBE usage index.) In an attempt to bargain, Kernighan wrote a
+    preprocessor which would superimpose better language features on top of FORTRAN.
+    He called it &quot;rational FORTRAN&quot;, though the rodent-like filename RATFOR is what
+    we now remember.</p>
+    <p>This was an idea of its time. An under-appreciated feature of the early Unix era
+    is that it saw a great flowering of techniques by which programs wrote other
+    programs, something previously difficult since computers had too little memory,
+    and sometimes had file systems rigidly distinguishing between program files and
+    data. Unix did not, so why shouldn't the output of one program be the source
+    code for another?</p>
+    <p>Language preprocessors tend to be stopgaps which do not last. Similar new features
+    to those in RATFOR were ultimately incorporated in the FORTRAN 77 revision. When
+    Bjarne Stroustrup began what became C++ in 1979, he used a preprocessor to C,
+    but by 1983 a native C++ compiler had replaced this. The trouble with preprocessors
+    is that they incur time overheads, and complicate build mechanisms, and report
+    errors waywardly. And the trouble with language extensions is that programmers
+    generally prefer the official, standard design, even when it's not very good,
+    just as chess players hardly ever play &quot;fairy chess&quot; — variants of the game with
+    exotic pieces, or different rules for captures.</p>
+    <p>But literate programming also comes out of this period, and when Donald Knuth
+    worked on the first WEB tool in 1980-84, he combined it with a suite of language
+    &quot;improvements&quot; so that using WEB wasn't so much coding in Pascal as a sort of
+    RAT-Pascal. Pascal was poorly standardised, and its design was not ideal for
+    system-software tools of the kind Knuth wanted to write. But it needed only a
+    little work: and since Knuth was, after all, using a preprocessor anyway, in
+    order to tangle code, why not throw in some new Pascal features along the way?</p>
+    <p>The answer to that &quot;why not&quot; question is: because it will tie the program too
+    closely to the preprocessor, and make it difficult to port. It is far from
+    easy to compile Knuth's great programs TeX and Metafont nowadays, because the
+    original Pascal dialect is obsolete. Even converting a web from WEB to CWEB,
+    say, porting the Pascal code to C, is a very non-trivial business.</p>
+    <h2>Supposed improvements</h2>
+    <p>&quot;Improving&quot; languages is a trap for authors of literate programming tools. Inweb
+    would arguably be a cleaner design if it did not fall into that trap: but in
+    fact it has. Specifically:</p>
+    <ul>
+    <li>
+    <p>When tangling a language which is a C variant, Inweb provides a number
+    of minor conveniences, such as predeclaring functions automatically and
+    reordering structure declarations — in both cases, so that programmers
+    don't need to define things in any particular order, or repeat themselves.</p>
+    </li>
+    <li>
+    <p>When tangling a particular C variant called &quot;InC&quot;, Inweb does even more,
+    and recognises a new sort of string literal, for example.</p>
+    </li>
+    </ul>
+    <h3>Declaring a language C-like</h3>
+    <p>Inweb's concept of being &quot;C-like&quot; means they really are very closely related —
+    Rust, for example, may have a lot of C heritage in it, but would not qualify.
+    So the property <code>C-Like</code> should be set to <code>true</code> only for a language which
+    really is a C variant adopting almost all of C's syntax. Of the languages
+    supplied with Inweb, only C itself, C++, and InC are <code>C-Like</code>.</p>
+    <p>This setting has two consequences:</p>
+    <ol>
+    <li>
+    <p>The <code>Function Declaration</code> and <code>Type Declaration</code> properties are ignored,
+    so that there is no point in setting them. Instead, code hard-wired into
+    Inweb performs its own scan for C function and typedef declarations.</p>
+    </li>
+    <li>
+    <p>Four conveniences are provided which affect the way tangling is performed.
+    They are off by default, and must be enabled by making <code>Conventions</code>.</p>
+    </li>
+    </ol>
+    <p>So, then, Inweb's definition of C includes:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
 	...
 	standard library #includes are tangled early in the program
 	typedefs are tangled early in the program
@@ -128,11 +127,11 @@ They are off by default, and must be enabled by making <code>Conventions</code>.
 	function predeclarations are tangled automatically
 }
 </span></pre>
-<p>Because the C definition includes the property <code>C-Like: true</code>, these four
-features are potentially available, but without those conventions being made
-as well, they would not take effect. Any web written in C can then render
-them ineffective again, by making one or more of the following conventions:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
+    <p>Because the C definition includes the property <code>C-Like: true</code>, these four
+    features are potentially available, but without those conventions being made
+    as well, they would not take effect. Any web written in C can then render
+    them ineffective again, by making one or more of the following conventions:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Conventions {
 	...
 	standard library #includes are treated like any other code
 	typedefs are treated like any other code
@@ -140,24 +139,24 @@ them ineffective again, by making one or more of the following conventions:</p>
 	functions are treated like any other code
 }
 </span></pre>
-<p>With those changes made, the language really is regular C, with all its
-charms and frustrations. Although the better function/struct scans mentioned
-in (1) above still happen, they then affect only weaving.</p>
-<p>So, then:</p>
-<ul>
-<li>
-<p><code>standard library #includes are tangled early in the program</code> pulls forward
-lines like <code>#include &lt;stdio.h&gt;</code> (written with angle brackets) for the C standard
-library files (only), so that they're tangled early.</p>
-</li>
-<li>
-<p><code>typedefs are tangled early in the program</code> similarly pulls forward lines which
-make simple typedefs not involving structures, like <code>typedef unsigned long long big</code>.</p>
-</li>
-<li>
-<p><code>typedef structs are tangled early and reordered logically</code> is best explained
-by example. Suppose the program contains:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">cake birthday_cake;
+    <p>With those changes made, the language really is regular C, with all its
+    charms and frustrations. Although the better function/struct scans mentioned
+    in (1) above still happen, they then affect only weaving.</p>
+    <p>So, then:</p>
+    <ul>
+    <li>
+    <p><code>standard library #includes are tangled early in the program</code> pulls forward
+    lines like <code>#include &lt;stdio.h&gt;</code> (written with angle brackets) for the C standard
+    library files (only), so that they're tangled early.</p>
+    </li>
+    <li>
+    <p><code>typedefs are tangled early in the program</code> similarly pulls forward lines which
+    make simple typedefs not involving structures, like <code>typedef unsigned long long big</code>.</p>
+    </li>
+    <li>
+    <p><code>typedef structs are tangled early and reordered logically</code> is best explained
+    by example. Suppose the program contains:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">cake birthday_cake;
 ...
 typedef struct cake {
     struct filling f;
@@ -167,27 +166,27 @@ typedef struct filling {
     int jam;
 } filling;
 </span></pre>
-<p>This will fail to compile for two reasons: <code>cake</code> is unknown at the time
-<code>cake birthday_cake</code> is read, because the compiler has not yet reached
-the typedef of <code>cake</code>; and <code>struct filling</code> needs to be fully declared
-<em>before</em> <code>struct cake</code> is declared (since it is incorporated, rather
-than simply pointed to). If <code>typedef structs are tangled early and reordered logically</code>,
-both these problems are solved automatically, as Inweb tangles the code
-into the right order to avoid them.</p>
-</li>
-<li>
-<p><code>function predeclarations are tangled automatically</code> avoids the need for
-functions to be predeclared before use. For example, suppose:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">void first(void) {
+    <p>This will fail to compile for two reasons: <code>cake</code> is unknown at the time
+    <code>cake birthday_cake</code> is read, because the compiler has not yet reached
+    the typedef of <code>cake</code>; and <code>struct filling</code> needs to be fully declared
+    <em>before</em> <code>struct cake</code> is declared (since it is incorporated, rather
+    than simply pointed to). If <code>typedef structs are tangled early and reordered logically</code>,
+    both these problems are solved automatically, as Inweb tangles the code
+    into the right order to avoid them.</p>
+    </li>
+    <li>
+    <p><code>function predeclarations are tangled automatically</code> avoids the need for
+    functions to be predeclared before use. For example, suppose:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">void first(void) {
     second();
 }
 void second(void) {
     printf("Hello, there.\n");
 }
 </span></pre>
-<p>This will fail to compile because <code>second</code> is unknown when <code>first</code> is compiled.
-Often by means of header files, C programmers overcome this with predeclarations:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">void second(void); /* predeclaration */
+    <p>This will fail to compile because <code>second</code> is unknown when <code>first</code> is compiled.
+    Often by means of header files, C programmers overcome this with predeclarations:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">void second(void); /* predeclaration */
 void first(void) {
     second();
 }
@@ -195,78 +194,78 @@ void second(void) {
     printf("Hello, there.\n");
 }
 </span></pre>
-<p>This is a nuisance, and if <code>function predeclarations are tangled automatically</code>
-then Inweb will automatically tangle predeclarations of all functions.</p>
-</li>
-</ul>
-<h3>InC</h3>
-<p>InC is a whole other ball of wax. It was contrived as a minimal set of
-conveniences for managing the very large ANSI C source code for the Inform
-compiler and related tools (including Inweb itself: Inweb is written in InC).
-It is not any sort of attempt to create a &quot;better&quot; C across the board. In
-that sense InC is not a general-purpose programming language. In particular,
-the following limitations currently exist:</p>
-<ul>
-<li>InC can only be used literately, i.e., with Inweb. There is no freestanding
-&quot;InC compiler&quot;. InC is tangled down to ANSI C, and the result can then be
-compiled with <code>clang</code> or <code>gcc</code>.</li>
-<li>InC programs must import the <code>foundation</code> module (included with Inweb).</li>
-<li>InC programs must be written in <code>InwebClassic</code> notation.</li>
-</ul>
-<p>With that said, InC is a stable design which has been used on a variety
-of tools by the Inform project for many years now. Anyone is welcome to use it.</p>
-<hr />
-<p>Firstly, InC has <code>C-Like: true</code> set, and enables all four of the above features
-for making C-like languages less fussy about code order.</p>
-<hr />
-<p>InC is also the only language included with Inweb which has the property
-<code>Supports Namespaces: true</code> set. This feature is not strictly speaking tied
-to C variants only, but it was inspired by a need for a managed system of
-function name prefixes, because very large C code-bases are in dire need of
-internal organisation, and C does not have the means. Setting this property
-has four effects:</p>
-<ol>
-<li>
-<p>Function names are allowed to take the form <code>Namespace::Name</code>. For example,
-Inweb has a function called <code>WebNotation::supports_named_holons</code>, where
-the namespace is <code>WebNotation</code>. The only exception is <code>main</code>. External
-functions not declared in the web source, such as the C library's <code>printf</code>,
-are of course also left bare.</p>
-</li>
-<li>
-<p>Each section of the literate source can declare that is is part of a namespace.
-(It can't be partly in one, partly in another.) Inweb throws an error if
-it finds a function name whose namespace does not match that of its section.
-Again, <code>main</code> is an exception.</p>
-</li>
-<li>
-<p>For weaving and syntax-colouring purposes, <code>::</code> is considered part of an
-identifier, as it otherwise would not be. <code>WebNotation::supports_named_holons</code>
-would by default be syntax-coloured like <code>main</code>, with the colons having the
-same colour as the letters. (Colouring programs can of course override this.)</p>
-</li>
-<li>
-<p>For tangling purposes, the <code>::</code> in a name is converted to <code>__</code>, so that the
-function as sent to the C compiler is called <code>WebNotation__supports_named_holons</code>.
-This needs to be remembered if working with a debugger on the resulting program.</p>
-</li>
-</ol>
-<p>The sections of an InC program, which must be written in <code>InwebClassic</code> notation,
-open with a titling line. If it takes the form:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[Namespace::] Actual Title.
+    <p>This is a nuisance, and if <code>function predeclarations are tangled automatically</code>
+    then Inweb will automatically tangle predeclarations of all functions.</p>
+    </li>
+    </ul>
+    <h3>InC</h3>
+    <p>InC is a whole other ball of wax. It was contrived as a minimal set of
+    conveniences for managing the very large ANSI C source code for the Inform
+    compiler and related tools (including Inweb itself: Inweb is written in InC).
+    It is not any sort of attempt to create a &quot;better&quot; C across the board. In
+    that sense InC is not a general-purpose programming language. In particular,
+    the following limitations currently exist:</p>
+    <ul>
+    <li>InC can only be used literately, i.e., with Inweb. There is no freestanding
+    &quot;InC compiler&quot;. InC is tangled down to ANSI C, and the result can then be
+    compiled with <code>clang</code> or <code>gcc</code>.</li>
+    <li>InC programs must import the <code>foundation</code> module (included with Inweb).</li>
+    <li>InC programs must be written in <code>InwebClassic</code> notation.</li>
+    </ul>
+    <p>With that said, InC is a stable design which has been used on a variety
+    of tools by the Inform project for many years now. Anyone is welcome to use it.</p>
+    <hr />
+    <p>Firstly, InC has <code>C-Like: true</code> set, and enables all four of the above features
+    for making C-like languages less fussy about code order.</p>
+    <hr />
+    <p>InC is also the only language included with Inweb which has the property
+    <code>Supports Namespaces: true</code> set. This feature is not strictly speaking tied
+    to C variants only, but it was inspired by a need for a managed system of
+    function name prefixes, because very large C code-bases are in dire need of
+    internal organisation, and C does not have the means. Setting this property
+    has four effects:</p>
+    <ol>
+    <li>
+    <p>Function names are allowed to take the form <code>Namespace::Name</code>. For example,
+    Inweb has a function called <code>WebNotation::supports_named_holons</code>, where
+    the namespace is <code>WebNotation</code>. The only exception is <code>main</code>. External
+    functions not declared in the web source, such as the C library's <code>printf</code>,
+    are of course also left bare.</p>
+    </li>
+    <li>
+    <p>Each section of the literate source can declare that it is part of a namespace.
+    (It can't be partly in one, partly in another.) Inweb throws an error if
+    it finds a function name whose namespace does not match that of its section.
+    Again, <code>main</code> is an exception.</p>
+    </li>
+    <li>
+    <p>For weaving and syntax-colouring purposes, <code>::</code> is considered part of an
+    identifier, as it otherwise would not be. <code>WebNotation::supports_named_holons</code>
+    would by default be syntax-coloured like <code>main</code>, with the colons having the
+    same colour as the letters. (Colouring programs can of course override this.)</p>
+    </li>
+    <li>
+    <p>For tangling purposes, the <code>::</code> in a name is converted to <code>__</code>, so that the
+    function as sent to the C compiler is called <code>WebNotation__supports_named_holons</code>.
+    This needs to be remembered if working with a debugger on the resulting program.</p>
+    </li>
+    </ol>
+    <p>The sections of an InC program, which must be written in <code>InwebClassic</code> notation,
+    open with a titling line. If it takes the form:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">[Namespace::] Actual Title.
 </span></pre>
-<p>...then the namespace given is the one for the section, which all its functions
-must live in. For example:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[WebNotation::] Web Notations.
+    <p>...then the namespace given is the one for the section, which all its functions
+    must live in. For example:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">[WebNotation::] Web Notations.
 </span></pre>
-<hr />
-<p>The <code>foundation</code> module provides a system for allocating structures in memory.
-Full details are best left to the <code>foundation</code> documentation, but briefly,
-to use this one must first <code>typedef</code> a suitable <code>struct</code>, then ensure it
-contains some members needed by the memory manager for book-keeping, and
-then create an enumerated ID to distinguish this memory block from others.</p>
-<p>This can indeed be done by hand:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ Somewhat like so...
+    <hr />
+    <p>The <code>foundation</code> module provides a system for allocating structures in memory.
+    Full details are best left to the <code>foundation</code> documentation, but briefly,
+    to use this one must first <code>typedef</code> a suitable <code>struct</code>, then ensure it
+    contains some members needed by the memory manager for book-keeping, and
+    then create an enumerated ID to distinguish this memory block from others.</p>
+    <p>This can indeed be done by hand:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ Somewhat like so...
 
 @e manual_CLASS
 
@@ -278,72 +277,72 @@ typedef struct manual {
 	CLASS_DEFINITION
 } manual;
 </span></pre>
-<p>But that makes a lot of tiresome boilerplate code, so InC provides this
-abbreviation:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">@ Somewhat like so...
+    <p>But that makes a lot of tiresome boilerplate code, so InC provides this
+    abbreviation:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">@ Somewhat like so...
 
 =
 classdef automatic {
 	int x;
 }
 </span></pre>
-<p>These are not really classes in the sense of an object-oriented programming
-language: the keyword <code>classdef</code> was chosen to emphasise that it's a concept
-which is as much <code>typedef struct</code> as class.</p>
-<p>The memory manager can be instructed to make slightly more lightweight objects
-which are allocated in bulk, for speed: that involves some trade-offs in how
-they can be used. The notation for this is:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">classdef profuse in 1000s {
+    <p>These are not really classes in the sense of an object-oriented programming
+    language: the keyword <code>classdef</code> was chosen to emphasise that it's a concept
+    which is as much <code>typedef struct</code> as class.</p>
+    <p>The memory manager can be instructed to make slightly more lightweight objects
+    which are allocated in bulk, for speed: that involves some trade-offs in how
+    they can be used. The notation for this is:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">classdef profuse in 1000s {
 	int y;
 }
 </span></pre>
-<p>The <code>in 1000s</code> means that the memory manager should allocate these in blocks
-of 1000 as needed. (Of course, this means that if 1006 are needed, 2000 will
-be allocated.)</p>
-<hr />
-<p>As noted above, InC webs all have to import the <code>foundation</code> modules. One of
-its services is a system for extensible strings of Unicode text, called
-&quot;text streams&quot; (since text file output is handled by the same mechanism,
-unifying files and strings to some extent). InC provides a new sort of literal
-for this type:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">text_stream *S = I"alpha beta gamma delta";
+    <p>The <code>in 1000s</code> means that the memory manager should allocate these in blocks
+    of 1000 as needed. (Of course, this means that if 1006 are needed, 2000 will
+    be allocated.)</p>
+    <hr />
+    <p>As noted above, InC webs all have to import the <code>foundation</code> modules. One of
+    its services is a system for extensible strings of Unicode text, called
+    &quot;text streams&quot; (since text file output is handled by the same mechanism,
+    unifying files and strings to some extent). InC provides a new sort of literal
+    for this type:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">text_stream *S = I"alpha beta gamma delta";
 </span></pre>
-<p>This syntax is intended to extend existing C syntax, which already has
-several different sorts of string literal identified by an initial letter:</p>
-<table>
-<thead>
-<tr>
-<th>example</th>
-<th>type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>&quot;alpha beta gamma delta&quot;</code></td>
-<td><code>char[]</code>: null-terminated bytes</td>
-</tr>
-<tr>
-<td><code>L&quot;alpha beta gamma delta&quot;</code></td>
-<td><code>wchar_t[]</code>: null-terminated bytes</td>
-</tr>
-<tr>
-<td><code>U&quot;alpha beta gamma delta&quot;</code></td>
-<td><code>uint32_t[]</code>: null-terminated bytes</td>
-</tr>
-<tr>
-<td><code>I&quot;alpha beta gamma delta&quot;</code></td>
-<td><code>text_stream *</code>: pointer to opaque object</td>
-</tr>
-</tbody>
-</table>
-<p>Note that a <code>text_stream</code> is not an array. Access to its contents is provided
-by the string-manipulation functions in <code>foundation</code>.</p>
-<hr />
-<p>Finally, InC provides for an arcane notation used only in the Inform compiler
-to write &quot;Preform&quot;, a set of grammar productions for its language. This is not
-the place to document that: see the <code>words</code> module in the Inform code base.</p>
-<p>But for example the following is legal InC code:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;declaration&gt; ::=
+    <p>This syntax is intended to extend existing C syntax, which already has
+    several different sorts of string literal identified by an initial letter:</p>
+    <table>
+    <thead>
+    <tr>
+    <th>example</th>
+    <th>type</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>&quot;alpha beta gamma delta&quot;</code></td>
+    <td><code>char[]</code>: null-terminated bytes</td>
+    </tr>
+    <tr>
+    <td><code>L&quot;alpha beta gamma delta&quot;</code></td>
+    <td><code>wchar_t[]</code>: null-terminated bytes</td>
+    </tr>
+    <tr>
+    <td><code>U&quot;alpha beta gamma delta&quot;</code></td>
+    <td><code>uint32_t[]</code>: null-terminated bytes</td>
+    </tr>
+    <tr>
+    <td><code>I&quot;alpha beta gamma delta&quot;</code></td>
+    <td><code>text_stream *</code>: pointer to opaque object</td>
+    </tr>
+    </tbody>
+    </table>
+    <p>Note that a <code>text_stream</code> is not an array. Access to its contents is provided
+    by the string-manipulation functions in <code>foundation</code>.</p>
+    <hr />
+    <p>Finally, InC provides for an arcane notation used only in the Inform compiler
+    to write &quot;Preform&quot;, a set of grammar productions for its language. This is not
+    the place to document that: see the <code>words</code> module in the Inform code base.</p>
+    <p>But for example the following is legal InC code:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;declaration&gt; ::=
 	declare &lt;dominion&gt; independent	==&gt;	{ R[1], - }
 
 &lt;dominion&gt; ::=
@@ -351,13 +350,13 @@ the place to document that: see the <code>words</code> module in the Inform code
 	india |
 	malaya
 </span></pre>
-<p>and <code>&lt;declaration&gt;</code> can then be used as if it were a function, in C terms:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">if (&lt;declaration&gt;(W)) { ... }
+    <p>and <code>&lt;declaration&gt;</code> can then be used as if it were a function, in C terms:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">if (&lt;declaration&gt;(W)) { ... }
 </span></pre>
-<p>Other programs in InC, such as Inweb and Intest, make no use of any of this.</p>
+    <p>Other programs in InC, such as Inweb and Intest, make no use of any of this.</p>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Recognising Functions and Types</span><a href="5-rfat.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 5: Languages</span>5<li class="progresssection"><span class="fullname-popup">About Languages</span><a href="5-al.html">al</a></li><li class="progresssection"><span class="fullname-popup">Creating Languages</span><a href="5-cl.html">cl</a></li><li class="progresssection"><span class="fullname-popup">Holons as Code Blocks</span><a href="5-hacb.html">hacb</a></li><li class="progresssection"><span class="fullname-popup">Syntax Colouring Programs</span><a href="5-scp.html">scp</a></li><li class="progresssection"><span class="fullname-popup">Recognising Functions and Types</span><a href="5-rfat.html">rfat</a></li><li class="progresscurrent"><span class="current-fullname-popup">Special C Features</span>scf</li><li class="progresssection"><span class="fullname-popup">Summary of Languages</span><a href="5-sol.html">sol</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Summary of Languages</span><a href="5-sol.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Recognising Functions and Types</span><a href="5-rfat.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 5: Languages</span>5</li><li class="progresssection"><span class="fullname-popup">About Languages</span><a href="5-al.html">al</a></li><li class="progresssection"><span class="fullname-popup">Creating Languages</span><a href="5-cl.html">cl</a></li><li class="progresssection"><span class="fullname-popup">Holons as Code Blocks</span><a href="5-hacb.html">hacb</a></li><li class="progresssection"><span class="fullname-popup">Syntax Colouring Programs</span><a href="5-scp.html">scp</a></li><li class="progresssection"><span class="fullname-popup">Recognising Functions and Types</span><a href="5-rfat.html">rfat</a></li><li class="progresscurrent"><span class="current-fullname-popup">Special C Features</span>scf</li><li class="progresssection"><span class="fullname-popup">Summary of Languages</span><a href="5-sol.html">sol</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Summary of Languages</span><a href="5-sol.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

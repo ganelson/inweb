@@ -525,9 +525,9 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 	if (Str::eq(text, I"! End")) {
 		Str::delete_last_character(marked_up);
 		WRITE_TO(STDOUT, "%S\n! Solution\n", marked_up);
-		Markdown::render_extended(STDOUT,
-			Markdown::parse_extended(marked_up, variation_to_test_against),
-			variation_to_test_against);
+		markdown_render rdr = MDRender::context_free_HTML(variation_to_test_against);
+		MDRender::render(STDOUT, &rdr,
+			Markdown::parse_extended(marked_up, variation_to_test_against));
 		WRITE_TO(STDOUT, "! End\n\n");
 		Str::clear(marked_up);
 		Markdown::set_tracing(FALSE);
@@ -553,11 +553,12 @@ void Unit::test_MD_helper(text_stream *text, text_file_position *tfp, void *stat
 	}
 }
 
-int Unit::boxed_quote_renderer(markdown_feature *feature, text_stream *OUT,
+int Unit::boxed_quote_renderer(markdown_feature *feature, markdown_render *rdr, text_stream *OUT,
 	markdown_item *md, int mode) {
 	if (md->type == BLOCK_QUOTE_MIT) {
 		HTML_OPEN_WITH("div", "border=\"1\"");
-		MDRenderer::recurse(OUT, NULL, md, mode, MarkdownVariations::CommonMark());
+		markdown_render rdr = MDRender::context_free_HTML(MarkdownVariations::CommonMark());
+		MDRender::render_in_mode(OUT, &rdr, md, mode);
 		HTML_CLOSE("div");
 		return TRUE;
 	}
@@ -590,7 +591,7 @@ void Unit::paiapi_r(markdown_item *md) {
 	}
 }
 
-int Unit::paste_icons_renderer(markdown_feature *feature, text_stream *OUT,
+int Unit::paste_icons_renderer(markdown_feature *feature, markdown_render *rdr, text_stream *OUT,
 	markdown_item *md, int mode) {
 	if (md->type == CODE_BLOCK_MIT) {
 		if (GENERAL_POINTER_IS_NULL(md->user_state) == FALSE) {

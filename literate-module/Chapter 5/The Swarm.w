@@ -41,16 +41,7 @@ which tree is passed to //WeavingFormats::render// for the actual writing of
 output. In this way, specifics of individual output formats are kept at arm's
 length from the actual weaving algorithm.
 
-The weave tree is a simple business, built in a single pass of a depth-first
-traverse of the web. The weaver keeps track of a modicum of "state" as it works,
-and these running details are stored in a //weaver_state// object, but this is
-thrown away as soon as the weaver finishes.
-
-The trickiest point of building the weave tree is done by //The Weaver of Text//,
-which breaks up lines of commentary or code to identify uses of mathematical
-notation, footnote cues, function calls, and so on.
-
-This is a "heterogeneous tree", in that its nodes are annotated
+The weave tree is a "heterogeneous tree", in that its nodes are annotated
 by data structures of different types. For example, a node for a section
 heading is annotated with a //weave_section_header_node// structure. The
 necessary types and object constructors are laid tediously out in
@@ -86,14 +77,15 @@ every rendering instruction in the weave tree can be fully followed in every
 format: for example, there's not much that plain text can do to render an
 image carousel.
 
-Inweb currently contains four renderers:
+Inweb currently contains five renderers:
 
 - //Debugging Format// renders the weave tree as a plain text display, and
 is solely for testing.
 - //TeX Format// renders the weave tree as TeX markup code — in the early
 days of literate programming, this was the sole weave format used; now it
 has been eclipsed by...
-- ...//HTML Formats//, which renders to HTML and also handles ePub ebooks.
+- ...//HTML Format//, which renders to HTML; and
+- //LaTeX Format//, the more modern way to create documents on "paper".
 - There is also //Plain Text Format//, a comically minimal approach.
 
 Renderers should make requests for weave plugins or colour schemes if, and
@@ -109,7 +101,7 @@ for example, when weaving the text you are currently reading, Inweb has to
 decide where to send //weave_order//. This is handled by a suite of useful
 functions in //Colonies// which coordinate URLs across websites so
 that one web's weave can safely link to another's. In particular, cross-references
-written in `//this notation//` are "resolved" by //Colonies::resolve_reference_in_weave//,
+written in `//this notation//` are "resolved" by //Colonies::resolve_reference//,
 and the function //Colonies::reference_URL// turns them into relative URLs
 from any given file. Within the main web being woven, //Colonies::paragraph_URL//
 can make a link to any paragraph of your choice.[1]
@@ -346,7 +338,7 @@ as necessary.
 =
 void Swarm::weave(ls_colony *context, ls_colony_member *CM, ls_web *W, filename *to, pathname *into,
 	ls_pattern *pattern, int swarm_mode, text_stream *range, text_stream *tag,
-	int verbose_mode, int silent_mode) {
+	int verbose_mode, int silent_mode, int run_commands) {
 	weave_reporting R = Swarm::new_reportage(silent_mode?NULL:STDOUT, W, verbose_mode);
 	if (context) Colonies::fully_load(context);
 	Conventions::establish(W, context);
@@ -355,12 +347,16 @@ void Swarm::weave(ls_colony *context, ls_colony_member *CM, ls_web *W, filename 
 	if (r != SWARM_OFF_SWM) swarm_mode = r;
 	if (Str::len(tag) > 0) swarm_mode = SWARM_OFF_SWM;
 	if ((W) && (CM == NULL)) CM = Colonies::find_ls_colony_member(W);
+	pattern->allow_commands = run_commands;
 	if (swarm_mode == SWARM_OFF_SWM) {
-		Swarm::weave_subset(context, CM, W, range, tag, pattern, to, WeavingDetails::get_redirect_weaves_to(W), &R);
+		Swarm::weave_subset(context, CM, W, range, tag, pattern,
+			to, WeavingDetails::get_redirect_weaves_to(W), &R);
 	} else {
-		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern, to, WeavingDetails::get_redirect_weaves_to(W), &R);
+		Swarm::weave_swarm(context, CM, W, range, swarm_mode, tag, pattern,
+			to, WeavingDetails::get_redirect_weaves_to(W), &R);
 	}
 	WeavingFormats::end_weaving(W, pattern);
+	pattern->allow_commands = FALSE;
 	Swarm::end_report(&R);
 	Swarm::cancel_redirection(W);
 }
@@ -708,6 +704,7 @@ void Swarm::ensure_plugin(weave_order *wv, text_stream *name) {
 
 colour_scheme *Swarm::ensure_colour_scheme(weave_order *wv, text_stream *name,
 	text_stream *pre) {
+	if (Patterns::html_based(wv->weave_web->declaration, wv->pattern) == FALSE) return NULL;
 	colour_scheme *existing;
 	LOOP_OVER_LINKED_LIST(existing, colour_scheme, wv->colour_schemes)
 		if (Str::eq_insensitive(name, existing->scheme_name))
@@ -733,4 +730,17 @@ void Swarm::include_plugins(OUTPUT_STREAM, weave_order *wv) {
 	colour_scheme *cs;
 	LOOP_OVER_LINKED_LIST(cs, colour_scheme, wv->colour_schemes)
 		Assets::include_colour_scheme(OUT, cs, wv);
+}
+
+int Swarm::footnotes_appear(weave_order *wv) {
+	ls_chapter *C;
+	ls_section *S;
+	LOOP_OVER_LINKED_LIST(C, ls_chapter, wv->weave_web->chapters)
+		if (C->imported == FALSE)
+			LOOP_OVER_LINKED_LIST(S, ls_section, C->sections)
+				if (WebRanges::is_within(WebRanges::of(S), wv->weave_range))
+					for (ls_paragraph *par = S->literate_source->first_par; par; par = par->next_par)
+						if (par->footnote_count > 0)
+							return TRUE;
+	return FALSE;
 }

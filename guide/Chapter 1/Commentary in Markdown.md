@@ -24,9 +24,9 @@ features like any other: they're probably best not used, but chacun à son goût
 
 **Character set**. Inweb uses Unicode throughout and expects files to be
 encoded as UTF-8. This means that the commentary in a web can freely use
-exotica like this:
+non-ASCII characters, like this:
 
-	Chacun à son goût, as the French say.🇫🇷
+	Chacun à son goût, as the French say.
 
 Older compilers and interpreters may not accept Unicode in their source code,
 but the tangled output from a web will only contain what characters we use in
@@ -67,7 +67,7 @@ characters `_` are not at word boundaries. It produces this_is_not_emphasis.
 * `_escaped\_underscore_` uses a backslash `\_` to mean "really an `_`, not
 the end of the current emphasis run". The result is _escaped\_underscore_.
 
-* ``` ``insignificant`backtick`` ``` uses doubled backtick markers so that
+* ``` ``insignificant`backtick`` ``` uses doubled backticks so that
 the inner backtick is not treated as the end of the code matter. The result
 is ``insignificant`backtick``. If you're curious as to how to get
 ``` ``insignificant`backtick`` ``` to appear, the answer is
@@ -170,9 +170,9 @@ commentary is to agonise over running time, like so:
 	counting sort trades memory for time in order to run in $O(n+k)$ time, where $k$
 	is the maximum value of the items being sorted.
 
-Here the mathematics `$n$`, `$O(n\log n)$`, and such are written in ${\rm\TeX}$ notation,
+Here the mathematics `$n$`, `$O(n\log n)$`, and such are written in TeX notation,
 and sandwiched in between dollar signs `$`. This produces $n$, $O(n\log n)$ and so on,
-and will be rendered in HTML using the ${\rm\TeX}$ engine to produce a typeset fragment of
+and will be rendered in HTML using the TeX engine to produce a typeset fragment of
 a page which is then displayed as an image. Longer, centred-on-the-page, formulae
 can be displayed using doubled dollar signs `$$`, so `$$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t} {\rm d}t $$`
 types a formula for the gamma function:
@@ -300,14 +300,10 @@ containing the colony file, and automatically copies it to where it's needed.
 Secondly, images can be resized, which regular Markdown image links would not allow:
 
 	![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@200)
-	
-	![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@150x30)
 
 produces:
 
 ![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@200)
-
-![fragment from book VIII on Papyrus Oxyrhynchus 2099](papyrus.jpg@150x30)
 
 And the text "fragment from book VIII on Papyrus Oxyrhynchus 2099" is used as the
 alt-text for the image, which will be shown by screen-readers.

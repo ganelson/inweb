@@ -1,0 +1,15 @@
+% `strikethrough-macros.tex`
+%
+% LaTeX does not support text struck through, out of the box: it turns out
+% to be quite tricky to get right.
+%
+\catcode`@=11
+\def\strikethrough#1{\leavevmode\strikethr@ugh#1 \relax}
+\def\strikethr@ugh#1 {\strike@word{#1}\futurelet\next\strike@next}
+\def\strike@next{\ifx\next\relax\else\strike@space\expandafter\strikethr@ugh\fi}
+\def\strike@word#1{\setbox0=\hbox{#1}\rlap{\strike@rule width\wd0}\box0}
+\def\strike@space{\leaders\strike@rule\sp@ce}
+\def\strike@rule{\vrule height2.4pt depth-2pt}
+\def\sp@ce{\hskip\fontdimen2\font plus\fontdimen3\font minus\fontdimen4\font}
+\catcode`@=12
+%

@@ -25,10 +25,14 @@ given in any order:
 *	`format: FORMAT` gives the fundamental kind of output being made. This must
 	be one of those supported by Inweb:
 	
-		HTML  ePub  plain  TeX  TestingInweb
+		HTML  plain  TeX  LaTeX  TestingInweb
 
-	`ePub` is the book format; `plain` is plain text; `TeX` is (plain) TeX;
-	and `TestingInweb` should not be used except for its advertised purpose.
+	Note that `HTML`, for example, is also the name of a pattern (the default
+	one used by Inweb, in fact): that pattern's format is of course `HTML`.	
+	`plain` is plain text; `TeX` is (plain) TeX, the low-level typesetting tool,
+	which can be used to make PDF documents; `LaTeX` is the higher-level
+	development of that; and `TestingInweb` should not be used except for its
+	advertised purpose.
 
 *	`block template: FILE` tells Inweb _not_ to read a file of this name from
 	the template(s) that the current template is based on. This can only be

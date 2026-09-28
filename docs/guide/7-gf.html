@@ -50,30 +50,30 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#7">Chapter 7: Other Services</a></li><li><b>Gitignore Files</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> Inweb provides a system for generating <code>.gitignore</code> files, for use with the
-git version control system, much like its system for generating <a href="7-rf.html" class="internal">README Files</a>.
-The command <code>inweb make-gitignore</code> works almost exactly like
-<code>inweb make-readme</code>, and once again generates a makefile from a script:</p>
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>Inweb provides a system for generating <code>.gitignore</code> files, for use with the
+    git version control system, much like its system for generating <a href="7-rf.html" class="internal">README Files</a>.
+    The command <code>inweb make-gitignore</code> works almost exactly like
+    <code>inweb make-readme</code>, and once again generates a makefile from a script:</p>
 </div>
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-gitignore smorgasbord</span></span>
-<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.giscript -&gt; smorgasbord/.gitignore</span></span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inweb</span><span class="ConsoleText-plain-syntax"> make-gitignore smorgasbord</span>
+<a id="SP1LN0" class="lineanchor"></a><span class="ConsoleText-plain-syntax">    smorgasbord/smorgasbord.giscript -&gt; smorgasbord/.gitignore</span>
 </pre>
 <div class="lsmarkdown">
-<p>Note that this resulting file may be &quot;hidden&quot; in some operating systems, on
-account of the name beginning with a <code>.</code>: for example, it will usually not
-be displayed by the Finder in MacOS.</p>
-<p>As for README scripts, the braces <code>{</code> and <code>}</code> are significant, and all of the
-same rules apply: <code>{set ...}</code> can create variables, <code>{repeat ...}</code> can provide
-loops, <code>{define ...}</code> can create new macros.</p>
-<p>Just one gitignore-related macro is additionally provided:</p>
-<ul>
-<li><code>{basics}</code>, which instructs git to ignore any woven output in the subdirectory
-<code>Woven</code> or tangled output in <code>Tangled</code>, and also any ctags file.</li>
-</ul>
+    <p class="commentary">Note that this resulting file may be &quot;hidden&quot; in some operating systems, on
+    account of the name beginning with a <code>.</code>: for example, it will usually not
+    be displayed by the Finder in MacOS.</p>
+    <p>As for README scripts, the braces <code>{</code> and <code>}</code> are significant, and all of the
+    same rules apply: <code>{set ...}</code> can create variables, <code>{repeat ...}</code> can provide
+    loops, <code>{define ...}</code> can create new macros.</p>
+    <p>Just one gitignore-related macro is additionally provided:</p>
+    <ul>
+    <li><code>{basics}</code>, which instructs git to ignore any woven output in the subdirectory
+    <code>Woven</code> or tangled output in <code>Tangled</code>, and also any ctags file.</li>
+    </ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Make Files</span><a href="7-mf.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 7: Other Services</span>7<li class="progresssection"><span class="fullname-popup">Build Numbering</span><a href="7-bn.html">bn</a></li><li class="progresssection"><span class="fullname-popup">README Files</span><a href="7-rf.html">rf</a></li><li class="progresssection"><span class="fullname-popup">Make Files</span><a href="7-mf.html">mf</a></li><li class="progresscurrent"><span class="current-fullname-popup">Gitignore Files</span>gf</li><li class="progressnextoff">&#10095;</li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Make Files</span><a href="7-mf.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 6: Patterns</span><a href="6-ap.html">6</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 7: Other Services</span>7</li><li class="progresssection"><span class="fullname-popup">Build Numbering</span><a href="7-bn.html">bn</a></li><li class="progresssection"><span class="fullname-popup">README Files</span><a href="7-rf.html">rf</a></li><li class="progresssection"><span class="fullname-popup">Make Files</span><a href="7-mf.html">mf</a></li><li class="progresscurrent"><span class="current-fullname-popup">Gitignore Files</span>gf</li><li class="progressnextoff">&#10095;</li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

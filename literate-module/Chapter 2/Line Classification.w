@@ -98,11 +98,6 @@ always has one of the following minors.
 @e HTML_MINLC /* minor of `INSERTION_MAJLC` */
 @e VIDEO_MINLC /* minor of `INSERTION_MAJLC` */
 
-@ Last and least, a feature which should perhaps go, for a sort of block-quotation
-form of commentary:
-
-@e QUOTATION_MAJLC
-
 @ This exists only very temporarily, to mark inclusion points for files:
 
 @e INCLUDE_FILE_MAJLC
@@ -396,10 +391,6 @@ match, we consider that line to be code.
 			break;
 		case DEFINITIONCONTINUED_LSNROID:
 			res = LineClassification::new_results(DEFINITION_CONTINUED_MAJLC, NO_MINLC);
-			res.cf.operand1 = Str::duplicate(material);
-			break;
-		case QUOTATION_LSNROID:
-			res = LineClassification::new_results(QUOTATION_MAJLC, NO_MINLC);
 			res.cf.operand1 = Str::duplicate(material);
 			break;
 		case CODE_LSNROID:

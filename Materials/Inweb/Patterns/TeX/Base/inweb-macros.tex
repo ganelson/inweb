@@ -1,0 +1,354 @@
+% Beginning of `inweb-macros.tex`
+%
+% These are TeX macros for use by Inweb when rendering to a Plain TeX variant
+% (such as TeX itself, pdftex or xetex): they should work on any TeX. Macros
+% which do not have the luxury of engine-independence have been hived off into
+% the files `links-macros.tex`, `colours-macros.tex`, and `images-macros.tex`.
+%
+% (1) Fonts
+% There are more fonts here than we actually need for Inweb purposes, but it
+% seems easiest to follow Knuth's semi-standard book design code.
+%
+% See Appendix B of the TeXBook: some `\font` definitions, such as `\tenrm`
+% and `\tentt`, are already defined in Plain TeX.
+%
+\font\defnannotationfont=cmti9
+\def\defnannotationtext#1{{\defnannotationfont #1}}
+\font\tentex=cmtex10
+\font\sourcefont=cmss10
+\font\holonfont=cmss9
+\def\holonnametext#1{{\holonfont #1}}
+\hyphenchar\holonfont=-1
+\font\usagefont=cmss8
+\def\endnotetext#1{{\usagefont #1}}
+\def\sectiontoctext#1{{\usagefont #1}}
+\font\inchhighfont=cminch
+\font\reducedinchhighfont=cminch at 60pt
+\font\chaptertitlefont=cmss10 at 24pt
+\def\chaptertitletext#1{\chaptertitlefont #1}
+\font\sectiontitlefont=cmss10 at 20pt
+\def\sectiontitletext#1{\sectiontitlefont #1}
+\font\ssectiontitlefont=cmss10 at 20pt
+\font\sssectiontitlefont=cmr10 at 12pt
+\font\ninerm=cmr9
+\font\eightrm=cmr8
+\font\sixrm=cmr6
+\font\ninei=cmmi9
+\skewchar\ninei='177
+\font\eighti=cmmi8
+\skewchar\eighti='177
+\font\sixi=cmmi6
+\skewchar\sixi='177
+\font\ninesy=cmsy9
+\skewchar\ninesy='60
+\font\eightsy=cmsy8
+\skewchar\eightsy='60
+\font\sixsy=cmsy6
+\skewchar\sixsy='60
+\font\holonnumberfont=cmss10 at 7pt
+\def\holonnumbertext#1{{\holonnumberfont #1}}
+\font\eightss=cmssq8
+\font\eightssi=cmssqi8
+\font\ninebf=cmbx9
+\font\eightbf=cmbx8
+\font\sixbf=cmbx6
+\font\ninett=cmtt9
+\hyphenchar\ninett=-1
+\font\eighttt=cmtt8
+\hyphenchar\eighttt=-1
+\hyphenchar\tentt=-1 % inhibit hyphenation in typewriter type
+\font\ninesl=cmsl9
+\font\eightsl=cmsl8
+\font\nineit=cmti9
+\font\eightit=cmti8
+\font\tenu=cmu10 % unslanted text italic
+\font\magnifiedfiverm=cmr5 at 10pt
+\font\manual=manfnt % font used for the METAFONT logo, etc.
+\font\cmman=cmman % font used for miscellaneous Computer Modern variations
+%
+% Knuth's standard way to change point size:
+%
+\newskip\ttglue
+\def\tenpoint{\def\rm{\fam0\tenrm}%
+  \textfont0=\tenrm \scriptfont0=\sevenrm \scriptscriptfont0=\fiverm
+  \textfont1=\teni \scriptfont1=\seveni \scriptscriptfont1=\fivei
+  \textfont2=\tensy \scriptfont2=\sevensy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\tenit}%
+  \textfont\itfam=\tenit
+  \def\sl{\fam\slfam\tensl}%
+  \textfont\slfam=\tensl
+  \def\bf{\fam\bffam\tenbf}%
+  \textfont\bffam=\tenbf \scriptfont\bffam=\sevenbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\tentt}%
+  \textfont\ttfam=\tentt
+  \tt \ttglue=.5em plus.25em minus.15em
+  \normalbaselineskip=12pt
+  \def\MF{{\manual META}\-{\manual FONT}}%
+  \let\sc=\eightrm
+  \let\big=\tenbig
+  \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width\z@}%
+  \normalbaselines\rm}
+%
+\def\ninepoint{\def\rm{\fam0\ninerm}%
+  \textfont0=\ninerm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\ninei \scriptfont1=\sixi \scriptscriptfont1=\fivei
+  \textfont2=\ninesy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\nineit}%
+  \textfont\itfam=\nineit
+  \def\sl{\fam\slfam\ninesl}%
+  \textfont\slfam=\ninesl
+  \def\bf{\fam\bffam\ninebf}%
+  \textfont\bffam=\ninebf \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\ninett}%
+  \textfont\ttfam=\ninett
+  \tt \ttglue=.5em plus.25em minus.15em
+  \normalbaselineskip=11pt
+  \def\MF{{\manual hijk}\-{\manual lmnj}}%
+  \let\sc=\sevenrm
+  \let\big=\ninebig
+  \setbox\strutbox=\hbox{\vrule height8pt depth3pt width\z@}%
+  \normalbaselines\rm}
+%
+\def\ttninepoint{\def\rm{\fam0\ninerm}%
+  \textfont0=\ninerm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\ninei \scriptfont1=\sixi \scriptscriptfont1=\fivei
+  \textfont2=\ninesy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\nineit}%
+  \textfont\itfam=\nineit
+  \def\sl{\fam\slfam\ninesl}%
+  \textfont\slfam=\ninesl
+  \def\bf{\fam\bffam\ninebf}%
+  \textfont\bffam=\ninebf \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\ninett}%
+  \textfont\ttfam=\ninett
+  \normalbaselineskip=11pt
+  \normalbaselines\rm}
+%
+\def\eightpoint{\def\rm{\fam0\eightrm}%
+  \textfont0=\eightrm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\eighti \scriptfont1=\sixi \scriptscriptfont1=\fivei
+  \textfont2=\eightsy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \def\it{\fam\itfam\eightit}%
+  \textfont\itfam=\eightit
+  \def\sl{\fam\slfam\eightsl}%
+  \textfont\slfam=\eightsl
+  \def\bf{\fam\bffam\eightbf}%
+  \textfont\bffam=\eightbf \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf
+  \def\tt{\fam\ttfam\eighttt}%
+  \textfont\ttfam=\eighttt
+  \tt \ttglue=.5em plus.25em minus.15em
+  \normalbaselineskip=9pt
+  \def\MF{{\manual opqr}\-{\manual stuq}}%
+  \let\sc=\sixrm
+  \let\big=\eightbig
+  \setbox\strutbox=\hbox{\vrule height7pt depth2pt width\z@}%
+  \normalbaselines\rm}
+%
+\def\tenmath{\tenpoint\fam-1 } % use after $ in ninepoint sections
+\def\tenbig#1{{\hbox{$\left#1\vbox to8.5pt{}\right.\n@space$}}}
+\def\ninebig#1{{\hbox{$\textfont0=\tenrm\textfont2=\tensy
+  \left#1\vbox to7.25pt{}\right.\n@space$}}}
+\def\eightbig#1{{\hbox{$\textfont0=\ninerm\textfont2=\ninesy
+  \left#1\vbox to6.5pt{}\right.\n@space$}}}
+%
+% (2) Inweb headings
+% `\weavesection` and its heavier friends are Inweb sections, the grander the
+% more `s` suffixes they have: untitled paragraph, titled paragraph, section, chapter.
+%
+\def\weavesectionsss#1#2#3#4#5{\vfill\eject\noindent\chaptertitletext{#2}\mark{#3}\vskip 0.5in\par\noindent\titlepage}
+\def\weavesectionss#1#2#3#4#5{\vfill\eject\noindent\sectiontitletext{#2\hfill #5}\mark{#3}\bigskip\par\noindent\titlepage}
+\def\weavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1. #2.}\mark{#3}\quad}
+\def\weavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #4#1.}\mark{#3}\quad}
+%
+% The `t` variants are for themed extracts.
+\def\tweavesections#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1. #2.}\quad}
+\def\tweavesection#1#2#3#4#5{\bigskip\goodbreak\noindent{\bf #5.#4#1.}\quad}
+%
+% The `ns` variants have less vertical spacing before them.
+\def\nsweavesections#1#2#3#4#5{\noindent{\bf #4#1. #2.}\mark{#3}\quad}
+\def\nsweavesection#1#2#3#4#5{\noindent{\bf #4#1.}\mark{#3}\quad}
+%
+% (3) Strikethrough
+% Plain TeX does not support text struck through, out of the box: it turns out
+% to be quite tricky to get right.
+%
+\catcode`@=11
+\def\strikethrough#1{\leavevmode\strikethr@ugh#1 \relax}
+\def\strikethr@ugh#1 {\strike@word{#1}\futurelet\next\strike@next}
+\def\strike@next{\ifx\next\relax\else\strike@space\expandafter\strikethr@ugh\fi}
+\def\strike@word#1{\setbox0=\hbox{#1}\rlap{\strike@rule width\wd0}\box0}
+\def\strike@space{\leaders\strike@rule\sp@ce}
+\def\strike@rule{\vrule height2.4pt depth-2pt}
+\def\sp@ce{\hskip\fontdimen2\font plus\fontdimen3\font minus\fontdimen4\font}
+\catcode`@=12
+%
+% (4) Nested lists, enumerated and unenumerated
+% We don't want to have to rely on Plain TeX's `\item` and `\itemitem`.
+% Instead, all items are `\item` (which is redefined as appropriate for the
+% context) and lists begin and end with `\beginenumerate` and `\endenumerate`
+% if they are to be numbered, or `\beginunenumerate` and `\endunenumerate` if not;
+% and those can be fairly arbitrarily nested.
+%
+\catcode`@=11
+\newcount\c@listlevel
+\newcount\c@item
+\newdimen\enumerateindent
+%
+\def\init@str{} % the label of every item
+\def\beginenumerate{%
+  \begingroup
+  \let\item\enumerate@item
+  \advance\c@listlevel\@ne
+  \ifnum\c@listlevel=\@ne
+    \vskip.5\baselineskip
+  \fi
+  \ifnum\c@listlevel>\@ne
+    \edef\init@str{}%
+  \fi
+  \c@item\z@
+}
+%
+\def\endenumerate{%
+  \par\endgroup
+  \ifnum\c@listlevel=\z@
+    \vskip.5\baselineskip
+  \fi}
+%
+\def\beginunenumerate{%
+  \begingroup
+  \let\item\unenumerate@item
+  \advance\c@listlevel\@ne
+  \ifnum\c@listlevel=\@ne
+    \vskip.5\baselineskip
+  \fi
+  \c@item\z@
+}
+%
+\def\endunenumerate{%
+  \par\endgroup
+  \ifnum\c@listlevel=\z@
+    \vskip.5\baselineskip
+  \fi}
+%
+\def\enumerate@item{%
+  \advance\c@item\@ne
+  \enumerateindent=\c@listlevel\parindent
+  \ifvmode\else\par\fi
+  % if an \item has more than one paragraph only the first one have to be preceded by a label;
+  % so \@itemlabel redefine itself the first time is expanded.
+  \def\@itemlabel{%
+    \llap{\init@str\number\c@item.\quad}%
+    \def\@itemlabel{}%
+  }%
+  \everypar{\setbox0\lastbox
+    \hangindent\enumerateindent \hangafter\z@
+    \@itemlabel}}
+%
+\def\unenumerate@item{%
+  \advance\c@item\@ne
+  \enumerateindent=\c@listlevel\parindent
+  \ifvmode\else\par\fi
+  \everypar{\setbox0\lastbox
+    \hangindent\enumerateindent \hangafter\z@
+    $\bullet$~}}
+%
+\catcode`@=12
+%
+% (5) Verbatim code samples
+%
+\chardef\other=12
+\def\ttverbatim{\begingroup\ttninepoint\frenchspacing
+  \catcode`\\=\other
+  \catcode`\{=\other
+  \catcode`\}=\other
+  \catcode`\$=\other
+  \catcode`\&=\other
+  \catcode`\#=\other
+  \catcode`\%=\other
+  \catcode`\~=\other
+  \catcode`\_=\other
+  \catcode`\^=\other
+  \obeyspaces \obeylines \tt}
+%
+\def\|{\leavevmode\hbox{\tt\char`\|}} % vertical line
+\outer\def\begintt{$$\let\par=\endgraf \ttverbatim \parskip=\z@
+  \catcode`\|=0 \rightskip-5pc \ttfinish}
+{\catcode`\|=0 |catcode`|\=\other % | is temporary escape character
+  |obeylines % end of line is active
+  |gdef|ttfinish#1^^M#2\endtt{#1|vbox{#2}|endgroup|tenpoint$$}}
+\catcode`\|=\active
+%
+{\obeylines \gdef|{\ttverbatim \spaceskip\ttglue \let^^M=\  \let|=\endgroup}}
+%
+\catcode`@=11
+\def\beginlines{\par\begingroup\nobreak\medskip\parindent\z@ \obeylines\nobreak \everypar{\strut}}
+\def\beginlinestighter{\par\begingroup\nobreak\parindent=0pt \kern1pt\nobreak \obeylines \everypar{\strut}}
+\def\endlines{\kern1pt\endgroup\medbreak\noindent}
+\catcode`@=12
+%
+% (6) Preform grammar document macros
+% These are no longer really used, but are brief enough to be worth keeping around
+% in case of an underdog comeback story.
+%
+\def\[#1]{\silenttrue\xref|#1|\thinspace{\tt#1}\thinspace} % keyword in syntax
+\def\beginsyntax{\endgraf\nobreak\medskip
+  \begingroup \catcode`<=13 \catcode`[=13
+  \let\par=\endsyntaxline \obeylines}
+\def\endsyntaxline{\futurelet\next\syntaxswitch}
+\def\syntaxswitch{\ifx\next\<\let\next=\syntaxrule
+  \else\ifx\next\endsyntax\let\next=\endgroup
+  \else\let\next=\continuerule\fi\fi \next}
+\def\continuerule{\hfil\break\indent\qquad}
+\def\endsyntax{\medbreak\noindent}
+{\catcode`<=13 \catcode`[=13
+  \global\let<=\< \global\let[=\[
+  \gdef\syntaxrule<#1>{\endgraf\indent\silentfalse\xref\<#1>}}
+\def\is{\ $\longrightarrow$ }
+\def\alt{\ $\vert$ }
+\def\cast#1#2{{#1}$\;\rightarrow\;${#2}}
+\def\comp#1#2{{#1}$\;\sim\;${#2}}
+\def\al{$\alpha$}
+\def\be{$\beta$}
+\def\nonterminal#1{$\langle${\xreffont\pdfliteral direct{1 1 0 0 k}#1\special{PDF:0 g}}$\rangle$}
+\def\fixed#1{{\bf #1}}
+\def\from{\par\qquad\quad$\leftarrow$\quad}
+\def\continuation{\par\qquad\quad\phantom{$\leftarrow$}\quad}
+%
+% (7) Miscellaneous math macros which seem to be expected by MathJax users,
+% even though they are not in Plain TeX
+%
+\def\frac#1#2{{{#1}\over{#2}}}
+\def\cfrac#1#2{{{#1}\over{#2}}}
+\def\dfrac#1#2{{{#1}\over{#2}}}
+\def\tfrac#1#2{{{#1}\over{#2}}}
+\def\mathit#1{{\hbox{\it #1}}}
+\def\mathrm#1{{\hbox{\rm #1}}}
+\def\mathbf#1{{\hbox{\bf #1}}}
+\def\text#1{{\hbox{#1}}}
+\def\lvert{|}
+\def\rvert{|}
+\def\implies{\Rightarrow}
+%
+% (8) And finally, something other than macros and fonts: the page design.
+% First, header and footer:
+%
+\nopagenumbers
+\newif\iftitle
+\def\titlepage{\global\titletrue}
+\headline={\iftitle\hfil\global\titlefalse\else\tenrm\hfil{\sourcefont \firstmark\qquad\the\pageno}\fi}
+\titlepage
+%
+% Tolerances for spacing:
+%
+\raggedbottom
+\tolerance=20000
+%
+% End of `inweb-macros.tex`

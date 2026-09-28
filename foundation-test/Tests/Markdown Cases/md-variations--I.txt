@@ -32,14 +32,14 @@ autolinks like <a href="https://this.com">https://this.com</a> or <a href="mailt
 
 This is all good stuff.
 And it resumes here.
-')"><img border=0 src=paste.png></a><pre><code>&quot;Bananas&quot;
+')"><img border=0 src=paste.png></a><pre class="displayed-code all-displayed-code code-font"><span class="plain">"Bananas"
 
 This is all good stuff.
-</code></pre>
+</span></pre>
 <p>But then again:</p>
 <a class="pastelink" href="javascript:pasteCode('And it resumes here.
-')"><img border=0 src=paste.png></a><pre><code>And it resumes here.
-</code></pre>
+')"><img border=0 src=paste.png></a><pre class="displayed-code all-displayed-code code-font"><span class="plain">And it resumes here.
+</span></pre>
 <p># Not a heading, either</p>
 ! End
 

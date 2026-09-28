@@ -1,0 +1,12 @@
+Pattern "LaTeX" {
+	format: LaTeX
+	initial extension: .latex
+	default range: 0
+	plugin: Base
+	assets
+		titling.tex file: collate to document
+		.tex files: embed file
+		.latexpkg files: collate before document
+		.xcs files: collate to document
+	end
+}

@@ -3,8 +3,9 @@
 ## What is Inweb?
 
 Inweb is a free and open-source tool for literate programming. Besides the basic tasks
-of tangling and weaving, it plays nicely with GitHub, offers highly customisable
-notation, and provides convenient organisation tools. Above all, it scales easily
+of tangling and weaving, it plays nicely with GitHub, and provides convenient
+organisation tools. It can work with any programming language, and offers highly
+customisable notation, with rich support for Markdown. Above all, it scales easily
 from simple one-page programs in a single file up to extensive families of large and
 inter-related programs and libraries.
 

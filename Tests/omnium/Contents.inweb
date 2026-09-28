@@ -1,0 +1,179 @@
+Title: Omnium
+Author: Inweb
+Notation: Omnitest
+Language: C
+Purpose: To exercise as much of the Inweb renderer as possible.
+Version Number: 1.0
+
+Chapter 1: Layout
+    Layout Demonstration
+
+Chapter 2: Commentary
+    Markdown Demonstration
+
+Conventions {
+	search box on section pages
+	labels match //\* ([A-Z]) \*//
+	comments can contain styling
+}
+
+Notation "Omnitest" {
+	recognise .zzz
+	recognise .*.zzz
+
+	recognise .w
+	recognise .*.w
+	
+	classify
+		[FOURTH] MATERIAL.                          ==> title if on first line
+		MATERIAL.                                   ==> title if on first line
+	
+		@d MATERIAL(NONWHITESPACE) SECOND           ==> definition
+		@d MATERIAL                                 ==> definition
+		@define MATERIAL(NONWHITESPACE) SECOND      ==> definition
+		@default MATERIAL(NONWHITESPACE) SECOND     ==> definition with defaultoption
+		@default MATERIAL                           ==> definition with defaultoption
+		@e MATERIAL(NONWHITESPACE) from SECOND      ==> enumeration
+		@enum MATERIAL(NONWHITESPACE) from SECOND   ==> enumeration
+		@e MATERIAL                                 ==> enumeration
+		@enum MATERIAL                              ==> enumeration
+	
+		<OPENHOLON>MATERIAL<CLOSEHOLON>=            ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> =           ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS) = ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON> (OPTIONS)=  ==> namedholon
+		<OPENHOLON>MATERIAL<CLOSEHOLON>+=           ==> namedholon with continuationoption
+		<OPENHOLON>MATERIAL<CLOSEHOLON> +=          ==> namedholon with continuationoption
+	
+		@                                           ==> beginparagraph
+		@=                                          ==> namelessholon in new paragraph
+		@ =                                         ==> namelessholon in new paragraph
+		@ RESIDUE                                   ==> beginparagraph
+		@h MATERIAL.                                ==> beginparagraph
+		@heading MATERIAL.                          ==> beginparagraph
+		@h MATERIAL. RESIDUE                        ==> beginparagraph
+		@heading MATERIAL. RESIDUE                  ==> beginparagraph
+		@h MATERIAL                                 ==> error "no full stop after heading text"
+		@heading MATERIAL                           ==> error "no full stop after heading text"
+		@m											==> makeclasseshere
+	end
+	
+	options of namedholon
+		webwide                                     ==> webwideholonoption
+		tangled to SECOND							==> tangledtoholonoption
+		tangled very early                          ==> veryearlyholonoption
+		tangled early                               ==> earlyholonoption
+		tangled late                                ==> lateholonoption
+		tangled very late                           ==> verylateholonoption
+		webwide, OPTIONS                            ==> webwideholonoption
+		tangled to SECOND, OPTIONS    				==> tangledtoholonoption
+		tangled very early, OPTIONS                 ==> veryearlyholonoption
+		tangled early, OPTIONS                      ==> earlyholonoption
+		tangled late, OPTIONS                       ==> lateholonoption
+		tangled very late, OPTIONS                  ==> verylateholonoption
+		webwide and OPTIONS                         ==> webwideholonoption
+		tangled to SECOND and OPTIONS    			==> tangledtoholonoption
+		tangled very early and OPTIONS              ==> veryearlyholonoption
+		tangled early and OPTIONS                   ==> earlyholonoption
+		tangled late and OPTIONS                    ==> lateholonoption
+		tangled very late and OPTIONS               ==> verylateholonoption
+		MATERIAL                                    ==> error "unknown holon option(s)"
+	end
+
+	residue of beginparagraph
+		RESIDUE <OPENTAG>MATERIAL<CLOSETAG>         ==> paragraphtag if paragraph tags supported
+		<OPENTAG>MATERIAL<CLOSETAG>                 ==> paragraphtag if paragraph tags supported
+	end
+	
+	classify
+		=                                           ==> endextract if in extract context
+		=                                           ==> namelessholon if not in extract context
+		= (code)                                    ==> namelessholon
+		= (early code)                              ==> namelessholon with earlyholonoption
+		= (very early code)                         ==> namelessholon with veryearlyholonoption
+		= (late code)                               ==> namelessholon with lateholonoption
+		= (very late code)                          ==> namelessholon with verylateholonoption
+		= (audio MATERIAL)                          ==> audio
+		= (video MATERIAL)                          ==> video
+		= (figure MATERIAL "SECOND")                ==> figure
+		= (figure MATERIAL)                         ==> figure
+		= (html MATERIAL)                           ==> html
+		= (download MATERIAL "")                    ==> download
+		= (download MATERIAL "SECOND")              ==> download
+		= (download MATERIAL)                       ==> download
+		= (embedded MATERIAL audio SECOND)          ==> embeddedvideo
+		= (embedded MATERIAL video SECOND)          ==> embeddedvideo
+		= (carousel)                                ==> carouselslide
+		= (carousel "")                             ==> carouselslide
+		= (carousel "MATERIAL")                     ==> carouselslide
+		= (carousel "MATERIAL" above)               ==> carouselslide with captionaboveoption
+		= (carousel "MATERIAL" below)               ==> carouselslide with captionbelowoption
+		= (carousel end)                            ==> carouselend
+	
+		= (text)                                    ==> textextract
+		= (text as code)                            ==> textascodeextract
+		= (text as MATERIAL)                        ==> textextract
+		= (text from SECOND as code)                ==> textascodeextract
+		= (text from SECOND as MATERIAL)            ==> textextract
+		= (text from SECOND)                        ==> textextract
+		= (text to MATERIAL)                        ==> textextractto
+		= (OPTIONS text)                            ==> textextract
+		= (OPTIONS text as code)                    ==> textascodeextract
+		= (OPTIONS text as MATERIAL)                ==> textextract
+		= (OPTIONS text from SECOND as code)        ==> textascodeextract
+		= (OPTIONS text from SECOND as MATERIAL)    ==> textextract
+		= (OPTIONS text from SECOND)                ==> textextract
+		= (OPTIONS text to MATERIAL)                ==> textextractto
+	
+		= (MATERIAL)                                ==> error "unknown extract or insertion"
+	end
+	
+	options of textextract
+		undisplayed                                 ==> undisplayedoption
+		undisplayed OPTIONS                         ==> undisplayedoption
+		MATERIAL                                    ==> error "unknown text option(s)"
+	end
+	
+	options of textascodeextract
+		undisplayed                                 ==> undisplayedoption
+		undisplayed OPTIONS                         ==> undisplayedoption
+		MATERIAL                                    ==> error "unknown text option(s)"
+	end
+	
+	options of textextractto
+		undisplayed                                 ==> undisplayedoption
+		undisplayed OPTIONS                         ==> undisplayedoption
+		MATERIAL                                    ==> error "unknown text option(s)"
+	end
+	
+	classify
+		MATERIAL                                    ==> extract if in extract context
+		MATERIAL                                    ==> definitioncontinued if in definition context
+		MATERIAL                                    ==> commentary
+	end
+
+	alerts
+		♨︎ HOT
+		> SYNTAX
+		✦ EXAMPLES
+		🎯 PERFORMANCE
+		⚙ PROCESS
+	end
+	
+	Conventions {
+		commentary uses Markdown markup
+		comments can contain styling
+		a summary under the title is read as the purpose
+		holon names are written between @< and @>
+		metadata in strings are written between [[ and ]]
+		paragraph tags are written between ^" and "
+		verbatim tangle material is written between @= and @>
+		web comments are written between @{- and @-}
+		index entries are written between @^ and @>
+		typewritten index entries are written between @. and @>
+		nonstandard index entries are written between @: and @>
+		important index entries are written between @!@^ and @>
+		important typewritten index entries are written between @!@. and @>
+		important nonstandard index entries are written between @!@: and @>
+	}
+}

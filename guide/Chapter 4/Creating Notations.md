@@ -558,7 +558,7 @@ When woven to HTML, these alerts will become blockquotes, just as for `[!NOTE]`
 and so on; the blockquotes will have the class names `alerthot` and `alertsyntax`,
 matching the conventions used for `alertnote`, `alertwarning` and so on. They
 can then be styled in suitable colour schemes, have boxes drawn around them, or
-whatever, by means of CSS: see //Creating Patterns//.
+whatever, by means of CSS: see //Patterns for Weaving Websites//.
 
 ## Processing
 

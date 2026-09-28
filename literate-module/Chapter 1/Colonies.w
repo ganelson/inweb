@@ -724,33 +724,21 @@ The web metadata `Wm` is for the web currently being woven, and the line `L`
 is where the reference is made from.
 
 =
-int Colonies::resolve_reference_in_weave_order(weave_order *wv,
-	text_stream *url, text_stream *title, text_stream *text, int *ext) {
-	return Colonies::resolve_reference_in_weave((wv)?wv->weave_colony:NULL,
-		url, title, (wv)?wv->weave_to:NULL, text,
-		(wv)?wv->weave_web:NULL, (wv)?wv->current_weave_line:NULL, ext);
-}
-
-int Colonies::resolve_reference_in_weave(ls_colony *C, text_stream *url, text_stream *title,
-	filename *for_HTML_file, text_stream *text, ls_web *Wm, ls_line *lst, int *ext) {
-	int r = 0;
-	if (ext) *ext = FALSE;
+int Colonies::resolve_reference(query_results *qr, text_stream *text,
+	ls_colony *C, ls_web *Wm, ls_line *lst, filename *for_HTML_file) {
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, U"(%c+?) -> (%c+)")) {
-		r = Colonies::resolve_reference_in_weave_inner(C, url, NULL,
-			for_HTML_file, mr.exp[1], Wm, lst, ext);
-		WRITE_TO(title, "%S", mr.exp[0]);
+		qr->found = Colonies::resolve_reference_inner(qr, mr.exp[1], C, Wm, lst, for_HTML_file);
+		if (qr->found) qr->title = Str::duplicate(mr.exp[0]);
 	} else {
-		r = Colonies::resolve_reference_in_weave_inner(C, url, title,
-			for_HTML_file, text, Wm, lst, ext);
+		qr->found = Colonies::resolve_reference_inner(qr, text, C, Wm, lst, for_HTML_file);
 	}
 	Regexp::dispose_of(&mr);
-	return r;
+	return qr->found;
 }
 
-int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, text_stream *title,
-	filename *for_HTML_file, text_stream *text, ls_web *Wm, ls_line *lst,
-	int *ext) {
+int Colonies::resolve_reference_inner(query_results *qr, text_stream *text,
+	ls_colony *C, ls_web *Wm, ls_line *lst, filename *for_HTML_file) {
 	ls_module *from_M = (Wm)?(Wm->main_module):NULL;
 	ls_module *search_M = from_M;
 	ls_colony_member *search_CM = NULL;
@@ -776,11 +764,12 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 
 	/* now perform the definitive search */
 	found_M = NULL; found_Sm = NULL; bare_module_name = FALSE;
+	if (qr->title == NULL) qr->title = Str::new();
 	N = WebModules::named_reference(&found_M, &found_Sm, &bare_module_name,
-		title, search_M, text, FALSE, sections_only);
+		qr->title, search_M, text, FALSE, sections_only);
 
 	if (N == 0) {
-		if ((external == FALSE)  && (Wm)) {
+		if ((external == FALSE) && (Wm)) {
 			@<Is it the name of a function in the current web?@>;
 			@<Is it the name of a type in the current web?@>;
 		}
@@ -793,7 +782,7 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	if (N > 1) {
 		WebErrors::issue_at(I"Multiple cross-references might be meant here", lst);
 		WebModules::named_reference(&found_M, &found_Sm, &bare_module_name,
-			title, search_M, text, TRUE, FALSE);
+			qr->title, search_M, text, TRUE, FALSE);
 		return FALSE;
 	}
 	@<It refers unambiguously to a single section@>;
@@ -803,10 +792,12 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 @<Is it an explicit URL?@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, text, U"https*://%c*")) {
-		WRITE_TO(url, "%S", text);
-		WRITE_TO(title, "%S", text);
+		if (qr->url == NULL) qr->url = Str::new();
+		WRITE_TO(qr->url, "%S", text);
+		if (qr->title == NULL) qr->title = Str::new();
+		WRITE_TO(qr->title, "%S", text);
 		Regexp::dispose_of(&mr);
-		if (ext) *ext = TRUE;
+		qr->external = TRUE;
 		return TRUE;
 	}
 	int wsc = 0, dc = 0;
@@ -816,10 +807,12 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 		if (c == '.') dc++;
 	}
 	if ((wsc == 0) && (dc > 0)) {
-		WRITE_TO(url, "%S", text);
-		WRITE_TO(title, "%S", text);
+		if (qr->url == NULL) qr->url = Str::new();
+		WRITE_TO(qr->url, "%S", text);
+		if (qr->title == NULL) qr->title = Str::new();
+		WRITE_TO(qr->title, "%S", text);
 		Regexp::dispose_of(&mr);
-		if (ext) *ext = TRUE;
+		qr->external = TRUE;
 		return TRUE;
 	}
 	Regexp::dispose_of(&mr);
@@ -830,13 +823,19 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 		ls_line_label *label = LineLabels::find(Wm, lst, mr.exp[0]);
 		if (label) {
 			ls_line *destination = LineLabels::destination(label);
-			Colonies::paragraph_URL(url,
+			if (qr->url == NULL) qr->url = Str::new();
+			Colonies::paragraph_URL(qr->url,
 				LiterateSource::par_of_line(destination), destination, for_HTML_file, C);
-			WRITE_TO(title, "<span class=\"linelabel\">");
-			WRITE_TO(title, "%S", LineLabels::label_text(destination));
-			WRITE_TO(title, "</span>");
+			if (qr->title == NULL) qr->title = Str::new();
+			WRITE_TO(qr->title, "%S", LineLabels::label_text(destination));
 			Regexp::dispose_of(&mr);
-			if (ext) *ext = FALSE;
+			qr->external = FALSE;
+			qr->token = (void *) label;
+			if (qr->internal_xref == NULL) qr->internal_xref = Str::new();
+			ls_line *line = LineLabels::destination(label);
+			ls_section *S = LiterateSource::section_of_line(line);
+			if (S) WRITE_TO(qr->internal_xref, "s%d", S->allocation_id);
+			WRITE_TO(qr->internal_xref, "line%d", line->sequence_number_in_section);
 			return TRUE;
 		}
 		TEMPORARY_TEXT(err)
@@ -857,7 +856,8 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 		ls_section *found_Sm = FIRST_IN_LINKED_LIST(ls_section, found_C->sections);
 		if (found_Sm == NULL) internal_error("chapter without sections");
 		int bare_module_name = TRUE;
-		WRITE_TO(title, "%S", search_CM->name);
+		if (qr->title == NULL) qr->title = Str::new();
+		WRITE_TO(qr->title, "%S", search_CM->name);
 		@<It refers unambiguously to a single section@>;
 	}
 
@@ -880,9 +880,11 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	language_function *fn;
 	LOOP_OVER_LINKED_LIST(fn, language_function, CodeAnalysis::language_functions_list(Wm))
 		if (Str::eq_insensitive(fn->function_name, text)) {
-			Colonies::paragraph_URL(url, Functions::declaration_lsparagraph(fn), NULL,
+			if (qr->url == NULL) qr->url = Str::new();
+			Colonies::paragraph_URL(qr->url, Functions::declaration_lsparagraph(fn), NULL,
 				for_HTML_file, C);
-			WRITE_TO(title, "%S", fn->function_name);
+			if (qr->title == NULL) qr->title = Str::new();
+			WRITE_TO(qr->title, "%S", fn->function_name);
 			return TRUE;
 		}
 
@@ -890,40 +892,53 @@ int Colonies::resolve_reference_in_weave_inner(ls_colony *C, text_stream *url, t
 	language_type *str;
 	LOOP_OVER(str, language_type) {
 		if (Str::eq_insensitive(str->structure_name, text)) {
-			Colonies::paragraph_URL(url,
+			if (qr->url == NULL) qr->url = Str::new();
+			Colonies::paragraph_URL(qr->url,
 				LiterateSource::par_of_line(str->structure_header_at), NULL,
 				for_HTML_file, C);
-			WRITE_TO(title, "%S", str->structure_name);
+			if (qr->title == NULL) qr->title = Str::new();
+			WRITE_TO(qr->title, "%S", str->structure_name);
 			return TRUE;
 		}
 	}
 
 @<It refers unambiguously to a single section@> =
 	if (found_M == NULL) internal_error("could not locate M");
-	if (search_CM) @<The section is a known colony member@>
+	if (search_CM) @<The section is in a known colony member@>
 	else @<The section is not in a known colony member@>;
+	if ((found_M == from_M) && (found_Sm)) {
+		if (qr->internal_xref == NULL) qr->internal_xref = Str::new();
+		WRITE_TO(qr->internal_xref, "se%S", found_Sm->sect_range);
+	}
 	return TRUE;
 
-@<The section is a known colony member@> =
+@<The section is in a known colony member@> =
 	pathname *from = Filenames::up(for_HTML_file);
 	pathname *to = Colonies::weave_path(search_CM);
-	Pathnames::relative_URL(url, from, to);
-	if (bare_module_name) WRITE_TO(url, "%S", search_CM->home_leaf);
-	else if (found_Sm) Colonies::section_URL(url, found_Sm); 
-	if (bare_module_name == FALSE)
-		WRITE_TO(title, " (in %S)", search_CM->name);
+	if (qr->url == NULL) qr->url = Str::new();
+	Pathnames::relative_URL(qr->url, from, to);
+	if (bare_module_name) WRITE_TO(qr->url, "%S", search_CM->home_leaf);
+	else if (found_Sm) Colonies::section_URL(qr->url, found_Sm); 
+	if (bare_module_name == FALSE) {
+		if (qr->title == NULL) qr->title = Str::new();
+		WRITE_TO(qr->title, " (in %S)", search_CM->name);
+	}
 
 @ In the absence of a colony file, we can really only guess, and the guess we
 make is that modules of the current web will be woven alongside the main one.
 
 @<The section is not in a known colony member@> =
 	if (found_M == from_M) {
-		Colonies::section_URL(url, found_Sm);
+		if (qr->url == NULL) qr->url = Str::new();
+		Colonies::section_URL(qr->url, found_Sm);
 	} else {
-		WRITE_TO(url, "../%S-module/", found_M->module_name);
-		Colonies::section_URL(url, found_Sm); 
-		if (bare_module_name == FALSE)
-			WRITE_TO(title, " (in %S)", found_M->module_name);
+		if (qr->url == NULL) qr->url = Str::new();
+		WRITE_TO(qr->url, "../%S-module/", found_M->module_name);
+		Colonies::section_URL(qr->url, found_Sm); 
+		if (bare_module_name == FALSE) {
+			if (qr->title == NULL) qr->title = Str::new();
+			WRITE_TO(qr->title, " (in %S)", found_M->module_name);
+		}
 	}
 
 @ If all we want is to establish whether it's internal or external:
@@ -963,15 +978,14 @@ void Colonies::link_URL(OUTPUT_STREAM, ls_colony *context, text_stream *link_tex
 	Regexp::dispose_of(&mr);
 }
 
-void Colonies::reference_URL(OUTPUT_STREAM, ls_colony *context, text_stream *link_text, filename *F) {
-	TEMPORARY_TEXT(title)
-	TEMPORARY_TEXT(url)
-	if (Colonies::resolve_reference_in_weave(context, url, title, F, link_text, NULL, NULL, NULL))
-		WRITE("%S", url);
+void Colonies::reference_URL(OUTPUT_STREAM, ls_colony *C, text_stream *link_text, filename *F) {
+	query_results qr = MDRender::create_qr();
+	Colonies::resolve_reference(&qr, link_text, C, NULL, NULL, F);
+	if (qr.found)
+		WRITE("%S", qr.url);
 	else
 		PRINT("Warning: unable to resolve reference '%S' in navigation\n", link_text);
-	DISCARD_TEXT(title)
-	DISCARD_TEXT(url)
+	MDRender::dispose_of(&qr);
 }
 
 void Colonies::section_URL(OUTPUT_STREAM, ls_section *S) {

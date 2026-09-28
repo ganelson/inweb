@@ -487,7 +487,6 @@ altogether, so that nobody uses it by mistake.
 			case COMMENTARY_MAJLC:           ct = COMMENTARY_LSCT; break;
 			case DEFINITION_MAJLC:           ct = DEFINITION_LSCT; break;
 			case DEFINITION_CONTINUED_MAJLC: ct = DEFINITION_LSCT; break;
-			case QUOTATION_MAJLC:            ct = QUOTATION_LSCT; break;
 			case HOLON_DECLARATION_MAJLC:
 				ct = HOLON_DECLARATION_LSCT;
 				switch (line->classification.minor) {
@@ -595,7 +594,6 @@ following:
 
 @e COMMENTARY_LSCT from 1
 @e EXTRACT_LSCT
-@e QUOTATION_LSCT
 @e DEFINITION_LSCT
 @e HOLON_DECLARATION_LSCT
 @e HOLON_ADDENDUM_LSCT
@@ -621,7 +619,6 @@ classdef ls_chunk in 100s {
 	/* meaningful for EXTRACT_LSCT chunks only */
 	struct ls_holon *holon; /* or `NULL`, if this doesn't contain a program fragment */
 	int plainer;
-	int hyperlinked;
 	struct text_stream *extract_to;
 	struct programming_language *extract_language;
 	struct ls_code_excerpt *code_excerpt;
@@ -659,7 +656,6 @@ classdef ls_chunk in 100s {
 
 	chunk->holon = NULL;
 	chunk->plainer = FALSE;
-	chunk->hyperlinked = FALSE;
 	chunk->extract_to = NULL;
 	chunk->extract_language = NULL;
 	chunk->code_excerpt = NULL;
@@ -958,15 +954,15 @@ we sometimes read this as a purpose written in plain text, and remove the para.
 			text_stream *language_name = NULL;
 			switch (chunk->metadata.minor) {
 				case TEXT_AS_MINLC:
-					@<Parse out the optional undisplayed and hyperlinked keywords@>;
+					@<Parse out the optional undisplayed keyword@>;
 					language_name = chunk->metadata.operand1;
 					break;
 				case TEXT_TO_MINLC:
-					@<Parse out the optional undisplayed and hyperlinked keywords@>;
+					@<Parse out the optional undisplayed keyword@>;
 					chunk->extract_to = chunk->metadata.operand1;
 					break;
 				case TEXT_MINLC:
-					@<Parse out the optional undisplayed and hyperlinked keywords@>;
+					@<Parse out the optional undisplayed keyword@>;
 					break;
 			}
 			if (Str::len(language_name) > 0)
@@ -977,8 +973,7 @@ we sometimes read this as a purpose written in plain text, and remove the para.
 
 @ This is all a little clumsy, but it'll do:
 
-@<Parse out the optional undisplayed and hyperlinked keywords@> =
-	if (chunk->metadata.options_bitmap & HYPERLINKED_LSNROBIT) chunk->hyperlinked = TRUE;
+@<Parse out the optional undisplayed keyword@> =
 	if (chunk->metadata.options_bitmap & UNDISPLAYED_LSNROBIT) chunk->plainer = TRUE;
 
 @ So, each chunk which contains a fragment of the actual program code (rather
@@ -1423,7 +1418,6 @@ text_stream *LiterateSource::line_weaving_matter(ls_line *line) {
 	if (line == NULL) return NULL;
 	if ((line->classification.operand1) &&
 		((line->classification.major == COMMENTARY_MAJLC) ||
-			(line->classification.major == QUOTATION_MAJLC) ||
 			(line->classification.major == EXTRACT_MATTER_MAJLC)))
 		return line->classification.operand1;
 	return line->text;	
@@ -1644,8 +1638,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 		for (ls_chunk *chunk = par->first_chunk; chunk; chunk = chunk->next_chunk) {
 			cc++;
 			WRITE("C%d: ", cc);
-			if (chunk->holon) @<Write holon@>
-			else @<Write non-holon chunk@>;
+			LiterateSource::write_chunk(OUT, chunk);
 			if ((chunk == par->first_chunk) && (chunk->prev_chunk))
 				WRITE("*** first chunk but has prev_chunk set\n");
 			if ((chunk == par->last_chunk) && (chunk->next_chunk))
@@ -1658,6 +1651,11 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 		}
 		OUTDENT;
 	}
+}
+
+void LiterateSource::write_chunk(OUTPUT_STREAM, ls_chunk *chunk) {
+	if (chunk->holon) @<Write holon@>
+	else @<Write non-holon chunk@>;
 }
 
 @<Write holon@> =
@@ -1682,7 +1680,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 		WRITE(")");
 	}
 	WRITE("\n");
-	INDENT
+	INDENT;
 	holon_splice *hs;
 	LOOP_OVER_HOLON_DEFINITION(hs, holon) {
 		switch (hs->type) {
@@ -1714,9 +1712,7 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 @<Write non-holon chunk@> =
 	switch (chunk->chunk_type) {
 		case COMMENTARY_LSCT: WRITE("commentary\n"); break;
-		case QUOTATION_LSCT: WRITE("quotation\n"); break;
 		case EXTRACT_LSCT:
-			if (chunk->hyperlinked) WRITE("hyperlinked ");
 			if (chunk->plainer) WRITE("undisplayed ");
 			switch (chunk->metadata.minor) {
 				case CODE_MINLC: WRITE("code "); break;
@@ -1777,7 +1773,6 @@ void LiterateSource::write_lsu(OUTPUT_STREAM, ls_unit *lsu) {
 	for (ls_line *line = chunk->first_line; line; line = line->next_line) {
 		switch (line->classification.major) {
 			case COMMENTARY_MAJLC:
-			case QUOTATION_MAJLC:
 			case EXTRACT_MATTER_MAJLC:
 				WRITE("_______ ");
 				LiterateSource::write_code(OUT, NULL, line->classification.operand1,

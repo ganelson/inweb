@@ -2,9 +2,9 @@
 
 ## General rules
 
-In the example pattern developed in //Creating Patterns//, there was just one
-asset, the image `gobelins.jpg`. That was tucked away in its own plugin,
-called `Logo`, and the files were arranged like so:
+In one of the example patterns developed in //Patterns for Weaving Websites//,
+there was just one asset, the image `gobelins.jpg`. That was tucked away in its
+own plugin, called `Logo`, and the files were arranged like so:
 
 	Tapestry
 		Logo
@@ -180,7 +180,7 @@ the copied file in the assets directory.
 
 Inweb has a special tweak to handle the plugin `Colouring`, found in `HTML`.
 This contains a single asset: the file `Colours.css`, which specifies the
-appearance of code features. See //Creating Patterns// for an example of
+appearance of code features. See //Patterns for Weaving Websites// for an example of
 how this can be rewritten.
 
 The special feature is this: When Inweb is weaving code of a given language

@@ -49,74 +49,78 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#6">Chapter 6: Patterns</a></li><li><b>Summary of Patterns</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> A pattern declaration must be in a file called <code>NAME.inweb</code> which is inside a
-directory of plugins and templates, called <code>NAME</code>. The declaration should
-be written thus:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "NAME" {
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a>A pattern declaration must be in a file called <code>NAME.inweb</code> which is inside a
+    directory of plugins and templates, called <code>NAME</code>. The declaration should
+    be written thus:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">Language "NAME" {
 	...
 }
 </span></pre>
-<p>where the body <code>...</code> consists of blank lines, or of any of the following,
-given in any order:</p>
-<ul>
-<li>
-<p><code>based on: ENAME</code> declares that the new pattern is based on an existing one
-called <code>ENAME</code>. For the pattern to be used, Inweb must be able to see that
-existing pattern somewhere: it will halt with an error if not. Any of the
-settings in this section (other than <code>based on</code>) will be taken from <code>ENAME</code>
-if the new pattern does not specify them.</p>
-</li>
-<li>
-<p><code>default range: RANGE</code> tells Inweb how granular the weave of a multi-section
-web should be, by default. <code>default range: sections</code> means that each section
-should be woven to its own file. <code>default range: chapters</code> means that each
-chapter is in its own file, which presents all its sections in turn.</p>
-</li>
-<li>
-<p><code>format: FORMAT</code> gives the fundamental kind of output being made. This must
-be one of those supported by Inweb:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">HTML  ePub  plain  TeX  TestingInweb
+    <p>where the body <code>...</code> consists of blank lines, or of any of the following,
+    given in any order:</p>
+    <ul>
+    <li>
+    <p><code>based on: ENAME</code> declares that the new pattern is based on an existing one
+    called <code>ENAME</code>. For the pattern to be used, Inweb must be able to see that
+    existing pattern somewhere: it will halt with an error if not. Any of the
+    settings in this section (other than <code>based on</code>) will be taken from <code>ENAME</code>
+    if the new pattern does not specify them.</p>
+    </li>
+    <li>
+    <p><code>default range: RANGE</code> tells Inweb how granular the weave of a multi-section
+    web should be, by default. <code>default range: sections</code> means that each section
+    should be woven to its own file. <code>default range: chapters</code> means that each
+    chapter is in its own file, which presents all its sections in turn.</p>
+    </li>
+    <li>
+    <p><code>format: FORMAT</code> gives the fundamental kind of output being made. This must
+    be one of those supported by Inweb:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">HTML  plain  TeX  LaTeX  TestingInweb
 </span></pre>
-<p><code>ePub</code> is the book format; <code>plain</code> is plain text; <code>TeX</code> is (plain) TeX;
-and <code>TestingInweb</code> should not be used except for its advertised purpose.</p>
-</li>
-<li>
-<p><code>block template: FILE</code> tells Inweb <em>not</em> to read a file of this name from
-the template(s) that the current template is based on. This can only be
-used with template files like <code>template-body.html</code>. (It is less fuss to
-change the version of <code>template-body.html</code>: simply supply a replacement
-in the new template's directory. But if the idea is to not have the file
-at all, then this command is needed.)</p>
-</li>
-<li>
-<p><code>plugin: PNAME</code> tells Inweb to include the plugin <code>PNAME</code>, which should be
-a subdirectory called <code>PNAME</code> of the pattern directory. It should contain
-asset files: see <a href="6-am.html" class="internal">Asset Management</a>.</p>
-</li>
-<li>
-<p><code>mathematics plugin: PNAME</code> tells Inweb to include <code>PNAME</code> if and only if
-the weave includes any TeX mathematics formulae in commentary.</p>
-</li>
-<li>
-<p><code>footnotes plugin: PNAME</code> tells Inweb to include <code>PNAME</code> if and only if
-the weave includes any use of footnotes in commentary.</p>
-</li>
-<li>
-<p><code>assets</code>, followed by lines containing instructions on how to include
-files of various types, followed by an <code>end</code> line. See <a href="6-am.html" class="internal">Asset Management</a>.</p>
-</li>
-<li>
-<p><code>initial extension: .EXT</code> is useful only when <code>commands</code> are supplied.
-See <a href="6-tp.html" class="internal">The Post-Weave</a>.</p>
-</li>
-<li>
-<p><code>commands</code>, followed by lines containing post-weave shell script commands,
-followed by an <code>end</code> line. See <a href="6-tp.html" class="internal">The Post-Weave</a>.</p>
-</li>
-</ul>
+    <p>Note that <code>HTML</code>, for example, is also the name of a pattern (the default
+    one used by Inweb, in fact): that pattern's format is of course <code>HTML</code>.
+    <code>plain</code> is plain text; <code>TeX</code> is (plain) TeX, the low-level typesetting tool,
+    which can be used to make PDF documents; <code>LaTeX</code> is the higher-level
+    development of that; and <code>TestingInweb</code> should not be used except for its
+    advertised purpose.</p>
+    </li>
+    <li>
+    <p><code>block template: FILE</code> tells Inweb <em>not</em> to read a file of this name from
+    the template(s) that the current template is based on. This can only be
+    used with template files like <code>template-body.html</code>. (It is less fuss to
+    change the version of <code>template-body.html</code>: simply supply a replacement
+    in the new template's directory. But if the idea is to not have the file
+    at all, then this command is needed.)</p>
+    </li>
+    <li>
+    <p><code>plugin: PNAME</code> tells Inweb to include the plugin <code>PNAME</code>, which should be
+    a subdirectory called <code>PNAME</code> of the pattern directory. It should contain
+    asset files: see <a href="6-am.html" class="internal">Asset Management</a>.</p>
+    </li>
+    <li>
+    <p><code>mathematics plugin: PNAME</code> tells Inweb to include <code>PNAME</code> if and only if
+    the weave includes any TeX mathematics formulae in commentary.</p>
+    </li>
+    <li>
+    <p><code>footnotes plugin: PNAME</code> tells Inweb to include <code>PNAME</code> if and only if
+    the weave includes any use of footnotes in commentary.</p>
+    </li>
+    <li>
+    <p><code>assets</code>, followed by lines containing instructions on how to include
+    files of various types, followed by an <code>end</code> line. See <a href="6-am.html" class="internal">Asset Management</a>.</p>
+    </li>
+    <li>
+    <p><code>initial extension: .EXT</code> is useful only when <code>commands</code> are supplied.
+    See <a href="6-tp.html" class="internal">The Post-Weave</a>.</p>
+    </li>
+    <li>
+    <p><code>commands</code>, followed by lines containing post-weave shell script commands,
+    followed by an <code>end</code> line. See <a href="6-tp.html" class="internal">The Post-Weave</a>.</p>
+    </li>
+    </ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">The Post-Weave</span><a href="6-tp.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 6: Patterns</span>6<li class="progresssection"><span class="fullname-popup">About Patterns</span><a href="6-ap.html">ap</a></li><li class="progresssection"><span class="fullname-popup">Creating Patterns</span><a href="6-cp.html">cp</a></li><li class="progresssection"><span class="fullname-popup">Collation</span><a href="6-cll.html">cll</a></li><li class="progresssection"><span class="fullname-popup">Asset Management</span><a href="6-am.html">am</a></li><li class="progresssection"><span class="fullname-popup">The Post-Weave</span><a href="6-tp.html">tp</a></li><li class="progresscurrent"><span class="current-fullname-popup">Summary of Patterns</span>sop</li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Build Numbering</span><a href="7-bn.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">The Post-Weave</span><a href="6-tp.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 6: Patterns</span>6</li><li class="progresssection"><span class="fullname-popup">About Patterns</span><a href="6-ap.html">ap</a></li><li class="progresssection"><span class="fullname-popup">Patterns for Weaving Websites</span><a href="6-pfww.html">pfww</a></li><li class="progresssection"><span class="fullname-popup">Patterns for Weaving PDFs</span><a href="6-pfwp.html">pfwp</a></li><li class="progresssection"><span class="fullname-popup">Collation</span><a href="6-cll.html">cll</a></li><li class="progresssection"><span class="fullname-popup">Asset Management</span><a href="6-am.html">am</a></li><li class="progresssection"><span class="fullname-popup">The Post-Weave</span><a href="6-tp.html">tp</a></li><li class="progresscurrent"><span class="current-fullname-popup">Summary of Patterns</span>sop</li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Build Numbering</span><a href="7-bn.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

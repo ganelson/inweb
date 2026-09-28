@@ -49,47 +49,47 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">The Inweb Guide</a></li><li><a href="index.html#6">Chapter 6: Patterns</a></li><li><b>Collation</b></li></ul></div>
 <div class="lsmarkdown">
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a> <em>Collation</em> is the process used by Inweb when it makes a new file in the
-weave output. For example, consider this weave (last seen in <a href="2-cp.html" class="internal">Contents Pages</a>):</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">$ inweb weave smorgasbord -to my_website
+    <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><em>Collation</em> is the process used by Inweb when it makes a new file in the
+    weave output. For example, consider this weave (last seen in <a href="2-cp.html" class="internal">Contents Pages</a>):</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">$ inweb weave smorgasbord -to my_website
 weaving web "Sorting Smorgasbord" (Python program in MarkdownCode notation) as HTML
 	[my_website/cnsr.html] [qcsr]
 	[index]
 	10 files copied to: my_website/assets
 </span></pre>
-<p>Here Inweb needs to make two section pages and one index page.</p>
-<table>
-<thead>
-<tr>
-<th>File</th>
-<th>Collated from</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>my_website/cnsr.html</code></td>
-<td><code>HTML/template-body.html</code></td>
-</tr>
-<tr>
-<td><code>my_website/qcsr.html</code></td>
-<td><code>HTML/template-body.html</code></td>
-</tr>
-<tr>
-<td><code>my_website/index.html</code></td>
-<td><code>HTML/template-index.html</code></td>
-</tr>
-</tbody>
-</table>
-<p>Collation can also happen on smaller scales. When Inweb turns a <code>Navigation</code>
-resource into the actual HTML for a sidebar of navigation links, it does that
-by collation. (See <a href="3-stm.html" class="internal">Sitemaps</a>.) And collation is also used when Inweb injects
-content from plugins into web pages. (See <a href="6-am.html" class="internal">Asset Management</a>.) As this
-demonstrates, one collation can include the output of another.</p>
-<p>The basic idea is very simple. The template is a file like a pro-forma letter,
-which has everything in place except the actual text. Collating fills this in
-to make a finished letter.</p>
-<p>For example, here is a template file for making an HTML page:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+    <p>Here Inweb needs to make two section pages and one index page.</p>
+    <table>
+    <thead>
+    <tr>
+    <th>File</th>
+    <th>Collated from</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><code>my_website/cnsr.html</code></td>
+    <td><code>HTML/template-body.html</code></td>
+    </tr>
+    <tr>
+    <td><code>my_website/qcsr.html</code></td>
+    <td><code>HTML/template-body.html</code></td>
+    </tr>
+    <tr>
+    <td><code>my_website/index.html</code></td>
+    <td><code>HTML/template-index.html</code></td>
+    </tr>
+    </tbody>
+    </table>
+    <p>Collation can also happen on smaller scales. When Inweb turns a <code>Navigation</code>
+    resource into the actual HTML for a sidebar of navigation links, it does that
+    by collation. (See <a href="3-stm.html" class="internal">Sitemaps</a>.) And collation is also used when Inweb injects
+    content from plugins into web pages. (See <a href="6-am.html" class="internal">Asset Management</a>.) As this
+    demonstrates, one collation can include the output of another.</p>
+    <p>The basic idea is very simple. The template is a file like a pro-forma letter,
+    which has everything in place except the actual text. Collating fills this in
+    to make a finished letter.</p>
+    <p>For example, here is a template file for making an HTML page:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;title&gt;[[Booklet Title]]&lt;/title&gt;
@@ -100,120 +100,120 @@ to make a finished letter.</p>
 	&lt;/body&gt;
 &lt;/html&gt;
 </span></pre>
-<p>Collating with this is just copying it over verbatim: except for the placeholders
-in double square brackets.</p>
-<h2>Placeholders used on body pages</h2>
-<ul>
-<li>
-<p><code>[[Weave Content]]</code> expands to the body of the web page — the headings,
-paragraphs and so on.</p>
-</li>
-<li>
-<p><code>[[Plugins]]</code> expands to any links to CSS or Javascript files needed
-by the plugins being used.</p>
-</li>
-<li>
-<p>Any item of metadata for the web expands to its value: thus <code>[[Title]]</code>,
-<code>[[Author]]</code> and so on. (See <a href="1-mtd.html" class="internal">Metadata</a>.)</p>
-</li>
-<li>
-<p><code>[[Booklet Title]]</code> is a title for the document, which Inweb works out
-depending on what (and how much) it contains. For a single-page web, this
-would be the title of the whole program; for just one section of a web, the
-section title; and so on. (The quaint term &quot;booklet title&quot; is because literate
-programming tools began in a world of making short book-like documents rather
-than web pages.)</p>
-</li>
-<li>
-<p>For any metadata, placing the word <code>Capitalized</code> (or <code>Capitalised</code>) produces
-that text in capital letters. Thus if <code>[[Author]]</code> expands to &quot;Lucy Templeton&quot;,
-then <code>[[Capitalized Author]]</code> expands to &quot;LUCY TEMPLETON&quot;.</p>
-</li>
-<li>
-<p><code>[[Navigation]]|</code> expands to the navigation sidebar in use when weaving
-a colony of webs — see <a href="3-stm.html" class="internal">Sitemaps</a> for more. What happens is that the content
-of the navigation resource for the web is collated in.</p>
-</li>
-<li>
-<p><code>[[Breadcrumbs]]</code> expands to the HTML for the breadcrumb trail of a page.
-Again, see <a href="3-stm.html" class="internal">Sitemaps</a>. Note that the <code>template-body.html</code> for <code>HTML</code> does
-not contain this placeholder, and so the breadcrumb links aren't shown. But
-the <code>template-body.html</code> for <code>GitHubPages</code>, for example, does.</p>
-</li>
-<li>
-<p><code>[[Docs]]</code> is intended for webs being woven as part of a colony of webs
-sharing a website: it expands to the URL for the home page.</p>
-</li>
-<li>
-<p><code>[[Assets]]|</code> expands to the URL of the directory into which plugin
-assets such as images are placed. An example of this in use can be found
-in <a href="6-cp.html" class="internal">Creating Patterns</a>, in the URL for the tapestry logo image. Note that
-it might be the empty text, if the images are in the same directory as
-the page being generated: and if it is not empty, then it contains a final
-directory divider. It might typically expand to <code>project-assets/</code>. Because
-of this a typical image URL in the template should be written <code>[[Assets]]image.jpg</code>,
-not <code>[[Assets]]/image.jpg</code>, which may go wrong if <code>[[Assets]]|</code> is empty.</p>
-</li>
-</ul>
-<h2>Placeholders used on index pages</h2>
-<p>The <code>template-index.html</code> file has access to additional placeholders
-enabling it to generate contents/index pages:</p>
-<ul>
-<li>
-<p>One of the following details about the entire-web PDF (see below):</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]
+    <p>Collating with this is just copying it over verbatim: except for the placeholders
+    in double square brackets.</p>
+    <h2>Placeholders used on body pages</h2>
+    <ul>
+    <li>
+    <p><code>[[Weave Content]]</code> expands to the body of the web page — the headings,
+    paragraphs and so on.</p>
+    </li>
+    <li>
+    <p><code>[[Plugins]]</code> expands to any links to CSS or Javascript files needed
+    by the plugins being used.</p>
+    </li>
+    <li>
+    <p>Any item of metadata for the web expands to its value: thus <code>[[Title]]</code>,
+    <code>[[Author]]</code> and so on. (See <a href="1-mtd.html" class="internal">Metadata</a>.)</p>
+    </li>
+    <li>
+    <p><code>[[Booklet Title]]</code> is a title for the document, which Inweb works out
+    depending on what (and how much) it contains. For a single-page web, this
+    would be the title of the whole program; for just one section of a web, the
+    section title; and so on. (The quaint term &quot;booklet title&quot; is because literate
+    programming tools began in a world of making short book-like documents rather
+    than web pages.)</p>
+    </li>
+    <li>
+    <p>For any metadata, placing the word <code>Capitalized</code> (or <code>Capitalised</code>) produces
+    that text in capital letters. Thus if <code>[[Author]]</code> expands to &quot;Lucy Templeton&quot;,
+    then <code>[[Capitalized Author]]</code> expands to &quot;LUCY TEMPLETON&quot;.</p>
+    </li>
+    <li>
+    <p><code>[[Navigation]]|</code> expands to the navigation sidebar in use when weaving
+    a colony of webs — see <a href="3-stm.html" class="internal">Sitemaps</a> for more. What happens is that the content
+    of the navigation resource for the web is collated in.</p>
+    </li>
+    <li>
+    <p><code>[[Breadcrumbs]]</code> expands to the HTML for the breadcrumb trail of a page.
+    Again, see <a href="3-stm.html" class="internal">Sitemaps</a>. Note that the <code>template-body.html</code> for <code>HTML</code> does
+    not contain this placeholder, and so the breadcrumb links aren't shown. But
+    the <code>template-body.html</code> for <code>GitHubPages</code>, for example, does.</p>
+    </li>
+    <li>
+    <p><code>[[Docs]]</code> is intended for webs being woven as part of a colony of webs
+    sharing a website: it expands to the URL for the home page.</p>
+    </li>
+    <li>
+    <p><code>[[Assets]]</code> expands to the URL of the directory into which plugin
+    assets such as images are placed. An example of this in use can be found
+    in <a href="6-pfww.html" class="internal">Patterns for Weaving Websites</a>, in the URL for the tapestry logo image.
+    Note that it might be the empty text, if the images are in the same directory as
+    the page being generated: and if it is not empty, then it contains a final
+    directory divider. It might typically expand to <code>project-assets/</code>. Because
+    of this a typical image URL in the template should be written <code>[[Assets]]image.jpg</code>,
+    not <code>[[Assets]]/image.jpg</code>, which may go wrong if <code>[[Assets]]|</code> is empty.</p>
+    </li>
+    </ul>
+    <h2>Placeholders used on index pages</h2>
+    <p>The <code>template-index.html</code> file has access to additional placeholders
+    enabling it to generate contents/index pages:</p>
+    <ul>
+    <li>
+    <p>One of the following details about the entire-web PDF (see below):</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Complete Leafname]]  [[Complete Extent]]  [[Complete PDF Size]]
 </span></pre>
-</li>
-<li>
-<p>One of the following details about the &quot;current chapter&quot; (again, see below):</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Chapter Title]]  [[Chapter Purpose]]  [[Chapter Leafname]]
+    </li>
+    <li>
+    <p>One of the following details about the &quot;current chapter&quot; (again, see below):</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Chapter Title]]  [[Chapter Purpose]]  [[Chapter Leafname]]
 [[Chapter Extent]]  [[Chapter PDF Size]]  [[Chapter Errors]]
 </span></pre>
-<p>The leafname is that of the typeset PDF; the extent is a page count;
-the errors result is a usually blank report.</p>
-</li>
-<li>
-<p>One of the following details about the &quot;current section&quot; (again, see below):</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Section Title]]  [[Section Purpose]]  [[Section Leafname]]
+    <p>The leafname is that of the typeset PDF; the extent is a page count;
+    the errors result is a usually blank report.</p>
+    </li>
+    <li>
+    <p>One of the following details about the &quot;current section&quot; (again, see below):</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Section Title]]  [[Section Purpose]]  [[Section Leafname]]
 [[Section Extent]]  [[Section PDF Size]]  [[Section Errors]]
 [[Section Lines]]  [[Section Paragraphs]]  [[Section Mean]]
 [[Section Source]]
 </span></pre>
-<p>Lines and Paragraphs are counts of the number of each; the Source
-substitution is the leafname of the literate source file. The Mean is the
-average number of lines per paragraph: where this is large, the section
-is rather raw and literate programming is not being used to the full.</p>
-</li>
-<li>
-<p><code>[[Repeat Chapter]]</code> and <code>[[Repeat Section]]</code> begin blocks of lines which
-are repeated for each chapter or section: the material to be repeated
-continues to the matching <code>[[End Repeat]]</code> line. The &quot;current chapter or
-section&quot; mentioned above is the one selected in the current innermost
-loop of that description.</p>
-</li>
-<li>
-<p><code>[[Repeat Module]]</code>, similarly, begins a repeat through the imported
-modules of the current web. (The main module, containing the actual material
-of the current web, does not count.) Within such a loop,</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Module Title]]  [[Module Purpose]]  [[Module Page]]
+    <p>Lines and Paragraphs are counts of the number of each; the Source
+    substitution is the leafname of the literate source file. The Mean is the
+    average number of lines per paragraph: where this is large, the section
+    is rather raw and literate programming is not being used to the full.</p>
+    </li>
+    <li>
+    <p><code>[[Repeat Chapter]]</code> and <code>[[Repeat Section]]</code> begin blocks of lines which
+    are repeated for each chapter or section: the material to be repeated
+    continues to the matching <code>[[End Repeat]]</code> line. The &quot;current chapter or
+    section&quot; mentioned above is the one selected in the current innermost
+    loop of that description.</p>
+    </li>
+    <li>
+    <p><code>[[Repeat Module]]</code>, similarly, begins a repeat through the imported
+    modules of the current web. (The main module, containing the actual material
+    of the current web, does not count.) Within such a loop,</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">[[Module Title]]  [[Module Purpose]]  [[Module Page]]
 </span></pre>
-<p>can all be used to refer to the current module. <code>[[Module Page]]</code> expands
-to the relative URL of the module's own woven HTML form, provided that
-the module is listed as a member of the current colony file.</p>
-</li>
-<li>
-<p><code>[[Select ...]]</code> and <code>[[End Select]]</code> form a block which behaves like
-a repetition, but happens just once, for the named chapter or section.</p>
-<p>For example, the following pattern:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">To take chapter 3 as an example, for instance, we find -
+    <p>can all be used to refer to the current module. <code>[[Module Page]]</code> expands
+    to the relative URL of the module's own woven HTML form, provided that
+    the module is listed as a member of the current colony file.</p>
+    </li>
+    <li>
+    <p><code>[[Select ...]]</code> and <code>[[End Select]]</code> form a block which behaves like
+    a repetition, but happens just once, for the named chapter or section.</p>
+    <p>For example, the following pattern:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">To take chapter 3 as an example, for instance, we find -
 [[Select 3]]
 [[Repeat Section]]
 	Section [[Section Title]], [[Section Code]], [[Section Lines]] lines.
 [[End Repeat]]
 [[End Select]]
 </span></pre>
-<p>weaves a report somewhat like this:</p>
-<pre class="displayed-code all-displayed-code code-font"><span class="plain-syntax">To take chapter 3 as an example, for instance, we find -
+    <p>weaves a report somewhat like this:</p>
+    <pre class="-displayed-code all-displayed-code code-font"><span class="plain-syntax">To take chapter 3 as an example, for instance, we find -
 	Section Lexer, 3/lex, 1011 lines.
 	Section Read Source Text, 3/read, 394 lines.
 	Section Lexical Writing Back, 3/lwb, 376 lines.
@@ -221,37 +221,37 @@ a repetition, but happens just once, for the named chapter or section.</p>
 	Section Vocabulary, 3/vocab, 338 lines.
 	Section Built-In Words, 3/words, 1207 lines.
 </span></pre>
-</li>
-<li>
-<p>Finally, there is very limited support for conditionals with
-<code>[[If CONDITION]]</code>, an optional <code>[[Else]]</code>, and a compulsory <code>[[Endif]]</code>.
-Very few conditions are in fact allowed:</p>
-<ul>
-<li>
-<p><code>[[If Chapters]]</code> tests whether the current web is divided into chapters,
-the alternative being that all the sections are in a notional chapter just
-called <code>Sections</code>.</p>
-</li>
-<li>
-<p><code>[[If Modules]]</code> tests whether the current web imports any modules.</p>
-</li>
-<li>
-<p><code>[[If Chapter Purpose]]</code>, inside a <code>[[Repeat Chapter]]</code>, tests whether the
-current chapter has a (non-empty) purpose text. Similarly for <code>[[If Section Purpose]]</code>
-and <code>[[If Module Purpose]]</code>.</p>
-</li>
-<li>
-<p><code>[[If Module Page]]</code>, inside a <code>[[Repeat Module]]</code>, tests whether the module
-appears (under its own name, i.e., not by a different name) as a member in
-the colony file, if there is one. In effect, this can be used to test whether
-it is safe to make a link to the module's own woven pages using <code>[[Module Page]]</code>.</p>
-</li>
-</ul>
-</li>
-</ul>
+    </li>
+    <li>
+    <p>Finally, there is very limited support for conditionals with
+    <code>[[If CONDITION]]</code>, an optional <code>[[Else]]</code>, and a compulsory <code>[[Endif]]</code>.
+    Very few conditions are in fact allowed:</p>
+    <ul>
+    <li>
+    <p><code>[[If Chapters]]</code> tests whether the current web is divided into chapters,
+    the alternative being that all the sections are in a notional chapter just
+    called <code>Sections</code>.</p>
+    </li>
+    <li>
+    <p><code>[[If Modules]]</code> tests whether the current web imports any modules.</p>
+    </li>
+    <li>
+    <p><code>[[If Chapter Purpose]]</code>, inside a <code>[[Repeat Chapter]]</code>, tests whether the
+    current chapter has a (non-empty) purpose text. Similarly for <code>[[If Section Purpose]]</code>
+    and <code>[[If Module Purpose]]</code>.</p>
+    </li>
+    <li>
+    <p><code>[[If Module Page]]</code>, inside a <code>[[Repeat Module]]</code>, tests whether the module
+    appears (under its own name, i.e., not by a different name) as a member in
+    the colony file, if there is one. In effect, this can be used to test whether
+    it is safe to make a link to the module's own woven pages using <code>[[Module Page]]</code>.</p>
+    </li>
+    </ul>
+    </li>
+    </ul>
 </div>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Creating Patterns</span><a href="6-cp.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 6: Patterns</span>6<li class="progresssection"><span class="fullname-popup">About Patterns</span><a href="6-ap.html">ap</a></li><li class="progresssection"><span class="fullname-popup">Creating Patterns</span><a href="6-cp.html">cp</a></li><li class="progresscurrent"><span class="current-fullname-popup">Collation</span>cll</li><li class="progresssection"><span class="fullname-popup">Asset Management</span><a href="6-am.html">am</a></li><li class="progresssection"><span class="fullname-popup">The Post-Weave</span><a href="6-tp.html">tp</a></li><li class="progresssection"><span class="fullname-popup">Summary of Patterns</span><a href="6-sop.html">sop</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a><li class="progressnext"><span class="nav-popup">Asset Management</span><a href="6-am.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><span class="nav-popup">Patterns for Weaving PDFs</span><a href="6-pfwp.html">&#10094;</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 1: Smaller Webs</span><a href="1-gs.html">1</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 2: Larger Webs</span><a href="2-cp.html">2</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 3: Colonies of Webs</span><a href="3-cln.html">3</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 4: Notations</span><a href="4-an.html">4</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 5: Languages</span><a href="5-al.html">5</a></li><li class="progresscurrentchapter"><span class="current-c-fullname-popup">Chapter 6: Patterns</span>6</li><li class="progresssection"><span class="fullname-popup">About Patterns</span><a href="6-ap.html">ap</a></li><li class="progresssection"><span class="fullname-popup">Patterns for Weaving Websites</span><a href="6-pfww.html">pfww</a></li><li class="progresssection"><span class="fullname-popup">Patterns for Weaving PDFs</span><a href="6-pfwp.html">pfwp</a></li><li class="progresscurrent"><span class="current-fullname-popup">Collation</span>cll</li><li class="progresssection"><span class="fullname-popup">Asset Management</span><a href="6-am.html">am</a></li><li class="progresssection"><span class="fullname-popup">The Post-Weave</span><a href="6-tp.html">tp</a></li><li class="progresssection"><span class="fullname-popup">Summary of Patterns</span><a href="6-sop.html">sop</a></li><li class="progresschapter"><span class="c-fullname-popup">Chapter 7: Other Services</span><a href="7-bn.html">7</a></li><li class="progressnext"><span class="nav-popup">Asset Management</span><a href="6-am.html">&#10095;</a></li></ul></div>
 </nav><!-- End of weave -->
 
 		</main>

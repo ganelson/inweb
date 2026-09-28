@@ -191,7 +191,7 @@ has four effects:
    functions not declared in the web source, such as the C library's `printf`,
    are of course also left bare.
 
-2. Each section of the literate source can declare that is is part of a namespace.
+2. Each section of the literate source can declare that it is part of a namespace.
    (It can't be partly in one, partly in another.) Inweb throws an error if
    it finds a function name whose namespace does not match that of its section.
    Again, `main` is an exception.

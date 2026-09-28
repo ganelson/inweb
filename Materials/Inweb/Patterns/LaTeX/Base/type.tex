@@ -1,0 +1,30 @@
+% `type.tex`
+%
+% This file shows the relative stylings and point sizes of different typographic
+% features used by Inweb, but does not set the font family: for that, see `page.tex`.
+%
+% Used for holon names (and other paragraph cross-references)
+\def\holonnametext#1{\textsf{\small #1}}
+\def\holonnumbertext#1{\textsf{\footnotesize #1}}
+%
+% Sans-serif footnote-sized text is used for endnotes and also the table of contents
+\def\sectiontoctext#1{\textsf{\footnotesize #1}}
+\def\endnotetext#1{\textsf{\footnotesize #1}}
+%
+% Headings for chapters and sections
+\def\chaptertitletext#1{\textsf{\Huge #1}}
+\def\sectiontitletext#1{\textsf{\huge #1}}
+%
+% Enumerations are marked "enum" in this font; default definitions are
+% subscripted "def" in this font
+\def\defnannotationtext#1{\textit{\footnotesize #1}}
+%
+% Type size and leading for body text and for code samples
+\def\bodytextspacing{\normalsize
+  \setbox\strutbox=\hbox{\vrule height8.5pt depth3.5pt width 0pt}%
+  \normalbaselines\rm}
+%
+\def\codetextspacing{\small
+  \setbox\strutbox=\hbox{\vrule height6pt depth3pt width 0pt}%
+  \normalbaselines\tt}
+%

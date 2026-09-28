@@ -1,0 +1,41 @@
+% `verbatim-macros.tex`
+%
+% These are macros to make code extracts work, which is much trickier than it
+% looks. There are LaTeX packages for this, but often those have tricky
+% restrictions (can't be used in `\centerline`, `\footnote`, etc.). So we'll
+% write our own macros, and cope with their issues by compiling around those
+% issues (see the Inweb source code). In the end, this is code going back to
+% Knuth's handling of verbatim code in the TeXBook, though slightly tweaked.
+%
+\newskip\ttglue
+%
+\chardef\other=12
+\def\codetext{\begingroup\codetextspacing\frenchspacing
+  \catcode`\\=\other
+  \catcode`\{=\other
+  \catcode`\}=\other
+  \catcode`\$=\other
+  \catcode`\&=\other
+  \catcode`\#=\other
+  \catcode`\%=\other
+  \catcode`\~=\other
+  \catcode`\_=\other
+  \catcode`\^=\other
+  \obeyspaces \obeylines \tt}
+%
+\def\|{\leavevmode\hbox{\tt\char`\|}} % vertical line
+\outer\def\begintt{$$\let\par=\endgraf \codetext \parskip=0pt
+  \catcode`\|=0 \rightskip-5pc \ttfinish}
+{\catcode`\|=0 |catcode`|\=\other % | is temporary escape character
+  |obeylines % end of line is active
+  |gdef|ttfinish#1^^M#2\endtt{#1|vbox{#2}|endgroup|bodytext$$}}
+\catcode`\|=\active
+%
+{\obeylines \gdef|{\codetext \spaceskip\ttglue \let^^M=\  \let|=\endgroup}}
+%
+\catcode`@=11
+\def\beginlines{\par\begingroup\nobreak\medskip\parindent=0pt \obeylines\nobreak \everypar{\strut}}
+\def\beginlinestighter{\par\begingroup\nobreak\parindent=0pt \kern1pt\nobreak \obeylines \everypar{\strut}}
+\def\endlines{\kern1pt\endgroup\medbreak\noindent}
+\catcode`@=12
+%

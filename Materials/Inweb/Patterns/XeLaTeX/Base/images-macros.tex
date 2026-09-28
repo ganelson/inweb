@@ -1,0 +1,27 @@
+\def\inwebimage#1{
+\begin{figure}
+\centering
+\includegraphics{#1}
+\end{figure}
+}
+%
+\def\inwebimagewidth#1#2{
+\begin{figure}
+\centering
+\includegraphics[width=#2cm]{#1}
+\end{figure}
+}
+%
+\def\inwebimageheight#1#2{
+\begin{figure}
+\centering
+\includegraphics[height=#2cm]{#1}
+\end{figure}
+}
+%
+\def\inwebimagewidthheight#1#2#3{
+\begin{figure}[ht]
+\centering
+\includegraphics[width=#2cm, height=#3cm]{#1}
+\end{figure}
+}
